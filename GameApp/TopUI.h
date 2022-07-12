@@ -18,6 +18,7 @@ public:
 
 protected:
 	GameEngineUIRenderer* TopRenderer;
+	GameEngineUIRenderer* BotRenderer;
 	float Time;
 
 private:
