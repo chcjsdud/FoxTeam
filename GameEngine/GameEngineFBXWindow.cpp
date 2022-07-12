@@ -11,6 +11,7 @@
 GameEngineFBXWindow::GameEngineFBXWindow()
 	: FBXFileSelect(-1)
 	, ActorSelect(-1)
+	, SelectAnimation(nullptr)
 {
 
 
