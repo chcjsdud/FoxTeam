@@ -69,10 +69,10 @@ void Player::Update(float _DeltaTime)
 		GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 	}
 
-	//if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
-	//{
-	//	return;
-	//}
+	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
+	{
+		return;
+	}
 
 	float4 MoveDir = float4::ZERO;
 

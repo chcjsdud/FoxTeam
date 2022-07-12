@@ -32,7 +32,8 @@ void GameEngineTransform::TransformUpdate()
 	{
 		TransformData_.ParentSetting(Parent_->TransformData_.WorldWorld_);
 	}
-	else {
+	else 
+	{
 		TransformData_.RootCalculation();
 	}
 
