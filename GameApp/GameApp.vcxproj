@@ -184,7 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="TestPlayer.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -222,7 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomVertex.h" />
-    <ClInclude Include="Player.h">
+    <ClInclude Include="TestPlayer.h">
       <SubType>
       </SubType>
     </ClInclude>

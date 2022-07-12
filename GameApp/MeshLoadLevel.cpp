@@ -1,6 +1,6 @@
 #include "PreCompile.h"
 #include "MeshLoadLevel.h"
-#include "Player.h"
+#include "TestPlayer.h"
 #include "TopUI.h"
 #include <GameEngine/PostFade.h>
 #include <GameEngine/PostBlur.h>
@@ -17,6 +17,9 @@
 #include "UserGame.h"
 
 MeshLoadLevel::MeshLoadLevel()
+	: FadeEffect(nullptr)
+	, FBXWindow(nullptr)
+	, MActor(nullptr)
 {
 }
 
@@ -99,7 +102,7 @@ void MeshLoadLevel::CreateActorLevel()
 
 
 	{
-		Player* Actor = CreateActor<Player>();
+		TestPlayer* Actor = CreateActor<TestPlayer>();
 	}
 
 	{

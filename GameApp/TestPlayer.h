@@ -5,21 +5,21 @@
 // Ό³Έν :
 class GameEngineLevel;
 class GameEngineImageRenderer;
-class Player : public GameEngineActor
+class TestPlayer : public GameEngineActor
 {
 public:
-	static Player* MainPlayer;
+	static TestPlayer* MainPlayer;
 
 public:
 	// constrcuter destructer
-	Player();
-	~Player();
+	TestPlayer();
+	~TestPlayer();
 
 	// delete Function
-	Player(const Player& _Other) = delete;
-	Player(Player&& _Other) noexcept = delete;
-	Player& operator=(const Player& _Other) = delete;
-	Player& operator=(Player&& _Other) noexcept = delete;
+	TestPlayer(const TestPlayer& _Other) = delete;
+	TestPlayer(TestPlayer&& _Other) noexcept = delete;
+	TestPlayer& operator=(const TestPlayer& _Other) = delete;
+	TestPlayer& operator=(TestPlayer&& _Other) noexcept = delete;
 
 protected:
 	GameEngineCollision* PlayerCollision;

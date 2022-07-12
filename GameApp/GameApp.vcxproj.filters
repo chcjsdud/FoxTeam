@@ -8,12 +8,6 @@
     <ClCompile Include="UserGame_Resources_Shader.cpp">
       <Filter>01.Core\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>02.GlobalActor</Filter>
-    </ClCompile>
-    <ClCompile Include="TopUI.cpp">
-      <Filter>02.GlobalActor</Filter>
-    </ClCompile>
     <ClCompile Include="MeshLoadLevel.cpp">
       <Filter>03.Level\MeshLoadLevel</Filter>
     </ClCompile>
@@ -25,6 +19,12 @@
     </ClCompile>
     <ClCompile Include="PlayLevel.cpp">
       <Filter>03.Level\PlayLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="TestPlayer.cpp">
+      <Filter>03.Level\MeshLoadLevel\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="TopUI.cpp">
+      <Filter>03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +52,12 @@
     <Filter Include="03.Level\PlayLevel">
       <UniqueIdentifier>{05b751c2-561b-4ec7-9f56-dd77d1993f1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Level\PlayLevel\Actor">
+      <UniqueIdentifier>{76756eed-32e9-42f3-8ce1-5f9577bf4b80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Level\MeshLoadLevel\Actor">
+      <UniqueIdentifier>{6dfae342-c1d4-4e78-af66-4069ade280e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -63,12 +69,6 @@
     <ClInclude Include="UserGame_Resources_Shader.h">
       <Filter>01.Core\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>02.GlobalActor</Filter>
-    </ClInclude>
-    <ClInclude Include="TopUI.h">
-      <Filter>02.GlobalActor</Filter>
-    </ClInclude>
     <ClInclude Include="MeshLoadLevel.h">
       <Filter>03.Level\MeshLoadLevel</Filter>
     </ClInclude>
@@ -77,6 +77,12 @@
     </ClInclude>
     <ClInclude Include="PlayLevel.h">
       <Filter>03.Level\PlayLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="TestPlayer.h">
+      <Filter>03.Level\MeshLoadLevel\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="TopUI.h">
+      <Filter>03.Level\MeshLoadLevel\Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

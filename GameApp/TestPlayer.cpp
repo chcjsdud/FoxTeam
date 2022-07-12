@@ -1,22 +1,22 @@
 #include "PreCompile.h"
 #include <GameEngine/GameEngineImageRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
-#include "Player.h"
+#include "TestPlayer.h"
 
-Player* Player::MainPlayer;
+TestPlayer* TestPlayer::MainPlayer;
 
-Player::Player()
+TestPlayer::TestPlayer()
 	: Speed(300.0f)
 	, PlayerCollision(nullptr)
 {
 	MainPlayer = this;
 }
 
-Player::~Player()
+TestPlayer::~TestPlayer()
 {
 }
 
-void Player::Start()
+void TestPlayer::Start()
 {
 	// GetTransform()->SetWorldPosition({200.0f, 0.0f});
 
@@ -63,7 +63,7 @@ void Player::Start()
 	GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 }
 
-void Player::Update(float _DeltaTime)
+void TestPlayer::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst().Down("FreeCameraOn"))
 	{
@@ -99,7 +99,7 @@ void Player::Update(float _DeltaTime)
 	GetTransform()->SetWorldDeltaTimeMove(MoveDir * Speed);
 }
 
-void Player::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
+void TestPlayer::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
 	if (std::string::npos != _NextLevel->GetName().find("Title"))
 	{
