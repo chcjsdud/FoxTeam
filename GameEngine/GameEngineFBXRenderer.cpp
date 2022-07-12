@@ -197,7 +197,7 @@ void FBXAnimation::Init()
     Animation->CalFbxExBoneFrameTransMatrix(Mesh);
     PixAniData = &Animation->AnimationDatas[0];
     Start = 0;
-    End = PixAniData->AniFrameData[0].BoneMatData.size();
+    End = static_cast<UINT>(PixAniData->AniFrameData[0].BoneMatData.size());
     FrameTime = 0.02f;
 
     //}
@@ -229,7 +229,7 @@ void FBXAnimation::Update(float _DeltaTime)
 
     ++NextFrame;
 
-    if (NextFrame >= End)
+    if (NextFrame >= static_cast<int>(End))
     {
         NextFrame = 0;
     }

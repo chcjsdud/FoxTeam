@@ -32,12 +32,12 @@ public:
 	std::string SpcTextureName; // 텍스처경로
 
 public:
-	FbxExRenderingPipeLineSettingData() {}
-	~FbxExRenderingPipeLineSettingData() {}
+	FbxExRenderingPipeLineSettingData();
+	~FbxExRenderingPipeLineSettingData();
 };
 
 
-struct FbxMeshSet 
+struct FbxMeshSet
 {
 public:
 	int IsLodLv;
@@ -99,7 +99,7 @@ public:
 				GameEngineIndexBuffers[i][j] = nullptr;
 			}
 		}
-		
+
 	}
 };
 
@@ -434,17 +434,17 @@ public:
 	void Load(const std::string& _Path);
 	void CreateRenderingBuffer();
 
-	std::map<int, FbxMeshSet>& GetMeshSet() 
+	std::map<int, FbxMeshSet>& GetMeshSet()
 	{
 		return AllMeshMap;
 	}
 
-	size_t GetBoneCount() 
+	size_t GetBoneCount()
 	{
 		return AllBones.size();
 	}
 
-	GameEngineStructuredBuffer* GetAnimationBuffer() 
+	GameEngineStructuredBuffer* GetAnimationBuffer()
 	{
 		return AnimationBuffer;
 	}

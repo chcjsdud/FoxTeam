@@ -429,7 +429,7 @@ void GameEngineFBXWindow::OnGUI()
 
 			Renderer->SetFBXMesh(SelectMesh->GetName(), "Color");
 
-			for (size_t i = 0; i < Renderer->GetRenderSetCount(); i++)
+			for (unsigned int i = 0; i < Renderer->GetRenderSetCount(); i++)
 			{
 				Renderer->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
 			}
