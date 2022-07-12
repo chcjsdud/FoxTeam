@@ -37,5 +37,5 @@ public:
 	float4 TANGENT;
 	float4 BINORMAL;
 	float4 WEIGHT; // °¡ÁßÄ¡¶û
-	int BLENDINDICES[4]; // 12 51 78
+	int BLENDINDICES[4] = {0, }; // 12 51 78
 };

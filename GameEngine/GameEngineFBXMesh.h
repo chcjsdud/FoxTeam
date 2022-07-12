@@ -407,6 +407,8 @@ struct FbxExMeshInfo
 class FbxClusterData
 {
 public:
+	FbxClusterData();
+public:
 	fbxsdk::FbxCluster* Cluster;
 	fbxsdk::FbxMesh* Mesh;
 	std::string LinkName;

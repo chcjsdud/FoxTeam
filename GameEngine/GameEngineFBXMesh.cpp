@@ -1419,3 +1419,10 @@ FbxExRenderingPipeLineSettingData::FbxExRenderingPipeLineSettingData()
 FbxExRenderingPipeLineSettingData::~FbxExRenderingPipeLineSettingData()
 {
 }
+
+FbxClusterData::FbxClusterData()
+	: Cluster(nullptr)
+	, Mesh(nullptr)
+{
+
+}
