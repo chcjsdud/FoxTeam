@@ -7,6 +7,7 @@ Player* Player::MainPlayer;
 
 Player::Player()
 	: Speed(300.0f)
+	, PlayerCollision(nullptr)
 {
 	MainPlayer = this;
 }
