@@ -1,9 +1,7 @@
 #include "PreCompile.h"
 #include "PlayLevel.h"
 #include "Player.h"
-#include "Monster.h"
 #include "TopUI.h"
-#include "Map.h"
 #include <GameEngine/PostFade.h>
 #include <GameEngine/PostBlur.h>
 #include <GameEngine/SmallPostBlur.h>
@@ -33,86 +31,9 @@ void PlayLevel::LevelStart()
 	FBXWindow->FBXFolder.MoveParent("FoxTeam");
 	FBXWindow->FBXFolder.MoveChild("EngineResources");
 	FBXWindow->FBXFolder.MoveChild("FBX");
-	
-
-	//GameEngineGUIWindow::inst
-
-	//GameEngineDirectory Dir;
-	//Dir.MoveParent("AR38");
-	//Dir.MoveChild("EngineResources");
-	//Dir.MoveChild("FBX");
-
-	//std::vector<GameEngineFile> Files = Dir.GetAllFile("FBX");
-
-	//for (auto& File : Files)
-	//{
-	//	GameEngineFBXMeshManager::GetInst().Load(File.GetFullPath());
-	//}
-
 
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
 	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -100.0f));
-
-
-	if (false == GameEngineInput::GetInst().IsKey("PlayerMove"))
-	{
-		GameEngineInput::GetInst().CreateKey("MOn", 'p');
-		GameEngineInput::GetInst().CreateKey("MOff", 'o');
-		GameEngineInput::GetInst().CreateKey("LevelControl", 'i');
-	}
-
-	//float _Dir,// 1
-	//float Speed, // 
-	//int Clip = 0
-
-	/*FadeEffect = AddPostProcessCameraMergeNext<PostFade>();
-	FadeEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-
-	GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
-	float4 Size = { 128, 72 };
-	Window->PushRenderTarget("PostEffectFade", FadeEffect->GetResult(), Size * 3);
-
-	FadeEffect->set(10, "BlurFilter.png");*/
-
-	//{
-	//	SmallPostBlur* BlurEffect = AddPostProcessCameraMergeNext<SmallPostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-
-	//{
-	//	SmallPostBlur* BlurEffect = AddPostProcessCameraMergeNext<SmallPostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-	//{
-	//	SmallPostBlur* BlurEffect = AddPostProcessCameraMergeNext<SmallPostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-
-	//{
-	//	PostBlur* BlurEffect = AddPostProcessCameraMergeNext<PostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-	//{
-	//	PostBlur* BlurEffect = AddPostProcessCameraMergeNext<PostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-	//{
-	//	PostBlur* BlurEffect = AddPostProcessCameraMergeNext<PostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-
 }
 
 void PlayLevel::LevelUpdate(float _DeltaTime)
@@ -136,44 +57,11 @@ void PlayLevel::LevelUpdate(float _DeltaTime)
 		Window->PushRenderTarget("UI 카메라 타겟", GetUICamera()->GetCameraRenderTarget(), Size * 3);
 		Check = true;
 	}
-
-	if (true == GameEngineInput::GetInst().Down("LevelControl"))
-	{
-		GameEngineGUIWindow* Window = GameEngineGUI::GetInst()->FindGUIWindow("LevelControlWindow");
-
-		Window->OnOffChange();
-	}
-
-	if (true == GameEngineInput::GetInst().Down("MOn"))
-	{
-		GameEngineGUIWindow* Window = GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow");
-
-		Window->OnOffChange();
-	}
-
-	if (true == GameEngineInput::GetInst().Down("MOff"))
-	{
-		//Window->Off();
-		//MActor->WindowCursorOff();
-
-	}
 }
 
-// 지금 내가 보스방이야.
-// 지금 내가 보스방이야.
 void PlayLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
 	
-
-	//if (std::string::npos != _NextLevel->GetName().find("World")
-	//	&& std::string::npos != _NextLevel->GetName().find("Boss"))
-	//{
-
-	//	Player::MainPlayer->GetLevel()->GetLevelActorMove(_NextLevel, Player::MainPlayer);
-
-	//}
-
-	// MoveLevelActor("TitleLevel", "BossLevel");
 
 }
 void PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
@@ -183,9 +71,6 @@ void PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 void PlayLevel::CreateActorLevel()
 {
-
-
-
 	static bool Check = false;
 
 	if (true == Check)
@@ -215,10 +100,6 @@ void PlayLevel::CreateActorLevel()
 
 	{
 		Player* Actor = CreateActor<Player>();
-	}
-
-	{
-		Map* Actor = CreateActor<Map>();
 	}
 
 	{

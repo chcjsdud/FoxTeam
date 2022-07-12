@@ -2,9 +2,6 @@
 #include <GameEngine/GameEngineImageRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
 #include "Player.h"
-#include "Monster.h"
-#include "Bullet.h"
-#include "Map.h"
 
 Player* Player::MainPlayer;
 
@@ -21,6 +18,16 @@ Player::~Player()
 void Player::Start()
 {
 	// GetTransform()->SetWorldPosition({200.0f, 0.0f});
+
+	{
+		GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(nullptr);
+		Renderer->SetRenderingPipeLine("Color");
+		Renderer->SetMesh("Box");
+
+		Renderer->GetTransform()->SetLocalScaling({ 1000.0f, 10.0f, 1000.0f });
+		Renderer->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+		Renderer->ShaderHelper.SettingConstantBufferSet("ResultColor", float4(0.0f, 0.2f, 0.0f));
+	}
 
 	{
 		GameEngineRenderer* ParentRenderer = nullptr;
@@ -62,10 +69,10 @@ void Player::Update(float _DeltaTime)
 		GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 	}
 
-	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
-	{
-		return;
-	}
+	//if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
+	//{
+	//	return;
+	//}
 
 	float4 MoveDir = float4::ZERO;
 

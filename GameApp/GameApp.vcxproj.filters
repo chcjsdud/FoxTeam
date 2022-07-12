@@ -14,29 +14,14 @@
     <ClCompile Include="UserGame_Resources_Shader.cpp">
       <Filter>UserCore\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="TitleLevel.cpp">
-      <Filter>Level</Filter>
-    </ClCompile>
     <ClCompile Include="PlayLevel.cpp">
       <Filter>Level</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
     <ClCompile Include="TopUI.cpp">
       <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
-      <Filter>Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayLevel2.cpp">
-      <Filter>Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -72,29 +57,14 @@
     <ClInclude Include="UserGame_Resources_Shader.h">
       <Filter>UserCore\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="TitleLevel.h">
-      <Filter>Level</Filter>
-    </ClInclude>
     <ClInclude Include="PlayLevel.h">
       <Filter>Level</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Bullet.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
     <ClInclude Include="TopUI.h">
       <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
-      <Filter>Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayLevel2.h">
-      <Filter>Level</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

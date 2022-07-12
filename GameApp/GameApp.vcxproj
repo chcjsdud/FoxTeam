@@ -184,9 +184,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
-    <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="Map.cpp" />
-    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Player.cpp">
       <SubType>
       </SubType>
@@ -195,7 +192,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="PlayLevel2.cpp" />
     <ClCompile Include="PreCompile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Precompile.h</PrecompiledHeaderFile>
@@ -205,10 +201,6 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Precompile.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Precompile.h</PrecompiledHeaderFile>
-    </ClCompile>
-    <ClCompile Include="TitleLevel.cpp">
-      <SubType>
-      </SubType>
     </ClCompile>
     <ClCompile Include="TopUI.cpp">
       <SubType>
@@ -225,10 +217,7 @@
     <ClCompile Include="UserGame_Resources_Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bullet.h" />
     <ClInclude Include="CustomVertex.h" />
-    <ClInclude Include="Map.h" />
-    <ClInclude Include="Monster.h" />
     <ClInclude Include="Player.h">
       <SubType>
       </SubType>
@@ -237,12 +226,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PlayLevel2.h" />
     <ClInclude Include="PreCompile.h" />
-    <ClInclude Include="TitleLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="TopUI.h">
       <SubType>
       </SubType>

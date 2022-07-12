@@ -8,9 +8,7 @@
 #include <GameEngine\GameEngineLevelControlWindow.h>
 #include <GameEngine\GameEngineRenderWindow.h>
 
-#include "TitleLevel.h"
 #include "PlayLevel.h"
-#include "PlayLevel2.h"
 
 std::atomic<int> UserGame::LoadingFolder = 0;
 
@@ -37,9 +35,7 @@ void UserGame::Initialize()
 	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
-	LevelCreate<TitleLevel>("Title");
 	LevelCreate<PlayLevel>("Play");
-	LevelCreate<PlayLevel2>("Play2");
 	LevelChange("Play");
 
 	return;
