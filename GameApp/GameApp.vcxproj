@@ -188,6 +188,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="MeshLoadLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PlayLevel.cpp">
       <SubType>
       </SubType>
@@ -219,6 +223,10 @@
   <ItemGroup>
     <ClInclude Include="CustomVertex.h" />
     <ClInclude Include="Player.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="MeshLoadLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
