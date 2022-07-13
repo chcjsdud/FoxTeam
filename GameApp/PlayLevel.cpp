@@ -1,22 +1,19 @@
 #include "PreCompile.h"
 #include "PlayLevel.h"
 #include "Player.h"
-//#include "TestACtor.h"
-#include "Monster.h"
 #include "TopUI.h"
-#include "Map.h"
-#include <GameEngine/PostFade.h>
-#include <GameEngine/PostBlur.h>
-#include <GameEngine/SmallPostBlur.h>
+
 #include <GameEngine/CameraComponent.h>
 #include <GameEngine/GameEngineTransform.h>
 #include <GameEngine/CameraActor.h>
-#include <GameEngine/MouseActor.h>
 #include <GameEngine/LightActor.h>
 #include <GameEngine/GameEngineGUI.h>
 #include <GameEngine/GameEngineRenderWindow.h>
 #include <GameEngine/SKySphereActor.h>
 #include <GameEngine/GameEngineFBXWindow.h>
+#include <GameEngine/GameEngineFBXMesh.h>
+
+#include <GameEngine/GameEngineImageRenderer.h>
 #include "UserGame.h"
 
 PlayLevel::PlayLevel() 
@@ -29,8 +26,11 @@ PlayLevel::~PlayLevel()
 
 void PlayLevel::LevelStart()
 {
-	LoadState_.CreateState("Load",std::bind(& PlayLevel::Load_Update,this),std::bind(&PlayLevel::Load_Start,this),std::bind(&PlayLevel::Load_End, this));
-	LoadState_.CreateState("Play",std::bind(& PlayLevel::Play_Update,this),std::bind(&PlayLevel::Play_Start,this), std::bind(&PlayLevel::Play_End, this));
+	// 레벨 진입전 리소스 로드
+	LoadState_.CreateState<PlayLevel>("Load",this,& PlayLevel::Load_Start,&PlayLevel::Load_Update,&PlayLevel::Load_End);
+	// 리소스 로드 완료 후 게임 시작
+	LoadState_.CreateState<PlayLevel>("Play",this,& PlayLevel::Play_Start,&PlayLevel::Play_Update,&PlayLevel::Play_End);
+
 	LoadState_.ChangeState("Load");
 
 	//FBXWindow = GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineFBXWindow>("FBXWindow");
@@ -64,6 +64,14 @@ void PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 void PlayLevel::Load_Start()
 {
+	//{
+	//	GameEngineActor* loading = CreateActor<GameEngineActor>();
+	//	GameEngineImageRenderer* loadingimage = loading->CreateTransformComponent<GameEngineImageRenderer>();
+	//	loadingimage->SetImage("TestLoading.jpg");
+	//	loadingimage->GetTransform()->SetLocalScaling({ 1920.f,1080.f,1.f });
+	//	loadingimage->GetTransform()->SetWorldPosition({ 0.f,0.f, -400.f });
+	//}
+
 	GameEngineDirectory Directory;
 	Directory.MoveParent("FoxTeam");
 	Directory.MoveChild("EngineResources");
@@ -79,6 +87,7 @@ void PlayLevel::Load_Update()
 {
 	if (0 >= UserGame::LoadingFolder)
 	{
+		// 로드 완료되면 플레이 상태로 변경
 		LoadState_.ChangeState("Play");
 	}
 
@@ -90,6 +99,13 @@ void PlayLevel::Load_End()
 
 void PlayLevel::Play_Start()
 {
+	//로드 완료후 처음 실행할 함수
+	// 플레이어 생성 등등...
+
+	/////////////////////////////
+	//프리카메라 주석 쳐놓음
+	/////////////////////////////
+
 
 	//GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
 	//GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -100.0f));
@@ -106,7 +122,14 @@ void PlayLevel::Play_Start()
 }
 
 void PlayLevel::Play_Update()
-{
+{	
+	// 로드 완료후 업데이트될 함수
+
+	/////////////////////////////
+	//프리카메라 주석 쳐놓음
+	/////////////////////////////
+	// 
+	// 
 	//static bool Check = false;
 
 	//if (false == Check && nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow"))
@@ -146,11 +169,6 @@ void PlayLevel::Play_End()
 
 void PlayLevel::CreateActorLevel()
 {
-	//{
-	//	MActor = CreateActor<MouseActor>();
-	//	MActor->GetUIRenderer()->SetRenderGroup(1000);
-	//}
-
 	{
 		LightActor* Actor;
 	
@@ -165,15 +183,9 @@ void PlayLevel::CreateActorLevel()
 	}
 
 	{
-		Map* Actor = CreateActor<Map>();
-	}
-
-	{
 		SKySphereActor* Actor = CreateActor<SKySphereActor>();
 		// Actor->SetRadius(5000);
 	}
-	
-
 
 	{
 		Player* Actor = CreateActor<Player>();

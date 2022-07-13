@@ -30,7 +30,7 @@ private:
 private:
 	void CreateActorLevel();
 
-
+	//FSM으로 구현된 레벨 로딩 단계
 
 	void Load_Start();
 	void Load_Update();

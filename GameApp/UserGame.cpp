@@ -9,6 +9,7 @@
 #include <GameEngine\GameEngineRenderWindow.h>
 
 #include "MeshLoadLevel.h"
+#include "PlayLevel.h"
 
 std::atomic<int> UserGame::LoadingFolder = 0;
 
@@ -35,11 +36,10 @@ void UserGame::Initialize()
 	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
-	LevelCreate<MeshLoadLevel>("MeshLoadLevel");
-	LevelChange("MeshLoadLevel");
-	//LevelCreate<TitleLevel>("Title");
+	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
+	//LevelChange("MeshLoadLevel");
+
 	LevelCreate<PlayLevel>("Play");
-	//LevelCreate<PlayLevel2>("Play2");
 	LevelChange("Play");
 
 	return;

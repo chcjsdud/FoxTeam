@@ -188,6 +188,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Player_State.cpp" />
     <ClCompile Include="TestPlayer.cpp">
       <SubType>
       </SubType>

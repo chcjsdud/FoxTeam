@@ -69,5 +69,24 @@ private:
 
 	State* Current_;
 	State* Next_;
+
+public:
+	template <typename T>
+	void CreateState(
+		const std::string& _Name,
+		T* objptr,
+		void (T::*_Start)(),
+		void (T::*_Update)(),
+		void (T::*_End)()
+		)
+	{
+		if (AllState_.end() != AllState_.find(_Name))
+		{
+			GameEngineDebug::MsgBoxError("이미 존재하는 스테이트를 또 만들려고 했습니다.");
+			return;
+		}
+
+		AllState_.insert(std::map<std::string, State*>::value_type(_Name, new State{ _Name, std::bind(_Start,objptr), std::bind(_Update,objptr), std::bind(_End,objptr )}));
+	}
 };
 
