@@ -30,7 +30,7 @@
       <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Player_State.cpp">
-      <Filter>03.Level\PlayLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

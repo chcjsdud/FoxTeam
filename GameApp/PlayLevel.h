@@ -33,11 +33,11 @@ private:
 	//FSM으로 구현된 레벨 로딩 단계
 
 	void Load_Start();
-	void Load_Update();
+	void Load_Update(float _DeltaTime);
 	void Load_End();
 
 	void Play_Start();
-	void Play_Update();
+	void Play_Update(float _DeltaTime);
 	void Play_End();
 };
 

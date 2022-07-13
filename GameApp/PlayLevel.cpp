@@ -83,7 +83,7 @@ void PlayLevel::Load_Start()
 	GameEngineFBXAnimationManager::GetInst().Load(Directory.PathToPlusFileName("ALS_N_RUN_F.FBX"));
 }
 
-void PlayLevel::Load_Update()
+void PlayLevel::Load_Update(float _DeltaTime)
 {
 	if (0 >= UserGame::LoadingFolder)
 	{
@@ -121,7 +121,7 @@ void PlayLevel::Play_Start()
 	CreateActorLevel();
 }
 
-void PlayLevel::Play_Update()
+void PlayLevel::Play_Update(float _DeltaTime)
 {	
 	// 로드 완료후 업데이트될 함수
 

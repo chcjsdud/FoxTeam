@@ -12,7 +12,7 @@ void Player::Idle_Start()
 {
 	Speed_ = 0.f;
 }
-void Player::Idle_Update()
+void Player::Idle_Update(float _DeltaTime)
 {
 	if (GameEngineInput::GetInst().IsKey("W")||
 		GameEngineInput::GetInst().IsKey("A")||
@@ -33,7 +33,7 @@ void Player::Walk_Start()
 {
 	Speed_ = 300.f;
 }
-void Player::Walk_Update()
+void Player::Walk_Update(float _DeltaTime)
 {
 	if (!GameEngineInput::GetInst().IsKey("W") &&
 		!GameEngineInput::GetInst().IsKey("A") &&
@@ -48,6 +48,8 @@ void Player::Walk_Update()
 		PlayerState_.ChangeState("Run");
 	}
 
+	MoveUpdate(_DeltaTime);
+	RotateFunc(_DeltaTime);
 }
 void Player::Walk_End()
 {
@@ -58,7 +60,7 @@ void Player::Run_Start()
 {
 	Speed_ = 600.f;
 }
-void Player::Run_Update()
+void Player::Run_Update(float _DeltaTime)
 {
 	if (!GameEngineInput::GetInst().IsKey("Space"))
 	{
@@ -80,6 +82,9 @@ void Player::Run_Update()
 	{
 		PlayerState_.ChangeState("Idle");
 	}
+
+	MoveUpdate(_DeltaTime);
+	RotateFunc(_DeltaTime);
 }
 void Player::Run_End()
 {
@@ -89,7 +94,7 @@ void Player::Run_End()
 void Player::Attack_Start()
 {
 }
-void Player::Attack_Update()
+void Player::Attack_Update(float _DeltaTime)
 {
 }
 void Player::Attack_End()

@@ -33,25 +33,31 @@ private:
 private:
 	//State
 	void Idle_Start();
-	void Idle_Update();
+	void Idle_Update(float _DeltaTime);
 	void Idle_End();
 
 	void Walk_Start();
-	void Walk_Update();
+	void Walk_Update(float _DeltaTime);
 	void Walk_End();
 
 	void Run_Start();
-	void Run_Update();
+	void Run_Update(float _DeltaTime);
 	void Run_End();
 
 	void Attack_Start();
-	void Attack_Update();
+	void Attack_Update(float _DeltaTime);
 	void Attack_End();
 
 private:
 	//Member Func
 	void Attack();
-	void MoveUpdate();
+
+
+	void CameraUpdate(float _DeltaTime);
+	void MoveUpdate(float _DeltaTime);
+
+	void RotateFunc(float _DeltaTime);
+
 
 private:
 	//state
@@ -68,6 +74,10 @@ private:
 	GameEngineFBXMesh* mesh_; //필요한가?
 
 	float Speed_;
+
+	float4 CurFowordDir_;
+	float4 KeyDir_;
+
 private:
 };
 
