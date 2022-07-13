@@ -3,23 +3,25 @@
 
 // Ό³Έν :
 class MouseActor;
-class PlayLevel2 : public GameEngineLevel
+class MeshLoadLevel : public GameEngineLevel
 {
 public:
 	// constrcuter destructer
-	PlayLevel2();
-	~PlayLevel2();
+	MeshLoadLevel();
+	~MeshLoadLevel();
 
 	// delete Function
-	PlayLevel2(const PlayLevel2& _Other) = delete;
-	PlayLevel2(PlayLevel2&& _Other) noexcept = delete;
-	PlayLevel2& operator=(const PlayLevel2& _Other) = delete;
-	PlayLevel2& operator=(PlayLevel2&& _Other) noexcept = delete;
+	MeshLoadLevel(const MeshLoadLevel& _Other) = delete;
+	MeshLoadLevel(MeshLoadLevel&& _Other) noexcept = delete;
+	MeshLoadLevel& operator=(const MeshLoadLevel& _Other) = delete;
+	MeshLoadLevel& operator=(MeshLoadLevel&& _Other) noexcept = delete;
 
 	MouseActor* MActor; 
 	class PostFade* FadeEffect;
 
 protected:
+
+	class GameEngineFBXWindow* FBXWindow;
 
 private:
 	void CreateActorLevel();

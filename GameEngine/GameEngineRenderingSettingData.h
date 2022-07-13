@@ -199,6 +199,10 @@ public:
 		: Res_(nullptr)
 		, Shader(nullptr)
 		, SettingIndex_(0)
+		, Mode_(SettingMode::MAX)
+		, NewData_(nullptr)
+		, SettingDataSize_(0)
+		, SettingData_(nullptr)
 	{
 
 	}

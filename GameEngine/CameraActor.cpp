@@ -9,6 +9,7 @@ CameraActor::CameraActor()
 	, IsFreeCameraMode_(false)
 	, FreeCameraSpeed_(200.0f)
 	, RotSpeed_(360.0f)
+	, PrevCamMode_(ProjectionMode::Perspective)
 {
 }
 

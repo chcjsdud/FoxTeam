@@ -1,21 +1,17 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
-
+/// <summary>
+/// 여우 주인공 액터
+/// </summary>
 // 설명 :
 class GameEngineLevel;
 class GameEngineImageRenderer;
 class Player : public GameEngineActor
 {
 public:
-	static Player* MainPlayer;
-
-public:
-	// constrcuter destructer
 	Player();
 	~Player();
-
-	// delete Function
 	Player(const Player& _Other) = delete;
 	Player(Player&& _Other) noexcept = delete;
 	Player& operator=(const Player& _Other) = delete;
@@ -30,11 +26,6 @@ private:
 	float Speed;
 
 private:
-	void Start() override;
-	void Update(float _DeltaTime) override;
-
-	void TestTimeEvent();
-
-	void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
+	GameEngineFBXMesh* mesh_;
 };
 

@@ -10,6 +10,15 @@ class GameEngineInput
 private:
     class GameEngineKey 
     {
+    public:
+        GameEngineKey()
+            : Down_(false)
+            , Press_(false)
+            , Up_(false)
+            , Free_(false)
+        {
+
+        }
     private:
         bool Down_;
         bool Press_;

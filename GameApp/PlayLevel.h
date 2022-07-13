@@ -1,28 +1,28 @@
 #pragma once
+
 #include <GameEngine/GameEngineLevel.h>
 #include <GameEngine/GameEngineFSM.h>
 
-// Ό³Έν :
-class MouseActor;
 class PlayLevel : public GameEngineLevel
 {
 public:
-	// constrcuter destructer
 	PlayLevel();
 	~PlayLevel();
-
-	// delete Function
 	PlayLevel(const PlayLevel& _Other) = delete;
 	PlayLevel(PlayLevel&& _Other) noexcept = delete;
 	PlayLevel& operator=(const PlayLevel& _Other) = delete;
 	PlayLevel& operator=(PlayLevel&& _Other) noexcept = delete;
 
-	MouseActor* MActor; 
-	class PostFade* FadeEffect;
+public:
+	virtual void LevelStart() override;
+	virtual void LevelUpdate(float _DeltaTime) override;
+	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
+	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
 protected:
 
-	class GameEngineFBXWindow* FBXWindow;
+private:
+
 
 private:
 	GameEngineFSM LoadState_;
@@ -30,10 +30,6 @@ private:
 private:
 	void CreateActorLevel();
 
-	void LevelStart() override;
-	void LevelUpdate(float _DeltaTime) override;
-	void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
-	void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
 
 	void Load_Start();

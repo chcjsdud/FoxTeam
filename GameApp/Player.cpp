@@ -3,19 +3,15 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include "Player.h"
-#include "Monster.h"
-#include "Bullet.h"
-#include "Map.h"
 
-Player* Player::MainPlayer;
+#include <GameEngine/GameEngineFBXMeshManager.h>
+#include <GameEngine/GameEngineFBXWindow.h>
 
-Player::Player()
-	: Speed(300.0f)
+Player::Player() 
 {
-	MainPlayer = this;
 }
 
-Player::~Player()
+Player::~Player() 
 {
 }
 
@@ -68,10 +64,7 @@ void Player::Start()
 
 void Player::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::GetInst().Down("FreeCameraOn"))
-	{
-		GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
-	}
+}
 
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{

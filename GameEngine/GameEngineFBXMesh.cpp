@@ -1408,3 +1408,21 @@ bool GameEngineFBXMesh::ImportBone()
 
 	return true;
 }
+
+FbxExRenderingPipeLineSettingData::FbxExRenderingPipeLineSettingData()
+	: Shininess(0.0f)
+	, SpecularPower(0.0f)
+	, TransparencyFactor(0.0f)
+{
+}
+
+FbxExRenderingPipeLineSettingData::~FbxExRenderingPipeLineSettingData()
+{
+}
+
+FbxClusterData::FbxClusterData()
+	: Cluster(nullptr)
+	, Mesh(nullptr)
+{
+
+}

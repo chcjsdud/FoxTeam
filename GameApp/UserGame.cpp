@@ -8,9 +8,7 @@
 #include <GameEngine\GameEngineLevelControlWindow.h>
 #include <GameEngine\GameEngineRenderWindow.h>
 
-#include "TitleLevel.h"
-#include "PlayLevel.h"
-#include "PlayLevel2.h"
+#include "MeshLoadLevel.h"
 
 std::atomic<int> UserGame::LoadingFolder = 0;
 
@@ -37,6 +35,8 @@ void UserGame::Initialize()
 	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
+	LevelCreate<MeshLoadLevel>("MeshLoadLevel");
+	LevelChange("MeshLoadLevel");
 	//LevelCreate<TitleLevel>("Title");
 	LevelCreate<PlayLevel>("Play");
 	//LevelCreate<PlayLevel2>("Play2");
@@ -49,27 +49,3 @@ void UserGame::Release()
 {
 
 }
-
-
-//
-//void UserGame::GameLoop()
-//{
-//	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("ColorRendering");
-//	{
-//		Pos.x += 0.001f;
-//		TransData.Position.Translation(Pos);
-//		TransData.CalWorld();
-//
-//
-//		// 랜더링 파이프라인이 하나가 돌고
-//		// 이안에 세팅정보가 존재하겠죠?
-//		GameEngineDevice::RenderStart();
-//
-//		// 매프레임마다 세팅해줘야 하는게 되죠?
-//		// 
-//		Pipe->Rendering();
-//		GameEngineDevice::RenderEnd();
-//	}
-//}
-//
-//

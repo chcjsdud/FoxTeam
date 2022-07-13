@@ -11,14 +11,9 @@ class GameEngineTransformComponent;
 class GameEngineActor : public GameEngineObjectNameBase
 {
 	friend GameEngineLevel;
-
 public:
-
-	// constrcuter destructer
 	GameEngineActor();
 	~GameEngineActor();
-
-	// delete Function
 	GameEngineActor(const GameEngineActor& _Other) = delete;
 	GameEngineActor(GameEngineActor&& _Other) noexcept = delete;
 	GameEngineActor& operator=(const GameEngineActor& _Other) = delete;
@@ -33,7 +28,7 @@ public:
 		NextLevelMove_ = true;
 	}
 
-	GameEngineLevel* GetLevel() 
+	GameEngineLevel* GetLevel()
 	{
 		return Level_;
 	}
@@ -50,7 +45,7 @@ public:
 		{
 			Death();
 		}
-		else 
+		else
 		{
 			IsDestroyed_ = true;
 			DeathTime_ = _Time;
@@ -60,7 +55,7 @@ public:
 	template<typename ComponentType>
 	ComponentType* CreateComponent(int _Order = 0)
 	{
-		GameEngineComponent* NewComponent = new ComponentType(); 
+		GameEngineComponent* NewComponent = new ComponentType();
 		NewComponent->SetParent(this);
 		NewComponent->SetOrder(_Order);
 		NewComponent->InitComponent(this);
@@ -89,14 +84,20 @@ public:
 	{
 		// 업캐스팅을 이용해서 컴파일 에러를 낼것이다.
 		GameEngineTransformComponent* NewComponent = new ComponentType();
-		NewComponent->SetParent(this);
+
 		NewComponent->SetOrder(_Order);
 		NewComponent->InitComponent(this);
+
 		if (nullptr == _Transform)
 		{
-			GameEngineDebug::MsgBoxError("트랜스폼을 세팅안 해줬습니다.");
+			NewComponent->SetParent(nullptr);
 		}
-		NewComponent->AttachTransform(_Transform);
+		else
+		{
+			NewComponent->SetParent(this);
+			NewComponent->AttachTransform(_Transform);
+		}
+
 		TransformComponentList_.push_back(NewComponent);
 
 		NewComponent->Start();
@@ -135,7 +136,7 @@ protected:
 ////////////////////////
 
 public:
-	GameEngineTransform* GetTransform() 
+	GameEngineTransform* GetTransform()
 	{
 		return &Transform_;
 	}

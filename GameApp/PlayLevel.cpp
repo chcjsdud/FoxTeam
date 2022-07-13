@@ -19,11 +19,11 @@
 #include <GameEngine/GameEngineFBXWindow.h>
 #include "UserGame.h"
 
-PlayLevel::PlayLevel()
+PlayLevel::PlayLevel() 
 {
 }
 
-PlayLevel::~PlayLevel()
+PlayLevel::~PlayLevel() 
 {
 }
 

@@ -29,6 +29,7 @@ private:
 			, Start_(_Start)
 			, Update_(_Update)
 			, End_(_End)
+			, Time(0.0f)
 		{
 
 		}
