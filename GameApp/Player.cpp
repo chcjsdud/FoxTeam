@@ -77,7 +77,7 @@ void Player::Update(float _DeltaTime)
 {
 	PlayerState_.Update(_DeltaTime);
 
-	Move();
+	MoveUpdate();
 
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{

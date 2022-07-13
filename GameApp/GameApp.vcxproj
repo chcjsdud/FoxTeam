@@ -227,6 +227,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomVertex.h" />
+    <ClInclude Include="Macro.h" />
     <ClInclude Include="Player.h">
       <SubType>
       </SubType>

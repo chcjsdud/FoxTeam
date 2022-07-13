@@ -3,95 +3,110 @@
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
     <ClCompile Include="PreCompile.cpp">
-      <Filter>00.Precom</Filter>
+      <Filter>00.GameApp\00.Precom</Filter>
     </ClCompile>
     <ClCompile Include="UserGame_Resources_Shader.cpp">
-      <Filter>01.Core\Resources</Filter>
+      <Filter>00.GameApp\01.Core\Resources</Filter>
     </ClCompile>
     <ClCompile Include="MeshLoadLevel.cpp">
-      <Filter>03.Level\MeshLoadLevel</Filter>
+      <Filter>01.GameObject\03.Level\MeshLoadLevel</Filter>
     </ClCompile>
     <ClCompile Include="UserGame.cpp">
-      <Filter>01.Core</Filter>
+      <Filter>00.GameApp\01.Core</Filter>
     </ClCompile>
     <ClCompile Include="UserGame_Resources.cpp">
-      <Filter>01.Core</Filter>
+      <Filter>00.GameApp\01.Core</Filter>
     </ClCompile>
     <ClCompile Include="PlayLevel.cpp">
-      <Filter>03.Level\PlayLevel</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel</Filter>
     </ClCompile>
     <ClCompile Include="TestPlayer.cpp">
-      <Filter>03.Level\MeshLoadLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="TopUI.cpp">
-      <Filter>03.Level\MeshLoadLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>03.Level\PlayLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Player_State.cpp">
       <Filter>03.Level\PlayLevel\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="01.Core">
-      <UniqueIdentifier>{e9202fd3-1d82-4b24-95c9-d9783411c25a}</UniqueIdentifier>
+    <Filter Include="00.GameApp">
+      <UniqueIdentifier>{97e149dc-7ede-46de-a3aa-c1dd3bb2785a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.Core\Resources">
-      <UniqueIdentifier>{097aabc9-6df0-4d53-a9ed-77681a8002e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="00.Precom">
+    <Filter Include="00.GameApp\00.Precom">
       <UniqueIdentifier>{0d0b75c7-5726-42b1-aa92-879451e131c1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GlobalActor">
-      <UniqueIdentifier>{5b1798ae-0845-4fbe-8a16-76e0e38dd1a8}</UniqueIdentifier>
+    <Filter Include="00.GameApp\01.Core">
+      <UniqueIdentifier>{e9202fd3-1d82-4b24-95c9-d9783411c25a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Level">
-      <UniqueIdentifier>{e6998438-49d5-445a-83ae-2e78e52a45df}</UniqueIdentifier>
+    <Filter Include="00.GameApp\01.Core\Resources">
+      <UniqueIdentifier>{097aabc9-6df0-4d53-a9ed-77681a8002e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Level\MeshLoadLevel">
-      <UniqueIdentifier>{e7fc81f9-dff4-4828-83dd-89047b857231}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.Core\CustomVertex">
+    <Filter Include="00.GameApp\01.Core\CustomVertex">
       <UniqueIdentifier>{16842167-2534-42db-8026-796a267ad72b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Level\PlayLevel">
+    <Filter Include="01.GameObject">
+      <UniqueIdentifier>{7b108a2e-bcd5-4fed-b937-95af2ec8b5b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\00.Constant">
+      <UniqueIdentifier>{fe7eca9f-4c96-41c7-9a5e-95d402951209}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\01.BaseActor">
+      <UniqueIdentifier>{da4abc2b-3a0e-4baf-9045-7c4fd649a8b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\02.GlobalActor">
+      <UniqueIdentifier>{5b1798ae-0845-4fbe-8a16-76e0e38dd1a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level">
+      <UniqueIdentifier>{e6998438-49d5-445a-83ae-2e78e52a45df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\MeshLoadLevel">
+      <UniqueIdentifier>{e7fc81f9-dff4-4828-83dd-89047b857231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\MeshLoadLevel\Actor">
+      <UniqueIdentifier>{6dfae342-c1d4-4e78-af66-4069ade280e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel">
       <UniqueIdentifier>{05b751c2-561b-4ec7-9f56-dd77d1993f1c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="03.Level\PlayLevel\Actor">
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor">
       <UniqueIdentifier>{76756eed-32e9-42f3-8ce1-5f9577bf4b80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03.Level\MeshLoadLevel\Actor">
-      <UniqueIdentifier>{6dfae342-c1d4-4e78-af66-4069ade280e4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
-      <Filter>00.Precom</Filter>
+      <Filter>00.GameApp\00.Precom</Filter>
     </ClInclude>
     <ClInclude Include="CustomVertex.h">
-      <Filter>01.Core\CustomVertex</Filter>
+      <Filter>00.GameApp\01.Core\CustomVertex</Filter>
     </ClInclude>
     <ClInclude Include="UserGame_Resources_Shader.h">
-      <Filter>01.Core\Resources</Filter>
+      <Filter>00.GameApp\01.Core\Resources</Filter>
     </ClInclude>
     <ClInclude Include="MeshLoadLevel.h">
-      <Filter>03.Level\MeshLoadLevel</Filter>
+      <Filter>01.GameObject\03.Level\MeshLoadLevel</Filter>
     </ClInclude>
     <ClInclude Include="UserGame.h">
-      <Filter>01.Core</Filter>
+      <Filter>00.GameApp\01.Core</Filter>
     </ClInclude>
     <ClInclude Include="PlayLevel.h">
-      <Filter>03.Level\PlayLevel</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel</Filter>
     </ClInclude>
     <ClInclude Include="TestPlayer.h">
-      <Filter>03.Level\MeshLoadLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="TopUI.h">
-      <Filter>03.Level\MeshLoadLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>03.Level\PlayLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
