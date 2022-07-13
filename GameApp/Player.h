@@ -21,8 +21,9 @@ public:
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
-protected:
+private:
 	GameEngineCollision* PlayerCollision;
+	class GameEngineFBXRenderer* FBXRenderer;
 
 	GameEngineFSM StateManager_;
 

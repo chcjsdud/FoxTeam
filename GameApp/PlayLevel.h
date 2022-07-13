@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineLevel.h>
+#include <GameEngine/GameEngineFSM.h>
 
 // Ό³Έν :
 class MouseActor;
@@ -24,6 +25,9 @@ protected:
 	class GameEngineFBXWindow* FBXWindow;
 
 private:
+	GameEngineFSM LoadState_;
+
+private:
 	void CreateActorLevel();
 
 	void LevelStart() override;
@@ -31,5 +35,13 @@ private:
 	void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 	void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
+
+	void Load_Start();
+	void Load_Update();
+	void Load_End();
+
+	void Play_Start();
+	void Play_Update();
+	void Play_End();
 };
 

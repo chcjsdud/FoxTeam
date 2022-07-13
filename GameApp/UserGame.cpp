@@ -33,13 +33,13 @@ UserGame::UserGame(UserGame&& _other) noexcept  // default RValue Copy construct
 
 void UserGame::Initialize()
 {
-	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
-	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
+	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
+	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
-	LevelCreate<TitleLevel>("Title");
+	//LevelCreate<TitleLevel>("Title");
 	LevelCreate<PlayLevel>("Play");
-	LevelCreate<PlayLevel2>("Play2");
+	//LevelCreate<PlayLevel2>("Play2");
 	LevelChange("Play");
 
 	return;
