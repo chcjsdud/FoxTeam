@@ -2,10 +2,12 @@
 #include <GameEngine/GameEngineImageRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
+
 #include "Player.h"
 
-#include <GameEngine/GameEngineFBXMeshManager.h>
-#include <GameEngine/GameEngineFBXWindow.h>
+//
+//State Cpp
+//
 
 //Idle
 void Player::Idle_Start()
@@ -14,12 +16,14 @@ void Player::Idle_Start()
 }
 void Player::Idle_Update(float _DeltaTime)
 {
-	if (GameEngineInput::GetInst().IsKey("W")||
-		GameEngineInput::GetInst().IsKey("A")||
-		GameEngineInput::GetInst().IsKey("S")||
-		GameEngineInput::GetInst().IsKey("D"))
+	if (true == GameEngineInput::GetInst().Press("W")||
+		true == GameEngineInput::GetInst().Press("A")||
+		true == GameEngineInput::GetInst().Press("S")||
+		true == GameEngineInput::GetInst().Press("D"))
 	{
 		PlayerState_.ChangeState("Walk");
+
+		return;
 	}
 
 
@@ -35,21 +39,29 @@ void Player::Walk_Start()
 }
 void Player::Walk_Update(float _DeltaTime)
 {
-	if (!GameEngineInput::GetInst().IsKey("W") &&
-		!GameEngineInput::GetInst().IsKey("A") &&
-		!GameEngineInput::GetInst().IsKey("S") &&
-		!GameEngineInput::GetInst().IsKey("D"))
+	// 크기가 2짜리 큐를 만들고, 2번째는 인접 Key가 아니면 return 시킴, 그리고 안눌렸으면 다시 반환시켜서 먼저 누른거 2개만 남게 해주기
+	// 
+
+
+	if (false == GameEngineInput::GetInst().Press("W") &&
+		false == GameEngineInput::GetInst().Press("A") &&
+		false == GameEngineInput::GetInst().Press("S") &&
+		false == GameEngineInput::GetInst().Press("D"))
 	{
 		PlayerState_.ChangeState("Idle");
+
+		return;
 	}
 
-	if (GameEngineInput::GetInst().IsKey("Space"))
+	if (true == GameEngineInput::GetInst().Press("Space"))
 	{
 		PlayerState_.ChangeState("Run");
+
+		return;
 	}
 
 	MoveUpdate(_DeltaTime);
-	RotateFunc(_DeltaTime);
+	MoveRotateUpdate(_DeltaTime);
 }
 void Player::Walk_End()
 {
@@ -62,12 +74,12 @@ void Player::Run_Start()
 }
 void Player::Run_Update(float _DeltaTime)
 {
-	if (!GameEngineInput::GetInst().IsKey("Space"))
+	if (false == GameEngineInput::GetInst().Press("Space"))
 	{
-		if (GameEngineInput::GetInst().IsKey("W") ||
-			GameEngineInput::GetInst().IsKey("A") ||
-			GameEngineInput::GetInst().IsKey("S") ||
-			GameEngineInput::GetInst().IsKey("D"))
+		if (true == GameEngineInput::GetInst().Press("W") ||
+			true == GameEngineInput::GetInst().Press("A") ||
+			true == GameEngineInput::GetInst().Press("S") ||
+			true == GameEngineInput::GetInst().Press("D"))
 		{
 			PlayerState_.ChangeState("Walk");
 
@@ -75,16 +87,18 @@ void Player::Run_Update(float _DeltaTime)
 		}
 	}
 
-	if (!GameEngineInput::GetInst().IsKey("W") &&
-		!GameEngineInput::GetInst().IsKey("A") &&
-		!GameEngineInput::GetInst().IsKey("S") &&
-		!GameEngineInput::GetInst().IsKey("D"))
+	if (false == GameEngineInput::GetInst().Press("W") &&
+		false == GameEngineInput::GetInst().Press("A") &&
+		false == GameEngineInput::GetInst().Press("S") &&
+		false == GameEngineInput::GetInst().Press("D"))
 	{
 		PlayerState_.ChangeState("Idle");
+
+		return;
 	}
 
 	MoveUpdate(_DeltaTime);
-	RotateFunc(_DeltaTime);
+	MoveRotateUpdate(_DeltaTime);
 }
 void Player::Run_End()
 {

@@ -2,17 +2,20 @@
 #include <GameEngine/GameEngineImageRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
+
 #include "Player.h"
 
-#include <GameEngine/GameEngineFBXMeshManager.h>
-#include <GameEngine/GameEngineFBXWindow.h>
+//
+//Player Global Func
+//
 
 Player::Player() 
-	: PlayerCollision_(nullptr)
-	, FBXRenderer_(nullptr)
+	: FBXRenderer_(nullptr)
 	, PlayerGroundCollision_(nullptr)
 	, PlayerHitBoxCollision_(nullptr)
 	, Speed_(100.f)
+	, CurFowordDir_{0.f,0.f,1.f}
+	, YRotateSpeed_(900.f)
 	
 {
 }
@@ -27,8 +30,18 @@ void Player::Start()
 	ComponenetInit();
 	KeyInit();
 
+	ChangeCamFunc(&Player::CameraUpdate_UpPosition);
 
 	//GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
+}
+
+void Player::Update(float _DeltaTime)
+{
+	GetLevel()->PushDebugRender(PlayerHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
+	
+
+	PlayerState_.Update(_DeltaTime);
+	CamFunc_(_DeltaTime);
 }
 
 void Player::ComponenetInit()
@@ -46,6 +59,9 @@ void Player::ComponenetInit()
 
 	PlayerGroundCollision_ = CreateTransformComponent<GameEngineCollision>();
 	PlayerHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();	
+
+	PlayerHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 100.f,200.f,100.f ,1.f});
+	PlayerHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,0.f });
 }
 
 void Player::StateInit()
@@ -73,17 +89,82 @@ void Player::KeyInit()
 	}
 }
 
-void Player::Update(float _DeltaTime)
-{
-	PlayerState_.Update(_DeltaTime);
-	CameraUpdate(_DeltaTime);
-}
-
 void Player::Attack()
 {
 }
 
-void Player::CameraUpdate(float _DeltaTime)
+void Player::MoveUpdate(float _DeltaTime)
+{
+	float4 MoveDir = float4::ZERO;
+
+	bool isMove = false;
+
+	// 키 민감도(?) 설정을 해야함
+	// 현 상황에서는 대각 방향 Idle이 안나옴
+	// 대각 방향 Idle 나올 수 있게 수정하기
+	// 어떤 키가 몇초 이상 눌렸는가 설정하게,
+	// flaot값으로 키 민감도 설정 가능하게 만들기
+
+	if (true == GameEngineInput::GetInst().Press("D"))
+	{
+		MoveDir.x += 1.f;
+
+		isMove = true;
+		//GetTransform()->AddLocalRotationDegreeY(1.f);// 곧 수정
+		//GetLevel()->GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeY(1.f);
+	}
+	if (true == GameEngineInput::GetInst().Press("A"))
+	{
+		MoveDir.x -= 1.f;
+
+		isMove = true;
+		//GetTransform()->AddLocalRotationDegreeY(-1.f);//
+		//GetLevel()->GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeY(-1.f);
+	}
+	if (true == GameEngineInput::GetInst().Press("W"))
+	{
+		MoveDir.z += 1.f;
+
+		isMove = true;
+		//MoveDir += GetTransform()->GetWorldForwardVector();
+	}
+	if (true == GameEngineInput::GetInst().Press("S"))
+	{
+		MoveDir.z -= 1.f;
+
+		isMove = true;
+		//MoveDir += GetTransform()->GetWorldBackVector();
+	}
+
+	if (true == isMove)
+	{
+		MoveDir.Normalize3D(); 
+		KeyDir_ = MoveDir;
+	}
+
+	GetTransform()->SetWorldMove(KeyDir_ * Speed_ * _DeltaTime);
+}
+
+void Player::MoveRotateUpdate(float _DeltaTime)
+{
+	//떨림 없게 만들기
+
+	float4 dir = float4::Cross3D(CurFowordDir_, KeyDir_);
+
+	if (dir.y > 0.f)
+	{
+		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_* _DeltaTime);
+		CurFowordDir_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
+	}
+
+	if (dir.y < 0.f)
+	{
+		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
+		CurFowordDir_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
+	}
+}
+
+void Player::CameraUpdate_BackPosition(float _DeltaTime)
 {
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{
@@ -102,46 +183,21 @@ void Player::CameraUpdate(float _DeltaTime)
 	}
 }
 
-void Player::MoveUpdate(float _DeltaTime)
+void Player::CameraUpdate_UpPosition(float _DeltaTime)
 {
-	float4 MoveDir = float4::ZERO;
-
-	if (true == GameEngineInput::GetInst().Press("D"))
+	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{
-		GetTransform()->AddLocalRotationDegreeY(1.f);
-		GetLevel()->GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeY(1.f);
+		return;
 	}
-	if (true == GameEngineInput::GetInst().Press("A"))
+	else
 	{
-		GetTransform()->AddLocalRotationDegreeY(-1.f);
-		GetLevel()->GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeY(-1.f);
+		//float4 rot = GetLevel()->GetMainCameraActor()->GetTransform()->GetLocalRotation();
+
+		float4 CamPos = GetTransform()->GetWorldPosition();
+		CamPos.y += 400.f;
+		CamPos.z -= 400;
+
+		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldPosition(CamPos);
+		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldRotationDegree({ 25.f,0.f,0.f });
 	}
-	if (true == GameEngineInput::GetInst().Press("W"))
-	{
-		MoveDir += GetTransform()->GetWorldForwardVector();
-	}
-	if (true == GameEngineInput::GetInst().Press("S"))
-	{
-		MoveDir += GetTransform()->GetWorldBackVector();
-	}
-
-	MoveDir.Normalize3D();
-
-	GetTransform()->SetWorldDeltaTimeMove(MoveDir * Speed_);
-}
-
-void Player::RotateFunc(float _DeltaTime)
-{
-	if (CurFowordDir_ != KeyDir_)
-	{
-		// 1. 현재 바라보는 각도
-		// 2. Key 로 인해 바라보게될 각도
-		// 3. 두 각도 차를 구해 + - 를 계산해 가장 가까운 방향으로 Rotate 시킴
-		// 4. 바라볼 각도와 현재 각도가 일치 (혹은 아주 미세한 차이)하게 되면 중지
-		// 5. 가중치를 설정하여 빠르게 or 느리게 설정 가능
-		// 6. Move 함수에서 현재 바라볼 각도 설정
-		// 7. RotateFunc 에서 현재 바라보고 있는 각도 계산하기 (transform의 rotate 값 이용)
-	}
-
-
 }

@@ -271,6 +271,75 @@ void GameEngineCore::EngineResourcesCreate_Mesh()
 	}
 
 	{
+		{
+			std::vector<GameEngineVertex> Vertex = std::vector<GameEngineVertex>(4 * 6);
+
+			{
+				Vertex[0] = { float4({ -0.5f, 0.5f, 0.5f }), {},{},{0.0f, 0.0f, 1.0f, 0.0f} };
+				Vertex[1] = { float4({ 0.5f, 0.5f, 0.5f }), {},{},{0.0f, 0.0f, 1.0f, 0.0f} };
+				Vertex[2] = { float4({ 0.5f, -0.5f, 0.5f }), {},{},{0.0f, 0.0f, 1.0f, 0.0f} };
+				Vertex[3] = { float4({ -0.5f, -0.5f, 0.5f }), {},{},{0.0f, 0.0f, 1.0f, 0.0f} };
+
+				Vertex[4] = { float4::RotateXDegree(Vertex[0].POSITION, 180.0f), {},{},{0.0f, 0.0f, -1.0f, 0.0f} };
+				Vertex[5] = { float4::RotateXDegree(Vertex[1].POSITION, 180.0f), {},{},{0.0f, 0.0f, -1.0f, 0.0f} };
+				Vertex[6] = { float4::RotateXDegree(Vertex[2].POSITION, 180.0f), {},{},{0.0f, 0.0f, -1.0f, 0.0f} };
+				Vertex[7] = { float4::RotateXDegree(Vertex[3].POSITION, 180.0f), {},{},{0.0f, 0.0f, -1.0f, 0.0f} };
+			}
+
+			{
+				Vertex[8] = { float4::RotateYDegree(Vertex[0].POSITION, 90.0f), {},{},{-1.0f, 0.0f, 0.0f, 0.0f} };
+				Vertex[9] = { float4::RotateYDegree(Vertex[1].POSITION, 90.0f), {},{},{-1.0f, 0.0f, 0.0f, 0.0f} };
+				Vertex[10] = { float4::RotateYDegree(Vertex[2].POSITION, 90.0f), {},{},{-1.0f, 0.0f, 0.0f, 0.0f} };
+				Vertex[11] = { float4::RotateYDegree(Vertex[3].POSITION, 90.0f), {},{},{-1.0f, 0.0f, 0.0f, 0.0f} };
+
+				Vertex[12] = { float4::RotateYDegree(Vertex[0].POSITION, -90.0f), {},{},{1.0f, 0.0f, 0.0f, 0.0f} };
+				Vertex[13] = { float4::RotateYDegree(Vertex[1].POSITION, -90.0f), {},{},{1.0f, 0.0f, 0.0f, 0.0f} };
+				Vertex[14] = { float4::RotateYDegree(Vertex[2].POSITION, -90.0f), {},{},{1.0f, 0.0f, 0.0f, 0.0f} };
+				Vertex[15] = { float4::RotateYDegree(Vertex[3].POSITION, -90.0f), {},{},{1.0f, 0.0f, 0.0f, 0.0f} };
+			}
+
+			{
+				Vertex[16] = { float4::RotateXDegree(Vertex[0].POSITION, 90.0f), {},{},{0.0f, 1.0f, 0.0f, 0.0f} };
+				Vertex[17] = { float4::RotateXDegree(Vertex[1].POSITION, 90.0f), {},{},{0.0f, 1.0f, 0.0f, 0.0f} };
+				Vertex[18] = { float4::RotateXDegree(Vertex[2].POSITION, 90.0f), {},{},{0.0f, 1.0f, 0.0f, 0.0f} };
+				Vertex[19] = { float4::RotateXDegree(Vertex[3].POSITION, 90.0f), {},{},{0.0f, 1.0f, 0.0f, 0.0f} };
+
+				Vertex[20] = { float4::RotateXDegree(Vertex[0].POSITION, -90.0f), {},{},{0.0f, -1.0f, 0.0f, 0.0f} };
+				Vertex[21] = { float4::RotateXDegree(Vertex[1].POSITION, -90.0f), {},{},{0.0f, -1.0f, 0.0f, 0.0f} };
+				Vertex[22] = { float4::RotateXDegree(Vertex[2].POSITION, -90.0f), {},{},{0.0f, -1.0f, 0.0f, 0.0f} };
+				Vertex[23] = { float4::RotateXDegree(Vertex[3].POSITION, -90.0f), {},{},{0.0f, -1.0f, 0.0f, 0.0f} };
+			}
+
+			for (size_t i = 0; i < Vertex.size(); i += 4)
+			{
+				Vertex[i + 0].TEXTURECOORD = { 0.0f, 0.0f };
+				Vertex[i + 1].TEXTURECOORD = { 1.0f, 0.0f };
+				Vertex[i + 2].TEXTURECOORD = { 1.0f, 1.0f };
+				Vertex[i + 3].TEXTURECOORD = { 0.0f, 1.0f };
+			}
+
+			GameEngineVertexBufferManager::GetInst().Create("DebugBox", Vertex, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+		}
+
+		{
+			std::vector<UINT> BoxIndex;
+
+			for (int i = 0; i < 6; i++)
+			{
+				BoxIndex.push_back(i * 4 + 2);
+				BoxIndex.push_back(i * 4 + 1);
+				BoxIndex.push_back(i * 4 + 0);
+
+				BoxIndex.push_back(i * 4 + 3);
+				BoxIndex.push_back(i * 4 + 2);
+				BoxIndex.push_back(i * 4 + 0);
+			}
+
+			GameEngineIndexBufferManager::GetInst().Create("DebugBox", BoxIndex, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+		}
+	}
+
+	{
 		std::vector<GameEngineVertex> RectVertex = std::vector<GameEngineVertex>(4);
 
 		{
@@ -539,6 +608,15 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetInputAssembler1VertexBufferSetting("DebugRect");
 		Pipe->SetVertexShader("Color_VS");
 		Pipe->SetInputAssembler2IndexBufferSetting("DebugRect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+		Pipe->SetPixelShader("Color_PS");
+	}
+
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DebugBox");
+		Pipe->SetInputAssembler1VertexBufferSetting("DebugBox");
+		Pipe->SetVertexShader("Color_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("DebugBox");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 		Pipe->SetPixelShader("Color_PS");
 	}

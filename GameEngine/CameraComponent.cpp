@@ -274,7 +274,15 @@ void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType
 	case CollisionType::Point3D:
 	case CollisionType::Sphere3D:
 	case CollisionType::AABBBox3D:
+	{
+		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugBox");
+		break;
+	}
 	case CollisionType::OBBBox3D:
+	{
+		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugBox");
+		break;
+	}
 	case CollisionType::MAX:
 	{
 		GameEngineDebug::MsgBoxError("처리할수 없는 디버그 타입입니다.");
@@ -298,7 +306,8 @@ void CameraComponent::Start()
 	DebugVector_.resize(1000);
 	DebugRenderCount_ = 0;
 
-	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
+	//GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
+	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("DebugBox");
 	for (size_t i = 0; i < DebugVector_.size(); i++)
 	{
 		DebugVector_[i].ShaderHelper_.ShaderResourcesCheck(Pipe->GetVertexShader());
@@ -306,6 +315,7 @@ void CameraComponent::Start()
 		DebugVector_[i].Color_ = float4::RED;
 		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("ResultColor", DebugVector_[i].Color_);
 		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("TransformData", DebugVector_[i].Data_);
+		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("LightsData", LightData_);
 	}
 
 	CameraBufferTarget_ = new GameEngineRenderTarget();
