@@ -65,13 +65,15 @@ private:
 	//캐릭터가 바라보는 방향이 바로 바로 안변하고 천천히 변함(이동과는 무관하게)
 	void MoveRotateUpdate(float _DeltaTime);
 
-	void ChangeCamFunc(void (Player::* _Camfunc)(float))
-	{
-		CamFunc_ = std::bind(_Camfunc, this, std::placeholders::_1);
-	}
+	//void ChangeCamFunc(void (Player::* _Camfunc)(float))
+	//{
+	//	CamFunc_ = std::bind(_Camfunc, this, std::placeholders::_1);
+	//}
 private:
 	//state
 	GameEngineFSM PlayerState_;
+
+	GameEngineFSM CameraState_;
 
 	//component
 	// 
@@ -94,7 +96,7 @@ private:
 	//Y축 회전 속도
 	float YRotateSpeed_;
 
-	std::function<void(float)> CamFunc_;
+	//std::function<void(float)> CamFunc_;
 
 	//구르기 쿨타임
 	float RollTurmSecond_;
@@ -137,5 +139,23 @@ public:
 	}
 
 private:
+
+	//임시 땜빵용
+	float UnitVectorToDegree(float x, float y)
+	{
+		float result = 0.f;
+
+		if (y >= 0)
+		{
+				result = acosf(x) * GameEngineMath::RadianToDegree;
+		}
+
+		if (y < 0)
+		{
+				result = (acosf(-x) * GameEngineMath::RadianToDegree) +180.f;
+		}
+
+		return result;
+	}
 };
 

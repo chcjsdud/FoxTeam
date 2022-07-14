@@ -31,7 +31,7 @@ void Player::Start()
 	ComponenetInit();
 	KeyInit();
 
-	ChangeCamFunc(&Player::CameraUpdate_UpPosition);
+	//ChangeCamFunc(&Player::CameraUpdate_UpPosition);
 
 	//GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 }
@@ -51,7 +51,8 @@ void Player::Update(float _DeltaTime)
 	}
 
 	PlayerState_.Update(_DeltaTime);
-	CamFunc_(_DeltaTime);
+	CameraState_.Update(_DeltaTime);
+	//CamFunc_(_DeltaTime);
 }
 
 void Player::ComponenetInit()
@@ -82,12 +83,22 @@ void Player::ComponenetInit()
 
 void Player::StateInit()
 {
-	PlayerState_.CreateState<Player>("Idle", this, &Player::Idle_Start, &Player::Idle_Update, &Player::Idle_End);;
-	PlayerState_.CreateState<Player>("Walk", this, &Player::Walk_Start, &Player::Walk_Update, &Player::Walk_End);;
-	PlayerState_.CreateState<Player>("Run", this, &Player::Run_Start, &Player::Run_Update, &Player::Run_End);;
-	PlayerState_.CreateState<Player>("Attack", this, &Player::Attack_Start, &Player::Attack_Update, &Player::Attack_End);;
+	{
+		PlayerState_.CreateState<Player>("Idle", this, &Player::Idle_Start, &Player::Idle_Update, &Player::Idle_End);;
+		PlayerState_.CreateState<Player>("Walk", this, &Player::Walk_Start, &Player::Walk_Update, &Player::Walk_End);;
+		PlayerState_.CreateState<Player>("Run", this, &Player::Run_Start, &Player::Run_Update, &Player::Run_End);;
+		PlayerState_.CreateState<Player>("Attack", this, &Player::Attack_Start, &Player::Attack_Update, &Player::Attack_End);;
 
-	PlayerState_.ChangeState("Idle");
+		PlayerState_.ChangeState("Idle");
+	}
+
+	{
+		CameraState_.CreateState<Player>("Up", this, nullptr, &Player::CameraUpdate_UpPosition, nullptr);
+		CameraState_.CreateState<Player>("Back", this, nullptr, &Player::CameraUpdate_BackPosition, nullptr);
+
+		CameraState_.ChangeState("Up");
+	}
+
 }
 
 void Player::KeyInit()
@@ -164,20 +175,37 @@ void Player::MoveUpdate(float _DeltaTime)
 
 void Player::MoveRotateUpdate(float _DeltaTime)
 {
-	//떨림 없게 만들기
+	//완전히 서로 반대되는 방향일 경우, 외적의 결과값이 나오질 않는 문제
+
 
 	float4 dir = float4::Cross3D(CurFowordDir_, KeyDir_);
 
+	float goaldegree = UnitVectorToDegree(KeyDir_.z, KeyDir_.x);
+
 	if (dir.y > 0.f)
 	{
-		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_* _DeltaTime);
+		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_ * _DeltaTime);
 		CurFowordDir_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
+
+		dir = float4::Cross3D(CurFowordDir_, KeyDir_);
+		if (dir.y < 0.f)
+		{
+			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+			CurFowordDir_ = KeyDir_;
+		}
 	}
 
-	if (dir.y < 0.f)
+	else if (dir.y < 0.f)
 	{
 		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
 		CurFowordDir_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
+
+		dir = float4::Cross3D(CurFowordDir_, KeyDir_);
+		if (dir.y > 0.f)
+		{
+			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+			CurFowordDir_ = KeyDir_;
+		}
 	}
 }
 
