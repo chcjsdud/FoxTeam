@@ -9,20 +9,27 @@ TopUI::TopUI()
 
 TopUI::~TopUI()
 {
+	//for (auto& UIRenderer : UIRendererMap)
+	//{
+	//	if (true)
+	//	{
+	//		delete UIRenderer.second;
+	//		UIRenderer.second = nullptr;
+	//	}
+	//}
 }
 
 void TopUI::Start()
 {
+	
 	TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	TopRenderer->GetTransform()->SetLocalScaling({ 1280.0f, 100.0f, 1.0f });
-	TopRenderer->GetTransform()->SetLocalPosition({ 0.0f, 300.0f, 0.0f });
-	TopRenderer->SetImage("Char.png", "LinearSmp");
-	TopRenderer->TextSetting("궁서", "테스트 중입니다", 50);
-
-	BotRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	BotRenderer->GetTransform()->SetLocalScaling({ 1280.0f, 100.0f, 1.0f });
-	BotRenderer->GetTransform()->SetLocalPosition({ 0.0f, -300.0f, 0.0f });
-	BotRenderer->TextSetting("궁서", "진짜 안나올까요?", 50);
+	TopRenderer->SetImage("HPBarBackground_OutLine.png", "PointSmp");
+	TopRenderer->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+	TopRenderer->GetTransform()->SetLocalScaling(TopRenderer->GetCurrentTexture()->GetTextureSize());
+	//TopRenderer->SetAlpha(0.0f);
+	//TopRenderer->TextSetting("궁서", "테스트 중입니다", 50);
+	
+	UIRendererMap.insert(make_pair("HPBarBackground_OutLine", TopRenderer));
 
 }
 

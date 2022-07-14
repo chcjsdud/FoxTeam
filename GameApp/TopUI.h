@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
+using namespace std;
 // Ό³Έν :
 class GameEngineUIRenderer;
 class TopUI : public GameEngineActor
@@ -18,7 +19,7 @@ public:
 
 protected:
 	GameEngineUIRenderer* TopRenderer;
-	GameEngineUIRenderer* BotRenderer;
+	map<string, GameEngineUIRenderer*> UIRendererMap;
 	float Time;
 
 private:
