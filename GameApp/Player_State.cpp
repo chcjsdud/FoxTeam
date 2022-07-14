@@ -107,10 +107,70 @@ void Player::Run_End()
 //Attack
 void Player::Attack_Start()
 {
+	if (AttackTurm_ == 0)
+	{
+		AttackTime_ = 1.f;
+		AttackLevel_ = 0;
+		AttackTurm_ = 0.5f;
+		AttackHitTime_ = 0.1f;
+
+		PlayerAttackHitBoxCollision_->On();
+	}
 }
 void Player::Attack_Update(float _DeltaTime)
 {
+	AttackTurm_ -= _DeltaTime;
+	AttackTime_ -= _DeltaTime;
+	AttackHitTime_ -= _DeltaTime;
+
+	if (AttackHitTime_ < 0)
+	{
+		PlayerAttackHitBoxCollision_->Off();
+	}
+
+
+	if (AttackTurm_ < 0.f)
+	{
+		if (AttackTime_ > 0.f)
+		{
+			if (AttackLevel_ < 3)
+			{
+				if (GameEngineInput::GetInst().Press("Attack"))
+				{
+					//다음 단계 공격, 에니메이션 바꾸기
+					PlayerAttackHitBoxCollision_->On();
+
+					AttackTime_ = 1.f;
+
+					AttackTurm_ = 0.5f;
+				}
+			}
+			else
+			{
+				PlayerState_.ChangeState("Idle");
+			}
+		}
+		else
+		{
+			PlayerAttackHitBoxCollision_->Off();
+		}
+	}
+
+	if (AttackTime_ < 0)
+	{
+		AttackTurm_ = 0.f;
+		PlayerAttackHitBoxCollision_->Off();
+
+		PlayerState_.ChangeState("Idle");
+	}
+
 }
 void Player::Attack_End()
 {
+	AttackTurm_ = 0.f;
+	AttackTime_ = 0.f;
+	AttackLevel_ = 0;
+	AttackHitTime_ = 0.f;
+	//맞거나 이런저런 상황으로 강제로 State가 종료 되었을때
+	PlayerAttackHitBoxCollision_->Off();
 }

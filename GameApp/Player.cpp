@@ -13,6 +13,7 @@ Player::Player()
 	: FBXRenderer_(nullptr)
 	, PlayerGroundCollision_(nullptr)
 	, PlayerHitBoxCollision_(nullptr)
+	, PlayerAttackHitBoxCollision_(nullptr)
 	, Speed_(100.f)
 	, CurFowordDir_{0.f,0.f,1.f}
 	, YRotateSpeed_(900.f)
@@ -38,7 +39,16 @@ void Player::Start()
 void Player::Update(float _DeltaTime)
 {
 	GetLevel()->PushDebugRender(PlayerHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
+
+	if (PlayerAttackHitBoxCollision_->IsUpdate())
+	{
+		GetLevel()->PushDebugRender(PlayerAttackHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
+	}
 	
+	if (GameEngineInput::GetInst().Press("Attack"))
+	{
+		PlayerState_.ChangeState("Attack");
+	}
 
 	PlayerState_.Update(_DeltaTime);
 	CamFunc_(_DeltaTime);
@@ -59,6 +69,12 @@ void Player::ComponenetInit()
 
 	PlayerGroundCollision_ = CreateTransformComponent<GameEngineCollision>();
 	PlayerHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();	
+	PlayerAttackHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();
+
+	PlayerAttackHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 200.f,50.f,100.f ,1.f});
+	PlayerAttackHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,100.f });
+
+	PlayerAttackHitBoxCollision_->Off();
 
 	PlayerHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 100.f,200.f,100.f ,1.f});
 	PlayerHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,0.f });
@@ -85,6 +101,7 @@ void Player::KeyInit()
 		GameEngineInput::GetInst().CreateKey("Space", VK_SPACE);
 		GameEngineInput::GetInst().CreateKey("MoveUp", 'Q');
 		GameEngineInput::GetInst().CreateKey("MoveDown", 'E');
+		GameEngineInput::GetInst().CreateKey("Attack", 'J');
 		//GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 	}
 }

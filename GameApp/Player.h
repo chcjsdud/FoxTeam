@@ -74,9 +74,13 @@ private:
 	GameEngineFSM PlayerState_;
 
 	//component
-
+	// 
+	//바닥 콜리전
 	GameEngineCollision* PlayerGroundCollision_;
+	//피격 히트박스
 	GameEngineCollision* PlayerHitBoxCollision_;
+	//공격 히트박스
+	GameEngineCollision* PlayerAttackHitBoxCollision_;
 
 	GameEngineFBXRenderer* FBXRenderer_;
 
@@ -91,6 +95,46 @@ private:
 	float YRotateSpeed_;
 
 	std::function<void(float)> CamFunc_;
+
+	//구르기 쿨타임
+	float RollTurmSecond_;
+	//구르는 시간(무적타임)
+	float RollSecond_;
+
+	//공격 텀
+	float AttackTurm_; 
+	//공격 에니메이션 단계
+	int AttackLevel_;
+	//공격 시간, 이 시간 이내에 공격키를 누르면 다음 단계 공격을 함
+	float AttackTime_;
+	float AttackHitTime_;
+
+	int Hp_;
+	float Stamina_;
+
+public:
+	class TopUI* TopUI_;
+
+public:
+	const int GetHP()
+	{
+		return Hp_;
+	}
+
+	void SetHP(int _Hp)
+	{
+		Hp_ = _Hp;
+	}
+
+	const float GetStamina()
+	{
+		return Stamina_;
+	}
+
+	void SetStamina(float _Stamina)
+	{
+		Stamina_ = _Stamina;
+	}
 
 private:
 };
