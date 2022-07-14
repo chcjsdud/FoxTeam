@@ -13,23 +13,23 @@ private:
 		// 이 상태가 시작됐다
 		std::function<void()> Start_;
 		// 이 상태가 진행중이다.
-		std::function<void()> Update_;
+		std::function<void(float)> Update_;
 		// 이 상태가 끝났다.
 		std::function<void()> End_;
 
-		float Time;
+		//float Time;
 
 		State(
 			std::string _Name,
 			std::function<void()> _Start,
-			std::function<void()> _Update,
+			std::function<void(float)> _Update,
 			std::function<void()> _End
 		) 
 			: Name_(_Name)
 			, Start_(_Start)
 			, Update_(_Update)
 			, End_(_End)
-			, Time(0.0f)
+			//, Time(0.0f)
 		{
 
 		}
@@ -47,7 +47,7 @@ public:
 	GameEngineFSM& operator=(const GameEngineFSM& _Other) = delete;
 	GameEngineFSM& operator=(GameEngineFSM&& _Other) noexcept = delete;
 
-	void CreateState(const std::string& _Name, std::function<void()> _Update, std::function<void()> _Start = nullptr, std::function<void()> _EndStart = nullptr, std::function<void()> _Init = nullptr);
+	//void CreateState(const std::string& _Name, std::function<void()> _Update, std::function<void()> _Start = nullptr, std::function<void()> _EndStart = nullptr, std::function<void()> _Init = nullptr);
 	void ChangeState(const std::string& _Name);
 
 	inline bool IsCurrentState(const std::string& _Name) const
@@ -69,5 +69,24 @@ private:
 
 	State* Current_;
 	State* Next_;
+
+public:
+	template <typename T>
+	void CreateState(
+		const std::string& _Name,
+		T* objptr,
+		void (T::*_Start)(),
+		void (T::*_Update)(float),
+		void (T::*_End)()
+		)
+	{
+		if (AllState_.end() != AllState_.find(_Name))
+		{
+			GameEngineDebug::MsgBoxError("이미 존재하는 스테이트를 또 만들려고 했습니다.");
+			return;
+		}
+
+		AllState_.insert(std::map<std::string, State*>::value_type(_Name, new State{ _Name, std::bind(_Start,objptr), std::bind(_Update ,objptr,std::placeholders::_1), std::bind(_End,objptr) }));
+	}
 };
 

@@ -9,6 +9,7 @@
 #include <GameEngine\GameEngineRenderWindow.h>
 
 #include "MeshLoadLevel.h"
+#include "PlayLevel.h"
 
 std::atomic<int> UserGame::LoadingFolder = 0;
 
@@ -31,12 +32,15 @@ UserGame::UserGame(UserGame&& _other) noexcept  // default RValue Copy construct
 
 void UserGame::Initialize()
 {
-	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
-	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
+	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
+	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
-	LevelCreate<MeshLoadLevel>("MeshLoadLevel");
-	LevelChange("MeshLoadLevel");
+	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
+	//LevelChange("MeshLoadLevel");
+
+	LevelCreate<PlayLevel>("Play");
+	LevelChange("Play");
 
 	return;
 }

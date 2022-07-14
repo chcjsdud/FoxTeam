@@ -26,9 +26,9 @@ void GameEngineFSM::Update(float _Time)
 			Current_->End_();
 		}
 		Current_ = Next_;
-		Current_->Time = 0.0f;
+		//Current_->Time = 0.0f;
 
-		if (nullptr != Current_->End_)
+		if (nullptr != Current_->Start_)
 		{
 			Current_->Start_();
 		}
@@ -41,31 +41,31 @@ void GameEngineFSM::Update(float _Time)
 		return;
 	}
 
-	Current_->Time += _Time;
-	Current_->Update_();
+	//Current_->Time += _Time;
+	Current_->Update_(_Time);
 }
 
-void GameEngineFSM::CreateState(
-	const std::string& _Name,
-	std::function<void()> _Update, 
-	std::function<void()> _Start /*= nullptr*/, 
-	std::function<void()> _EndStart /*= nullptr*/, 
-	std::function<void()> _Init /*= nullptr*/
-)
-{
-	if (AllState_.end() != AllState_.find(_Name))
-	{
-		GameEngineDebug::MsgBoxError("이미 존재하는 스테이트를 또 만들려고 했습니다.");
-		return;
-	}
-
-	if (nullptr != _Init)
-	{
-		_Init();
-	}
-
-	AllState_.insert(std::map<std::string, State*>::value_type(_Name, new State{ _Name, _Start, _Update, _EndStart }));
-}
+//void GameEngineFSM::CreateState(
+//	const std::string& _Name,
+//	std::function<void()> _Update, 
+//	std::function<void()> _Start /*= nullptr*/, 
+//	std::function<void()> _EndStart /*= nullptr*/, 
+//	std::function<void()> _Init /*= nullptr*/
+//)
+//{
+//	if (AllState_.end() != AllState_.find(_Name))
+//	{
+//		GameEngineDebug::MsgBoxError("이미 존재하는 스테이트를 또 만들려고 했습니다.");
+//		return;
+//	}
+//
+//	if (nullptr != _Init)
+//	{
+//		_Init();
+//	}
+//
+//	AllState_.insert(std::map<std::string, State*>::value_type(_Name, new State{ _Name, _Start, _Update, _EndStart }));
+//}
 
 void GameEngineFSM::ChangeState(const std::string& _Name)
 {

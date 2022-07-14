@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GameEngine/GameEngineLevel.h>
+#include <GameEngine/GameEngineFSM.h>
 
 class PlayLevel : public GameEngineLevel
 {
@@ -23,7 +24,20 @@ protected:
 private:
 
 
+private:
+	GameEngineFSM LoadState_;
 
+private:
+	void CreateActorLevel();
 
+	//FSM으로 구현된 레벨 로딩 단계
+
+	void Load_Start();
+	void Load_Update(float _DeltaTime);
+	void Load_End();
+
+	void Play_Start();
+	void Play_Update(float _DeltaTime);
+	void Play_End();
 };
 
