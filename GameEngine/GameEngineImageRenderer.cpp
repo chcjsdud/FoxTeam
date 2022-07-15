@@ -168,7 +168,8 @@ void GameEngineImageRenderer::SetRenderingPipeLineSettingNext()
 	ShaderHelper.SettingConstantBufferLink("TextureAtlasData", CutData);
 
 	CorrectResultColor_.vMulColor = float4::ONE;
-	CorrectResultColor_.vPlusColor = float4::ZERO;
+	//CorrectResultColor_.vPlusColor = float4::ZERO;
+	CorrectResultColor_.vPlusColor = float4{0.0f, 0.0f, 0.0f, 0.0f};
 
 	ShaderHelper.SettingConstantBufferLink("TextureAtlasResultColor", CorrectResultColor_);
 }

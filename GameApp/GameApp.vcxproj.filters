@@ -32,6 +32,9 @@
     <ClCompile Include="Player_State.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>03.Level\PlayLevel\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -107,6 +110,9 @@
     </ClInclude>
     <ClInclude Include="Macro.h">
       <Filter>01.GameObject\00.Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>03.Level\PlayLevel\Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
