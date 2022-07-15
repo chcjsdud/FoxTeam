@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "TopUI.h"
 
+#include "Map.h"
+
 #include <GameEngine/CameraComponent.h>
 #include <GameEngine/GameEngineTransform.h>
 #include <GameEngine/CameraActor.h>
@@ -192,7 +194,13 @@ void PlayLevel::CreateActorLevel()
 	}
 
 	{
-		TopUI* Actor = CreateActor<TopUI>();
-		Actor->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
+		Map* Actor = CreateActor<Map>(); 
+	}
+
+	{
+		//TopUI* Actor = CreateActor<TopUI>();
+		//Actor->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
+
+		//플레이어로 이동
 	}
 }

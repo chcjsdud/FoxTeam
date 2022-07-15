@@ -127,22 +127,22 @@ public:
 	class TopUI* TopUI_;
 
 public:
-	const int GetHP()
+	const int PlayerGetHP()
 	{
 		return Hp_;
 	}
 
-	void SetHP(int _Hp)
+	void PlayerSetHP(int _Hp)
 	{
 		Hp_ = _Hp;
 	}
 
-	const float GetStamina()
+	const float PlayerGetStamina()
 	{
 		return Stamina_;
 	}
 
-	void SetStamina(float _Stamina)
+	void PlayerSetStamina(float _Stamina)
 	{
 		Stamina_ = _Stamina;
 	}

@@ -29,5 +29,14 @@ private:
 	void Start() override;
 	void Update(float _Time) override;
 
+	//ÀÌÇö
+private:
+	Player* Player_;
+public:
+	void SetPlayer(Player* _Player)
+	{
+		Player_ = _Player;
+	}
+	//
 };
 

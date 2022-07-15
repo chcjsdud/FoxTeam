@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 
 #include "Player.h"
+#include "TopUI.h"
 
 //
 //Player Global Func
@@ -37,6 +38,10 @@ void Player::Start()
 	StateInit();
 	ComponenetInit();
 	KeyInit();
+
+	TopUI_ = GetLevel()->CreateActor<TopUI>();
+	TopUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
+	TopUI_->SetPlayer(this);
 
 	//ChangeCamFunc(&Player::CameraUpdate_UpPosition);
 

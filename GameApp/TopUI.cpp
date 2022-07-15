@@ -3,6 +3,8 @@
 #include "GameEngine/GameEngineUIRenderer.h"
 #include "GameEngine/GameEngineInput.h"
 
+#include "Player.h"
+
 TopUI::TopUI()
 	: Time(1.0f), UIOn(false)
 {
@@ -32,7 +34,7 @@ void TopUI::Start()
 		float4 HPBarPos = { -395.0f, -202.0f, -1.0f };
 		float4 HPBarTopPos = { -394.0f, -143.0f, -1.0f };
 		float4 HPBarLinePos = { -401.0f, -180.0f, -2.0f};
-
+		
 		{
 			TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 			TopRenderer->SetImage("BackGroundBar_Test.png", "PointSmp");
@@ -65,6 +67,14 @@ void TopUI::Start()
 			UIRendererMap.insert(make_pair("Bar_Line", TopRenderer));
 		}
 	}
+
+
+	//이현, Player 예제 함수
+	//int HP = Player_->PlayerGetHP();
+	//float Stmina = Player_->PlayerGetStamina();
+	//Player_->PlayerSetHP(10);
+	//Player_->PlayerSetStamina(100.f);
+
 
 }
 

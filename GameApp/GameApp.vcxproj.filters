@@ -27,13 +27,16 @@
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Player_State.cpp">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
+      <Filter>03.Level\PlayLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>03.Level\PlayLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player_State.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +82,12 @@
     <Filter Include="01.GameObject\03.Level\PlayLevel\Actor">
       <UniqueIdentifier>{76756eed-32e9-42f3-8ce1-5f9577bf4b80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Map">
+      <UniqueIdentifier>{6b09dc04-e094-4d8f-a861-b450d419d49f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\Player">
+      <UniqueIdentifier>{37fb317c-3483-4425-9f93-cdd21cb09e47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -105,14 +114,17 @@
     <ClInclude Include="TopUI.h">
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="Macro.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>03.Level\PlayLevel\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
