@@ -246,28 +246,32 @@ void CameraComponent::PushLight(GameEngineLightComponent* _Light)
 	Lights_.push_back(_Light);
 }
 
-void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type)
+void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color)
 {
 	switch (_Type)
 	{
 	case CollisionType::Point2D:
 	{
 		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
+		DebugVector_[DebugRenderCount_].Color_ = _Color;
 		break;
 	}
 	case CollisionType::CirCle:
 	{
 		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
+		DebugVector_[DebugRenderCount_].Color_ = _Color;
 		break;
 	}
 	case CollisionType::Rect:
 	{
 		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
+		DebugVector_[DebugRenderCount_].Color_ = _Color;
 		break;
 	}
 	case CollisionType::OrientedRect:
 	{
 		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
+		DebugVector_[DebugRenderCount_].Color_ = _Color;
 		break;
 	}
 
@@ -276,11 +280,13 @@ void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType
 	case CollisionType::AABBBox3D:
 	{
 		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugBox");
+		DebugVector_[DebugRenderCount_].Color_ = _Color;
 		break;
 	}
 	case CollisionType::OBBBox3D:
 	{
 		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugBox");
+		DebugVector_[DebugRenderCount_].Color_ = _Color;
 		break;
 	}
 	case CollisionType::MAX:
@@ -312,7 +318,7 @@ void CameraComponent::Start()
 	{
 		DebugVector_[i].ShaderHelper_.ShaderResourcesCheck(Pipe->GetVertexShader());
 		DebugVector_[i].ShaderHelper_.ShaderResourcesCheck(Pipe->GetPixelShader());
-		DebugVector_[i].Color_ = float4::RED;
+		//DebugVector_[i].Color_ = float4::GREEN;
 		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("ResultColor", DebugVector_[i].Color_);
 		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("TransformData", DebugVector_[i].Data_);
 		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("LightsData", LightData_);

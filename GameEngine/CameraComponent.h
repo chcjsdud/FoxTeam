@@ -99,7 +99,7 @@ public:
 	void PushLight(GameEngineLightComponent* _Light);
 
 public:
-	void PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type);
+	void PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color = float4::GREEN);
 	void ChangeRendererGroup(int _Group, GameEngineRendererBase* _Renderer);
 
 protected:

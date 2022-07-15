@@ -267,9 +267,9 @@ void GameEngineLevel::ChangeCollisionGroup(int _Group, GameEngineCollision* _Col
 	CollisionList_[_Collision->GetOrder()].push_back(_Collision);
 }
 
-void GameEngineLevel::PushDebugRender(GameEngineTransform* _Transform, CollisionType _Type) 
+void GameEngineLevel::PushDebugRender(GameEngineTransform* _Transform, CollisionType _Type, float4 _Color)
 {
-	MainCameraActor_->GetCamera()->PushDebugRender(_Transform, _Type);
+	MainCameraActor_->GetCamera()->PushDebugRender(_Transform, _Type, _Color);
 }
 
 void GameEngineLevel::AddTimeEvent(float _Time, std::function<void()> _Event) 

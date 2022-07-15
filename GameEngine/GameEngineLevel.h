@@ -53,7 +53,7 @@ public:
 	void PushCollision(GameEngineCollision* _Collision, UserEnumType _Group);
 	void PushCollision(GameEngineCollision* _Collision, int _Group);
 
-	void PushDebugRender(GameEngineTransform* _Transform, CollisionType _Type);
+	void PushDebugRender(GameEngineTransform* _Transform, CollisionType _Type, float4 _Color = float4::GREEN);
 
 	void AddTimeEvent(float _Time, std::function<void()> _Event);
 

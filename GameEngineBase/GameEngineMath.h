@@ -7,6 +7,9 @@ public:
 	static const float PI2;
 	static const float DegreeToRadian;
 	static const float RadianToDegree;
+
+	// 단위 벡터를 360도 각도로 변환, 단위 벡터만 가능
+	static const float UnitVectorToDegree(float x, float y);
 };
 
 class float4x4;

@@ -51,14 +51,16 @@ private:
 	void Attack_End();
 #pragma endregion
 
+#pragma region MemberUpdateFunc
 private:
 	//Member Func
-	void Attack();
+	void DEBUGUpdate(float _DeltaTime);
 
 	// update류 함수에 같이 들어가 카메라 업데이트, 바로 뒤에서 바라보는 함수
 	void CameraUpdate_BackPosition(float _DeltaTime);
 	void CameraUpdate_UpPosition(float _DeltaTime);
 
+	void KeyDirUpdate(float _DeltaTime);
 	// update류 함수에 같이 들어가 이동을 제어함
 	void MoveUpdate(float _DeltaTime);
 
@@ -69,6 +71,8 @@ private:
 	//{
 	//	CamFunc_ = std::bind(_Camfunc, this, std::placeholders::_1);
 	//}
+#pragma endregion
+
 private:
 	//state
 	GameEngineFSM PlayerState_;
@@ -88,6 +92,8 @@ private:
 
 	//GameEngineFBXMesh* mesh_; //필요한가?
 
+	bool IsMove_;
+
 	float Speed_;
 
 	float4 KeyDir_;
@@ -103,6 +109,7 @@ private:
 	//구르는 시간(무적타임)
 	float RollSecond_;
 
+
 	//공격 텀
 	float AttackTurm_; 
 	//공격 에니메이션 단계
@@ -111,10 +118,12 @@ private:
 	float AttackTime_;
 	float AttackHitTime_;
 
+	//Status
 	int Hp_;
 	float Stamina_;
 
 public:
+	//UI
 	class TopUI* TopUI_;
 
 public:
@@ -136,26 +145,6 @@ public:
 	void SetStamina(float _Stamina)
 	{
 		Stamina_ = _Stamina;
-	}
-
-private:
-
-	//임시 땜빵용
-	float UnitVectorToDegree(float x, float y)
-	{
-		float result = 0.f;
-
-		if (y >= 0)
-		{
-				result = acosf(x) * GameEngineMath::RadianToDegree;
-		}
-
-		if (y < 0)
-		{
-				result = (acosf(-x) * GameEngineMath::RadianToDegree) +180.f;
-		}
-
-		return result;
 	}
 };
 
