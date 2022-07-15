@@ -17,10 +17,13 @@ public:
 	TopUI& operator=(const TopUI& _Other) = delete;
 	TopUI& operator=(TopUI&& _Other) noexcept = delete;
 
+	bool UIOn;
+
 protected:
 	GameEngineUIRenderer* TopRenderer;
 	map<string, GameEngineUIRenderer*> UIRendererMap;
 	float Time;
+
 
 private:
 	void Start() override;

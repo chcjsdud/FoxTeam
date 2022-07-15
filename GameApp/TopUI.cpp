@@ -4,7 +4,7 @@
 #include "GameEngine/GameEngineInput.h"
 
 TopUI::TopUI()
-	: Time(1.0f)
+	: Time(1.0f), UIOn(false)
 {
 }
 
@@ -74,8 +74,37 @@ void TopUI::Update(float _Time)
 	{
 		//TopRenderer->SetAlpha(Time);
 	}
+	
+	//UI 온오프 체크
+	{
+		map<string, GameEngineUIRenderer*>::iterator FindIter = UIRendererMap.begin();
 
+		if (false == UIOn)
+		{
+			for (; FindIter != UIRendererMap.end(); FindIter++)
+			{
+				FindIter->second->Off();
+			}
+		}
+		else
+		{
+			for (; FindIter != UIRendererMap.end(); FindIter++)
+			{
+				FindIter->second->On();
+			}
+		}
+	}
 
-//	TopRenderer->SetAlpha(0.1f);
+	if (true == GameEngineInput::GetInst().Down("Esc"))
+	{
+		if (UIOn == true)
+		{
+			UIOn = false;
+		}
+		else
+		{
+			UIOn = true;
+		}
+	}
 }
 
