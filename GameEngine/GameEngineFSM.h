@@ -86,7 +86,21 @@ public:
 			return;
 		}
 
-		AllState_.insert(std::map<std::string, State*>::value_type(_Name, new State{ _Name, std::bind(_Start,objptr), std::bind(_Update ,objptr,std::placeholders::_1), std::bind(_End,objptr) }));
+		std::function<void()> Start = nullptr;
+		std::function<void(float)> Update = nullptr;
+		std::function<void()> End = nullptr;
+
+		if (_Start != nullptr)
+			Start = std::bind(_Start, objptr);
+
+		if (_Update != nullptr)
+			Update = std::bind(_Update, objptr, std::placeholders::_1);
+
+		if (_End != nullptr)
+			End = std::bind(_End, objptr);
+
+		AllState_.insert(std::map<std::string, State*>::value_type(_Name, new State{ _Name,Start,Update,End }));
+		//AllState_.insert(std::map<std::string, State*>::value_type(_Name, new State{ _Name, std::bind(_Start,objptr), std::bind(_Update ,objptr,std::placeholders::_1), std::bind(_End,objptr) }));
 	}
 };
 
