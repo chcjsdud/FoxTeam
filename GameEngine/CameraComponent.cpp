@@ -258,7 +258,7 @@ void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType
 	}
 	case CollisionType::CirCle:
 	{
-		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
+		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugCircle");
 		DebugVector_[DebugRenderCount_].Color_ = _Color;
 		break;
 	}

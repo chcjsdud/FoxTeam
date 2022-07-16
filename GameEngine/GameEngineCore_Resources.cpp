@@ -9,6 +9,7 @@
 #include "GameEngineVertexShader.h"
 #include "GameEngineDepthStencil.h"
 #include "EngineVertex.h"
+#include <GameEngineBase/GameEngineMath.h>
 
 void GameEngineCore::EngineResourcesCreate_Mesh() 
 {
@@ -340,6 +341,97 @@ void GameEngineCore::EngineResourcesCreate_Mesh()
 	}
 
 	{
+		std::vector<GameEngineVertex> CircleVertex = std::vector<GameEngineVertex>(21);
+
+		{
+			float4 buffer = {0.0f, 0.0f, 0.0f};
+			// 앞면
+			CircleVertex[0] = { float4({ 0.0f, 0.0f, 0.0f }),  { 0.5f, 0.5f } };
+
+			CircleVertex[1] = { float4({ 0.5f, 0.0f, 0.0f }),  { 0.5f, 0.5f } };
+			
+			// 왜인지 모르지만 for 문 자꾸 터져서 하드코딩 했습니다ㅜㅠ 나중에 정비 예정 // 박종원 0717
+			buffer = buffer.RotateYDegree(CircleVertex[1].POSITION, 18.0f);
+			CircleVertex[2] = { buffer,  {0.5f, 0.5f}};
+			
+			buffer = buffer.RotateYDegree(CircleVertex[2].POSITION, 18.0f);
+			CircleVertex[3] = { buffer,  {0.5f, 0.5f} };
+			
+			buffer = buffer.RotateYDegree(CircleVertex[3].POSITION, 18.0f);
+			CircleVertex[4] = { buffer,  {0.5f, 0.5f} };
+			
+			buffer = buffer.RotateYDegree(CircleVertex[4].POSITION, 18.0f);
+			CircleVertex[5] = { buffer,  {0.5f, 0.5f} };
+			
+			buffer = buffer.RotateYDegree(CircleVertex[5].POSITION, 18.0f);
+			CircleVertex[6] = { buffer,  {0.5f, 0.5f} };
+			
+			buffer = buffer.RotateYDegree(CircleVertex[6].POSITION, 18.0f);
+			CircleVertex[7] = { buffer,  {0.5f, 0.5f} };
+			
+			buffer = buffer.RotateYDegree(CircleVertex[7].POSITION, 18.0f);
+			CircleVertex[8] = { buffer,  {0.5f, 0.5f} };
+			
+			buffer = buffer.RotateYDegree(CircleVertex[8].POSITION, 18.0f);
+			CircleVertex[9] = { buffer,  {0.5f, 0.5f} };
+			
+			buffer = buffer.RotateYDegree(CircleVertex[9].POSITION, 18.0f);
+			CircleVertex[10] = { buffer,  {0.5f, 0.5f} };
+			
+			buffer = buffer.RotateYDegree(CircleVertex[10].POSITION, 18.0f);
+			CircleVertex[11] = { buffer,  {0.5f, 0.5f} };
+			
+			buffer = buffer.RotateYDegree(CircleVertex[11].POSITION, 18.0f);
+			CircleVertex[12] = { buffer,  {0.5f, 0.5f} };
+
+			buffer = buffer.RotateYDegree(CircleVertex[12].POSITION, 18.0f);
+			CircleVertex[13] = { buffer,  {0.5f, 0.5f} };
+
+			buffer = buffer.RotateYDegree(CircleVertex[13].POSITION, 18.0f);
+			CircleVertex[14] = { buffer,  {0.5f, 0.5f} };
+
+			buffer = buffer.RotateYDegree(CircleVertex[14].POSITION, 18.0f);
+			CircleVertex[15] = { buffer,  {0.5f, 0.5f} };
+
+			buffer = buffer.RotateYDegree(CircleVertex[15].POSITION, 18.0f);
+			CircleVertex[16] = { buffer,  {0.5f, 0.5f} };
+
+			buffer = buffer.RotateYDegree(CircleVertex[16].POSITION, 18.0f);
+			CircleVertex[17] = { buffer,  {0.5f, 0.5f} };
+
+			buffer = buffer.RotateYDegree(CircleVertex[17].POSITION, 18.0f);
+			CircleVertex[18] = { buffer,  {0.5f, 0.5f} };
+
+			buffer = buffer.RotateYDegree(CircleVertex[18].POSITION, 18.0f);
+			CircleVertex[19] = { buffer,  {0.5f, 0.5f} };
+
+			buffer = buffer.RotateYDegree(CircleVertex[19].POSITION, 18.0f);
+			CircleVertex[20] = { buffer,  {0.5f, 0.5f} };
+		}
+
+		GameEngineVertexBufferManager::GetInst().Create("DebugCircle", CircleVertex, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+	}
+
+	{
+		std::vector<UINT> circleIndex;
+
+		for (size_t i = 0; i < 19; i++)
+		{
+			circleIndex.push_back(0);
+			circleIndex.push_back(i+1);
+			circleIndex.push_back(i+2);
+		}
+
+			circleIndex.push_back(0);
+			circleIndex.push_back(20);
+			circleIndex.push_back(1);
+
+
+		GameEngineIndexBufferManager::GetInst().Create("DebugCircle", circleIndex, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+	}
+
+
+	{
 		std::vector<GameEngineVertex> RectVertex = std::vector<GameEngineVertex>(4);
 
 		{
@@ -617,6 +709,15 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetInputAssembler1VertexBufferSetting("DebugBox");
 		Pipe->SetVertexShader("Color_VS");
 		Pipe->SetInputAssembler2IndexBufferSetting("DebugBox");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+		Pipe->SetPixelShader("Color_PS");
+	}
+
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DebugCircle");
+		Pipe->SetInputAssembler1VertexBufferSetting("DebugCircle");
+		Pipe->SetVertexShader("Color_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("DebugCircle");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 		Pipe->SetPixelShader("Color_PS");
 	}

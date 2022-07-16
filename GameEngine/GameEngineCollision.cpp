@@ -26,6 +26,9 @@ void GameEngineCollision::Init()
 
 	CollisionCheckFunction[static_cast<int>(CollisionType::OBBBox3D)][static_cast<int>(CollisionType::OBBBox3D)]
 		= std::bind(&GameEngineCollision::OBBToOBB, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::CirCle)][static_cast<int>(CollisionType::AABBBox3D)]
+		= std::bind(&GameEngineCollision::CirCleToAABB, std::placeholders::_1, std::placeholders::_2);
 }
 
 
@@ -62,6 +65,15 @@ bool GameEngineCollision::CirCleToCirCle(GameEngineTransform* _Left, GameEngineT
 bool GameEngineCollision::Sphere3DToSphere3D(GameEngineTransform* _Left, GameEngineTransform* _Right)
 {
 	return _Left->GetSphere().Intersects(_Right->GetSphere());
+}
+
+bool GameEngineCollision::CirCleToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right)
+{
+	DirectX::BoundingSphere Left = _Left->GetSphere();
+	DirectX::BoundingBox Right = _Right->GetAABB();
+	Left.Center.z = 0.0f;
+	Right.Center.z = 0.0f;
+	return Left.Intersects(Right);
 }
 
 GameEngineCollision::GameEngineCollision() 

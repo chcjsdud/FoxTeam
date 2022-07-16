@@ -27,6 +27,7 @@ public:
 	static bool AABBToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
 
 	static bool OBBToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool CirCleToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
 
 public:
 	// constrcuter destructer

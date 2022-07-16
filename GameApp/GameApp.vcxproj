@@ -193,6 +193,11 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Player_State.cpp" />
+    <ClCompile Include="TestMonster.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TestMonsterState.cpp" />
     <ClCompile Include="TestPlayer.cpp">
       <SubType>
       </SubType>
@@ -231,12 +236,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomVertex.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="Map.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="Player.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TestMonster.h">
       <SubType>
       </SubType>
     </ClInclude>

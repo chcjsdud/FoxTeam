@@ -2,7 +2,7 @@
 #include "PlayLevel.h"
 #include "Player.h"
 #include "TopUI.h"
-
+#include "TestMonster.h"
 #include "Map.h"
 
 #include <GameEngine/CameraComponent.h>
@@ -191,6 +191,12 @@ void PlayLevel::CreateActorLevel()
 
 	{
 		Player* Actor = CreateActor<Player>();
+	
+
+		TestMonster* Monster = CreateActor<TestMonster>();
+		Monster->GetTransform()->SetWorldPosition(float4{ 800.0f, 0.0f, 800.0f });
+		Monster->SetTarget(Actor); // 게임매니저 생성으로 플레이어 위치정보 공유될 시 삭제될 함수입니다.
+
 	}
 
 	{

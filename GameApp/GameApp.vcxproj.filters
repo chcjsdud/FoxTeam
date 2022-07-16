@@ -27,9 +27,6 @@
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>03.Level\PlayLevel\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
     </ClCompile>
     <ClCompile Include="Player_State.cpp">
@@ -37,6 +34,13 @@
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="TestMonster.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="TestMonsterState.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +92,12 @@
     <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\Player">
       <UniqueIdentifier>{37fb317c-3483-4425-9f93-cdd21cb09e47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\Monster">
+      <UniqueIdentifier>{b6c78f36-c0f2-41d8-a1ef-e232a327be95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\ENUMs">
+      <UniqueIdentifier>{2e0372bc-0aab-4540-8ca0-d601cac9e32a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -118,13 +128,17 @@
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>03.Level\PlayLevel\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="TestMonster.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\ENUMs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
