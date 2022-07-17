@@ -16,7 +16,7 @@ void TestMonster::Idle_Start()
 void TestMonster::Idle_Update(float _DeltaTime)
 {
 	// Idle 상태에서 만약 인지 범위 안에 플레이어가 충돌하면 함수 실행해줘 State 를 Pursuit(추적) 으로 돌립니다.
-	monsterSightBoxCollision_->Collision(CollisionType::CirCle, CollisionType::AABBBox3D, CollisionGroup::Player, std::bind(&TestMonster::CollisionSight, this, std::placeholders::_1));
+	monsterSightBoxCollision_->Collision(CollisionType::CirCle, CollisionType::AABBBox3D, static_cast<int>(CollisionGroup::Player), std::bind(&TestMonster::CollisionSight, this, std::placeholders::_1));
 	return;
 }
 void TestMonster::Idle_End()
