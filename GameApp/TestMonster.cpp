@@ -5,6 +5,7 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 
 #include "Enums.h"
+#include "Player.h"
 
 TestMonster::TestMonster() // default constructer 디폴트 생성자
 	: FBXRenderer_(nullptr)
@@ -20,6 +21,7 @@ TestMonster::TestMonster() // default constructer 디폴트 생성자
 	, AttackTurm_(0.f)
 	, Hp_(0)
 	, Stamina_(0.f)
+	, targetPlayer_(nullptr)
 {
 
 }
@@ -93,41 +95,40 @@ void TestMonster::MoveUpdate(float _DeltaTime)
 
 void TestMonster::MoveRotateUpdate(float _DeltaTime)
 {
-
-	
-	if (CurFowordDir_ == KeyDir_)
+	if (prevmoveVector_ == moveVector_) // 전 벡터와의 변동량이 없다면... 리턴
 	{
 		return;
 	}
 
-	float4 dir = float4::Cross3D(CurFowordDir_, KeyDir_);
+	float4 dir = float4::Cross3D(prevmoveVector_, moveVector_); // 외적 구하기
 
-	float goaldegree = GameEngineMath::UnitVectorToDegree(KeyDir_.z, KeyDir_.x);
+	float goaldegree = GameEngineMath::UnitVectorToDegree(moveVector_.z, moveVector_.x);
+	// 전의 방향 벡터와 후의 방향 벡터와의 각도 비교
 
 	if (dir.y >= 0.f)
 	{
 
 		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_ * _DeltaTime);
-		CurFowordDir_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
+		prevmoveVector_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
 
-		dir = float4::Cross3D(CurFowordDir_, KeyDir_);
+		dir = float4::Cross3D(prevmoveVector_, moveVector_);
 		if (dir.y < 0.f)
 		{
 			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			CurFowordDir_ = KeyDir_;
+			prevmoveVector_ = moveVector_;
 		}
 	}
 
 	else if (dir.y < 0.f)
 	{
 		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
-		CurFowordDir_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
+		prevmoveVector_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
 
-		dir = float4::Cross3D(CurFowordDir_, KeyDir_);
+		dir = float4::Cross3D(prevmoveVector_, moveVector_);
 		if (dir.y > 0.f)
 		{
 			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			CurFowordDir_ = KeyDir_;
+			prevmoveVector_ = moveVector_;
 		}
 	}
 }

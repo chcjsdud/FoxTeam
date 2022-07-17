@@ -95,6 +95,7 @@ private:
 	float Stamina_;
 
 	Player* targetPlayer_;
+	float4 prevmoveVector_;
 	float4 moveVector_;
 	float4 movePos_;
 
