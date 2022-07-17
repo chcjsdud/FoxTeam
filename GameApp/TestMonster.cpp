@@ -72,8 +72,8 @@ void TestMonster::ComponenetInit()
 	monsterHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 100.f,200.f,100.f ,1.f });
 	monsterHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,0.f });
 
-	monsterSightBoxCollision_->GetTransform()->SetLocalScaling(float4{ 800.f,0.f,800.f ,1.f });
-	monsterSightBoxCollision_->GetTransform()->SetLocalPosition(monsterHitBoxCollision_->GetTransform()->GetLocalPosition());
+	monsterSightBoxCollision_->GetTransform()->SetLocalScaling(float4{ 800.f,0.f,800.f});
+	monsterSightBoxCollision_->GetTransform()->SetLocalPosition(float4{0.0f,0.0f,0.0f});
 	monsterSightBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::MonsterSight));
 }
 

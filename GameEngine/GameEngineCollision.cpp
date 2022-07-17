@@ -74,8 +74,8 @@ bool GameEngineCollision::CirCleToAABB(GameEngineTransform* _Left, GameEngineTra
 {
 	DirectX::BoundingSphere Left = _Left->GetSphere();
 	DirectX::BoundingBox Right = _Right->GetAABB();
-	Left.Center.z = 0.0f;
-	Right.Center.z = 0.0f;
+	Left.Center.y = 0.0f;
+
 	return Left.Intersects(Right);
 }
 
