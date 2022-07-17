@@ -1,6 +1,6 @@
 #pragma once
 
-enum CollisionGroup
+enum class CollisionGroup
 {
 	None = 0,
 	Player,

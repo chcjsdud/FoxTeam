@@ -29,6 +29,9 @@ void GameEngineCollision::Init()
 
 	CollisionCheckFunction[static_cast<int>(CollisionType::CirCle)][static_cast<int>(CollisionType::AABBBox3D)]
 		= std::bind(&GameEngineCollision::CirCleToAABB, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::AABBBox3D)][static_cast<int>(CollisionType::CirCle)]
+		= std::bind(&GameEngineCollision::AABBToCirCle, std::placeholders::_1, std::placeholders::_2);
 }
 
 
@@ -76,7 +79,13 @@ bool GameEngineCollision::CirCleToAABB(GameEngineTransform* _Left, GameEngineTra
 	return Left.Intersects(Right);
 }
 
-GameEngineCollision::GameEngineCollision() 
+bool GameEngineCollision::AABBToCirCle(GameEngineTransform* _Left, GameEngineTransform* _Right)
+{
+	return CirCleToAABB(_Right, _Left);
+}
+
+GameEngineCollision::GameEngineCollision()
+	: ColType_(CollisionType::Rect)
 {
 }
 
@@ -97,6 +106,59 @@ void GameEngineCollision::Update(float _DeltaTime)
 void GameEngineCollision::SetCollisionGroup(int _Type)
 {
 	GetLevel()->ChangeCollisionGroup(_Type, this);
+}
+
+bool GameEngineCollision::Collision(int _OtherGroup)
+{
+	std::list<GameEngineCollision*>& Group = GetLevel()->GetCollisionGroup(_OtherGroup);
+
+	for (GameEngineCollision* OtherCollision : Group)
+	{
+		if (false == OtherCollision->IsUpdate())
+		{
+			continue;
+		}
+
+		auto& CheckFunction = CollisionCheckFunction[static_cast<int>(ColType_)][static_cast<int>(OtherCollision->ColType_)];
+
+		if (nullptr == CheckFunction)
+		{
+			GameEngineDebug::MsgBoxError("아직 구현하지 않는 타입간에 충돌을 하려고 했습니다.");
+		}
+
+		return CheckFunction(GetTransform(), OtherCollision->GetTransform());
+	}
+
+	return false;
+}
+
+GameEngineCollision* GameEngineCollision::CollisionPtr(int _OtherGroup)
+{
+	std::list<GameEngineCollision*>& Group = GetLevel()->GetCollisionGroup(_OtherGroup);
+
+	for (GameEngineCollision* OtherCollision : Group)
+	{
+		if (false == OtherCollision->IsUpdate())
+		{
+			continue;
+		}
+
+		auto& CheckFunction = CollisionCheckFunction[static_cast<int>(ColType_)][static_cast<int>(OtherCollision->ColType_)];
+
+		if (nullptr == CheckFunction)
+		{
+			GameEngineDebug::MsgBoxError("아직 구현하지 않는 타입간에 충돌을 하려고 했습니다.");
+		}
+
+		if (false ==CheckFunction(GetTransform(), OtherCollision->GetTransform()))
+		{
+			continue;
+		}
+
+		return OtherCollision;
+	}
+
+	return nullptr;
 }
 
 void GameEngineCollision::Collision(CollisionType _ThisType, CollisionType _OtherType, int _OtherGroup, std::function<void(GameEngineCollision*)> _CallBack)

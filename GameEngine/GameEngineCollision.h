@@ -28,6 +28,7 @@ public:
 
 	static bool OBBToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
 	static bool CirCleToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool AABBToCirCle(GameEngineTransform* _Left, GameEngineTransform* _Right);
 
 public:
 	// constrcuter destructer
@@ -40,7 +41,6 @@ public:
 	GameEngineCollision& operator=(const GameEngineCollision& _Other) = delete;
 	GameEngineCollision& operator=(GameEngineCollision&& _Other) noexcept = delete;
 
-
 	template<typename UserType>
 	void SetCollisionGroup(UserType _Type)
 	{
@@ -49,7 +49,6 @@ public:
 
 	void SetCollisionGroup(int _Type);
 
-
 	void Collision(
 		CollisionType _ThisType, 
 		CollisionType _OtherType, 
@@ -57,11 +56,27 @@ public:
 		std::function<void(GameEngineCollision*)> _CallBack
 	);
 
+
 	void SphereToSphereCollision(int _OtherGroup, std::function<void(GameEngineCollision*)> _CallBack);
 
+	/// 이현 ///
+	void SetCollisionTpye(CollisionType _ColType)
+	{
+		ColType_ = _ColType;
+	}
+
+	void SetCollisionInfo(int _Type, CollisionType _ColType)
+	{
+		SetCollisionGroup(_Type);
+		SetCollisionTpye(_ColType);
+	}
+
+	bool Collision(int _OtherGroup);
+	GameEngineCollision* CollisionPtr(int _OtherGroup);
 
 protected:
-	
+	CollisionType ColType_;
+	///  이현 ///
 
 private:
 	void Start() override;

@@ -4,6 +4,7 @@
 using namespace std;
 // 설명 :
 class GameEngineUIRenderer;
+class Player;
 class TopUI : public GameEngineActor
 {
 public:
@@ -31,12 +32,13 @@ private:
 
 	//이현
 private:
-	//Player* Player_;
+	Player* Player_;
+
 public:
-	//void SetPlayer(Player* _Player)
-	//{
-	//	Player_ = _Player;
-	//}
-	//
+	void SetPlayer(Player* _Player)
+	{
+		Player_ = _Player;
+	}
+	
 };
 

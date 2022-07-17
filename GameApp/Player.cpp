@@ -43,7 +43,7 @@ void Player::Start()
 
 	TopUI_ = GetLevel()->CreateActor<TopUI>();
 	TopUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
-	//TopUI_->SetPlayer(this);
+	TopUI_->SetPlayer(this);
 
 	//ChangeCamFunc(&Player::CameraUpdate_UpPosition);
 
@@ -87,7 +87,9 @@ void Player::ComponenetInit()
 	//피격 히트박스 겸사겸사 맵 컬리전도 가능할듯
 	PlayerHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 100.f,200.f,100.f ,1.f});
 	PlayerHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,0.f });
-	PlayerHitBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::Player));
+	//PlayerHitBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::Player));
+
+	PlayerHitBoxCollision_->SetCollisionInfo(CINT(CollisionGroup::Player), CollisionType::AABBBox3D);
 }
 
 void Player::StateInit()
@@ -266,4 +268,9 @@ void Player::DEBUGUpdate(float _DeltaTime)
 	{
 		GetLevel()->PushDebugRender(PlayerAttackHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D,float4::RED);
 	}
+
+	//if (PlayerHitBoxCollision_->Collision(CINT(CollisionGroup::MonsterSight)))
+	//{
+	//	int a = 0;
+	//}
 }
