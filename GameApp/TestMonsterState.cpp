@@ -37,7 +37,7 @@ void TestMonster::Pursuit_Update(float _DeltaTime)
 	moveVector_ = (movePos_ - GetTransform()->GetWorldPosition()).NormalizeReturn3D();
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
-
+	prevmoveVector_ = moveVector_;
 
 
 	//if (GameEngineInput::GetInst().Press("Attack"))
