@@ -179,6 +179,7 @@ private:
 public:
 	//UI
 	class TopUI* TopUI_;
+	class RockOnUI* RockOnUI_;
 
 public:
 	const int PlayerGetHP()
@@ -199,6 +200,11 @@ public:
 	void PlayerSetStamina(float _Stamina)
 	{
 		Stamina_ = _Stamina;
+	}
+
+	GameEngineActor* PlayerGetTarget()
+	{
+		return Target_;
 	}
 };
 

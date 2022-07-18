@@ -42,6 +42,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
     </ClCompile>
+    <ClCompile Include="RockOnUI.cpp">
+      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -121,9 +124,6 @@
     <ClInclude Include="TestPlayer.h">
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="TopUI.h">
-      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="Macro.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
@@ -139,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="TopUI.h">
+      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="RockOnUI.h">
+      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

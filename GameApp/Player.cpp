@@ -5,6 +5,7 @@
 
 #include "Player.h"
 #include "TopUI.h"
+#include "RockOnUI.h"
 
 #include "Enums.h"
 
@@ -45,6 +46,12 @@ void Player::Start()
 	TopUI_ = GetLevel()->CreateActor<TopUI>();
 	TopUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
 	TopUI_->SetPlayer(this);
+
+	RockOnUI_ = GetLevel()->CreateActor<RockOnUI>();
+	RockOnUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
+	RockOnUI_->SetPlayer(this);
+
+	RockOnUI_->Off();
 
 	//ChangeCamFunc(&Player::CameraUpdate_UpPosition);
 
@@ -156,6 +163,8 @@ void Player::RockOnUpdate(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst().Press("RockOn"))
 	{
+		RockOnUI_->On();
+
 		GameEngineCollision* RockOnPtr = PlayerRockOnCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
 
 		//PlayerRockOnCollision_->Collision(CollisionType::CirCle, CollisionType::AABBBox3D, static_cast<int>(CollisionGroup::Player), std::bind(&Player::test, this));
@@ -175,6 +184,7 @@ void Player::RockOnUpdate(float _DeltaTime)
 
 	else
 	{
+		RockOnUI_->Off();
 		Target_ = nullptr;
 	}
 }
