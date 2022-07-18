@@ -11,7 +11,7 @@
 
 void TestMonster::Idle_Start()
 {
-	Speed_ = 0.f;
+	//Speed_ = 0.f;
 }
 void TestMonster::Idle_Update(float _DeltaTime)
 {
@@ -28,7 +28,7 @@ void TestMonster::Idle_End()
 void TestMonster::Pursuit_Start()
 {
 	IsMove_ = true;
-	Speed_ = 70.f;
+
 	return;
 }
 void TestMonster::Pursuit_Update(float _DeltaTime)
@@ -122,5 +122,70 @@ void TestMonster::Attack_End()
 void TestMonster::CollisionSight(GameEngineCollision* _other)
 {
 	monsterState_.ChangeState("Pursuit");
+	return;
+}
+
+// 업데이트에서 계속 실행되어 플레이어의 공격 충돌체와의 접촉 체크, 넉백 등을 수행합니다.
+void TestMonster::DamageUpdate(float _DeltaTime)
+{
+	if (0 >= InvincibleTermTimer_)
+	{
+		isDamaged_ = false;
+	}
+	else
+	{
+		InvincibleTermTimer_ -= _DeltaTime;
+		
+	}
+
+	KnockBackUpdate(_DeltaTime);
+
+	monsterHitBoxCollision_->Collision(CollisionType::AABBBox3D, CollisionType::AABBBox3D, static_cast<int>(CollisionGroup::PlayerAttack),
+		std::bind(&TestMonster::CollisionGetDamaged, this, std::placeholders::_1));
+
+
+	return;
+}
+
+void TestMonster::KnockBackUpdate(float _DeltaTime)
+{
+	if (true == isKnockBack_)
+	{
+		if (0 >= KnockBackTimer_)
+		{
+			KnockBackTimer_ = KnockBackRate_;
+			isKnockBack_ = false;
+			return;
+		}
+
+		KnockBackTimer_ -= _DeltaTime;
+		GetTransform()->SetWorldMove(-PursuitDir_ * KnockBackSpeed_ * _DeltaTime);
+	}
+
+
+	return;
+}
+
+void TestMonster::DeathUpdate(float _DeltaTime)
+{
+	if (0 >= Hp_)
+	{
+		this->Death();
+	}
+
+	return;
+}
+
+void TestMonster::CollisionGetDamaged(GameEngineCollision* _other)
+{
+	if (false == isDamaged_)
+	{
+		this->Hp_ -= targetPlayer_->PlayerGetAttackPower();
+		isDamaged_ = true;
+		isKnockBack_ = true;
+		InvincibleTermTimer_ = InvincibleTermRate_;
+		return;
+	}
+
 	return;
 }

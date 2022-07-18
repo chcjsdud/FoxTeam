@@ -33,6 +33,10 @@ private:
 	//State 초기화
 	void StateInit();
 
+	// HP 공격력 이동 속도 등의 "몬스터의 특성" 을 Init 해주는 함수입니다.
+	virtual void TraitInit();
+	
+
 #pragma endregion
 
 #pragma region State
@@ -61,6 +65,12 @@ private:
 	//캐릭터가 바라보는 방향이 바로 바로 안변하고 천천히 변함(이동과는 무관하게)
 	void MoveRotateUpdate(float _DeltaTime);
 
+	void DamageUpdate(float _DeltaTime);
+	// 업데이트에서 계속 실행되어 플레이어의 공격 충돌체와의 접촉 체크를 수행합니다.
+	void KnockBackUpdate(float _DeltaTime);
+	// 위의 DamageUpdate() 에서 실행되어 피격 시 넉백을 수행합니다.
+	void DeathUpdate(float _DeltaTime);
+	// 업데이트에서 계속 실행되어 남은 체력을 체크해 죽음 판정을 수행합니다.
 #pragma endregion
 private:
 	//state
@@ -79,14 +89,27 @@ private:
 
 	bool IsMove_;
 
-	float Speed_; //이동 속도
-
-	//공격 텀
-	float AttackTurm_;
-
+	
 	//Status
 	int Hp_;
-	float Stamina_;
+
+	// 공격받을 때 무적시간 관련 변수 (콜리젼이 한 번에 여러 번 파파팍 들어가지 않게)
+	float InvincibleTermRate_; // 무적 기준 시간 (이 몬스터는 무적시간이 얼마나 가나...)
+	float InvincibleTermTimer_; // 델타타임에 의해 깎여나가는 무적시간 타이머
+	bool isDamaged_; // 방금 공격받았나? 변수. 무적시간 타이머가 끝나면 false 
+
+	// 공격받을 때 넉백 관련 변수
+	float KnockBackRate_; // 넉백 기준 시간 (이 몬스터는 넉백 시간이 얼마나 가나...)
+	float KnockBackTimer_; // 델타타임에 의해 깎여나가는 넉백 타이머
+	float KnockBackSpeed_; // 넉백시 뒤로 물러나는 스피드
+	bool isKnockBack_; // 방금 넉백되었나?
+
+
+	int AttackPower_;
+
+
+	float AttackTurm_;
+	float Speed_;
 
 	float4 PursuitDir_; // 바라봐야 할 방향
 	float4 CurFowordDir_; //현재 바라보는 방향
@@ -121,5 +144,6 @@ public:
 	}
 
 	void CollisionSight(GameEngineCollision* _other);
+	void CollisionGetDamaged(GameEngineCollision* _other);
 };
 

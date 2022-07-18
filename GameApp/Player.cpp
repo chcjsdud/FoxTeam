@@ -30,6 +30,7 @@ Player::Player()
 	, AttackLevel_(0)
 	, Hp_(0)
 	, Stamina_(0.f)
+	, AttackPower_(20)
 {
 }
 
@@ -91,6 +92,7 @@ void Player::ComponenetInit()
 	//타격 히트 박스
 	PlayerAttackHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 200.f,50.f,100.f ,1.f});
 	PlayerAttackHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,100.f });
+	PlayerAttackHitBoxCollision_->SetCollisionGroup(CollisionGroup::PlayerAttack);
 	PlayerAttackHitBoxCollision_->Off();
 
 	//피격 히트박스 겸사겸사 맵 컬리전도 가능할듯

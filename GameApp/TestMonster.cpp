@@ -13,17 +13,20 @@ TestMonster::TestMonster() // default constructer 디폴트 생성자
 	, monsterHitBoxCollision_(nullptr)
 	, monsterAttackHitBoxCollision_(nullptr)
 	, monsterSightBoxCollision_(nullptr)
-	, Speed_(10.f)
-	//, prevmoveVector_{ 0.f,0.f,1.f }
-	//, moveVector_{ 0.f,0.f,1.f }
+	, Speed_(0.f)
 	, CurFowordDir_{ 0.f,0.f,1.f }
 	, PursuitDir_{ 0.f,0.f,1.f }
 	, YRotateSpeed_(10.f)
 	, IsMove_(false)
 	, AttackTurm_(0.f)
 	, Hp_(0)
-	, Stamina_(0.f)
 	, targetPlayer_(nullptr)
+	, InvincibleTermRate_(0.f)
+	, InvincibleTermTimer_(0.f)
+	, isDamaged_(false)
+	, KnockBackRate_(0.f)
+	, KnockBackTimer_(0.f)
+	, KnockBackSpeed_(0.f)
 {
 
 }
@@ -37,11 +40,14 @@ void TestMonster::Start()
 {
 	StateInit();
 	ComponenetInit();
+	TraitInit();
 }
 
 void TestMonster::Update(float _DeltaTime)
 {
+	DeathUpdate(_DeltaTime);
 	DEBUGUpdate(_DeltaTime);
+	DamageUpdate(_DeltaTime);
 	monsterState_.Update(_DeltaTime);
 }
 
@@ -90,6 +96,22 @@ void TestMonster::StateInit()
 		monsterState_.CreateState<TestMonster>("Attack", this, &TestMonster::Attack_Start, &TestMonster::Attack_Update, &TestMonster::Attack_End);;
 		monsterState_.ChangeState("Idle");
 	}
+}
+
+void TestMonster::TraitInit()
+{
+	// HP 공격력 이동 속도 등의 "몬스터의 특성" 을 Init 해주는 함수입니다.
+	Hp_ = 100;
+	Speed_ = 180.0f;
+	AttackPower_ = 20;
+	AttackTurm_ = 0.1f;
+
+	InvincibleTermRate_ = 0.3f;
+	InvincibleTermTimer_ = 0.f;
+	
+	KnockBackRate_ = 0.03f;
+	KnockBackTimer_ = 0.0f;
+	KnockBackSpeed_ = 4320.0f;
 }
 
 //void TestMonster::MoveUpdate(float _DeltaTime)
@@ -151,7 +173,7 @@ void TestMonster::PursuitDirUpdate(float _DeltaTime)
 void TestMonster::MoveUpdate(float _DeltaTime)
 {
 	if (true == IsMove_)
-	{
+	{	
 		GetTransform()->SetWorldMove(PursuitDir_ * Speed_ * _DeltaTime);
 	}
 }
@@ -198,8 +220,10 @@ void TestMonster::DEBUGUpdate(float _DeltaTime)
 {
 	GetLevel()->PushDebugRender(monsterHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
 	GetLevel()->PushDebugRender(monsterSightBoxCollision_->GetTransform(), CollisionType::CirCle);
+
 	if (monsterAttackHitBoxCollision_->IsUpdate())
 	{
 		GetLevel()->PushDebugRender(monsterAttackHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
 	}
 }
+

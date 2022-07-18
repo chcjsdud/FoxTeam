@@ -25,7 +25,7 @@ RockOnUI::~RockOnUI()
 void RockOnUI::Start()
 {
 	//플레이어가 락온한 타겟의 포인터
-	GameEngineActor* Target = Player_->PlayerGetTarget();
+	//GameEngineActor* Target = Player_->PlayerGetTarget();
 
 	/*
 	테스트 이미지로 TestRockOn.png 를 사용하시면 됩니다.

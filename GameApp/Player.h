@@ -175,6 +175,7 @@ private:
 	//Status
 	int Hp_;
 	float Stamina_;
+	int AttackPower_;
 
 public:
 	//UI
@@ -206,5 +207,11 @@ public:
 	{
 		return Target_;
 	}
+
+	const int PlayerGetAttackPower()
+	{
+		return AttackPower_;
+	}
+
 };
 
