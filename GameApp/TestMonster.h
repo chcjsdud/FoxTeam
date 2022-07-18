@@ -13,12 +13,12 @@ private:
 	friend Player;
 
 public:
-	TestMonster(); // default constructer 디폴트 생성자
-	~TestMonster(); // default destructer 디폴트 소멸자
-	TestMonster(const TestMonster& _other) = delete; // default Copy constructer 디폴트 복사생성자
-	TestMonster(TestMonster&& _other) noexcept; // default RValue Copy constructer 디폴트 RValue 복사생성자
-	TestMonster& operator=(const TestMonster& _other) = delete; // default Copy operator 디폴트 대입 연산자
-	TestMonster& operator=(const TestMonster&& _other) noexcept = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
+	TestMonster(); 
+	~TestMonster(); 
+	TestMonster(const TestMonster& _other) = delete;
+	TestMonster(TestMonster&& _other) = delete; 
+	TestMonster& operator=(const TestMonster& _other) = delete; 
+	TestMonster& operator=(const TestMonster&& _other)  = delete; 
 
 protected:
 	virtual void Start();
@@ -54,7 +54,7 @@ private:
 private:
 	void DEBUGUpdate(float _DeltaTime);
 
-	void KeyDirUpdate(float _DeltaTime);
+	void PursuitDirUpdate(float _DeltaTime);
 	// update류 함수에 같이 들어가 이동을 제어함
 	void MoveUpdate(float _DeltaTime);
 
@@ -78,14 +78,8 @@ private:
 	GameEngineFBXRenderer* FBXRenderer_;
 
 	bool IsMove_;
-	float Speed_;
 
-	float4 KeyDir_;
-	float4 CurFowordDir_;
-
-	//Y축 회전 속도
-	float YRotateSpeed_;
-
+	float Speed_; //이동 속도
 
 	//공격 텀
 	float AttackTurm_;
@@ -94,10 +88,14 @@ private:
 	int Hp_;
 	float Stamina_;
 
+	float4 PursuitDir_; // 바라봐야 할 방향
+	float4 CurFowordDir_; //현재 바라보는 방향
+	float YRotateSpeed_; // 회전 속도
+
 	Player* targetPlayer_;
-	float4 prevmoveVector_;
-	float4 moveVector_;
-	float4 movePos_;
+	//float4 prevmoveVector_;
+	//float4 moveVector_;
+	//float4 movePos_;
 
 public:
 	const int GetHP()

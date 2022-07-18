@@ -73,6 +73,15 @@ private:
 	//}
 #pragma endregion
 
+#pragma region MemberFunc
+private:
+
+	void SetTarget(GameEngineActor* _Target)
+	{
+		Target_ = _Target;
+	}
+
+#pragma endregion
 private:
 	//state
 	GameEngineFSM PlayerState_;
@@ -89,6 +98,11 @@ private:
 	GameEngineCollision* PlayerAttackHitBoxCollision_;
 
 	GameEngineFBXRenderer* FBXRenderer_;
+
+
+
+	GameEngineImageRenderer* RockOnImageRenderer_;
+	GameEngineActor* Target_;
 
 	//GameEngineFBXMesh* mesh_; //필요한가?
 

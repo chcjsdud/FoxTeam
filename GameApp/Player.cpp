@@ -90,6 +90,16 @@ void Player::ComponenetInit()
 	//PlayerHitBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::Player));
 
 	PlayerHitBoxCollision_->SetCollisionInfo(CINT(CollisionGroup::Player), CollisionType::AABBBox3D);
+
+	//RockOnImageRenderer_ = CreateTransformComponent<GameEngineImageRenderer>();
+	//RockOnImageRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 1.f });
+	//RockOnImageRenderer_->SetImage("TestRockOn.png");
+
+	//RockOnImageRenderer_->GetTransform()->SetWorldPosition(Target_->GetTransform()->GetWorldPosition());
+	//RockOnImageRenderer_->GetTransform()->SetLocalRotationDegree((Target_->GetTransform()->GetLocalRotation());
+
+	//RockOnImageRenderer_->SetRenderingPipeLine("Color")
+	// 렌더링 파이프 라인 설정에 문제가 있음, 블랜드인지 뎁스인지 뭔지 있던거 같은데 해결은 쉬움
 }
 
 void Player::StateInit()

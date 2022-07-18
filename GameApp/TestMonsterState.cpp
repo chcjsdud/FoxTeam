@@ -33,18 +33,10 @@ void TestMonster::Pursuit_Start()
 }
 void TestMonster::Pursuit_Update(float _DeltaTime)
 {
-	movePos_ = targetPlayer_->GetTransform()->GetWorldPosition();
-	moveVector_ = (movePos_ - GetTransform()->GetWorldPosition()).NormalizeReturn3D();
+	PursuitDirUpdate(_DeltaTime);
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
-	prevmoveVector_ = moveVector_;
 
-
-	//if (GameEngineInput::GetInst().Press("Attack"))
-	//{
-	//	monsterState_.ChangeState("Attack");
-	//	return;
-	//}
 	return;
 }
 void TestMonster::Pursuit_End()

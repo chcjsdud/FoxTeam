@@ -14,9 +14,11 @@ TestMonster::TestMonster() // default constructer 디폴트 생성자
 	, monsterAttackHitBoxCollision_(nullptr)
 	, monsterSightBoxCollision_(nullptr)
 	, Speed_(10.f)
+	//, prevmoveVector_{ 0.f,0.f,1.f }
+	//, moveVector_{ 0.f,0.f,1.f }
 	, CurFowordDir_{ 0.f,0.f,1.f }
-	, KeyDir_{ 0.f,0.f,1.f }
-	, YRotateSpeed_(900.f)
+	, PursuitDir_{ 0.f,0.f,1.f }
+	, YRotateSpeed_(10.f)
 	, IsMove_(false)
 	, AttackTurm_(0.f)
 	, Hp_(0)
@@ -88,52 +90,107 @@ void TestMonster::StateInit()
 	}
 }
 
+//void TestMonster::MoveUpdate(float _DeltaTime)
+//{
+//	GetTransform()->SetLocalMove(moveVector_ * Speed_ * _DeltaTime);
+//}
+
+//void TestMonster::MoveRotateUpdate(float _DeltaTime)
+//{
+//	if (prevmoveVector_ == moveVector_) // 전 벡터와의 변동량이 없다면... 리턴
+//	{
+//		return;
+//	}
+//
+//	float4 dir = float4::Cross3D(prevmoveVector_, moveVector_); // 외적 구하기
+//
+//	float goaldegree = GameEngineMath::UnitVectorToDegree(moveVector_.z, moveVector_.x);
+//	// 전의 방향 벡터와 후의 방향 벡터와의 각도 비교
+//
+//	if (dir.y >= 0.f)
+//	{
+//
+//		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_ * _DeltaTime);
+//		prevmoveVector_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
+//
+//		dir = float4::Cross3D(prevmoveVector_, moveVector_);
+//		if (dir.y < 0.f)
+//		{
+//			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+//			prevmoveVector_ = moveVector_;
+//		}
+//	}
+//
+//	else if (dir.y < 0.f)
+//	{
+//		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
+//		prevmoveVector_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
+//
+//		dir = float4::Cross3D(prevmoveVector_, moveVector_);
+//		if (dir.y > 0.f)
+//		{
+//			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+//			prevmoveVector_ = moveVector_;
+//		}
+//	}
+//}
+
+void TestMonster::PursuitDirUpdate(float _DeltaTime)
+{
+	float4 MoveDir = float4::ZERO;
+
+	//MoveDir = GetTransform()->GetWorldPosition() - targetPlayer_->GetTransform()->GetWorldPosition(); 값을 반대로 하면 도망치게 만듦
+	MoveDir = targetPlayer_->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
+
+	MoveDir.Normalize3D();
+	PursuitDir_ = MoveDir;
+}
+
 void TestMonster::MoveUpdate(float _DeltaTime)
 {
-	GetTransform()->SetLocalMove(moveVector_ * Speed_ * _DeltaTime);
+	if (true == IsMove_)
+	{
+		GetTransform()->SetWorldMove(PursuitDir_ * Speed_ * _DeltaTime);
+	}
 }
 
 void TestMonster::MoveRotateUpdate(float _DeltaTime)
 {
-	if (prevmoveVector_ == moveVector_) // 전 벡터와의 변동량이 없다면... 리턴
+	if (CurFowordDir_ == PursuitDir_)
 	{
 		return;
 	}
 
-	float4 dir = float4::Cross3D(prevmoveVector_, moveVector_); // 외적 구하기
+	float4 dir = float4::Cross3D(CurFowordDir_, PursuitDir_);
 
-	float goaldegree = GameEngineMath::UnitVectorToDegree(moveVector_.z, moveVector_.x);
-	// 전의 방향 벡터와 후의 방향 벡터와의 각도 비교
+	float goaldegree = GameEngineMath::UnitVectorToDegree(PursuitDir_.z, PursuitDir_.x);
 
 	if (dir.y >= 0.f)
 	{
-
 		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_ * _DeltaTime);
-		prevmoveVector_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
+		CurFowordDir_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
 
-		dir = float4::Cross3D(prevmoveVector_, moveVector_);
+		dir = float4::Cross3D(CurFowordDir_, PursuitDir_);
 		if (dir.y < 0.f)
 		{
 			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			prevmoveVector_ = moveVector_;
+			CurFowordDir_ = PursuitDir_;
 		}
 	}
 
 	else if (dir.y < 0.f)
 	{
 		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
-		prevmoveVector_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
+		CurFowordDir_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
 
-		dir = float4::Cross3D(prevmoveVector_, moveVector_);
+		dir = float4::Cross3D(CurFowordDir_, PursuitDir_);
 		if (dir.y > 0.f)
 		{
 			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			prevmoveVector_ = moveVector_;
+			CurFowordDir_ = PursuitDir_;
 		}
 	}
 }
-
-
 
 void TestMonster::DEBUGUpdate(float _DeltaTime)
 {
