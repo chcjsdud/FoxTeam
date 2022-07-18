@@ -73,10 +73,12 @@ void TestMonster::ComponenetInit()
 	//피격 히트박스 겸사겸사 맵 컬리전도 가능할듯
 	monsterHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 100.f,200.f,100.f ,1.f });
 	monsterHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,0.f });
+	monsterHitBoxCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::Monster), CollisionType::AABBBox3D);
 
 	monsterSightBoxCollision_->GetTransform()->SetLocalScaling(float4{ 800.f,0.f,800.f});
 	monsterSightBoxCollision_->GetTransform()->SetLocalPosition(float4{0.0f,0.0f,0.0f});
-	monsterSightBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::MonsterSight));
+	//monsterSightBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::MonsterSight));
+	monsterSightBoxCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::MonsterSight),CollisionType::CirCle);
 }
 
 void TestMonster::StateInit()

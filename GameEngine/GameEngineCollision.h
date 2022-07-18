@@ -71,8 +71,12 @@ public:
 		SetCollisionTpye(_ColType);
 	}
 
+	//충돌 여부를 Bool 값으로 리턴
 	bool Collision(int _OtherGroup);
+	//충돌한 가장 가까운 ptr 리턴
 	GameEngineCollision* CollisionPtr(int _OtherGroup);
+	//충돌한 새끼들 싹다 리스트로 리턴
+	std::list<GameEngineCollision*> CollisionPtrGroup(int _OtherGroup);
 
 protected:
 	CollisionType ColType_;

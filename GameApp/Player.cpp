@@ -20,6 +20,7 @@ Player::Player()
 	, Speed_(100.f)
 	, CurFowordDir_{0.f,0.f,1.f}
 	, KeyDir_{0.f,0.f,1.f}
+	, FowordDir_{0.f,0.f,1.f}
 	, YRotateSpeed_(900.f)
 	, IsMove_(false)
 	, AttackTurm_(0.f)
@@ -78,6 +79,7 @@ void Player::ComponenetInit()
 	PlayerGroundCollision_ = CreateTransformComponent<GameEngineCollision>();
 	PlayerHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();	
 	PlayerAttackHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();
+	PlayerRockOnCollision_ = CreateTransformComponent<GameEngineCollision>();
 
 	//타격 히트 박스
 	PlayerAttackHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 200.f,50.f,100.f ,1.f});
@@ -90,6 +92,11 @@ void Player::ComponenetInit()
 	//PlayerHitBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::Player));
 
 	PlayerHitBoxCollision_->SetCollisionInfo(CINT(CollisionGroup::Player), CollisionType::AABBBox3D);
+
+	PlayerRockOnCollision_->GetTransform()->SetLocalScaling(float4{ 800.f,0.f,800.f });
+	PlayerRockOnCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::PlayerSight), CollisionType::CirCle);
+	//PlayerRockOnCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::PlayerSight));
+	//PlayerRockOnCollision_->Off();
 
 	//RockOnImageRenderer_ = CreateTransformComponent<GameEngineImageRenderer>();
 	//RockOnImageRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 1.f });
@@ -135,14 +142,58 @@ void Player::KeyInit()
 	GameEngineInput::GetInst().CreateKey("MoveDown", 'E');
 	GameEngineInput::GetInst().CreateKey("Attack", 'J');
 	GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
+	GameEngineInput::GetInst().CreateKey("RockOn", VK_LSHIFT);
 	//GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
+}
+
+void Player::CurDirUpdate(float _DeltaTime)
+{
+	RockOnUpdate(_DeltaTime);
+	KeyDirUpdate(_DeltaTime);
+}
+
+void Player::RockOnUpdate(float _DeltaTime)
+{
+	if (true == GameEngineInput::GetInst().Press("RockOn"))
+	{
+		GameEngineCollision* RockOnPtr = PlayerRockOnCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
+
+		//PlayerRockOnCollision_->Collision(CollisionType::CirCle, CollisionType::AABBBox3D, static_cast<int>(CollisionGroup::Player), std::bind(&Player::test, this));
+
+
+		if (RockOnPtr != nullptr)
+		{
+			Target_ = RockOnPtr->GetActor();
+
+			RockOnDirUpdate(_DeltaTime);
+		}
+		else
+		{
+			Target_ = nullptr;
+		}
+	}
+
+	else
+	{
+		Target_ = nullptr;
+	}
+}
+
+void Player::RockOnDirUpdate(float _DeltaTime)
+{
+	if (nullptr != Target_)
+	{
+		float4 MoveDir = CalculateTargetDir(Target_->GetTransform());
+
+		MoveDir.Normalize3D();
+		TargetDir_ = MoveDir;
+		FowordDir_ = MoveDir;
+	}
 }
 
 void Player::KeyDirUpdate(float _DeltaTime)
 {
 	float4 MoveDir = float4::ZERO;
-
-	//IsMove_ = false;
 
 	bool Key = false;
 
@@ -181,6 +232,12 @@ void Player::KeyDirUpdate(float _DeltaTime)
 		MoveDir.Normalize3D();
 		KeyDir_ = MoveDir;
 
+		if (Target_ == nullptr)
+		{
+			FowordDir_ = KeyDir_;
+		}
+
+
 		//IsMove_ = false;
 	}
 }
@@ -195,14 +252,14 @@ void Player::MoveUpdate(float _DeltaTime)
 
 void Player::MoveRotateUpdate(float _DeltaTime)
 {
-	if (CurFowordDir_ == KeyDir_)
+	if (CurFowordDir_ == FowordDir_)
 	{
 		return;
 	}
 
-	float4 dir = float4::Cross3D(CurFowordDir_, KeyDir_);
+	float4 dir = float4::Cross3D(CurFowordDir_, FowordDir_);
 
-	float goaldegree = GameEngineMath::UnitVectorToDegree(KeyDir_.z, KeyDir_.x);
+	float goaldegree = GameEngineMath::UnitVectorToDegree(FowordDir_.z, FowordDir_.x);
 
 	if (dir.y >= 0.f)
 	{
@@ -210,11 +267,11 @@ void Player::MoveRotateUpdate(float _DeltaTime)
 		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_ * _DeltaTime);
 		CurFowordDir_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
 
-		dir = float4::Cross3D(CurFowordDir_, KeyDir_);
+		dir = float4::Cross3D(CurFowordDir_, FowordDir_);
 		if (dir.y < 0.f)
 		{
 			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			CurFowordDir_ = KeyDir_;
+			CurFowordDir_ = FowordDir_;
 		}
 	}
 
@@ -223,11 +280,11 @@ void Player::MoveRotateUpdate(float _DeltaTime)
 		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
 		CurFowordDir_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
 
-		dir = float4::Cross3D(CurFowordDir_, KeyDir_);
+		dir = float4::Cross3D(CurFowordDir_, FowordDir_);
 		if (dir.y > 0.f)
 		{
 			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			CurFowordDir_ = KeyDir_;
+			CurFowordDir_ = FowordDir_;
 		}
 	}
 }
@@ -273,6 +330,7 @@ void Player::CameraUpdate_UpPosition(float _DeltaTime)
 void Player::DEBUGUpdate(float _DeltaTime)
 {
 	GetLevel()->PushDebugRender(PlayerHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
+	GetLevel()->PushDebugRender(PlayerRockOnCollision_->GetTransform(), CollisionType::CirCle);
 
 	if (PlayerAttackHitBoxCollision_->IsUpdate())
 	{

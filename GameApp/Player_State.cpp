@@ -34,6 +34,10 @@ void Player::Idle_Update(float _DeltaTime)
 		PlayerState_.ChangeState("Attack");
 		return;
 	}
+
+	CurDirUpdate(_DeltaTime);
+
+	MoveRotateUpdate(_DeltaTime);
 }
 void Player::Idle_End()
 {
@@ -71,7 +75,8 @@ void Player::Walk_Update(float _DeltaTime)
 
 		return;
 	}
-	KeyDirUpdate(_DeltaTime);
+
+	CurDirUpdate(_DeltaTime);
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
 }
@@ -116,7 +121,8 @@ void Player::Run_Update(float _DeltaTime)
 
 		return;
 	}
-	KeyDirUpdate(_DeltaTime);
+
+	CurDirUpdate(_DeltaTime);
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
 }
@@ -128,22 +134,8 @@ void Player::Run_End()
 //Attack
 void Player::Attack_Start()
 {
-	if (AttackTurm_ == 0)
-	{
-		// 이 시간 안에 추가 공격 하면 연속기가 나감, 공격시 갱신
-		AttackTime_ = 1.f;
-
-		//연속기 단계, 3단계 넘으면 다시 0으로
-		AttackLevel_ = 0;
-
-		//0.5초 간격으로 공격한다. 공격시 갱신
-		AttackTurm_ = 0.5f;
-
-		//0.1초 동안만 타격 판정이 있다. 공격시 갱신
-		AttackHitTime_ = 0.1f;
-
-		PlayerAttackHitBoxCollision_->On();
-	}
+	AttackStateInit();
+	PlayerAttackHitBoxCollision_->On();
 }
 void Player::Attack_Update(float _DeltaTime)
 {
@@ -155,7 +147,6 @@ void Player::Attack_Update(float _DeltaTime)
 
 	if (AttackHitTime_ <= 0)
 	{
-		//타격 중에는 회전하지 않음
 		MoveRotateUpdate(_DeltaTime);
 		PlayerAttackHitBoxCollision_->Off();
 	}
@@ -198,3 +189,4 @@ void Player::Attack_End()
 	//맞거나 이런저런 상황으로 강제로 State가 종료 되었을때
 	PlayerAttackHitBoxCollision_->Off();
 }
+

@@ -3,6 +3,8 @@
 class GameEngineMath
 {
 public:
+	class float4;
+
 	static const float PI;
 	static const float PI2;
 	static const float DegreeToRadian;

@@ -49,6 +49,23 @@ private:
 	void Attack_Start();
 	void Attack_Update(float _DeltaTime);
 	void Attack_End();
+
+
+	void AttackStateInit()
+	{
+		// 이 시간 안에 추가 공격 하면 연속기가 나감, 공격시 갱신
+		AttackTime_ = 0.75f;
+
+		//연속기 단계, 3단계 넘으면 다시 0으로
+		AttackLevel_ = 0;
+
+		//0.5초 간격으로 공격한다. 공격시 갱신
+		AttackTurm_ = 0.5f;
+
+		//0.1초 동안만 타격 판정이 있다. 공격시 갱신
+		AttackHitTime_ = 0.1f;	
+	}
+
 #pragma endregion
 
 #pragma region MemberUpdateFunc
@@ -64,9 +81,16 @@ private:
 	// update류 함수에 같이 들어가 이동을 제어함
 	void MoveUpdate(float _DeltaTime);
 
-	//캐릭터가 바라보는 방향이 바로 바로 안변하고 천천히 변함(이동과는 무관하게)
+	//캐릭터가 바라보는 방향이 바로 바로 안변하고 천천히 변함(이동과는 무관하게), 
+	//07.18 바라보는 방향을 넣어줘야함
 	void MoveRotateUpdate(float _DeltaTime);
 
+	//RockOn 중일때 방향 업데이트
+	void RockOnDirUpdate(float _DeltaTime);
+
+	void CurDirUpdate(float _DeltaTime);
+
+	void RockOnUpdate(float _DeltaTime);
 	//void ChangeCamFunc(void (Player::* _Camfunc)(float))
 	//{
 	//	CamFunc_ = std::bind(_Camfunc, this, std::placeholders::_1);
@@ -81,6 +105,14 @@ private:
 		Target_ = _Target;
 	}
 
+	const float4 CalculateTargetDir(GameEngineTransform* TargetTransform)
+	{
+		float4 Dir = TargetTransform->GetWorldPosition()- GetTransform()->GetWorldPosition();
+		Dir.Normalize3D();
+
+		return Dir;
+	}
+
 #pragma endregion
 private:
 	//state
@@ -92,6 +124,8 @@ private:
 	// 
 	//바닥 콜리전
 	GameEngineCollision* PlayerGroundCollision_;
+	// RockOn 충돌체
+	GameEngineCollision* PlayerRockOnCollision_;
 	//피격 히트박스
 	GameEngineCollision* PlayerHitBoxCollision_;
 	//공격 히트박스
@@ -106,15 +140,21 @@ private:
 
 	//GameEngineFBXMesh* mesh_; //필요한가?
 
-	bool IsMove_;
-
-	float Speed_;
-
+	//키 방향
 	float4 KeyDir_;
+	//락온된 대상의 방향
+	float4 TargetDir_;
+	//바라봐야 할 방향
+	float4 FowordDir_;
+	//현재 바라보는 방향
 	float4 CurFowordDir_;
-
 	//Y축 회전 속도
 	float YRotateSpeed_;
+
+	bool IsMove_;
+	bool IsRockon_;
+
+	float Speed_;
 
 	//std::function<void(float)> CamFunc_;
 
