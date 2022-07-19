@@ -54,13 +54,13 @@ private:
 	void AttackStateInit()
 	{
 		// 이 시간 안에 추가 공격 하면 연속기가 나감, 공격시 갱신
-		AttackTime_ = 0.75f;
+		AttackTime_ = 0.5f;
 
 		//연속기 단계, 3단계 넘으면 다시 0으로
 		AttackLevel_ = 0;
 
 		//0.5초 간격으로 공격한다. 공격시 갱신
-		AttackTurm_ = 0.5f;
+		AttackTurm_ = 0.25f;
 
 		//0.1초 동안만 타격 판정이 있다. 공격시 갱신
 		AttackHitTime_ = 0.1f;	
@@ -105,9 +105,9 @@ private:
 		Target_ = _Target;
 	}
 
-	const float4 CalculateTargetDir(GameEngineTransform* TargetTransform)
+	const float4 CalculateTargetDir(float4 TargetPos)
 	{
-		float4 Dir = TargetTransform->GetWorldPosition()- GetTransform()->GetWorldPosition();
+		float4 Dir = TargetPos;
 		Dir.Normalize3D();
 
 		return Dir;

@@ -185,12 +185,20 @@ public:
 
 	inline void AddLocalDeltaTimeRotation(const float4& _Value)
 	{
-		SetLocalRotationDegree(TransformData_.vLocalRotation_ + _Value * GameEngineTime::GetInst().GetDeltaTime());
+		//이현, 임시 수정
+		float4 temp = _Value;
+		temp.w = 0.f;
+		SetLocalRotationDegree(TransformData_.vLocalRotation_ + temp * GameEngineTime::GetInst().GetDeltaTime());
+		//SetLocalRotationDegree(TransformData_.vLocalRotation_ + _Value * GameEngineTime::GetInst().GetDeltaTime());
 	}
 
 	inline void AddWorldDeltaTimeRotation(const float4& _Value)
 	{
-		SetWorldRotationDegree(TransformData_.vWorldRotation_ + _Value * GameEngineTime::GetInst().GetDeltaTime());
+		//이현, 임시 수정
+		float4 temp = _Value;
+		temp.w = 0.f;
+		SetWorldRotationDegree(TransformData_.vWorldRotation_ + temp * GameEngineTime::GetInst().GetDeltaTime());
+		//SetWorldRotationDegree(TransformData_.vWorldRotation_ + _Value * GameEngineTime::GetInst().GetDeltaTime());
 	}
 
 	void SetLocalPosition(const float4& _Value);
@@ -198,22 +206,37 @@ public:
 
 	inline void SetLocalMove(const float4& _Value)
 	{
-		SetLocalPosition(TransformData_.vLocalPosition_ + _Value);
+		float4 temp = _Value;
+		temp.w = 0.f;
+		SetLocalPosition(TransformData_.vLocalPosition_ + temp);
+		//SetLocalPosition(TransformData_.vLocalPosition_ + _Value);
 	}
 
 	inline void SetWorldMove(const float4& _Value)
 	{
-		SetWorldPosition(TransformData_.vWorldPosition_ + _Value);
+		//이현, 임시 수정
+		float4 temp = _Value;
+		temp.w = 0.f;
+		SetWorldPosition(TransformData_.vWorldPosition_ + temp);
+		//SetWorldPosition(TransformData_.vWorldPosition_ + _Value);
 	}
 
 	inline void SetLocalDeltaTimeMove(const float4& _Value)
 	{
-		SetLocalPosition(TransformData_.vLocalPosition_ + _Value * GameEngineTime::GetInst().GetDeltaTime());
+		//이현, 임시 수정
+		float4 temp = _Value;
+		temp.w = 0.f;
+		SetLocalPosition(TransformData_.vLocalPosition_ + temp * GameEngineTime::GetInst().GetDeltaTime());
+		//SetLocalPosition(TransformData_.vLocalPosition_ + _Value * GameEngineTime::GetInst().GetDeltaTime());
 	}
 
 	inline void SetWorldDeltaTimeMove(const float4& _Value)
 	{
-		SetWorldPosition(TransformData_.vWorldPosition_ + _Value * GameEngineTime::GetInst().GetDeltaTime());
+		//이현, 임시 수정
+		float4 temp = _Value;
+		temp.w = 0.f;
+		SetWorldPosition(TransformData_.vWorldPosition_ + temp * GameEngineTime::GetInst().GetDeltaTime());
+		//SetWorldPosition(TransformData_.vWorldPosition_ + _Value * GameEngineTime::GetInst().GetDeltaTime());
 	}
 
 	void DetachChildTransform(GameEngineTransform* _Child);

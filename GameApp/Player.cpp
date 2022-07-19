@@ -19,9 +19,9 @@ Player::Player()
 	, PlayerHitBoxCollision_(nullptr)
 	, PlayerAttackHitBoxCollision_(nullptr)
 	, Speed_(100.f)
-	, CurFowordDir_{0.f,0.f,1.f}
-	, KeyDir_{0.f,0.f,1.f}
-	, FowordDir_{0.f,0.f,1.f}
+	, CurFowordDir_{0.f,0.f,1.f,0.f}
+	, KeyDir_{0.f,0.f,1.f,0.f}
+	, FowordDir_{0.f,0.f,1.f,0.f}
 	, YRotateSpeed_(900.f)
 	, IsMove_(false)
 	, AttackTurm_(0.f)
@@ -45,7 +45,7 @@ void Player::Start()
 	KeyInit();
 
 	TopUI_ = GetLevel()->CreateActor<TopUI>();
-	TopUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
+	TopUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f,0.f));
 	TopUI_->SetPlayer(this);
 
 	RockOnUI_ = GetLevel()->CreateActor<RockOnUI>();
@@ -82,7 +82,7 @@ void Player::ComponenetInit()
 	FBXRenderer_->CreateFBXAnimation("TestRun", "ALS_N_RUN_F.FBX");// 달리기
 	FBXRenderer_->ChangeFBXAnimation("TestRun");
 
-
+	
 	//컬리전//
 	PlayerGroundCollision_ = CreateTransformComponent<GameEngineCollision>();
 	PlayerHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();	
@@ -195,7 +195,7 @@ void Player::RockOnDirUpdate(float _DeltaTime)
 {
 	if (nullptr != Target_)
 	{
-		float4 MoveDir = CalculateTargetDir(Target_->GetTransform());
+		float4 MoveDir = CalculateTargetDir(Target_->GetTransform()->GetWorldPosition());
 
 		MoveDir.Normalize3D();
 		TargetDir_ = MoveDir;
@@ -248,8 +248,6 @@ void Player::KeyDirUpdate(float _DeltaTime)
 		{
 			FowordDir_ = KeyDir_;
 		}
-
-
 		//IsMove_ = false;
 	}
 }
@@ -264,6 +262,11 @@ void Player::MoveUpdate(float _DeltaTime)
 
 void Player::MoveRotateUpdate(float _DeltaTime)
 {
+	if (Target_ == nullptr && IsMove_ == false)
+	{
+		return;
+	}
+
 	if (CurFowordDir_ == FowordDir_)
 	{
 		return;
