@@ -12,14 +12,7 @@ RockOnUI::RockOnUI()
 
 RockOnUI::~RockOnUI()
 {
-	//for (auto& UIRenderer : UIRendererMap)
-	//{
-	//	if (true)
-	//	{
-	//		delete UIRenderer.second;
-	//		UIRenderer.second = nullptr;
-	//	}
-	//}
+
 }
 
 void RockOnUI::Start()
@@ -40,7 +33,13 @@ void RockOnUI::Start()
 
 
 
-
+	{
+		LockOnRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		LockOnRenderer->SetImage("TestRockOn.png", "PointSmp");
+		LockOnRenderer->GetTransform()->SetLocalScaling(LockOnRenderer->GetCurrentTexture()->GetTextureSize());
+		LockOnRenderer->GetTransform()->SetLocalPosition({0.0f,0.0f,0.0f,0.0f});
+		LockOnRenderer->Off();
+	}
 
 
 	//리소스들을 SetImage하고 위치를 조정합니다
@@ -93,47 +92,30 @@ void RockOnUI::Start()
 	//float Stmina = Player_->PlayerGetStamina();
 	//Player_->PlayerSetHP(10);
 	//Player_->PlayerSetStamina(100.f);
-
-
 }
 
 void RockOnUI::Update(float _Time)
 {
-	//if (0.0f >= (Time -= _Time))
-	//{
-	//	//TopRenderer->SetAlpha(Time);
-	//}
-	//
-	////UI 온오프 체크
-	//{
-	//	map<string, GameEngineUIRenderer*>::iterator FindIter = UIRendererMap.begin();
 
-	//	if (false == UIOn)
-	//	{
-	//		for (; FindIter != UIRendererMap.end(); FindIter++)
-	//		{
-	//			FindIter->second->Off();
-	//		}
-	//	}
-	//	else
-	//	{
-	//		for (; FindIter != UIRendererMap.end(); FindIter++)
-	//		{
-	//			FindIter->second->On();
-	//		}
-	//	}
-	//}
 
-	//if (true == GameEngineInput::GetInst().Down("Esc"))
-	//{
-	//	if (UIOn == true)
-	//	{
-	//		UIOn = false;
-	//	}
-	//	else
-	//	{
-	//		UIOn = true;
-	//	}
-	//}
+	GameEngineActor* Target = Player_->PlayerGetTarget();
+
+	//타겟이 있으면 위치정보를 가져오고 LockOnRenderer가 ON
+	if (Target != nullptr)
+	{
+	float4 position = Target->GetTransform()->GetWorldPosition();
+	LockOnRenderer->On();
+	LockOnRenderer->GetTransform()->SetLocalPosition(GetLockOnPosition(position));
+//	//GetLockOnPosition(position);
+	//3D위치를 토대로 2D위치를 받아와야함
+	//LockOnRenderer->GetTransform()->SetLocalPosition();
+	}
+	else
+	{
+		//타겟이 null이면 LockOnRenderer를 끈다
+		LockOnRenderer->Off();
+	}
+
+
 }
 
