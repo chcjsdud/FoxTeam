@@ -110,7 +110,7 @@ void TestMonster::TraitInit()
 	InvincibleTermTimer_ = 0.f;
 	
 	KnockBackRate_ = 0.03f;
-	KnockBackTimer_ = 0.0f;
+	KnockBackTimer_ = KnockBackRate_;
 	KnockBackSpeed_ = 4320.0f;
 }
 
