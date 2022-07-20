@@ -180,7 +180,7 @@ private:
 public:
 	//UI
 	class TopUI* TopUI_;
-	class RockOnUI* RockOnUI_;
+	class LockOnUI* RockOnUI_;
 
 public:
 	const int PlayerGetHP()

@@ -193,7 +193,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Player_State.cpp" />
-    <ClCompile Include="RockOnUI.cpp" />
+    <ClCompile Include="LockOnUI.cpp" />
     <ClCompile Include="TestMonster.cpp">
       <SubType>
       </SubType>
@@ -247,7 +247,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="RockOnUI.h" />
+    <ClInclude Include="LockOnUI.h" />
     <ClInclude Include="TestMonster.h">
       <SubType>
       </SubType>

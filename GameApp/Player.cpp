@@ -5,7 +5,7 @@
 
 #include "Player.h"
 #include "TopUI.h"
-#include "RockOnUI.h"
+#include "LsockOnUI.h"
 
 #include "Enums.h"
 
@@ -48,7 +48,7 @@ void Player::Start()
 	TopUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f,0.f));
 	TopUI_->SetPlayer(this);
 
-	RockOnUI_ = GetLevel()->CreateActor<RockOnUI>();
+	RockOnUI_ = GetLevel()->CreateActor<LockOnUI>();
 	RockOnUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
 	RockOnUI_->SetPlayer(this);
 
