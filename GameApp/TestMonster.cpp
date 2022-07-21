@@ -16,7 +16,7 @@ TestMonster::TestMonster() // default constructer 디폴트 생성자
 	, Speed_(0.f)
 	, CurFowordDir_{ 0.f,0.f,1.f }
 	, PursuitDir_{ 0.f,0.f,1.f }
-	, YRotateSpeed_(10.f)
+	, YRotateSpeed_(100.f)
 	, IsMove_(false)
 	, AttackTurm_(0.f)
 	, Hp_(0)

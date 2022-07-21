@@ -9,7 +9,7 @@ enum class CollisionGroup
 	Monster,
 	MonsterAttack,
 	PlayerSight,
-
+	Item,
 
 
 	MAX = 999

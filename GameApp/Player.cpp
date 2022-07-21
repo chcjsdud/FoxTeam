@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "TopUI.h"
 #include "LockOnUI.h"
+#include "Inventory.h"
 
 #include "Enums.h"
 
@@ -18,6 +19,7 @@ Player::Player()
 	, PlayerGroundCollision_(nullptr)
 	, PlayerHitBoxCollision_(nullptr)
 	, PlayerAttackHitBoxCollision_(nullptr)
+	, LockOnUI_(nullptr)
 	, Speed_(100.f)
 	, CurFowordDir_{0.f,0.f,1.f,0.f}
 	, KeyDir_{0.f,0.f,1.f,0.f}
@@ -43,18 +45,7 @@ void Player::Start()
 	StateInit();
 	ComponenetInit();
 	KeyInit();
-
-	TopUI_ = GetLevel()->CreateActor<TopUI>();
-	TopUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f,0.f));
-	TopUI_->SetPlayer(this);
-
-	RockOnUI_ = GetLevel()->CreateActor<LockOnUI>();
-	RockOnUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
-	RockOnUI_->SetPlayer(this);
-
-	RockOnUI_->Off();
-
-	//ChangeCamFunc(&Player::CameraUpdate_UpPosition);
+	UIInit();
 
 	//GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 }
@@ -65,7 +56,6 @@ void Player::Update(float _DeltaTime)
 	
 	PlayerState_.Update(_DeltaTime);
 	CameraState_.Update(_DeltaTime);
-	//CamFunc_(_DeltaTime);
 }
 
 void Player::ComponenetInit()
@@ -101,21 +91,8 @@ void Player::ComponenetInit()
 	//PlayerHitBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::Player));
 
 	PlayerHitBoxCollision_->SetCollisionInfo(CINT(CollisionGroup::Player), CollisionType::AABBBox3D);
-
 	PlayerRockOnCollision_->GetTransform()->SetLocalScaling(float4{ 800.f,0.f,800.f });
 	PlayerRockOnCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::PlayerSight), CollisionType::CirCle);
-	//PlayerRockOnCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::PlayerSight));
-	//PlayerRockOnCollision_->Off();
-
-	//RockOnImageRenderer_ = CreateTransformComponent<GameEngineImageRenderer>();
-	//RockOnImageRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 1.f });
-	//RockOnImageRenderer_->SetImage("TestRockOn.png");
-
-	//RockOnImageRenderer_->GetTransform()->SetWorldPosition(Target_->GetTransform()->GetWorldPosition());
-	//RockOnImageRenderer_->GetTransform()->SetLocalRotationDegree((Target_->GetTransform()->GetLocalRotation());
-
-	//RockOnImageRenderer_->SetRenderingPipeLine("Color")
-	// 렌더링 파이프 라인 설정에 문제가 있음, 블랜드인지 뎁스인지 뭔지 있던거 같은데 해결은 쉬움
 }
 
 void Player::StateInit()
@@ -155,6 +132,21 @@ void Player::KeyInit()
 	//GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 }
 
+void Player::UIInit()
+{
+	TopUI_ = GetLevel()->CreateActor<TopUI>();
+	TopUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
+	TopUI_->SetPlayer(this);
+
+	LockOnUI_ = GetLevel()->CreateActor<LockOnUI>();
+	LockOnUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
+	LockOnUI_->SetPlayer(this);
+	LockOnUI_->Off();
+
+	Inventory_ = GetLevel()->CreateActor<Inventory>();
+	Inventory_->SetPlayer(this);
+}
+
 void Player::CurDirUpdate(float _DeltaTime)
 {
 	RockOnUpdate(_DeltaTime);
@@ -165,9 +157,12 @@ void Player::RockOnUpdate(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst().Press("RockOn"))
 	{
-		RockOnUI_->On();
+		LockOnUI_->On();
 
 		GameEngineCollision* RockOnPtr = PlayerRockOnCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
+
+		//엔진 lib에서 app에서 설정해둔 값을 참고하게 할 순 없을까?
+
 
 		//PlayerRockOnCollision_->Collision(CollisionType::CirCle, CollisionType::AABBBox3D, static_cast<int>(CollisionGroup::Player), std::bind(&Player::test, this));
 
@@ -186,7 +181,7 @@ void Player::RockOnUpdate(float _DeltaTime)
 
 	else
 	{
-		RockOnUI_->Off();
+		LockOnUI_->Off();
 		Target_ = nullptr;
 	}
 }
@@ -262,10 +257,10 @@ void Player::MoveUpdate(float _DeltaTime)
 
 void Player::MoveRotateUpdate(float _DeltaTime)
 {
-	if (Target_ == nullptr && IsMove_ == false)
-	{
-		return;
-	}
+	//if (Target_ == nullptr && IsMove_ == false)
+	//{
+	//	return;
+	//}
 
 	if (CurFowordDir_ == FowordDir_)
 	{

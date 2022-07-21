@@ -134,54 +134,57 @@ bool GameEngineCollision::Collision(int _OtherGroup)
 
 GameEngineCollision* GameEngineCollision::CollisionPtr(int _OtherGroup)
 {
-	std::list<GameEngineCollision*>& Group = GetLevel()->GetCollisionGroup(_OtherGroup);
-
-	GameEngineCollision* RetCollision = nullptr;
-	float retdist = 0.f;
-	float comparedist = 0.f;
-
-	for (GameEngineCollision* OtherCollision : Group)
+	if (true == IsUpdate())
 	{
-		if (false == OtherCollision->IsUpdate())
+		std::list<GameEngineCollision*>& Group = GetLevel()->GetCollisionGroup(_OtherGroup);
+
+		GameEngineCollision* RetCollision = nullptr;
+		float retdist = 0.f;
+		float comparedist = 0.f;
+
+		for (GameEngineCollision* OtherCollision : Group)
 		{
-			continue;
+			if (false == OtherCollision->IsUpdate())
+			{
+				continue;
+			}
+
+			auto& CheckFunction = CollisionCheckFunction[static_cast<int>(ColType_)][static_cast<int>(OtherCollision->ColType_)];
+
+			if (nullptr == CheckFunction)
+			{
+				GameEngineDebug::MsgBoxError("아직 구현하지 않는 타입간에 충돌을 하려고 했습니다.");
+			}
+
+			if (false == CheckFunction(GetTransform(), OtherCollision->GetTransform()))
+			{
+				continue;
+			}
+
+			float4 cal = GetTransform()->GetWorldPosition() - OtherCollision->GetTransform()->GetWorldPosition();
+
+			comparedist = cal.Len3D();
+
+			if (retdist == 0.f)
+			{
+				retdist = comparedist;
+				RetCollision = OtherCollision;
+			}
+
+			else if (comparedist > retdist)
+			{
+				continue;
+			}
+			else
+			{
+				retdist = comparedist;
+				RetCollision = OtherCollision;
+			}
 		}
-
-		auto& CheckFunction = CollisionCheckFunction[static_cast<int>(ColType_)][static_cast<int>(OtherCollision->ColType_)];
-
-		if (nullptr == CheckFunction)
-		{
-			GameEngineDebug::MsgBoxError("아직 구현하지 않는 타입간에 충돌을 하려고 했습니다.");
-		}
-
-		if (false ==CheckFunction(GetTransform(), OtherCollision->GetTransform()))
-		{
-			continue;
-		}
-
-		float4 cal = GetTransform()->GetWorldPosition()- OtherCollision->GetTransform()->GetWorldPosition();
-
-		comparedist = cal.Len3D();
-
-		if (retdist == 0.f)
-		{
-			retdist = comparedist;
-			RetCollision = OtherCollision;
-		}
-
-		else if (comparedist> retdist)
-		{
-			continue;
-		}
-		else
-		{
-			retdist = comparedist;
-			RetCollision = OtherCollision;
-		}
+		return RetCollision;
 	}
-	return RetCollision;
 
-	//return nullptr;
+	return nullptr;
 }
 
 std::list<GameEngineCollision*> GameEngineCollision::CollisionPtrGroup(int _OtherGroup)

@@ -30,6 +30,7 @@ private:
 	//State ÃÊ±âÈ­
 	void StateInit();
 	void KeyInit();
+	void UIInit();
 #pragma endregion
 
 #pragma region State
@@ -107,13 +108,23 @@ private:
 
 	const float4 CalculateTargetDir(float4 TargetPos)
 	{
-		float4 Dir = TargetPos;
+		float4 Dir = TargetPos - GetTransform()->GetWorldPosition();
 		Dir.Normalize3D();
 
 		return Dir;
 	}
 
 #pragma endregion
+
+private:
+	//const
+
+	//const float C_Walk_kSpeed_ = 300.f;
+	//const float C_Run_Speed_ = 600.f;
+
+	//const float C_Walk_Speed_;
+
+
 private:
 	//state
 	GameEngineFSM PlayerState_;
@@ -177,12 +188,15 @@ private:
 	float Stamina_;
 	int AttackPower_;
 
-public:
 	//UI
 	class TopUI* TopUI_;
-	class LockOnUI* RockOnUI_;
+	class LockOnUI* LockOnUI_;
+	class Inventory* Inventory_;
 
 public:
+
+public:
+
 	const int PlayerGetHP()
 	{
 		return Hp_;

@@ -23,27 +23,36 @@
     <ClCompile Include="TestPlayer.cpp">
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="TopUI.cpp">
-      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="Player_State.cpp">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Map</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="TestMonster.cpp">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Monster</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClCompile>
     <ClCompile Include="TestMonsterState.cpp">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Monster</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
     </ClCompile>
+    <ClCompile Include="TopUI.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\00. UI</Filter>
+    </ClCompile>
     <ClCompile Include="LockOnUI.cpp">
-      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\00. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\00. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\02. Item\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="WoodStick.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\02. Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -92,14 +101,26 @@
     <Filter Include="01.GameObject\03.Level\PlayLevel\Map">
       <UniqueIdentifier>{6b09dc04-e094-4d8f-a861-b450d419d49f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\Player">
-      <UniqueIdentifier>{37fb317c-3483-4425-9f93-cdd21cb09e47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\Monster">
-      <UniqueIdentifier>{b6c78f36-c0f2-41d8-a1ef-e232a327be95}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\03.Level\PlayLevel\ENUMs">
       <UniqueIdentifier>{2e0372bc-0aab-4540-8ca0-d601cac9e32a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\00. UI">
+      <UniqueIdentifier>{0afffbf6-ed4b-4ee0-bca8-15b10b58d266}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\01. Object">
+      <UniqueIdentifier>{e15878bb-1b17-4cf2-9c8a-ea54718be9da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player">
+      <UniqueIdentifier>{37fb317c-3483-4425-9f93-cdd21cb09e47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\01. Object\Monster">
+      <UniqueIdentifier>{b6c78f36-c0f2-41d8-a1ef-e232a327be95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\02. Item">
+      <UniqueIdentifier>{91bc37d1-4716-4b4b-9c9d-2caab4625de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\02. Item\Base">
+      <UniqueIdentifier>{244cfc02-090c-4558-82bc-041667c3cb41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -132,7 +153,7 @@
     </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="TestMonster.h">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Monster</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>01.GameObject\03.Level\PlayLevel\ENUMs</Filter>
@@ -141,10 +162,19 @@
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
     </ClInclude>
     <ClInclude Include="TopUI.h">
-      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
     <ClInclude Include="LockOnUI.h">
-      <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\00. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\00. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\02. Item\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="WoodStick.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\02. Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
