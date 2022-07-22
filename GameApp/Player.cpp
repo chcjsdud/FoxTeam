@@ -47,6 +47,16 @@ Player::Player()
 
 Player::~Player() 
 {
+	auto iter0 = Player_BufferList_.begin();
+	auto iter1 = Player_BufferList_.end();
+
+	for (; iter0 != iter1;)
+	{
+		delete iter0->second;	
+		iter0++;
+	}
+
+	Player_BufferList_.clear();
 }
 
 void Player::Start()
@@ -174,15 +184,19 @@ void Player::StaminaRecoverUpdate(float _DeltaTime)
 
 bool Player::SyncPlayerStat()
 {
+	// 스텟 초기화
 	PlayerStatusMult_.Reset();
 	PlayerStatusAdd_.Reset();
 	PlayerStatusFinal_.Reset();
 
+	//플레이어 버프 리스트
 	auto iter0 = Player_BufferList_.begin();
 	auto iter1 = Player_BufferList_.end();
 
 	for (; iter0 != iter1;)
 	{
+		// 더해야 할 스텟은 PlayerStatusAdd_, 
+		// 곱해야 할 스텟은 PlayerStatusMult_에 더해줌
 		if (true == iter0->second->Stat_IsMult_)
 		{
 			PlayerStatusMult_ += *(iter0->second);
@@ -191,7 +205,11 @@ bool Player::SyncPlayerStat()
 		{
 			PlayerStatusAdd_ += *(iter0->second);
 		}
+		iter0++;
 	}
+
+	// 최종적으로 사용되는 스탯은 PlayerStatusFinal_임
+	// PlayerStatusFinal_은 PlayerStatusBase_에 더해야할 스텟을 먼저 더하고 마지막에 곱해야할 스텟을 곱해주어 계산함
 
 	PlayerStatusFinal_ = PlayerStatusBase_ + PlayerStatusAdd_;
 	PlayerStatusFinal_ *= PlayerStatusMult_;
