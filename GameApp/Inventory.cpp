@@ -50,7 +50,7 @@ void Inventory::Update(float _Time)
 			continue;
 		}
 
-		if (true == (*iter0).second->IsEquiped_)
+		if (true == (*iter0).second->IsEquip_)
 		{
 			//장착 하고 있으면 업데이트
 			(*iter0).second->Equip_Update_(_Time);

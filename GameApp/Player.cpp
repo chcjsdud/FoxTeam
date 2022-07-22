@@ -19,8 +19,10 @@ Player::Player()
 	, PlayerGroundCollision_(nullptr)
 	, PlayerHitBoxCollision_(nullptr)
 	, PlayerAttackHitBoxCollision_(nullptr)
+	, PlayerLockOnCollision_(nullptr)
+	, Inventory_(nullptr)
 	, LockOnUI_(nullptr)
-	, Speed_(100.f)
+	, TopUI_(nullptr)
 	, CurFowordDir_{0.f,0.f,1.f,0.f}
 	, KeyDir_{0.f,0.f,1.f,0.f}
 	, FowordDir_{0.f,0.f,1.f,0.f}
@@ -30,10 +32,17 @@ Player::Player()
 	, AttackTime_(0.f)
 	, AttackHitTime_(0.f)
 	, AttackLevel_(0)
-	, Hp_(0)
-	, Stamina_(0.f)
-	, AttackPower_(20)
+	, RollCoolTime_(0.f)
+	, RollSecond_(0.f)
 {
+	PlayerStatusBase_.Stat_Hp_ = 0;
+	PlayerStatusBase_.Stat_MaxHp_ = 100;
+	PlayerStatusBase_.Stat_Stamina_ = 0.f;
+	PlayerStatusBase_.Stat_MaxStamina_ = 100.f;
+	PlayerStatusBase_.Stat_AttackPower_ = 10;
+	PlayerStatusBase_.Stat_Speed_ = 300;
+	PlayerStatusBase_.Stat_RunSpeed_ = 600;
+	PlayerStatusBase_.Stat_Stamina_RecoverRate_ = 1.f;
 }
 
 Player::~Player() 
@@ -77,7 +86,7 @@ void Player::ComponenetInit()
 	PlayerGroundCollision_ = CreateTransformComponent<GameEngineCollision>();
 	PlayerHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();	
 	PlayerAttackHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();
-	PlayerRockOnCollision_ = CreateTransformComponent<GameEngineCollision>();
+	PlayerLockOnCollision_ = CreateTransformComponent<GameEngineCollision>();
 
 	//타격 히트 박스
 	PlayerAttackHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 200.f,50.f,100.f ,1.f});
@@ -91,8 +100,8 @@ void Player::ComponenetInit()
 	//PlayerHitBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::Player));
 
 	PlayerHitBoxCollision_->SetCollisionInfo(CINT(CollisionGroup::Player), CollisionType::AABBBox3D);
-	PlayerRockOnCollision_->GetTransform()->SetLocalScaling(float4{ 800.f,0.f,800.f });
-	PlayerRockOnCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::PlayerSight), CollisionType::CirCle);
+	PlayerLockOnCollision_->GetTransform()->SetLocalScaling(float4{ 800.f,0.f,800.f });
+	PlayerLockOnCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::PlayerSight), CollisionType::CirCle);
 }
 
 void Player::StateInit()
@@ -153,13 +162,51 @@ void Player::CurDirUpdate(float _DeltaTime)
 	KeyDirUpdate(_DeltaTime);
 }
 
-void Player::StaminaRecover(float _DeltaTime)
+void Player::StaminaRecoverUpdate(float _DeltaTime)
 {
-	Stamina_ += _DeltaTime;
-	if (Stamina_ > 100.f)
+	PlayerStatusFinal_.Stat_Stamina_ += _DeltaTime* PlayerStatusFinal_.Stat_Stamina_RecoverRate_;
+
+	if (PlayerStatusFinal_.Stat_Stamina_ > 100.f)
 	{
-		Stamina_ = 100.f;
+		PlayerStatusFinal_.Stat_Stamina_ = 100.f;
 	}
+}
+
+bool Player::SyncPlayerStat()
+{
+	PlayerStatusMult_.Reset();
+	PlayerStatusAdd_.Reset();
+	PlayerStatusFinal_.Reset();
+
+	auto iter0 = Player_BufferList_.begin();
+	auto iter1 = Player_BufferList_.end();
+
+	for (; iter0 != iter1;)
+	{
+		if (true == iter0->second->Stat_IsMult_)
+		{
+			PlayerStatusMult_ += *(iter0->second);
+		}
+		else
+		{
+			PlayerStatusAdd_ += *(iter0->second);
+		}
+	}
+
+	PlayerStatusFinal_ = PlayerStatusBase_ + PlayerStatusAdd_;
+	PlayerStatusFinal_ *= PlayerStatusMult_;
+
+	return true;
+}
+
+bool Player::EquipItem(std::string _BuffName, PlayerStatus* _PlayerStatus)
+{
+	PlayerStatus* NewPlayerStatus = new PlayerStatus;
+	*NewPlayerStatus = *_PlayerStatus;
+
+	Player_BufferList_.insert(std::make_pair(_BuffName, _PlayerStatus));
+
+	return false;
 }
 
 void Player::RockOnUpdate(float _DeltaTime)
@@ -168,7 +215,7 @@ void Player::RockOnUpdate(float _DeltaTime)
 	{
 		LockOnUI_->On();
 
-		GameEngineCollision* RockOnPtr = PlayerRockOnCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
+		GameEngineCollision* RockOnPtr = PlayerLockOnCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
 
 		//엔진 lib에서 app에서 설정해둔 값을 참고하게 할 순 없을까?
 
@@ -260,7 +307,7 @@ void Player::MoveUpdate(float _DeltaTime)
 {
 	if (true == IsMove_)
 	{
-		GetTransform()->SetWorldMove(KeyDir_ * Speed_ * _DeltaTime);
+		GetTransform()->SetWorldMove(KeyDir_ * PlayerStatusFinal_.Stat_Speed_ * _DeltaTime);
 	}
 }
 
@@ -349,7 +396,7 @@ void Player::CameraUpdate_UpPosition(float _DeltaTime)
 void Player::DEBUGUpdate(float _DeltaTime)
 {
 	GetLevel()->PushDebugRender(PlayerHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
-	GetLevel()->PushDebugRender(PlayerRockOnCollision_->GetTransform(), CollisionType::CirCle);
+	GetLevel()->PushDebugRender(PlayerLockOnCollision_->GetTransform(), CollisionType::CirCle);
 
 	if (PlayerAttackHitBoxCollision_->IsUpdate())
 	{

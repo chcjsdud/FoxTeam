@@ -14,7 +14,7 @@
 //Idle
 void Player::Idle_Start()
 {
-	Speed_ = 0.f;
+	//Speed_ = 0.f;
 }
 void Player::Idle_Update(float _DeltaTime)
 {
@@ -35,6 +35,8 @@ void Player::Idle_Update(float _DeltaTime)
 		return;
 	}
 
+	StaminaRecoverUpdate(_DeltaTime);
+
 	CurDirUpdate(_DeltaTime);
 
 	MoveRotateUpdate(_DeltaTime);
@@ -47,7 +49,7 @@ void Player::Idle_End()
 void Player::Walk_Start()
 {
 	IsMove_ = true;
-	Speed_ = 300.f;
+	//Speed_ = 300.f;
 }
 void Player::Walk_Update(float _DeltaTime)
 {
@@ -89,7 +91,7 @@ void Player::Walk_End()
 void Player::Run_Start()
 {
 	IsMove_ = true;
-	Speed_ = 600.f;
+	//Speed_ = 600.f;
 }
 void Player::Run_Update(float _DeltaTime)
 {
@@ -122,6 +124,13 @@ void Player::Run_Update(float _DeltaTime)
 		return;
 	}
 
+	PlayerStatusFinal_.Stat_Stamina_ -= _DeltaTime;
+
+	if (PlayerStatusFinal_.Stat_Stamina_ < 0.f)
+	{
+		PlayerStatusFinal_.Stat_Stamina_ = 0.f;
+	}
+
 	CurDirUpdate(_DeltaTime);
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
@@ -134,7 +143,7 @@ void Player::Run_End()
 //Attack
 void Player::Attack_Start()
 {
-	if (Stamina_ < 5.f)
+	if (PlayerStatusFinal_.Stat_Stamina_ < 5.f)
 	{
 		//스테미나 게이지 깜빡거리기
 		MPLAYERChangeState("Idle");
@@ -143,11 +152,11 @@ void Player::Attack_Start()
 	AttackStateInit();
 	PlayerAttackHitBoxCollision_->On();
 
-	Stamina_ -= Attack_Stamina_;
+	PlayerStatusFinal_.Stat_Stamina_ -= PlayerStatusFinal_.Stat_Attack_Stamina_;
 
-	if (Stamina_ < 0.f)
+	if (PlayerStatusFinal_.Stat_Stamina_ < 0.f)
 	{
-		Stamina_ = 0.f;
+		PlayerStatusFinal_.Stat_Stamina_ = 0.f;
 	}
 }
 void Player::Attack_Update(float _DeltaTime)
@@ -173,11 +182,11 @@ void Player::Attack_Update(float _DeltaTime)
 				//다음 단계 공격, 에니메이션 바꾸기
 				PlayerAttackHitBoxCollision_->On();
 
-				Stamina_ -= Attack_Stamina_;
+				PlayerStatusFinal_.Stat_Stamina_ -= PlayerStatusFinal_.Stat_Attack_Stamina_;
 
-				if (Stamina_ < 0.f)
+				if (PlayerStatusFinal_.Stat_Stamina_ < 0.f)
 				{
-					Stamina_ = 0.f;
+					PlayerStatusFinal_.Stat_Stamina_ = 0.f;
 				}
 
 				AttackTime_ = 1.f;

@@ -183,5 +183,8 @@
     <ClInclude Include="Player.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Player_Status.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

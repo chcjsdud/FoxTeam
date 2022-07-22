@@ -1,14 +1,14 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+
+#include "Player_Status.h"
 /// <summary>
 /// 여우 주인공 액터
 /// </summary>
 
 
-
 // 플레이어를 static으로 만들고 언제 어디서든 불러올 수 있으면 좋겠다.(편하겠다)
-
 
 class GameEngineLevel;
 class GameEngineImageRenderer;
@@ -25,28 +25,22 @@ public:
 private:
 	//state
 	GameEngineFSM PlayerState_;
-
 	GameEngineFSM CameraState_;
 
-	//component
-	// 
+#pragma region Player component
 	//바닥 콜리전
 	GameEngineCollision* PlayerGroundCollision_;
 	// RockOn 충돌체
-	GameEngineCollision* PlayerRockOnCollision_;
+	GameEngineCollision* PlayerLockOnCollision_;
 	//피격 히트박스
 	GameEngineCollision* PlayerHitBoxCollision_;
 	//공격 히트박스
 	GameEngineCollision* PlayerAttackHitBoxCollision_;
-
+	//FBX Renderer
 	GameEngineFBXRenderer* FBXRenderer_;
+#pragma endregion
 
-
-
-	GameEngineImageRenderer* RockOnImageRenderer_;
 	GameEngineActor* Target_;
-
-	//GameEngineFBXMesh* mesh_; //필요한가?
 
 	//키 방향
 	float4 KeyDir_;
@@ -58,39 +52,41 @@ private:
 	float4 CurFowordDir_;
 	//Y축 회전 속도
 	float YRotateSpeed_;
-
 	bool IsMove_;
 	bool IsRockon_;
 
-	float Speed_;
+	//UI
+	class TopUI* TopUI_;
+	class LockOnUI* LockOnUI_;
+	class Inventory* Inventory_;
 
-	//std::function<void(float)> CamFunc_;
-
-	//구르기 쿨타임
-	float RollTurmSecond_;
-	//구르는 시간(무적타임)
-	float RollSecond_;
-
-
+#pragma region Player Status
 	//공격 텀
 	float AttackTurm_;
 	//공격 에니메이션 단계
 	int AttackLevel_;
 	//공격 시간, 이 시간 이내에 공격키를 누르면 다음 단계 공격을 함
 	float AttackTime_;
+	//Attack Hit Box 활성화 시간
 	float AttackHitTime_;
-	// 공격 스테미나 소모량
-	float Attack_Stamina_;
+	//구르기 쿨타임
+	float RollCoolTime_;
+	//구르는 시간(무적타임)
+	float RollSecond_;
 
-	//Status
-	int Hp_;
-	float Stamina_;
-	int AttackPower_;
+	//버프 리스트, 
+	std::map <std::string, PlayerStatus*> Player_BufferList_;
 
-	//UI
-	class TopUI* TopUI_;
-	class LockOnUI* LockOnUI_;
-	class Inventory* Inventory_;
+	// 플레이어 기본 스텟
+	PlayerStatus PlayerStatusBase_;
+	// 플레이어 추가 스텟 / 덧
+	PlayerStatus PlayerStatusAdd_;
+	// 플레이어 추가 스텟 / 곱
+	PlayerStatus PlayerStatusMult_;
+	// 플레이어 최종 스텟
+	PlayerStatus PlayerStatusFinal_;
+
+#pragma endregion
 
 private:
 	virtual void Start();
@@ -168,15 +164,15 @@ private:
 
 	void RockOnUpdate(float _DeltaTime);
 
-	void StaminaRecover(float _DeltaTime);
+	void StaminaRecoverUpdate(float _DeltaTime);
 
 	void Run_Stamina_Decrease(float _DeltaTime)
 	{
-		Stamina_ -= _DeltaTime;
+		PlayerStatusFinal_.Stat_Stamina_ -= _DeltaTime;
 
-		if (Stamina_ < 0.f)
+		if (PlayerStatusFinal_.Stat_Stamina_ < 0.f)
 		{
-			Stamina_ = 0.f;
+			PlayerStatusFinal_.Stat_Stamina_ = 0.f;
 		}
 	}
 
@@ -205,37 +201,73 @@ private:
 
 		return Dir;
 	}
+
+	bool SyncPlayerStat();
+
+	//임시 구현 상태, 인벤토리에서 아이템을 가져오고, 아이템에서 이름과 스테이터스를 가져오게끔
+	bool EquipItem(std::string _BuffName, PlayerStatus* _PlayerStatus);
+
 #pragma endregion
 
 private:
-	//const
 
-	//const float C_Walk_kSpeed_ = 300.f;
-	//const float C_Run_Speed_ = 600.f;
-
-	//const float C_Walk_Speed_;
-
+#pragma region Player 외부함수
 public:
 
-	const int PlayerGetHP()
+	//void PlayerAddStat(PlayerStatus& _PlayerStatus)
+	//{
+	//	PlayerStatusAdd_ += _PlayerStatus;
+	//}
+
+	//void PlayerSetAddStat(PlayerStatus& _PlayerStatus)
+	//{
+	//	PlayerStatusAdd_ = _PlayerStatus;
+	//}
+
+	std::map < std::string, PlayerStatus*> PlayerGetBuffList()
 	{
-		return Hp_;
+		return Player_BufferList_;
 	}
 
-	void PlayerSetHP(int _Hp)
+	const PlayerStatus PlayerGetBaseStat()
 	{
-		Hp_ = _Hp;
+		return PlayerStatusBase_;
 	}
 
-	const float PlayerGetStamina()
+	const PlayerStatus PlayerGetAddStat()
 	{
-		return Stamina_;
+		return PlayerStatusAdd_;
 	}
 
-	void PlayerSetStamina(float _Stamina)
+	const PlayerStatus PlayerGetMultStat()
 	{
-		Stamina_ = _Stamina;
+		return PlayerStatusMult_;
 	}
+
+	const PlayerStatus PlayerGetFinalStat()
+	{
+		return PlayerStatusFinal_;
+	}
+
+	const int PlayerGetCurHP()
+	{
+		return PlayerStatusFinal_.Stat_Hp_;
+	}
+
+	//void PlayerSetHP(int _Hp)
+	//{
+	//	PlayerStatusFinal_.Stat_Hp_ = _Hp;
+	//}
+
+	const float PlayerGetCurStamina()
+	{
+		return PlayerStatusFinal_.Stat_Stamina_;
+	}
+
+	//void PlayerSetStamina(float _Stamina)
+	//{
+	//	PlayerStatusFinal_.Stat_Hp_ = _Stamina;
+	//}
 
 	GameEngineActor* PlayerGetTarget()
 	{
@@ -244,12 +276,14 @@ public:
 
 	const int PlayerGetAttackPower()
 	{
-		return AttackPower_;
+		return PlayerStatusFinal_.Stat_AttackPower_;
 	}
 
 	Inventory* PlayerGetInventory()
 	{
 		return Inventory_;
 	}
+
+#pragma endregion
 };
 
