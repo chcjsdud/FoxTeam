@@ -81,4 +81,10 @@ void Inventory::Inventory_RemoveItem(std::string _Name)
 	//UI구현 상태에 따라서 정렬 기능같은걸 추가적으로 넣어두기
 }
 
+void Inventory::Inventory_Item_Loot(Item* _Item)
+{
+	_Item->SetPlayer(Player_);
+	ItemList_.insert(std::make_pair(_Item->GetName(), _Item));
+}
+
 

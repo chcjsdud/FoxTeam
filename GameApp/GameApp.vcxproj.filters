@@ -29,7 +29,6 @@
     <ClCompile Include="Map.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Map</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="TestMonster.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClCompile>
@@ -53,6 +52,9 @@
     </ClCompile>
     <ClCompile Include="WoodStick.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\02. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +124,9 @@
     <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\02. Item\Base">
       <UniqueIdentifier>{244cfc02-090c-4558-82bc-041667c3cb41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Manager">
+      <UniqueIdentifier>{043d8cd8-a08b-4bb7-a9ea-5796ac32ddca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -151,7 +156,6 @@
     <ClInclude Include="Map.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Map</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h" />
     <ClInclude Include="TestMonster.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClInclude>
@@ -175,6 +179,9 @@
     </ClInclude>
     <ClInclude Include="WoodStick.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\02. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,7 +4,12 @@
 /// <summary>
 /// 여우 주인공 액터
 /// </summary>
-// 설명 :
+
+
+
+// 플레이어를 static으로 만들고 언제 어디서든 불러올 수 있으면 좋겠다.(편하겠다)
+
+
 class GameEngineLevel;
 class GameEngineImageRenderer;
 class Player : public GameEngineActor
@@ -16,6 +21,76 @@ public:
 	Player(Player&& _Other) noexcept = delete;
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
+
+private:
+	//state
+	GameEngineFSM PlayerState_;
+
+	GameEngineFSM CameraState_;
+
+	//component
+	// 
+	//바닥 콜리전
+	GameEngineCollision* PlayerGroundCollision_;
+	// RockOn 충돌체
+	GameEngineCollision* PlayerRockOnCollision_;
+	//피격 히트박스
+	GameEngineCollision* PlayerHitBoxCollision_;
+	//공격 히트박스
+	GameEngineCollision* PlayerAttackHitBoxCollision_;
+
+	GameEngineFBXRenderer* FBXRenderer_;
+
+
+
+	GameEngineImageRenderer* RockOnImageRenderer_;
+	GameEngineActor* Target_;
+
+	//GameEngineFBXMesh* mesh_; //필요한가?
+
+	//키 방향
+	float4 KeyDir_;
+	//락온된 대상의 방향
+	float4 TargetDir_;
+	//바라봐야 할 방향
+	float4 FowordDir_;
+	//현재 바라보는 방향
+	float4 CurFowordDir_;
+	//Y축 회전 속도
+	float YRotateSpeed_;
+
+	bool IsMove_;
+	bool IsRockon_;
+
+	float Speed_;
+
+	//std::function<void(float)> CamFunc_;
+
+	//구르기 쿨타임
+	float RollTurmSecond_;
+	//구르는 시간(무적타임)
+	float RollSecond_;
+
+
+	//공격 텀
+	float AttackTurm_;
+	//공격 에니메이션 단계
+	int AttackLevel_;
+	//공격 시간, 이 시간 이내에 공격키를 누르면 다음 단계 공격을 함
+	float AttackTime_;
+	float AttackHitTime_;
+	// 공격 스테미나 소모량
+	float Attack_Stamina_;
+
+	//Status
+	int Hp_;
+	float Stamina_;
+	int AttackPower_;
+
+	//UI
+	class TopUI* TopUI_;
+	class LockOnUI* LockOnUI_;
+	class Inventory* Inventory_;
 
 private:
 	virtual void Start();
@@ -92,6 +167,23 @@ private:
 	void CurDirUpdate(float _DeltaTime);
 
 	void RockOnUpdate(float _DeltaTime);
+
+	void StaminaRecover(float _DeltaTime);
+
+	void Run_Stamina_Decrease(float _DeltaTime)
+	{
+		Stamina_ -= _DeltaTime;
+
+		if (Stamina_ < 0.f)
+		{
+			Stamina_ = 0.f;
+		}
+	}
+
+
+	//void StaminaDecrease(float _DeltaTime);
+	//void HpRecover(float _DeltaTime);
+	// 
 	//void ChangeCamFunc(void (Player::* _Camfunc)(float))
 	//{
 	//	CamFunc_ = std::bind(_Camfunc, this, std::placeholders::_1);
@@ -113,7 +205,6 @@ private:
 
 		return Dir;
 	}
-
 #pragma endregion
 
 private:
@@ -123,77 +214,6 @@ private:
 	//const float C_Run_Speed_ = 600.f;
 
 	//const float C_Walk_Speed_;
-
-
-private:
-	//state
-	GameEngineFSM PlayerState_;
-
-	GameEngineFSM CameraState_;
-
-	//component
-	// 
-	//바닥 콜리전
-	GameEngineCollision* PlayerGroundCollision_;
-	// RockOn 충돌체
-	GameEngineCollision* PlayerRockOnCollision_;
-	//피격 히트박스
-	GameEngineCollision* PlayerHitBoxCollision_;
-	//공격 히트박스
-	GameEngineCollision* PlayerAttackHitBoxCollision_;
-
-	GameEngineFBXRenderer* FBXRenderer_;
-
-
-
-	GameEngineImageRenderer* RockOnImageRenderer_;
-	GameEngineActor* Target_;
-
-	//GameEngineFBXMesh* mesh_; //필요한가?
-
-	//키 방향
-	float4 KeyDir_;
-	//락온된 대상의 방향
-	float4 TargetDir_;
-	//바라봐야 할 방향
-	float4 FowordDir_;
-	//현재 바라보는 방향
-	float4 CurFowordDir_;
-	//Y축 회전 속도
-	float YRotateSpeed_;
-
-	bool IsMove_;
-	bool IsRockon_;
-
-	float Speed_;
-
-	//std::function<void(float)> CamFunc_;
-
-	//구르기 쿨타임
-	float RollTurmSecond_;
-	//구르는 시간(무적타임)
-	float RollSecond_;
-
-
-	//공격 텀
-	float AttackTurm_; 
-	//공격 에니메이션 단계
-	int AttackLevel_;
-	//공격 시간, 이 시간 이내에 공격키를 누르면 다음 단계 공격을 함
-	float AttackTime_;
-	float AttackHitTime_;
-
-	//Status
-	int Hp_;
-	float Stamina_;
-	int AttackPower_;
-
-	//UI
-	class TopUI* TopUI_;
-	class LockOnUI* LockOnUI_;
-	class Inventory* Inventory_;
-
-public:
 
 public:
 
@@ -227,5 +247,9 @@ public:
 		return AttackPower_;
 	}
 
+	Inventory* PlayerGetInventory()
+	{
+		return Inventory_;
+	}
 };
 

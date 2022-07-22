@@ -134,8 +134,21 @@ void Player::Run_End()
 //Attack
 void Player::Attack_Start()
 {
+	if (Stamina_ < 5.f)
+	{
+		//스테미나 게이지 깜빡거리기
+		MPLAYERChangeState("Idle");
+	}
+
 	AttackStateInit();
 	PlayerAttackHitBoxCollision_->On();
+
+	Stamina_ -= Attack_Stamina_;
+
+	if (Stamina_ < 0.f)
+	{
+		Stamina_ = 0.f;
+	}
 }
 void Player::Attack_Update(float _DeltaTime)
 {
@@ -159,6 +172,13 @@ void Player::Attack_Update(float _DeltaTime)
 			{
 				//다음 단계 공격, 에니메이션 바꾸기
 				PlayerAttackHitBoxCollision_->On();
+
+				Stamina_ -= Attack_Stamina_;
+
+				if (Stamina_ < 0.f)
+				{
+					Stamina_ = 0.f;
+				}
 
 				AttackTime_ = 1.f;
 				AttackTurm_ = 0.5f;

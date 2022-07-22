@@ -33,19 +33,12 @@ private:
 	void Inventory_EquipItem(std::string _Name);
 	void Inventory_UseItem(std::string _Name);
 
+	//map에서 지워버린다. 
 	void Inventory_RemoveItem(std::string _Name);
+
 public:
-
-	template <typename ItemType>
-	ItemType* Inventory_Newitem(std::string _Name)
-	{
-		ItemType* newItem = GetLevel()->CreateActor<ItemType>();
-
-		newItem->SetName(_Name);
-		newItem->SetPlayer(Player_);
-
-		ItemList_.insert(std::make_pair(_Name, newItem));
-	}
+	// 아이템을 줏었을 경우, 해당 아이템을 insert 한다. 플레이어가 사용하게 될것
+	void Inventory_Item_Loot(Item* _Item);
 
 	void SetPlayer(Player* _Player)
 	{

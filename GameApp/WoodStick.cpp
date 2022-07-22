@@ -13,6 +13,7 @@ WoodStick::~WoodStick() // default destructer 디폴트 소멸자
 
 void WoodStick::Start()
 {
+	SetName("WoodStick");
 }
 
 void WoodStick::Update(float _Time)

@@ -218,7 +218,6 @@ public:
 		float4 temp = _Value;
 		temp.w = 0.f;
 		SetWorldPosition(TransformData_.vWorldPosition_ + temp);
-		//SetWorldPosition(TransformData_.vWorldPosition_ + _Value);
 	}
 
 	inline void SetLocalDeltaTimeMove(const float4& _Value)

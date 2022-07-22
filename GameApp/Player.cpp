@@ -153,6 +153,15 @@ void Player::CurDirUpdate(float _DeltaTime)
 	KeyDirUpdate(_DeltaTime);
 }
 
+void Player::StaminaRecover(float _DeltaTime)
+{
+	Stamina_ += _DeltaTime;
+	if (Stamina_ > 100.f)
+	{
+		Stamina_ = 100.f;
+	}
+}
+
 void Player::RockOnUpdate(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst().Press("RockOn"))
