@@ -39,5 +39,26 @@
     <FxCompile Include="EngineResources\Shader\ColorAni.fx">
       <Filter>Engine</Filter>
     </FxCompile>
+    <FxCompile Include="EngineResources\Shader\TextureAni.fx">
+      <Filter>Engine</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shader\TestColor.fx">
+      <Filter>Engine</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shader\DeferredColor.fx">
+      <Filter>Engine</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shader\TextureLight.fx">
+      <Filter>Engine</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shader\TextureDeferredLight.fx">
+      <Filter>Engine</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shader\DeferredMerge.fx">
+      <Filter>Engine</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shader\DeferredCalLight.fx">
+      <Filter>Engine</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

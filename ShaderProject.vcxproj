@@ -24,11 +24,18 @@
     <FxCompile Include="EngineResources\Shader\CbufferHeader.fx" />
     <FxCompile Include="EngineResources\Shader\Color.fx" />
     <FxCompile Include="EngineResources\Shader\ColorAni.fx" />
+    <FxCompile Include="EngineResources\Shader\DeferredCalLight.fx" />
+    <FxCompile Include="EngineResources\Shader\DeferredColor.fx" />
+    <FxCompile Include="EngineResources\Shader\DeferredMerge.fx" />
     <FxCompile Include="EngineResources\Shader\Fade.fx" />
     <FxCompile Include="EngineResources\Shader\LightHeader.fx" />
     <FxCompile Include="EngineResources\Shader\TargetMerge.fx" />
+    <FxCompile Include="EngineResources\Shader\TestColor.fx" />
     <FxCompile Include="EngineResources\Shader\Texture.fx" />
+    <FxCompile Include="EngineResources\Shader\TextureAni.fx" />
     <FxCompile Include="EngineResources\Shader\TextureAtlas.fx" />
+    <FxCompile Include="EngineResources\Shader\TextureDeferredLight.fx" />
+    <FxCompile Include="EngineResources\Shader\TextureLight.fx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

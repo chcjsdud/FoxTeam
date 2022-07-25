@@ -15,7 +15,7 @@ struct VertexOut
     float4 ViewNormal : NORMAL;
 };
 
-VertexOut Color_VS(VertexIn _In)
+VertexOut TestColor_VS(VertexIn _In)
 {
     VertexOut Out = (VertexOut)0;
     
@@ -46,7 +46,7 @@ cbuffer ResultColor : register(b0)
     float4 vDiffuseColor;
 };
 
-float4 Color_PS(VertexOut _In) : SV_Target0
+float4 TestColor_PS(VertexOut _In) : SV_Target0
 {
     float4 DiffuseLight = (float) 0.0f;
     float4 SpacularLight = (float) 0.0f;
@@ -65,7 +65,9 @@ float4 Color_PS(VertexOut _In) : SV_Target0
         Color *= (DiffuseLight + SpacularLight + AmbientLight);
     }
     
-    Color.w = 1.0f;
     
+    Color = _In.ViewNormal;
+    
+    Color.w = 1.0f;
     return Color;
 }
