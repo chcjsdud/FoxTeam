@@ -15,6 +15,7 @@ private:	// member Var
 	std::vector<GameEngineTexture*> Textures_;
 	// std::vector<D3D11_VIEWPORT> ViewPort_;
 	std::vector<ID3D11RenderTargetView*> RenderTargetViews_;
+	std::vector<ID3D11RenderTargetView*> RenderTargetViewsReset_;
 	std::vector<ID3D11ShaderResourceView*> ShaderResourcesViews_;
 
 	std::vector<float4> ClearColor_;
@@ -32,6 +33,11 @@ public:
 	static GameEngineDepthBuffer* GetLastDepthBuffer()
 	{
 		return LastDepthBuffer;
+	}
+
+	inline size_t GetShaderResourcesViewCount()
+	{
+		return ShaderResourcesViews_.size();
 	}
 
 	inline ID3D11ShaderResourceView* GetShaderResourcesView(size_t _Index)
@@ -55,6 +61,7 @@ public:
 	// -1이면 전부다 세팅하라는 의미가 됩니다.
 	// 0~n은 그 인덱스 1개를 세팅하라는 의미가 됩니다.
 	void Setting(int _Index = -1);
+	void Reset(int _Index = -1);
 
 public:
 	void Create(const std::string _TextureName, float4 _ClearColor);
@@ -63,6 +70,13 @@ public:
 	void Create(GameEngineTexture* _Texture, float4 _ClearColor);
 
 	void CreateDepthBuffer(float4 _Scale);
+
+	GameEngineDepthBuffer* GetDepthBuffer()
+	{
+		return DepthBuffer_;
+	}
+
+	void SetDepthBuffer(GameEngineDepthBuffer* _Depth);
 
 public:
 	GameEngineRenderTarget(); // default constructer 디폴트 생성자

@@ -248,6 +248,11 @@ void GameEngineRenderingPipeLine::Rasterizer()
 	Rasterizer_->SettingViewPort();
 }
 
+bool GameEngineRenderingPipeLine::IsDeferred()
+{
+	return PixelShader_->IsDeferred();
+}
+
 
 void GameEngineRenderingPipeLine::PixelShader()
 {
@@ -258,6 +263,8 @@ void GameEngineRenderingPipeLine::OutPutMerger()
 {
 	Blend_->Setting();
 	DepthStencil_->Setting();
+
+	// ¿Ã≥‡ºÆ¿Ã ∑£¥ı≈∏∞Ÿ¿ª 
 }
 
 void GameEngineRenderingPipeLine::RenderingPipeLineSetting() 

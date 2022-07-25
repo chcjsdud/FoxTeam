@@ -29,6 +29,30 @@ CameraComponent::~CameraComponent()
 		delete CameraBufferTarget_;
 		CameraBufferTarget_ = nullptr;
 	}
+
+	if (nullptr != CameraForwardTarget_)
+	{
+		delete CameraForwardTarget_;
+		CameraForwardTarget_ = nullptr;
+	}
+
+	if (nullptr != CameraDeferredGBufferTarget)
+	{
+		delete CameraDeferredGBufferTarget;
+		CameraDeferredGBufferTarget = nullptr;
+	}
+
+	if (nullptr != CameraDeferredLightTarget)
+	{
+		delete CameraDeferredLightTarget;
+		CameraDeferredLightTarget = nullptr;
+	}
+
+	if (nullptr != CameraDeferredTarget_)
+	{
+		delete CameraDeferredTarget_;
+		CameraDeferredTarget_ = nullptr;
+	}
 }
 
 void CameraComponent::ClearCameraTarget()
@@ -42,16 +66,16 @@ void CameraComponent::CameraTransformUpdate()
 
 	switch (ProjectionMode_)
 	{
-		case ProjectionMode::Perspective:
-		{
-			GetTransform()->GetTransformData().Projection_.PerspectiveFovLH(FovAngleY_, CamSize_.x, CamSize_.y, NearZ_, FarZ_);
-			break;
-		}
-		case ProjectionMode::Orthographic:
-		{
-			GetTransform()->GetTransformData().Projection_.OrthographicLH(CamSize_.x, CamSize_.y, NearZ_, FarZ_);
-			break;
-		}
+	case ProjectionMode::Perspective:
+	{
+		GetTransform()->GetTransformData().Projection_.PerspectiveFovLH(FovAngleY_, CamSize_.x, CamSize_.y, NearZ_, FarZ_);
+		break;
+	}
+	case ProjectionMode::Orthographic:
+	{
+		GetTransform()->GetTransformData().Projection_.OrthographicLH(CamSize_.x, CamSize_.y, NearZ_, FarZ_);
+		break;
+	}
 	}
 }
 
@@ -81,9 +105,48 @@ void CameraComponent::Render(float _DeltaTime)
 	}
 
 	// 카메라 전용 렌더타겟으로 셋팅
-	CameraBufferTarget_->Setting();
+	// 
+
 
 	// 렌더링 전 카메라의 최종행렬을 계산한다.
+
+	// 디버그 기념 랜더링 구조 회의
+	// 디퍼드와 포워드를 구분해야할 이유가 생겼어.
+
+	// 구분단위 rendering파이프라인 => isdefferd
+
+	// 0. 랜더러가 랜더러 내부에서 구분하자.
+	// 1. 내부에서 그냥 if로 처리하자 지금 디퍼드로 그리는지 포워드로 그리는지 랜더러에게 알려주고
+
+	// 1. 랜더러단위로 구분하자.
+	// 랜더러 단위로 포워드와 디퍼드를 구분하자
+	// 문제 => fbx매쉬 랜더러는 안에 파이프라인이 여러개인데
+	// 디퍼드로 그릴지
+	// 포워드로 그릴지 
+	// fbx매쉬 랜더는 
+	// ForwardRenderers_
+	// DefferdRenderers_
+
+	// 2. 랜더러를 모으지 말고 랜더 셋을 모으자.
+	// class RenderSet
+	// ShaderHelper
+	// PipeLine
+	// Renderers_ => 순수 저장용
+	// ForwardRendererSets_ // 
+	// DeferredRendererSets_
+
+
+	// 3아예 랜더러 구조는 그대로 두고 함수로 구분하자.
+	// Renderer->ForwardRender(_DeltaTime);
+	// Renderer->DeferredRender(_DeltaTime);
+
+	// 종하 => 랜더셋으로 하자.
+	// 규현 => if
+	// 석진 => 함수로 구분
+	// 이현 => 기권
+	// 종원 => if
+	CameraForwardTarget_->Clear();
+	CameraForwardTarget_->Setting();
 
 	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
 	{
@@ -106,9 +169,55 @@ void CameraComponent::Render(float _DeltaTime)
 			// 렌더링 전에 최종행렬을 계산
 			Renderer->GetTransform()->GetTransformData().WVPCalculation();
 
-			Renderer->Render(_DeltaTime);
+			Renderer->Render(_DeltaTime, false);
+
+			// Renderer->ForwardRender(_DeltaTime);
+			// Renderer->DeferredRender(_DeltaTime);
 		}
 	}
+
+	//// 포워드로 그린애들
+	CameraDeferredGBufferTarget->Clear(false);
+	CameraDeferredGBufferTarget->Setting();
+
+
+	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
+	{
+		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
+
+		// 같은 그룹내에 존재하는 렌더러를 Z값에 따라서 오름차순 정렬
+		// => 겹쳐서 그려야하는 렌더러들을 z값에따라 오름차순하여 블렌딩작업하도록하기 위하여 렌더링 전에 정렬
+		Renderers.sort(ZSort);
+
+		for (GameEngineRendererBase* Renderer : Renderers)
+		{
+			if (false == Renderer->IsUpdate())
+			{
+				continue;
+			}
+
+			Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
+			Renderer->GetTransform()->GetTransformData().View_ = View;
+
+			// 렌더링 전에 최종행렬을 계산
+			Renderer->GetTransform()->GetTransformData().WVPCalculation();
+
+			Renderer->Render(_DeltaTime, true);
+
+			// Renderer->ForwardRender(_DeltaTime);
+			// Renderer->DeferredRender(_DeltaTime);
+		}
+	}
+
+	CalLightEffect.Effect(_DeltaTime); // 빛계산하고 
+	DeferredMergeEffect.Effect(_DeltaTime); // 그걸 합쳐요
+
+
+
+	ClearCameraTarget();
+
+	CameraBufferTarget_->Merge(CameraForwardTarget_);
+	CameraBufferTarget_->Merge(CameraDeferredTarget_);
 
 	GameEngineStructuredBufferSetting::ResetLastSetting();
 }
@@ -130,7 +239,7 @@ void CameraComponent::DebugRender()
 		DebugVector_[i].Data_.Projection_ = Projection;
 		DebugVector_[i].Data_.View_ = View;
 		DebugVector_[i].Data_.WVPCalculation();
-
+		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("LightsData", LightData_);
 		DebugVector_[i].ShaderHelper_.Setting();
 		DebugVector_[i].PipeLine_->Rendering();
 		DebugVector_[i].ShaderHelper_.ReSet();
@@ -312,21 +421,48 @@ void CameraComponent::Start()
 	DebugVector_.resize(1000);
 	DebugRenderCount_ = 0;
 
-	//GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
-	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("DebugBox");
+	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
 	for (size_t i = 0; i < DebugVector_.size(); i++)
 	{
 		DebugVector_[i].ShaderHelper_.ShaderResourcesCheck(Pipe->GetVertexShader());
 		DebugVector_[i].ShaderHelper_.ShaderResourcesCheck(Pipe->GetPixelShader());
-		//DebugVector_[i].Color_ = float4::GREEN;
+		DebugVector_[i].Color_ = float4::RED;
 		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("ResultColor", DebugVector_[i].Color_);
 		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("TransformData", DebugVector_[i].Data_);
-		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("LightsData", LightData_);
 	}
 
 	CameraBufferTarget_ = new GameEngineRenderTarget();
 	CameraBufferTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
 	CameraBufferTarget_->CreateDepthBuffer(GameEngineWindow::GetInst().GetSize());
+
+	CameraForwardTarget_ = new GameEngineRenderTarget();
+	CameraForwardTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
+	CameraForwardTarget_->SetDepthBuffer(CameraBufferTarget_->GetDepthBuffer());
+
+	CameraDeferredGBufferTarget = new GameEngineRenderTarget();
+	CameraDeferredGBufferTarget->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE); // 디퓨즈
+	CameraDeferredGBufferTarget->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE); // 포지션
+	CameraDeferredGBufferTarget->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE); // 노말
+	CameraDeferredGBufferTarget->SetDepthBuffer(CameraBufferTarget_->GetDepthBuffer());
+
+	CameraDeferredLightTarget = new GameEngineRenderTarget();
+	CameraDeferredLightTarget->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE); // 디퓨즈 라이트
+	CameraDeferredLightTarget->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE); // 스펙큘러 라이트
+	CameraDeferredLightTarget->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE); // 스펙큘러 라이트
+
+	CameraDeferredTarget_ = new GameEngineRenderTarget();
+	CameraDeferredTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE); // 디퓨즈 라이트
+
+	CalLightEffect.SetTarget(CameraDeferredGBufferTarget);
+	CalLightEffect.SetEffect("DeferredCalLight");
+	CalLightEffect.SetResult(CameraDeferredLightTarget);
+	CalLightEffect.Initialize();
+	CalLightEffect.LightDataSetting(this);
+
+	DeferredMergeEffect.SetEffect("DeferredMerge");
+	DeferredMergeEffect.SetResult(CameraDeferredTarget_);
+	DeferredMergeEffect.SetDeferredTarget(CameraDeferredGBufferTarget, CameraDeferredLightTarget);
+
 }
 
 void CameraComponent::Update(float _DeltaTime)

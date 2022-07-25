@@ -66,3 +66,8 @@ std::string GameEnginePath::GetExtension()
 {
 	return path_.extension().string();
 }
+
+bool GameEnginePath::IsExist(std::string _Path)
+{
+	return 	std::filesystem::exists(_Path);
+}

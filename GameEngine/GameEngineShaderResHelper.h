@@ -43,6 +43,8 @@ public:
 
 	bool IsStructuredBuffer(const std::string& _SettingName);
 
+	bool IsTextureSetting(const std::string& _SettingName);
+
 	template<typename T>
 	void SettingStructuredBufferLink(const std::string& _SettingName, const T& _Data)
 	{

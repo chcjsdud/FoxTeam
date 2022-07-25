@@ -2,6 +2,35 @@
 #include "GameEngineShader.h"
 #include "GameEngineConstantBufferManager.h"
 #include "GameEngineResourcesManager.h"
+#include <GameEngineBase/GameEngineFile.h>
+
+void GameEngineShader::AutoCompile(GameEngineFile& ShaderFile)
+{
+	ShaderFile.Open("rt");
+
+	std::string FileName = ShaderFile.GetFileNameWithOutExtension();
+	std::string AllCode = ShaderFile.GetString();
+
+	if (std::string::npos != AllCode.find(FileName + "_VS"))
+	{
+		GameEngineVertexShader* Ptr = GameEngineVertexShaderManager::GetInst().Load(FileName + "_VS", ShaderFile.GetFullPath(), FileName + "_VS");
+	}
+
+	if (std::string::npos != AllCode.find(FileName + "_PS"))
+	{
+		GameEnginePixelShader* Ptr = GameEnginePixelShaderManager::GetInst().Load(FileName + "_PS", ShaderFile.GetFullPath(), FileName + "_PS");
+
+		int Count = Ptr->GetOutPutSize("SV_Target");
+
+		if (Count > 1 && AllCode.find("DeferredOutPut "))
+		{
+			Ptr->IsDeferred_ = true;
+		}
+
+		
+
+	}
+}
 
 GameEngineShader::GameEngineShader(ShaderType _Type)
 	: VersionHigh_(5)
@@ -184,9 +213,6 @@ void GameEngineShader::ResCheck()
 			Setting.Res_ = nullptr;
 
 			StructuredBuffers_.insert(std::make_pair(Name, Setting));
-
-			int a = 0;
-			// Textures_.insert(std::make_pair(ResInfo.BindPoint, Name));
 			break;
 		}
 		default:
@@ -194,4 +220,15 @@ void GameEngineShader::ResCheck()
 			break;
 		}
 	}
+
+	for (unsigned int i = 0; i < Info.OutputParameters; i++)
+	{
+		D3D11_SIGNATURE_PARAMETER_DESC Desc;
+		CompilInfo->GetOutputParameterDesc(i, &Desc);
+
+	 	std::string Name = GameEngineString::toupper(Desc.SemanticName);
+
+		OutPutMap[Name].push_back(Desc);
+	}
+
 }

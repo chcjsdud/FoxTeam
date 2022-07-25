@@ -9,7 +9,6 @@
 #include "GameEngineVertexShader.h"
 #include "GameEngineDepthStencil.h"
 #include "EngineVertex.h"
-#include <GameEngineBase/GameEngineMath.h>
 
 void GameEngineCore::EngineResourcesCreate_Mesh() 
 {
@@ -344,43 +343,43 @@ void GameEngineCore::EngineResourcesCreate_Mesh()
 		std::vector<GameEngineVertex> CircleVertex = std::vector<GameEngineVertex>(21);
 
 		{
-			float4 buffer = {0.0f, 0.0f, 0.0f};
+			float4 buffer = { 0.0f, 0.0f, 0.0f };
 			// 앞면
 			CircleVertex[0] = { float4({ 0.0f, 0.0f, 0.0f }),  { 0.5f, 0.5f } };
 
 			CircleVertex[1] = { float4({ 0.5f, 0.0f, 0.0f }),  { 0.5f, 0.5f } };
-			
+
 			// 왜인지 모르지만 for 문 자꾸 터져서 하드코딩 했습니다ㅜㅠ 나중에 정비 예정 // 박종원 0717
 			buffer = buffer.RotateYDegree(CircleVertex[1].POSITION, 18.0f);
-			CircleVertex[2] = { buffer,  {0.5f, 0.5f}};
-			
+			CircleVertex[2] = { buffer,  {0.5f, 0.5f} };
+
 			buffer = buffer.RotateYDegree(CircleVertex[2].POSITION, 18.0f);
 			CircleVertex[3] = { buffer,  {0.5f, 0.5f} };
-			
+
 			buffer = buffer.RotateYDegree(CircleVertex[3].POSITION, 18.0f);
 			CircleVertex[4] = { buffer,  {0.5f, 0.5f} };
-			
+
 			buffer = buffer.RotateYDegree(CircleVertex[4].POSITION, 18.0f);
 			CircleVertex[5] = { buffer,  {0.5f, 0.5f} };
-			
+
 			buffer = buffer.RotateYDegree(CircleVertex[5].POSITION, 18.0f);
 			CircleVertex[6] = { buffer,  {0.5f, 0.5f} };
-			
+
 			buffer = buffer.RotateYDegree(CircleVertex[6].POSITION, 18.0f);
 			CircleVertex[7] = { buffer,  {0.5f, 0.5f} };
-			
+
 			buffer = buffer.RotateYDegree(CircleVertex[7].POSITION, 18.0f);
 			CircleVertex[8] = { buffer,  {0.5f, 0.5f} };
-			
+
 			buffer = buffer.RotateYDegree(CircleVertex[8].POSITION, 18.0f);
 			CircleVertex[9] = { buffer,  {0.5f, 0.5f} };
-			
+
 			buffer = buffer.RotateYDegree(CircleVertex[9].POSITION, 18.0f);
 			CircleVertex[10] = { buffer,  {0.5f, 0.5f} };
-			
+
 			buffer = buffer.RotateYDegree(CircleVertex[10].POSITION, 18.0f);
 			CircleVertex[11] = { buffer,  {0.5f, 0.5f} };
-			
+
 			buffer = buffer.RotateYDegree(CircleVertex[11].POSITION, 18.0f);
 			CircleVertex[12] = { buffer,  {0.5f, 0.5f} };
 
@@ -418,18 +417,17 @@ void GameEngineCore::EngineResourcesCreate_Mesh()
 		for (size_t i = 0; i < 19; i++)
 		{
 			circleIndex.push_back(0);
-			circleIndex.push_back(i+1);
-			circleIndex.push_back(i+2);
+			circleIndex.push_back(i + 1);
+			circleIndex.push_back(i + 2);
 		}
 
-			circleIndex.push_back(0);
-			circleIndex.push_back(20);
-			circleIndex.push_back(1);
+		circleIndex.push_back(0);
+		circleIndex.push_back(20);
+		circleIndex.push_back(1);
 
 
 		GameEngineIndexBufferManager::GetInst().Create("DebugCircle", circleIndex, D3D11_USAGE::D3D11_USAGE_DEFAULT);
 	}
-
 
 	{
 		std::vector<GameEngineVertex> RectVertex = std::vector<GameEngineVertex>(4);
@@ -483,6 +481,17 @@ void GameEngineCore::EngineResourcesCreate_Rasterizer()
 		Info.MultisampleEnable = true;
 		Info.DepthClipEnable = true;
 		GameEngineRasterizer* Ptr = GameEngineRasterizerManager::GetInst().Create("EngineBaseRasterizerFront", Info);
+		Ptr->AddWindowSizeViewPort();
+	}
+
+	{
+		D3D11_RASTERIZER_DESC Info = { D3D11_FILL_MODE::D3D11_FILL_SOLID, };
+		Info.FillMode = D3D11_FILL_MODE::D3D11_FILL_SOLID;
+		Info.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+		Info.AntialiasedLineEnable = true;
+		Info.MultisampleEnable = true;
+		Info.DepthClipEnable = true;
+		GameEngineRasterizer* Ptr = GameEngineRasterizerManager::GetInst().Create("EngineBaseRasterizerNone", Info);
 		Ptr->AddWindowSizeViewPort();
 	}
 
@@ -554,20 +563,8 @@ void GameEngineCore::EngineResourcesLoad()
 
 		for (auto& ShaderFile : AllShader)
 		{
-			ShaderFile.Open("rt");
+			GameEngineShader::AutoCompile(ShaderFile);
 
-			std::string FileName = ShaderFile.GetFileNameWithOutExtension();
-			std::string AllCode = ShaderFile.GetString();
-
-			if (std::string::npos != AllCode.find(FileName + "_VS"))
-			{
-				GameEngineVertexShader* Ptr = GameEngineVertexShaderManager::GetInst().Load(FileName + "_VS", ShaderFile.GetFullPath(), FileName + "_VS");
-			}
-
-			if (std::string::npos != AllCode.find(FileName + "_PS"))
-			{
-				GameEnginePixelShader* Ptr = GameEnginePixelShaderManager::GetInst().Load(FileName + "_PS", ShaderFile.GetFullPath(), FileName + "_PS");
-			}
 
 		}
 
@@ -728,9 +725,19 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
 		Pipe->SetVertexShader("TargetMerge_VS");
 		Pipe->SetPixelShader("TargetMerge_PS");
-		Pipe->SetOutputMergerDepthStencil("BaseDepthOff");
+		Pipe->SetOutputMergerDepthStencil("MergeDepth");
 	}
 
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TestColor");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("TestColor_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		Pipe->SetPixelShader("TestColor_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
 
 	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("Color");
@@ -763,6 +770,45 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		Pipe->SetRasterizer("EngineBaseRasterizerBack");
 		Pipe->SetPixelShader("TextureAtlas_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
+
+
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TextureAni");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("TextureAni_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		Pipe->SetPixelShader("TextureAni_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
+
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TextureDeferredLight");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("TextureDeferredLight_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		Pipe->SetPixelShader("TextureDeferredLight_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
+
+
+	
+
+
+
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TextureLight");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("TextureLight_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		Pipe->SetPixelShader("TextureLight_PS");
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
 
@@ -801,16 +847,41 @@ void GameEngineCore::EngineResourcesCreate()
 
 	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TextureTrans");
-		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
-		Pipe->SetVertexShader("Texture_VS");
-		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
+		Pipe->SetVertexShader("DeferredCalLight_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		Pipe->SetRasterizer("EngineBaseRasterizerBack");
-		Pipe->SetPixelShader("Texture_PS");
+		Pipe->SetPixelShader("DeferredCalLight_PS");
 		Pipe->SetOutputMergerBlend("Trans");
 	}
 
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DeferredMerge");
+		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
+		Pipe->SetVertexShader("DeferredMerge_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerNone");
+		Pipe->SetPixelShader("DeferredMerge_PS");
+		Pipe->SetOutputMergerDepthStencil("MergeDepth");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
 
+
+
+
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DeferredCalLight");
+		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
+		Pipe->SetVertexShader("DeferredCalLight_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerNone");
+		Pipe->SetPixelShader("DeferredCalLight_PS");
+		Pipe->SetOutputMergerDepthStencil("MergeDepth");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
 
 
 }

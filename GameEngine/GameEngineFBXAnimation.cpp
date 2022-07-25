@@ -72,22 +72,18 @@ bool GameEngineFBXAnimation::CheckAnimation()
 
 		AnimationDatas[i].FbxModeCount = (long long)fbxsdk::FbxTime::GetFrameRate(AnimationDatas[i].TimeMode);
 		AnimationDatas[i].FbxModeRate = (double)fbxsdk::FbxTime::GetFrameRate(AnimationDatas[i].TimeMode);
-
-		// double Test = fbxsdk::FbxTime::GetFrameRate(m_UserAniData[i].TimeMode);
-
 	}
 
-	for (int i = 0; i < AniNameArray.GetCount(); i++)
+	for (int i = 0; i < AniNameArray.Size(); i++)
 	{
 		delete AniNameArray[i];
 	}
-
 
 	return true;
 }
 
 
-void GameEngineFBXAnimation::ProcessAnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::FbxNode* pNode)
+void GameEngineFBXAnimation::ProcessAnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::FbxNode* pNode, int _index)
 {
 	// 모든 노드를 다 훑기 위해서
 
@@ -101,14 +97,14 @@ void GameEngineFBXAnimation::ProcessAnimationLoad(GameEngineFBXMesh* _Mesh, fbxs
 		{
 			if (0 != pNode->GetChildCount())
 			{
-				ProcessAnimationLoad(_Mesh, pNode->GetChild(0));
+				ProcessAnimationLoad(_Mesh, pNode->GetChild(0), _index);
 				return;
 			}
 		}
 		break;
 		case fbxsdk::FbxNodeAttribute::eMesh:
 		{
-			AnimationLoad(_Mesh, pNode);
+			AnimationLoad(_Mesh, pNode, _index);
 		}
 		break;
 		default:
@@ -118,32 +114,35 @@ void GameEngineFBXAnimation::ProcessAnimationLoad(GameEngineFBXMesh* _Mesh, fbxs
 
 	for (int n = 0; n < pNode->GetChildCount(); ++n)
 	{
-		ProcessAnimationLoad(_Mesh, pNode->GetChild(n));
+		ProcessAnimationLoad(_Mesh, pNode->GetChild(n), _index);
 	}
 }
 
 
-void GameEngineFBXAnimation::ProcessAnimationCheckState(GameEngineFBXMesh* _Fbx)
+void GameEngineFBXAnimation::ProcessAnimationCheckState(GameEngineFBXMesh* _Fbx, int userAniDataIndex)
 {
-	size_t userAniDataSize = AnimationDatas.size();
-	for (size_t userAniDataIndex = 0; userAniDataIndex < userAniDataSize; ++userAniDataIndex)
+	// 뛴다
+	FbxExAniData& userAniData = AnimationDatas.at(userAniDataIndex);
+	fbxsdk::FbxLongLong fbxTime = userAniData.EndTime.Get() - userAniData.StartTime.Get() + 1;
+
+	// 몸통
+	for (size_t MeshIndex = 0; MeshIndex < userAniData.AniFrameData.size(); MeshIndex++)
 	{
-		FbxExAniData& userAniData = AnimationDatas.at(userAniDataIndex);
-		fbxsdk::FbxLongLong fbxTime = userAniData.EndTime.Get() - userAniData.StartTime.Get() + 1;
-		size_t aniFrameDataSize = userAniData.AniFrameData.size();
+		// 30프레임의 정보가
+		size_t aniFrameDataSize = userAniData.AniFrameData[MeshIndex].size();
 		for (size_t aniFrameDataIndex = 0; aniFrameDataIndex < aniFrameDataSize; ++aniFrameDataIndex)
 		{
-			FbxExBoneFrame& aniFrameData = userAniData.AniFrameData.at(aniFrameDataIndex);
+			FbxExBoneFrame& aniFrameData = userAniData.AniFrameData[MeshIndex].at(aniFrameDataIndex);
 			// 비어있을때.
 			if (0 == aniFrameData.BoneMatData.size())
 			{
 				aniFrameData.BoneMatData.resize(fbxTime);
-				Bone& curBone = _Fbx->AllBones[aniFrameDataIndex];
+				Bone& curBone = _Fbx->AllBones[0][aniFrameDataIndex];
 				aniFrameData.BoneIndex = curBone.Index;
 				aniFrameData.BoneParentIndex = curBone.ParentIndex;
 				if (-1 != curBone.ParentIndex)
 				{
-					FbxExBoneFrame& parentAniFrameData = userAniData.AniFrameData.at(curBone.ParentIndex);
+					FbxExBoneFrame& parentAniFrameData = userAniData.AniFrameData[MeshIndex].at(curBone.ParentIndex);
 					for (fbxsdk::FbxLongLong start = 0; start < fbxTime; ++start)
 					{
 						aniFrameData.BoneMatData[start].Time = parentAniFrameData.BoneMatData[start].Time;
@@ -171,9 +170,10 @@ void GameEngineFBXAnimation::ProcessAnimationCheckState(GameEngineFBXMesh* _Fbx)
 			}
 		}
 	}
+
 }
 
-void GameEngineFBXAnimation::CalFbxExBoneFrameTransMatrix(GameEngineFBXMesh* _Mesh)
+void GameEngineFBXAnimation::CalFbxExBoneFrameTransMatrix(GameEngineFBXMesh* _Mesh, int _AnimationIndex)
 {
 	if (0 == AnimationDatas.size())
 	{
@@ -181,14 +181,15 @@ void GameEngineFBXAnimation::CalFbxExBoneFrameTransMatrix(GameEngineFBXMesh* _Me
 		return;
 	}
 
-	for (size_t i = 0; i < AnimationDatas.size(); i++)
+	AnimationDatas[_AnimationIndex].AniFrameData.resize(_Mesh->MeshInfos.size());
+	for (UINT MeshCount = 0; MeshCount < _Mesh->MeshInfos.size(); MeshCount++)
 	{
-		AnimationDatas[i].AniFrameData.resize(_Mesh->AllBones.size());
+		AnimationDatas[_AnimationIndex].AniFrameData[MeshCount].resize(_Mesh->GetBoneCount(MeshCount));
 	}
 
-	ProcessAnimationLoad(_Mesh, _Mesh->RootNode);
+	ProcessAnimationLoad(_Mesh, _Mesh->RootNode, _AnimationIndex);
 
-	ProcessAnimationCheckState(_Mesh);
+	ProcessAnimationCheckState(_Mesh, _AnimationIndex);
 
 
 	AnimationDatas;
@@ -212,73 +213,74 @@ fbxsdk::FbxAMatrix GameEngineFBXAnimation::GetGeometryTransformation(fbxsdk::Fbx
 }
 
 
-bool GameEngineFBXAnimation::AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::FbxNode* _Node)
+bool GameEngineFBXAnimation::AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::FbxNode* _Node, int AnimationIndex)
 {
-	// 어마어마하게 부담되는 작업이기 때문에.
-	std::vector<FbxExBoneFrame> vecAniFrameData;
-	vecAniFrameData.resize(_Mesh->GetBoneCount());
+	FbxAnimStack* stack = Scene->GetSrcObject<FbxAnimStack>(AnimationIndex);
+	Scene->SetCurrentAnimationStack(stack);
 
 	fbxsdk::FbxMesh* pCurrMesh = _Node->GetMesh();
 	int deformerCount = pCurrMesh->GetDeformerCount();
-	// 이노드의 기본행렬 정보를 얻어온다.
 	fbxsdk::FbxAMatrix geometryTransform = GetGeometryTransformation(_Node);
 
-	// fbxsdk::FbxAnimStack::ClassId
-	// 
-	//fbxsdk::FbxAnimStack* currAnimStack = Scene->GetSrcObject<fbxsdk::FbxAnimStack>(0);
-	//fbxsdk::FbxString animStackName = currAnimStack->GetName();
-	for (size_t i = 0; i < AnimationDatas.size(); i++)
+
+
+	fbxsdk::FbxTakeInfo* takeInfo = Scene->GetTakeInfo(AnimationDatas[AnimationIndex].AniName.c_str());
+	fbxsdk::FbxTime start = takeInfo->mLocalTimeSpan.GetStart();
+	fbxsdk::FbxTime end = takeInfo->mLocalTimeSpan.GetStop();
+	fbxsdk::FbxTime::EMode timeMode = Scene->GetGlobalSettings().GetTimeMode();
+
+	fbxsdk::FbxAMatrix currentTransformOffset;
+	fbxsdk::FbxAMatrix localTransform;
+	fbxsdk::FbxAMatrix globalTransform;
+
+	fbxsdk::FbxCluster* pCurrCluster;
+	std::string currJointName;
+	Bone* pBone;
+
+	fbxsdk::FbxAMatrix transformMatrix;
+	fbxsdk::FbxAMatrix transformLinkMatrix;
+	fbxsdk::FbxAMatrix globalBindposeInverseMatrix;
+
+	fbxsdk::FbxLongLong fixIndex;
+
+	std::string linkName;
+
+	fbxsdk::FbxLongLong endTime;
+	fbxsdk::FbxLongLong startTime;
+
+	fbxsdk::FbxTime currTime;
+
+
+	for (int deformerIndex = 0; deformerIndex < deformerCount; ++deformerIndex)
 	{
-		fbxsdk::FbxTakeInfo* takeInfo = Scene->GetTakeInfo(AnimationDatas[i].AniName.c_str());
-		fbxsdk::FbxTime start = takeInfo->mLocalTimeSpan.GetStart();
-		fbxsdk::FbxTime end = takeInfo->mLocalTimeSpan.GetStop();
-		fbxsdk::FbxTime::EMode timeMode = Scene->GetGlobalSettings().GetTimeMode();
-
-		fbxsdk::FbxAMatrix currentTransformOffset;
-		fbxsdk::FbxAMatrix localTransform;
-		fbxsdk::FbxAMatrix globalTransform;
-
-		fbxsdk::FbxCluster* pCurrCluster;
-		std::string currJointName;
-		Bone* pBone;
-
-		fbxsdk::FbxAMatrix transformMatrix;
-		fbxsdk::FbxAMatrix transformLinkMatrix;
-		fbxsdk::FbxAMatrix globalBindposeInverseMatrix;
-
-		fbxsdk::FbxLongLong fixIndex;
-
-		std::string linkName;
-
-		fbxsdk::FbxLongLong endTime;
-		fbxsdk::FbxLongLong startTime;
-
-		fbxsdk::FbxTime currTime;
-
-
-		for (int deformerIndex = 0; deformerIndex < deformerCount; ++deformerIndex)
+		fbxsdk::FbxSkin* pCurrSkin = reinterpret_cast<fbxsdk::FbxSkin*>(pCurrMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
+		if (nullptr == pCurrSkin)
 		{
-			fbxsdk::FbxSkin* pCurrSkin = reinterpret_cast<fbxsdk::FbxSkin*>(pCurrMesh->GetDeformer(deformerIndex, fbxsdk::FbxDeformer::eSkin));
-			if (nullptr == pCurrSkin)
+			continue;
+		}
+
+		unsigned int numOfClusters = pCurrSkin->GetClusterCount();
+
+		endTime = end.GetFrameCount(timeMode);
+		startTime = start.GetFrameCount(timeMode);
+
+		FbxExAniData& CurAniData = AnimationDatas[AnimationIndex];
+		CurAniData.EndTime = endTime;
+		CurAniData.StartTime = startTime;
+		CurAniData.TimeMode = timeMode;
+
+		for (size_t MeshIndex = 0; MeshIndex < CurAniData.AniFrameData.size(); ++MeshIndex)
+		{
+			if (0 == CurAniData.AniFrameData[MeshIndex].size())
 			{
 				continue;
 			}
-
-			unsigned int numOfClusters = pCurrSkin->GetClusterCount();
-
-			endTime = end.GetFrameCount(timeMode);
-			startTime = start.GetFrameCount(timeMode);
-
-			FbxExAniData& CurAniData = AnimationDatas[i];
-			CurAniData.EndTime = endTime;
-			CurAniData.StartTime = startTime;
-			CurAniData.TimeMode = timeMode;
 
 			for (unsigned int clusterIndex = 0; clusterIndex < numOfClusters; ++clusterIndex)
 			{
 				pCurrCluster = pCurrSkin->GetCluster(clusterIndex);
 				currJointName = pCurrCluster->GetLink()->GetName();
-				pBone = _Mesh->FindBone(currJointName);
+				pBone = _Mesh->FindBone(0, currJointName);
 
 				pCurrCluster->GetTransformMatrix(transformMatrix);
 				pCurrCluster->GetTransformLinkMatrix(transformLinkMatrix);
@@ -287,7 +289,7 @@ bool GameEngineFBXAnimation::AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::Fbx
 				linkName = pCurrCluster->GetLink()->GetName();
 				fbxsdk::FbxNode* pLinkNode = Scene->FindNodeByName(linkName.c_str());
 
-				FbxExBoneFrame& Frame = CurAniData.AniFrameData[pBone->Index];
+				FbxExBoneFrame& Frame = CurAniData.AniFrameData[MeshIndex][pBone->Index];
 				Frame.BoneMatData.resize(endTime - startTime + 1);
 				Frame.BoneIndex = pBone->Index;
 				Frame.BoneParentIndex = pBone->ParentIndex;
@@ -317,6 +319,7 @@ bool GameEngineFBXAnimation::AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::Fbx
 				}
 			}
 		}
+
 	}
 
 	return true;

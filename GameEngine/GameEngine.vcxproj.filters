@@ -365,6 +365,12 @@
     <ClInclude Include="GameEngineTransform.h">
       <Filter>Object\Component\Transform</Filter>
     </ClInclude>
+    <ClInclude Include="DeferredCalLightEffect.h">
+      <Filter>Object\PostProcess\EngineEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="DeferredMerge.h">
+      <Filter>Object\PostProcess\EngineEffect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -604,6 +610,12 @@
     <ClCompile Include="GameEngineStructuredBufferManager.cpp">
       <Filter>Resources\99Manager</Filter>
     </ClCompile>
+    <ClCompile Include="DeferredCalLightEffect.cpp">
+      <Filter>Object\PostProcess\EngineEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="DeferredMerge.cpp">
+      <Filter>Object\PostProcess\EngineEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="..\ThirdParty\x64\Release\DirectXTex\DirectXTex.lib">
@@ -654,28 +666,12 @@
     <CopyFileToFolders Include="..\ThirdParty\x64\Release\DirectXTex\DirectXTex.pdb">
       <Filter>Lib\DirectXTex\Release</Filter>
     </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\ThirdParty\x64\Release\FBX\zlib-mt.lib">
-      <Filter>Lib\FBX\Release</Filter>
-    </Library>
-    <Library Include="..\ThirdParty\x64\Release\FBX\libfbxsdk.lib">
-      <Filter>Lib\FBX\Release</Filter>
-    </Library>
-    <Library Include="..\ThirdParty\x64\Release\FBX\libfbxsdk-md.lib">
-      <Filter>Lib\FBX\Release</Filter>
-    </Library>
-    <Library Include="..\ThirdParty\x64\Release\FBX\libfbxsdk-mt.lib">
-      <Filter>Lib\FBX\Release</Filter>
-    </Library>
-    <Library Include="..\ThirdParty\x64\Release\FBX\libxml2-md.lib">
-      <Filter>Lib\FBX\Release</Filter>
-    </Library>
-    <Library Include="..\ThirdParty\x64\Release\FBX\libxml2-mt.lib">
-      <Filter>Lib\FBX\Release</Filter>
-    </Library>
-    <Library Include="..\ThirdParty\x64\Release\FBX\zlib-md.lib">
-      <Filter>Lib\FBX\Release</Filter>
-    </Library>
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libfbxsdk-md.lib" />
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libfbxsdk-mt.lib" />
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libfbxsdk.lib" />
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libxml2-md.lib" />
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libxml2-mt.lib" />
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\zlib-md.lib" />
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\zlib-mt.lib" />
   </ItemGroup>
 </Project>

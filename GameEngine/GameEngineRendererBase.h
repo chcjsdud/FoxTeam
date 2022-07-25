@@ -25,9 +25,8 @@ protected:
 
 	virtual void SetRenderGroup(int _Order);
 
-	virtual void Render(float _DeltaTime);
+	virtual void Render(float _DeltaTime, bool _IsDeferred);
 
 private:
 
 };
-

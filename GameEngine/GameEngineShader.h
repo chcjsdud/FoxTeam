@@ -14,6 +14,7 @@ enum class ShaderType
 };
 
 // Ό³Έν :
+class GameEngineFile;
 class GameEngineSampler;
 class GameEngineTexture;
 class GameEngineConstantBuffer;
@@ -24,7 +25,10 @@ class GameEngineConstantBufferSetting;
 class GameEngineStructuredBufferSetting;
 class GameEngineShader : public GameEngineObjectNameBase 
 {
+public:
 	friend class GameEngineLayOut;
+
+	static void AutoCompile(GameEngineFile& ShaderFile);
 
 public:
 	// constrcuter destructer
@@ -47,12 +51,13 @@ protected:
 	std::string EntryPoint_;
 	std::string Code_;
 	ShaderType Type_;
-
+	std::map<std::string, std::list<D3D11_SIGNATURE_PARAMETER_DESC>> OutPutMap;
 
 	void SetVersion(UINT _VersionHigh, UINT _VersionLow);
 	void CreateVersion(const std::string& _ShaderType);
 	void SetCode(const std::string& _Code);
 	void SetEntryPoint(const std::string& _EntryPoint);
+
 
 public:
 	unsigned int GetTypeIndex()
@@ -60,6 +65,13 @@ public:
 		return static_cast<unsigned int>(Type_);
 	}
 	void ResCheck();
+
+	size_t GetOutPutSize(const std::string& _Name) 
+	{
+		std::string Name = GameEngineString::toupper(_Name);
+
+		return OutPutMap[Name].size();
+	}
 
 private:
 	std::map<std::string, GameEngineConstantBufferSetting> ConstantBuffers_;

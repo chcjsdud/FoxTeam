@@ -17,9 +17,15 @@ GameEngineDebug::GameEngineDebug(GameEngineDebug&& _other) noexcept
 {
 }
 
-void GameEngineDebug::LeakCheckOn() 
+void GameEngineDebug::LeakCheckOn(int Check) 
 {
 	_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_ALLOC_MEM_DF);
+
+	if (Check != -1)
+	{
+		_CrtSetBreakAlloc(Check);
+	}
+
 }
 
 //member Func

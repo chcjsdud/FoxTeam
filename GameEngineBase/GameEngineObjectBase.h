@@ -9,7 +9,6 @@ private:	// member Var
 	// true라고 하는순간 메모리적으로 파괴될겁니다.
 	bool isDeath_; // 죽는기능이 아닙니다. 죽었는지 확인할수 있는기능
 	bool isUpdate_; // 이게 업데이트되는 기능이 아니고 업데이트를 해야
-
 	bool isDebug_; // 디버깅 기능 이거 true로 해놓고 f9 걸어 놓으면 
 	int Order_;
 	bool isOrigin_; // 디버깅 기능 이거 true로 해놓고 f9 걸어 놓으면 
@@ -19,6 +18,11 @@ public:
 	bool IsNull()
 	{
 		return nullptr == this;
+	}
+
+	GameEngineObjectBase* GetParent()
+	{
+		return parent_;
 	}
 
 	void SetParent(GameEngineObjectBase* _parent)

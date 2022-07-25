@@ -11,7 +11,6 @@
 GameEngineFBXWindow::GameEngineFBXWindow()
 	: FBXFileSelect(-1)
 	, ActorSelect(-1)
-	, SelectAnimation(nullptr)
 {
 
 
@@ -30,34 +29,83 @@ void GameEngineFBXWindow::TestInit()
 		return;
 	}
 
-	// std::vector<GameEngineFile> Files = FBXFolder.GetAllFile("FBX");
 
-	// GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName("Man38.FBX"));
-	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName("AnimMan.fbx"));
-	Mesh->CreateRenderingBuffer();
-
-
-	GameEngineActor* NewActor = GameEngineCore::CurrentLevel()->CreateActor<GameEngineActor>();
-	Actors.push_back(NewActor);
-
-	GameEngineFBXRenderer* Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
-
-	
-	// Renderer->SetFBXMesh("AnimMan.FBX", "Color");
-	Renderer->SetFBXMesh("AnimMan.FBX", "ColorAni");
-
-	for (UINT i = 0; i < Renderer->GetRenderSetCount(); i++)
 	{
-		Renderer->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
+		std::string MeshName = "Monster3.FBX";
+
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName(MeshName));
+		Mesh->CreateRenderingBuffer();
+
+		GameEngineActor* NewActor = GameEngineCore::CurrentLevel()->CreateActor<GameEngineActor>();
+		Actors.push_back(NewActor);
+
+		GameEngineFBXRenderer* Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
+		// Renderer->SetFBXMeshRenderSet(MeshName, "TextureLight", 0);
+
+		Renderer->SetFBXMesh(MeshName, "TextureDeferredLight");
+
+		Renderer->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
+
+		//for (UINT i = 0; i < Renderer->GetRenderSetCount(); i++)
+		//{
+		//	Renderer->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
+		//}
+
+		// GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(FBXFolder.PathToPlusFileName("ALS_N_Run_F.FBX"));
+
+		//for (size_t i = 0; i < Animation->AnimationCount(); i++)
+		//{
+		//	auto Data = Animation->GetAnimationData(i);
+		//}
+
+		//Renderer->CreateFBXAnimation("ALS_N_Run_F.FBX", "ALS_N_Run_F.FBX", 0);
+		//Renderer->ChangeFBXAnimation("ALS_N_Run_F.FBX");
+
+		return;
 	}
 
-	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(FBXFolder.PathToPlusFileName("ALS_N_Run_F.FBX"));
+
+	{
+		std::string MeshName = "Fox.FBX";
+
+		//GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName(MeshName));
+		//Mesh->CreateRenderingBuffer();
+
+		GameEngineFBXMesh* Mesh1 = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName("Fox enemy.fbx"));
+		Mesh1->CreateRenderingBuffer();
+
+		GameEngineActor* NewActor = GameEngineCore::CurrentLevel()->CreateActor<GameEngineActor>();
+
+		Actors.push_back(NewActor);
+
+		GameEngineFBXRenderer* Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
+		// Renderer->SetFBXMesh("Fox enemy.fbx", "TextureAni");
+		// Renderer->SetFBXMesh("Fox.FBX", "Texture");
+		Renderer->SetFBXMeshRenderSet("Fox enemy.fbx", "TextureAni", 0);
+		Renderer->SetFBXMeshRenderSet("Fox enemy.fbx", "TextureAni", 6);
+
+		Renderer->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
 
 
-	Renderer->CreateFBXAnimation("ALS_N_Run_F.FBX", "ALS_N_Run_F.FBX");
-	Renderer->ChangeFBXAnimation("ALS_N_Run_F.FBX");
+		for (UINT i = 0; i < Renderer->GetRenderSetCount(); i++)
+		{
+			Renderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "fox.Png");
+		}
 
-	Once = true;
+		GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(FBXFolder.PathToPlusFileName("Fox enemy.fbx"));
+
+		for (size_t i = 0; i < Animation->AnimationCount(); i++)
+		{
+			auto Data = Animation->GetAnimationData(i);
+		}
+
+		Renderer->CreateFBXAnimation("Sprint", "Fox enemy.fbx", 5);
+		Renderer->CreateFBXAnimation("Attack", "Fox enemy.fbx", 0);
+		Renderer->ChangeFBXAnimation("Sprint");
+
+		return;
+	}
+
 }
 
 
@@ -384,7 +432,7 @@ void GameEngineFBXWindow::OnGUI()
 		{
 			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(Files[FBXFileSelect].GetFullPath());
 
-			if (0 == Mesh->GetMeshSet().size())
+			if (0 == Mesh->GetAllMeshMap().size())
 			{
 				GameEngineDebug::MsgBox("매쉬정보가 존재하지 않는 FBX입니다");
 				GameEngineFBXMeshManager::GetInst().DeletePath(Files[FBXFileSelect].GetFullPath());
@@ -412,16 +460,16 @@ void GameEngineFBXWindow::OnGUI()
 
 
 	if (nullptr != SelectMesh
-		&& 0 != SelectMesh->GetMeshSet().size()
+		&& 0 != SelectMesh->GetAllMeshMap().size()
 		&& ImGui::Button("Actor Create"))
 	{
-		if (0 == SelectMesh->GetMeshSet().size())
+		if (0 == SelectMesh->GetAllMeshMap().size())
 		{
 			// SelectMesh->MeshLoad();
 			SelectMesh->CreateRenderingBuffer();
 		}
 
-		if (0 != SelectMesh->GetMeshSet().size())
+		if (0 != SelectMesh->GetAllMeshMap().size())
 		{
 			GameEngineActor* NewActor = GameEngineCore::CurrentLevel()->CreateActor<GameEngineActor>();
 			Actors.push_back(NewActor);
@@ -430,7 +478,7 @@ void GameEngineFBXWindow::OnGUI()
 
 			Renderer->SetFBXMesh(SelectMesh->GetName(), "Color");
 
-			for (unsigned int i = 0; i < Renderer->GetRenderSetCount(); i++)
+			for (size_t i = 0; i < Renderer->GetRenderSetCount(); i++)
 			{
 				Renderer->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
 			}
@@ -504,7 +552,7 @@ void GameEngineFBXWindow::ActorControl()
 
 		if (0 != MeshRender.size())
 		{
-			MeshRender[0]->CreateFBXAnimation(SelectAnimation->GetName(), SelectAnimation->GetName());
+			MeshRender[0]->CreateFBXAnimation(SelectAnimation->GetName(), SelectAnimation->GetName(), 0);
 			MeshRender[0]->ChangeFBXAnimation(SelectAnimation->GetName());
 
 			int a = 0;

@@ -2,6 +2,8 @@
 #include "GameEngineTransformComponent.h"
 #include "GameEngineDebugRenderData.h"
 #include "GameEngineLightComponent.h"
+#include "DeferredCalLightEffect.h"
+#include "DeferredMerge.h"
 #include "Enums.h"
 
 // 투영 타입
@@ -40,6 +42,12 @@ private:
 	std::vector<GameEngineDebugRenderData> DebugVector_;
 	GameEngineRenderTarget* CameraBufferTarget_;
 
+	GameEngineRenderTarget* CameraForwardTarget_;
+
+	GameEngineRenderTarget* CameraDeferredGBufferTarget;
+	GameEngineRenderTarget* CameraDeferredLightTarget;
+	GameEngineRenderTarget* CameraDeferredTarget_;
+
 public:
 	CameraComponent();
 	~CameraComponent();
@@ -67,6 +75,26 @@ public:
 		return LightData_;
 	}
 
+	inline GameEngineRenderTarget* GetCameraDeferredTarget()
+	{
+		return CameraDeferredTarget_;
+	}
+
+	inline GameEngineRenderTarget* GetCameraDeferredGBufferTarget()
+	{
+		return CameraDeferredGBufferTarget;
+	}
+
+	inline GameEngineRenderTarget* GetCameraDeferredLightTarget()
+	{
+		return CameraDeferredLightTarget;
+	}
+
+	inline GameEngineRenderTarget* GetCameraForwardTarget_()
+	{
+		return CameraForwardTarget_;
+	}
+
 	inline GameEngineRenderTarget* GetCameraRenderTarget()
 	{
 		return CameraBufferTarget_;
@@ -88,6 +116,8 @@ public:
 	}
 
 
+	DeferredCalLightEffect CalLightEffect;
+	DeferredMerge DeferredMergeEffect;
 
 public:
 	void CameraZoomReset();

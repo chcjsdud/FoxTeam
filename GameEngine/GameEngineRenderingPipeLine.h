@@ -44,6 +44,8 @@ private:	// member Var
 	GameEngineDepthStencil* DepthStencil_;
 
 public:
+	bool IsDeferred();
+
 	inline GameEngineRasterizer* GetRasterizer() const
 	{
 		return Rasterizer_;

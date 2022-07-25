@@ -8,6 +8,8 @@ class RenderSet
 public:
 	GameEngineShaderResHelper* ShaderHelper;
 	GameEngineRenderingPipeLine* PipeLine_;
+	int Index;
+	std::vector<float4x4> BoneData;
 };
 
 class FbxExAniData;
@@ -28,7 +30,7 @@ public:
 	UINT End;
 	UINT Start;
 
-	void Init();
+	void Init(int _Index);
 	void Update(float _DeltaTime);
 };
 
@@ -62,6 +64,8 @@ public:
 	// 이녀석이 여기에 들어있는 Mesh용 fbx입니다.
 	void SetFBXMesh(const std::string& _Value, std::string _PipeLine);
 
+	void SetFBXMeshRenderSet(const std::string& _Value, std::string _PipeLine, int _MeshIndex);
+
 
 	size_t GetRenderSetCount()
 	{
@@ -77,7 +81,7 @@ public:
 protected:
 	void Start() override;
 
-	void Render(float _DeltaTime) override;
+	void Render(float _DeltaTime, bool _IsDeferred) override;
 
 private:
 	std::vector<RenderSet> RenderSets;
@@ -91,11 +95,10 @@ private:
 	// FBXAnimation
 
 public:
-	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName);
+	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex = 0);
 	void ChangeFBXAnimation(const std::string& _AnimationName);
 
 private:
-	std::vector<float4x4> BoneData;
 
 	std::map<std::string, FBXAnimation*> Animations;
 	FBXAnimation* CurAnimation;

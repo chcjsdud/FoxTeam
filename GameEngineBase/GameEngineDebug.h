@@ -10,7 +10,7 @@ class GameEngineDebug
 private:	// member Var
 
 public:
-	static void LeakCheckOn();
+	static void LeakCheckOn(int Check = -1);
 
 protected:		
 	GameEngineDebug(); // default constructer 디폴트 생성자

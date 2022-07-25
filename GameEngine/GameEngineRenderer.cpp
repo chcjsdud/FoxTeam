@@ -25,12 +25,31 @@ GameEngineRenderer::~GameEngineRenderer()
 }
 
 
-void GameEngineRenderer::Render(float _DeltaTime) 
+void GameEngineRenderer::Render(float _DeltaTime, bool _IsDeferred)
 {
-	ShaderHelper.Setting();
-	PipeLine_->Rendering();
-	ShaderHelper.ReSet();
-	PipeLine_->Reset();
+	if (true == _IsDeferred && true == PipeLine_->IsDeferred())
+	{
+		ShaderHelper.Setting();
+		PipeLine_->Rendering();
+		ShaderHelper.ReSet();
+		PipeLine_->Reset();
+	}
+	else if(false == _IsDeferred && false == PipeLine_->IsDeferred())
+	{
+		ShaderHelper.Setting();
+		PipeLine_->Rendering();
+		ShaderHelper.ReSet();
+		PipeLine_->Reset();
+	}
+
+	////if (true == PipeLine_->IsDeferred())
+	////{
+	////}
+
+	//ShaderHelper.Setting();
+	//PipeLine_->Rendering();
+	//ShaderHelper.ReSet();
+	//PipeLine_->Reset();
 }
 
 void GameEngineRenderer::SetMesh(const std::string& _Value)

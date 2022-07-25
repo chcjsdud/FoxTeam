@@ -23,7 +23,7 @@ void GameEngineRendererBase::Start()
 	GetLevel()->GetMainCamera()->PushRenderer(GetOrder(), this);
 }
 
-void GameEngineRendererBase::Render(float _DeltaTime) 
+void GameEngineRendererBase::Render(float _DeltaTime, bool _IsDeferred)
 {
 
 }

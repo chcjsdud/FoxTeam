@@ -23,7 +23,8 @@ GameEngineRenderTarget::~GameEngineRenderTarget() // default destructer 디폴트 �
 		delete ReleaseTextures_[i];
 	}
 	
-	if (nullptr != DepthBuffer_)
+	if (nullptr != DepthBuffer_
+		&& this == DepthBuffer_->GetParent())
 	{
 		delete DepthBuffer_;
 	}
@@ -81,6 +82,7 @@ void GameEngineRenderTarget::CreateDepthBuffer(float4 _Scale)
 	}
 
 	DepthBuffer_ = new GameEngineDepthBuffer();
+	DepthBuffer_->SetParent(this);
 	DepthBuffer_->Create(_Scale);
 }
 
@@ -88,6 +90,7 @@ void GameEngineRenderTarget::Create(GameEngineTexture* _Texture, float4 _ClearCo
 {
 	Textures_.push_back(_Texture);
 	RenderTargetViews_.push_back(_Texture->GetRenderTargetView());
+	RenderTargetViewsReset_.push_back(nullptr);
 	ShaderResourcesViews_.push_back(*_Texture->GetShaderResourcesView());
 	ClearColor_.push_back(_ClearColor);
 }
@@ -121,6 +124,26 @@ void GameEngineRenderTarget::Setting(int _Index)
 	}
 }
 
+void GameEngineRenderTarget::Reset(int _Index /*= -1*/) 
+{
+
+	if (0 >= RenderTargetViews_.size())
+	{
+		GameEngineDebug::MsgBoxError("Render Target Setting Error Size Zero");
+	}
+
+	ID3D11DepthStencilView* View = nullptr;
+
+	if (-1 == _Index)
+	{
+		GameEngineDevice::GetContext()->OMSetRenderTargets(static_cast<UINT>(RenderTargetViewsReset_.size()), &RenderTargetViewsReset_[0], nullptr);
+	}
+	else
+	{
+		GameEngineDevice::GetContext()->OMSetRenderTargets(1, &RenderTargetViewsReset_[_Index], nullptr);
+	}
+}
+
 void GameEngineRenderTarget::Merge(GameEngineRenderTarget* _Other, int _Index) 
 {
 	// 나한테 그려라
@@ -137,4 +160,9 @@ void GameEngineRenderTarget::Copy(GameEngineRenderTarget* _Other)
 {
 	Clear();
 	Merge(_Other);
+}
+
+void GameEngineRenderTarget::SetDepthBuffer(GameEngineDepthBuffer* _Depth)
+{
+	DepthBuffer_ = _Depth;
 }

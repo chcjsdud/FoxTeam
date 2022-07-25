@@ -3,7 +3,6 @@
 
 #pragma warning(push)
 #pragma warning(disable:26495)
-#pragma warning(disable:26451)
 #include <fbxsdk.h>
 #pragma comment(lib, "zlib-md.lib")
 #pragma comment(lib, "libxml2-md.lib")

@@ -43,8 +43,9 @@ public:
 	__int64					FbxModeCount;
 	double					FbxModeRate;
 
-	// 이 애니메이션에 100개의 본의 애니메이션 데이터가 있다.
-	std::vector<FbxExBoneFrame> AniFrameData;
+	// 머리          44본
+	// 몸통          44
+	std::vector<std::vector<FbxExBoneFrame>> AniFrameData;
 
 public:
 	float FrameTime(int _Frame)
@@ -72,19 +73,11 @@ public:
 
 
 public:
-	FbxExAniData() 
-		: AniName("")
-		, StartTime(0)
-		, EndTime(0)
-		, TimeStartCount(0)
-		, TimeEndCount(0)
-		, FrameCount(0)
-		, FbxModeCount(0)
-		, FbxModeRate(0.0)
-		, TimeMode(fbxsdk::FbxTime::EMode::eDefaultMode)
+	FbxExAniData() : AniName(""), StartTime(0), EndTime(0), TimeStartCount(0), TimeEndCount(0), FrameCount(0), FbxModeCount(0), FbxModeRate(0.0)
 	{}
 	~FbxExAniData() {}
 };
+
 
 class FBXAnimation;
 class GameEngineFBXAnimation : public GameEngineFBX
@@ -106,7 +99,7 @@ public:
 	// 기본이 되는 매쉬를 알아야 했다.
 	// 기본이 되는 매쉬가 로드가 안되어있으면 애니메이션이 로드가 안될것이다.
 
-	bool AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::FbxNode* Node);
+	bool AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::FbxNode* Node, int _Index);
 
 	inline size_t GetAnimationCount() 
 	{
@@ -114,13 +107,29 @@ public:
 	}
 
 	fbxsdk::FbxAMatrix GetGeometryTransformation(fbxsdk::FbxNode* pNode);
-	void CalFbxExBoneFrameTransMatrix(GameEngineFBXMesh* _Mesh);
+	void CalFbxExBoneFrameTransMatrix(GameEngineFBXMesh* _Mesh, int _AnimationIndex);
 
 	// 애니메이션 행렬로드
-	void ProcessAnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::FbxNode* pNode);
+	void ProcessAnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::FbxNode* pNode, int _index);
 
 	// 애니메이션행렬을 로드했는데 안채워준애가 있으면 기본값을 채워주는거
-	void ProcessAnimationCheckState(GameEngineFBXMesh* _Fbx);
+	void ProcessAnimationCheckState(GameEngineFBXMesh* _Fbx, int _index);
+
+	size_t AnimationCount() 
+	{
+		return AnimationDatas.size();
+	}
+
+	const FbxExAniData& GetAnimationData(unsigned int _Index) 
+	{
+		if (AnimationDatas.size() <= _Index)
+		{
+			GameEngineDebug::MsgBoxError("애니메이션 범위를 넘어갔습니다.");
+			return FbxExAniData();
+		}
+
+		return AnimationDatas[_Index];
+	}
 
 protected:
 	
@@ -128,6 +137,26 @@ protected:
 private:
 	bool CheckAnimation();
 
+	// 말그대로 애니메이션이 n개다.
+	// 1개밖에 안들어 있었다.
 	std::vector<FbxExAniData> AnimationDatas;
+	// 12개가 들어가 있겠죠?
+
+
+	//  매쉬 12 7      
+	std::vector<std::vector<FbxExAniData>> MatrixData;
+	// 7개가 나왔는데.
+	// 그중에서 2개가 애니메이션이 가능한 매쉬라면
+
+	// 스윙 take001
+	// 어택
+	// 런
+
+	// 매쉬 됨
+	
+	// 내가 애니메이션이 가능한 매쉬정보.
+	// 7개중 2개    애니메이션 종류
+
+	// 매쉬 있음
 };
 

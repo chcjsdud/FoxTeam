@@ -5,6 +5,7 @@
 
 GameEnginePixelShader::GameEnginePixelShader()
 	: GameEngineShader(ShaderType::PS)
+	, IsDeferred_(false)
 {
 }
 
