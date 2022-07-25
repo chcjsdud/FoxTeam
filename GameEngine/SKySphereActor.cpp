@@ -24,6 +24,7 @@ void SKySphereActor::Start()
 		Renderer->SetRenderingPipeLine("Texture");
 		Renderer->SetMesh("Sphere");
 		Renderer->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerFront");
+		//Renderer->ShaderHelper.SettingConstantBufferSet("DiffuseTex", Data);
 		Renderer->ShaderHelper.SettingTexture("DiffuseTex", "EngineSky.jpg");
 
 		Renderer->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });

@@ -35,9 +35,6 @@
     <ClCompile Include="TestMonsterState.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
-    </ClCompile>
     <ClCompile Include="TopUI.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
@@ -55,6 +52,10 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="GameMouse.cpp">
+      <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,9 +163,6 @@
     <ClInclude Include="Enums.h">
       <Filter>01.GameObject\03.Level\PlayLevel\ENUMs</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor\Player</Filter>
-    </ClInclude>
     <ClInclude Include="TopUI.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
@@ -185,6 +183,10 @@
     </ClInclude>
     <ClInclude Include="Player_Status.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="GameMouse.h">
+      <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
