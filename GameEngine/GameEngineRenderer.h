@@ -44,7 +44,7 @@ public:
 	void SetMesh(GameEngineVertexBuffer* _Vtx, GameEngineIndexBuffer* _Idx);
 
 protected:
-	void Render(float _DeltaTime) override;
+	void Render(float _DeltaTime, bool _IsDeferred) override;
 
 private:
 	GameEngineRenderingPipeLine* PipeLine_;

@@ -27,6 +27,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="DeferredCalLightEffect.h" />
+    <ClInclude Include="DeferredMerge.h" />
     <ClInclude Include="EngineVertex.h" />
     <ClInclude Include="GameEngineDebugRenderData.h">
       <SubType>
@@ -278,6 +280,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="DeferredCalLightEffect.cpp" />
+    <ClCompile Include="DeferredMerge.cpp" />
     <ClCompile Include="EngineVertex.cpp" />
     <ClCompile Include="GameEngineCore_Resources.cpp" />
     <ClCompile Include="GameEngineDebugRenderData.cpp">

@@ -9,6 +9,8 @@
 class GameEngineTextureSetting;
 class GameEnginePixelShader : public GameEngineShader
 {
+	friend GameEngineShader;
+
 public:
 	// constrcuter destructer
 	GameEnginePixelShader();
@@ -40,9 +42,16 @@ public:
 
 	void Setting();
 
+	inline bool IsDeferred()
+	{
+		return IsDeferred_;
+	}
+
 protected:
 
 private:
+	bool IsDeferred_;
+
 	ID3D11PixelShader* Shader_;
 
 	void SetConstantBuffers(const GameEngineConstantBufferSetting* _Setting) override;

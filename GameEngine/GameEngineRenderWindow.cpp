@@ -17,27 +17,33 @@ void GameEngineRenderWindow::OnGUI()
 
 	for (size_t i = 0; i < DrawRenderTarget_.size(); i++)
 	{
-		ImGui::Text(GameEngineString::AnsiToUTF8Return(DrawRenderTarget_[i].Name).c_str());
-		ImTextureID Id = reinterpret_cast<ImTextureID>(DrawRenderTarget_[i].Target->GetShaderResourcesView(0));
-		float4 Size = DrawRenderTarget_[i].Size_;
+		size_t Count =  DrawRenderTarget_[i].Target->GetShaderResourcesViewCount();
 
-		if (true == ImGui::ImageButton(Id, { Size.x, Size.y }))
+		for (size_t TextureCount = 0; TextureCount < Count; TextureCount++)
 		{
-			for (auto& Window : ImageShot_)
+			ImGui::Text(GameEngineString::AnsiToUTF8Return(DrawRenderTarget_[i].Name).c_str());
+			ImTextureID Id = reinterpret_cast<ImTextureID>(DrawRenderTarget_[i].Target->GetShaderResourcesView(TextureCount));
+			float4 Size = DrawRenderTarget_[i].Size_;
+
+			if (true == ImGui::ImageButton(Id, { Size.x, Size.y }))
 			{
-				if (true == Window->IsUpdate())
+				for (auto& Window : ImageShot_)
 				{
-					continue;
+					if (true == Window->IsUpdate())
+					{
+						continue;
+					}
+
+					Window->On();
+					Window->SetView(DrawRenderTarget_[i].Target->GetShaderResourcesView(TextureCount), DrawRenderTarget_[i].Target->GetTextureSize(TextureCount));
+					return;
 				}
 
-				Window->On();
-				Window->SetView(DrawRenderTarget_[i].Target->GetShaderResourcesView(0), DrawRenderTarget_[i].Target->GetTextureSize(0));
-				return;
+				GameEngineImageShotWindow* ImageWindow = GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineImageShotWindow>("ImageShot" + std::to_string(ImageShot_.size()));
+				ImageWindow->SetView(DrawRenderTarget_[i].Target->GetShaderResourcesView(TextureCount), DrawRenderTarget_[i].Target->GetTextureSize(TextureCount));
+				ImageShot_.push_back(ImageWindow);
 			}
-
-			GameEngineImageShotWindow* ImageWindow = GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineImageShotWindow>("ImageShot" + std::to_string(ImageShot_.size()));
-			ImageWindow->SetView(DrawRenderTarget_[i].Target->GetShaderResourcesView(0), DrawRenderTarget_[i].Target->GetTextureSize(0));
-			ImageShot_.push_back(ImageWindow);
 		}
+
 	}
 }

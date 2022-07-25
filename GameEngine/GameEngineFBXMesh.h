@@ -32,14 +32,15 @@ public:
 	std::string SpcTextureName; // 텍스처경로
 
 public:
-	FbxExRenderingPipeLineSettingData();
-	~FbxExRenderingPipeLineSettingData();
+	FbxExRenderingPipeLineSettingData() {}
+	~FbxExRenderingPipeLineSettingData() {}
 };
 
 
-struct FbxMeshSet
+struct FbxMeshSet 
 {
 public:
+	int Index;
 	int IsLodLv;
 	bool IsLod;
 
@@ -54,14 +55,16 @@ public:
 	//       애니메이션이 있다면 채워져 있을겁니다.
 	std::map<FbxMesh*, std::map<int, std::vector<FbxExIW>>> MapWI;
 
-	std::vector<std::vector<GameEngineVertex>> Vertexs;
+	std::vector<GameEngineVertex> Vertexs;
+
+	std::vector<std::vector<FbxExRenderingPipeLineSettingData>> MatialData;
+
 	std::vector<std::vector<std::vector<UINT>>> Indexs;
 
 	std::vector<GameEngineVertexBuffer*> GameEngineVertexBuffers;
 	std::vector<std::vector<GameEngineIndexBuffer*>> GameEngineIndexBuffers;
 	// std::vector<std::vector<std::shared_ptr<DirectMesh>>> m_Mesh;
 
-	std::vector<std::vector<FbxExRenderingPipeLineSettingData>> MatialData;
 
 	// FbxMeshSet(const FbxMeshSet& _Other) = delete;
 	// FbxMeshSet(FbxMeshSet&& _Other) noexcept = delete;
@@ -99,7 +102,7 @@ public:
 				GameEngineIndexBuffers[i][j] = nullptr;
 			}
 		}
-
+		
 	}
 };
 
@@ -382,7 +385,7 @@ struct FbxExMeshInfo
 
 	bool bIsLodGroup;
 	std::string LODGroup;
-	int VertexOrder;
+	int LodLevel;
 	int MorphNum;
 
 	FbxExMeshInfo()
@@ -398,7 +401,7 @@ struct FbxExMeshInfo
 		SkeletonElemNum = 0;
 		bIsLodGroup = false;
 		LODGroup = "";
-		VertexOrder = 0;
+		LodLevel = -1;
 		MorphNum = 0;
 	}
 };
@@ -406,8 +409,6 @@ struct FbxExMeshInfo
 
 class FbxClusterData
 {
-public:
-	FbxClusterData();
 public:
 	fbxsdk::FbxCluster* Cluster;
 	fbxsdk::FbxMesh* Mesh;
@@ -436,19 +437,24 @@ public:
 	void Load(const std::string& _Path);
 	void CreateRenderingBuffer();
 
-	std::map<int, FbxMeshSet>& GetMeshSet()
+	std::vector<FbxMeshSet>& GetAllMeshMap()
 	{
 		return AllMeshMap;
 	}
 
-	size_t GetBoneCount()
+	size_t GetBoneCount(UINT _Index) 
 	{
-		return AllBones.size();
+		return AllBones[_Index].size();
 	}
 
-	GameEngineStructuredBuffer* GetAnimationBuffer()
+	GameEngineStructuredBuffer* GetAnimationBuffer(int _Index) 
 	{
-		return AnimationBuffer;
+		if (AnimationBuffers.size() <= _Index)
+		{
+			return nullptr;
+		}
+
+		return AnimationBuffers[_Index];
 	}
 
 	bool ImportBone();
@@ -461,17 +467,14 @@ private:
 
 	// Lhand RHand
 
+	// 이녀석은 정보
 	std::vector<FbxExMeshInfo> MeshInfos;
-	std::vector<Bone> AllBones; // 
+	std::vector<FbxMeshSet> AllMeshMap;
+	std::vector<std::vector<Bone>> AllBones; 
+	std::vector<std::map<std::string, Bone*>> AllFindMap; 
+	std::vector<GameEngineStructuredBuffer*> AnimationBuffers;
+	std::vector<std::vector<FbxClusterData>> ClusterData;
 
-	// 이름이 겹칠 가능성 때문에 멀티맵으로 하는겁니다.
-	std::map<std::string, Bone*> AllFindMap; // 
-
-	std::map<int, FbxMeshSet> AllMeshMap;
-
-	std::map<int, std::vector<FbxClusterData>> ClusterData;
-
-	GameEngineStructuredBuffer* AnimationBuffer;
 
 	fbxsdk::FbxNode* RecursiveFindParentLodGroup(fbxsdk::FbxNode* parentNode);
 
@@ -483,7 +486,6 @@ private:
 
 
 	// 탄젠트 바이노말 계산
-
 	void LoadBinormal(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshMatrix, std::vector<GameEngineVertex>& _ArrVtx, int VtxId, int _Index);
 	void LoadTangent(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshMatrix, std::vector<GameEngineVertex>& _ArrVtx, int VtxId, int _Index);
 	void LoadNormal(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshMatrix, std::vector<GameEngineVertex>& _ArrVtx, int VtxId, int _Index);
@@ -500,8 +502,8 @@ private:
 	// 애니메이션 관련
 
 
-	Bone* FindBone(int _Index);
-	Bone* FindBone(std::string _Name);
+	Bone* FindBone(int NodeIndex, int _Index);
+	Bone* FindBone(int NodeIndex, std::string _Name);
 	bool IsBone(fbxsdk::FbxNode* Link);
 
 	bool RetrievePoseFromBindPose(fbxsdk::FbxScene* pScene, const std::vector<fbxsdk::FbxNode*>& NodeArray, fbxsdk::FbxArray<fbxsdk::FbxPose*>& PoseArray);
@@ -517,6 +519,12 @@ private:
 	void LoadAnimationVertexData(FbxMeshSet* _DrawData, const std::vector<FbxClusterData>& vecClusterData);
 	void DrawSetWeightAndIndexSetting(FbxMeshSet* _DrawSet, fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxCluster* _Cluster, int _BoneIndex);
 	void CalAnimationVertexData(FbxMeshSet& _DrawSet);
+
+	// Lod그룹 함수
+
+	fbxsdk::FbxNode* RecursiveGetFirstMeshNode(fbxsdk::FbxNode* Node, fbxsdk::FbxNode* NodeToFind);
+	fbxsdk::FbxNode* FindLODGroupNode(fbxsdk::FbxNode* NodeLodGroup, int LodIndex, fbxsdk::FbxNode* NodeToFind);
+
 
 };
 

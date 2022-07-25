@@ -53,6 +53,20 @@ bool GameEngineShaderResHelper::IsStructuredBuffer(const std::string& _SettingNa
 	return true;
 }
 
+bool GameEngineShaderResHelper::IsTextureSetting(const std::string& _SettingName)
+{
+	std::string UpperName = GameEngineString::toupper(_SettingName);
+
+	std::map<std::string, GameEngineTextureSetting>::iterator FindIter = AllTextureData_.find(UpperName);
+
+	if (FindIter == AllTextureData_.end())
+	{
+		return false;
+	}
+
+	return true;
+}
+
 
 void GameEngineShaderResHelper::ShaderResourcesCheck(GameEngineRenderingPipeLine* _Pipe) 
 {

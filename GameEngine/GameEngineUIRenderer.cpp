@@ -64,9 +64,14 @@ void GameEngineUIRenderer::TextSetting(std::string _FontName, std::string _Print
 	Color_ = _Color;
 }
 
-void GameEngineUIRenderer::Render(float _DeltaTime)
+void GameEngineUIRenderer::Render(float _DeltaTime, bool _IsDeferred)
 {
-	GameEngineRenderer::Render(_DeltaTime);
+	if (true == _IsDeferred)
+	{
+		return;
+	}
+
+	GameEngineRenderer::Render(_DeltaTime, _IsDeferred);
 
 	if ("" == PrintText_)
 	{
