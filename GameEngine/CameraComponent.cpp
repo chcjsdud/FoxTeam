@@ -355,46 +355,6 @@ void CameraComponent::PushLight(GameEngineLightComponent* _Light)
 	Lights_.push_back(_Light);
 }
 
-void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type)
-{
-	switch (_Type)
-	{
-	case CollisionType::Point2D:
-	{
-		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
-		break;
-	}
-	case CollisionType::CirCle:
-	{
-		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
-		break;
-	}
-	case CollisionType::Rect:
-	{
-		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
-		break;
-	}
-	case CollisionType::OrientedRect:
-	{
-		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
-		break;
-	}
-
-	case CollisionType::Point3D:
-	case CollisionType::Sphere3D:
-	case CollisionType::AABBBox3D:
-	case CollisionType::OBBBox3D:
-	case CollisionType::MAX:
-	{
-		GameEngineDebug::MsgBoxError("처리할수 없는 디버그 타입입니다.");
-		break;
-	}
-	}
-
-	DebugVector_[DebugRenderCount_].Data_ = _Trans->GetTransformData();
-	++DebugRenderCount_;
-}
-
 void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color)
 {
 	switch (_Type)
@@ -409,7 +369,6 @@ void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType
 	{
 		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugCircle");
 		DebugVector_[DebugRenderCount_].Color_ = _Color;
-		//DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");
 		break;
 	}
 	case CollisionType::Rect:
@@ -431,9 +390,14 @@ void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType
 	{
 		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugBox");
 		DebugVector_[DebugRenderCount_].Color_ = _Color;
+		break;
 	}
-	break;
 	case CollisionType::OBBBox3D:
+	{
+		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugBox");
+		DebugVector_[DebugRenderCount_].Color_ = _Color;
+		break;
+	}
 	case CollisionType::MAX:
 	{
 		GameEngineDebug::MsgBoxError("처리할수 없는 디버그 타입입니다.");
