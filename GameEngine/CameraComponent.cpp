@@ -239,7 +239,7 @@ void CameraComponent::DebugRender()
 		DebugVector_[i].Data_.Projection_ = Projection;
 		DebugVector_[i].Data_.View_ = View;
 		DebugVector_[i].Data_.WVPCalculation();
-
+		DebugVector_[i].ShaderHelper_.SettingConstantBufferLink("LightsData", LightData_);
 		DebugVector_[i].ShaderHelper_.Setting();
 		DebugVector_[i].PipeLine_->Rendering();
 		DebugVector_[i].ShaderHelper_.ReSet();
