@@ -36,10 +36,10 @@ void UserGame::Initialize()
 	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
-	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
-	//LevelChange("MeshLoadLevel");
-
 	LevelCreate<PlayLevel>("Play");
+	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
+
+	//LevelChange("MeshLoadLevel");
 	LevelChange("Play");
 
 	return;

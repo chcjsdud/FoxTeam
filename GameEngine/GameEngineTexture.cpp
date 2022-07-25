@@ -170,7 +170,7 @@ void GameEngineTexture::Load(const std::string& _Path)
 	GameEngineFile NewFile = GameEngineFile(_Path);
 
 	std::string Extension = NewFile.GetExtension();
-	GameEngineString::toupper(Extension);
+	Extension = GameEngineString::toupper(Extension);
 
 	// PNG 풍화설
 
@@ -178,11 +178,14 @@ void GameEngineTexture::Load(const std::string& _Path)
 	GameEngineString::AnsiToUnicode(_Path, wPath);
 
 	// PNG
-	if (Extension == "TGA")
+	if (Extension == ".TGA")
 	{
-		GameEngineDebug::MsgBoxError("로드할수 없는 이미지 포맷입니다" + Extension);
+		if (S_OK != DirectX::LoadFromTGAFile(wPath.c_str(), DirectX::TGA_FLAGS_NONE, nullptr, Image_))
+		{
+			GameEngineDebug::MsgBoxError("로드할수 없는 이미지 포맷입니다" + _Path);
+		}
 	}
-	else if (Extension == "DDS")
+	else if (Extension == ".DDS")
 	{
 		GameEngineDebug::MsgBoxError("로드할수 없는 이미지 포맷입니다" + Extension);
 	}
