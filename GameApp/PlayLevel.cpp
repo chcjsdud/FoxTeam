@@ -5,6 +5,7 @@
 #include "TestMonster.h"
 #include "Map.h"
 #include "GameMouse.h"
+#include "PlayController.h"
 
 #include "Controller.h"
 #include "Yuki.h"
@@ -23,6 +24,7 @@
 #include "UserGame.h"
 
 PlayLevel::PlayLevel() 
+	: controller_(nullptr)
 {
 }
 
@@ -181,6 +183,7 @@ void PlayLevel::CreateActorLevel()
 #pragma endregion
 
 	{
+
 		LightActor* Actor;
 	
 		Actor = CreateActor<LightActor>();
@@ -199,14 +202,19 @@ void PlayLevel::CreateActorLevel()
 	}
 
 	{
-		GameMouse* mouse = CreateActor<GameMouse>();
+	//	GameMouse* mouse = CreateActor<GameMouse>();
+	//
+	//	Player* Actor = CreateActor<Player>();
+	//	Actor->SetParentMouse(mouse); // 플레이어 캐릭터를 종속시킬 마우스 커서를 알려줍니다. 게임매니저 생성 시 삭제될 함수
+	//
+	//	TestMonster* Monster = CreateActor<TestMonster>();
+	//	Monster->GetTransform()->SetWorldPosition(float4{ 800.0f, 0.0f, 800.0f });
+	//	Monster->SetTarget(Actor); // 게임매니저 생성으로 플레이어 위치정보 공유될 시 삭제될 함수입니다.
 
-		Player* Actor = CreateActor<Player>();
-	
+	}
 
-		TestMonster* Monster = CreateActor<TestMonster>();
-		Monster->GetTransform()->SetWorldPosition(float4{ 800.0f, 0.0f, 800.0f });
-		Monster->SetTarget(Actor); // 게임매니저 생성으로 플레이어 위치정보 공유될 시 삭제될 함수입니다.
+	{
+		controller_ = CreateActor<PlayController>();
 
 	}
 

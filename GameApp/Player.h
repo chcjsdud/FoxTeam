@@ -49,7 +49,7 @@ private:
 
 	//키 방향
 	float4 KeyDir_;
-	//락온된 대상의 방향
+	//락온된 대상 or 마우스 우클릭시 커서의 방향
 	float4 TargetDir_;
 	//바라봐야 할 방향
 	float4 FowordDir_;
@@ -60,6 +60,21 @@ private:
 	bool IsMove_;
 	bool IsRockon_;
 
+
+	// 이터널 리턴 추가 변수
+	float4 targetPos_;
+	// 하달받은 마우스 커서 우클릭 좌표
+	float4 arrivalPos_;
+	// 최종 도착 좌표
+
+public:
+	void SetTargetPos(const float4 _targetPos)
+	{
+		targetPos_ = _targetPos;
+		IsMove_ = true;
+	}
+
+private:
 	//UI
 	class TopUI* TopUI_;
 	class LockOnUI* LockOnUI_;
@@ -127,6 +142,14 @@ private:
 	void Attack_Update(float _DeltaTime);
 	void Attack_End();
 
+	void Stand_Start();
+	void Stand_Update(float _DeltaTime);
+	void Stand_End();
+
+	void Move_Start();
+	void Move_Update(float _DeltaTime);
+	void Move_End();
+
 
 	void AttackStateInit()
 	{
@@ -153,6 +176,9 @@ private:
 	// update류 함수에 같이 들어가 카메라 업데이트, 바로 뒤에서 바라보는 함수
 	void CameraUpdate_BackPosition(float _DeltaTime);
 	void CameraUpdate_UpPosition(float _DeltaTime);
+
+	// 이터널 리턴용 추가 : 쿼터뷰 시점
+	void CameraUpdate_EternalReturn(float _DeltaTime);
 
 	void KeyDirUpdate(float _DeltaTime);
 	// update류 함수에 같이 들어가 이동을 제어함
@@ -194,10 +220,7 @@ private:
 #pragma region MemberFunc
 private:
 
-	void SetParentMouse(GameMouse* _targetMouse)
-	{
-		targetMouse_ = _targetMouse;
-	}
+
 
 	void SetTarget(GameEngineActor* _Target)
 	{
@@ -224,6 +247,10 @@ private:
 #pragma region Player 외부함수
 public:
 
+	void SetParentMouse(GameMouse* _targetMouse)
+	{
+		targetMouse_ = _targetMouse;
+	}
 	//void PlayerAddStat(PlayerStatus& _PlayerStatus)
 	//{
 	//	PlayerStatusAdd_ += _PlayerStatus;

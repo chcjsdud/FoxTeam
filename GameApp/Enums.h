@@ -3,6 +3,7 @@
 enum class CollisionGroup
 {
 	None = 0,
+	MousePointer,
 	Player,
 	PlayerAttack,
 	MonsterSight,

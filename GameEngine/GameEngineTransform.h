@@ -76,6 +76,11 @@ public:
 		WVP_ = WorldWorld_ * View_ * Projection_;
 	}
 
+	void WVCalculation()
+	{
+		WV_ = WorldWorld_ * View_;
+	}
+
 	void RootCalculation() 
 	{
 		WorldWorld_ = LocalWorld_;
@@ -216,6 +221,17 @@ public:
 	{
 		//이현, 임시 수정
 		float4 temp = _Value;
+		temp.w = 0.f;
+		SetWorldPosition(TransformData_.vWorldPosition_ + temp);
+	}
+
+	inline void SetWorldMoveXZ(const float4& _Value)
+	{
+		//박종원, 추가
+		// XY로 들어온 값을 XZ로 변환
+		float4 temp = _Value;
+		temp.z = temp.y;
+		temp.y = 0.f;
 		temp.w = 0.f;
 		SetWorldPosition(TransformData_.vWorldPosition_ + temp);
 	}

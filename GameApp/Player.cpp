@@ -118,12 +118,16 @@ void Player::StateInit()
 {
 	//State 함수
 	{
-		PlayerState_.CreateState<Player>("Idle", this, &Player::Idle_Start, &Player::Idle_Update, &Player::Idle_End);;
-		PlayerState_.CreateState<Player>("Walk", this, &Player::Walk_Start, &Player::Walk_Update, &Player::Walk_End);;
-		PlayerState_.CreateState<Player>("Run", this, &Player::Run_Start, &Player::Run_Update, &Player::Run_End);;
-		PlayerState_.CreateState<Player>("Attack", this, &Player::Attack_Start, &Player::Attack_Update, &Player::Attack_End);;
+		//PlayerState_.CreateState<Player>("Idle", this, &Player::Idle_Start, &Player::Idle_Update, &Player::Idle_End);;
+		//PlayerState_.CreateState<Player>("Walk", this, &Player::Walk_Start, &Player::Walk_Update, &Player::Walk_End);;
+		//PlayerState_.CreateState<Player>("Run", this, &Player::Run_Start, &Player::Run_Update, &Player::Run_End);;
+		//PlayerState_.CreateState<Player>("Attack", this, &Player::Attack_Start, &Player::Attack_Update, &Player::Attack_End);;
 
-		PlayerState_.ChangeState("Idle");
+		// 마우스 커서 이동 시험용 스테이트
+		PlayerState_.CreateState<Player>("Stand", this, &Player::Stand_Start, &Player::Stand_Update, &Player::Stand_End);;
+		PlayerState_.CreateState<Player>("Move", this, &Player::Move_Start, &Player::Move_Update, &Player::Move_End);;
+
+		PlayerState_.ChangeState("Stand");
 	}
 
 
@@ -131,8 +135,8 @@ void Player::StateInit()
 	{
 		CameraState_.CreateState<Player>("Up", this, nullptr, &Player::CameraUpdate_UpPosition, nullptr);
 		CameraState_.CreateState<Player>("Back", this, nullptr, &Player::CameraUpdate_BackPosition, nullptr);
-
-		CameraState_.ChangeState("Up");
+		CameraState_.CreateState<Player>("EternalReturn", this, nullptr, &Player::CameraUpdate_EternalReturn, nullptr);
+		CameraState_.ChangeState("EternalReturn");
 	}
 }
 
@@ -166,9 +170,10 @@ void Player::UIInit()
 	Inventory_->SetPlayer(this);
 }
 
-void Player::CurDirUpdate(float _DeltaTime)
+void Player::CurDirUpdate(float _DeltaTime)	// 마우스 커서 우클릭한 위치로의 방향 벡터를 계산합니다.
 {
-	RockOnUpdate(_DeltaTime);
+	// RockOnUpdate(_DeltaTime);
+	
 	KeyDirUpdate(_DeltaTime);
 }
 
@@ -408,6 +413,24 @@ void Player::CameraUpdate_UpPosition(float _DeltaTime)
 
 		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldPosition(CamPos);
 		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldRotationDegree({ 25.f,0.f,0.f });
+	}
+}
+
+void Player::CameraUpdate_EternalReturn(float _DeltaTime)
+{
+	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
+	{
+		return;
+	}
+	else
+	{
+		float4 CamPos = GetTransform()->GetWorldPosition();
+		CamPos.y += 700.f;
+		CamPos.z -= 550;
+		
+		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldPosition(CamPos);
+		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldRotationDegree({ 60.f,0.f,0.f });
+
 	}
 }
 

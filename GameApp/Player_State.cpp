@@ -219,3 +219,74 @@ void Player::Attack_End()
 	PlayerAttackHitBoxCollision_->Off();
 }
 
+
+
+// 마우스 커서 이동용
+// 명령을 컨트롤러에서 하달받고
+// 하달받은 스테이트와 장입된 변수만으로 일을 처리합니다.
+
+void Player::Stand_Start()
+{
+	IsMove_ = false;
+	return;
+}
+
+void Player::Stand_Update(float _DeltaTime)
+{
+	if (true == IsMove_)
+	{
+		PlayerState_.ChangeState("Move");
+	}
+
+	return;
+}
+
+void Player::Stand_End()
+{
+	return;
+}
+
+void Player::Move_Start()
+{
+	arrivalPos_ = { targetPos_.x + GetTransform()->GetWorldPosition().x, 0.0f,  targetPos_.y + GetTransform()->GetWorldPosition().y };
+	int a = 0;
+	return;
+}
+
+void Player::Move_Update(float _DeltaTime)
+{
+	//CurDirUpdate(_DeltaTime);
+	// 마우스 커서 우클릭한 위치로의 방향 벡터를 계산합니다.
+
+	if (static_cast<int>(arrivalPos_.x) == static_cast<int>(GetTransform()->GetWorldPosition().x) 
+		&& static_cast<int>(arrivalPos_.z) == static_cast<int>(GetTransform()->GetWorldPosition().z)) // 목표 위치에 다다르면
+	{
+		IsMove_ = false;
+		PlayerState_.ChangeState("Stand");
+	}
+
+	if (targetPos_ != GetTransform()->GetWorldPosition())
+	{
+		TargetDir_ = targetPos_;
+		TargetDir_.Normalize3D(); // 정규화
+	}
+
+	//MoveUpdate(_DeltaTime);
+	// 우클릭 위치로 이동합니다.
+	{
+		GetTransform()->SetWorldMoveXZ(TargetDir_ * 200.0f * _DeltaTime);
+	}
+
+	//MoveRotateUpdate(_DeltaTime);
+	// 우클릭 위치로 몸을 향합니다.
+	
+	
+}
+
+void Player::Move_End()
+{
+	TargetDir_ = float4::ZERO;
+	arrivalPos_ = float4::ZERO;
+	IsMove_ = false;
+	return;
+}

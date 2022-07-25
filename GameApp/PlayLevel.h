@@ -3,6 +3,8 @@
 #include <GameEngine/GameEngineLevel.h>
 #include <GameEngine/GameEngineFSM.h>
 
+
+class PlayController;
 class PlayLevel : public GameEngineLevel
 {
 public:
@@ -22,7 +24,7 @@ public:
 protected:
 
 private:
-
+	PlayController* controller_;
 
 private:
 	GameEngineFSM LoadState_;
