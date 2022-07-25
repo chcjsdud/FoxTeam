@@ -10,6 +10,7 @@
 
 // 플레이어를 static으로 만들고 언제 어디서든 불러올 수 있으면 좋겠다.(편하겠다)
 
+class GameMouse;
 class GameEngineLevel;
 class GameEngineImageRenderer;
 class Player : public GameEngineActor
@@ -40,7 +41,11 @@ private:
 	GameEngineFBXRenderer* FBXRenderer_;
 #pragma endregion
 
+	// 인식해야 하는 마우스 액터 포인터
+	GameMouse* targetMouse_;
+
 	GameEngineActor* Target_;
+
 
 	//키 방향
 	float4 KeyDir_;
@@ -188,6 +193,11 @@ private:
 
 #pragma region MemberFunc
 private:
+
+	void SetParentMouse(GameMouse* _targetMouse)
+	{
+		targetMouse_ = _targetMouse;
+	}
 
 	void SetTarget(GameEngineActor* _Target)
 	{

@@ -4,6 +4,8 @@
 #include "TopUI.h"
 #include "TestMonster.h"
 #include "Map.h"
+#include "GameMouse.h"
+
 
 #include <GameEngine/CameraComponent.h>
 #include <GameEngine/GameEngineTransform.h>
@@ -190,6 +192,8 @@ void PlayLevel::CreateActorLevel()
 	}
 
 	{
+		GameMouse* mouse = CreateActor<GameMouse>();
+
 		Player* Actor = CreateActor<Player>();
 	
 
