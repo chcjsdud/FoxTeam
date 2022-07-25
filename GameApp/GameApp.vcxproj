@@ -184,6 +184,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
+    <ClCompile Include="Characters.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="GameMouse.cpp">
       <SubType>
       </SubType>
@@ -197,6 +199,11 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Monsters.cpp" />
+    <ClCompile Include="Objects.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -250,8 +257,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Yuki.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Characters.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="CustomVertex.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GameMouse.h">
@@ -268,6 +281,11 @@
     </ClInclude>
     <ClInclude Include="Macro.h" />
     <ClInclude Include="Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Monsters.h" />
+    <ClInclude Include="Objects.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -304,6 +322,10 @@
     </ClInclude>
     <ClInclude Include="UserGame_Resources_Shader.h" />
     <ClInclude Include="WoodStick.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Yuki.h">
       <SubType>
       </SubType>
     </ClInclude>
