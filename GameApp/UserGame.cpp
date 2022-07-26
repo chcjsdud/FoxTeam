@@ -11,6 +11,8 @@
 #include "MeshLoadLevel.h"
 #include "PlayLevel.h"
 
+#include "SJH_PlayLevel.h"
+
 std::atomic<int> UserGame::LoadingFolder = 0;
 
 
@@ -37,10 +39,11 @@ void UserGame::Initialize()
 
 
 	LevelCreate<PlayLevel>("Play");
-	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
+	//LevelCreate<SJH_PlayLevel>("SJH_PlayLevel");	// 220727 SJH : TEST¿ë ·¹º§
 
-	//LevelChange("MeshLoadLevel");
+	
 	LevelChange("Play");
+	//LevelChange("SJH_PlayLevel");
 
 	return;
 }

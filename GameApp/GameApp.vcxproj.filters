@@ -75,6 +75,9 @@
     <ClCompile Include="RayTextBox.cpp">
       <Filter>01.GameObject\99.JGH\RayTestLevel</Filter>
     </ClCompile>
+    <ClCompile Include="SJH_PlayLevel.cpp">
+      <Filter>01.GameObject\99.SJH\02.Level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -253,6 +256,9 @@
     </ClInclude>
     <ClInclude Include="RayTextBox.h">
       <Filter>01.GameObject\99.JGH\RayTestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="SJH_PlayLevel.h">
+      <Filter>01.GameObject\99.SJH\02.Level</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
