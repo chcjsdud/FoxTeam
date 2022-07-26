@@ -54,12 +54,6 @@
     <ClCompile Include="GameMouse.cpp">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClCompile>
-    <ClCompile Include="Monsters.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
-    </ClCompile>
-    <ClCompile Include="Objects.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
-    </ClCompile>
     <ClCompile Include="PlayController.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor</Filter>
     </ClCompile>
@@ -119,12 +113,6 @@
     <Filter Include="01.GameObject\99.SJH\01.Actor">
       <UniqueIdentifier>{e36967ae-78a3-4b45-b023-9dcaf7532b4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.SJH\00.Controller">
-      <UniqueIdentifier>{a5a64047-9e10-4fa3-a9f1-703511e40bc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\RootClass">
-      <UniqueIdentifier>{74a118af-cdea-4d4b-bf15-3199122a4558}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\03.Level\MeshLoadLevel">
       <UniqueIdentifier>{e7fc81f9-dff4-4828-83dd-89047b857231}</UniqueIdentifier>
     </Filter>
@@ -182,6 +170,12 @@
     <Filter Include="01.GameObject\99.YSJ">
       <UniqueIdentifier>{46f26566-5222-4e2a-bfa8-6a456c2f4039}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\99.SJH\02.Level">
+      <UniqueIdentifier>{b66488e9-fcb7-4625-9255-3efb2275161c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.SJH\99.Controller">
+      <UniqueIdentifier>{a5a64047-9e10-4fa3-a9f1-703511e40bc8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -235,12 +229,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameMouse.h">
       <Filter>01.GameObject\02.GlobalActor</Filter>
-    </ClInclude>
-    <ClInclude Include="Monsters.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
-    </ClInclude>
-    <ClInclude Include="Objects.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
     </ClInclude>
     <ClInclude Include="PlayController.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor</Filter>
