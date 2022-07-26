@@ -143,6 +143,6 @@ public:
 
 private:
 
-	void Item_Loot();
+	//void Item_Loot();
 };
 

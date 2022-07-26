@@ -20,43 +20,24 @@ Player::Player()
 	, PlayerHitBoxCollision_(nullptr)
 	, PlayerAttackHitBoxCollision_(nullptr)
 	, PlayerLockOnCollision_(nullptr)
-	, Inventory_(nullptr)
+	//, Inventory_(nullptr)
 	, LockOnUI_(nullptr)
 	, TopUI_(nullptr)
-	, CurFowordDir_{0.f,0.f,1.f,0.f}
-	, KeyDir_{0.f,0.f,1.f,0.f}
-	, FowordDir_{0.f,0.f,1.f,0.f}
-	, YRotateSpeed_(900.f)
-	, IsMove_(false)
-	, AttackTurm_(0.f)
-	, AttackTime_(0.f)
-	, AttackHitTime_(0.f)
-	, AttackLevel_(0)
-	, RollCoolTime_(0.f)
-	, RollSecond_(0.f)
+	, JobType_(JobType::NONE)
 {
-	PlayerStatusBase_.Stat_Hp_ = 0;
-	PlayerStatusBase_.Stat_MaxHp_ = 100;
-	PlayerStatusBase_.Stat_Stamina_ = 0.f;
-	PlayerStatusBase_.Stat_MaxStamina_ = 100.f;
-	PlayerStatusBase_.Stat_AttackPower_ = 10;
-	PlayerStatusBase_.Stat_Speed_ = 300;
-	PlayerStatusBase_.Stat_RunSpeed_ = 600;
-	PlayerStatusBase_.Stat_Stamina_RecoverRate_ = 1.f;
+	//PlayerStatusBase_.Stat_Hp_ = 0;
+	//PlayerStatusBase_.Stat_MaxHp_ = 100;
+	//PlayerStatusBase_.Stat_Stamina_ = 0.f;
+	//PlayerStatusBase_.Stat_MaxStamina_ = 100.f;
+	//PlayerStatusBase_.Stat_AttackPower_ = 10;
+	//PlayerStatusBase_.Stat_Speed_ = 300;
+	//PlayerStatusBase_.Stat_RunSpeed_ = 600;
+	//PlayerStatusBase_.Stat_Stamina_RecoverRate_ = 1.f;
 }
 
 Player::~Player() 
 {
-	auto iter0 = Player_BufferList_.begin();
-	auto iter1 = Player_BufferList_.end();
 
-	for (; iter0 != iter1;)
-	{
-		delete iter0->second;	
-		iter0++;
-	}
-
-	Player_BufferList_.clear();
 }
 
 void Player::Start()
@@ -73,7 +54,7 @@ void Player::Update(float _DeltaTime)
 {
 	DEBUGUpdate(_DeltaTime);
 	
-	PlayerState_.Update(_DeltaTime);
+	State_.Update(_DeltaTime);
 	CameraState_.Update(_DeltaTime);
 }
 
@@ -117,18 +98,17 @@ void Player::ComponenetInit()
 void Player::StateInit()
 {
 	//State ÇÔ¼ö
-	{
-		//PlayerState_.CreateState<Player>("Idle", this, &Player::Idle_Start, &Player::Idle_Update, &Player::Idle_End);;
-		//PlayerState_.CreateState<Player>("Walk", this, &Player::Walk_Start, &Player::Walk_Update, &Player::Walk_End);;
-		//PlayerState_.CreateState<Player>("Run", this, &Player::Run_Start, &Player::Run_Update, &Player::Run_End);;
-		//PlayerState_.CreateState<Player>("Attack", this, &Player::Attack_Start, &Player::Attack_Update, &Player::Attack_End);;
+	//{
+	//	PlayerState_.CreateState<Player>("Idle", this, &Player::Idle_Start, &Player::Idle_Update, &Player::Idle_End);;
+	//	PlayerState_.CreateState<Player>("Walk", this, &Player::Walk_Start, &Player::Walk_Update, &Player::Walk_End);;
+	//	PlayerState_.CreateState<Player>("Run", this, &Player::Run_Start, &Player::Run_Update, &Player::Run_End);;
+	//	PlayerState_.CreateState<Player>("Attack", this, &Player::Attack_Start, &Player::Attack_Update, &Player::Attack_End);;
 
 		// ¸¶¿ì½º Ä¿¼­ ÀÌµ¿ ½ÃÇè¿ë ½ºÅ×ÀÌÆ®
-		PlayerState_.CreateState<Player>("Stand", this, &Player::Stand_Start, &Player::Stand_Update, &Player::Stand_End);;
-		PlayerState_.CreateState<Player>("Move", this, &Player::Move_Start, &Player::Move_Update, &Player::Move_End);;
+	State_.CreateState<Player>("Stand", this, &Player::Stand_Start, &Player::Stand_Update, &Player::Stand_End);;
+	State_.CreateState<Player>("Move", this, &Player::Move_Start, &Player::Move_Update, &Player::Move_End);;
 
-		PlayerState_.ChangeState("Stand");
-	}
+	State_.ChangeState("Stand");
 
 
 	//Ä«¸Þ¶ó ÇÔ¼ö
@@ -166,8 +146,8 @@ void Player::UIInit()
 	LockOnUI_->SetPlayer(this);
 	LockOnUI_->Off();
 
-	Inventory_ = GetLevel()->CreateActor<Inventory>();
-	Inventory_->SetPlayer(this);
+	//Inventory_ = GetLevel()->CreateActor<Inventory>();
+	//Inventory_->SetPlayer(this);
 }
 
 void Player::CurDirUpdate(float _DeltaTime)	// ¸¶¿ì½º Ä¿¼­ ¿ìÅ¬¸¯ÇÑ À§Ä¡·ÎÀÇ ¹æÇâ º¤ÅÍ¸¦ °è»êÇÕ´Ï´Ù.
@@ -179,58 +159,23 @@ void Player::CurDirUpdate(float _DeltaTime)	// ¸¶¿ì½º Ä¿¼­ ¿ìÅ¬¸¯ÇÑ À§Ä¡·ÎÀÇ ¹æÇ
 
 void Player::StaminaRecoverUpdate(float _DeltaTime)
 {
-	PlayerStatusFinal_.Stat_Stamina_ += _DeltaTime* PlayerStatusFinal_.Stat_Stamina_RecoverRate_;
+	Status_Final_.Stat_StaminaRecovery_ += _DeltaTime* Status_Final_.Stat_StaminaRecovery_;
 
-	if (PlayerStatusFinal_.Stat_Stamina_ > 100.f)
+	if (Status_Final_.Stat_StaminaRecovery_ > 100.f)
 	{
-		PlayerStatusFinal_.Stat_Stamina_ = 100.f;
+		Status_Final_.Stat_StaminaRecovery_ = 100.f;
 	}
 }
 
-bool Player::SyncPlayerStat()
-{
-	// ½ºÅÝ ÃÊ±âÈ­
-	PlayerStatusMult_.Reset();
-	PlayerStatusAdd_.Reset();
-	PlayerStatusFinal_.Reset();
-
-	//ÇÃ·¹ÀÌ¾î ¹öÇÁ ¸®½ºÆ®
-	auto iter0 = Player_BufferList_.begin();
-	auto iter1 = Player_BufferList_.end();
-
-	for (; iter0 != iter1;)
-	{
-		// ´õÇØ¾ß ÇÒ ½ºÅÝÀº PlayerStatusAdd_, 
-		// °öÇØ¾ß ÇÒ ½ºÅÝÀº PlayerStatusMult_¿¡ ´õÇØÁÜ
-		if (true == iter0->second->Stat_IsMult_)
-		{
-			PlayerStatusMult_ += *(iter0->second);
-		}
-		else
-		{
-			PlayerStatusAdd_ += *(iter0->second);
-		}
-		iter0++;
-	}
-
-	// ÃÖÁ¾ÀûÀ¸·Î »ç¿ëµÇ´Â ½ºÅÈÀº PlayerStatusFinal_ÀÓ
-	// PlayerStatusFinal_Àº PlayerStatusBase_¿¡ ´õÇØ¾ßÇÒ ½ºÅÝÀ» ¸ÕÀú ´õÇÏ°í ¸¶Áö¸·¿¡ °öÇØ¾ßÇÒ ½ºÅÝÀ» °öÇØÁÖ¾î °è»êÇÔ
-
-	PlayerStatusFinal_ = PlayerStatusBase_ + PlayerStatusAdd_;
-	PlayerStatusFinal_ *= PlayerStatusMult_;
-
-	return true;
-}
-
-bool Player::EquipItem(std::string _BuffName, PlayerStatus* _PlayerStatus)
-{
-	PlayerStatus* NewPlayerStatus = new PlayerStatus;
-	*NewPlayerStatus = *_PlayerStatus;
-
-	Player_BufferList_.insert(std::make_pair(_BuffName, _PlayerStatus));
-
-	return false;
-}
+//bool Player::EquipItem(std::string _BuffName, PlayerStatus* _PlayerStatus)
+//{
+//	PlayerStatus* NewPlayerStatus = new PlayerStatus;
+//	*NewPlayerStatus = *_PlayerStatus;
+//
+//	Player_BufferList_.insert(std::make_pair(_BuffName, _PlayerStatus));
+//
+//	return false;
+//}
 
 void Player::RockOnUpdate(float _DeltaTime)
 {
@@ -240,11 +185,7 @@ void Player::RockOnUpdate(float _DeltaTime)
 
 		GameEngineCollision* RockOnPtr = PlayerLockOnCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
 
-		//¿£Áø lib¿¡¼­ app¿¡¼­ ¼³Á¤ÇØµÐ °ªÀ» Âü°íÇÏ°Ô ÇÒ ¼ø ¾øÀ»±î?
-
-
 		//PlayerRockOnCollision_->Collision(CollisionType::CirCle, CollisionType::AABBBox3D, static_cast<int>(CollisionGroup::Player), std::bind(&Player::test, this));
-
 
 		if (RockOnPtr != nullptr)
 		{
@@ -330,7 +271,7 @@ void Player::MoveUpdate(float _DeltaTime)
 {
 	if (true == IsMove_)
 	{
-		GetTransform()->SetWorldMove(KeyDir_ * PlayerStatusFinal_.Stat_Speed_ * _DeltaTime);
+		GetTransform()->SetWorldMove(KeyDir_ * Status_Final_.Stat_MoveSpeed_ * _DeltaTime);
 	}
 }
 

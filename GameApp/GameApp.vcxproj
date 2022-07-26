@@ -302,7 +302,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LockOnUI.h" />
-    <ClInclude Include="Player_Status.h" />
+    <ClInclude Include="Status.h" />
     <ClInclude Include="TestMonster.h">
       <SubType>
       </SubType>

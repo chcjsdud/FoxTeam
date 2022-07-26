@@ -39,22 +39,22 @@ void Item::Start()
 
 void Item::Update(float _Time)
 {
-	Player_ = dynamic_cast<Player*>(ItemCollision_->CollisionPtr(CINT(CollisionGroup::Player))->GetActor());
+	//Player_ = dynamic_cast<Player*>(ItemCollision_->CollisionPtr(CINT(CollisionGroup::Player))->GetActor());
 
-	if (Player_ != nullptr)
-	{
-		Item_Loot();
-	}
+	//if (Player_ != nullptr)
+	//{
+	//	Item_Loot();
+	//}
 	//Item_Update(_Time);
 }
 
-void Item::Item_Loot()
-{
-	ItemFBXRenderer_->Death();
-	ItemFBXRenderer_ = nullptr;
-
-	Player_->PlayerGetInventory()->Inventory_Item_Loot(this);
-}
+//void Item::Item_Loot()
+//{
+//	ItemFBXRenderer_->Death();
+//	ItemFBXRenderer_ = nullptr;
+//
+//	Player_->PlayerGetInventory()->Inventory_Item_Loot(this);
+//}
 
 void Item::Item_EquipStart()
 {

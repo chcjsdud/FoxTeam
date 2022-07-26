@@ -96,7 +96,9 @@ void Controller::CreateCharacter()
 			case static_cast<int>(JobType::YUKI):
 			{
 				Yuki* NewYuki = CurrentLevel_->CreateActor<Yuki>();
-				NewYuki->Initialize();
+				//NewYuki->Initialize();
+				//TODO : 잠시 주석 쳐놓음
+
 				NewCharacter = dynamic_cast<Characters*>(NewYuki);
 				break;
 			}

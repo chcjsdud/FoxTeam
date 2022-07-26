@@ -5,11 +5,12 @@
 
 #include "Player.h"
 
-#define MPLAYERChangeState(Name) 	PlayerState_.ChangeState(Name); return
-
 //
 //State Cpp
 //
+
+// 곧 다른곳으로 다 옮겨야함
+
 
 //Idle
 void Player::Idle_Start()
@@ -25,13 +26,13 @@ void Player::Idle_Update(float _DeltaTime)
 	{
 		//MPLAYERChangeState("Walk");
 		
-		PlayerState_.ChangeState("Walk");
+		State_.ChangeState("Walk");
 		return;
 	}
 
 	if (GameEngineInput::GetInst().Press("Attack"))
 	{
-		PlayerState_.ChangeState("Attack");
+		State_.ChangeState("Attack");
 		return;
 	}
 
@@ -57,7 +58,7 @@ void Player::Walk_Update(float _DeltaTime)
 	// 
 	if (GameEngineInput::GetInst().Press("Attack"))
 	{
-		PlayerState_.ChangeState("Attack");
+		State_.ChangeState("Attack");
 		return;
 	}
 
@@ -66,14 +67,14 @@ void Player::Walk_Update(float _DeltaTime)
 		false == GameEngineInput::GetInst().Press("S") &&
 		false == GameEngineInput::GetInst().Press("D"))
 	{
-		PlayerState_.ChangeState("Idle");
+		State_.ChangeState("Idle");
 
 		return;
 	}
 
 	if (true == GameEngineInput::GetInst().Press("Space"))
 	{
-		PlayerState_.ChangeState("Run");
+		State_.ChangeState("Run");
 
 		return;
 	}
@@ -97,7 +98,7 @@ void Player::Run_Update(float _DeltaTime)
 {
 	if (GameEngineInput::GetInst().Press("Attack"))
 	{
-		PlayerState_.ChangeState("Attack");
+		State_.ChangeState("Attack");
 		return;
 	}
 
@@ -108,7 +109,7 @@ void Player::Run_Update(float _DeltaTime)
 			true == GameEngineInput::GetInst().Press("S") ||
 			true == GameEngineInput::GetInst().Press("D"))
 		{
-			PlayerState_.ChangeState("Walk");
+			State_.ChangeState("Walk");
 
 			return;
 		}
@@ -119,16 +120,16 @@ void Player::Run_Update(float _DeltaTime)
 		false == GameEngineInput::GetInst().Press("S") &&
 		false == GameEngineInput::GetInst().Press("D"))
 	{
-		PlayerState_.ChangeState("Idle");
+		State_.ChangeState("Idle");
 
 		return;
 	}
 
-	PlayerStatusFinal_.Stat_Stamina_ -= _DeltaTime;
+	Status_Final_.Stat_Stamina_ -= _DeltaTime;
 
-	if (PlayerStatusFinal_.Stat_Stamina_ < 0.f)
+	if (Status_Final_.Stat_Stamina_ < 0.f)
 	{
-		PlayerStatusFinal_.Stat_Stamina_ = 0.f;
+		Status_Final_.Stat_Stamina_ = 0.f;
 	}
 
 	CurDirUpdate(_DeltaTime);
@@ -143,21 +144,33 @@ void Player::Run_End()
 //Attack
 void Player::Attack_Start()
 {
-	if (PlayerStatusFinal_.Stat_Stamina_ < 5.f)
+	if (Status_Final_.Stat_Stamina_ < 5.f)
 	{
 		//스테미나 게이지 깜빡거리기
-		MPLAYERChangeState("Idle");
+		State_.ChangeState("Idle");
+		return;
 	}
 
-	AttackStateInit();
+	// 이 시간 안에 추가 공격 하면 연속기가 나감, 공격시 갱신
+	AttackTime_ = 0.5f;
+
+	//연속기 단계, 3단계 넘으면 다시 0으로
+	AttackLevel_ = 0;
+
+	//0.5초 간격으로 공격한다. 공격시 갱신
+	AttackTurm_ = 0.25f;
+
+	//0.1초 동안만 타격 판정이 있다. 공격시 갱신
+	AttackHitTime_ = 0.1f;
+
 	PlayerAttackHitBoxCollision_->On();
 
-	PlayerStatusFinal_.Stat_Stamina_ -= PlayerStatusFinal_.Stat_Attack_Stamina_;
+	//Status_Final_.Stat_Stamina_ -= Status_Final_.Stat_Attack_Stamina_;
 
-	if (PlayerStatusFinal_.Stat_Stamina_ < 0.f)
-	{
-		PlayerStatusFinal_.Stat_Stamina_ = 0.f;
-	}
+	//if (Status_Final_.Stat_Stamina_ < 0.f)
+	//{
+	//	Status_Final_.Stat_Stamina_ = 0.f;
+	//}
 }
 void Player::Attack_Update(float _DeltaTime)
 {
@@ -182,12 +195,12 @@ void Player::Attack_Update(float _DeltaTime)
 				//다음 단계 공격, 에니메이션 바꾸기
 				PlayerAttackHitBoxCollision_->On();
 
-				PlayerStatusFinal_.Stat_Stamina_ -= PlayerStatusFinal_.Stat_Attack_Stamina_;
+				//Status_Final_.Stat_Stamina_ -= Status_Final_.Stat_Attack_Stamina_;
 
-				if (PlayerStatusFinal_.Stat_Stamina_ < 0.f)
-				{
-					PlayerStatusFinal_.Stat_Stamina_ = 0.f;
-				}
+				//if (Status_Final_.Stat_Stamina_ < 0.f)
+				//{
+				//	Status_Final_.Stat_Stamina_ = 0.f;
+				//}
 
 				AttackTime_ = 1.f;
 				AttackTurm_ = 0.5f;
@@ -204,7 +217,7 @@ void Player::Attack_Update(float _DeltaTime)
 
 	else
 	{
-		PlayerState_.ChangeState("Idle");
+		State_.ChangeState("Idle");
 		return;
 	}
 }
@@ -235,7 +248,7 @@ void Player::Stand_Update(float _DeltaTime)
 {
 	if (true == IsMove_)
 	{
-		PlayerState_.ChangeState("Move");
+		State_.ChangeState("Move");
 	}
 
 	return;
@@ -262,7 +275,7 @@ void Player::Move_Update(float _DeltaTime)
 		&& static_cast<int>(arrivalPos_.z) == static_cast<int>(GetTransform()->GetWorldPosition().z)) // 목표 위치에 다다르면
 	{
 		IsMove_ = false;
-		PlayerState_.ChangeState("Stand");
+		State_.ChangeState("Stand");
 	}
 
 	if (targetPos_ != GetTransform()->GetWorldPosition())

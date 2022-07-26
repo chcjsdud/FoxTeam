@@ -1,33 +1,28 @@
 #pragma once
-#include <GameEngine/GameEngineActor.h>
-#include <GameEngine/GameEngineFSM.h>
 
-#include "Player_Status.h"
+#include "Characters.h"
 /// <summary>
 /// 여우 주인공 액터
 /// </summary>
 
 
-// 플레이어를 static으로 만들고 언제 어디서든 불러올 수 있으면 좋겠다.(편하겠다)
+// 플레이어블 캐릭터 부모 클레스
 
 class GameMouse;
 class GameEngineLevel;
 class GameEngineImageRenderer;
-class Player : public GameEngineActor
+class Player : public Characters
 {
 public:
 	Player();
 	~Player();
+
 	Player(const Player& _Other) = delete;
 	Player(Player&& _Other) noexcept = delete;
 	Player& operator=(const Player& _Other) = delete;
 	Player& operator=(Player&& _Other) noexcept = delete;
 
 private:
-	//state
-	GameEngineFSM PlayerState_;
-	GameEngineFSM CameraState_;
-
 #pragma region Player component
 	//바닥 콜리전
 	GameEngineCollision* PlayerGroundCollision_;
@@ -41,23 +36,12 @@ private:
 	GameEngineFBXRenderer* FBXRenderer_;
 #pragma endregion
 
+	//state
+	GameEngineFSM CameraState_;
+
 	// 인식해야 하는 마우스 액터 포인터
 	GameMouse* targetMouse_;
 
-	GameEngineActor* Target_;
-
-
-	//키 방향
-	float4 KeyDir_;
-	//락온된 대상 or 마우스 우클릭시 커서의 방향
-	float4 TargetDir_;
-	//바라봐야 할 방향
-	float4 FowordDir_;
-	//현재 바라보는 방향
-	float4 CurFowordDir_;
-	//Y축 회전 속도
-	float YRotateSpeed_;
-	bool IsMove_;
 	bool IsRockon_;
 
 
@@ -78,69 +62,68 @@ private:
 	//UI
 	class TopUI* TopUI_;
 	class LockOnUI* LockOnUI_;
-	class Inventory* Inventory_;
+	//class Inventory* Inventory_;
 
 #pragma region Player Status
-	//공격 텀
-	float AttackTurm_;
-	//공격 에니메이션 단계
-	int AttackLevel_;
-	//공격 시간, 이 시간 이내에 공격키를 누르면 다음 단계 공격을 함
-	float AttackTime_;
-	//Attack Hit Box 활성화 시간
-	float AttackHitTime_;
-	//구르기 쿨타임
-	float RollCoolTime_;
-	//구르는 시간(무적타임)
-	float RollSecond_;
 
-	//버프 리스트, 
-	std::map <std::string, PlayerStatus*> Player_BufferList_;
-
-	// 플레이어 기본 스텟
-	PlayerStatus PlayerStatusBase_;
-	// 플레이어 추가 스텟 / 덧
-	PlayerStatus PlayerStatusAdd_;
-	// 플레이어 추가 스텟 / 곱
-	PlayerStatus PlayerStatusMult_;
-	// 플레이어 최종 스텟
-	PlayerStatus PlayerStatusFinal_;
+	// 플레이어 레벨업 스텟
+	Status Status_LevelUp_;
+	// 직업 정보
+	JobType JobType_;
 
 #pragma endregion
 
-private:
+protected:
 	virtual void Start();
 	virtual void Update(float _DeltaTime);
 
 #pragma region Init
-private:
+protected:
 	//Init
 
 	// 렌더러, 콜리전, 등등 Componenet 초기화
-	void ComponenetInit();
+	virtual void ComponenetInit();
 	//State 초기화
-	void StateInit();
-	void KeyInit();
-	void UIInit();
+	virtual void StateInit();
+	virtual void KeyInit();
+	virtual void UIInit();
 #pragma endregion
 
 #pragma region State
-private:
-	void Idle_Start();
-	void Idle_Update(float _DeltaTime);
-	void Idle_End();
+protected:
+	// 캐릭터 State, 가상함수를 통해 캐릭터 클레스가 기본적으로 가지고 있어야 할 state를 지정
+	//virtual void Idle_Start() = 0;
+	//virtual void Idle_Update(float _DeltaTime) = 0;
+	//virtual void Idle_End() = 0;
 
-	void Walk_Start();
-	void Walk_Update(float _DeltaTime);
-	void Walk_End();
+	//virtual void Walk_Start() = 0;
+	//virtual void Walk_Update(float _DeltaTime) = 0;
+	//virtual void Walk_End() = 0;
 
-	void Run_Start();
-	void Run_Update(float _DeltaTime);
-	void Run_End();
+	//virtual void Run_Start() = 0;
+	//virtual void Run_Update(float _DeltaTime) = 0;
+	//virtual void Run_End() = 0;
 
-	void Attack_Start();
-	void Attack_Update(float _DeltaTime);
-	void Attack_End();
+	//virtual void Attack_Start() = 0;
+	//virtual void Attack_Update(float _DeltaTime) = 0;
+	//virtual void Attack_End() = 0;
+
+	// 임시 코드, 나중에 주석처리함
+	virtual void Idle_Start();
+	virtual void Idle_Update(float _DeltaTime);
+	virtual void Idle_End();
+
+	virtual void Walk_Start();
+	virtual void Walk_Update(float _DeltaTime);
+	virtual void Walk_End();
+
+	virtual void Run_Start();
+	virtual void Run_Update(float _DeltaTime);
+	virtual void Run_End();
+
+	virtual void Attack_Start();
+	virtual void Attack_Update(float _DeltaTime);
+	virtual void Attack_End();
 
 	void Stand_Start();
 	void Stand_Update(float _DeltaTime);
@@ -149,23 +132,6 @@ private:
 	void Move_Start();
 	void Move_Update(float _DeltaTime);
 	void Move_End();
-
-
-	void AttackStateInit()
-	{
-		// 이 시간 안에 추가 공격 하면 연속기가 나감, 공격시 갱신
-		AttackTime_ = 0.5f;
-
-		//연속기 단계, 3단계 넘으면 다시 0으로
-		AttackLevel_ = 0;
-
-		//0.5초 간격으로 공격한다. 공격시 갱신
-		AttackTurm_ = 0.25f;
-
-		//0.1초 동안만 타격 판정이 있다. 공격시 갱신
-		AttackHitTime_ = 0.1f;	
-	}
-
 #pragma endregion
 
 #pragma region MemberUpdateFunc
@@ -197,15 +163,15 @@ private:
 
 	void StaminaRecoverUpdate(float _DeltaTime);
 
-	void Run_Stamina_Decrease(float _DeltaTime)
-	{
-		PlayerStatusFinal_.Stat_Stamina_ -= _DeltaTime;
+	//void Run_Stamina_Decrease(float _DeltaTime)
+	//{
+	//	Status_Final_.Stat_Stamina_ -= _DeltaTime;
 
-		if (PlayerStatusFinal_.Stat_Stamina_ < 0.f)
-		{
-			PlayerStatusFinal_.Stat_Stamina_ = 0.f;
-		}
-	}
+	//	if (Status_Final_.Stat_Stamina_ < 0.f)
+	//	{
+	//		Status_Final_.Stat_Stamina_ = 0.f;
+	//	}
+	//}
 
 
 	//void StaminaDecrease(float _DeltaTime);
@@ -222,11 +188,6 @@ private:
 
 
 
-	void SetTarget(GameEngineActor* _Target)
-	{
-		Target_ = _Target;
-	}
-
 	const float4 CalculateTargetDir(float4 TargetPos)
 	{
 		float4 Dir = TargetPos - GetTransform()->GetWorldPosition();
@@ -235,10 +196,8 @@ private:
 		return Dir;
 	}
 
-	bool SyncPlayerStat();
-
 	//임시 구현 상태, 인벤토리에서 아이템을 가져오고, 아이템에서 이름과 스테이터스를 가져오게끔
-	bool EquipItem(std::string _BuffName, PlayerStatus* _PlayerStatus);
+	//bool EquipItem(std::string _BuffName, PlayerStatus* _PlayerStatus);
 
 #pragma endregion
 
@@ -261,65 +220,12 @@ public:
 	//	PlayerStatusAdd_ = _PlayerStatus;
 	//}
 
-	std::map < std::string, PlayerStatus*> PlayerGetBuffList()
-	{
-		return Player_BufferList_;
-	}
 
-	const PlayerStatus PlayerGetBaseStat()
-	{
-		return PlayerStatusBase_;
-	}
 
-	const PlayerStatus PlayerGetAddStat()
-	{
-		return PlayerStatusAdd_;
-	}
-
-	const PlayerStatus PlayerGetMultStat()
-	{
-		return PlayerStatusMult_;
-	}
-
-	const PlayerStatus PlayerGetFinalStat()
-	{
-		return PlayerStatusFinal_;
-	}
-
-	const int PlayerGetCurHP()
-	{
-		return PlayerStatusFinal_.Stat_Hp_;
-	}
-
-	//void PlayerSetHP(int _Hp)
+	//Inventory* PlayerGetInventory()
 	//{
-	//	PlayerStatusFinal_.Stat_Hp_ = _Hp;
+	//	return Inventory_;
 	//}
-
-	const float PlayerGetCurStamina()
-	{
-		return PlayerStatusFinal_.Stat_Stamina_;
-	}
-
-	//void PlayerSetStamina(float _Stamina)
-	//{
-	//	PlayerStatusFinal_.Stat_Hp_ = _Stamina;
-	//}
-
-	GameEngineActor* PlayerGetTarget()
-	{
-		return Target_;
-	}
-
-	const int PlayerGetAttackPower()
-	{
-		return PlayerStatusFinal_.Stat_AttackPower_;
-	}
-
-	Inventory* PlayerGetInventory()
-	{
-		return Inventory_;
-	}
 
 #pragma endregion
 };

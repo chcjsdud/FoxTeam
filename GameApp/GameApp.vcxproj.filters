@@ -54,17 +54,8 @@
     <ClCompile Include="GameMouse.cpp">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClCompile>
-    <ClCompile Include="Controller.cpp">
-      <Filter>01.GameObject\99.SJH\00.Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Characters.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
-    </ClCompile>
     <ClCompile Include="Monsters.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
-    </ClCompile>
-    <ClCompile Include="Yuki.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor</Filter>
     </ClCompile>
     <ClCompile Include="Objects.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
@@ -74,6 +65,15 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Characters.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Yuki.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -208,24 +208,12 @@
     <ClInclude Include="WoodStick.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\02. Item</Filter>
     </ClInclude>
-    <ClInclude Include="Player_Status.h">
-      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameMouse.h">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>01.GameObject\99.SJH\00.Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Characters.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
-    </ClInclude>
     <ClInclude Include="Monsters.h">
       <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
-    </ClInclude>
-    <ClInclude Include="Yuki.h">
-      <Filter>01.GameObject\99.SJH\01.Actor</Filter>
     </ClInclude>
     <ClInclude Include="Objects.h">
       <Filter>01.GameObject\99.SJH\01.Actor\RootClass</Filter>
@@ -235,6 +223,18 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Status.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Characters.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Yuki.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>01.GameObject\03.Level\PlayLevel\Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

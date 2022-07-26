@@ -17,6 +17,54 @@ void Yuki::Update(float _DeltaTime)
 {
 }
 
+void Yuki::Idle_Start()
+{
+}
+
+void Yuki::Idle_Update(float _DeltaTime)
+{
+}
+
+void Yuki::Idle_End()
+{
+}
+
+void Yuki::Walk_Start()
+{
+}
+
+void Yuki::Walk_Update(float _DeltaTime)
+{
+}
+
+void Yuki::Walk_End()
+{
+}
+
+void Yuki::Run_Start()
+{
+}
+
+void Yuki::Run_Update(float _DeltaTime)
+{
+}
+
+void Yuki::Run_End()
+{
+}
+
+void Yuki::Attack_Start()
+{
+}
+
+void Yuki::Attack_Update(float _DeltaTime)
+{
+}
+
+void Yuki::Attack_End()
+{
+}
+
 void Yuki::BaseInfoSetting()
 {
 	//// 기본정보
@@ -60,11 +108,11 @@ void Yuki::SkillInfoSetting()
 
 }
 
-void Yuki::Initialize()
-{
-	// 고유정보 셋팅
-	BaseInfoSetting();
-
-	// 스킬정보 셋팅
-	SkillInfoSetting();
-}
+//void Yuki::Initialize()
+//{
+//	// 고유정보 셋팅
+//	BaseInfoSetting();
+//
+//	// 스킬정보 셋팅
+//	SkillInfoSetting();
+//}
