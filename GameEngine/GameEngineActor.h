@@ -53,75 +53,16 @@ public:
 	}
 
 	template<typename ComponentType>
-	ComponentType* CreateComponent(int _Order = 0)
-	{
-		GameEngineComponent* NewComponent = new ComponentType();
-		NewComponent->SetParent(this);
-		NewComponent->SetOrder(_Order);
-		NewComponent->InitComponent(this);
-		ComponentList_.push_back(NewComponent);
-		NewComponent->Start();
-		return dynamic_cast<ComponentType*>(NewComponent);;
-	}
+	ComponentType* CreateComponent(int _Order = 0);
 
 	template<typename ComponentType>
-	ComponentType* CreateTransformComponent(int _Order = 0)
-	{
-		// 업캐스팅을 이용해서 컴파일 에러를 낼것이다.
-		GameEngineTransformComponent* NewComponent = new ComponentType();
-		NewComponent->SetParent(this);
-		NewComponent->SetOrder(_Order);
-		NewComponent->InitComponent(this);
-		NewComponent->AttachTransform(GetTransform());
-		TransformComponentList_.push_back(NewComponent);
-
-		NewComponent->Start();
-		return dynamic_cast<ComponentType*>(NewComponent);;
-	}
+	ComponentType* CreateTransformComponent(int _Order = 0);
 
 	template<typename ComponentType>
-	ComponentType* CreateTransformComponent(GameEngineTransform* _Transform, int _Order = 0)
-	{
-		// 업캐스팅을 이용해서 컴파일 에러를 낼것이다.
-		GameEngineTransformComponent* NewComponent = new ComponentType();
-
-		NewComponent->SetOrder(_Order);
-		NewComponent->InitComponent(this);
-
-		if (nullptr == _Transform)
-		{
-			NewComponent->SetParent(nullptr);
-		}
-		else
-		{
-			NewComponent->SetParent(this);
-			NewComponent->AttachTransform(_Transform);
-		}
-
-		TransformComponentList_.push_back(NewComponent);
-
-		NewComponent->Start();
-		return dynamic_cast<ComponentType*>(NewComponent);;
-	}
-
+	ComponentType* CreateTransformComponent(GameEngineTransform* _Transform, int _Order = 0);
 
 	template<typename ComType>
-	std::vector<ComType*> GetTransformComponent()
-	{
-		std::vector<ComType*> Return;
-
-		for (auto& TransformComponent : TransformComponentList_)
-		{
-			if (typeid(*TransformComponent) != typeid(ComType))
-			{
-				continue;
-			}
-
-			Return.push_back(dynamic_cast<ComType*>(TransformComponent));
-		}
-
-		return Return;
-	}
+	std::vector<ComType*> GetTransformComponent();
 
 protected:
 	virtual void Start() {}
@@ -160,3 +101,72 @@ private:
 	void ReleaseUpdate(float _DeltaTime);
 };
 
+template<typename ComponentType>
+inline ComponentType* GameEngineActor::CreateComponent(int _Order)
+{
+	GameEngineComponent* NewComponent = new ComponentType();
+	NewComponent->SetParent(this);
+	NewComponent->SetOrder(_Order);
+	NewComponent->InitComponent(this);
+	ComponentList_.push_back(NewComponent);
+	NewComponent->Start();
+	return dynamic_cast<ComponentType*>(NewComponent);;
+}
+
+template<typename ComponentType>
+inline ComponentType* GameEngineActor::CreateTransformComponent(int _Order)
+{
+	// 업캐스팅을 이용해서 컴파일 에러를 낼것이다.
+	GameEngineTransformComponent* NewComponent = new ComponentType();
+	NewComponent->SetParent(this);
+	NewComponent->SetOrder(_Order);
+	NewComponent->InitComponent(this);
+	NewComponent->AttachTransform(GetTransform());
+	TransformComponentList_.push_back(NewComponent);
+
+	NewComponent->Start();
+	return dynamic_cast<ComponentType*>(NewComponent);;
+}
+
+template<typename ComponentType>
+inline ComponentType* GameEngineActor::CreateTransformComponent(GameEngineTransform* _Transform, int _Order)
+{
+	// 업캐스팅을 이용해서 컴파일 에러를 낼것이다.
+	GameEngineTransformComponent* NewComponent = new ComponentType();
+
+	NewComponent->SetOrder(_Order);
+	NewComponent->InitComponent(this);
+
+	if (nullptr == _Transform)
+	{
+		NewComponent->SetParent(nullptr);
+	}
+	else
+	{
+		NewComponent->SetParent(this);
+		NewComponent->AttachTransform(_Transform);
+	}
+
+	TransformComponentList_.push_back(NewComponent);
+
+	NewComponent->Start();
+	return dynamic_cast<ComponentType*>(NewComponent);;
+}
+
+template<typename ComType>
+inline std::vector<ComType*> GameEngineActor::GetTransformComponent()
+{
+	std::vector<ComType*> Return;
+
+	for (auto& TransformComponent : TransformComponentList_)
+	{
+		if (typeid(*TransformComponent) != typeid(ComType))
+		{
+			continue;
+		}
+
+		Return.push_back(dynamic_cast<ComType*>(TransformComponent));
+	}
+
+	return Return;
+}

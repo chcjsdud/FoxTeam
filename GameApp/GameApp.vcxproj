@@ -217,6 +217,14 @@
     </ClCompile>
     <ClCompile Include="Player_State.cpp" />
     <ClCompile Include="LockOnUI.cpp" />
+    <ClCompile Include="RayTextBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="RayTextLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="TestMonster.cpp">
       <SubType>
       </SubType>
@@ -302,6 +310,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LockOnUI.h" />
+    <ClInclude Include="RayTextBox.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="RayTextLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Status.h" />
     <ClInclude Include="TestMonster.h">
       <SubType>
