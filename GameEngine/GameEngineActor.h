@@ -110,7 +110,7 @@ inline ComponentType* GameEngineActor::CreateComponent(int _Order)
 	NewComponent->InitComponent(this);
 	ComponentList_.push_back(NewComponent);
 	NewComponent->Start();
-	return dynamic_cast<ComponentType*>(NewComponent);;
+	return dynamic_cast<ComponentType*>(NewComponent);
 }
 
 template<typename ComponentType>
@@ -125,7 +125,7 @@ inline ComponentType* GameEngineActor::CreateTransformComponent(int _Order)
 	TransformComponentList_.push_back(NewComponent);
 
 	NewComponent->Start();
-	return dynamic_cast<ComponentType*>(NewComponent);;
+	return dynamic_cast<ComponentType*>(NewComponent);
 }
 
 template<typename ComponentType>
@@ -150,7 +150,7 @@ inline ComponentType* GameEngineActor::CreateTransformComponent(GameEngineTransf
 	TransformComponentList_.push_back(NewComponent);
 
 	NewComponent->Start();
-	return dynamic_cast<ComponentType*>(NewComponent);;
+	return dynamic_cast<ComponentType*>(NewComponent);
 }
 
 template<typename ComType>
