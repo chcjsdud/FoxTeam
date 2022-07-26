@@ -212,7 +212,7 @@
     </ClCompile>
     <ClCompile Include="Player_State.cpp" />
     <ClCompile Include="LockOnUI.cpp" />
-    <ClCompile Include="RayTextBox.cpp">
+    <ClCompile Include="RayTestBox.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -304,7 +304,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LockOnUI.h" />
-    <ClInclude Include="RayTextBox.h">
+    <ClInclude Include="RayTestBox.h">
       <SubType>
       </SubType>
     </ClInclude>

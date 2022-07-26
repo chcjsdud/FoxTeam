@@ -72,7 +72,7 @@
     <ClCompile Include="RayTextLevel.cpp">
       <Filter>01.GameObject\99.JGH\RayTestLevel</Filter>
     </ClCompile>
-    <ClCompile Include="RayTextBox.cpp">
+    <ClCompile Include="RayTestBox.cpp">
       <Filter>01.GameObject\99.JGH\RayTestLevel</Filter>
     </ClCompile>
     <ClCompile Include="SJH_PlayLevel.cpp">
@@ -254,7 +254,7 @@
     <ClInclude Include="RayTextLevel.h">
       <Filter>01.GameObject\99.JGH\RayTestLevel</Filter>
     </ClInclude>
-    <ClInclude Include="RayTextBox.h">
+    <ClInclude Include="RayTestBox.h">
       <Filter>01.GameObject\99.JGH\RayTestLevel</Filter>
     </ClInclude>
     <ClInclude Include="SJH_PlayLevel.h">

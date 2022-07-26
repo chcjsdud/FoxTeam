@@ -1,24 +1,24 @@
 #include "PreCompile.h"
-#include "RayTextBox.h"
+#include "RayTestBox.h"
 
 #include <GameEngine/GameEngineCollision.h>
 
-RayTextBox::RayTextBox()
+RayTestBox::RayTestBox()
 	: collision_(nullptr)
 {
 
 }
 
-RayTextBox::~RayTextBox()
+RayTestBox::~RayTestBox()
 {
 
 }
 
-void RayTextBox::Start()
+void RayTestBox::Start()
 {
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 }
 
-void RayTextBox::Update(float _deltaTime)
+void RayTestBox::Update(float _deltaTime)
 {
 }

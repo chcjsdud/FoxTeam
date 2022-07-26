@@ -60,7 +60,7 @@ public:
 	void SphereToSphereCollision(int _OtherGroup, std::function<void(GameEngineCollision*)> _CallBack);
 
 	/// 이현 ///
-	void SetCollisionTpye(CollisionType _ColType)
+	void SetCollisionType(CollisionType _ColType)
 	{
 		ColType_ = _ColType;
 	}
@@ -68,7 +68,7 @@ public:
 	void SetCollisionInfo(int _Type, CollisionType _ColType)
 	{
 		SetCollisionGroup(_Type);
-		SetCollisionTpye(_ColType);
+		SetCollisionType(_ColType);
 	}
 
 	//충돌 여부를 Bool 값으로 리턴
