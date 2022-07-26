@@ -158,6 +158,9 @@
     <Filter Include="01.GameObject\99.SJH\01.Actor\RootClass">
       <UniqueIdentifier>{74a118af-cdea-4d4b-bf15-3199122a4558}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\03.Level\PlayLevel\Actor\03. AI">
+      <UniqueIdentifier>{44a2fec1-2490-4348-a6a4-e52e5c60d685}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
