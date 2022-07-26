@@ -118,6 +118,11 @@ void GameEngineRenderer::SetRenderingPipeLine(const std::string& _Value)
 		ShaderHelper.SettingConstantBufferLink("LightsData", Data);
 	}
 
+	if (true == ShaderHelper.IsConstantBuffer("RendererData"))
+	{
+		ShaderHelper.SettingConstantBufferLink("RendererData", RendererDataInst);
+	}
+
 	if (nullptr == PipeLine_)
 	{
 		GameEngineDebug::MsgBoxError("존재하지 않는 파이프라인 입니다!");

@@ -112,6 +112,11 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
                 RenderSetData.ShaderHelper->SettingConstantBufferLink("LightsData", LightData);
             }
 
+            if (true == RenderSetData.ShaderHelper->IsConstantBuffer("RendererData"))
+            {
+                RenderSetData.ShaderHelper->SettingConstantBufferLink("RendererData", RendererDataInst);
+            }
+
             if (true == RenderSetData.ShaderHelper->IsTextureSetting("DiffuseTex"))
             {
                 GameEngineTexture* Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
@@ -123,6 +128,23 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
                         GameEngineTextureManager::GetInst().Load(MatData->DifTexturePath);
                         Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
                         RenderSetData.ShaderHelper->SettingTexture("DiffuseTex", Tex);
+                    }
+                }
+            }
+
+
+            if (true == RenderSetData.ShaderHelper->IsTextureSetting("NormalTex"))
+            {
+                GameEngineTexture* Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
+
+                if ("" != MatData->NorTexturePath)
+                {
+                    if (Tex == nullptr && true == GameEnginePath::IsExist(MatData->NorTexturePath))
+                    {
+                        GameEngineTextureManager::GetInst().Load(MatData->NorTexturePath);
+                        Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
+                        RenderSetData.ShaderHelper->SettingTexture("NormalTex", Tex);
+                        RendererDataInst.IsBump = 1;
                     }
                 }
             }

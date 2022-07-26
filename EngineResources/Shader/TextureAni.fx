@@ -21,7 +21,10 @@ VertexOut TextureAni_VS(VertexIn _In)
 {
     VertexOut Out;
 
-    Skinning(_In.Position, _In.Weight, _In.Index, ArrAniMationMatrix);
+    if (0 != IsAni)
+    {
+        Skinning(_In.Position, _In.Weight, _In.Index, ArrAniMationMatrix);
+    }
     
     Out.Position = _In.Position;
 
