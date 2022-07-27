@@ -666,12 +666,26 @@
     <CopyFileToFolders Include="..\ThirdParty\x64\Release\DirectXTex\DirectXTex.pdb">
       <Filter>Lib\DirectXTex\Release</Filter>
     </CopyFileToFolders>
-    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libfbxsdk-md.lib" />
-    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libfbxsdk-mt.lib" />
-    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libfbxsdk.lib" />
-    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libxml2-md.lib" />
-    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libxml2-mt.lib" />
-    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\zlib-md.lib" />
-    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\zlib-mt.lib" />
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libfbxsdk.lib">
+      <Filter>Lib\FBX\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libfbxsdk-md.lib">
+      <Filter>Lib\FBX\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libfbxsdk-mt.lib">
+      <Filter>Lib\FBX\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libxml2-md.lib">
+      <Filter>Lib\FBX\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\libxml2-mt.lib">
+      <Filter>Lib\FBX\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\zlib-md.lib">
+      <Filter>Lib\FBX\Release</Filter>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="..\ThirdParty\x64\Release\FBX\zlib-mt.lib">
+      <Filter>Lib\FBX\Release</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>
