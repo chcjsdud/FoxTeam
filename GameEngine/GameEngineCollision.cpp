@@ -51,7 +51,6 @@ bool GameEngineCollision::RectToRect(GameEngineTransform* _Left, GameEngineTrans
 bool GameEngineCollision::AABBToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right)
 {
 	// DirectX::TriangleTests::Intersects()
-
 	return _Left->GetAABB().Intersects(_Right->GetAABB());
 }
 

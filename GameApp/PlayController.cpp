@@ -53,6 +53,13 @@ void PlayController::CheckInput(float _DeltaTime)
 		testPlayer_->SetTargetPos(testGameMouse_->GetSavedPos()); // 그 좌표를 플레이어에게 하달
 
 		// savedPos 는 "클릭하는 부분" 의 "스크린 상의 XZ 좌표" 여야 한다...
+
+		// 어떻게 만들어야 하나?
+		// 오른 클릭이 되면, 마우스 위치에서 Ray 가 쏴져야 한다.
+		// testGameMouse_->Ratshot()
+		// 광선을 만드는데 광선의 목표물에 충돌체가 구비되어야 할 것...
+
+
 		int a = 0;
 	}
 }

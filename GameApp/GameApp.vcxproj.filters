@@ -75,6 +75,15 @@
     <ClCompile Include="RayTestBox.cpp">
       <Filter>01.GameObject\99.JGH\RayTestLevel</Filter>
     </ClCompile>
+    <ClCompile Include="PJW_Hyunwoo.cpp">
+      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="PJW_Level.cpp">
+      <Filter>01.GameObject\98.PJW\PJW_Level</Filter>
+    </ClCompile>
+    <ClCompile Include="PJW_Map.cpp">
+      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
+    </ClCompile>
     <ClCompile Include="SJH_PlayLevel.cpp">
       <Filter>01.GameObject\99.SJH\02.Level</Filter>
     </ClCompile>
@@ -158,9 +167,6 @@
     <Filter Include="01.GameObject\99.LH\PlayLevel\Manager">
       <UniqueIdentifier>{043d8cd8-a08b-4bb7-a9ea-5796ac32ddca}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.PJW">
-      <UniqueIdentifier>{4ff96786-5801-497d-b9cc-8c4a615dc496}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\99.JGH">
       <UniqueIdentifier>{469ee93c-6366-4982-8330-ab0dbe60b641}</UniqueIdentifier>
     </Filter>
@@ -172,6 +178,15 @@
     </Filter>
     <Filter Include="01.GameObject\99.YSJ">
       <UniqueIdentifier>{46f26566-5222-4e2a-bfa8-6a456c2f4039}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\98.PJW">
+      <UniqueIdentifier>{4ff96786-5801-497d-b9cc-8c4a615dc496}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\98.PJW\PJW_Level">
+      <UniqueIdentifier>{7e051d1d-84aa-470e-8e52-6fa2cb588bdd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\98.PJW\PJW_Actor">
+      <UniqueIdentifier>{df7e7229-3e32-47a4-94e4-5e3482065f32}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\99.SJH\02.Level">
       <UniqueIdentifier>{b66488e9-fcb7-4625-9255-3efb2275161c}</UniqueIdentifier>
@@ -259,6 +274,15 @@
     </ClInclude>
     <ClInclude Include="SJH_PlayLevel.h">
       <Filter>01.GameObject\99.SJH\02.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="PJW_Hyunwoo.h">
+      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="PJW_Level.h">
+      <Filter>01.GameObject\98.PJW\PJW_Level</Filter>
+    </ClInclude>
+    <ClInclude Include="PJW_Map.h">
+      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

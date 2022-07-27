@@ -23,16 +23,15 @@ Player::Player()
 	//, Inventory_(nullptr)
 	, LockOnUI_(nullptr)
 	, TopUI_(nullptr)
-	, JobType_(JobType::NONE)
 {
-	//PlayerStatusBase_.Stat_Hp_ = 0;
-	//PlayerStatusBase_.Stat_MaxHp_ = 100;
-	//PlayerStatusBase_.Stat_Stamina_ = 0.f;
-	//PlayerStatusBase_.Stat_MaxStamina_ = 100.f;
-	//PlayerStatusBase_.Stat_AttackPower_ = 10;
-	//PlayerStatusBase_.Stat_Speed_ = 300;
-	//PlayerStatusBase_.Stat_RunSpeed_ = 600;
-	//PlayerStatusBase_.Stat_Stamina_RecoverRate_ = 1.f;
+	PlayerStatusBase_.Stat_Hp_ = 0;
+	PlayerStatusBase_.Stat_MaxHp_ = 100;
+	PlayerStatusBase_.Stat_Stamina_ = 0.f;
+	PlayerStatusBase_.Stat_MaxStamina_ = 100.f;
+	PlayerStatusBase_.Stat_AttackPower_ = 10;
+	PlayerStatusBase_.Stat_Speed_ = 300;
+	PlayerStatusBase_.Stat_RunSpeed_ = 600;
+	PlayerStatusBase_.Stat_Stamina_RecoverRate_ = 1.f;
 }
 
 Player::~Player() 

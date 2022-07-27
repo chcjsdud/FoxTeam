@@ -202,6 +202,18 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="PJW_Hyunwoo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PJW_Level.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PJW_Map.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PlayController.cpp">
       <SubType>
       </SubType>
@@ -292,6 +304,23 @@
     </ClInclude>
     <ClInclude Include="Macro.h" />
     <ClInclude Include="Map.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Monsters.h" />
+    <ClInclude Include="Objects.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PJW_Hyunwoo.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PJW_Level.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PJW_Map.h">
       <SubType>
       </SubType>
     </ClInclude>

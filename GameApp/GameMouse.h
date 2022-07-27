@@ -1,6 +1,8 @@
 #pragma once
 #include <GameEngine/MouseActor.h>
 
+
+
 class PlayController;
 class Player;
 class GameEngineCollision;
@@ -40,17 +42,70 @@ private:
 	float4 savedPos_;
 	// 마우스 이동 시 마우스의 좌표를 저장하는 버퍼
 
+
+
+
+
 	void SaveCurPos()
 	{
 		savedPos_ = GameEngineInput::GetInst().GetMouse3DPos();
 			//UIRenderer->GetTransform()->GetWorldPosition();
 	}
-
+	
 public:
 	const float4 GetSavedPos()
 	{
 		return savedPos_;
 	}
+
+
+
+private:
+	// 피킹 변수와 함수들
+
+	float4 pickingRayDirection_; // 광선의 방향
+	float4 pickingRayOrigin_; // 광선의 원점
+	bool Init(HINSTANCE _hinstance, HWND _hwnd, int _a, int _b);
+
+	void Intersection(float _mouseX, float _mouseY);
+
+
+	class Ray
+	{
+	public:
+		Ray();
+		~Ray();
+
+	protected:
+		float4 original_; // 광선의 출발 지점
+		float4 direction_; // 광선의 방향(화면 안쪽으로 향하게)
+
+	public:
+		Ray RayAtViewSpace(int nScreenX, int nScreenY);
+		// 디바이스에서 뷰포트와 투영행렬 얻어와 저장
+		// 계산에 필요한 방향벡터 direction_ 을 계산
+		// Z 값은? 1.0f?
+		
+
+		Ray RayAtWorldSpace(int nScreenX, int nScreenY);
+		// 뷰포트, 투영행렬을 이요해 변환한 방향벡터를 얻어온다.
+		// 행렬을 담기 위한 변수 2개를 생성 (matView, matInvView)
+		// d3dDevice 를 이용해 matView 에 현재의 뷰행렬을 담는다.
+		// matInvView행렬에 matView의 역행렬을 담는다.
+		// 뷰의 역행렬을 이용해서 광선의 출발점을 변환한다.
+		// ... 이거부터가 지금 난관임.
+		// 
+		// 
+		// 뷰의 역행렬을 이용해서 방향벡터를 변환한다.
+		// 방향벡터를 정규화(행렬안의 모든값이 1보다 작도록)한다.
+
+		// 즉 뷰 스페이스가 적용되기 전의 좌표가 필요하다...
+
+
+	};
+public:
+	
+
 
 };
 

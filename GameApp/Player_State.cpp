@@ -261,7 +261,7 @@ void Player::Stand_End()
 
 void Player::Move_Start()
 {
-	arrivalPos_ = { targetPos_.x + GetTransform()->GetWorldPosition().x, 0.0f,  targetPos_.y + GetTransform()->GetWorldPosition().y };
+
 	int a = 0;
 	return;
 }
@@ -290,8 +290,43 @@ void Player::Move_Update(float _DeltaTime)
 		GetTransform()->SetWorldMoveXZ(TargetDir_ * 200.0f * _DeltaTime);
 	}
 
-	//MoveRotateUpdate(_DeltaTime);
+
+
 	// 우클릭 위치로 몸을 향합니다.
+	float4 dir = float4::Cross3D(CurFowordDir_, TargetDir_);
+
+	float goaldegree = GameEngineMath::UnitVectorToDegree(TargetDir_.z, TargetDir_.x);
+	if (goaldegree == GetTransform()->GetLocalRotation().y)
+	{
+		return;
+	}
+	if (dir.y >= 0.f)
+	{
+
+		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_ * _DeltaTime);
+		CurFowordDir_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
+
+		dir = float4::Cross3D(CurFowordDir_, TargetDir_);
+		if (dir.y < 0.f)
+		{
+			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+			CurFowordDir_ = TargetDir_;
+		}
+	}
+
+	else if (dir.y < 0.f)
+	{
+		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
+		CurFowordDir_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
+
+		dir = float4::Cross3D(CurFowordDir_, TargetDir_);
+		if (dir.y > 0.f)
+		{
+			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+			CurFowordDir_ = TargetDir_;
+		}
+	}
+
 	
 	
 }

@@ -55,6 +55,7 @@ public:
 	void SetTargetPos(const float4 _targetPos)
 	{
 		targetPos_ = _targetPos;
+		arrivalPos_ = { targetPos_.x + GetTransform()->GetWorldPosition().x, 0.0f,  targetPos_.y + GetTransform()->GetWorldPosition().y };
 		IsMove_ = true;
 	}
 
