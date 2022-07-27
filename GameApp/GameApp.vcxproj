@@ -308,6 +308,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="PJW_Enum.h" />
     <ClInclude Include="PJW_Hyunwoo.h">
       <SubType>
       </SubType>

@@ -796,11 +796,6 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
 
-
-	
-
-
-
 	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TextureLight");
 		Pipe->SetInputAssembler1VertexBufferSetting("Rect");

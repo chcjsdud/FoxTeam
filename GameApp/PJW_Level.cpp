@@ -1,6 +1,8 @@
 #include "PreCompile.h"
 #include "PJW_Level.h"
 
+
+#include "GameEngine/SKySphereActor.h"
 #include "PJW_Hyunwoo.h"
 #include "PJW_Map.h"
 #include "GameEngine/LightActor.h"
@@ -24,7 +26,11 @@ PJW_Level::PJW_Level(PJW_Level&& _other) noexcept  // default RValue Copy constr
 
 void PJW_Level::LevelStart()
 {
+	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
+	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -100.0f));
+
 	Init_Actors();
+	Init_Keys();
 }
 
 void PJW_Level::LevelUpdate(float _DeltaTime)
@@ -46,12 +52,42 @@ void PJW_Level::Init_Actors()
 {
 	// 플레이어 캐릭터 생성
 	{
+		std::string MeshName = "Hyunwoo_01_LOD1.FBX";
+		GameEngineDirectory dir;
+
+		dir.MoveParent("FoxTeam");
+		dir.MoveChild("Resources");
+		dir.MoveChild("FBX");
+
+		// 렌더러		
+		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(dir.PathToPlusFileName(MeshName)))
+		{
+			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName(MeshName));
+			Mesh->CreateRenderingBuffer();
+		}
+		
+		GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_01_LOD1.FBX"));
+
+		for (size_t i = 0; i < Animation->AnimationCount(); i++)
+		{
+			auto Data = Animation->GetAnimationData(i);
+		}
+
 		player_ = CreateActor<PJW_Hyunwoo>();
+
+		PJW_Hyunwoo* enemy = CreateActor<PJW_Hyunwoo>();
+		enemy->GetTransform()->SetWorldPosition({ 50.0f, 0.0f, 300.0f });
+
+		player_->SetTarget(enemy);
 	}
 
 	// 맵 생성
 	{
 		//map_ = CreateActor<PJW_Map>();
+	}
+
+	{
+		SKySphereActor* Actor = CreateActor<SKySphereActor>();
 	}
 
 	// 빛 생성
@@ -64,5 +100,14 @@ void PJW_Level::Init_Actors()
 		light_B->GetLight()->SetDiffusePower(0.3f);
 		light_B->GetLight()->SetSpacularLightPow(50.0f);
 		light_B->GetTransform()->SetLocalRotationDegree({ 45.0f, 0.0f, 0.0f });
+	}
+}
+
+void PJW_Level::Init_Keys()
+{
+	if (false == GameEngineInput::GetInst().IsKey("Skill_Q"))
+	{
+		GameEngineInput::GetInst().CreateKey("Skill_Q", 'Q');
+		GameEngineInput::GetInst().CreateKey("Test_Move", VK_RBUTTON);
 	}
 }

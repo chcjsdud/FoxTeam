@@ -193,6 +193,12 @@
     <Filter Include="01.GameObject\99.SJH\99.Controller">
       <UniqueIdentifier>{a5a64047-9e10-4fa3-a9f1-703511e40bc8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\98.PJW\PJW_Enum">
+      <UniqueIdentifier>{e52092a1-9f14-4b36-a5e8-7dd0dac57653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\98.PJW\PJW_Shader">
+      <UniqueIdentifier>{3049977c-cd71-4489-bd81-b9e0c4b94a9f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -278,6 +284,11 @@
     </ClInclude>
     <ClInclude Include="PJW_Map.h">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Monsters.h" />
+    <ClInclude Include="Objects.h" />
+    <ClInclude Include="PJW_Enum.h">
+      <Filter>01.GameObject\98.PJW\PJW_Enum</Filter>
     </ClInclude>
     <ClInclude Include="Monsters.h" />
     <ClInclude Include="Objects.h" />

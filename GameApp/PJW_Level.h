@@ -33,6 +33,7 @@ protected:
 private:
 	void Init_Actors();
 	// 캐릭터 맵 빛 등의 액터 생성하는 함수
+	void Init_Keys();
 
 private:
 	PJW_Hyunwoo* player_;

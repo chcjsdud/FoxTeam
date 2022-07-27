@@ -12,6 +12,7 @@
 #include "LH_PlayLevel.h"
 
 #include "SJH_PlayLevel.h"
+#include "PJW_Level.h"
 
 std::atomic<int> UserGame::LoadingFolder = 0;
 
@@ -38,7 +39,7 @@ void UserGame::Initialize()
 	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
-	LevelCreate<PlayLevel>("Play");
+	LevelCreate<PJW_Level>("Play");
 	//LevelCreate<SJH_PlayLevel>("SJH_PlayLevel");	// 220727 SJH : TEST¿ë ·¹º§
 
 	

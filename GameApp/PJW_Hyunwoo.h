@@ -15,6 +15,20 @@ public:
 	PJW_Hyunwoo& operator=(const PJW_Hyunwoo& _other) = delete;
 	PJW_Hyunwoo& operator=(const PJW_Hyunwoo&& _other) = delete;
 
+public:
+	// 공격 타겟을 선정하는 함수
+	void SetTarget(PJW_Hyunwoo* _target)
+	{
+		target_ = _target;
+	}
+
+	// 현재 타겟을 리턴하는 함수
+	PJW_Hyunwoo* GetTarget()
+	{
+		return target_;
+	}
+
+
 protected: 
 	virtual void Start();
 	virtual void Update(float _DeltaTime);
@@ -32,13 +46,21 @@ private:
 	void Idle_Update(float _DeltaTime);
 	void Idle_End();
 
-	//void Move_Start();
-	//void Move_Update(float _DeltaTime);
-	//void Move_End();
+	void Move_Start();
+	void Move_Update(float _DeltaTime);
+	void Move_End();
+
+	void Attack_Start();
+	void Attack_Update(float _DeltaTime);
+	void Attack_End();
 
 	void Skill_Q_Start();
 	void Skill_Q_Update(float _DeltaTime);
 	void Skill_Q_End();
+
+
+
+
 
 // FBX 렌더러
 private:
@@ -53,7 +75,21 @@ private:
 	GameEngineCollision* collision_Qskill_; 
 	// Q 스킬 시 피격 거리 콜리젼
 
-	GameEngineCollision* collision_Rskill;
-	// R 궁극기 피격 거리 콜리젼
+
+private:
+	PJW_Hyunwoo* target_;
+
+// 스탯
+private:
+	float status_HP_;
+	float status_ATK_;
+	float status_MoveSpeed_;
+
+// 기타 변수
+private:
+	float deltaTime_;
+	bool isMoving_;
+	float4 aimDir_;
+	float4 curDir_;
 };
 
