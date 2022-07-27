@@ -224,11 +224,11 @@
     </ClCompile>
     <ClCompile Include="LH_Player_State.cpp" />
     <ClCompile Include="LH_LockOnUI.cpp" />
-    <ClCompile Include="RayTestBox.cpp">
+    <ClCompile Include="GHRayTestBox.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="RayTextLevel.cpp">
+    <ClCompile Include="GHRayTestLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -330,11 +330,11 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LH_LockOnUI.h" />
-    <ClInclude Include="RayTestBox.h">
+    <ClInclude Include="GHRayTestBox.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="RayTextLevel.h">
+    <ClInclude Include="GHRayTestLevel.h">
       <SubType>
       </SubType>
     </ClInclude>

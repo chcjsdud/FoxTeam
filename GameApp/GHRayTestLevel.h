@@ -2,17 +2,17 @@
 
 #include <GameEngine\GameEngineLevel.h>
 
-class RayTextLevel : public GameEngineLevel
+class GHRayTestLevel : public GameEngineLevel
 {
 public:
-	RayTextLevel(); 
-	~RayTextLevel();
+	GHRayTestLevel(); 
+	~GHRayTestLevel();
 
-	RayTextLevel(const RayTextLevel& _other) = delete; 
-	RayTextLevel(RayTextLevel&& _other) = delete; 
+	GHRayTestLevel(const GHRayTestLevel& _other) = delete; 
+	GHRayTestLevel(GHRayTestLevel&& _other) = delete; 
 
-	RayTextLevel& operator=(const RayTextLevel& _other) = delete;
-	RayTextLevel& operator=(const RayTextLevel&& _other) = delete;
+	GHRayTestLevel& operator=(const GHRayTestLevel& _other) = delete;
+	GHRayTestLevel& operator=(const GHRayTestLevel&& _other) = delete;
 
 public:
 	// GameEngineLevel을(를) 통해 상속됨
