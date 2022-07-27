@@ -17,40 +17,36 @@
     <ClCompile Include="UserGame_Resources.cpp">
       <Filter>00.GameApp\01.Core</Filter>
     </ClCompile>
-    <ClCompile Include="PlayLevel.cpp">
+    <ClCompile Include="LH_PlayLevel.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel</Filter>
     </ClCompile>
     <ClCompile Include="TestPlayer.cpp">
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="Player_State.cpp">
+    <ClCompile Include="LH_Player_State.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
+    <ClCompile Include="LH_Map.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Map</Filter>
     </ClCompile>
-    <ClCompile Include="TestMonster.cpp">
+    <ClCompile Include="LH_TestMonster.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="TestMonsterState.cpp">
+    <ClCompile Include="LH_TestMonsterState.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="TopUI.cpp">
+    <ClCompile Include="LH_TopUI.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
-    <ClCompile Include="LockOnUI.cpp">
+    <ClCompile Include="LH_LockOnUI.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
-    <ClCompile Include="Inventory.cpp">
+    <ClCompile Include="LH_Inventory.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Item\Base</Filter>
     </ClCompile>
-    <ClCompile Include="WoodStick.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="GameMouse.cpp">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClCompile>
@@ -60,10 +56,10 @@
     <ClCompile Include="Player.cpp">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Characters.cpp">
+    <ClCompile Include="LH_Characters.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Yuki.cpp">
+    <ClCompile Include="LH_Yuki.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="Controller.cpp">
@@ -86,6 +82,9 @@
     </ClCompile>
     <ClCompile Include="SJH_PlayLevel.cpp">
       <Filter>01.GameObject\99.SJH\02.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="LH_Player.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,7 +210,7 @@
     <ClInclude Include="UserGame.h">
       <Filter>00.GameApp\01.Core</Filter>
     </ClInclude>
-    <ClInclude Include="PlayLevel.h">
+    <ClInclude Include="LH_PlayLevel.h">
       <Filter>01.GameObject\99.LH\PlayLevel</Filter>
     </ClInclude>
     <ClInclude Include="TestPlayer.h">
@@ -220,31 +219,27 @@
     <ClInclude Include="Macro.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
-    <ClInclude Include="Map.h">
+    <ClInclude Include="LH_Map.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Map</Filter>
     </ClInclude>
-    <ClInclude Include="TestMonster.h">
+    <ClInclude Include="LH_TestMonster.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>01.GameObject\99.LH\PlayLevel\ENUMs</Filter>
     </ClInclude>
-    <ClInclude Include="TopUI.h">
+    <ClInclude Include="LH_TopUI.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
-    <ClInclude Include="LockOnUI.h">
+    <ClInclude Include="LH_LockOnUI.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
-    <ClInclude Include="Inventory.h">
+    <ClInclude Include="LH_Inventory.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Item\Base</Filter>
     </ClInclude>
-    <ClInclude Include="WoodStick.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h" />
     <ClInclude Include="GameMouse.h">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClInclude>
@@ -254,13 +249,13 @@
     <ClInclude Include="Player.h">
       <Filter>01.GameObject\03.Level\PlayLevel\Actor\01. Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Status.h">
+    <ClInclude Include="LH_Status.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Characters.h">
+    <ClInclude Include="LH_Characters.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Yuki.h">
+    <ClInclude Include="LH_Yuki.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="Controller.h">
@@ -283,6 +278,11 @@
     </ClInclude>
     <ClInclude Include="PJW_Map.h">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Monsters.h" />
+    <ClInclude Include="Objects.h" />
+    <ClInclude Include="LH_Player.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

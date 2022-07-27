@@ -184,13 +184,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
-    <ClCompile Include="Characters.cpp" />
+    <ClCompile Include="LH_Characters.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="GameMouse.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Inventory.cpp">
+    <ClCompile Include="LH_Inventory.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -198,7 +198,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Map.cpp">
+    <ClCompile Include="LH_Map.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -218,12 +218,12 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
+    <ClCompile Include="LH_Player.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Player_State.cpp" />
-    <ClCompile Include="LockOnUI.cpp" />
+    <ClCompile Include="LH_Player_State.cpp" />
+    <ClCompile Include="LH_LockOnUI.cpp" />
     <ClCompile Include="RayTestBox.cpp">
       <SubType>
       </SubType>
@@ -236,11 +236,11 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="TestMonster.cpp">
+    <ClCompile Include="LH_TestMonster.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="TestMonsterState.cpp" />
+    <ClCompile Include="LH_TestMonsterState.cpp" />
     <ClCompile Include="TestPlayer.cpp">
       <SubType>
       </SubType>
@@ -249,7 +249,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="PlayLevel.cpp">
+    <ClCompile Include="LH_PlayLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -263,7 +263,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Precompile.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="TopUI.cpp">
+    <ClCompile Include="LH_TopUI.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -276,17 +276,13 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="UserGame_Resources_Shader.cpp" />
-    <ClCompile Include="WoodStick.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Yuki.cpp">
+    <ClCompile Include="LH_Yuki.cpp">
       <SubType>
       </SubType>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Characters.h" />
+    <ClInclude Include="LH_Characters.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="CustomVertex.h" />
     <ClInclude Include="Enums.h" />
@@ -294,7 +290,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Inventory.h">
+    <ClInclude Include="LH_Inventory.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -303,7 +299,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Macro.h" />
-    <ClInclude Include="Map.h">
+    <ClInclude Include="LH_Map.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -328,11 +324,11 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="LH_Player.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="LockOnUI.h" />
+    <ClInclude Include="LH_LockOnUI.h" />
     <ClInclude Include="RayTestBox.h">
       <SubType>
       </SubType>
@@ -345,8 +341,8 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Status.h" />
-    <ClInclude Include="TestMonster.h">
+    <ClInclude Include="LH_Status.h" />
+    <ClInclude Include="LH_TestMonster.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -358,12 +354,12 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PlayLevel.h">
+    <ClInclude Include="LH_PlayLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="PreCompile.h" />
-    <ClInclude Include="TopUI.h">
+    <ClInclude Include="LH_TopUI.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -372,11 +368,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="UserGame_Resources_Shader.h" />
-    <ClInclude Include="WoodStick.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Yuki.h">
+    <ClInclude Include="LH_Yuki.h">
       <SubType>
       </SubType>
     </ClInclude>
