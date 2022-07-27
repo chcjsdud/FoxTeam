@@ -1,6 +1,6 @@
 #include "PreCompile.h"
 #include <GameEngine/GameEngineCollision.h>
-#include "Map.h"
+#include "LH_Map.h"
 
 Map::Map() // default constructer 디폴트 생성자
 {

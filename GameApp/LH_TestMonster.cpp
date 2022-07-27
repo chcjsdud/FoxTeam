@@ -1,11 +1,11 @@
 #include "PreCompile.h"
-#include "TestMonster.h"
+#include "LH_TestMonster.h"
 #include <GameEngine/GameEngineImageRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
 #include "Enums.h"
-#include "Player.h"
+#include "LH_Player.h"
 
 TestMonster::TestMonster() // default constructer 디폴트 생성자
 	: FBXRenderer_(nullptr)

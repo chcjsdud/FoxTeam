@@ -1,9 +1,9 @@
 #include "PreCompile.h"
-#include "TopUI.h"
+#include "LH_TopUI.h"
 #include "GameEngine/GameEngineUIRenderer.h"
 #include "GameEngine/GameEngineInput.h"
 
-#include "Player.h"
+#include "LH_Player.h"
 
 TopUI::TopUI()
 	: Time(1.0f), UIOn(false)

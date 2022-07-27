@@ -3,8 +3,8 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
-#include "Player.h"
-#include "TestMonster.h"
+#include "LH_Player.h"
+#include "LH_TestMonster.h"
 #include "Enums.h"
 
 #define MMonsterChangeState(Name) 	monsterState_.ChangeState(Name); return

@@ -4,8 +4,8 @@
 #include <GameEngine/GameEngineCollision.h>
 
 #include "Item.h"
-#include "Player.h"
-#include "Inventory.h"
+#include "LH_Player.h"
+#include "LH_Inventory.h"
 
 #include "Enums.h"
 

@@ -3,7 +3,7 @@
 #include <GameEngine/GameEngineFSM.h>
 
 #include "Enums.h"
-#include "Status.h"
+#include "LH_Status.h"
 
 struct SkillInfo
 {

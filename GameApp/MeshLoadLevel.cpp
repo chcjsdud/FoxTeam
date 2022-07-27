@@ -1,8 +1,8 @@
 #include "PreCompile.h"
 #include "MeshLoadLevel.h"
-#include "Player.h"
-#include "TopUI.h"
-#include "Map.h"
+#include "LH_Player.h"
+#include "LH_TopUI.h"
+#include "LH_Map.h"
 #include <GameEngine/PostFade.h>
 #include <GameEngine/PostBlur.h>
 #include <GameEngine/SmallPostBlur.h>

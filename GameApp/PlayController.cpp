@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "PlayController.h"
 #include "GameMouse.h"
-#include "Player.h"
+#include "LH_Player.h"
 PlayController::PlayController() // default constructer 디폴트 생성자
 {
 

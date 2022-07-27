@@ -3,7 +3,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
-#include "Player.h"
+#include "LH_Player.h"
 
 //
 //State Cpp

@@ -1,9 +1,9 @@
 #include "PreCompile.h"
-#include "LockOnUI.h"
+#include "LH_LockOnUI.h"
 #include "GameEngine/GameEngineUIRenderer.h"
 #include "GameEngine/GameEngineInput.h"
 
-#include "Player.h"
+#include "LH_Player.h"
 
 LockOnUI::LockOnUI()
 	: Time(1.0f), UIOn(false)

@@ -3,10 +3,10 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
-#include "Player.h"
-#include "TopUI.h"
-#include "LockOnUI.h"
-#include "Inventory.h"
+#include "LH_Player.h"
+#include "LH_TopUI.h"
+#include "LH_LockOnUI.h"
+#include "LH_Inventory.h"
 
 #include "Enums.h"
 

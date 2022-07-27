@@ -1,8 +1,8 @@
 #include "PreCompile.h"
 #include "Controller.h"
 
-#include "Characters.h"
-#include "Yuki.h"
+#include "LH_Characters.h"
+#include "LH_Yuki.h"
 
 #include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngine/GameEngineCore.h>

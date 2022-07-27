@@ -1,5 +1,5 @@
 #include "PreCompile.h"
-#include "Characters.h"
+#include "LH_Characters.h"
 
 Characters* Characters::MainPlayer = nullptr;
 

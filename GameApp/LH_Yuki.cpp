@@ -1,5 +1,5 @@
 #include "PreCompile.h"
-#include "Yuki.h"
+#include "LH_Yuki.h"
 
 Yuki::Yuki()
 {

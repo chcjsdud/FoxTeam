@@ -1,5 +1,5 @@
 #pragma once
-#include "Player.h"
+#include "LH_Player.h"
 
 // 분류 : 캐릭터
 // 용도 : 유키

@@ -1,5 +1,5 @@
 #include "PreCompile.h"
-#include "Inventory.h"
+#include "LH_Inventory.h"
 #include "Item.h"
 
 Inventory::Inventory() // default constructer 디폴트 생성자
