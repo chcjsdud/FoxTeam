@@ -16,10 +16,19 @@ public:
 
 public:
 	// GameEngineLevel을(를) 통해 상속됨
-	virtual void LevelStart() override;
-	virtual void LevelUpdate(float _DeltaTime) override;
-	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
-	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
+	void LevelStart() override;
+	void LevelUpdate(float _DeltaTime) override;
+	void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
+	void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
+
+
+private:
+	void loadResource();
+	void releaseResource();
+	void createActor();
+
+	void initRenderWindow();
+	void releaseRenderWindow();
 
 };
 

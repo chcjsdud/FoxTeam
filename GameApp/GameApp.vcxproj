@@ -184,6 +184,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
+    <ClCompile Include="GHRio.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="LH_Characters.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="GameMouse.cpp">
@@ -282,6 +286,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GHRio.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="LH_Characters.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="CustomVertex.h" />
