@@ -39,7 +39,8 @@ void UserGame::Initialize()
 	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
-	LevelCreate<PJW_Level>("Play");
+	LevelCreate<PlayLevel>("Play");
+	//LevelCreate<PJW_Level>("Play"); // 220728 PJW Test 레벨
 	//LevelCreate<SJH_PlayLevel>("SJH_PlayLevel");	// 220727 SJH : TEST용 레벨
 
 	
