@@ -22,8 +22,10 @@ VertexOut ColorAni_VS(VertexIn _In)
 {
     VertexOut Out = (VertexOut)0;
     
-    
-    Skinning(_In.Position, _In.Weight, _In.Index, ArrAniMationMatrix);
+    if (0 != IsAni)
+    {
+        Skinning(_In.Position, _In.Weight, _In.Index, ArrAniMationMatrix);
+    }
     
     // [][][][]
     // [][][][]
@@ -57,6 +59,7 @@ float4 ColorAni_PS(VertexOut _In) : SV_Target0
     float4 DiffuseLight = (float) 0.0f;
     float4 SpacularLight = (float) 0.0f;
     float4 AmbientLight = (float) 0.0f;
+    
     for (int i = 0; i < LightCount; ++i)
     {
         DiffuseLight += CalculateDirectionDiffuseLight(_In.ViewNormal, Lights[i]);
@@ -73,6 +76,5 @@ float4 ColorAni_PS(VertexOut _In) : SV_Target0
     
     Color.w = 1.0f;
     
-    return
-Color;
+    return Color;
 }

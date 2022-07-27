@@ -162,6 +162,8 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
                 // 음? 1번만 해도 되는걸 15번을 하게 될것이다.
                 RenderSetData.ShaderHelper->SettingStructuredBufferSetting("ArrAniMationMatrix", FBXMesh->GetAnimationBuffer(VertexBufferIndex));
                 RenderSetData.ShaderHelper->SettingStructuredBufferLink("ArrAniMationMatrix", &RenderSetData.BoneData[0], sizeof(float4x4) * RenderSetData.BoneData.size());
+
+                RendererDataInst.IsAni = 1;
             }
 
             RenderSetData.PipeLine_->SetInputAssembler1VertexBufferSetting(VertexBuffer);
@@ -226,7 +228,7 @@ void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName
 
     if (nullptr == Animation)
     {
-        GameEngineDebug::MsgBoxError("같은 이름의 애니메이션을 또 만들수는 없습니다.");
+        GameEngineDebug::MsgBoxError("로드하려는 애니메이션 정보가 없습니다.");
         return;
     }
 

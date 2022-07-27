@@ -16,6 +16,7 @@
 #include <GameEngine/SKySphereActor.h>
 #include <GameEngine/GameEngineFBXWindow.h>
 #include "UserGame.h"
+#include "TestPlayer.h"
 
 MeshLoadLevel::MeshLoadLevel()
 {
@@ -139,13 +140,6 @@ void MeshLoadLevel::LevelUpdate(float _DeltaTime)
 		Check = true;
 	}
 
-	if (true == GameEngineInput::GetInst().Down("LevelControl"))
-	{
-		GameEngineGUIWindow* Window = GameEngineGUI::GetInst()->FindGUIWindow("LevelControlWindow");
-
-		Window->OnOffChange();
-	}
-
 	if (true == GameEngineInput::GetInst().Down("MOn"))
 	{
 		GameEngineGUIWindow* Window = GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow");
@@ -156,7 +150,7 @@ void MeshLoadLevel::LevelUpdate(float _DeltaTime)
 	if (true == GameEngineInput::GetInst().Down("MOff"))
 	{
 		//Window->Off();
-		//MActor->WindowCursorOff();
+		//MActor->WindowCursorOff();TestPlayer
 
 	}
 }
@@ -220,9 +214,9 @@ void MeshLoadLevel::CreateActorLevel()
 	}
 
 
-	//{
-	//	Player* Actor = CreateActor<Player>();
-	//}
+	{
+		TestPlayer* Actor = CreateActor<TestPlayer>();
+	}
 
 	{
 		Map* Actor = CreateActor<Map>();
