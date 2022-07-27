@@ -863,9 +863,6 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
 
-
-
-
 	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DeferredCalLight");
 		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
@@ -878,5 +875,14 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
 
-
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("ColorBox");
+		Pipe->SetInputAssembler1VertexBufferSetting("Box");
+		Pipe->SetVertexShader("Color_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Box");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		Pipe->SetPixelShader("Color_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
 }
