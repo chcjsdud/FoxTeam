@@ -32,12 +32,17 @@ public:
 	std::string SpcTextureName; // 텍스처경로
 
 public:
-	FbxExRenderingPipeLineSettingData() {}
+	FbxExRenderingPipeLineSettingData()
+		: SpecularPower(0.f)
+		, TransparencyFactor(0.f)
+		, Shininess(0.f)
+	{
+	}
 	~FbxExRenderingPipeLineSettingData() {}
 };
 
 
-struct FbxMeshSet 
+struct FbxMeshSet
 {
 public:
 	int Index;
@@ -73,7 +78,8 @@ public:
 
 	FbxMeshSet() :
 		IsLod(false),
-		IsLodLv(-1)
+		IsLodLv(-1),
+		Index(0)
 	{
 	}
 
@@ -102,7 +108,7 @@ public:
 				GameEngineIndexBuffers[i][j] = nullptr;
 			}
 		}
-		
+
 	}
 };
 
@@ -410,8 +416,8 @@ struct FbxExMeshInfo
 class FbxClusterData
 {
 public:
-	fbxsdk::FbxCluster* Cluster;
-	fbxsdk::FbxMesh* Mesh;
+	fbxsdk::FbxCluster* Cluster = nullptr;
+	fbxsdk::FbxMesh* Mesh = nullptr;
 	std::string LinkName;
 };
 
@@ -442,12 +448,12 @@ public:
 		return AllMeshMap;
 	}
 
-	size_t GetBoneCount(UINT _Index) 
+	size_t GetBoneCount(UINT _Index)
 	{
 		return AllBones[_Index].size();
 	}
 
-	GameEngineStructuredBuffer* GetAnimationBuffer(int _Index) 
+	GameEngineStructuredBuffer* GetAnimationBuffer(int _Index)
 	{
 		if (AnimationBuffers.size() <= _Index)
 		{
@@ -470,8 +476,8 @@ private:
 	// 이녀석은 정보
 	std::vector<FbxExMeshInfo> MeshInfos;
 	std::vector<FbxMeshSet> AllMeshMap;
-	std::vector<std::vector<Bone>> AllBones; 
-	std::vector<std::map<std::string, Bone*>> AllFindMap; 
+	std::vector<std::vector<Bone>> AllBones;
+	std::vector<std::map<std::string, Bone*>> AllFindMap;
 	std::vector<GameEngineStructuredBuffer*> AnimationBuffers;
 	std::vector<std::vector<FbxClusterData>> ClusterData;
 
