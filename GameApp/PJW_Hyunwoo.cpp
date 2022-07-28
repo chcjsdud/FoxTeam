@@ -7,7 +7,7 @@
 
 PJW_Hyunwoo::PJW_Hyunwoo() // default constructer 디폴트 생성자
 	:FBXRenderer_(nullptr), collision_Body_(nullptr), collision_Qskill_(nullptr), target_(nullptr),
-	status_HP_(0.0f), status_ATK_(0.0f), status_MoveSpeed_(0.0f), deltaTime_(0.0f), aimDir_(0.0f,0.0f,0.0f), curDir_(0.0f,0.0f,0.0f), isMoving_(false)
+	status_HP_(0.0f), status_ATK_(0.0f), status_MoveSpeed_(0.0f), deltaTime_(0.0f), aimDir_(0.0f,0.0f,1.0f), curDir_(0.0f,0.0f,1.0f), isMoving_(false)
 {
 
 }
@@ -24,7 +24,7 @@ PJW_Hyunwoo::PJW_Hyunwoo(PJW_Hyunwoo&& _other) noexcept  // default RValue Copy 
 
 void PJW_Hyunwoo::Start()
 {
-	status_MoveSpeed_ = 100.0f;
+	status_MoveSpeed_ = 50.0f;
 
 	Init_FBX();
 	Init_FSM();
@@ -43,12 +43,11 @@ void PJW_Hyunwoo::Init_FBX()
 	FBXRenderer_->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
 	FBXRenderer_->GetTransform()->SetLocalRotationDegree({-90.0f, 0.0f, 0.0f});
 
+	curDir_ = { 0.0f,0.0f,1.0f,1.0f };
 	for (UINT i = 0; i < FBXRenderer_->GetRenderSetCount(); i++)
 	{
 		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
 	}
-
-
 
 	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 1);
 	FBXRenderer_->CreateFBXAnimation("Skill_Q", "Hyunwoo_01_LOD1.FBX", 0);
@@ -132,7 +131,8 @@ void PJW_Hyunwoo::Move_Start()
 void PJW_Hyunwoo::Move_Update(float _DeltaTime)
 { 
 	aimDir_ = target_->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
-	aimDir_.Normalize3D();
+	// 상대 위치 - 내 위치 = 떨어진 거리
+	aimDir_.Normalize3D(); // 정규화로 방향 벡터 도출
 
 	if (true == isMoving_)
 	{
@@ -146,32 +146,36 @@ void PJW_Hyunwoo::Move_Update(float _DeltaTime)
 
 	float4 dir = float4::Cross3D(curDir_, aimDir_);
 
-	float goaldegree = GameEngineMath::UnitVectorToDegree(aimDir_.z, aimDir_.x);
+	float goaldegree = GameEngineMath::UnitVectorToDegree(aimDir_.x, aimDir_.z);
 
 	if (dir.y >= 0.f)
 	{
-		GetTransform()->AddLocalRotationDegreeY(200.0f * _DeltaTime);
-		curDir_.RotateYDegree(200.0f * _DeltaTime);
+		GetTransform()->AddLocalRotationDegreeY(100.0f * _DeltaTime);
+		// 실제 돌아가는 곳
+
+		curDir_.RotateYDegree(100.0f * _DeltaTime);
 
 		dir = float4::Cross3D(curDir_, aimDir_);
-		if (dir.y < 0.f)
-		{
-			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			curDir_ = aimDir_;
-		}
+
+		//if (dir.y < 0.f)
+		//{
+		//	GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+		//	curDir_ = aimDir_;
+		//}
 	}
 
 	else if (dir.y < 0.f)
 	{
-		GetTransform()->AddLocalRotationDegreeY(-200.0f * _DeltaTime);
-		curDir_.RotateYDegree(-200.0f * _DeltaTime);
+		GetTransform()->AddLocalRotationDegreeY(-100.0f * _DeltaTime);
+		curDir_.RotateYDegree(-100.0f * _DeltaTime);
 
 		dir = float4::Cross3D(curDir_, aimDir_);
-		if (dir.y > 0.f)
-		{
-			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			curDir_ = aimDir_;
-		}
+
+	//	if (dir.y > 0.f)
+	//	{
+	//		GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+	//		curDir_ = aimDir_;
+	//	}
 	}
 
 }

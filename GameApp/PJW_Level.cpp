@@ -58,7 +58,7 @@ void PJW_Level::Init_Actors()
 		dir.MoveParent("FoxTeam");
 		dir.MoveChild("Resources");
 		dir.MoveChild("FBX");
-
+		dir.MoveChild("PJW");
 		// ·»´õ·¯		
 		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(dir.PathToPlusFileName(MeshName)))
 		{
@@ -76,7 +76,7 @@ void PJW_Level::Init_Actors()
 		player_ = CreateActor<PJW_Hyunwoo>();
 
 		PJW_Hyunwoo* enemy = CreateActor<PJW_Hyunwoo>();
-		enemy->GetTransform()->SetWorldPosition({ 50.0f, 0.0f, 300.0f });
+		enemy->GetTransform()->SetWorldPosition({ 300.0f, 0.0f, 300.0f });
 
 		player_->SetTarget(enemy);
 	}
