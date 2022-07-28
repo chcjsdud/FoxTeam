@@ -115,6 +115,10 @@ public:
 		return LightData_;
 	}
 
+	inline void SetFov(float _fovAngle)
+	{
+		FovAngleY_ = _fovAngle;
+	}
 
 	DeferredCalLightEffect CalLightEffect;
 	DeferredMerge DeferredMergeEffect;
