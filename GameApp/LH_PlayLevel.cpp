@@ -7,7 +7,6 @@
 #include "GameMouse.h"
 #include "PlayController.h"
 
-#include "Controller.h"
 #include "LH_Yuki.h"
 
 #include <GameEngine/CameraComponent.h>
@@ -30,7 +29,6 @@ PlayLevel::PlayLevel()
 
 PlayLevel::~PlayLevel() 
 {
-	Controller::GetInst().Destory();
 }
 
 void PlayLevel::LevelStart()
@@ -178,10 +176,6 @@ void PlayLevel::Play_End()
 
 void PlayLevel::CreateActorLevel()
 {
-#pragma region SJH TEST
-	Controller::GetInst().Initialize();
-#pragma endregion
-
 	{
 
 		LightActor* Actor;

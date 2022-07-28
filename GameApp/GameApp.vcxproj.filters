@@ -59,9 +59,6 @@
     <ClCompile Include="LH_Yuki.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Controller.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="GHRayTestLevel.cpp">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
     </ClCompile>
@@ -269,9 +266,6 @@
     </ClInclude>
     <ClInclude Include="LH_Yuki.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="GHRayTestLevel.h">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>

@@ -34,7 +34,11 @@ protected:
 
 private:
 	GameEngineFBXMesh* Mesh_;
-	GameEngineFBXRenderer* Renderer_;
+	GameEngineFBXRenderer* AnimRenderer_;
+	GameEngineFBXRenderer* DeferredRenderer_;
+
+private:
+	std::vector<std::string> AnimationNameList_;
 
 };
 

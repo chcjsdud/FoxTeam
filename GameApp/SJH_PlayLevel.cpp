@@ -134,5 +134,4 @@ SJH_PlayLevel::SJH_PlayLevel()
 
 SJH_PlayLevel::~SJH_PlayLevel()
 {
-
 }

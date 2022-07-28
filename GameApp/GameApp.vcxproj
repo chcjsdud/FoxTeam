@@ -189,7 +189,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="LH_Characters.cpp" />
-    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="GameMouse.cpp">
       <SubType>
       </SubType>
@@ -294,7 +293,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LH_Characters.h" />
-    <ClInclude Include="Controller.h" />
     <ClInclude Include="CustomVertex.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GameMouse.h">

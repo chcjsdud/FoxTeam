@@ -53,5 +53,4 @@ void UserGame::Initialize()
 
 void UserGame::Release()
 {
-
 }
