@@ -206,6 +206,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="PJW_GameController.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PJW_Hyunwoo.cpp">
       <SubType>
       </SubType>
@@ -320,6 +324,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PJW_Enum.h" />
+    <ClInclude Include="PJW_GameController.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PJW_Hyunwoo.h">
       <SubType>
       </SubType>

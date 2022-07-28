@@ -92,6 +92,9 @@
     <ClCompile Include="SJH_Yuki.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor</Filter>
     </ClCompile>
+    <ClCompile Include="PJW_GameController.cpp">
+      <Filter>01.GameObject\98.PJW\PJW_Controller</Filter>
+    </ClCompile>
     <ClCompile Include="LGH_PlayLevel.cpp">
       <Filter>01.GameObject\99.LGH</Filter>
     </ClCompile>
@@ -208,6 +211,9 @@
     <Filter Include="01.GameObject\99.조규현\RayTestLevel">
       <UniqueIdentifier>{dc0f5689-7e98-4d72-a161-e40254618465}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\98.PJW\PJW_Controller">
+      <UniqueIdentifier>{1b0c7000-16dc-4204-981c-1654f6914312}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -309,6 +315,9 @@
     </ClInclude>
     <ClInclude Include="SJH_Yuki.h">
       <Filter>01.GameObject\99.SJH\01.Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="PJW_GameController.h">
+      <Filter>01.GameObject\98.PJW\PJW_Controller</Filter>
     </ClInclude>
     <ClInclude Include="LGH_PlayLevel.h">
       <Filter>01.GameObject\99.LGH</Filter>

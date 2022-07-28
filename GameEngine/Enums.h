@@ -3,7 +3,6 @@
 enum class CollisionType
 {
 	// 2D와 3D간의 충돌은 안되게 만들겁니다.
-	MousePointer,
 	Point2D,
 	CirCle,
 	Rect,

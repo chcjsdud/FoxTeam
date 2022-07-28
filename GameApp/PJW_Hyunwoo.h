@@ -28,14 +28,24 @@ public:
 		return target_;
 	}
 
+	void GetDamage(float _damage)
+	{
+		curHP_ -= _damage;
+	}
+
+	
+
 
 protected: 
 	virtual void Start();
-	virtual void Update(float _DeltaTime);
-
 	void Init_FBX();
 	void Init_FSM();
 	void Init_Collision();
+
+	virtual void Update(float _DeltaTime);
+	void Check_Collision(float _DeltaTime);
+	void Check_HP();
+	void Check_DebugRect(float _DeltaTime);
 
 // FSM
 private:
@@ -58,7 +68,9 @@ private:
 	void Skill_Q_Update(float _DeltaTime);
 	void Skill_Q_End();
 
-
+	void Death_Start();
+	void Death_Update(float _DeltaTime);
+	void Death_End();
 
 
 
@@ -72,8 +84,8 @@ private:
 	GameEngineCollision* collision_Body_;
 	// 몸통 콜리젼
 
-	GameEngineCollision* collision_Qskill_; 
-	// Q 스킬 시 피격 거리 콜리젼
+	GameEngineCollision* collision_Attack_; 
+	// 공격 범위 콜리젼 : 이 내부에 상대의 body 가 접촉되면 공격 수행
 
 
 private:
@@ -84,6 +96,10 @@ private:
 	float status_HP_;
 	float status_ATK_;
 	float status_MoveSpeed_;
+
+// 현재 체력 마력
+private:
+	float curHP_;
 
 // 기타 변수
 private:

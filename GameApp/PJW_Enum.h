@@ -7,7 +7,9 @@ enum InGameCollisionType
 {
 	MIN = 0,
 	MousePointer,
+
 	Player_Body,
-	Player_Skill,
+	Player_AttackRange,
+
 	MAX = 999
 };

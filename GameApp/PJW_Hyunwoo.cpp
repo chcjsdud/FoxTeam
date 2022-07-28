@@ -6,8 +6,8 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 
 PJW_Hyunwoo::PJW_Hyunwoo() // default constructer 디폴트 생성자
-	:FBXRenderer_(nullptr), collision_Body_(nullptr), collision_Qskill_(nullptr), target_(nullptr),
-	status_HP_(0.0f), status_ATK_(0.0f), status_MoveSpeed_(0.0f), deltaTime_(0.0f), aimDir_(0.0f,0.0f,1.0f), curDir_(0.0f,0.0f,1.0f), isMoving_(false)
+	:FBXRenderer_(nullptr), collision_Body_(nullptr), target_(nullptr),
+	status_HP_(0.0f), status_ATK_(0.0f), status_MoveSpeed_(0.0f), deltaTime_(0.0f), aimDir_(0.0f,0.0f,1.0f), curDir_(0.0f,0.0f,1.0f), isMoving_(false), curHP_(0.0f)
 {
 
 }
@@ -25,7 +25,9 @@ PJW_Hyunwoo::PJW_Hyunwoo(PJW_Hyunwoo&& _other) noexcept  // default RValue Copy 
 void PJW_Hyunwoo::Start()
 {
 	status_MoveSpeed_ = 50.0f;
-
+	status_ATK_ = 20.0f;
+	status_HP_ = 100.0f;
+	curHP_ = 100.0f;
 	Init_FBX();
 	Init_FSM();
 	Init_Collision();
@@ -33,10 +35,7 @@ void PJW_Hyunwoo::Start()
 
 void PJW_Hyunwoo::Init_FBX()
 {
-
-
 	// 렌더링용 버텍스, 인덱스 버퍼 생성
-
 	FBXRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXRenderer_->SetFBXMesh("Hyunwoo_01_LOD1.FBX", "TextureAni");
 	FBXRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
@@ -49,17 +48,22 @@ void PJW_Hyunwoo::Init_FBX()
 		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
 	}
 
-	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 1);
-	FBXRenderer_->CreateFBXAnimation("Skill_Q", "Hyunwoo_01_LOD1.FBX", 0);
+	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 3);
+	FBXRenderer_->CreateFBXAnimation("Move", "Hyunwoo_01_LOD1.FBX", 4);
+	FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 0);
+	FBXRenderer_->CreateFBXAnimation("Attack1", "Hyunwoo_01_LOD1.FBX", 1);
+	FBXRenderer_->CreateFBXAnimation("Death", "Hyunwoo_01_LOD1.FBX", 2);
+	
 	FBXRenderer_->ChangeFBXAnimation("Idle");
 }
 
 void PJW_Hyunwoo::Init_FSM()
 {
-	hyunwooState_.CreateState<PJW_Hyunwoo>("Idle", this, &PJW_Hyunwoo::Idle_Start, &PJW_Hyunwoo::Idle_Update, &PJW_Hyunwoo::Idle_End);;
-	hyunwooState_.CreateState<PJW_Hyunwoo>("Move", this, &PJW_Hyunwoo::Move_Start, &PJW_Hyunwoo::Move_Update, &PJW_Hyunwoo::Move_End);;
-	hyunwooState_.CreateState<PJW_Hyunwoo>("Attack", this, &PJW_Hyunwoo::Attack_Start, &PJW_Hyunwoo::Attack_Update, &PJW_Hyunwoo::Attack_End);;
-	hyunwooState_.CreateState<PJW_Hyunwoo>("Skill_Q", this, &PJW_Hyunwoo::Skill_Q_Start, &PJW_Hyunwoo::Skill_Q_Update, &PJW_Hyunwoo::Skill_Q_End);;
+	hyunwooState_.CreateState<PJW_Hyunwoo>("Idle", this, &PJW_Hyunwoo::Idle_Start, &PJW_Hyunwoo::Idle_Update, &PJW_Hyunwoo::Idle_End);
+	hyunwooState_.CreateState<PJW_Hyunwoo>("Move", this, &PJW_Hyunwoo::Move_Start, &PJW_Hyunwoo::Move_Update, &PJW_Hyunwoo::Move_End);
+	hyunwooState_.CreateState<PJW_Hyunwoo>("Attack", this, &PJW_Hyunwoo::Attack_Start, &PJW_Hyunwoo::Attack_Update, &PJW_Hyunwoo::Attack_End);
+	hyunwooState_.CreateState<PJW_Hyunwoo>("Skill_Q", this, &PJW_Hyunwoo::Skill_Q_Start, &PJW_Hyunwoo::Skill_Q_Update, &PJW_Hyunwoo::Skill_Q_End);
+	hyunwooState_.CreateState<PJW_Hyunwoo>("Death", this, &PJW_Hyunwoo::Death_Start, &PJW_Hyunwoo::Death_Update, &PJW_Hyunwoo::Death_End);
 	hyunwooState_.ChangeState("Idle");
 }
 
@@ -69,14 +73,16 @@ void PJW_Hyunwoo::Init_Collision()
 
 	////타격 히트 박스
 	collision_Body_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	collision_Body_->GetTransform()->SetLocalScaling(float4{ 200.f,50.f,100.f ,1.f });
+	collision_Body_->GetTransform()->SetLocalScaling(float4{ 50.f,50.f, 50.f ,1.f });
 	collision_Body_->SetCollisionGroup(InGameCollisionType::Player_Body);
+	collision_Body_->SetCollisionType(CollisionType::AABBBox3D);
 
 	////피격 히트박스 겸사겸사 맵 컬리전도 가능할듯
-	collision_Qskill_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	collision_Qskill_->GetTransform()->SetLocalScaling(float4{ 100.f,200.f,100.f ,1.f });
-	collision_Qskill_->GetTransform()->SetLocalPosition({ 0.f,100.f,0.f });
-	collision_Qskill_->SetCollisionGroup(static_cast<int>(InGameCollisionType::Player_Skill));
+	collision_Attack_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	collision_Attack_->GetTransform()->SetLocalScaling(float4{ 100.f,0.f,100.f ,1.f });
+	collision_Attack_->GetTransform()->SetLocalPosition({ 0.f,-50.f,0.f });
+	collision_Attack_->SetCollisionGroup(static_cast<int>(InGameCollisionType::Player_AttackRange));
+	collision_Attack_->SetCollisionType(CollisionType::CirCle);
 }
 
 
@@ -86,9 +92,30 @@ void PJW_Hyunwoo::Init_Collision()
 
 void PJW_Hyunwoo::Update(float _DeltaTime)
 {
+	Check_HP();
+	Check_DebugRect(_DeltaTime);
+	Check_Collision(_DeltaTime);
 	hyunwooState_.Update(_DeltaTime);
 }	
 
+
+void PJW_Hyunwoo::Check_HP()
+{
+	if (0.0f >= curHP_)
+	{
+		isMoving_ = false;
+		status_MoveSpeed_ = 0.0f;
+		status_ATK_ = 0.0f;
+		status_HP_ = 0.0f;
+		curHP_ = 0.0f;
+		hyunwooState_.ChangeState("Death");
+	}
+}
+
+void PJW_Hyunwoo::Check_Collision(float _DeltaTime)
+{
+		
+}
 
 void PJW_Hyunwoo::Idle_Start()
 {
@@ -99,12 +126,6 @@ void PJW_Hyunwoo::Idle_Start()
 
 void PJW_Hyunwoo::Idle_Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::GetInst().Down("Skill_Q"))
-	{
-		hyunwooState_.ChangeState("Skill_Q");
-		return;
-	}
-
 	if (true == GameEngineInput::GetInst().Down("Test_Move"))
 	{
 		if (nullptr == target_)
@@ -126,6 +147,7 @@ void PJW_Hyunwoo::Idle_End()
 void PJW_Hyunwoo::Move_Start()
 {
 	isMoving_ = true;
+	FBXRenderer_->ChangeFBXAnimation("Move");
 }
 
 void PJW_Hyunwoo::Move_Update(float _DeltaTime)
@@ -191,7 +213,21 @@ void PJW_Hyunwoo::Attack_Start()
 }
 void PJW_Hyunwoo::Attack_Update(float _DeltaTime)
 {
+	if (true == collision_Attack_->Collision(static_cast<int>(InGameCollisionType::Player_Body)))
+	{
+		FBXRenderer_->ChangeFBXAnimation("Attack0");
 
+		deltaTime_ += GameEngineTime::GetInst().GetDeltaTime();
+
+		if (0.5f <= deltaTime_)
+		{
+			target_->GetDamage(status_ATK_);
+			hyunwooState_.ChangeState("Idle");
+			return;
+		}
+
+		return;
+	}
 }
 
 void PJW_Hyunwoo::Attack_End()
@@ -224,3 +260,39 @@ void PJW_Hyunwoo::Skill_Q_End()
 {
 	return;
 }
+
+void PJW_Hyunwoo::Death_Start()
+{
+	FBXRenderer_->ChangeFBXAnimation("Death");
+	deltaTime_ = 0.0f;
+}
+void PJW_Hyunwoo::Death_Update(float _DeltaTime)
+{
+	deltaTime_ += GameEngineTime::GetInst().GetDeltaTime();
+
+	if (1.8f <= deltaTime_)
+	{
+		Death();
+		return;
+	}
+
+	return;
+}
+
+void PJW_Hyunwoo::Death_End()
+{
+
+}
+
+
+
+
+
+
+
+void PJW_Hyunwoo::Check_DebugRect(float _DeltaTime)
+{
+	GetLevel()->PushDebugRender(collision_Body_->GetTransform(), CollisionType::AABBBox3D);
+	GetLevel()->PushDebugRender(collision_Attack_->GetTransform(), CollisionType::CirCle);
+}
+
