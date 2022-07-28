@@ -236,6 +236,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="SJH_FloorMap.cpp" />
+    <ClCompile Include="SJH_Mouse.cpp" />
     <ClCompile Include="SJH_PlayLevel.cpp">
       <SubType>
       </SubType>
@@ -245,6 +247,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="LH_TestMonsterState.cpp" />
+    <ClCompile Include="SJH_Yuki.cpp" />
     <ClCompile Include="TestPlayer.cpp">
       <SubType>
       </SubType>
@@ -346,6 +349,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="SJH_FloorMap.h" />
+    <ClInclude Include="SJH_Mouse.h" />
     <ClInclude Include="SJH_PlayLevel.h">
       <SubType>
       </SubType>
@@ -355,6 +360,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="SJH_Yuki.h" />
     <ClInclude Include="TestPlayer.h">
       <SubType>
       </SubType>

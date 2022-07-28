@@ -41,11 +41,11 @@ void UserGame::Initialize()
 
 	LevelCreate<PlayLevel>("Play");
 	//LevelCreate<PJW_Level>("Play"); // 220728 PJW Test 레벨
-	//LevelCreate<SJH_PlayLevel>("SJH_PlayLevel");	// 220727 SJH : TEST용 레벨
+	//LevelCreate<SJH_PlayLevel>("SJH_Play");	// 220727 SJH : TEST용 레벨
 
 	
 	LevelChange("Play");
-	//LevelChange("SJH_PlayLevel");
+	//LevelChange("SJH_Play");
 
 	return;
 }
