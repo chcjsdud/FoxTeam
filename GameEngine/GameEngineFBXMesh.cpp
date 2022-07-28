@@ -687,6 +687,170 @@ void GameEngineFBXMesh::FbxMeshSetMaterialSetting(fbxsdk::FbxNode* _Node, FbxMes
 
 }
 
+//void LoadUVInformation(FbxMesh* pMesh, std::vector<GameEngineVertex>& VtxData)
+//{
+//
+//	//get all UV set names
+//	FbxStringList lUVSetNameList;
+//	pMesh->GetUVSetNames(lUVSetNameList);
+//
+//	//iterating over all uv sets
+//	for (int lUVSetIndex = 0; lUVSetIndex < lUVSetNameList.GetCount(); lUVSetIndex++)
+//	{
+//		//get lUVSetIndex-th uv set
+//		const char* lUVSetName = lUVSetNameList.GetStringAt(lUVSetIndex);
+//		const FbxGeometryElementUV* lUVElement = pMesh->GetElementUV(lUVSetName);
+//
+//		if (!lUVElement)
+//			continue;
+//
+//		// only support mapping mode eByPolygonVertex and eByControlPoint
+//		if (lUVElement->GetMappingMode() != FbxGeometryElement::eByPolygonVertex &&
+//			lUVElement->GetMappingMode() != FbxGeometryElement::eByControlPoint)
+//			return;
+//
+//		//index array, where holds the index referenced to the uv data
+//		const bool lUseIndex = lUVElement->GetReferenceMode() != FbxGeometryElement::eDirect;
+//		const int lIndexCount = (lUseIndex) ? lUVElement->GetIndexArray().GetCount() : 0;
+//
+//		//iterating through the data by polygon
+//		const int lPolyCount = pMesh->GetPolygonCount();
+//
+//		if (lUVElement->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+//		{
+//			for (int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex)
+//			{
+//				// build the max index array that we need to pass into MakePoly
+//				const int lPolySize = pMesh->GetPolygonSize(lPolyIndex);
+//				for (int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex)
+//				{
+//					FbxVector2 lUVValue;
+//
+//					//get the index of the current vertex in control points array
+//					int lPolyVertIndex = pMesh->GetPolygonVertex(lPolyIndex, lVertIndex);
+//
+//					//the UV index depends on the reference mode
+//					int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyVertIndex) : lPolyVertIndex;
+//
+//					lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+//
+//					VtxData[lUVIndex].TEXTURECOORD.x = static_cast<float>(lUVValue.mData[0]);
+//					VtxData[lUVIndex].TEXTURECOORD.y = static_cast<float>(lUVValue.mData[1]);
+//
+//					//User TODO:
+//					//Print out the value of UV(lUVValue) or log it to a file
+//				}
+//			}
+//		}
+//		else if (lUVElement->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+//		{
+//			// GameEngineDebug::AssertFalse();
+//
+//			int lPolyIndexCounter = 0;
+//			for (int lPolyIndex = 0; lPolyIndex < lPolyCount; ++lPolyIndex)
+//			{
+//				// build the max index array that we need to pass into MakePoly
+//				const int lPolySize = pMesh->GetPolygonSize(lPolyIndex);
+//				for (int lVertIndex = 0; lVertIndex < lPolySize; ++lVertIndex)
+//				{
+//					if (lPolyIndexCounter < lIndexCount)
+//					{
+//						FbxVector2 lUVValue;
+//
+//						//the UV index depends on the reference mode
+//						int lUVIndex = lUseIndex ? lUVElement->GetIndexArray().GetAt(lPolyIndexCounter) : lPolyIndexCounter;
+//
+//						lUVValue = lUVElement->GetDirectArray().GetAt(lUVIndex);
+//
+//						VtxData[lUVIndex].TEXTURECOORD.x = static_cast<float>(lUVValue.mData[0]);
+//						VtxData[lUVIndex].TEXTURECOORD.y = 1.0f - static_cast<float>(lUVValue.mData[1]);
+//
+//						//User TODO:
+//						//Print out the value of UV(lUVValue) or log it to a file
+//
+//						lPolyIndexCounter++;
+//					}
+//				}
+//			}
+//		}
+//	}
+//}
+
+void GameEngineFBXMesh::LoadUv(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshMatrix, std::vector<GameEngineVertex>& _ArrVtx, int VtxId, int VertexCount,int _Index)
+{
+	int iCount = _Mesh->GetElementUVCount();
+
+	if (0 == iCount)
+	{
+		return;
+
+	}
+
+	float4 result;
+
+	FbxGeometryElementUV* pElement = _Mesh->GetElementUV();
+	int iDataIndex = VtxId;
+	switch (pElement->GetMappingMode())
+		//switch (vertexTangnet->GetMappingMode())
+	{
+	case FbxGeometryElement::eByControlPoint:
+		switch (pElement->GetReferenceMode())
+		{
+		case FbxGeometryElement::eDirect:
+		{
+			result.x = static_cast<float>(pElement->GetDirectArray().GetAt(_Index).mData[0]);
+			result.y = static_cast<float>(pElement->GetDirectArray().GetAt(_Index).mData[1]);
+			result.z = static_cast<float>(pElement->GetDirectArray().GetAt(_Index).mData[2]);
+		}
+		break;
+
+		case FbxGeometryElement::eIndexToDirect:
+		{
+			int index = pElement->GetIndexArray().GetAt(_Index);
+			result.x = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[0]);
+			result.y = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[1]);
+			result.z = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[2]);
+		}
+		break;
+		default:
+		{
+		}
+			break;
+		}
+		break;
+
+	case FbxGeometryElement::eByPolygonVertex:
+		switch (pElement->GetReferenceMode())
+		{
+		case FbxGeometryElement::eDirect:
+		{
+			result.x = static_cast<float>(pElement->GetDirectArray().GetAt(VtxId).mData[0]);
+			result.y = static_cast<float>(pElement->GetDirectArray().GetAt(VtxId).mData[1]);
+			result.z = static_cast<float>(pElement->GetDirectArray().GetAt(VtxId).mData[2]);
+		}
+		break;
+
+		case FbxGeometryElement::eIndexToDirect:
+		{
+			int index = pElement->GetIndexArray().GetAt(VertexCount);
+			result.x = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[0]);
+			result.y = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[1]);
+			result.z = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[2]);
+		}
+		break;
+		default:
+		{
+		}
+			break;
+		}
+		break;
+	}
+
+
+	_ArrVtx[_Index].TEXTURECOORD.x = (float)result.x;
+	_ArrVtx[_Index].TEXTURECOORD.y = 1.0f - (float)result.y;
+}
+
 void GameEngineFBXMesh::VertexBufferCheck()
 {
 	size_t meshInfoSize = MeshInfos.size();
@@ -743,47 +907,55 @@ void GameEngineFBXMesh::VertexBufferCheck()
 		// 
 		FbxMeshSetMaterialSetting(pMeshNode, &DrawMesh);
 
-		fbxsdk::FbxStringList UVSetNameList;
-		pMesh->GetUVSetNames(UVSetNameList);
-		int uvSetCount = UVSetNameList.GetCount();
-		for (int uvSetIndex = 0; uvSetIndex < uvSetCount; ++uvSetIndex)
-		{
-			const char* uvSetName = UVSetNameList.GetStringAt(uvSetIndex);
-			const fbxsdk::FbxGeometryElementUV* pUVElement = pMesh->GetElementUV(uvSetName);
-			if (nullptr == pUVElement)
-			{
-				continue;
-			}
+		// LoadUVInformation(pMesh, VtxData);
 
-			fbxsdk::FbxGeometryElement::EMappingMode eMappingMode = pUVElement->GetMappingMode();
-			fbxsdk::FbxGeometryElement::EReferenceMode eReferenceMode = pUVElement->GetReferenceMode();
-			bool useIndex = fbxsdk::FbxGeometryElement::EReferenceMode::eDirect != eReferenceMode;
-			int IndexCount = true == useIndex ? pUVElement->GetIndexArray().GetCount() : 0;
 
-			int nPolygonCount = pMesh->GetPolygonCount();
-			for (int PolygonIndex = 0; PolygonIndex < nPolygonCount; ++PolygonIndex)
-			{
-				const int PolygonSize = pMesh->GetPolygonSize(PolygonIndex);
-				if (3 != PolygonSize)
-				{
-					GameEngineDebug::MsgBoxError("삼각형이 아닌 면이 발견됬습니다.");
-				}
 
-				for (int PositionInPolygon = 0; PositionInPolygon < PolygonSize; ++PositionInPolygon)
-				{
-					int convertUvIndex = isOddNegativeScale ? 2 - PositionInPolygon : PositionInPolygon;
-					int ControlPointIndex = pMesh->GetPolygonVertex(PolygonIndex, PositionInPolygon);
-					int UVMapIndex = (fbxsdk::FbxGeometryElement::EMappingMode::eByControlPoint == eMappingMode) ?
-						ControlPointIndex : PolygonIndex * 3 + PositionInPolygon;
 
-					int UvIndex = useIndex ? pUVElement->GetIndexArray().GetAt(UVMapIndex) : UVMapIndex;
-					fbxsdk::FbxVector2 uvValue = pUVElement->GetDirectArray().GetAt(UvIndex);
+		//fbxsdk::FbxStringList UVSetNameList;
+		//pMesh->GetUVSetNames(UVSetNameList);
+		//int uvSetCount = UVSetNameList.GetCount();
+		//for (int uvSetIndex = 0; uvSetIndex < uvSetCount; ++uvSetIndex)
+		//{
+		//	const char* uvSetName = UVSetNameList.GetStringAt(uvSetIndex);
+		//	const fbxsdk::FbxGeometryElementUV* pUVElement = pMesh->GetElementUV(uvSetName);
+		//	if (nullptr == pUVElement)
+		//	{
+		//		continue;
+		//	}
 
-					VtxData[ControlPointIndex].TEXTURECOORD.x = static_cast<float>(uvValue.mData[0]);
-					VtxData[ControlPointIndex].TEXTURECOORD.y = 1.f - static_cast<float>(uvValue.mData[1]);
-				}
-			}
-		}
+		//	fbxsdk::FbxGeometryElement::EMappingMode eMappingMode = pUVElement->GetMappingMode();
+		//	fbxsdk::FbxGeometryElement::EReferenceMode eReferenceMode = pUVElement->GetReferenceMode();
+		//	bool useIndex = fbxsdk::FbxGeometryElement::EReferenceMode::eDirect != eReferenceMode;
+		//	int IndexCount = true == useIndex ? pUVElement->GetIndexArray().GetCount() : 0;
+
+		//	int nPolygonCount = pMesh->GetPolygonCount();
+		//	for (int PolygonIndex = 0; PolygonIndex < nPolygonCount; ++PolygonIndex)
+		//	{
+		//		const int PolygonSize = pMesh->GetPolygonSize(PolygonIndex);
+		//		if (3 != PolygonSize)
+		//		{
+		//			GameEngineDebug::MsgBoxError("삼각형이 아닌 면이 발견됬습니다.");
+		//		}
+
+		//		for (int PositionInPolygon = 0; PositionInPolygon < PolygonSize; ++PositionInPolygon)
+		//		{
+		//			int convertUvIndex = isOddNegativeScale ? 2 - PositionInPolygon : PositionInPolygon;
+		//			int ControlPointIndex = pMesh->GetPolygonVertex(PolygonIndex, PositionInPolygon);
+		//			int UVMapIndex = (fbxsdk::FbxGeometryElement::EMappingMode::eByControlPoint == eMappingMode) ?
+		//				ControlPointIndex : PolygonIndex * 3 + PositionInPolygon;
+
+		//			int UvIndex = useIndex ? pUVElement->GetIndexArray().GetAt(UVMapIndex) : UVMapIndex;
+		//			fbxsdk::FbxVector2 uvValue = pUVElement->GetDirectArray().GetAt(UvIndex);
+
+		//			VtxData[ControlPointIndex].TEXTURECOORD.x = static_cast<float>(uvValue.mData[0]);
+		//			VtxData[ControlPointIndex].TEXTURECOORD.y = static_cast<float>(uvValue.mData[1]);
+
+		//			// VtxData[ControlPointIndex].TEXTURECOORD.x = static_cast<float>(uvValue.mData[0]);
+		//			// VtxData[ControlPointIndex].TEXTURECOORD.y = 1.f - static_cast<float>(uvValue.mData[1]);
+		//		}
+		//	}
+		//}
 
 		pMesh->GetElementMaterialCount();
 		fbxsdk::FbxGeometryElementMaterial* pGeometryElementMaterial = pMesh->GetElementMaterial();
@@ -810,9 +982,11 @@ void GameEngineFBXMesh::VertexBufferCheck()
 				int ControlPointIndex = pMesh->GetPolygonVertex(PolygonIndex, PositionInPolygon);
 				IndexArray[PositionInPolygon] = ControlPointIndex;
 
+
 				LoadNormal(pMesh, meshMatrix, VtxData, VtxId, ControlPointIndex);
 				LoadTangent(pMesh, meshMatrix, VtxData, VtxId, ControlPointIndex);
 				LoadBinormal(pMesh, meshMatrix, VtxData, VtxId, ControlPointIndex);
+				LoadUv(pMesh, meshMatrix, VtxData, pMesh->GetTextureUVIndex(PolygonIndex, PositionInPolygon), VtxId, ControlPointIndex);
 
 				++VtxId;
 			}
