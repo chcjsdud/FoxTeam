@@ -17,11 +17,11 @@ GHRio::~GHRio()
 
 void GHRio::Start()
 {
-	std::string meshName = "Rio_000.fbx";
+	std::string meshName = "Rio_Run.fbx";
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	renderer_->SetFBXMesh(meshName, "TextureDeferredLight");
 
-	renderer_->GetTransform()->SetLocalScaling({ 10.f, 10.f, 10.f });
+	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 }
 
 void GHRio::Update(float _deltaTime)

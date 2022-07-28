@@ -13,6 +13,7 @@
 
 #include "SJH_PlayLevel.h"
 #include "PJW_Level.h"
+#include <GameApp/GHRayTestLevel.h>
 
 std::atomic<int> UserGame::LoadingFolder = 0;
 
@@ -35,14 +36,14 @@ UserGame::UserGame(UserGame&& _other) noexcept  // default RValue Copy construct
 
 void UserGame::Initialize()
 {
-	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
-	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
+	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
+	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
 	LevelCreate<PlayLevel>("Play");
 	//LevelCreate<PJW_Level>("Play"); // 220728 PJW Test 레벨
 	//LevelCreate<SJH_PlayLevel>("SJH_Play");	// 220727 SJH : TEST용 레벨
-
+	LevelCreate<GHRayTestLevel>("RayTestLevel");
 	
 	LevelChange("Play");
 	//LevelChange("SJH_Play");
