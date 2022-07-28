@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngineRenderWindow.cpp>
 #include <GameApp/GHRio.h>
 #include <GameEngine/LightActor.h>
+#include <GameEngine/SKySphereActor.h>
 
 GHRayTestLevel::GHRayTestLevel()
 {
@@ -81,6 +82,8 @@ void GHRayTestLevel::releaseResource()
 void GHRayTestLevel::createActor()
 {
 	CreateActor<GHRio>();
+	SKySphereActor* Actor = CreateActor<SKySphereActor>();
+
 
 	{
 		LightActor* Actor;
