@@ -6,8 +6,7 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 
 PJW_Hyunwoo::PJW_Hyunwoo() // default constructer 디폴트 생성자
-	:FBXRenderer_(nullptr), collision_Body_(nullptr), target_(nullptr),
-	status_HP_(0.0f), status_ATK_(0.0f), status_MoveSpeed_(0.0f), deltaTime_(0.0f), aimDir_(0.0f,0.0f,1.0f), curDir_(0.0f,0.0f,1.0f), isMoving_(false), curHP_(0.0f)
+	:FBXRenderer_(nullptr)
 {
 
 }
@@ -48,11 +47,9 @@ void PJW_Hyunwoo::Init_FBX()
 		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
 	}
 
-	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 3);
-	FBXRenderer_->CreateFBXAnimation("Move", "Hyunwoo_01_LOD1.FBX", 4);
-	FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 0);
-	FBXRenderer_->CreateFBXAnimation("Attack1", "Hyunwoo_01_LOD1.FBX", 1);
-	FBXRenderer_->CreateFBXAnimation("Death", "Hyunwoo_01_LOD1.FBX", 2);
+	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 0);
+	FBXRenderer_->CreateFBXAnimation("Move", "Hyunwoo_01_LOD1.FBX", 1);
+	FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 2);
 	
 	FBXRenderer_->ChangeFBXAnimation("Idle");
 }
@@ -74,14 +71,14 @@ void PJW_Hyunwoo::Init_Collision()
 	////타격 히트 박스
 	collision_Body_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	collision_Body_->GetTransform()->SetLocalScaling(float4{ 50.f,50.f, 50.f ,1.f });
-	collision_Body_->SetCollisionGroup(InGameCollisionType::Player_Body);
+
 	collision_Body_->SetCollisionType(CollisionType::AABBBox3D);
 
 	////피격 히트박스 겸사겸사 맵 컬리전도 가능할듯
 	collision_Attack_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	collision_Attack_->GetTransform()->SetLocalScaling(float4{ 100.f,0.f,100.f ,1.f });
 	collision_Attack_->GetTransform()->SetLocalPosition({ 0.f,-50.f,0.f });
-	collision_Attack_->SetCollisionGroup(static_cast<int>(InGameCollisionType::Player_AttackRange));
+
 	collision_Attack_->SetCollisionType(CollisionType::CirCle);
 }
 
@@ -121,21 +118,30 @@ void PJW_Hyunwoo::Idle_Start()
 {
 	FBXRenderer_->ChangeFBXAnimation("Idle");
 	isMoving_ = false;
+	isAttacking_ = false;
 	return;
 }
 
 void PJW_Hyunwoo::Idle_Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::GetInst().Down("Test_Move"))
 	{
-		if (nullptr == target_)
+		if (true == isMoving_)
 		{
+			if (nullptr == target_)
+			{
+				return;
+			}
+
+			hyunwooState_.ChangeState("Move");
 			return;
 		}
-		hyunwooState_.ChangeState("Move");
-		return;
-	}
 
+		if (true == isAttacking_)
+		{
+			hyunwooState_.ChangeState("Attack");
+			return;
+		}
+	}
 	return;
 }
 
@@ -146,7 +152,7 @@ void PJW_Hyunwoo::Idle_End()
 
 void PJW_Hyunwoo::Move_Start()
 {
-	isMoving_ = true;
+	isAttacking_ = false;
 	FBXRenderer_->ChangeFBXAnimation("Move");
 }
 
@@ -156,10 +162,13 @@ void PJW_Hyunwoo::Move_Update(float _DeltaTime)
 	// 상대 위치 - 내 위치 = 떨어진 거리
 	aimDir_.Normalize3D(); // 정규화로 방향 벡터 도출
 
-	if (true == isMoving_)
+	if (nullptr != collision_Attack_->CollisionPtr(InGameCollisionType::Player2_Body))
 	{
-		GetTransform()->SetWorldMove(aimDir_ * status_MoveSpeed_ * _DeltaTime);
+		hyunwooState_.ChangeState("Idle");
+		return;
 	}
+
+	GetTransform()->SetWorldMove(aimDir_ * status_MoveSpeed_ * _DeltaTime);
 
 	if (curDir_ == aimDir_) // 현재 방향 == 지향해야 하는 방향 이면 리턴
 	{
@@ -178,12 +187,6 @@ void PJW_Hyunwoo::Move_Update(float _DeltaTime)
 		curDir_.RotateYDegree(100.0f * _DeltaTime);
 
 		dir = float4::Cross3D(curDir_, aimDir_);
-
-		//if (dir.y < 0.f)
-		//{
-		//	GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-		//	curDir_ = aimDir_;
-		//}
 	}
 
 	else if (dir.y < 0.f)
@@ -192,29 +195,22 @@ void PJW_Hyunwoo::Move_Update(float _DeltaTime)
 		curDir_.RotateYDegree(-100.0f * _DeltaTime);
 
 		dir = float4::Cross3D(curDir_, aimDir_);
-
-	//	if (dir.y > 0.f)
-	//	{
-	//		GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-	//		curDir_ = aimDir_;
-	//	}
 	}
 
 }
 
 void PJW_Hyunwoo::Move_End()
 {
-
+	isMoving_ = false;
 }
 
 void PJW_Hyunwoo::Attack_Start()
 {
-
+	isMoving_ = false;
 }
+
 void PJW_Hyunwoo::Attack_Update(float _DeltaTime)
 {
-	if (true == collision_Attack_->Collision(static_cast<int>(InGameCollisionType::Player_Body)))
-	{
 		FBXRenderer_->ChangeFBXAnimation("Attack0");
 
 		deltaTime_ += GameEngineTime::GetInst().GetDeltaTime();
@@ -223,22 +219,20 @@ void PJW_Hyunwoo::Attack_Update(float _DeltaTime)
 		{
 			target_->GetDamage(status_ATK_);
 			hyunwooState_.ChangeState("Idle");
+			deltaTime_ = 0.0f;
 			return;
 		}
-
-		return;
-	}
 }
 
 void PJW_Hyunwoo::Attack_End()
 {
-
+	isAttacking_ = false;
 }
 
 
 void PJW_Hyunwoo::Skill_Q_Start()
 {
-	FBXRenderer_->ChangeFBXAnimation("Skill_Q");
+	//FBXRenderer_->ChangeFBXAnimation("Skill_Q");
 	deltaTime_ = 0.0f;
 	return;
 }
@@ -263,7 +257,7 @@ void PJW_Hyunwoo::Skill_Q_End()
 
 void PJW_Hyunwoo::Death_Start()
 {
-	FBXRenderer_->ChangeFBXAnimation("Death");
+	//FBXRenderer_->ChangeFBXAnimation("Death");
 	deltaTime_ = 0.0f;
 }
 void PJW_Hyunwoo::Death_Update(float _DeltaTime)

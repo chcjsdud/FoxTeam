@@ -40,51 +40,42 @@ void PJW_Level::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
 	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -100.0f));
 
-	gameController_ = CreateActor<PJW_GameController>();
+	Init_Resources();
 
-	//Init_Actors();
-	//Init_Keys();
+	Init_Actors();
+
 }
+
+void PJW_Level::Init_Resources()
+{	
+	// 
+	std::string MeshName = "Hyunwoo_01_LOD1.FBX";
+	GameEngineDirectory dir;
+
+	dir.MoveParent("FoxTeam");
+	dir.MoveChild("Resources");
+	dir.MoveChild("FBX");
+	dir.MoveChild("PJW");
+	// 렌더러		
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(dir.PathToPlusFileName(MeshName)))
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName(MeshName));
+		Mesh->CreateRenderingBuffer();
+	}
+
+	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_01_LOD1.FBX"));
+
+	for (size_t i = 0; i < Animation->AnimationCount(); i++)
+	{
+		auto Data = Animation->GetAnimationData(i);
+	}
+}
+
+
 
 void PJW_Level::Init_Actors()
 {
-	// 플레이어 캐릭터 생성
-	{
-		std::string MeshName = "Hyunwoo_01_LOD1.FBX";
-		GameEngineDirectory dir;
-
-		dir.MoveParent("FoxTeam");
-		dir.MoveChild("Resources");
-		dir.MoveChild("FBX");
-		dir.MoveChild("PJW");
-		// 렌더러		
-		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(dir.PathToPlusFileName(MeshName)))
-		{
-			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName(MeshName));
-			Mesh->CreateRenderingBuffer();
-		}
-		
-		GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_01_LOD1.FBX"));
-
-		for (size_t i = 0; i < Animation->AnimationCount(); i++)
-		{
-			auto Data = Animation->GetAnimationData(i);
-		}
-
-		player_ = CreateActor<PJW_Hyunwoo>();
-
-		PJW_Hyunwoo* enemy = CreateActor<PJW_Hyunwoo>();
-		enemy->GetTransform()->SetWorldPosition({ 300.0f, 0.0f, 300.0f });
-
-		player_->SetTarget(enemy);
-	}
-
-	
-
-	// 맵 생성
-	{
-		//map_ = CreateActor<PJW_Map>();
-	}
+	gameController_ = CreateActor<PJW_GameController>();
 
 	{
 		SKySphereActor* Actor = CreateActor<SKySphereActor>();
@@ -103,11 +94,3 @@ void PJW_Level::Init_Actors()
 	}
 }
 
-void PJW_Level::Init_Keys()
-{
-	if (false == GameEngineInput::GetInst().IsKey("Skill_Q"))
-	{
-		GameEngineInput::GetInst().CreateKey("Skill_Q", 'Q');
-		GameEngineInput::GetInst().CreateKey("Test_Move", VK_RBUTTON);
-	}
-}

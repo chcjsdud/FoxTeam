@@ -4,6 +4,7 @@
 // 분류 : 
 // 용도 : 
 // 설명 :
+class PJW_Player;
 class PJW_Hyunwoo;
 class PJW_GameController : public GameEngineActor
 {
@@ -19,16 +20,21 @@ public:
 
 public:
 	virtual void Start() override;
-	void Init_Actor();
-
-	virtual void Update(float _DeltaTime) override;
+	void Init_Player();
+	void Init_Keys();
 	
+	
+	virtual void Update(float _DeltaTime) override;
+	void Check_Input(float _DeltaTime);
+
 
 private:
-	std::vector<GameEngineActor*> playerList_;
+	std::vector<PJW_Player*> playerList_;
+	// 플레이어 목록
 
-	GameEngineActor* p1_;
-	GameEngineActor* p2_;
+	PJW_Player* curPlayer_;
+	// 현재 컨트롤권을 가진 플레이어
+
 
 };
 

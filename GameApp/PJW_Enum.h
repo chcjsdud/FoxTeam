@@ -8,8 +8,11 @@ enum InGameCollisionType
 	MIN = 0,
 	MousePointer,
 
-	Player_Body,
-	Player_AttackRange,
+	Player1_Body,
+	Player1_AttackRange,
+
+	Player2_Body,
+	Player2_AttackRange,
 
 	MAX = 999
 };

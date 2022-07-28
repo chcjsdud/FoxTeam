@@ -2,9 +2,10 @@
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
+#include "PJW_Player.h"
 
 class GameEngineCollision;
-class PJW_Hyunwoo : public GameEngineActor
+class PJW_Hyunwoo : public PJW_Player
 {
 
 public:
@@ -14,26 +15,6 @@ public:
 	PJW_Hyunwoo(PJW_Hyunwoo&& _other) noexcept;
 	PJW_Hyunwoo& operator=(const PJW_Hyunwoo& _other) = delete;
 	PJW_Hyunwoo& operator=(const PJW_Hyunwoo&& _other) = delete;
-
-public:
-	// 공격 타겟을 선정하는 함수
-	void SetTarget(PJW_Hyunwoo* _target)
-	{
-		target_ = _target;
-	}
-
-	// 현재 타겟을 리턴하는 함수
-	PJW_Hyunwoo* GetTarget()
-	{
-		return target_;
-	}
-
-	void GetDamage(float _damage)
-	{
-		curHP_ -= _damage;
-	}
-
-	
 
 
 protected: 
@@ -80,32 +61,8 @@ private:
 
 
 // 충돌체
-private:
-	GameEngineCollision* collision_Body_;
-	// 몸통 콜리젼
-
-	GameEngineCollision* collision_Attack_; 
-	// 공격 범위 콜리젼 : 이 내부에 상대의 body 가 접촉되면 공격 수행
 
 
-private:
-	PJW_Hyunwoo* target_;
 
-// 스탯
-private:
-	float status_HP_;
-	float status_ATK_;
-	float status_MoveSpeed_;
-
-// 현재 체력 마력
-private:
-	float curHP_;
-
-// 기타 변수
-private:
-	float deltaTime_;
-	bool isMoving_;
-	float4 aimDir_;
-	float4 curDir_;
 };
 

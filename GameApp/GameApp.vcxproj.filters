@@ -98,6 +98,9 @@
     <ClCompile Include="LGH_PlayLevel.cpp">
       <Filter>01.GameObject\99.LGH</Filter>
     </ClCompile>
+    <ClCompile Include="PJW_Player.cpp">
+      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -321,6 +324,9 @@
     </ClInclude>
     <ClInclude Include="LGH_PlayLevel.h">
       <Filter>01.GameObject\99.LGH</Filter>
+    </ClInclude>
+    <ClInclude Include="PJW_Player.h">
+      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
