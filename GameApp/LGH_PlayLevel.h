@@ -16,7 +16,7 @@ public:
 
 public:
 	GameEngineDirectory FBXFolder;
-
+	GameEngineFBXRenderer* Renderer;
 protected:
 	LGH_PlayLevel(const LGH_PlayLevel& _other) = delete;
 	LGH_PlayLevel(LGH_PlayLevel&& _other) noexcept = delete;
