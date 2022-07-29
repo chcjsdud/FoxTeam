@@ -574,6 +574,14 @@ public:
 			float4 vw;
 		};
 
+		struct
+		{
+			float _11, _12, _13;
+			float _21, _22, _23;
+			float _31, _32, _33;
+			float _41, _42, _43;
+		};
+
 		float Arr1D[4 * 4];
 
 		DirectX::XMFLOAT4X4 DxXmfloat4x4;
@@ -592,6 +600,10 @@ public:
 		return DirectX::XMMatrixTransformation(float4::ZERO.DirectVector, float4::ZERO.DirectVector, _Scale.DirectVector, float4::ZERO.DirectVector, _RotQ.DirectVector, _Pos.DirectVector);
 	}
 
+	static void StoreFloat4x4(float4x4* _Target, float4x4 _Matrix)
+	{
+		XMStoreFloat4x4(&(_Target->DxXmfloat4x4), _Matrix.DirectMatrix);
+	}
 
 public:
 	float4x4() : 

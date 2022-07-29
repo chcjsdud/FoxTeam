@@ -5,21 +5,7 @@
 #include <GameEngine/GameEngineCollision.h>
 
 #include "Enums.h"
-
-bool SJH_Mouse::IsPicked()
-{
-	float4 MouseClickPos = float4::ZERO;
-
-	// 
-
-
-
-
-
-
-
-	return false;
-}
+#include "SJH_Ray.h"
 
 void SJH_Mouse::Start()
 {
@@ -31,6 +17,10 @@ void SJH_Mouse::Start()
 	Collider_ = CreateTransformComponent<GameEngineCollision>();
 	Collider_->GetTransform()->SetLocalScaling(float4{ 30.0f, 30.0f, 30.0f });
 	Collider_->SetCollisionInfo(static_cast<int>(CollisionGroup::MousePointer), CollisionType::AABBBox3D);
+	
+
+	// 광선 생성
+	Ray_ = GetLevel()->CreateActor<SJH_Ray>();
 }
 
 void SJH_Mouse::Update(float _DeltaTime)
@@ -39,15 +29,14 @@ void SJH_Mouse::Update(float _DeltaTime)
 	GetTransform()->SetWorldPosition(GameEngineInput::GetInst().GetMouse3DPos());
 
 	// 키체크
+	// 카메라로부터 마우스클릭지점으로 향하는 방향벡터를 생성하고 그와 교차하는 충돌체를 탐색하여
+	// 교차하는 충돌체 발견시 해당 위치를 반환해준다
 	if (true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
-		// 테스트 : Yuki를 해당좌표로 이동
-
-
-
-
+		float4 ColPos = Ray_->RayAtViewSpace(GameEngineInput::GetInst().GetMousePos());
 	}
 
+	// 
 	if (true == GameEngineInput::GetInst().Down("RBUTTON"))
 	{
 
@@ -57,8 +46,7 @@ void SJH_Mouse::Update(float _DeltaTime)
 SJH_Mouse::SJH_Mouse()
 	: Renderer_(nullptr)
 	, Collider_(nullptr)
-	, Target_(nullptr)
-	, MouseClickPos_(float4::ZERO)
+	, Ray_(nullptr)
 {
 }
 

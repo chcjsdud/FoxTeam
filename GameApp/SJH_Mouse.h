@@ -6,18 +6,12 @@
 // Ό³Έν : 
 class GameEngineUIRenderer;
 class GameEngineCollision;
+class SJH_Ray;
 class SJH_Mouse : public GameEngineActor
 {
 public:
-	inline float4 GetMouseClickPos()
-	{
-		return MouseClickPos_;
-	}
-
 protected:
-
 private:
-	bool IsPicked();
 
 private:
 	void Start() override;
@@ -44,9 +38,6 @@ private:
 	GameEngineCollision* Collider_;
 
 private:
-	GameEngineActor* Target_;
-
-private:
-	float4 MouseClickPos_;
+	SJH_Ray* Ray_;
 };
 

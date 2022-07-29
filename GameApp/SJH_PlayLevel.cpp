@@ -11,6 +11,8 @@
 #include "SJH_Mouse.h"
 #include "SJH_Yuki.h"
 
+#include "SJH_TestActor.h"
+
 void SJH_PlayLevel::LevelStart()
 {
 	// 메인카메라 설정
@@ -117,7 +119,9 @@ void SJH_PlayLevel::CreateActorLevel()
 	// 플레이어
 	Yuki_ = CreateActor<SJH_Yuki>();
 
-	// ...
+	// 마우스피킹 테스트용 오브젝트
+	TestBox_ = CreateActor<SJH_TestActor>();
+
 
 #pragma endregion
 
@@ -128,6 +132,7 @@ SJH_PlayLevel::SJH_PlayLevel()
 	, FloorMap_(nullptr)
 	, InGameMouse_(nullptr)
 	, Yuki_(nullptr)
+	, TestBox_(nullptr)
 {
 
 }

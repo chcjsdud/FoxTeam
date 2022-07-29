@@ -40,10 +40,8 @@ void SJH_Yuki::Start()
 
 		std::string AnimationName = Data.AniName;
 		AnimationNameList_.push_back(AnimationName);
-		//Renderer_->CreateFBXAnimation(AnimationName, MeshName, i);
+		//AnimRenderer_->CreateFBXAnimation(AnimationName, MeshName, i);
 	}
-
-	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0);
 
 #pragma region 기존애니메이션
 	//Renderer_->CreateFBXAnimation("Yuki_Common_wait", "Yuki_01_LOD1.fbx", 0);
@@ -107,6 +105,7 @@ void SJH_Yuki::Start()
 
 #pragma endregion
 
+	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0);
 	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
 
 }

@@ -107,6 +107,12 @@
     <ClCompile Include="YSJ_PlayLevel.cpp">
       <Filter>01.GameObject\99.YSJ\01Level</Filter>
     </ClCompile>
+    <ClCompile Include="SJH_TestActor.cpp">
+      <Filter>01.GameObject\99.SJH\01.Actor\00.TestActor</Filter>
+    </ClCompile>
+    <ClCompile Include="SJH_Ray.cpp">
+      <Filter>01.GameObject\99.SJH\01.Actor\01.Ray</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -229,6 +235,12 @@
     <Filter Include="01.GameObject\99.YSJ\02Actor">
       <UniqueIdentifier>{0c6fe4b4-e0f8-427a-a301-5b0e91de0897}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\99.SJH\01.Actor\00.TestActor">
+      <UniqueIdentifier>{f365f1f5-c668-49ad-92dc-2fdaa2d8ad1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.SJH\01.Actor\01.Ray">
+      <UniqueIdentifier>{d5c516f0-c910-4ec7-ba22-897b4c08b5f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -345,6 +357,12 @@
     </ClInclude>
     <ClInclude Include="YSJ_PlayLevel.h">
       <Filter>01.GameObject\99.YSJ\01Level</Filter>
+    </ClInclude>
+    <ClInclude Include="SJH_TestActor.h">
+      <Filter>01.GameObject\99.SJH\01.Actor\00.TestActor</Filter>
+    </ClInclude>
+    <ClInclude Include="SJH_Ray.h">
+      <Filter>01.GameObject\99.SJH\01.Actor\01.Ray</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

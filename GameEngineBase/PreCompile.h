@@ -20,6 +20,7 @@
 // Math
 #include <math.h>
 #include <random>
+#include <directxmath.h>
 
 // 마소에서 제공하는 simd 연산용 함수들을 사용할수 있다.
 #include <DirectXPackedVector.h>

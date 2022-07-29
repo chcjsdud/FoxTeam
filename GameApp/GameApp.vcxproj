@@ -255,6 +255,8 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="LH_TestMonsterState.cpp" />
+    <ClCompile Include="SJH_Ray.cpp" />
+    <ClCompile Include="SJH_TestActor.cpp" />
     <ClCompile Include="SJH_Yuki.cpp" />
     <ClCompile Include="TestPlayer.cpp">
       <SubType>
@@ -378,6 +380,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="SJH_Ray.h" />
+    <ClInclude Include="SJH_TestActor.h" />
     <ClInclude Include="SJH_Yuki.h" />
     <ClInclude Include="TestPlayer.h">
       <SubType>
