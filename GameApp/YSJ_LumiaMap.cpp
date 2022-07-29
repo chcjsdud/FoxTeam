@@ -42,7 +42,7 @@ void YSJ_LumiaMap::Start()
 
 	for (UINT i = 0; i < FBXWallMesh->GetRenderSetCount(); i++)
 	{
-		FBXWallMesh->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+		FBXWallMesh->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
 	}
 
 	FBXWallMesh->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
