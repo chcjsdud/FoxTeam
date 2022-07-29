@@ -16,14 +16,35 @@ YSJ_LumiaMap::~YSJ_LumiaMap()
 void YSJ_LumiaMap::Start()
 {
 	FBXNaviMesh = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FBXNaviMesh->SetFBXMesh("Bg_NaviMesh.fbx", "Texture");
+	FBXNaviMesh->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
+
+	//for (UINT i = 0; i < FBXNaviMesh->GetRenderSetCount(); i++)
+	//{
+	//	FBXNaviMesh->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
+	//}
+
+	for (UINT i = 0; i < FBXNaviMesh->GetRenderSetCount(); i++)
+	{
+		FBXNaviMesh->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+	}
 
 	FBXNaviMesh->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	FBXNaviMesh->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 	FBXNaviMesh->GetTransform()->SetLocalRotationDegree({ 180.0f, 0.0f, 0.0f });
 	
 	FBXWallMesh = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FBXWallMesh->SetFBXMesh("NaviCol.fbx", "Texture");
+	FBXWallMesh->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
+
+	//for (UINT i = 0; i < FBXWallMesh->GetRenderSetCount(); i++)
+	//{
+	//	FBXWallMesh->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
+	//}
+
+	for (UINT i = 0; i < FBXWallMesh->GetRenderSetCount(); i++)
+	{
+		FBXWallMesh->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+	}
+
 	FBXWallMesh->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	FBXWallMesh->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 	FBXWallMesh->GetTransform()->SetLocalRotationDegree({ 180.0f, 0.0f, 0.0f });

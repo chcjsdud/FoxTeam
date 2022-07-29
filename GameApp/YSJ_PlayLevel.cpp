@@ -4,6 +4,7 @@
 #include <GameEngine/LightActor.h>
 #include "UserGame.h"
 #include <GameEngine/SKySphereActor.h>
+#include <GameEngine/GameEngineRenderWindow.h>
 
 #include "YSJ_LumiaMap.h"
 
@@ -78,6 +79,16 @@ void YSJ_PlayLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	if (nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow"))
+	{
+		GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+		float4 Size = { 128, 72 };
+		Window->PushRenderTarget("메인 카메라 타겟", GetMainCamera()->GetCameraRenderTarget(), Size * 3);
+		Window->PushRenderTarget("UI 카메라 타겟", GetUICamera()->GetCameraRenderTarget(), Size * 3);
+		Window->PushRenderTarget("메인 카메라 디퍼드", GetMainCamera()->GetCameraDeferredGBufferTarget(), Size * 3);
+		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size * 3);
+		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredTarget(), Size * 3);
+	}
 }
 
 void YSJ_PlayLevel::CreateActorLevel()
@@ -93,5 +104,4 @@ void YSJ_PlayLevel::CreateActorLevel()
 
 	SKySphereActor* SkyActor = CreateActor<SKySphereActor>();
 	YSJ_LumiaMap* LumiaMap = CreateActor<YSJ_LumiaMap>();
-
 }
