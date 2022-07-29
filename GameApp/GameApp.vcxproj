@@ -295,6 +295,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="YSJ_LumiaMap.cpp" />
+    <ClCompile Include="YSJ_PlayLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GHRio.h">
@@ -403,6 +405,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="YSJ_LumiaMap.h" />
+    <ClInclude Include="YSJ_PlayLevel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
