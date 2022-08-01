@@ -23,6 +23,7 @@ protected:
 private:
 	GameEngineFBXRenderer* FBXNaviMesh;
 	GameEngineFBXRenderer* FBXWallMesh;
+	GameEngineFBXRenderer* FBXSchoolMap;
 
 };
 

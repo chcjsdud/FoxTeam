@@ -31,7 +31,6 @@ void YSJ_PlayLevel::LevelStart()
 	tempDir.MoveChild("Resources");
 	tempDir.MoveChild("FBX");
 	tempDir.MoveChild("YSJ");
-	tempDir.MoveChild("LumiaNaviMesh");
 
 	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx")))
 	{
@@ -39,12 +38,15 @@ void YSJ_PlayLevel::LevelStart()
 		Mesh->CreateRenderingBuffer();
 	}
 
-	tempDir.MoveParent("YSJ");
-	tempDir.MoveChild("LumiaWallMesh");
-
 	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("NaviCol.fbx")))
 	{
 		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("NaviCol.fbx"));
+		Mesh->CreateRenderingBuffer();
+	}
+
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("School.fbx")))
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("School.fbx"));
 		Mesh->CreateRenderingBuffer();
 	}
 
@@ -101,6 +103,11 @@ void YSJ_PlayLevel::CreateActorLevel()
 	Light2->GetLight()->SetDiffusePower(0.3f);
 	Light2->GetLight()->SetSpacularLightPow(50.0f);
 	Light2->GetTransform()->SetLocalRotationDegree(float4(0.0f, 90.0f, 0.0f));
+
+	LightActor* Light3 = CreateActor<LightActor>();
+	Light3->GetLight()->SetDiffusePower(0.3f);
+	Light3->GetLight()->SetSpacularLightPow(50.0f);
+	Light3->GetTransform()->SetLocalRotationDegree(float4(45.0f, 0.0f, 0.0f));
 
 	SKySphereActor* SkyActor = CreateActor<SKySphereActor>();
 	YSJ_LumiaMap* LumiaMap = CreateActor<YSJ_LumiaMap>();

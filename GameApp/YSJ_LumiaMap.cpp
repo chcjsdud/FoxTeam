@@ -4,6 +4,7 @@
 YSJ_LumiaMap::YSJ_LumiaMap()
 	: FBXNaviMesh(nullptr)
 	, FBXWallMesh(nullptr)
+	, FBXSchoolMap(nullptr)
 {
 
 }
@@ -30,7 +31,7 @@ void YSJ_LumiaMap::Start()
 
 	FBXNaviMesh->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	FBXNaviMesh->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	FBXNaviMesh->GetTransform()->SetLocalRotationDegree({ 180.0f, 0.0f, 0.0f });
+	FBXNaviMesh->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f, 0.0f });
 	
 	FBXWallMesh = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXWallMesh->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
@@ -47,7 +48,16 @@ void YSJ_LumiaMap::Start()
 
 	FBXWallMesh->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	FBXWallMesh->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	FBXWallMesh->GetTransform()->SetLocalRotationDegree({ 180.0f, 0.0f, 0.0f });
+	FBXWallMesh->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f, 0.0f });
+
+	// SCHOOL ONLY
+	FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	FBXSchoolMap->SetFBXMesh("School.fbx", "TextureDeferredLight");
+
+	FBXSchoolMap->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+	FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
+	FBXSchoolMap->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f, 0.0f });
+
 }
 
 void YSJ_LumiaMap::Update(float _DeltaTime)
