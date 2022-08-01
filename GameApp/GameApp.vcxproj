@@ -202,6 +202,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="UI_Inventory.cpp" />
     <ClCompile Include="LH_Map.cpp">
       <SubType>
       </SubType>
@@ -258,6 +259,7 @@
     <ClCompile Include="SJH_Ray.cpp" />
     <ClCompile Include="SJH_TestActor.cpp" />
     <ClCompile Include="SJH_Yuki.cpp" />
+    <ClCompile Include="UI_Status.cpp" />
     <ClCompile Include="TestPlayer.cpp">
       <SubType>
       </SubType>
@@ -321,6 +323,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="UI_Inventory.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="LH_Map.h">
       <SubType>
@@ -383,6 +386,7 @@
     <ClInclude Include="SJH_Ray.h" />
     <ClInclude Include="SJH_TestActor.h" />
     <ClInclude Include="SJH_Yuki.h" />
+    <ClInclude Include="UI_Status.h" />
     <ClInclude Include="TestPlayer.h">
       <SubType>
       </SubType>

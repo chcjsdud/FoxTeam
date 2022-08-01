@@ -30,20 +30,19 @@ void TopUI::Start()
 	{
 		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
-		float4 Inventory_BackGroundPos = { 247.0f, -315.0f, 0.0f };
+
 		float4 Skill_BackGroundPos = { -20.0f, -315.0f, 0.0f };
 		float4 Eqiup_BackGroundPos = { -225.0f, -315.0f, 0.0f };
-		float4 MainStatus_BackgroundPos = { -410.0f, -315.0f, 0.0f};
-		float4 SubStatus_BackgroundPos = { -541.0f, -315.0f, 0.0f };
 		float4 CharUI_Pos = { -305.0f, -308.0f, 1.0f };
-		
-		{
-			TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-			TopRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
-			TopRenderer->GetTransform()->SetLocalPosition(Inventory_BackGroundPos);
-			TopRenderer->GetTransform()->SetLocalScaling(TopRenderer->GetCurrentTexture()->GetTextureSize());
-			UIRendererMap.insert(make_pair("Inventory_BackGround", TopRenderer));
-		}
+
+		// InventoryUI로 이동
+		//{
+		//	TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		//	TopRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		//	TopRenderer->GetTransform()->SetLocalPosition(Inventory_BackGroundPos);
+		//	TopRenderer->GetTransform()->SetLocalScaling(TopRenderer->GetCurrentTexture()->GetTextureSize());
+		//	UIRendererMap.insert(make_pair("Inventory_BackGround", TopRenderer));
+		//}
 
 		{
 			TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
@@ -61,21 +60,21 @@ void TopUI::Start()
 			UIRendererMap.insert(make_pair("Eqiup_BackGround", TopRenderer));
 		}
 
-		{
-			TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-			TopRenderer->SetImage("MainStatus_Background.png", "PointSmp");
-			TopRenderer->GetTransform()->SetLocalPosition(MainStatus_BackgroundPos);
-			TopRenderer->GetTransform()->SetLocalScaling(TopRenderer->GetCurrentTexture()->GetTextureSize());
-			UIRendererMap.insert(make_pair("MainStatus_Background", TopRenderer));
-		}
-
-		{
-			TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-			TopRenderer->SetImage("SubStatus_Background.png", "PointSmp");
-			TopRenderer->GetTransform()->SetLocalPosition(SubStatus_BackgroundPos);
-			TopRenderer->GetTransform()->SetLocalScaling(TopRenderer->GetCurrentTexture()->GetTextureSize());
-			UIRendererMap.insert(make_pair("SubStatus_Background", TopRenderer));
-		}
+	//	{
+	//		TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	//		TopRenderer->SetImage("MainStatus_Background.png", "PointSmp");
+	//		TopRenderer->GetTransform()->SetLocalPosition(MainStatus_BackgroundPos);
+	//		TopRenderer->GetTransform()->SetLocalScaling(TopRenderer->GetCurrentTexture()->GetTextureSize());
+	//		UIRendererMap.insert(make_pair("MainStatus_Background", TopRenderer));
+	//	}
+	//
+	//	{
+	//		TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	//		TopRenderer->SetImage("SubStatus_Background.png", "PointSmp");
+	//		TopRenderer->GetTransform()->SetLocalPosition(SubStatus_BackgroundPos);
+	//		TopRenderer->GetTransform()->SetLocalScaling(TopRenderer->GetCurrentTexture()->GetTextureSize());
+	//		UIRendererMap.insert(make_pair("SubStatus_Background", TopRenderer));
+	//	}
 
 		{
 			TopRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
