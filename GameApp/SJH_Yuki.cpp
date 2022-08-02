@@ -9,8 +9,8 @@ SJH_Yuki* SJH_Yuki::MainPlayer = nullptr;
 void SJH_Yuki::Start()
 {
 	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
-	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, -20.0f });
-	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 10.0f, 0.0f, 0.0f });
+	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -20.0f });
+	//GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 10.0f, 0.0f, 0.0f });
 
 	// FBX Files 경로 지정
 	GameEngineDirectory Directory;

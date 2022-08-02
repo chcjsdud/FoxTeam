@@ -31,7 +31,7 @@ SJH_Ray* SJH_Ray::RayAtViewSpace(float _MousePosX, float _MousePosY)
     float4x4 ViewMat = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().View_;
     float4x4 InverseViewMat = ViewMat.InverseReturn();
 
-    // 3. 뷰영역 적용전 위치 및 방향 계산
+    // 3. 광선(Ray)을 월드영역으로 이동
     OriginPos_ = DirectX::XMVector3TransformCoord(OriginPos_.DirectVector, InverseViewMat.DirectMatrix);
     Direction_ = DirectX::XMVector3TransformNormal(Direction_.DirectVector, InverseViewMat.DirectMatrix);
     Direction_.Normalize3D();
@@ -71,6 +71,7 @@ bool SJH_Ray::IsPicked(float4& _PickedPos)
             float4 fCenter = float4(CurColliderCenter.x, CurColliderCenter.y, CurColliderCenter.z);
             float Radius = CurCollider->GetTransform()->GetCollisionData().Sphere.Radius;
 
+            // 
             float4 Subtract = OriginPos_ - fCenter;
             float b = float4::Dot3D(Subtract, Direction_);
             float c = float4::Dot3D(Subtract, Subtract) - Radius * Radius;
