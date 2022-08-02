@@ -1,4 +1,7 @@
 #include "PreCompile.h"
+#include "Character_ProtoType.h"
+
+#include "PreCompile.h"
 
 #include <GameEngine/GameEngineImageRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
@@ -10,17 +13,15 @@
 
 #include "Enums.h"
 
-#include "LH_Yuki.h"
-
-Player_Yuki::Player_Yuki()
+Character_ProtoType::Character_ProtoType()
 {
 }
 
-Player_Yuki::~Player_Yuki()
+Character_ProtoType::~Character_ProtoType()
 {
 }
 
-void Player_Yuki::Start()
+void Character_ProtoType::Start()
 {
 	StateInit();
 	ComponenetInit();
@@ -28,7 +29,7 @@ void Player_Yuki::Start()
 	UIInit();
 }
 
-void Player_Yuki::Update(float _DeltaTime)
+void Character_ProtoType::Update(float _DeltaTime)
 {
 	DEBUGUpdate(_DeltaTime);
 
@@ -37,7 +38,7 @@ void Player_Yuki::Update(float _DeltaTime)
 }
 
 
-void Player_Yuki::ComponenetInit()
+void Character_ProtoType::ComponenetInit()
 {
 	// 렌더러
 	FBXRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
@@ -68,7 +69,7 @@ void Player_Yuki::ComponenetInit()
 	UnitSightCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::PlayerSight), CollisionType::CirCle);
 }
 
-void Player_Yuki::StateInit()
+void Character_ProtoType::StateInit()
 {
 	//State 함수
 	//{
@@ -86,14 +87,14 @@ void Player_Yuki::StateInit()
 
 	//카메라 함수
 	{
-		CameraState_.CreateState<Player_Yuki>("Up", this, nullptr, &Player_Yuki::CameraUpdate_UpPosition, nullptr);
-		CameraState_.CreateState<Player_Yuki>("Back", this, nullptr, &Player_Yuki::CameraUpdate_BackPosition, nullptr);
-		CameraState_.CreateState<Player_Yuki>("EternalReturn", this, nullptr, &Player_Yuki::CameraUpdate_EternalReturn, nullptr);
+		CameraState_.CreateState<Character_ProtoType>("Up", this, nullptr, &Character_ProtoType::CameraUpdate_UpPosition, nullptr);
+		CameraState_.CreateState<Character_ProtoType>("Back", this, nullptr, &Character_ProtoType::CameraUpdate_BackPosition, nullptr);
+		CameraState_.CreateState<Character_ProtoType>("EternalReturn", this, nullptr, &Character_ProtoType::CameraUpdate_EternalReturn, nullptr);
 		CameraState_.ChangeState("EternalReturn");
 	}
 }
 
-void Player_Yuki::KeyInit()
+void Character_ProtoType::KeyInit()
 {
 	GameEngineInput::GetInst().CreateKey("W", 'W');
 	GameEngineInput::GetInst().CreateKey("A", 'A');
@@ -108,7 +109,7 @@ void Player_Yuki::KeyInit()
 	//GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 }
 
-void Player_Yuki::UIInit()
+void Character_ProtoType::UIInit()
 {
 	SkillUI_ = GetLevel()->CreateActor<UI_Skill>();
 	SkillUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
@@ -123,7 +124,7 @@ void Player_Yuki::UIInit()
 	//Inventory_->SetPlayer(this);
 }
 
-void Player_Yuki::DEBUGUpdate(float _DeltaTime)
+void Character_ProtoType::DEBUGUpdate(float _DeltaTime)
 {
 	GetLevel()->PushDebugRender(UnitHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
 	GetLevel()->PushDebugRender(UnitSightCollision_->GetTransform(), CollisionType::CirCle);
@@ -133,12 +134,3 @@ void Player_Yuki::DEBUGUpdate(float _DeltaTime)
 		GetLevel()->PushDebugRender(AttackHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
 	}
 }
-
-//void Yuki::Initialize()
-//{
-//	// 고유정보 셋팅
-//	BaseInfoSetting();
-//
-//	// 스킬정보 셋팅
-//	SkillInfoSetting();
-//}

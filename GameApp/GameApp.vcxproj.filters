@@ -119,10 +119,16 @@
     <ClCompile Include="LH_Unit.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
     </ClCompile>
-    <ClCompile Include="LH_Yuki_State.cpp">
+    <ClCompile Include="Character_ProtoType.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character</Filter>
     </ClCompile>
     <ClCompile Include="LH_Yuki.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
+    </ClCompile>
+    <ClCompile Include="LH_Yuki_State.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
+    </ClCompile>
+    <ClCompile Include="Character_ProtoType_State.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character</Filter>
     </ClCompile>
   </ItemGroup>
@@ -259,6 +265,9 @@
     <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base">
       <UniqueIdentifier>{244cfc02-090c-4558-82bc-041667c3cb41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki">
+      <UniqueIdentifier>{e3551c73-9ec4-43e2-9ca7-4604bb44ced2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -391,8 +400,11 @@
     <ClInclude Include="LH_Status.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
     </ClInclude>
-    <ClInclude Include="LH_Yuki.h">
+    <ClInclude Include="Character_ProtoType.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="LH_Yuki.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

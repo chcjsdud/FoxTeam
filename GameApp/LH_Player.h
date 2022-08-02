@@ -83,8 +83,6 @@ protected:
 
 #pragma region MemberUpdateFunc
 protected:
-	//Member Func
-	void DEBUGUpdate(float _DeltaTime);
 
 	// update류 함수에 같이 들어가 카메라 업데이트, 바로 뒤에서 바라보는 함수
 	void CameraUpdate_BackPosition(float _DeltaTime);

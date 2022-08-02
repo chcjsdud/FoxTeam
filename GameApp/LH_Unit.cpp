@@ -15,8 +15,6 @@ Unit::Unit()
 	, UnitGroundCollision_(nullptr)
 	, UnitSightCollision_(nullptr)
 	, UnitHitBoxCollision_(nullptr)
-	, UnitAttackHitBoxCollision_(nullptr)
-	//, FBXRenderer_(nullptr)
 
 {
 	{
@@ -104,7 +102,7 @@ void Unit::AddBuff(std::string _Name, Status _Status, float _Time)
 {
 	Buff* _Buff = new Buff;
 	
-	*_Buff = { _Time , _Status };
+	*_Buff = { _Name, _Time , _Status , nullptr};
 
 	BufferList_.insert(std::make_pair( _Name, _Buff));
 }

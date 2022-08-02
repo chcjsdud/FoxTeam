@@ -67,12 +67,10 @@ protected: // 기본정보
 
 	//바닥 콜리전
 	GameEngineCollision* UnitGroundCollision_;
-	// RockOn 충돌체
+	//시야 충돌체
 	GameEngineCollision* UnitSightCollision_;
 	//피격 히트박스
 	GameEngineCollision* UnitHitBoxCollision_;
-	//공격 히트박스
-	GameEngineCollision* UnitAttackHitBoxCollision_;
 
 
 private: // 커맨드 패턴

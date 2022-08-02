@@ -271,14 +271,3 @@ void Player::CameraUpdate_EternalReturn(float _DeltaTime)
 
 	}
 }
-
-void Player::DEBUGUpdate(float _DeltaTime)
-{
-	GetLevel()->PushDebugRender(UnitHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
-	GetLevel()->PushDebugRender(UnitSightCollision_->GetTransform(), CollisionType::CirCle);
-
-	if (UnitAttackHitBoxCollision_->IsUpdate())
-	{
-		GetLevel()->PushDebugRender(UnitAttackHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D,float4::RED);
-	}
-}

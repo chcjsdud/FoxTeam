@@ -28,8 +28,8 @@ void PlayController::InitInput()
 
 void PlayController::InitActor()
 {
-	testGameMouse_ = GetLevel()->CreateActor<GameMouse>();
-	testPlayer_ = GetLevel()->CreateActor<Player>();
+	//testGameMouse_ = GetLevel()->CreateActor<GameMouse>();
+	//testPlayer_ = GetLevel()->CreateActor<Player>();
 
 }
 

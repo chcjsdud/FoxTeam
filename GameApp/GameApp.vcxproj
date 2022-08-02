@@ -184,6 +184,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
+    <ClCompile Include="Character_ProtoType.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Character_ProtoType_State.cpp" />
     <ClCompile Include="GHRio.cpp">
       <SubType>
       </SubType>
@@ -305,6 +310,10 @@
     <ClCompile Include="YSJ_PlayLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Character_ProtoType.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GHRio.h">
       <SubType>
       </SubType>

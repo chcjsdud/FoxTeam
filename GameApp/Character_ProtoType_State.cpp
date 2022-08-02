@@ -3,7 +3,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
-#include "LH_Yuki.h"
+#include "Character_ProtoType.h"
 
 //
 //State Cpp
@@ -13,11 +13,11 @@
 
 
 //Idle
-void Player_Yuki::Idle_Start()
+void Character_ProtoType::Idle_Start()
 {
 	//Speed_ = 0.f;
 }
-void Player_Yuki::Idle_Update(float _DeltaTime)
+void Character_ProtoType::Idle_Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst().Press("W")||
 		true == GameEngineInput::GetInst().Press("A")||
@@ -42,17 +42,17 @@ void Player_Yuki::Idle_Update(float _DeltaTime)
 
 	MoveRotateUpdate(_DeltaTime);
 }
-void Player_Yuki::Idle_End()
+void Character_ProtoType::Idle_End()
 {
 }
 
 //Walk
-void Player_Yuki::Walk_Start()
+void Character_ProtoType::Walk_Start()
 {
 	IsMove_ = true;
 	//Speed_ = 300.f;
 }
-void Player_Yuki::Walk_Update(float _DeltaTime)
+void Character_ProtoType::Walk_Update(float _DeltaTime)
 {
 	// 크기가 2짜리 큐를 만들고, 2번째는 인접 Key가 아니면 return 시킴, 그리고 안눌렸으면 다시 반환시켜서 먼저 누른거 2개만 남게 해주기
 	// 
@@ -83,18 +83,18 @@ void Player_Yuki::Walk_Update(float _DeltaTime)
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
 }
-void Player_Yuki::Walk_End()
+void Character_ProtoType::Walk_End()
 {
 	IsMove_ = false;
 }
 
 //Run
-void Player_Yuki::Run_Start()
+void Character_ProtoType::Run_Start()
 {
 	IsMove_ = true;
 	//Speed_ = 600.f;
 }
-void Player_Yuki::Run_Update(float _DeltaTime)
+void Character_ProtoType::Run_Update(float _DeltaTime)
 {
 	if (GameEngineInput::GetInst().Press("Attack"))
 	{
@@ -136,13 +136,13 @@ void Player_Yuki::Run_Update(float _DeltaTime)
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
 }
-void Player_Yuki::Run_End()
+void Character_ProtoType::Run_End()
 {
 	IsMove_ = false;
 }
 
 //Attack
-void Player_Yuki::Attack_Start()
+void Character_ProtoType::Attack_Start()
 {
 	if (Status_Final_.Stat_Stamina_ < 5.f)
 	{
@@ -172,7 +172,7 @@ void Player_Yuki::Attack_Start()
 	//	Status_Final_.Stat_Stamina_ = 0.f;
 	//}
 }
-void Player_Yuki::Attack_Update(float _DeltaTime)
+void Character_ProtoType::Attack_Update(float _DeltaTime)
 {
 	KeyDirUpdate(_DeltaTime);
 
@@ -221,7 +221,7 @@ void Player_Yuki::Attack_Update(float _DeltaTime)
 		return;
 	}
 }
-void Player_Yuki::Attack_End()
+void Character_ProtoType::Attack_End()
 {
 	AttackTurm_ = 0.f;
 	AttackTime_ = 0.f;
@@ -238,13 +238,13 @@ void Player_Yuki::Attack_End()
 // 명령을 컨트롤러에서 하달받고
 // 하달받은 스테이트와 장입된 변수만으로 일을 처리합니다.
 
-//void Player_Yuki::Stand_Start()
+//void Character_ProtoType::Stand_Start()
 //{
 //	IsMove_ = false;
 //	return;
 //}
 //
-//void Player_Yuki::Stand_Update(float _DeltaTime)
+//void Character_ProtoType::Stand_Update(float _DeltaTime)
 //{
 //	if (true == IsMove_)
 //	{
@@ -254,19 +254,19 @@ void Player_Yuki::Attack_End()
 //	return;
 //}
 //
-//void Player_Yuki::Stand_End()
+//void Character_ProtoType::Stand_End()
 //{
 //	return;
 //}
 //
-//void Player_Yuki::Move_Start()
+//void Character_ProtoType::Move_Start()
 //{
 //
 //	int a = 0;
 //	return;
 //}
 //
-//void Player_Yuki::Move_Update(float _DeltaTime)
+//void Character_ProtoType::Move_Update(float _DeltaTime)
 //{
 //	//CurDirUpdate(_DeltaTime);
 //	// 마우스 커서 우클릭한 위치로의 방향 벡터를 계산합니다.
@@ -331,7 +331,7 @@ void Player_Yuki::Attack_End()
 //	
 //}
 //
-//void Player_Yuki::Move_End()
+//void Character_ProtoType::Move_End()
 //{
 //	TargetDir_ = float4::ZERO;
 //	arrivalPos_ = float4::ZERO;

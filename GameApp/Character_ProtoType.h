@@ -4,21 +4,21 @@
 // 분류 : 캐릭터
 // 용도 : 유키
 // 설명 : 고유 스킬 및 패턴을 관리
-class Player_Yuki : public Player
+class Character_ProtoType : public Player
 {
 private:
 
 public:
-	Player_Yuki();
-	~Player_Yuki();
+	Character_ProtoType();
+	~Character_ProtoType();
 
 protected:		// delete constructer
-	Player_Yuki(const Player_Yuki& _other) = delete;
-	Player_Yuki(Player_Yuki&& _other) noexcept = delete;
+	Character_ProtoType(const Character_ProtoType& _other) = delete;
+	Character_ProtoType(Character_ProtoType&& _other) noexcept = delete;
 
 private:		//delete operator
-	Player_Yuki& operator=(const Player_Yuki& _other) = delete;
-	Player_Yuki& operator=(const Player_Yuki&& _other) = delete;
+	Character_ProtoType& operator=(const Character_ProtoType& _other) = delete;
+	Character_ProtoType& operator=(const Character_ProtoType&& _other) = delete;
 private:
 
 	//FBX Renderer
@@ -33,8 +33,8 @@ private:		//delete operator
 	// 렌더러, 콜리전, 등등 Componenet 초기화
 	void ComponenetInit();
 	//State 초기화
-	void StateInit() ;
-	void KeyInit() ;
+	void StateInit();
+	void KeyInit();
 	void UIInit();
 
 	void DEBUGUpdate(float _DeltaTime);
@@ -56,4 +56,5 @@ private:
 	void Attack_Update(float _DeltaTime) override;
 	void Attack_End() override;
 };
+
 

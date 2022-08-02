@@ -1,11 +1,5 @@
 #pragma once
-
-struct Buff
-{
-	float Time_;
-	Status Status_;
-	std::function<void> BuffFunc_;
-};
+#include <functional>
 
 struct Status
 {
@@ -282,4 +276,21 @@ struct Status
 	}
 
 #pragma endregion 
+};
+
+struct Buff
+{
+//public:
+//	Buff()
+//		: Time_(-1.f)
+//		, BuffFunc_(nullptr)
+//	{}
+//
+//	~Buff()
+//	{}
+
+	std::string Name_;
+	float Time_;
+	Status Status_;
+	std::function<void()> BuffFunc_;
 };

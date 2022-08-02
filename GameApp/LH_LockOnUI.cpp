@@ -28,7 +28,7 @@ void LockOnUI::Start()
 
 void LockOnUI::Update(float _Time)
 {
-	GameEngineActor* Target = Player_->PlayerGetTarget();
+	GameEngineActor* Target = Player_->Unit_GetTarget();
 
 	//타겟이 있으면 위치정보를 가져오고 LockOnRenderer가 ON
 	if (Target != nullptr)

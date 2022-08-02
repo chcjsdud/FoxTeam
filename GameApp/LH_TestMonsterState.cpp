@@ -180,7 +180,7 @@ void TestMonster::CollisionGetDamaged(GameEngineCollision* _other)
 {
 	if (false == isDamaged_)
 	{
-		this->Hp_ -= targetPlayer_->PlayerGetAttackPower();
+		this->Hp_ -= targetPlayer_->Unit_GetAttackPower();
 		isDamaged_ = true;
 		isKnockBack_ = true;
 		InvincibleTermTimer_ = InvincibleTermRate_;
