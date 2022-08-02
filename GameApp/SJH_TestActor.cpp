@@ -33,3 +33,11 @@ SJH_TestActor::SJH_TestActor()
 SJH_TestActor::~SJH_TestActor()
 {
 }
+
+void SJH_TestActor::SetResultColor(const float4& _Color)
+{
+	if (nullptr != BoxRenderer_)
+	{
+		BoxRenderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", _Color);
+	}
+}

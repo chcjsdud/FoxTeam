@@ -14,6 +14,12 @@ public: // 해당 마우스 클릭지점과 충돌하는 객체를 찾아내 그 객체의 위치값을 반환
 public: // 
 	bool IsPicked(float4& _PickedPos);
 
+public:
+	inline GameEngineActor* CurSelectTarget()
+	{
+		return CurTarget_;
+	}
+
 protected:
 
 private:
@@ -39,5 +45,8 @@ protected:
 private:
 	float4 OriginPos_;				// 마우스 클릭좌표
 	float4 Direction_;				// 카메라가 바라보는 방향
+
+private:
+	GameEngineActor* CurTarget_;	// 현재 선택된 타겟
 };
 

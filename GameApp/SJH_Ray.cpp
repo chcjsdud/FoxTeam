@@ -51,6 +51,9 @@ SJH_Ray* SJH_Ray::RayAtViewSpace(float4 _MouseClickPos)
 
 bool SJH_Ray::IsPicked(float4& _PickedPos)
 {
+    // 선택된 타겟 초기화
+    CurTarget_ = nullptr;
+
     // 현재 레벨의 모든 충돌체 목록 Get
     std::map<int, std::list<GameEngineCollision*>> AllList = GetLevel()->GetAllCollision();
 
@@ -76,22 +79,13 @@ bool SJH_Ray::IsPicked(float4& _PickedPos)
                 // 위치값 반환을 위해 위치값 저장
                 _PickedPos = CurCollider->GetActor()->GetTransform()->GetLocalPosition();
 
+                // 현재 선택된 타겟 저장
+                CurTarget_ = CurCollider->GetActor();
+
                 return true;
             }
         }
     }
-
-    /*
-    bool hit_sphere(const vec3& center, float radius, const ray& r)
-    {
-        vec3 oc = r.origin() - center;
-        float a = dot(r.direction(), r.direction());
-        float b = 2.0 * dot(oc, r.direction());
-        float c = dot(oc,oc) - radius*radius;
-        float discriminant = b*b - 4*a*c;
-        return (discriminant>0);
-    }
-    */
 
     // 충돌하는 충돌체가 존재하지않다면 실패
     return false;
@@ -99,19 +93,16 @@ bool SJH_Ray::IsPicked(float4& _PickedPos)
 
 void SJH_Ray::Start()
 {
-    //GetTransform()->SetWorldPosition(GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition());
 }
 
 void SJH_Ray::Update(float _DeltaTime)
 {
-    // 해당 광선과 현재레벨의 모든 액터와 충돌체크
-    
-
 }
 
 SJH_Ray::SJH_Ray()
     : OriginPos_(float4::ZERO)
     , Direction_(float4::ZERO)
+    , CurTarget_(nullptr)
 {
 }
 

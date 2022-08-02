@@ -122,18 +122,22 @@ void SJH_PlayLevel::CreateActorLevel()
 
 	// 마우스피킹 테스트용 오브젝트
 	TestBox_ = CreateActor<SJH_TestActor>();
+	TestBox_->SetName("test1");
 	TestBox_->GetTransform()->SetLocalPosition(float4(50.f, 0.f, 10.f));
 	TestBox_->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
 
 	// 
 	SJH_TestActor* TextBox2 = CreateActor<SJH_TestActor>();
+	TextBox2->SetName("test2");
 	TextBox2->GetTransform()->SetLocalPosition(float4(-50.f, 10.f, 200.f));
 	TextBox2->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
+	TextBox2->SetResultColor(float4(1.f, 0.f, 1.f));
 
 	SJH_TestActor* TextBox3 = CreateActor<SJH_TestActor>();
+	TextBox3->SetName("test3");
 	TextBox3->GetTransform()->SetLocalPosition(float4(-50.f, 10.f, 300.f));
 	TextBox3->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
-
+	TextBox3->SetResultColor(float4(1.f, 1.f, 1.f));
 #pragma endregion
 
 }

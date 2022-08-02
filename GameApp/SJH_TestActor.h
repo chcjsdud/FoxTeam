@@ -29,6 +29,7 @@ private:		//delete operator
 	SJH_TestActor& operator=(const SJH_TestActor&& _other) = delete;
 
 public:
+	void SetResultColor(const float4& _Color);
 
 protected:
 
