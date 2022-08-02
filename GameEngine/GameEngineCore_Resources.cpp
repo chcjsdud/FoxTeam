@@ -751,6 +751,15 @@ void GameEngineCore::EngineResourcesCreate()
 	}
 
 	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DebugSphere");
+		Pipe->SetInputAssembler1VertexBufferSetting("Sphere");
+		Pipe->SetVertexShader("Color_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Sphere");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+		Pipe->SetPixelShader("Color_PS");
+	}
+
+	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DebugCircle");
 		Pipe->SetInputAssembler1VertexBufferSetting("DebugCircle");
 		Pipe->SetVertexShader("Color_VS");
@@ -920,6 +929,17 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetInputAssembler1VertexBufferSetting("Box");
 		Pipe->SetVertexShader("Color_VS");
 		Pipe->SetInputAssembler2IndexBufferSetting("Box");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		Pipe->SetPixelShader("Color_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
+
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("ColorSphere");
+		Pipe->SetInputAssembler1VertexBufferSetting("Sphere");
+		Pipe->SetVertexShader("Color_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Sphere");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		Pipe->SetRasterizer("EngineBaseRasterizerBack");
 		Pipe->SetPixelShader("Color_PS");

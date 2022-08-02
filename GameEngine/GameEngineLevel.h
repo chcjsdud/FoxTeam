@@ -74,6 +74,12 @@ public:
 	CameraActor* GetUICameraActor();
 	CameraComponent* GetUICamera();
 
+public:
+	inline std::map<int, std::list<GameEngineCollision*>>& GetAllCollision()
+	{
+		return CollisionList_;
+	}
+
 private:
 	void Init();
 	void LevelChangeEndActorEvent(GameEngineLevel* _NextLevel);

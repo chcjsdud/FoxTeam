@@ -8,11 +8,11 @@ class GameEngineCollision;
 class SJH_Ray : public GameEngineActor
 {
 public: // 해당 마우스 클릭지점과 충돌하는 객체를 찾아내 그 객체의 위치값을 반환
-	float4 RayAtViewSpace(float _MousePosX, float _MousePosY);
-	float4 RayAtViewSpace(float4 _MousePos);
+	SJH_Ray* RayAtViewSpace(float _MousePosX, float _MousePosY);
+	SJH_Ray* RayAtViewSpace(float4 _MousePos);
 
 public: // 
-	bool IsPicked(GameEngineCollision* _Collider);
+	bool IsPicked(float4& _PickedPos);
 
 protected:
 

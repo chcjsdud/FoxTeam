@@ -6,6 +6,7 @@
 
 #include "Enums.h"
 #include "SJH_Ray.h"
+#include "SJH_Yuki.h"
 
 void SJH_Mouse::Start()
 {
@@ -18,7 +19,6 @@ void SJH_Mouse::Start()
 	Collider_->GetTransform()->SetLocalScaling(float4{ 30.0f, 30.0f, 30.0f });
 	Collider_->SetCollisionInfo(static_cast<int>(CollisionGroup::MousePointer), CollisionType::AABBBox3D);
 	
-
 	// 광선 생성
 	Ray_ = GetLevel()->CreateActor<SJH_Ray>();
 }
@@ -29,11 +29,22 @@ void SJH_Mouse::Update(float _DeltaTime)
 	GetTransform()->SetWorldPosition(GameEngineInput::GetInst().GetMouse3DPos());
 
 	// 키체크
-	// 카메라로부터 마우스클릭지점으로 향하는 방향벡터를 생성하고 그와 교차하는 충돌체를 탐색하여
-	// 교차하는 충돌체 발견시 해당 위치를 반환해준다
 	if (true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
-		float4 ColPos = Ray_->RayAtViewSpace(GameEngineInput::GetInst().GetMousePos());
+		// 단, 화면범위를 벗어나면 리턴
+		if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
+		{
+			return;
+		}
+
+		// 카메라로부터 마우스클릭지점으로 향하는 방향벡터를 생성하고 그와 교차하는 충돌체를 탐색하여
+		// 교차하는 충돌체 발견시 해당 위치를 반환해준다
+		SJH_Ray* Ray =  Ray_->RayAtViewSpace(GameEngineInput::GetInst().GetMousePos());
+		float4 MovePos = float4::ZERO;
+		if (true == Ray->IsPicked(MovePos))
+		{
+			SJH_Yuki::MainPlayer->GetTransform()->SetWorldPosition(MovePos);
+		}
 	}
 
 	// 

@@ -65,6 +65,12 @@ public:
 
 	bool IsWindowRangeOut(const float4& _Pos);
 
+public:
+	inline float4 GetWindowSize()
+	{
+		return size_;
+	}
+
 private:
 	static std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> MessageCallBack_;
 

@@ -111,17 +111,28 @@ void SJH_PlayLevel::CreateActorLevel()
 	Background_ = CreateActor<SKySphereActor>();
 
 	// 맵
-	FloorMap_ = CreateActor<SJH_FloorMap>();
+	//FloorMap_ = CreateActor<SJH_FloorMap>();
 
 	// 마우스
 	InGameMouse_ = CreateActor<SJH_Mouse>();
 
-	// 플레이어
+	// 플레이어(메인플레이어로 지정)
 	Yuki_ = CreateActor<SJH_Yuki>();
+	SJH_Yuki::MainPlayer = Yuki_;
 
 	// 마우스피킹 테스트용 오브젝트
 	TestBox_ = CreateActor<SJH_TestActor>();
+	TestBox_->GetTransform()->SetLocalPosition(float4(50.f, 0.f, 10.f));
+	TestBox_->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
 
+	// 
+	SJH_TestActor* TextBox2 = CreateActor<SJH_TestActor>();
+	TextBox2->GetTransform()->SetLocalPosition(float4(-50.f, 10.f, 200.f));
+	TextBox2->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
+
+	SJH_TestActor* TextBox3 = CreateActor<SJH_TestActor>();
+	TextBox3->GetTransform()->SetLocalPosition(float4(-50.f, 10.f, 300.f));
+	TextBox3->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
 
 #pragma endregion
 

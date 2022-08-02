@@ -4,6 +4,8 @@
 #include <GameEngine/GameEngineFBXMesh.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
+SJH_Yuki* SJH_Yuki::MainPlayer = nullptr;
+
 void SJH_Yuki::Start()
 {
 	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
@@ -107,7 +109,6 @@ void SJH_Yuki::Start()
 
 	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0);
 	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
-
 }
 
 void SJH_Yuki::Update(float _DeltaTime)

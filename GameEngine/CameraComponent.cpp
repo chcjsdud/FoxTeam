@@ -386,6 +386,11 @@ void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType
 
 	case CollisionType::Point3D:
 	case CollisionType::Sphere3D:
+	{
+		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugSphere");
+		DebugVector_[DebugRenderCount_].Color_ = _Color;
+		break;
+	}
 	case CollisionType::AABBBox3D:
 	{
 		DebugVector_[DebugRenderCount_].PipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DebugBox");

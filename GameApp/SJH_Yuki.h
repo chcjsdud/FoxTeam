@@ -29,6 +29,7 @@ private:
 	SJH_Yuki& operator=(const SJH_Yuki&& _other) = delete;
 
 public:
+	static SJH_Yuki* MainPlayer;
 
 protected:
 
