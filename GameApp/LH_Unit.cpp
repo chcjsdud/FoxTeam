@@ -112,6 +112,20 @@ void Unit::RemoveBuff(std::string _Name)
 	BufferList_.erase(BufferList_.find(_Name));
 }
 
+void Unit::RemoveAllBuff(std::string _Name)
+{
+	auto iter0 = BufferList_.begin();
+	auto iter1 = BufferList_.end();
+
+	for (; iter0 != iter1;)
+	{
+		delete iter0->second;
+		iter0++;
+	}
+
+	BufferList_.clear();
+}
+
 void Unit::UpdateBuff(float _DeltaTime)
 {
 	auto iter0 = BufferList_.begin();
@@ -136,5 +150,126 @@ void Unit::UpdateBuff(float _DeltaTime)
 		}
 
 		iter0++;
+	}
+}
+
+void Unit::CurDirUpdate(float _DeltaTime)	// 마우스 커서 우클릭한 위치로의 방향 벡터를 계산합니다.
+{
+	// RockOnUpdate(_DeltaTime);
+
+	KeyDirUpdate(_DeltaTime);
+}
+
+void Unit::RockOnDirUpdate(float _DeltaTime)
+{
+	if (nullptr != Target_)
+	{
+		float4 MoveDir = CalculateTargetDir(Target_->GetTransform()->GetWorldPosition());
+
+		MoveDir.Normalize3D();
+		TargetDir_ = MoveDir;
+		FowordDir_ = MoveDir;
+	}
+}
+
+void Unit::KeyDirUpdate(float _DeltaTime)
+{
+	float4 MoveDir = float4::ZERO;
+
+	bool Key = false;
+
+	if (true == GameEngineInput::GetInst().Press("D"))
+	{
+		MoveDir.x += 1.f;
+
+		//IsMove_ = true;
+		Key = true;
+	}
+	if (true == GameEngineInput::GetInst().Press("A"))
+	{
+		MoveDir.x -= 1.f;
+
+		//IsMove_ = true;
+		Key = true;
+	}
+	if (true == GameEngineInput::GetInst().Press("W"))
+	{
+		MoveDir.z += 1.f;
+
+		//IsMove_ = true;
+		Key = true;
+	}
+	if (true == GameEngineInput::GetInst().Press("S"))
+	{
+		MoveDir.z -= 1.f;
+
+		//IsMove_ = true;
+		Key = true;
+	}
+
+	//if (true == IsMove_)
+	if (true == Key)
+	{
+		MoveDir.Normalize3D();
+		KeyDir_ = MoveDir;
+
+		if (Target_ == nullptr)
+		{
+			FowordDir_ = KeyDir_;
+		}
+		//IsMove_ = false;
+	}
+}
+
+void Unit::MoveUpdate(float _DeltaTime)
+{
+	if (true == IsMove_)
+	{
+		GetTransform()->SetWorldMove(KeyDir_ * Status_Final_.Stat_MoveSpeed_ * _DeltaTime);
+	}
+}
+
+
+void Unit::MoveRotateUpdate(float _DeltaTime)
+{
+	//if (Target_ == nullptr && IsMove_ == false)
+	//{
+	//	return;
+	//}
+
+	if (CurFowordDir_ == FowordDir_)
+	{
+		return;
+	}
+
+	float4 dir = float4::Cross3D(CurFowordDir_, FowordDir_);
+
+	float goaldegree = GameEngineMath::UnitVectorToDegree(FowordDir_.z, FowordDir_.x);
+
+	if (dir.y >= 0.f)
+	{
+
+		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_ * _DeltaTime);
+		CurFowordDir_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
+
+		dir = float4::Cross3D(CurFowordDir_, FowordDir_);
+		if (dir.y < 0.f)
+		{
+			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+			CurFowordDir_ = FowordDir_;
+		}
+	}
+
+	else if (dir.y < 0.f)
+	{
+		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
+		CurFowordDir_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
+
+		dir = float4::Cross3D(CurFowordDir_, FowordDir_);
+		if (dir.y > 0.f)
+		{
+			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+			CurFowordDir_ = FowordDir_;
+		}
 	}
 }

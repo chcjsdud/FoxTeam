@@ -208,8 +208,7 @@ void PlayLevel::CreateActorLevel()
 	}
 
 	{
-		controller_ = CreateActor<PlayController>();
-
+		//controller_ = CreateActor<PlayController>();
 	}
 
 	{

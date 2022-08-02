@@ -24,7 +24,6 @@ void Player_Yuki::Start()
 {
 	StateInit();
 	ComponenetInit();
-	KeyInit();
 	UIInit();
 }
 
@@ -33,7 +32,7 @@ void Player_Yuki::Update(float _DeltaTime)
 	DEBUGUpdate(_DeltaTime);
 
 	State_.Update(_DeltaTime);
-	CameraState_.Update(_DeltaTime);
+	//CameraState_.Update(_DeltaTime);
 }
 
 
@@ -83,29 +82,6 @@ void Player_Yuki::StateInit()
 
 	//State_.ChangeState("Stand");
 
-
-	//카메라 함수
-	{
-		CameraState_.CreateState<Player_Yuki>("Up", this, nullptr, &Player_Yuki::CameraUpdate_UpPosition, nullptr);
-		CameraState_.CreateState<Player_Yuki>("Back", this, nullptr, &Player_Yuki::CameraUpdate_BackPosition, nullptr);
-		CameraState_.CreateState<Player_Yuki>("EternalReturn", this, nullptr, &Player_Yuki::CameraUpdate_EternalReturn, nullptr);
-		CameraState_.ChangeState("EternalReturn");
-	}
-}
-
-void Player_Yuki::KeyInit()
-{
-	GameEngineInput::GetInst().CreateKey("W", 'W');
-	GameEngineInput::GetInst().CreateKey("A", 'A');
-	GameEngineInput::GetInst().CreateKey("D", 'D');
-	GameEngineInput::GetInst().CreateKey("S", 'S');
-	GameEngineInput::GetInst().CreateKey("Space", VK_SPACE);
-	GameEngineInput::GetInst().CreateKey("MoveUp", 'Q');
-	GameEngineInput::GetInst().CreateKey("MoveDown", 'E');
-	GameEngineInput::GetInst().CreateKey("Attack", 'J');
-	GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
-	GameEngineInput::GetInst().CreateKey("RockOn", VK_LSHIFT);
-	//GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 }
 
 void Player_Yuki::UIInit()

@@ -280,15 +280,6 @@ struct Status
 
 struct Buff
 {
-//public:
-//	Buff()
-//		: Time_(-1.f)
-//		, BuffFunc_(nullptr)
-//	{}
-//
-//	~Buff()
-//	{}
-
 	std::string Name_;
 	float Time_;
 	Status Status_;

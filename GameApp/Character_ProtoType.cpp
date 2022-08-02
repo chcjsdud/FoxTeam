@@ -25,7 +25,6 @@ void Character_ProtoType::Start()
 {
 	StateInit();
 	ComponenetInit();
-	KeyInit();
 	UIInit();
 }
 
@@ -34,7 +33,7 @@ void Character_ProtoType::Update(float _DeltaTime)
 	DEBUGUpdate(_DeltaTime);
 
 	State_.Update(_DeltaTime);
-	CameraState_.Update(_DeltaTime);
+	//CameraState_.Update(_DeltaTime);
 }
 
 
@@ -83,30 +82,6 @@ void Character_ProtoType::StateInit()
 	//State_.CreateState<Player>("Move", this, &Player::Move_Start, &Player::Move_Update, &Player::Move_End);;
 
 	//State_.ChangeState("Stand");
-
-
-	//카메라 함수
-	{
-		CameraState_.CreateState<Character_ProtoType>("Up", this, nullptr, &Character_ProtoType::CameraUpdate_UpPosition, nullptr);
-		CameraState_.CreateState<Character_ProtoType>("Back", this, nullptr, &Character_ProtoType::CameraUpdate_BackPosition, nullptr);
-		CameraState_.CreateState<Character_ProtoType>("EternalReturn", this, nullptr, &Character_ProtoType::CameraUpdate_EternalReturn, nullptr);
-		CameraState_.ChangeState("EternalReturn");
-	}
-}
-
-void Character_ProtoType::KeyInit()
-{
-	GameEngineInput::GetInst().CreateKey("W", 'W');
-	GameEngineInput::GetInst().CreateKey("A", 'A');
-	GameEngineInput::GetInst().CreateKey("D", 'D');
-	GameEngineInput::GetInst().CreateKey("S", 'S');
-	GameEngineInput::GetInst().CreateKey("Space", VK_SPACE);
-	GameEngineInput::GetInst().CreateKey("MoveUp", 'Q');
-	GameEngineInput::GetInst().CreateKey("MoveDown", 'E');
-	GameEngineInput::GetInst().CreateKey("Attack", 'J');
-	GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
-	GameEngineInput::GetInst().CreateKey("RockOn", VK_LSHIFT);
-	//GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 }
 
 void Character_ProtoType::UIInit()

@@ -2,6 +2,7 @@
 #include "PlayController.h"
 #include "GameMouse.h"
 #include "LH_Player.h"
+
 PlayController::PlayController() // default constructer 디폴트 생성자
 {
 
@@ -24,6 +25,17 @@ void PlayController::InitInput()
 		GameEngineInput::GetInst().CreateKey("M1", VK_LBUTTON); // 마우스 왼쪽 키
 		GameEngineInput::GetInst().CreateKey("M2", VK_RBUTTON); // 마우스 오른쪽 키
 	}
+
+	GameEngineInput::GetInst().CreateKey("W", 'W');
+	GameEngineInput::GetInst().CreateKey("A", 'A');
+	GameEngineInput::GetInst().CreateKey("D", 'D');
+	GameEngineInput::GetInst().CreateKey("S", 'S');
+	GameEngineInput::GetInst().CreateKey("Space", VK_SPACE);
+	GameEngineInput::GetInst().CreateKey("MoveUp", 'Q');
+	GameEngineInput::GetInst().CreateKey("MoveDown", 'E');
+	GameEngineInput::GetInst().CreateKey("Attack", 'J');
+	GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
+	GameEngineInput::GetInst().CreateKey("RockOn", VK_LSHIFT);
 }
 
 void PlayController::InitActor()
@@ -38,28 +50,72 @@ void PlayController::Start()
 {
 	InitInput();
 	InitActor();
+
+	{
+		CameraState_.CreateState<PlayController>("Up", this, nullptr, &PlayController::CameraUpdate_UpPosition, nullptr);
+		CameraState_.CreateState<PlayController>("Back", this, nullptr, &PlayController::CameraUpdate_BackPosition, nullptr);
+		CameraState_.CreateState<PlayController>("EternalReturn", this, nullptr, &PlayController::CameraUpdate_EternalReturn, nullptr);
+		CameraState_.ChangeState("EternalReturn");
+	}
 }
 
 void PlayController::Update(float _DeltaTime)
 {
-	CheckInput(_DeltaTime);
+	//CheckInput(_DeltaTime);
 }
 
-void PlayController::CheckInput(float _DeltaTime)
+void PlayController::CameraUpdate_BackPosition(float _DeltaTime)
 {
-	if (true == GameEngineInput::GetInst().Down("M2"))
+	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{
-		testGameMouse_->SaveCurPos(); // 현재 마우스 좌표 저장
-		testPlayer_->SetTargetPos(testGameMouse_->GetSavedPos()); // 그 좌표를 플레이어에게 하달
+		return;
+	}
+	else
+	{
+		float4 rot = GetLevel()->GetMainCameraActor()->GetTransform()->GetLocalRotation();
 
-		// savedPos 는 "클릭하는 부분" 의 "스크린 상의 XZ 좌표" 여야 한다...
+		float4 CamPos = MainActor_->GetTransform()->GetWorldPosition();
+		CamPos.y += 200.f;
+		CamPos.x -= 100 * sinf(rot.y * GameEngineMath::DegreeToRadian);
+		CamPos.z -= 100 * cosf(rot.y * GameEngineMath::DegreeToRadian);
 
-		// 어떻게 만들어야 하나?
-		// 오른 클릭이 되면, 마우스 위치에서 Ray 가 쏴져야 한다.
-		// testGameMouse_->Ratshot()
-		// 광선을 만드는데 광선의 목표물에 충돌체가 구비되어야 할 것...
+		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldPosition(CamPos);
+	}
+}
 
+void PlayController::CameraUpdate_UpPosition(float _DeltaTime)
+{
+	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
+	{
+		return;
+	}
+	else
+	{
+		//float4 rot = GetLevel()->GetMainCameraActor()->GetTransform()->GetLocalRotation();
 
-		int a = 0;
+		float4 CamPos = MainActor_->GetTransform()->GetWorldPosition();
+		CamPos.y += 400.f;
+		CamPos.z -= 400;
+
+		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldPosition(CamPos);
+		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldRotationDegree({ 25.f,0.f,0.f });
+	}
+}
+
+void PlayController::CameraUpdate_EternalReturn(float _DeltaTime)
+{
+	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
+	{
+		return;
+	}
+	else
+	{
+		float4 CamPos = MainActor_->GetTransform()->GetWorldPosition();
+		CamPos.y += 700.f;
+		CamPos.z -= 550;
+
+		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldPosition(CamPos);
+		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldRotationDegree({ 60.f,0.f,0.f });
+
 	}
 }

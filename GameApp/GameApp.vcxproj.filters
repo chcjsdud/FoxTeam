@@ -47,9 +47,6 @@
     <ClCompile Include="GameMouse.cpp">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClCompile>
-    <ClCompile Include="PlayController.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="GHRayTestLevel.cpp">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
     </ClCompile>
@@ -119,17 +116,20 @@
     <ClCompile Include="LH_Unit.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
     </ClCompile>
-    <ClCompile Include="Character_ProtoType.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character</Filter>
-    </ClCompile>
     <ClCompile Include="LH_Yuki.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
     </ClCompile>
     <ClCompile Include="LH_Yuki_State.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
     </ClCompile>
+    <ClCompile Include="PlayController.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Character_ProtoType.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
+    </ClCompile>
     <ClCompile Include="Character_ProtoType_State.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character</Filter>
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,6 +268,12 @@
     <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki">
       <UniqueIdentifier>{e3551c73-9ec4-43e2-9ca7-4604bb44ced2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\02. Control">
+      <UniqueIdentifier>{8e1949a2-2e51-4a52-b909-94b3e4cc269a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto">
+      <UniqueIdentifier>{b0f00fb8-1231-42f6-bf8e-4cae645e1754}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -317,9 +323,6 @@
     </ClInclude>
     <ClInclude Include="GameMouse.h">
       <Filter>01.GameObject\02.GlobalActor</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayController.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="GHRayTestLevel.h">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
@@ -400,11 +403,14 @@
     <ClInclude Include="LH_Status.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
     </ClInclude>
-    <ClInclude Include="Character_ProtoType.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character</Filter>
-    </ClInclude>
     <ClInclude Include="LH_Yuki.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayController.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Character_ProtoType.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

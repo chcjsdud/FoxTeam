@@ -12,18 +12,9 @@ public:
 	Player_Yuki();
 	~Player_Yuki();
 
-protected:		// delete constructer
-	Player_Yuki(const Player_Yuki& _other) = delete;
-	Player_Yuki(Player_Yuki&& _other) noexcept = delete;
-
-private:		//delete operator
-	Player_Yuki& operator=(const Player_Yuki& _other) = delete;
-	Player_Yuki& operator=(const Player_Yuki&& _other) = delete;
 private:
-
 	//FBX Renderer
 	GameEngineFBXRenderer* FBXRenderer_;
-
 	GameEngineCollision* AttackHitBoxCollision_;
 
 private:		//delete operator
@@ -33,8 +24,7 @@ private:		//delete operator
 	// 렌더러, 콜리전, 등등 Componenet 초기화
 	void ComponenetInit();
 	//State 초기화
-	void StateInit() ;
-	void KeyInit() ;
+	void StateInit();
 	void UIInit();
 
 	void DEBUGUpdate(float _DeltaTime);
@@ -55,5 +45,11 @@ private:
 	void Attack_Start() override;
 	void Attack_Update(float _DeltaTime) override;
 	void Attack_End() override;
+
+private:		// delete constructer
+	Player_Yuki(const Player_Yuki& _other) = delete;
+	Player_Yuki(Player_Yuki&& _other) = delete;
+	Player_Yuki& operator=(const Player_Yuki& _other) = delete;
+	Player_Yuki& operator=(const Player_Yuki&& _other) = delete;
 };
 

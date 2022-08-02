@@ -13,18 +13,10 @@ public:
 	Unit();
 	~Unit();
 
-protected:		// delete constructer
-	Unit(const Unit& _other) = delete;
-	Unit(Unit&& _other) = delete;
-	Unit& operator=(const Unit& _other) = delete;
-	Unit& operator=(const Unit&& _other) = delete;
-
 protected: // 기본정보
 	CharacterType CharacterType_;		// (0: AI, 1: MAIN) : default(AI)
 
 	GameEngineFSM State_;
-
-	GameEngineFSM CameraState_;
 
 	//버프 리스트, 
 	std::map <std::string, Buff*> BufferList_;
@@ -72,14 +64,33 @@ protected: // 기본정보
 	//피격 히트박스
 	GameEngineCollision* UnitHitBoxCollision_;
 
-
-private: // 커맨드 패턴
-// 1. 메인캐릭터 시야 밖에서의 패턴(이동-파밍 패턴)
-// 2. 메인캐릭터 시야 범위내에서의 패턴(이동-공격 or 공격-회피)
-
 protected:
 	virtual void Start();
 	virtual void Update(float _DeltaTime);
+
+protected:
+	void SyncStatus();
+
+	const float4 CalculateTargetDir(float4 TargetPos)
+	{
+		float4 Dir = TargetPos - GetTransform()->GetWorldPosition();
+		Dir.Normalize3D();
+
+		return Dir;
+	}
+
+protected:
+	void UpdateBuff(float _DeltaTime);
+
+	void CurDirUpdate(float _DeltaTime);
+	//RockOn 중일때 방향 업데이트
+	void RockOnDirUpdate(float _DeltaTime);
+	void KeyDirUpdate(float _DeltaTime);
+	void MoveUpdate(float _DeltaTime);
+
+	//캐릭터가 바라보는 방향이 바로 바로 안변하고 천천히 변함(이동과는 무관하게), 
+//07.18 바라보는 방향을 넣어줘야함
+	void MoveRotateUpdate(float _DeltaTime);
 
 protected: 
 	// 캐릭터 State, 가상함수를 통해 캐릭터 클레스가 기본적으로 가지고 있어야 할 state를 지정
@@ -101,13 +112,13 @@ protected:
 
 protected: 
 	// 스텟에 변화가 생길때마다 적용함
-	void SyncStatus();
+
+public:
 	void AddBaseStat(Status _Status);
 	void SetBaseStat(Status _Status);
 	void AddBuff(std::string _Name, Status _Status, float _Time);
 	void RemoveBuff(std::string _Name);
-
-	void UpdateBuff(float _DeltaTime);
+	void RemoveAllBuff(std::string _Name);
 
 public:
 	void Unit_ChangeState(std::string _State)
@@ -175,4 +186,10 @@ public:
 	{
 		Target_ = _Target;
 	}
+
+protected:		// delete constructer
+	Unit(const Unit& _other) = delete;
+	Unit(Unit&& _other) = delete;
+	Unit& operator=(const Unit& _other) = delete;
+	Unit& operator=(const Unit&& _other) = delete;
 };
