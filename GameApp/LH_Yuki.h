@@ -19,32 +19,23 @@ protected:		// delete constructer
 private:		//delete operator
 	Player_Yuki& operator=(const Player_Yuki& _other) = delete;
 	Player_Yuki& operator=(const Player_Yuki&& _other) = delete;
-
 private:
-#pragma region Player component
-	//바닥 콜리전
-	GameEngineCollision* PlayerGroundCollision_;
-	// RockOn 충돌체
-	GameEngineCollision* PlayerLockOnCollision_;
-	//피격 히트박스
-	GameEngineCollision* PlayerHitBoxCollision_;
-	//공격 히트박스
-	GameEngineCollision* PlayerAttackHitBoxCollision_;
+
 	//FBX Renderer
 	GameEngineFBXRenderer* FBXRenderer_;
-#pragma endregion
 
-protected:
+private:		//delete operator
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 	// 렌더러, 콜리전, 등등 Componenet 초기화
-	void ComponenetInit()override;
+	void ComponenetInit();
 	//State 초기화
-	void StateInit() override;
-	void KeyInit() override;
-	void UIInit() override;
+	void StateInit() ;
+	void KeyInit() ;
+	void UIInit() ;
 
+private:
 	void Idle_Start() override;
 	void Idle_Update(float _DeltaTime) override;
 	void Idle_End() override;

@@ -1,5 +1,12 @@
 #pragma once
 
+struct Buff
+{
+	float Time_;
+	Status Status_;
+	std::function<void> BuffFunc_;
+};
+
 struct Status
 {
 	Status()

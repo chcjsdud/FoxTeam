@@ -51,27 +51,21 @@ void Player_Yuki::ComponenetInit()
 	FBXRenderer_->CreateFBXAnimation("TestRun", "ALS_N_RUN_F.FBX");// 달리기
 	FBXRenderer_->ChangeFBXAnimation("TestRun");
 
-
-	//컬리전//
-	PlayerGroundCollision_ = CreateTransformComponent<GameEngineCollision>();
-	PlayerHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();
-	PlayerAttackHitBoxCollision_ = CreateTransformComponent<GameEngineCollision>();
-	PlayerLockOnCollision_ = CreateTransformComponent<GameEngineCollision>();
-
 	//타격 히트 박스
-	PlayerAttackHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 200.f,50.f,100.f ,1.f });
-	PlayerAttackHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,100.f });
-	PlayerAttackHitBoxCollision_->SetCollisionGroup(CollisionGroup::PlayerAttack);
-	PlayerAttackHitBoxCollision_->Off();
+	UnitAttackHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 200.f,50.f,100.f ,1.f });
+	UnitAttackHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,100.f });
+	UnitAttackHitBoxCollision_->SetCollisionGroup(CollisionGroup::PlayerAttack);
+	UnitAttackHitBoxCollision_->Off();
 
 	//피격 히트박스 겸사겸사 맵 컬리전도 가능할듯
-	PlayerHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 100.f,200.f,100.f ,1.f });
-	PlayerHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,0.f });
+	UnitHitBoxCollision_->GetTransform()->SetLocalScaling(float4{ 100.f,200.f,100.f ,1.f });
+	UnitHitBoxCollision_->GetTransform()->SetLocalPosition({ 0.f,100.f,0.f });
+	UnitHitBoxCollision_->SetCollisionInfo(CINT(CollisionGroup::Player), CollisionType::AABBBox3D);
 	//PlayerHitBoxCollision_->SetCollisionGroup(static_cast<int>(CollisionGroup::Player));
 
-	PlayerHitBoxCollision_->SetCollisionInfo(CINT(CollisionGroup::Player), CollisionType::AABBBox3D);
-	PlayerLockOnCollision_->GetTransform()->SetLocalScaling(float4{ 800.f,0.f,800.f });
-	PlayerLockOnCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::PlayerSight), CollisionType::CirCle);
+
+	UnitSightCollision_->GetTransform()->SetLocalScaling(float4{ 800.f,0.f,800.f });
+	UnitSightCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::PlayerSight), CollisionType::CirCle);
 }
 
 void Player_Yuki::StateInit()
@@ -84,10 +78,10 @@ void Player_Yuki::StateInit()
 	//	PlayerState_.CreateState<Player>("Attack", this, &Player::Attack_Start, &Player::Attack_Update, &Player::Attack_End);;
 
 		// 마우스 커서 이동 시험용 스테이트
-	State_.CreateState<Player>("Stand", this, &Player::Stand_Start, &Player::Stand_Update, &Player::Stand_End);;
-	State_.CreateState<Player>("Move", this, &Player::Move_Start, &Player::Move_Update, &Player::Move_End);;
+	//State_.CreateState<Player>("Stand", this, &Player::Stand_Start, &Player::Stand_Update, &Player::Stand_End);;
+	//State_.CreateState<Player>("Move", this, &Player::Move_Start, &Player::Move_Update, &Player::Move_End);;
 
-	State_.ChangeState("Stand");
+	//State_.ChangeState("Stand");
 
 
 	//카메라 함수

@@ -5,6 +5,8 @@
 #include "Enums.h"
 #include "LH_Status.h"
 
+class GameEngineCollision;
+class GameEngineFBXRenderer;
 class Unit : public GameEngineActor
 {
 public:
@@ -25,7 +27,7 @@ protected: // 기본정보
 	GameEngineFSM CameraState_;
 
 	//버프 리스트, 
-	std::map <std::string, Status*> BufferList_;
+	std::map <std::string, Buff*> BufferList_;
 	// 캐릭터 기본 스텟
 	Status Status_Base_;
 	// 캐릭터 추가 스텟 / 덧
@@ -63,6 +65,16 @@ protected: // 기본정보
 
 	GameEngineActor* Target_;
 
+	//바닥 콜리전
+	GameEngineCollision* UnitGroundCollision_;
+	// RockOn 충돌체
+	GameEngineCollision* UnitSightCollision_;
+	//피격 히트박스
+	GameEngineCollision* UnitHitBoxCollision_;
+	//공격 히트박스
+	GameEngineCollision* UnitAttackHitBoxCollision_;
+
+
 private: // 커맨드 패턴
 // 1. 메인캐릭터 시야 밖에서의 패턴(이동-파밍 패턴)
 // 2. 메인캐릭터 시야 범위내에서의 패턴(이동-공격 or 공격-회피)
@@ -89,14 +101,23 @@ protected:
 	virtual void Attack_Update(float _DeltaTime) = 0;
 	virtual void Attack_End() = 0;
 
-	// 스텟에 변화가 생길때마다 적용함
 protected: 
-
-	void StateInit();
+	// 스텟에 변화가 생길때마다 적용함
 	void SyncStatus();
+	void AddBaseStat(Status _Status);
+	void SetBaseStat(Status _Status);
+	void AddBuff(std::string _Name, Status _Status, float _Time);
+	void RemoveBuff(std::string _Name);
+
+	void UpdateBuff(float _DeltaTime);
 
 public:
-	inline void SetCharacterType(CharacterType _Type)
+	void Unit_ChangeState(std::string _State)
+	{
+		State_.ChangeState(_State);
+	}
+
+	inline void Unit_SetCharacterType(CharacterType _Type)
 	{
 		// 잘못된 타입 수신시 실패
 		if (_Type == CharacterType::NONE || _Type == CharacterType::MAX)
@@ -107,52 +128,52 @@ public:
 		CharacterType_ = _Type;
 	}
 
-	std::map < std::string, Status*> PlayerGetBuffList()
+	std::map < std::string, Buff*> PlayerGetBuffList()
 	{
 		return BufferList_;
 	}
 
-	const Status PlayerGetBaseStat()
+	const Status Unit_GetBaseStat()
 	{
 		return Status_Base_;
 	}
 
-	const Status PlayerGetAddStat()
+	const Status Unit_GetAddStat()
 	{
 		return Status_Add_;
 	}
 
-	const Status PlayerGetMultStat()
+	const Status Unit_GetMultStat()
 	{
 		return Status_Mult_;
 	}
 
-	const Status PlayerGetFinalStat()
+	const Status Unit_GetFinalStat()
 	{
 		return Status_Final_;
 	}
 
-	const int PlayerGetCurHP()
+	const int Unit_GetCurHP()
 	{
 		return Status_Final_.Stat_Health_;
 	}
 
-	const float PlayerGetCurStamina()
+	const float Unit_GetCurStamina()
 	{
 		return Status_Final_.Stat_Stamina_;
 	}
 
-	GameEngineActor* PlayerGetTarget()
+	GameEngineActor* Unit_GetTarget()
 	{
 		return Target_;
 	}
 
-	const int PlayerGetAttackPower()
+	const int Unit_GetAttackPower()
 	{
 		return Status_Final_.Stat_AttackPower_;
 	}
 
-	void SetTarget(GameEngineActor* _Target)
+	void Unit_SetTarget(GameEngineActor* _Target)
 	{
 		Target_ = _Target;
 	}

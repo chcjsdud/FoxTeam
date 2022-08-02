@@ -34,6 +34,8 @@ private:
 
 protected:
 	//UI
+	bool IsPlayer_;
+
 	class UI_Skill* SkillUI_;
 	class LockOnUI* LockOnUI_;
 	//class Inventory* Inventory_;
@@ -49,19 +51,6 @@ protected:
 protected:
 	virtual void Start();
 	virtual void Update(float _DeltaTime);
-
-#pragma region Init
-protected:
-	//Init
-
-	// 렌더러, 콜리전, 등등 Componenet 초기화
-	virtual void ComponenetInit() =0;
-	//State 초기화
-	virtual void StateInit() =0;
-	virtual void KeyInit() = 0;
-	virtual void UIInit() = 0;
-
-#pragma endregion
 
 #pragma region State
 protected:
@@ -104,9 +93,6 @@ protected:
 	// 이터널 리턴용 추가 : 쿼터뷰 시점
 	void CameraUpdate_EternalReturn(float _DeltaTime);
 
-	void KeyDirUpdate(float _DeltaTime);
-	// update류 함수에 같이 들어가 이동을 제어함
-	void MoveUpdate(float _DeltaTime);
 
 	//캐릭터가 바라보는 방향이 바로 바로 안변하고 천천히 변함(이동과는 무관하게), 
 	//07.18 바라보는 방향을 넣어줘야함
@@ -115,8 +101,11 @@ protected:
 	//RockOn 중일때 방향 업데이트
 	void RockOnDirUpdate(float _DeltaTime);
 
-	void CurDirUpdate(float _DeltaTime);
 
+	void KeyDirUpdate(float _DeltaTime);
+	// update류 함수에 같이 들어가 이동을 제어함
+	void MoveUpdate(float _DeltaTime);
+	void CurDirUpdate(float _DeltaTime);
 	void RockOnUpdate(float _DeltaTime);
 
 	void StaminaRecoverUpdate(float _DeltaTime);

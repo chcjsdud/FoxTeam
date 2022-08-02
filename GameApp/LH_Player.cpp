@@ -1,6 +1,9 @@
 #include "PreCompile.h"
-
 #include "LH_Player.h"
+
+#include <GameEngine/GameEngineCollision.h>
+
+#include "LH_LockOnUI.h"
 
 //
 //Player Global Func
@@ -33,11 +36,6 @@ Player::~Player()
 
 void Player::Start()
 {
-	StateInit();
-	ComponenetInit();
-	KeyInit();
-	UIInit();
-
 	//GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 }
 
@@ -82,7 +80,7 @@ void Player::RockOnUpdate(float _DeltaTime)
 	{
 		LockOnUI_->On();
 
-		GameEngineCollision* RockOnPtr = PlayerLockOnCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
+		GameEngineCollision* RockOnPtr = UnitSightCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
 
 		//PlayerRockOnCollision_->Collision(CollisionType::CirCle, CollisionType::AABBBox3D, static_cast<int>(CollisionGroup::Player), std::bind(&Player::test, this));
 
@@ -276,16 +274,11 @@ void Player::CameraUpdate_EternalReturn(float _DeltaTime)
 
 void Player::DEBUGUpdate(float _DeltaTime)
 {
-	GetLevel()->PushDebugRender(PlayerHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
-	GetLevel()->PushDebugRender(PlayerLockOnCollision_->GetTransform(), CollisionType::CirCle);
+	GetLevel()->PushDebugRender(UnitHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D);
+	GetLevel()->PushDebugRender(UnitSightCollision_->GetTransform(), CollisionType::CirCle);
 
-	if (PlayerAttackHitBoxCollision_->IsUpdate())
+	if (UnitAttackHitBoxCollision_->IsUpdate())
 	{
-		GetLevel()->PushDebugRender(PlayerAttackHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D,float4::RED);
+		GetLevel()->PushDebugRender(UnitAttackHitBoxCollision_->GetTransform(), CollisionType::AABBBox3D,float4::RED);
 	}
-
-	//if (PlayerHitBoxCollision_->Collision(CINT(CollisionGroup::MonsterSight)))
-	//{
-	//	int a = 0;
-	//}
 }
