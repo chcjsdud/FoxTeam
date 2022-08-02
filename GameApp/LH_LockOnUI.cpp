@@ -36,9 +36,7 @@ void LockOnUI::Update(float _Time)
 	float4 position = Target->GetTransform()->GetWorldPosition();
 	LockOnRenderer->On();
 	LockOnRenderer->GetTransform()->SetLocalPosition(GetLockOnPosition(position));
-//	//GetLockOnPosition(position);
-	//3D위치를 토대로 2D위치를 받아와야함
-	//LockOnRenderer->GetTransform()->SetLocalPosition();
+	//3D위치를 토대로 2D위치를 받아오게 하는 함수 GetLockOnPosition()
 	}
 	else
 	{

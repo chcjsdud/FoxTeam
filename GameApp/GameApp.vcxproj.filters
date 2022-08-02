@@ -35,7 +35,7 @@
     <ClCompile Include="LH_TestMonsterState.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="LH_TopUI.cpp">
+    <ClCompile Include="UI_Skill.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
     <ClCompile Include="LH_LockOnUI.cpp">
@@ -117,6 +117,12 @@
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
     <ClCompile Include="UI_Status.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_CharPicture.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Equip.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
   </ItemGroup>
@@ -282,7 +288,7 @@
     <ClInclude Include="Enums.h">
       <Filter>01.GameObject\99.LH\PlayLevel\ENUMs</Filter>
     </ClInclude>
-    <ClInclude Include="LH_TopUI.h">
+    <ClInclude Include="UI_Skill.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
     <ClInclude Include="LH_LockOnUI.h">
@@ -374,6 +380,12 @@
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
     <ClInclude Include="UI_Status.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_CharPicture.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Equip.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
   </ItemGroup>

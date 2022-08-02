@@ -202,6 +202,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="UI_CharPicture.cpp" />
+    <ClCompile Include="UI_Equip.cpp" />
     <ClCompile Include="UI_Inventory.cpp" />
     <ClCompile Include="LH_Map.cpp">
       <SubType>
@@ -282,7 +284,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Precompile.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="LH_TopUI.cpp">
+    <ClCompile Include="UI_Skill.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -323,6 +325,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="UI_CharPicture.h" />
+    <ClInclude Include="UI_Equip.h" />
     <ClInclude Include="UI_Inventory.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="LH_Map.h">
@@ -400,7 +404,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PreCompile.h" />
-    <ClInclude Include="LH_TopUI.h">
+    <ClInclude Include="UI_Skill.h">
       <SubType>
       </SubType>
     </ClInclude>

@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "MeshLoadLevel.h"
 #include "LH_Player.h"
-#include "LH_TopUI.h"
+#include "UI_Skill.h"
 #include "LH_Map.h"
 #include <GameEngine/PostFade.h>
 #include <GameEngine/PostBlur.h>
@@ -229,7 +229,7 @@ void MeshLoadLevel::CreateActorLevel()
 	
 
 	{
-		TopUI* Actor = CreateActor<TopUI>();
+		UI_Skill* Actor = CreateActor<UI_Skill>();
 		Actor->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));
 	}
 

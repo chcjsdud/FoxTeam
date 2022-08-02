@@ -20,6 +20,12 @@ public:
 
 	bool UIOn;
 
+public:
+	void SetPlayer(Player* _Player)
+	{
+		Player_ = _Player;
+	}
+	
 protected:
 	GameEngineUIRenderer* MainStatusRenderer;
 	GameEngineUIRenderer* SubStatusRenderer;
@@ -34,11 +40,5 @@ private:
 private:
 	Player* Player_;
 
-public:
-	void SetPlayer(Player* _Player)
-	{
-		Player_ = _Player;
-	}
-	
 };
 

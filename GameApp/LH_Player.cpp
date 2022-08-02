@@ -4,7 +4,7 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 
 #include "LH_Player.h"
-#include "LH_TopUI.h"
+#include "UI_Skill.h"
 #include "LH_LockOnUI.h"
 #include "LH_Inventory.h"
 
@@ -22,7 +22,7 @@ Player::Player()
 	, PlayerLockOnCollision_(nullptr)
 	//, Inventory_(nullptr)
 	, LockOnUI_(nullptr)
-	, TopUI_(nullptr)
+	, SkillUI_(nullptr)
 {
 	//PlayerStatusBase_.Stat_Hp_ = 0;
 	//PlayerStatusBase_.Stat_MaxHp_ = 100;
@@ -136,9 +136,9 @@ void Player::KeyInit()
 
 void Player::UIInit()
 {
-	TopUI_ = GetLevel()->CreateActor<TopUI>();
-	TopUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
-	TopUI_->SetPlayer(this);
+	SkillUI_ = GetLevel()->CreateActor<UI_Skill>();
+	SkillUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
+	SkillUI_->SetPlayer(this);
 
 	LockOnUI_ = GetLevel()->CreateActor<LockOnUI>();
 	LockOnUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f));

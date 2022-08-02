@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "LH_PlayLevel.h"
 #include "LH_Player.h"
-#include "LH_TopUI.h"
+#include "UI_Skill.h"
 #include "LH_TestMonster.h"
 #include "LH_Map.h"
 #include "GameMouse.h"

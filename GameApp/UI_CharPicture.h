@@ -5,18 +5,18 @@ using namespace std;
 // Ό³Έν :
 class GameEngineUIRenderer;
 class Player;
-class UI_Inventory : public GameEngineActor
+class UI_CharPicture : public GameEngineActor
 {
 public:
 	// constrcuter destructer
-	UI_Inventory();
-	~UI_Inventory();
+	UI_CharPicture();
+	~UI_CharPicture();
 
 	// delete Function
-	UI_Inventory(const UI_Inventory& _Other) = delete;
-	UI_Inventory(UI_Inventory&& _Other) noexcept = delete;
-	UI_Inventory& operator=(const UI_Inventory& _Other) = delete;
-	UI_Inventory& operator=(UI_Inventory&& _Other) noexcept = delete;
+	UI_CharPicture(const UI_CharPicture& _Other) = delete;
+	UI_CharPicture(UI_CharPicture&& _Other) noexcept = delete;
+	UI_CharPicture& operator=(const UI_CharPicture& _Other) = delete;
+	UI_CharPicture& operator=(UI_CharPicture&& _Other) noexcept = delete;
 
 	bool UIOn;
 

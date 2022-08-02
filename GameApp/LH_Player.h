@@ -61,7 +61,7 @@ public:
 
 private:
 	//UI
-	class TopUI* TopUI_;
+	class UI_Skill* SkillUI_;
 	class LockOnUI* LockOnUI_;
 	//class Inventory* Inventory_;
 
