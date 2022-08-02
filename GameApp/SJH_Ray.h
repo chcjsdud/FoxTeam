@@ -43,7 +43,7 @@ public:
 protected:
 
 private:
-	float4 OriginPos_;				// 마우스 클릭좌표
+	float4 OriginPos_;				// 원점
 	float4 Direction_;				// 카메라가 바라보는 방향
 
 private:
