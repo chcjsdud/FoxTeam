@@ -3,7 +3,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
-#include "LH_Player.h"
+#include "LH_Yuki.h"
 
 //
 //State Cpp
@@ -13,11 +13,11 @@
 
 
 //Idle
-void Player::Idle_Start()
+void Player_Yuki::Idle_Start()
 {
 	//Speed_ = 0.f;
 }
-void Player::Idle_Update(float _DeltaTime)
+void Player_Yuki::Idle_Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst().Press("W")||
 		true == GameEngineInput::GetInst().Press("A")||
@@ -42,17 +42,17 @@ void Player::Idle_Update(float _DeltaTime)
 
 	MoveRotateUpdate(_DeltaTime);
 }
-void Player::Idle_End()
+void Player_Yuki::Idle_End()
 {
 }
 
 //Walk
-void Player::Walk_Start()
+void Player_Yuki::Walk_Start()
 {
 	IsMove_ = true;
 	//Speed_ = 300.f;
 }
-void Player::Walk_Update(float _DeltaTime)
+void Player_Yuki::Walk_Update(float _DeltaTime)
 {
 	// 크기가 2짜리 큐를 만들고, 2번째는 인접 Key가 아니면 return 시킴, 그리고 안눌렸으면 다시 반환시켜서 먼저 누른거 2개만 남게 해주기
 	// 
@@ -83,18 +83,18 @@ void Player::Walk_Update(float _DeltaTime)
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
 }
-void Player::Walk_End()
+void Player_Yuki::Walk_End()
 {
 	IsMove_ = false;
 }
 
 //Run
-void Player::Run_Start()
+void Player_Yuki::Run_Start()
 {
 	IsMove_ = true;
 	//Speed_ = 600.f;
 }
-void Player::Run_Update(float _DeltaTime)
+void Player_Yuki::Run_Update(float _DeltaTime)
 {
 	if (GameEngineInput::GetInst().Press("Attack"))
 	{
@@ -136,13 +136,13 @@ void Player::Run_Update(float _DeltaTime)
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
 }
-void Player::Run_End()
+void Player_Yuki::Run_End()
 {
 	IsMove_ = false;
 }
 
 //Attack
-void Player::Attack_Start()
+void Player_Yuki::Attack_Start()
 {
 	if (Status_Final_.Stat_Stamina_ < 5.f)
 	{
@@ -172,7 +172,7 @@ void Player::Attack_Start()
 	//	Status_Final_.Stat_Stamina_ = 0.f;
 	//}
 }
-void Player::Attack_Update(float _DeltaTime)
+void Player_Yuki::Attack_Update(float _DeltaTime)
 {
 	KeyDirUpdate(_DeltaTime);
 
@@ -221,7 +221,7 @@ void Player::Attack_Update(float _DeltaTime)
 		return;
 	}
 }
-void Player::Attack_End()
+void Player_Yuki::Attack_End()
 {
 	AttackTurm_ = 0.f;
 	AttackTime_ = 0.f;
@@ -238,103 +238,103 @@ void Player::Attack_End()
 // 명령을 컨트롤러에서 하달받고
 // 하달받은 스테이트와 장입된 변수만으로 일을 처리합니다.
 
-void Player::Stand_Start()
-{
-	IsMove_ = false;
-	return;
-}
-
-void Player::Stand_Update(float _DeltaTime)
-{
-	if (true == IsMove_)
-	{
-		State_.ChangeState("Move");
-	}
-
-	return;
-}
-
-void Player::Stand_End()
-{
-	return;
-}
-
-void Player::Move_Start()
-{
-
-	int a = 0;
-	return;
-}
-
-void Player::Move_Update(float _DeltaTime)
-{
-	//CurDirUpdate(_DeltaTime);
-	// 마우스 커서 우클릭한 위치로의 방향 벡터를 계산합니다.
-
-	if (static_cast<int>(arrivalPos_.x) == static_cast<int>(GetTransform()->GetWorldPosition().x) 
-		&& static_cast<int>(arrivalPos_.z) == static_cast<int>(GetTransform()->GetWorldPosition().z)) // 목표 위치에 다다르면
-	{
-		IsMove_ = false;
-		State_.ChangeState("Stand");
-	}
-
-	if (targetPos_ != GetTransform()->GetWorldPosition())
-	{
-		TargetDir_ = targetPos_;
-		TargetDir_.Normalize3D(); // 정규화
-	}
-
-	//MoveUpdate(_DeltaTime);
-	// 우클릭 위치로 이동합니다.
-	{
-		GetTransform()->SetWorldMoveXZ(TargetDir_ * 200.0f * _DeltaTime);
-	}
-
-
-
-	// 우클릭 위치로 몸을 향합니다.
-	float4 dir = float4::Cross3D(CurFowordDir_, TargetDir_);
-
-	float goaldegree = GameEngineMath::UnitVectorToDegree(TargetDir_.z, TargetDir_.x);
-	if (goaldegree == GetTransform()->GetLocalRotation().y)
-	{
-		return;
-	}
-	if (dir.y >= 0.f)
-	{
-
-		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_ * _DeltaTime);
-		CurFowordDir_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
-
-		dir = float4::Cross3D(CurFowordDir_, TargetDir_);
-		if (dir.y < 0.f)
-		{
-			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			CurFowordDir_ = TargetDir_;
-		}
-	}
-
-	else if (dir.y < 0.f)
-	{
-		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
-		CurFowordDir_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
-
-		dir = float4::Cross3D(CurFowordDir_, TargetDir_);
-		if (dir.y > 0.f)
-		{
-			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
-			CurFowordDir_ = TargetDir_;
-		}
-	}
-
-	
-	
-}
-
-void Player::Move_End()
-{
-	TargetDir_ = float4::ZERO;
-	arrivalPos_ = float4::ZERO;
-	IsMove_ = false;
-	return;
-}
+//void Player_Yuki::Stand_Start()
+//{
+//	IsMove_ = false;
+//	return;
+//}
+//
+//void Player_Yuki::Stand_Update(float _DeltaTime)
+//{
+//	if (true == IsMove_)
+//	{
+//		State_.ChangeState("Move");
+//	}
+//
+//	return;
+//}
+//
+//void Player_Yuki::Stand_End()
+//{
+//	return;
+//}
+//
+//void Player_Yuki::Move_Start()
+//{
+//
+//	int a = 0;
+//	return;
+//}
+//
+//void Player_Yuki::Move_Update(float _DeltaTime)
+//{
+//	//CurDirUpdate(_DeltaTime);
+//	// 마우스 커서 우클릭한 위치로의 방향 벡터를 계산합니다.
+//
+//	if (static_cast<int>(arrivalPos_.x) == static_cast<int>(GetTransform()->GetWorldPosition().x) 
+//		&& static_cast<int>(arrivalPos_.z) == static_cast<int>(GetTransform()->GetWorldPosition().z)) // 목표 위치에 다다르면
+//	{
+//		IsMove_ = false;
+//		State_.ChangeState("Stand");
+//	}
+//
+//	if (targetPos_ != GetTransform()->GetWorldPosition())
+//	{
+//		TargetDir_ = targetPos_;
+//		TargetDir_.Normalize3D(); // 정규화
+//	}
+//
+//	//MoveUpdate(_DeltaTime);
+//	// 우클릭 위치로 이동합니다.
+//	{
+//		GetTransform()->SetWorldMoveXZ(TargetDir_ * 200.0f * _DeltaTime);
+//	}
+//
+//
+//
+//	// 우클릭 위치로 몸을 향합니다.
+//	float4 dir = float4::Cross3D(CurFowordDir_, TargetDir_);
+//
+//	float goaldegree = GameEngineMath::UnitVectorToDegree(TargetDir_.z, TargetDir_.x);
+//	if (goaldegree == GetTransform()->GetLocalRotation().y)
+//	{
+//		return;
+//	}
+//	if (dir.y >= 0.f)
+//	{
+//
+//		GetTransform()->AddLocalRotationDegreeY(YRotateSpeed_ * _DeltaTime);
+//		CurFowordDir_.RotateYDegree(YRotateSpeed_ * _DeltaTime);
+//
+//		dir = float4::Cross3D(CurFowordDir_, TargetDir_);
+//		if (dir.y < 0.f)
+//		{
+//			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+//			CurFowordDir_ = TargetDir_;
+//		}
+//	}
+//
+//	else if (dir.y < 0.f)
+//	{
+//		GetTransform()->AddLocalRotationDegreeY(-YRotateSpeed_ * _DeltaTime);
+//		CurFowordDir_.RotateYDegree(-YRotateSpeed_ * _DeltaTime);
+//
+//		dir = float4::Cross3D(CurFowordDir_, TargetDir_);
+//		if (dir.y > 0.f)
+//		{
+//			GetTransform()->SetLocalRotationDegree({ 0.f,goaldegree,0.f });
+//			CurFowordDir_ = TargetDir_;
+//		}
+//	}
+//
+//	
+//	
+//}
+//
+//void Player_Yuki::Move_End()
+//{
+//	TargetDir_ = float4::ZERO;
+//	arrivalPos_ = float4::ZERO;
+//	IsMove_ = false;
+//	return;
+//}

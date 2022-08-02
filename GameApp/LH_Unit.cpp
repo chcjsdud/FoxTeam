@@ -1,26 +1,7 @@
 #include "PreCompile.h"
-#include "LH_Characters.h"
+#include "LH_Unit.h"
 
-Characters* Characters::MainPlayer = nullptr;
-
-Characters* Characters::GetMainPlayer()
-{
-	return MainPlayer;
-}
-
-void Characters::SetMainPlayer(Characters* _Player)
-{
-	if (nullptr != _Player)
-	{
-		// 메인플레이어 변경
-		MainPlayer = _Player;
-
-		// 메인플레이어로 변경되었으므로 타입변경
-		MainPlayer->CharacterType_ = CharacterType::MAIN;
-	}
-}
-
-Characters::Characters() 
+Unit::Unit() 
 	: CharacterType_(CharacterType::AI)
 	, SkillInfo_{}
 	, CurFowordDir_{ 0.f,0.f,1.f,0.f }
@@ -34,16 +15,16 @@ Characters::Characters()
 	, AttackLevel_(0)
 {
 	{
-		State_.CreateState<Characters>("Idle", this, &Characters::Idle_Start, &Characters::Idle_Update, &Characters::Idle_End);;
-		State_.CreateState<Characters>("Walk", this, &Characters::Walk_Start, &Characters::Walk_Update, &Characters::Walk_End);;
-		State_.CreateState<Characters>("Run", this, &Characters::Run_Start, &Characters::Run_Update, &Characters::Run_End);;
-		State_.CreateState<Characters>("Attack", this, &Characters::Attack_Start, &Characters::Attack_Update, &Characters::Attack_End);;
+		State_.CreateState<Unit>("Idle", this, &Unit::Idle_Start, &Unit::Idle_Update, &Unit::Idle_End);;
+		State_.CreateState<Unit>("Walk", this, &Unit::Walk_Start, &Unit::Walk_Update, &Unit::Walk_End);;
+		State_.CreateState<Unit>("Run", this, &Unit::Run_Start, &Unit::Run_Update, &Unit::Run_End);;
+		State_.CreateState<Unit>("Attack", this, &Unit::Attack_Start, &Unit::Attack_Update, &Unit::Attack_End);;
 
 		State_.ChangeState("Idle");
 	}
 }
 
-Characters::~Characters()
+Unit::~Unit()
 {
 	auto iter0 = BufferList_.begin();
 	auto iter1 = BufferList_.end();
@@ -57,20 +38,20 @@ Characters::~Characters()
 	BufferList_.clear();
 }
 
-void Characters::Start()
+void Unit::Start()
 {
 }
 
-void Characters::Update(float _DeltaTime)
+void Unit::Update(float _DeltaTime)
 {
 }
 
-void Characters::StateInit()
+void Unit::StateInit()
 {
 
 }
 
-void Characters::SyncStatus()
+void Unit::SyncStatus()
 {
 	// 스텟 초기화
 	Status_Mult_.Reset_mult();

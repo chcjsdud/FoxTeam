@@ -23,17 +23,14 @@
     <ClCompile Include="TestPlayer.cpp">
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="LH_Player_State.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
-    </ClCompile>
     <ClCompile Include="LH_Map.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Map</Filter>
     </ClCompile>
     <ClCompile Include="LH_TestMonster.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Monster</Filter>
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster</Filter>
     </ClCompile>
     <ClCompile Include="LH_TestMonsterState.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Monster</Filter>
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster</Filter>
     </ClCompile>
     <ClCompile Include="UI_Skill.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
@@ -45,19 +42,13 @@
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Item\Base</Filter>
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base</Filter>
     </ClCompile>
     <ClCompile Include="GameMouse.cpp">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClCompile>
     <ClCompile Include="PlayController.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_Characters.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_Yuki.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClCompile>
     <ClCompile Include="GHRayTestLevel.cpp">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
@@ -78,7 +69,7 @@
       <Filter>01.GameObject\99.SJH\02.Level</Filter>
     </ClCompile>
     <ClCompile Include="LH_Player.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player</Filter>
     </ClCompile>
     <ClCompile Include="GHRio.cpp">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
@@ -124,6 +115,15 @@
     </ClCompile>
     <ClCompile Include="UI_Equip.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="LH_Unit.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
+    </ClCompile>
+    <ClCompile Include="LH_Yuki_State.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="LH_Yuki.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -184,18 +184,6 @@
     <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object">
       <UniqueIdentifier>{e15878bb-1b17-4cf2-9c8a-ea54718be9da}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player">
-      <UniqueIdentifier>{37fb317c-3483-4425-9f93-cdd21cb09e47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\Monster">
-      <UniqueIdentifier>{b6c78f36-c0f2-41d8-a1ef-e232a327be95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\02. Item">
-      <UniqueIdentifier>{91bc37d1-4716-4b4b-9c9d-2caab4625de8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\02. Item\Base">
-      <UniqueIdentifier>{244cfc02-090c-4558-82bc-041667c3cb41}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\99.LH\PlayLevel\Map">
       <UniqueIdentifier>{6b09dc04-e094-4d8f-a861-b450d419d49f}</UniqueIdentifier>
     </Filter>
@@ -253,6 +241,24 @@
     <Filter Include="01.GameObject\99.SJH\01.Actor\01.Ray">
       <UniqueIdentifier>{d5c516f0-c910-4ec7-ba22-897b4c08b5f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit">
+      <UniqueIdentifier>{054b4baf-c695-4d64-bbe8-d0f329ed8945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player">
+      <UniqueIdentifier>{37fb317c-3483-4425-9f93-cdd21cb09e47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster">
+      <UniqueIdentifier>{b6c78f36-c0f2-41d8-a1ef-e232a327be95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character">
+      <UniqueIdentifier>{89a9f3e3-524f-433a-84e2-abf98f278c11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item">
+      <UniqueIdentifier>{91bc37d1-4716-4b4b-9c9d-2caab4625de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base">
+      <UniqueIdentifier>{244cfc02-090c-4558-82bc-041667c3cb41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -283,7 +289,7 @@
       <Filter>01.GameObject\99.LH\PlayLevel\Map</Filter>
     </ClInclude>
     <ClInclude Include="LH_TestMonster.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Monster</Filter>
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>01.GameObject\99.LH\PlayLevel\ENUMs</Filter>
@@ -298,22 +304,13 @@
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Item\Base</Filter>
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base</Filter>
     </ClInclude>
     <ClInclude Include="GameMouse.h">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClInclude>
     <ClInclude Include="PlayController.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_Status.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_Characters.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_Yuki.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
     </ClInclude>
     <ClInclude Include="GHRayTestLevel.h">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
@@ -341,7 +338,7 @@
     <ClInclude Include="Monsters.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="LH_Player.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\Player</Filter>
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player</Filter>
     </ClInclude>
     <ClInclude Include="GHRio.h">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
@@ -387,6 +384,15 @@
     </ClInclude>
     <ClInclude Include="UI_Equip.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="LH_Unit.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="LH_Status.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="LH_Yuki.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,41 +4,62 @@
 // 분류 : 캐릭터
 // 용도 : 유키
 // 설명 : 고유 스킬 및 패턴을 관리
-class Yuki : public Player
+class Player_Yuki : public Player
 {
 private:
 
 public:
-	Yuki();
-	~Yuki();
+	Player_Yuki();
+	~Player_Yuki();
 
 protected:		// delete constructer
-	Yuki(const Yuki& _other) = delete;
-	Yuki(Yuki&& _other) noexcept = delete;
+	Player_Yuki(const Player_Yuki& _other) = delete;
+	Player_Yuki(Player_Yuki&& _other) noexcept = delete;
 
 private:		//delete operator
-	Yuki& operator=(const Yuki& _other) = delete;
-	Yuki& operator=(const Yuki&& _other) = delete;
+	Player_Yuki& operator=(const Player_Yuki& _other) = delete;
+	Player_Yuki& operator=(const Player_Yuki&& _other) = delete;
+
+private:
+#pragma region Player component
+	//바닥 콜리전
+	GameEngineCollision* PlayerGroundCollision_;
+	// RockOn 충돌체
+	GameEngineCollision* PlayerLockOnCollision_;
+	//피격 히트박스
+	GameEngineCollision* PlayerHitBoxCollision_;
+	//공격 히트박스
+	GameEngineCollision* PlayerAttackHitBoxCollision_;
+	//FBX Renderer
+	GameEngineFBXRenderer* FBXRenderer_;
+#pragma endregion
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	virtual void Idle_Start() ;
-	virtual void Idle_Update(float _DeltaTime) ;
-	virtual void Idle_End() ;
+	// 렌더러, 콜리전, 등등 Componenet 초기화
+	void ComponenetInit()override;
+	//State 초기화
+	void StateInit() override;
+	void KeyInit() override;
+	void UIInit() override;
 
-	virtual void Walk_Start() ;
-	virtual void Walk_Update(float _DeltaTime) ;
-	virtual void Walk_End() ;
+	void Idle_Start() override;
+	void Idle_Update(float _DeltaTime) override;
+	void Idle_End() override;
 
-	virtual void Run_Start() ;
-	virtual void Run_Update(float _DeltaTime) ;
-	virtual void Run_End() ;
+	void Walk_Start() override;
+	void Walk_Update(float _DeltaTime) override;
+	void Walk_End() override;
 
-	virtual void Attack_Start() ;
-	virtual void Attack_Update(float _DeltaTime) ;
-	virtual void Attack_End() ;
+	void Run_Start() override;
+	void Run_Update(float _DeltaTime) override;
+	void Run_End() override;
+
+	void Attack_Start() override;
+	void Attack_Update(float _DeltaTime) override;
+	void Attack_End() override;
 
 private:
 	void BaseInfoSetting();

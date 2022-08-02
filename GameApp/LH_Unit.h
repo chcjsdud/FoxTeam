@@ -5,37 +5,25 @@
 #include "Enums.h"
 #include "LH_Status.h"
 
-struct SkillInfo
-{
-	// skilltype(패시브, 공격, ...)
-	// 소모자원(sp)
-	// 쿨타임
-	// 사거리
-	// 효과
-};
-
-// 분류 : 
-// 용도 : 캐릭터 최상위 클래스
-// 설명 : 모든 캐릭터의 커맨드 패턴 및 기본정보를 관리 07.26 이현 : 몬스터 포함
-// 플레이어블 캐릭터는 Player.h
-
-class Characters : public GameEngineActor
+class Unit : public GameEngineActor
 {
 public:
-	Characters();
-	~Characters();
+	Unit();
+	~Unit();
 
 protected:		// delete constructer
-	Characters(const Characters& _other) = delete;
-	Characters(Characters&& _other) = delete;
-	Characters& operator=(const Characters& _other) = delete;
-	Characters& operator=(const Characters&& _other) = delete;
-
-private: // 생성정보
-	CharacterType CharacterType_;		// (0: AI, 1: MAIN) : default(AI)
+	Unit(const Unit& _other) = delete;
+	Unit(Unit&& _other) = delete;
+	Unit& operator=(const Unit& _other) = delete;
+	Unit& operator=(const Unit&& _other) = delete;
 
 protected: // 기본정보
+	CharacterType CharacterType_;		// (0: AI, 1: MAIN) : default(AI)
+
 	GameEngineFSM State_;
+
+	GameEngineFSM CameraState_;
+
 	//버프 리스트, 
 	std::map <std::string, Status*> BufferList_;
 	// 캐릭터 기본 스텟
@@ -75,20 +63,6 @@ protected: // 기본정보
 
 	GameEngineActor* Target_;
 
-
-private: // 현재 메인플레이어 지정
-	static Characters* MainPlayer;
-	 //다른 관리자 클레스가 들고 있는게 나을거 같음
-
-
-public:
-	static Characters* GetMainPlayer();
-	static void SetMainPlayer(Characters* _Player);
-
-private: // 스킬정보
-	SkillInfo SkillInfo_[6];			// 스킬(패시브, Q, W, E, R, D)
-										// 패시브, Q~R 고유 스킬
-										// D 스킬은 무기의 스
 private: // 커맨드 패턴
 // 1. 메인캐릭터 시야 밖에서의 패턴(이동-파밍 패턴)
 // 2. 메인캐릭터 시야 범위내에서의 패턴(이동-공격 or 공격-회피)
@@ -120,7 +94,6 @@ protected:
 
 	void StateInit();
 	void SyncStatus();
-
 
 public:
 	inline void SetCharacterType(CharacterType _Type)
@@ -183,11 +156,4 @@ public:
 	{
 		Target_ = _Target;
 	}
-
-protected: // 각 캐릭터 고유 정보 및 스킬셋팅
-	//virtual void Initialize() = 0;
-
-protected: // 각 캐릭터 커맨드 부여
-
-
 };

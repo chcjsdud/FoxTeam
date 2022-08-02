@@ -189,7 +189,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="LGH_PlayLevel.cpp" />
-    <ClCompile Include="LH_Characters.cpp" />
+    <ClCompile Include="LH_Unit.cpp" />
     <ClCompile Include="GameMouse.cpp">
       <SubType>
       </SubType>
@@ -237,7 +237,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="LH_Player_State.cpp" />
+    <ClCompile Include="LH_Yuki_State.cpp" />
     <ClCompile Include="LH_LockOnUI.cpp" />
     <ClCompile Include="GHRayTestBox.cpp">
       <SubType>
@@ -310,7 +310,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LGH_PlayLevel.h" />
-    <ClInclude Include="LH_Characters.h" />
+    <ClInclude Include="LH_Unit.h" />
     <ClInclude Include="CustomVertex.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="GameMouse.h">
