@@ -1,9 +1,9 @@
 #pragma once
+#include <GameEngine/GameEngineActor.h>
+#include <GameEngineBase\GameEngineRandom.h>
 
-// 분류 : 
-// 용도 : 
-// 설명 : 
-class PJW_Map
+class GameEngineImageRenderer;
+class PJW_Map : public GameEngineActor
 {
 public:
 	PJW_Map();
@@ -14,5 +14,13 @@ public:
 	PJW_Map& operator=(const PJW_Map&& _other) = delete; 
 
 public:
+
+protected:
+
+	void Start() override;
+
+private:
+	GameEngineImageRenderer* renderer_;
+	GameEngineCollision* mapCollision_;
 };
 

@@ -44,6 +44,7 @@ void PJW_Hyunwoo::Init_FBX()
 	curDir_ = { 0.0f,0.0f,1.0f,1.0f };
 	for (UINT i = 0; i < FBXRenderer_->GetRenderSetCount(); i++)
 	{
+		//FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingConstantBufferLink("ResultColor", float4::RED);
 		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
 	}
 
@@ -164,7 +165,7 @@ void PJW_Hyunwoo::Move_Update(float _DeltaTime)
 
 	if (nullptr != collision_Attack_->CollisionPtr(InGameCollisionType::Player2_Body))
 	{
-		hyunwooState_.ChangeState("Idle");
+		hyunwooState_.ChangeState("Attack");
 		return;
 	}
 
@@ -218,7 +219,7 @@ void PJW_Hyunwoo::Attack_Update(float _DeltaTime)
 		if (0.5f <= deltaTime_)
 		{
 			target_->GetDamage(status_ATK_);
-			hyunwooState_.ChangeState("Idle");
+			//hyunwooState_.ChangeState("Idle");
 			deltaTime_ = 0.0f;
 			return;
 		}

@@ -54,7 +54,6 @@ private:
 	void Death_End();
 
 
-
 // FBX ·»´õ·¯
 private:
 	GameEngineFBXRenderer* FBXRenderer_;

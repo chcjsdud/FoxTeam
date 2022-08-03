@@ -7,6 +7,7 @@ enum InGameCollisionType
 {
 	MIN = 0,
 	MousePointer,
+	Map,
 
 	Player1_Body,
 	Player1_AttackRange,

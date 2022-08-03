@@ -27,7 +27,38 @@ void PJW_Level::LevelStart()
 
 void PJW_Level::LevelUpdate(float _DeltaTime)
 {
+	if (true == GameEngineInput::GetInst().Down("FreeCameraOn"))
+	{
+		GetMainCameraActor()->FreeCameraModeSwitch();
+	}
 
+	if (true == GetMainCameraActor()->IsFreeCameraMode())
+	{
+		return;
+	}
+
+	float4 MoveDir = float4::ZERO;
+
+	if (true == GameEngineInput::GetInst().Press("MoveLeft"))
+	{
+		MoveDir += GetMainCamera()->GetTransform()->GetWorldLeftVector();
+	}
+	if (true == GameEngineInput::GetInst().Press("MoveRight"))
+	{
+		MoveDir += GetMainCamera()->GetTransform()->GetWorldRightVector();
+	}
+	if (true == GameEngineInput::GetInst().Press("MoveForward"))
+	{
+		MoveDir += GetMainCamera()->GetTransform()->GetWorldForwardVector();
+	}
+	if (true == GameEngineInput::GetInst().Press("MoveBack"))
+	{
+		MoveDir += GetMainCamera()->GetTransform()->GetWorldBackVector();
+	}
+
+	MoveDir.Normalize3D();
+
+	GetMainCamera()->GetTransform()->SetWorldDeltaTimeMove(MoveDir * 200.0f);
 }
 
 void PJW_Level::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
@@ -38,8 +69,9 @@ void PJW_Level::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 void PJW_Level::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
-	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -100.0f));
 
+	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 400.0f, -100.0f));
+	GetMainCameraActor()->GetTransform()->SetLocalRotationDegree(float4(60.0f, 0.0f, 0.0f));
 	Init_Resources();
 
 	Init_Actors();
@@ -48,7 +80,6 @@ void PJW_Level::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 void PJW_Level::Init_Resources()
 {	
-	// 
 	std::string MeshName = "Hyunwoo_01_LOD1.FBX";
 	GameEngineDirectory dir;
 

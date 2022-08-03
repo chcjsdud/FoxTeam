@@ -2,6 +2,7 @@
 #include "PJW_GameController.h"
 
 #include "PJW_Hyunwoo.h"
+#include "PJW_Map.h"
 
 #include <GameEngine/GameEngineCollision.h>
 #include "PJW_Enum.h"
@@ -51,14 +52,23 @@ void PJW_GameController::Init_Player()
 
 	// 현재 컨트롤 주도권을 가진 플레이어 설정
 	curPlayer_ = playerList_[0];
+
+
+	map_ = GetLevel()->CreateActor<PJW_Map>();
 }
 
 void PJW_GameController::Init_Keys()
 {
 	if (false == GameEngineInput::GetInst().IsKey("Skill_Q"))
 	{
+		GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'O');
+		GameEngineInput::GetInst().CreateKey("FreeCamera_Left", 'A');
+		GameEngineInput::GetInst().CreateKey("FreeCamera_Right", 'D');
+		GameEngineInput::GetInst().CreateKey("FreeCamera_Forward", 'W');
+		GameEngineInput::GetInst().CreateKey("FreeCamera_Back", 'S');
 		GameEngineInput::GetInst().CreateKey("Skill_Q", 'Q');
 		GameEngineInput::GetInst().CreateKey("Test_Move", VK_RBUTTON);
+		
 	}
 }
 
@@ -72,6 +82,7 @@ void PJW_GameController::Check_Input(float _DeltaTime)
 	if (true == GameEngineInput::GetInst().Down("Test_Move"))
 	{
 		curPlayer_->SetTarget(playerList_[1]);
+		curPlayer_->isAttacking_ = false;
 		curPlayer_->isMoving_ = true;
 		// 컨트롤러의 인풋을 인식해 현재 플레이어 캐릭터의 bool 변수값을 스위칭한다.
 		// 동작이 끝나 false 로 돌리는 것은 플레이어 캐릭터가 한다.
@@ -79,7 +90,8 @@ void PJW_GameController::Check_Input(float _DeltaTime)
 
 	if (true == GameEngineInput::GetInst().Down("Skill_Q"))
 	{
-		curPlayer_->isAttacking_ = true;
+		//curPlayer_->isMoving_ = false;
+		//curPlayer_->isAttacking_ = true;
 		
 	}
 }

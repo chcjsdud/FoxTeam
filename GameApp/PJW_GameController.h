@@ -4,6 +4,7 @@
 // 분류 : 
 // 용도 : 
 // 설명 :
+class PJW_Map;
 class PJW_Player;
 class PJW_Hyunwoo;
 class PJW_GameController : public GameEngineActor
@@ -35,6 +36,8 @@ private:
 	PJW_Player* curPlayer_;
 	// 현재 컨트롤권을 가진 플레이어
 
+	PJW_Map* map_;
+	// 네브메시가 적용되는 맵
 
 };
 
