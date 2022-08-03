@@ -12,6 +12,7 @@
 #include <GameEngine/GameEngineGUI.h>
 #include <GameEngine/SKySphereActor.h>
 #include <GameApp/LGH_Aya.h>
+#include "UI_Skill.h"
 //#include "LH_Map.h"
 #include <GameEngine/GameEngineFBXWindow.h>
 #include <GameEngine/GameEngineFBXMesh.h>
@@ -29,6 +30,10 @@ void LGH_PlayLevel::LevelStart()
 
 	player_ = CreateActor<LGH_Aya>();
 
+	{
+		SkillUI_ = CreateActor<UI_Skill>();
+		SkillUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
+	}
 
 	{
 

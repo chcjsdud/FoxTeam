@@ -19,6 +19,8 @@ public:
 
 	LGH_Aya* player_;
 
+	class UI_Skill* SkillUI_;
+
 protected:
 	LGH_PlayLevel(const LGH_PlayLevel& _other) = delete;
 	LGH_PlayLevel(LGH_PlayLevel&& _other) noexcept = delete;
