@@ -32,6 +32,17 @@ void YSJ_PlayLevel::LevelStart()
 	tempDir.MoveChild("FBX");
 	tempDir.MoveChild("YSJ");
 
+	//std::vector<GameEngineFile> vecFile = tempDir.GetAllFile("FBX");
+
+	//for (size_t i = 0; i < vecFile.size(); i++)
+	//{
+	//	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+	//	{
+	//		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(vecFile[i].GetFullPath());
+	//		Mesh->CreateRenderingBuffer();
+	//	}
+	//}
+
 	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx")))
 	{
 		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx"));
