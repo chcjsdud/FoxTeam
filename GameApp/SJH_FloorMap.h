@@ -35,5 +35,8 @@ protected:
 private:
 	GameEngineCollision* Collider_;
 	GameEngineFBXMesh* Mesh_;
+
+private:
+	GameEngineRenderer* Renderer_;
 };
 

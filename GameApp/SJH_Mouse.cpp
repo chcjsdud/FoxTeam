@@ -43,11 +43,8 @@ void SJH_Mouse::Update(float _DeltaTime)
 		float4 MovePos = float4::ZERO;
 		if (true == Ray->IsPicked(MovePos))
 		{
+			//SJH_Yuki::MainPlayer->GetTransform()->SetLocalPosition(MovePos);
 			SJH_Yuki::MainPlayer->GetTransform()->SetWorldPosition(MovePos);
-
-			// Å¸°Ù È®ÀÎ¿ë
-			//GameEngineActor* Target = Ray->CurSelectTarget();
-			//std::string TargetName = Target->GetName();
 		}
 	}
 

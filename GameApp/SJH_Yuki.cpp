@@ -8,8 +8,8 @@ SJH_Yuki* SJH_Yuki::MainPlayer = nullptr;
 
 void SJH_Yuki::Start()
 {
-	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
-	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -20.0f });
+	//GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
+	//GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -20.0f });
 	//GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 10.0f, 0.0f, 0.0f });
 
 	// FBX Files 경로 지정
@@ -28,7 +28,7 @@ void SJH_Yuki::Start()
 	// 렌더러 생성
 	AnimRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	AnimRenderer_->SetFBXMesh(MeshName, "TextureAni");
-	AnimRenderer_->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
+	AnimRenderer_->GetTransform()->SetLocalScaling(float4(100.f, 100.f, 100.f));
 	AnimRenderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
 	
 	// 애니메이션 로드
