@@ -36,7 +36,7 @@ void PJW_Hyunwoo::Init_FBX()
 {
 	// 렌더링용 버텍스, 인덱스 버퍼 생성
 	FBXRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FBXRenderer_->SetFBXMesh("Hyunwoo_01_LOD1.FBX", "TextureAni");
+	FBXRenderer_->SetFBXMesh("Hyunwoo_01_LOD1.FBX", "PJWAni");
 	FBXRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
 	FBXRenderer_->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
 	FBXRenderer_->GetTransform()->SetLocalRotationDegree({-90.0f, 0.0f, 0.0f});
@@ -44,7 +44,6 @@ void PJW_Hyunwoo::Init_FBX()
 	curDir_ = { 0.0f,0.0f,1.0f,1.0f };
 	for (UINT i = 0; i < FBXRenderer_->GetRenderSetCount(); i++)
 	{
-		//FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingConstantBufferLink("ResultColor", float4::RED);
 		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
 	}
 

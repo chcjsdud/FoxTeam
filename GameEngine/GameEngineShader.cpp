@@ -22,7 +22,7 @@ void GameEngineShader::AutoCompile(GameEngineFile& ShaderFile)
 
 		int Count = Ptr->GetOutPutSize("SV_Target");
 
-		if (Count > 1 && AllCode.find("DeferredOutPut "))
+		if (Count > 1 && AllCode.find("DeferredOutPut"))
 		{
 			Ptr->IsDeferred_ = true;
 		}

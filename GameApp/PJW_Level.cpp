@@ -1,11 +1,15 @@
 #include "PreCompile.h"
 #include "PJW_Level.h"
+#include "UserGame.h"
 
 #include "PJW_GameController.h"
 #include "GameEngine/SKySphereActor.h"
 #include "PJW_Hyunwoo.h"
 #include "PJW_Map.h"
 #include "GameEngine/LightActor.h"
+#include <GameEngine/GameEngineFBXWindow.h>
+#include <GameEngine/GameEngineGUI.h>
+#include <GameEngine/GameEngineRenderWindow.h>
 
 PJW_Level::PJW_Level() // default constructer 디폴트 생성자
 	: gameController_(nullptr), player_(nullptr), map_(nullptr), light_A(nullptr), light_B(nullptr)
@@ -27,6 +31,21 @@ void PJW_Level::LevelStart()
 
 void PJW_Level::LevelUpdate(float _DeltaTime)
 {
+	static bool CreateActorCheck = false;
+
+	static bool Check = false;
+
+	if (false == Check && nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow"))
+	{
+		GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+		float4 Size = { 128, 72 };
+		Window->PushRenderTarget("메인 카메라 타겟", GetMainCamera()->GetCameraRenderTarget(), Size * 3);
+		Window->PushRenderTarget("디퍼드 G버퍼", GetMainCamera()->GetCameraDeferredGBufferTarget(), Size * 3);
+		Window->PushRenderTarget("디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size * 3);
+		Window->PushRenderTarget("디퍼드 G버터 + 라이트", GetMainCamera()->GetCameraDeferredTarget(), Size * 3);
+		Check = true;
+	}
+
 	if (true == GameEngineInput::GetInst().Down("FreeCameraOn"))
 	{
 		GetMainCameraActor()->FreeCameraModeSwitch();
@@ -114,14 +133,10 @@ void PJW_Level::Init_Actors()
 
 	// 빛 생성
 	{
-		//light_A = CreateActor<LightActor>();
-		//light_A->GetLight()->SetDiffusePower(0.3f);
-		//light_A->GetLight()->SetSpacularLightPow(50.0f);
-		//
-		//light_B = CreateActor<LightActor>();
-		//light_B->GetLight()->SetDiffusePower(0.3f);
-		//light_B->GetLight()->SetSpacularLightPow(50.0f);
-		//light_B->GetTransform()->SetLocalRotationDegree({ 45.0f, 0.0f, 0.0f });
+		light_A = CreateActor<LightActor>();
+		light_A->GetLight()->SetDiffusePower(1.0f);
+		light_A->GetLight()->SetSpacularLightPow(10.0f);
+		light_A->GetLight()->SetAmbientPower(10.0f);
 	}
 }
 

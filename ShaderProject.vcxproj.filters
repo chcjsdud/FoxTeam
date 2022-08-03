@@ -66,5 +66,8 @@
     <FxCompile Include="EngineResources\Shader\DeferredCalLight.fx">
       <Filter>Engine</Filter>
     </FxCompile>
+    <FxCompile Include="EngineResources\Shader\PJWAni.fx">
+      <Filter>User\PJW</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

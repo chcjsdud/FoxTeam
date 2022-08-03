@@ -59,6 +59,11 @@ public:
 		LightDataObject.SpacularLightPow.x = _Pow;
 	}
 
+	void SetAmbientPower(float _Power)
+	{
+		LightDataObject.LightPower.z = _Power;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

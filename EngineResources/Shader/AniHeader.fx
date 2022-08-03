@@ -7,6 +7,8 @@ struct AniMat
 // 본이 90개면 이 프레임에 해당하는 
 StructuredBuffer<AniMat> ArrAniMationMatrix : register(t12);
 
+
+
 void Skinning(inout float4 _Pos, float4 _Weight, int4 _Index, StructuredBuffer<AniMat> _ArrAniMationMatrix)
 {
     float4 CalPos = float4(0.0f, 0.0f, 0.0f, 0.0f);

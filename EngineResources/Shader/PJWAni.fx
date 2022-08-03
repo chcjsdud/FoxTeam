@@ -1,5 +1,6 @@
 #include "CbufferHeader.fx"
 #include "LightHeader.fx"
+#include "AniHeader.fx"
 
 struct VertexIn
 {
@@ -8,6 +9,8 @@ struct VertexIn
     float4 Normal : NORMAL;
     float4 BiNormal : BINORMAL;
     float4 Tangent : TANGENT;
+    float4 Weight : BLENDWEIGHT; // 내가 곱해져야할 뼈에게 얼마나 영향을 받느냐에 대한 정보.
+    int4 Index : BLENDINDICES; // 내가 곱해져야할 뼈의 인덱스 정보
 };
 
 struct VertexOut
@@ -21,25 +24,20 @@ struct VertexOut
     float4 ViewTangent : TANGENT;
 };
 
-VertexOut TextureDeferredLight_VS(VertexIn _In)
+VertexOut PJWAni_VS(VertexIn _In)
 {
     VertexOut Out = (VertexOut) 0;
     
-    // [][][][]
-    // [][][][]
-    // [][][][1]
-    // [][][][]
+    //if (0 != IsAni)
+    {
+        Skinning(_In.Position, _In.Weight, _In.Index, ArrAniMationMatrix);
+    }
+    
     
     _In.Position.w = 1.0f;
     Out.Position = mul(_In.Position, WVP_);
     Out.ViewPosition = mul(_In.Position, WV_);
     Out.Texcoord = _In.Texcoord;
-
-    // w에 z값 들어있잖아.
-    // Out.Position.w = 1.0f;
-    
-    
-    // 픽셀을 건져내기 위한 포지션
     
     _In.Normal.w = 0.0f;
     Out.ViewNormal = normalize(mul(_In.Normal, WV_));
@@ -68,7 +66,7 @@ Texture2D DiffuseTex : register(t0);
 Texture2D NormalTex : register(t1);
 SamplerState Smp : register(s0);
 
-DeferredOutPut TextureDeferredLight_PS(VertexOut _In)
+DeferredOutPut PJWAni_PS(VertexOut _In)
 {
     DeferredOutPut Out;
 

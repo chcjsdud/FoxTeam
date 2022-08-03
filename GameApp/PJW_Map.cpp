@@ -24,9 +24,10 @@ PJW_Map::PJW_Map(PJW_Map&& _other) noexcept  // default RValue Copy constructer 
 void PJW_Map::Start()
 {
 	GetTransform()->SetWorldPosition({ 0.0f, -50.0f, 0.0f });
-
-
+	renderer_ = CreateTransformComponent<GameEngineRenderer>(GetTransform());
 	renderer_->SetRenderingPipeLine("Color");
+	renderer_->SetMesh("Rect");
+
 	renderer_->GetTransform()->SetLocalScaling({ 1000.0f, 10.0f, 1000.0f });
 	renderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	renderer_->ShaderHelper.SettingConstantBufferSet("ResultColor", float4(0.5f, 0.5f, 0.5f));

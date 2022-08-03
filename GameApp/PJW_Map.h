@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngineBase\GameEngineRandom.h>
+#include <GameEngine/GameEngineRenderer.h>
 
 class GameEngineImageRenderer;
 class PJW_Map : public GameEngineActor
@@ -20,7 +21,7 @@ protected:
 	void Start() override;
 
 private:
-	GameEngineImageRenderer* renderer_;
+	GameEngineRenderer* renderer_;
 	GameEngineCollision* mapCollision_;
 };
 
