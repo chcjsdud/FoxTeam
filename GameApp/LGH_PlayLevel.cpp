@@ -11,6 +11,7 @@
 #include <GameEngine/LightActor.h>
 #include <GameEngine/GameEngineGUI.h>
 #include <GameEngine/SKySphereActor.h>
+#include <GameApp/LGH_Aya.h>
 //#include "LH_Map.h"
 #include <GameEngine/GameEngineFBXWindow.h>
 #include <GameEngine/GameEngineFBXMesh.h>
@@ -20,113 +21,14 @@
 
 void LGH_PlayLevel::LevelStart()
 {
-	FBXFolder.MoveParent("FoxTeam");
-	FBXFolder.MoveChild("Resources");
-	FBXFolder.MoveChild("FBX");
-	FBXFolder.MoveChild("LGH");
 
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
 	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -100.0f));
 
 	
 
-	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName("LGH_Aya.fbx"));
-	Mesh->CreateRenderingBuffer();
+	player_ = CreateActor<LGH_Aya>();
 
-	/*
-{
-	std::string MeshName = "Fox.FBX";
-
-	//GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName(MeshName));
-	//Mesh->CreateRenderingBuffer();
-
-	GameEngineFBXMesh* Mesh1 = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName("Fox enemy.fbx"));
-	Mesh1->CreateRenderingBuffer();
-
-	GameEngineActor* NewActor = GameEngineCore::CurrentLevel()->CreateActor<GameEngineActor>();
-
-	GameEngineFBXRenderer* Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
-	// Renderer->SetFBXMesh("Fox enemy.fbx", "TextureAni");
-	// Renderer->SetFBXMesh("Fox.FBX", "Texture");
-	Renderer->SetFBXMeshRenderSet("Fox enemy.fbx", "TextureAni", 0);
-	Renderer->SetFBXMeshRenderSet("Fox enemy.fbx", "TextureAni", 6);
-
-	Renderer->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
-
-
-	for (UINT i = 0; i < Renderer->GetRenderSetCount(); i++)
-	{
-		Renderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "fox.Png");
-	}
-
-	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(FBXFolder.PathToPlusFileName("Fox enemy.fbx"));
-
-	for (size_t i = 0; i < Animation->AnimationCount(); i++)
-	{
-		auto Data = Animation->GetAnimationData(i);
-	}
-
-	Renderer->CreateFBXAnimation("Sprint", "Fox enemy.fbx", 5);
-	Renderer->CreateFBXAnimation("Attack", "Fox enemy.fbx", 0);
-	Renderer->ChangeFBXAnimation("Sprint");
-
-	return;
-}
-*/
-
-	{
-		std::string MeshName = "LGH_Aya.FBX";
-
-		//GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName(MeshName));
-		//Mesh->CreateRenderingBuffer();
-
-	//	GameEngineFBXMesh* Mesh1 = GameEngineFBXMeshManager::GetInst().Load(FBXFolder.PathToPlusFileName("LGH_Aya.fbx"));
-	//	Mesh1->CreateRenderingBuffer();
-
-		GameEngineActor* NewActor = CreateActor<GameEngineActor>();
-
-		Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
-		// Renderer->SetFBXMesh("Fox enemy.fbx", "TextureAni");
-		// Renderer->SetFBXMesh("Fox.FBX", "Texture");
-
-		//Renderer->SetFBXMesh(MeshName, "TextureDeferredLight");
-
-		Renderer->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 0); //body
-		Renderer->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 1); //face
-		//Renderer->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 2); //glass
-		Renderer->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 3); //hair
-		//Renderer->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 4); //Gun
-	
-
-		Renderer->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });
-		Renderer->GetTransform()->SetWorldRotationDegree({0.0f, 180.0f, 0.0f});
-	
-
-		//for (UINT i = 0; i < Renderer->GetRenderSetCount(); i++)
-		//{
-		//	Renderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Body.Png");
-		//}
-
-		Renderer->GetRenderSet(0).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Body.Png");
-		Renderer->GetRenderSet(1).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Body.Png");
-		Renderer->GetRenderSet(2).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Face.Png");
-		Renderer->GetRenderSet(3).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Face.Png");
-		Renderer->GetRenderSet(4).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Hair.Png");
-		Renderer->GetRenderSet(5).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Hair.Png");
-		
-
-		GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(FBXFolder.PathToPlusFileName("LGH_Aya.fbx"));
-
-		for (size_t i = 0; i < Animation->AnimationCount(); i++)
-		{
-			auto Data = Animation->GetAnimationData(i);
-		}
-
-		Renderer->CreateFBXAnimation("Run", "LGH_Aya.fbx", 0);
-		Renderer->CreateFBXAnimation("Idle", "LGH_Aya.fbx", 1);
-		Renderer->ChangeFBXAnimation("Run");
-
-	}
 
 	{
 

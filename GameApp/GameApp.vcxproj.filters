@@ -131,6 +131,9 @@
     <ClCompile Include="Character_ProtoType_State.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
     </ClCompile>
+    <ClCompile Include="LGH_Aya.cpp">
+      <Filter>01.GameObject\99.LGH</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -411,6 +414,9 @@
     </ClInclude>
     <ClInclude Include="Character_ProtoType.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
+    </ClInclude>
+    <ClInclude Include="LGH_Aya.h">
+      <Filter>01.GameObject\99.LGH</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

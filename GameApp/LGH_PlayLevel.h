@@ -5,10 +5,10 @@
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineBase/GameEngineFile.h>
 
-
 // 분류 : 
 // 용도 : 
 // 설명 : 
+class LGH_Aya;
 class LGH_PlayLevel : public GameEngineLevel
 {
 public:
@@ -16,7 +16,9 @@ public:
 
 public:
 	GameEngineDirectory FBXFolder;
-	GameEngineFBXRenderer* Renderer;
+
+	LGH_Aya* player_;
+
 protected:
 	LGH_PlayLevel(const LGH_PlayLevel& _other) = delete;
 	LGH_PlayLevel(LGH_PlayLevel&& _other) noexcept = delete;

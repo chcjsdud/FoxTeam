@@ -193,6 +193,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LGH_Aya.cpp" />
     <ClCompile Include="LGH_PlayLevel.cpp" />
     <ClCompile Include="LH_Unit.cpp" />
     <ClCompile Include="GameMouse.cpp">
@@ -318,6 +319,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LGH_Aya.h" />
     <ClInclude Include="LGH_PlayLevel.h" />
     <ClInclude Include="LH_Unit.h" />
     <ClInclude Include="CustomVertex.h" />
