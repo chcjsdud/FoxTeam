@@ -30,6 +30,23 @@ public:
 	static bool CirCleToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
 	static bool AABBToCirCle(GameEngineTransform* _Left, GameEngineTransform* _Right);
 
+
+//======================================== SJH
+private: // 타입별 광선과의 교차검사
+	bool OBBBoxToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
+	bool Sphere3DToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
+	bool AABBBoxToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
+
+public:
+	bool RayCollision(CollisionType _ThisType, const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
+
+public:
+	inline CollisionType GetCollisionType()
+	{
+		return ColType_;
+	}
+//======================================== SJH
+
 public:
 	// constrcuter destructer
 	GameEngineCollision();

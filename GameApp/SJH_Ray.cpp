@@ -56,9 +56,6 @@ SJH_Ray* SJH_Ray::RayAtViewSpace(float4 _MouseClickPos)
 
 bool SJH_Ray::IsPicked(float4& _PickedPos)
 {
-    // 선택된 타겟 초기화
-    CurTarget_ = nullptr;
-
     // 현재 레벨의 모든 충돌체 목록 Get
     std::map<int, std::list<GameEngineCollision*>> AllList = GetLevel()->GetAllCollision();
 
@@ -70,60 +67,62 @@ bool SJH_Ray::IsPicked(float4& _PickedPos)
         std::list<GameEngineCollision*>::iterator EndIter = AllList[Group].end();
         for (; StartIter != EndIter; ++StartIter)
         {
-            // 구(Sphere) : 중심(Center), 반지름(Radius)
-            // 광선(Ray) : 시작위치(OriginPos), 방향(Direction)
-            // 구의 중심과 시작점을 연결하는 벡터 : Connect
-            // 1. Connect와 광선의방향을 내적한 값이 0보다 작으면 광선의 시작점은 구를 지나친다
-            // 2. Connect의 길이가 구의 반지름보다 작으면 광선의 시작점은 구안에 존재
-            // -> Connect와 광선의 방향을 내적한 값이 0보다 클때 교차
-            // Connect와 광선의방향 내적한 값 : Cross 라고할때
-            // 피타고라스정리에 의해 2개의 거리를 구할수있다.
-            // 1. 구의 센터에서 광선의방향벡터까지의 거리
-            // 2. (구의 센터에서 광선의방향벡터까지의 거리지점에서 교차점까지의 거리
-            // 단, 교차지점이 2개인경우 가까운 거리에 존재하는 교차점의 거리를 반환한다.
-            GameEngineCollision* CurCollider = (*StartIter);
+            bool CrossCheck = false;
 
-            // 현재 검색하는 구의 센터와 반지름 Get
-            DirectX::XMFLOAT3 CurColliderCenter = CurCollider->GetTransform()->GetCollisionData().Sphere.Center;
-            float4 fCenter = float4(CurColliderCenter.x, CurColliderCenter.y, CurColliderCenter.z);
-            float Radius = CurCollider->GetTransform()->GetCollisionData().Sphere.Radius;
-
-            // 거리와 교차여부를 판단하기 위한 데이터 계산
-            float4 Connect = fCenter - OriginPos_;
-            float s = float4::Dot3D(Connect, Direction_);
-            float l = float4::Dot3D(Connect, Connect);
-            float r = std::pow(Radius, 2);
-
-            // 광선이 구의 반대방향을 향하거나 구를 지나친다.
-            if (s < 0 && l > r)
+            // 광선의 시작지점에서부터 선택된 충돌체와 교차하는 지점까지의 거리
+            float Dist = 0.0f;
+            if (true == (*StartIter)->RayCollision((*StartIter)->GetCollisionType(), OriginPos_, Direction_, Dist))
             {
-                return false;
-            }
+                // 교차한 지점의 좌표를 반환
+                _PickedPos = OriginPos_ + (Direction_ * Dist);
 
-            // 광선이 구를 비껴나가는 경우
-            float m = l - static_cast<float>(std::pow(s, 2));
-            if (m > r)
-            {
-                return false;
+                return true;
             }
+          
+#pragma region 광선교차 공통화작업으로 인한 주석
+            //======================= 220804 SJH 임시주석
+            //// 현재 검색하는 구의 센터와 반지름 Get
+            //DirectX::XMFLOAT3 CurColliderCenter = CurCollider->GetTransform()->GetCollisionData().Sphere.Center;
+            //float4 fCenter = float4(CurColliderCenter.x, CurColliderCenter.y, CurColliderCenter.z);
+            //float Radius = CurCollider->GetTransform()->GetCollisionData().Sphere.Radius;
 
-            // 광선의 시작점으로부터 교차점까지의 거리
-            float q = static_cast<float>(std::sqrt(r - m));
-            float Distance = 0.0f;
-            if (l > r)
-            {
-                Distance = s - q;
-            }
-            else
-            {
-                Distance = s + q;
-            }
+            //// 거리와 교차여부를 판단하기 위한 데이터 계산
+            //float4 Connect = fCenter - OriginPos_;
+            //float s = float4::Dot3D(Connect, Direction_);
+            //float l = float4::Dot3D(Connect, Connect);
+            //float r = std::pow(Radius, 2);
 
-            // 광선 원위치 + (t * 광선방향) = 교차한점의 좌표
-            // Dist : 출발점(원위치)로부터 충돌(교차)한 지점까지의 거리
-            _PickedPos = OriginPos_ + (Direction_ * Distance);
+            //// 광선이 구의 반대방향을 향하거나 구를 지나친다.
+            //if (s < 0 && l > r)
+            //{
+            //    return false;
+            //}
 
-            return true;
+            //// 광선이 구를 비껴나가는 경우
+            //float m = l - static_cast<float>(std::pow(s, 2));
+            //if (m > r)
+            //{
+            //    return false;
+            //}
+
+            //// 광선의 시작점으로부터 교차점까지의 거리
+            //float q = static_cast<float>(std::sqrt(r - m));
+            //float Distance = 0.0f;
+            //if (l > r)
+            //{
+            //    Distance = s - q;
+            //}
+            //else
+            //{
+            //    Distance = s + q;
+            //}
+
+            //// 광선 원위치 + (t * 광선방향) = 교차한점의 좌표
+            //// Dist : 출발점(원위치)로부터 충돌(교차)한 지점까지의 거리
+            //_PickedPos = OriginPos_ + (Direction_ * Distance);
+
+            //return true;
+#pragma endregion
         }
     }
 
@@ -142,7 +141,6 @@ void SJH_Ray::Update(float _DeltaTime)
 SJH_Ray::SJH_Ray()
     : OriginPos_(float4::ZERO)
     , Direction_(float4::ZERO)
-    , CurTarget_(nullptr)
 {
 }
 

@@ -83,6 +83,44 @@ bool GameEngineCollision::AABBToCirCle(GameEngineTransform* _Left, GameEngineTra
 	return CirCleToAABB(_Right, _Left);
 }
 
+//===================================================== SJH
+bool GameEngineCollision::RayCollision(CollisionType _ThisType, const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
+{
+	switch (_ThisType)
+	{
+		case CollisionType::Sphere3D:
+		{
+			return Sphere3DToRay(_RayOriginPos, _RayDirection, _Dist);
+		}
+		case CollisionType::AABBBox3D:
+		{
+			return AABBBoxToRay(_RayOriginPos, _RayDirection, _Dist);
+		}
+		case CollisionType::OBBBox3D:
+		{
+			return OBBBoxToRay(_RayOriginPos, _RayDirection, _Dist);
+		}
+	}
+
+	return false;
+}
+
+bool GameEngineCollision::OBBBoxToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
+{
+	return GetTransform()->GetOBB().Intersects(_RayOriginPos.DirectVector, _RayDirection.DirectVector, _Dist);
+}
+
+bool GameEngineCollision::Sphere3DToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
+{
+	return GetTransform()->GetSphere().Intersects(_RayOriginPos.DirectVector, _RayDirection.DirectVector, _Dist);
+}
+
+bool GameEngineCollision::AABBBoxToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
+{
+	return GetTransform()->GetAABB().Intersects(_RayOriginPos.DirectVector, _RayDirection.DirectVector, _Dist);
+}
+//===================================================== SJH
+
 GameEngineCollision::GameEngineCollision()
 	: ColType_(CollisionType::Rect)
 {
