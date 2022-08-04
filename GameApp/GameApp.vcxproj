@@ -308,6 +308,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="YSJ_LumiaMap.cpp" />
+    <ClCompile Include="YSJ_Player.cpp" />
     <ClCompile Include="YSJ_PlayLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -429,6 +430,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="YSJ_LumiaMap.h" />
+    <ClInclude Include="YSJ_Player.h" />
     <ClInclude Include="YSJ_PlayLevel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

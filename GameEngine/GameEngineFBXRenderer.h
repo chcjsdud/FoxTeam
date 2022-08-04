@@ -66,7 +66,6 @@ public:
 
 	void SetFBXMeshRenderSet(const std::string& _Value, std::string _PipeLine, int _MeshIndex);
 
-
 	size_t GetRenderSetCount()
 	{
 		return RenderSets.size();
@@ -77,6 +76,7 @@ public:
 		return RenderSets[_Index];
 	}
 
+	bool CheckIntersects(const float4& _Position);
 
 protected:
 	void Start() override;

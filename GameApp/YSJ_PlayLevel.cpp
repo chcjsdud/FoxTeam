@@ -7,6 +7,7 @@
 #include <GameEngine/GameEngineRenderWindow.h>
 
 #include "YSJ_LumiaMap.h"
+#include "YSJ_Player.h"
 
 
 YSJ_PlayLevel::YSJ_PlayLevel()
@@ -24,6 +25,8 @@ void YSJ_PlayLevel::LevelStart()
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
 	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 300.0f, -300.0f));
 	GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeX(30.0f);
+
+	YSJ_Player* Player = CreateActor<YSJ_Player>();
 
 	GameEngineDirectory tempDir;
 
@@ -55,9 +58,21 @@ void YSJ_PlayLevel::LevelStart()
 		Mesh->CreateRenderingBuffer();
 	}
 
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("School.fbx")))
+	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("School.fbx")))
+	//{
+	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("School.fbx"));
+	//	Mesh->CreateRenderingBuffer();
+	//}
+	//
+	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Downtown.fbx")))
+	//{
+	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
+	//	Mesh->CreateRenderingBuffer();
+	//}
+
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("TestBox.fbx")))
 	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("School.fbx"));
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("TestBox.fbx"));
 		Mesh->CreateRenderingBuffer();
 	}
 

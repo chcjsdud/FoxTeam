@@ -447,6 +447,10 @@ public:
 	{
 		return AllMeshMap;
 	}
+	std::vector<FbxExMeshInfo>& GetMeshInfos()
+	{
+		return MeshInfos;
+	}
 
 	size_t GetBoneCount(UINT _Index)
 	{

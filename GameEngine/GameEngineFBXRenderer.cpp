@@ -127,8 +127,8 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
                     {
                         GameEngineTextureManager::GetInst().Load(MatData->DifTexturePath);
                         Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
-                        RenderSetData.ShaderHelper->SettingTexture("DiffuseTex", Tex);
                     }
+                    RenderSetData.ShaderHelper->SettingTexture("DiffuseTex", Tex);
                 }
             }
 
@@ -355,4 +355,39 @@ void FBXAnimation::Update(float _DeltaTime)
             // ParentRenderer->BoneData[i].Transpose();
         }
     }
+}
+
+bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position)
+{
+    std::vector<FbxMeshSet>& vecMeshMap = FBXMesh->GetAllMeshMap();
+    std::vector<FbxExMeshInfo>& vecMeshInfos = FBXMesh->GetMeshInfos();
+
+    bool Check = false;
+
+    for (size_t i = 0; i < vecMeshMap.size(); i++)
+    {
+        float dist = 0.0f;
+
+        for (size_t j = 0; j < vecMeshInfos[i].FaceNum; j++)
+        {
+            float4 V0 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 0]].POSITION + GetTransform()->GetWorldPosition();
+            float4 V1 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 1]].POSITION + GetTransform()->GetWorldPosition();
+            float4 V2 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 2]].POSITION + GetTransform()->GetWorldPosition();
+
+            Check = DirectX::TriangleTests::Intersects(_Position.DirectVector,
+                float4::DOWN.DirectVector,
+                V0.DirectVector,
+                V1.DirectVector,
+                V2.DirectVector,
+                dist);
+
+            if (true == Check && 5.0f >= dist
+                && 0.0f < dist)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }

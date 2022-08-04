@@ -1,9 +1,11 @@
 #include "PreCompile.h"
 #include "YSJ_LumiaMap.h"
+#include <GameEngine/GameEngineFBXRenderer.h>
+#include "YSJ_Player.h"
 
 YSJ_LumiaMap::YSJ_LumiaMap()
-	: FBXNaviMesh(nullptr)
-	, FBXWallMesh(nullptr)
+	: FBXNaviRenderer(nullptr)
+	, FBXWallRenderer(nullptr)
 	, FBXSchoolMap(nullptr)
 {
 
@@ -16,52 +18,50 @@ YSJ_LumiaMap::~YSJ_LumiaMap()
 
 void YSJ_LumiaMap::Start()
 {
-	FBXNaviMesh = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FBXNaviMesh->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
+	/*FBXNaviRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	FBXNaviRenderer->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
 
-	//for (UINT i = 0; i < FBXNaviMesh->GetRenderSetCount(); i++)
-	//{
-	//	FBXNaviMesh->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
-	//}
-
-	for (UINT i = 0; i < FBXNaviMesh->GetRenderSetCount(); i++)
+	for (UINT i = 0; i < FBXNaviRenderer->GetRenderSetCount(); i++)
 	{
-		FBXNaviMesh->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+		FBXNaviRenderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
 	}
 
-	FBXNaviMesh->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-	FBXNaviMesh->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	FBXNaviMesh->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f, 0.0f });
-	
-	FBXWallMesh = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FBXWallMesh->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
+	FBXNaviRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
+	*/
+	FBXWallRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	FBXWallRenderer->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
 
-	//for (UINT i = 0; i < FBXWallMesh->GetRenderSetCount(); i++)
-	//{
-	//	FBXWallMesh->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
-	//}
-
-	for (UINT i = 0; i < FBXWallMesh->GetRenderSetCount(); i++)
+	for (UINT i = 0; i < FBXWallRenderer->GetRenderSetCount(); i++)
 	{
-		FBXWallMesh->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
+		FBXWallRenderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
 	}
 
-	FBXWallMesh->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-	FBXWallMesh->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	FBXWallMesh->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f, 0.0f });
+	//FBXWallRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
+	//FBXWallRenderer->GetTransform()->SetLocalScaling({ 0.5f, 0.5f, 0.5f });
+	FBXWallRenderer->GetTransform()->SetLocalPosition({ 100.0f, 100.0f, 50.0f });
 
-	// SCHOOL ONLY
-	FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FBXSchoolMap->SetFBXMesh("School.fbx", "TextureDeferredLight");
+	//// SCHOOL ONLY
+	//FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	//FBXSchoolMap->SetFBXMesh("School.fbx", "TextureDeferredLight");
+	//FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 
-	FBXSchoolMap->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-	FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	FBXSchoolMap->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f, 0.0f });
+	//{
+	//	GameEngineFBXRenderer* FBX = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	//	FBX->SetFBXMesh("Downtown.fbx", "TextureDeferredLight");
+	//	FBX->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
+	//}
 
 }
 
 void YSJ_LumiaMap::Update(float _DeltaTime)
 {
+	if (nullptr != YSJ_Player::MainPlayer)
+	{
+		if (true == FBXWallRenderer->CheckIntersects(YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition()))
+		{
+			int a = 0;
+		}
+	}
 	
 }
 
