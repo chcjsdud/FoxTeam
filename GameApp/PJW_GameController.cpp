@@ -3,6 +3,7 @@
 
 #include "PJW_Hyunwoo.h"
 #include "PJW_Map.h"
+#include "PJW_GameMouse.h"
 
 #include <GameEngine/GameEngineCollision.h>
 #include "PJW_Enum.h"
@@ -55,6 +56,7 @@ void PJW_GameController::Init_Player()
 
 
 	map_ = GetLevel()->CreateActor<PJW_Map>();
+	mouse_ = GetLevel()->CreateActor<PJW_GameMouse>();
 }
 
 void PJW_GameController::Init_Keys()
@@ -86,6 +88,9 @@ void PJW_GameController::Check_Input(float _DeltaTime)
 		curPlayer_->isMoving_ = true;
 		// 컨트롤러의 인풋을 인식해 현재 플레이어 캐릭터의 bool 변수값을 스위칭한다.
 		// 동작이 끝나 false 로 돌리는 것은 플레이어 캐릭터가 한다.
+
+
+
 	}
 
 	if (true == GameEngineInput::GetInst().Down("Skill_Q"))
