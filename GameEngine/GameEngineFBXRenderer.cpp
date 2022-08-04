@@ -368,7 +368,8 @@ void FBXAnimation::Update(float _DeltaTime)
     }
 }
 
-bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position, const float4& _Direction)
+bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position, 
+    const float4& _Direction, const float _Distance/* = 5.0f*/)
 {
     std::vector<FbxMeshSet>& vecMeshMap = FBXMesh->GetAllMeshMap();
     std::vector<FbxExMeshInfo>& vecMeshInfos = FBXMesh->GetMeshInfos();
@@ -395,7 +396,7 @@ bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position, const float
                 V2.DirectVector,
                 dist);
 
-            if (true == Check && 5.0f >= dist
+            if (true == Check && _Distance >= dist
                 && 0.0f < dist)
             {
                 return true;
