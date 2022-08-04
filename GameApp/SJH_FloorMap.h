@@ -9,6 +9,7 @@ class GameEngineFBXMesh;
 class SJH_FloorMap : public GameEngineActor
 {
 public:
+	void Initialize(CollisionType _ColliderType);
 
 protected:
 

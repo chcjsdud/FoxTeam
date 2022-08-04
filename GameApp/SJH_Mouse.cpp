@@ -29,7 +29,7 @@ void SJH_Mouse::Update(float _DeltaTime)
 	GetTransform()->SetWorldPosition(GameEngineInput::GetInst().GetMouse3DPos());
 
 	// 키체크
-	if (true == GameEngineInput::GetInst().Down("LBUTTON"))
+	if (true == GameEngineInput::GetInst().Press("LBUTTON"))
 	{
 		// 단, 화면범위를 벗어나면 리턴
 		if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
@@ -43,7 +43,6 @@ void SJH_Mouse::Update(float _DeltaTime)
 		float4 MovePos = float4::ZERO;
 		if (true == Ray->IsPicked(MovePos))
 		{
-			//SJH_Yuki::MainPlayer->GetTransform()->SetLocalPosition(MovePos);
 			SJH_Yuki::MainPlayer->GetTransform()->SetWorldPosition(MovePos);
 		}
 	}

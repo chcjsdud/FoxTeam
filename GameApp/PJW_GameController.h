@@ -3,7 +3,8 @@
 
 // 분류 : 
 // 용도 : 
-// 설명 :
+
+class PJW_GameMouse;
 class PJW_Map;
 class PJW_Player;
 class PJW_Hyunwoo;
@@ -38,6 +39,8 @@ private:
 
 	PJW_Map* map_;
 	// 네브메시가 적용되는 맵
+
+	PJW_GameMouse* mouse_;
 
 };
 

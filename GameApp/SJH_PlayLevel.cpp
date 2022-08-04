@@ -113,6 +113,16 @@ void SJH_PlayLevel::CreateActorLevel()
 
 	// 맵
 	FloorMap_ = CreateActor<SJH_FloorMap>();
+	FloorMap_->Initialize(CollisionType::OBBBox3D);
+
+	// 테스트 맵
+	SJH_FloorMap* TestMap1 = CreateActor<SJH_FloorMap>();
+	TestMap1->Initialize(CollisionType::Sphere3D);
+	TestMap1->GetTransform()->SetWorldPosition(float4(-1500.f, 0.f, -1500.f));
+
+	SJH_FloorMap* TestMap2 = CreateActor<SJH_FloorMap>();
+	TestMap2->Initialize(CollisionType::Sphere3D);
+	TestMap2->GetTransform()->SetWorldPosition(float4(1500.f, 0.f, 1500.f));
 
 	// 마우스
 	InGameMouse_ = CreateActor<SJH_Mouse>();
@@ -121,24 +131,6 @@ void SJH_PlayLevel::CreateActorLevel()
 	Yuki_ = CreateActor<SJH_Yuki>();
 	SJH_Yuki::MainPlayer = Yuki_;
 
-	//// 마우스피킹 테스트용 오브젝트
-	//TestBox_ = CreateActor<SJH_TestActor>();
-	//TestBox_->SetName("test1");
-	//TestBox_->GetTransform()->SetLocalPosition(float4(50.f, 0.f, 10.f));
-	//TestBox_->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
-
-	//// 
-	//SJH_TestActor* TextBox2 = CreateActor<SJH_TestActor>();
-	//TextBox2->SetName("test2");
-	//TextBox2->GetTransform()->SetLocalPosition(float4(-50.f, 10.f, 200.f));
-	//TextBox2->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
-	//TextBox2->SetResultColor(float4(1.f, 0.f, 1.f));
-
-	//SJH_TestActor* TextBox3 = CreateActor<SJH_TestActor>();
-	//TextBox3->SetName("test3");
-	//TextBox3->GetTransform()->SetLocalPosition(float4(-50.f, 10.f, 300.f));
-	//TextBox3->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
-	//TextBox3->SetResultColor(float4(1.f, 1.f, 1.f));
 #pragma endregion
 
 }

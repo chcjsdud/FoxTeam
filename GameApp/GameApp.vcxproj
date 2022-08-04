@@ -208,6 +208,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="PJW_GameMouse.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="PJW_MouseRay.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UI_CharPicture.cpp" />
     <ClCompile Include="UI_Equip.cpp" />
     <ClCompile Include="UI_Inventory.cpp" />
@@ -334,6 +342,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Item.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PJW_GameMouse.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PJW_MouseRay.h">
       <SubType>
       </SubType>
     </ClInclude>
