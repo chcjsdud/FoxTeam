@@ -368,25 +368,28 @@ void FBXAnimation::Update(float _DeltaTime)
     }
 }
 
-bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position)
+bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position, const float4& _Direction)
 {
     std::vector<FbxMeshSet>& vecMeshMap = FBXMesh->GetAllMeshMap();
     std::vector<FbxExMeshInfo>& vecMeshInfos = FBXMesh->GetMeshInfos();
 
     bool Check = false;
 
+    float4 Dir = _Direction.NormalizeReturn3D();
+
     for (size_t i = 0; i < vecMeshMap.size(); i++)
     {
-        float dist = 0.0f;
 
         for (size_t j = 0; j < vecMeshInfos[i].FaceNum; j++)
         {
+            float dist = 0.0f;
+
             float4 V0 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
             float4 V1 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
             float4 V2 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
 
             Check = DirectX::TriangleTests::Intersects(_Position.DirectVector,
-                float4::DOWN.DirectVector,
+                Dir.DirectVector,
                 V0.DirectVector,
                 V1.DirectVector,
                 V2.DirectVector,

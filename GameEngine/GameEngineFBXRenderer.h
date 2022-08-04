@@ -78,7 +78,7 @@ public:
 		return RenderSets[_Index];
 	}
 
-	bool CheckIntersects(const float4& _Position);
+	bool CheckIntersects(const float4& _Position, const float4& _Direction);
 
 protected:
 	void Start() override;

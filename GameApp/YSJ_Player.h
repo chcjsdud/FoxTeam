@@ -21,18 +21,22 @@ public:
 	YSJ_Player& operator=(const YSJ_Player& _Other) = delete;
 	YSJ_Player& operator=(YSJ_Player&& _Other) noexcept = delete;
 
+	void SetColor(float4 _Color)
+	{
+		Color_ = _Color;
+	}
+
 protected:
 	GameEngineCollision* PlayerCollision;
 
 	GameEngineFSM StateManager_;
 
 	float Speed;
+	float4 Color_;
 
 private:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-
-	void TestTimeEvent();
 
 	void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 };

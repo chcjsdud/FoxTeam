@@ -6,7 +6,9 @@
 YSJ_Player* YSJ_Player::MainPlayer;
 
 YSJ_Player::YSJ_Player()
-	: Speed(300.0f)
+	: Speed(100.0f)
+	, Color_(float4::RED)
+	, PlayerCollision(nullptr)
 {
 	MainPlayer = this;
 }
@@ -29,7 +31,7 @@ void YSJ_Player::Start()
 
 			Renderer->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
 			Renderer->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-			Renderer->ShaderHelper.SettingConstantBufferSet("ResultColor", float4(1.0f, 0.0f, 0.0f));
+			Renderer->ShaderHelper.SettingConstantBufferLink("ResultColor", Color_);
 			ParentRenderer = Renderer;
 		}
 
