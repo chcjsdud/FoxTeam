@@ -3,7 +3,7 @@
 
 #include "PJW_Hyunwoo.h"
 #include "PJW_Map.h"
-#include "PJW_GameMouse.h"
+//#include "PJW_GameMouse.h"
 
 #include <GameEngine/GameEngineCollision.h>
 #include "PJW_Enum.h"
@@ -56,7 +56,7 @@ void PJW_GameController::Init_Player()
 
 
 	map_ = GetLevel()->CreateActor<PJW_Map>();
-	mouse_ = GetLevel()->CreateActor<PJW_GameMouse>();
+	//mouse_ = GetLevel()->CreateActor<PJW_GameMouse>();
 }
 
 void PJW_GameController::Init_Keys()

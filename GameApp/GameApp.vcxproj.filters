@@ -134,12 +134,6 @@
     <ClCompile Include="LGH_Aya.cpp">
       <Filter>01.GameObject\99.LGH</Filter>
     </ClCompile>
-    <ClCompile Include="PJW_MouseRay.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_Mouse</Filter>
-    </ClCompile>
-    <ClCompile Include="PJW_GameMouse.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_Mouse</Filter>
-    </ClCompile>
     <ClCompile Include="YSJ_Player.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor</Filter>
     </ClCompile>
@@ -426,12 +420,6 @@
     </ClInclude>
     <ClInclude Include="Character_ProtoType.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
-    </ClInclude>
-    <ClInclude Include="PJW_MouseRay.h">
-      <Filter>01.GameObject\98.PJW\PJW_Mouse</Filter>
-    </ClInclude>
-    <ClInclude Include="PJW_GameMouse.h">
-      <Filter>01.GameObject\98.PJW\PJW_Mouse</Filter>
     </ClInclude>
     <ClInclude Include="LGH_Aya.h">
       <Filter>01.GameObject\99.LGH</Filter>
