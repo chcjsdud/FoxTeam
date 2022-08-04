@@ -381,9 +381,9 @@ bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position)
 
         for (size_t j = 0; j < vecMeshInfos[i].FaceNum; j++)
         {
-            float4 V0 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 0]].POSITION + GetTransform()->GetWorldPosition();
-            float4 V1 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 1]].POSITION + GetTransform()->GetWorldPosition();
-            float4 V2 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 2]].POSITION + GetTransform()->GetWorldPosition();
+            float4 V0 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+            float4 V1 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+            float4 V2 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
 
             Check = DirectX::TriangleTests::Intersects(_Position.DirectVector,
                 float4::DOWN.DirectVector,

@@ -36,9 +36,9 @@ void YSJ_LumiaMap::Start()
 		FBXWallRenderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
 	}
 
-	//FBXWallRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	//FBXWallRenderer->GetTransform()->SetLocalScaling({ 0.5f, 0.5f, 0.5f });
+	FBXWallRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 	FBXWallRenderer->GetTransform()->SetLocalPosition({ 100.0f, 100.0f, 50.0f });
+	FBXWallRenderer->GetTransform()->SetLocalRotationDegree({ 0.0f, 70.0f, 0.0f });
 
 	//// SCHOOL ONLY
 	//FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
