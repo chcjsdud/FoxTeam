@@ -210,8 +210,8 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 }
 
 
-void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex)
-{
+void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex, bool _isLoop)
+{   // 0805 애니메이션 루프여부 추가
     if (nullptr == FBXMesh)
     {
         GameEngineDebug::MsgBoxError("매쉬를 세팅하지 않은 랜더러에 애니메이션을 만들 수가 없습니다.");
@@ -238,7 +238,7 @@ void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName
     NewFBXAnimation->Animation = Animation;
     NewFBXAnimation->ParentRenderer = this;
 
-    NewFBXAnimation->Init(_AnimationIndex);
+    NewFBXAnimation->Init(_AnimationIndex, _isLoop);
 
 
     Animations.insert(std::make_pair(_AnimationName, NewFBXAnimation));
@@ -256,16 +256,21 @@ void GameEngineFBXRenderer::ChangeFBXAnimation(const std::string& _AnimationName
     }
 
     CurAnimation = FindIter->second;
+    // 애니메이션 전환 시 프레임 리셋
+    CurAnimation->ResetFrame();
 }
 
 
-void FBXAnimation::Init(int _Index)
+void FBXAnimation::Init(int _Index, bool _isLoop)
 {
     Animation->CalFbxExBoneFrameTransMatrix(Mesh, _Index);
     PixAniData = &Animation->AnimationDatas[_Index];
     Start = 0;
     End = PixAniData->TimeEndCount;
     FrameTime = 0.02f;
+
+    // 0805 박종원 : 애니메이션 만들 시 루프/어웨이크를 결정짓는 bool 값입니다.
+    isLoop_ = _isLoop;
 }
 
 void FBXAnimation::Update(float _DeltaTime) 
@@ -284,8 +289,14 @@ void FBXAnimation::Update(float _DeltaTime)
         ++CurFrame;
     }
 
-    if (CurFrame >= End)
+    if (CurFrame >= End) // 현 프레임이 끝 프레임에 다다랐을 때
     {
+        // 0805 박종원 : 루프 애니메이션이 아니면 더 이상의 프레임 갱신을 하지 않습니다.
+        if (false == isLoop_)
+        {
+            return;
+        }
+
         CurFrame = Start;
     }
 
@@ -390,4 +401,14 @@ bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position)
     }
 
     return false;
+}
+}
+
+
+// 0805 박종원
+// ChangeAnimation() 시 마지막에 모든 프레임을 초기화해줍니다.
+void FBXAnimation::ResetFrame()
+{
+    CurFrame = Start;
+    End = PixAniData->TimeEndCount;
 }

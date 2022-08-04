@@ -36,6 +36,7 @@
     <FxCompile Include="EngineResources\Shader\TextureAni.fx" />
     <FxCompile Include="EngineResources\Shader\TextureAtlas.fx" />
     <FxCompile Include="EngineResources\Shader\TextureDeferredLight.fx" />
+    <FxCompile Include="EngineResources\Shader\TextureDeferredLightAni.fx" />
     <FxCompile Include="EngineResources\Shader\TextureLight.fx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

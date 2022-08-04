@@ -36,7 +36,7 @@ void PJW_Hyunwoo::Init_FBX()
 {
 	// 렌더링용 버텍스, 인덱스 버퍼 생성
 	FBXRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FBXRenderer_->SetFBXMesh("Hyunwoo_01_LOD1.FBX", "PJWAni");
+	FBXRenderer_->SetFBXMesh("Jackie_01_LOD1.FBX", "TextureDeferredLightAni");
 	FBXRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
 	FBXRenderer_->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
 	FBXRenderer_->GetTransform()->SetLocalRotationDegree({-90.0f, 0.0f, 0.0f});
@@ -44,12 +44,14 @@ void PJW_Hyunwoo::Init_FBX()
 	curDir_ = { 0.0f,0.0f,1.0f,1.0f };
 	for (UINT i = 0; i < FBXRenderer_->GetRenderSetCount(); i++)
 	{
-		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
+		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Jackie_01_LOD1.png");
 	}
 
-	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 0);
-	FBXRenderer_->CreateFBXAnimation("Move", "Hyunwoo_01_LOD1.FBX", 1);
-	FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 2);
+	FBXRenderer_->CreateFBXAnimation("Idle", "Jackie_01_LOD1.FBX", 0);
+
+
+	FBXRenderer_->CreateFBXAnimation("Move", "Jackie_01_LOD1.FBX", 1); // 루프 애니메이션
+	FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 2, false); // 루프안함
 	
 	FBXRenderer_->ChangeFBXAnimation("Idle");
 }
@@ -82,10 +84,6 @@ void PJW_Hyunwoo::Init_Collision()
 	collision_Attack_->SetCollisionType(CollisionType::CirCle);
 }
 
-
-
-
-//
 
 void PJW_Hyunwoo::Update(float _DeltaTime)
 {
@@ -158,6 +156,7 @@ void PJW_Hyunwoo::Move_Start()
 
 void PJW_Hyunwoo::Move_Update(float _DeltaTime)
 { 
+
 	aimDir_ = target_->GetTransform()->GetWorldPosition() - GetTransform()->GetWorldPosition();
 	// 상대 위치 - 내 위치 = 떨어진 거리
 	aimDir_.Normalize3D(); // 정규화로 방향 벡터 도출
@@ -207,11 +206,12 @@ void PJW_Hyunwoo::Move_End()
 void PJW_Hyunwoo::Attack_Start()
 {
 	isMoving_ = false;
+	FBXRenderer_->ChangeFBXAnimation("Attack0");
 }
 
 void PJW_Hyunwoo::Attack_Update(float _DeltaTime)
 {
-		FBXRenderer_->ChangeFBXAnimation("Attack0");
+
 
 		deltaTime_ += GameEngineTime::GetInst().GetDeltaTime();
 

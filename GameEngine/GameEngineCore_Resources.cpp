@@ -835,13 +835,14 @@ void GameEngineCore::EngineResourcesCreate()
 	}
 
 	{
-		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("PJWAni");
+		// 0805 ╧за╬©Ь
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TextureDeferredLightAni");
 		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
-		Pipe->SetVertexShader("PJWAni_VS");
+		Pipe->SetVertexShader("TextureDeferredLightAni_VS");
 		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		Pipe->SetRasterizer("EngineBaseRasterizerBack");
-		Pipe->SetPixelShader("PJWAni_PS");
+		Pipe->SetPixelShader("TextureDeferredLightAni_PS");
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
 

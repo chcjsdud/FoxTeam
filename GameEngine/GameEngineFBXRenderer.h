@@ -29,9 +29,11 @@ public:
 	UINT CurFrame;
 	UINT End;
 	UINT Start;
+	bool isLoop_;
 
-	void Init(int _Index);
+	void Init(int _Index, bool _isLoop = true);
 	void Update(float _DeltaTime);
+	void ResetFrame();
 };
 
 // 설명 : 하나의 랜더 단위를 표현합니다.
@@ -95,7 +97,7 @@ private:
 	// FBXAnimation
 
 public:
-	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex = 0);
+	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex = 0, bool _isLoop = true);
 	void ChangeFBXAnimation(const std::string& _AnimationName);
 
 private:
