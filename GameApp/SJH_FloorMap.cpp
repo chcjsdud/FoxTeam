@@ -6,7 +6,7 @@
 
 void SJH_FloorMap::Start()
 {
-	GetTransform()->SetLocalPosition(float4(0.0f, -100.0f, 0.0f));
+	//GetTransform()->SetLocalPosition(float4(0.0f, -100.0f, 0.0f));
 
 	//// 메쉬 로드
 	//GameEngineDirectory Directory;
@@ -24,15 +24,13 @@ void SJH_FloorMap::Start()
 	// 테스트용 충돌체
 	Collider_ = CreateTransformComponent<GameEngineCollision>();
 	Collider_->SetCollisionType(CollisionType::Sphere3D);
-	Collider_->GetTransform()->SetLocalScaling(float4(2000.f, 100.f, 2000.f));
+	Collider_->GetTransform()->SetLocalScaling(float4(1000.f, 1000.f, 1000.f));
 
-	int a = 0;
-
-	//// 테스트 메쉬
-	//Renderer_ = CreateTransformComponent<GameEngineRenderer>();
-	//Renderer_->SetRenderingPipeLine("ColorSphere");
-	//Renderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4(1.0f, 0.0f, 1.0f, 1.0f));
-	//Renderer_->GetTransform()->SetLocalScaling(float4(2000.f, 100.f, 2000.f));
+	// 테스트 메쉬
+	Renderer_ = CreateTransformComponent<GameEngineRenderer>();
+	Renderer_->SetRenderingPipeLine("ColorSphere");
+	Renderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4(1.0f, 0.0f, 1.0f, 1.0f));
+	Renderer_->GetTransform()->SetLocalScaling(float4(1000.f, 1000.f, 1000.f));
 }
 
 void SJH_FloorMap::Update(float _DeltaTime)
@@ -45,7 +43,7 @@ void SJH_FloorMap::Update(float _DeltaTime)
 
 	if (nullptr != Collider_)
 	{
-		GetLevel()->PushDebugRender(Collider_->GetTransform(), CollisionType::Sphere3D, float4::RED);
+		//GetLevel()->PushDebugRender(Collider_->GetTransform(), CollisionType::Sphere3D, float4::RED);
 	}
 #endif // _DEBUG
 
@@ -58,6 +56,7 @@ void SJH_FloorMap::Update(float _DeltaTime)
 SJH_FloorMap::SJH_FloorMap()
 	: Collider_(nullptr)
 	, Mesh_(nullptr)
+	, Renderer_(nullptr)
 {
 }
 
