@@ -18,8 +18,8 @@ SJH_Ray* SJH_Ray::RayAtViewSpace(float _MousePosX, float _MousePosY)
     UINT ViewPortNo = 1;
     D3D11_VIEWPORT ViewPort_ = {};
     GameEngineDevice::GetInst().GetContext()->RSGetViewports(&ViewPortNo, &ViewPort_);
-    Direction_.x = ((2.0f * _MousePosX - 2.0f * ViewPort_.TopLeftX) / ViewPort_.Width - 1.0f);
-    Direction_.y = -1.0f * ((2.0f * _MousePosY - 2.0f * ViewPort_.TopLeftY) / ViewPort_.Height - 1.0f);
+    Direction_.x = (2.0f * _MousePosX) / ViewPort_.Width - 1.0f;
+    Direction_.y = (-2.0f * _MousePosY) / ViewPort_.Height + 1.0f;
     Direction_.z = 1.0f;
 
     // 2. 투영영역 -> 뷰영역
