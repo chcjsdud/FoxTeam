@@ -495,6 +495,16 @@ void GameEngineCore::EngineResourcesCreate_Rasterizer()
 		Ptr->AddWindowSizeViewPort();
 	}
 
+	{
+		D3D11_RASTERIZER_DESC Info = { D3D11_FILL_MODE::D3D11_FILL_WIREFRAME, };
+		Info.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
+		Info.CullMode = D3D11_CULL_MODE::D3D11_CULL_NONE;
+		Info.AntialiasedLineEnable = true;
+		Info.MultisampleEnable = true;
+		Info.DepthClipEnable = true;
+		GameEngineRasterizer* Ptr = GameEngineRasterizerManager::GetInst().Create("EngineBaseRasterizerWireFrame", Info);
+		Ptr->AddWindowSizeViewPort();
+	}
 }
 
 
