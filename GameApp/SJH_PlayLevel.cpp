@@ -17,8 +17,7 @@ void SJH_PlayLevel::LevelStart()
 {
 	// 메인카메라 설정
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
-	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -300.0f));
-	//GetMainCameraActor()->GetTransform()->SetLocalRotationDegree(float4(90.f, 0.f, 0.f));
+	GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, -300.0f });
 
 #pragma region IMGUI Windows
 	// 렌더타겟 IMGUI Window

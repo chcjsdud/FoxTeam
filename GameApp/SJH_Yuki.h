@@ -9,6 +9,7 @@ class GameEngineFBXRenderer;
 class SJH_Yuki : public GameEngineActor
 {
 public:
+	void Move(const float4& _TargetPos);
 
 protected:
 
@@ -36,10 +37,12 @@ protected:
 private:
 	GameEngineFBXMesh* Mesh_;
 	GameEngineFBXRenderer* AnimRenderer_;
-	GameEngineFBXRenderer* DeferredRenderer_;
 
 private:
 	std::vector<std::string> AnimationNameList_;
 
+private:
+	bool IsMove_;
+	float4 MoveTargetPos_;
 };
 

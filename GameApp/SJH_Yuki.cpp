@@ -6,11 +6,20 @@
 
 SJH_Yuki* SJH_Yuki::MainPlayer = nullptr;
 
+void SJH_Yuki::Move(const float4& _TargetPos)
+{
+	// 이동 Flag On
+	IsMove_ = true;
+
+	// 목표위치 저장
+	MoveTargetPos_ = _TargetPos;
+}
+
 void SJH_Yuki::Start()
 {
-	//GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
-	//GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -20.0f });
-	//GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 10.0f, 0.0f, 0.0f });
+	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
+	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, 0.0f });
+	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 80.0f, 0.0f, 0.0f });
 
 	// FBX Files 경로 지정
 	GameEngineDirectory Directory;
@@ -32,10 +41,10 @@ void SJH_Yuki::Start()
 	AnimRenderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
 
 	// Yuki_01_LOD1.png
-	for (UINT i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
-	{
+	//for (UINT i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
+	//{
 		//AnimRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Yuki_01_LOD1.png");
-	}
+	//}
 
 	// 애니메이션 로드
 	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(Directory.PathToPlusFileName(MeshName));
@@ -119,12 +128,17 @@ void SJH_Yuki::Start()
 
 void SJH_Yuki::Update(float _DeltaTime)
 {
+	// 이동 Flag On일때 이동
+	if (true == IsMove_)
+	{
+
+	}
 }
 
 SJH_Yuki::SJH_Yuki()
 	: Mesh_(nullptr)
 	, AnimRenderer_(nullptr)
-	, DeferredRenderer_(nullptr)
+	, IsMove_(false)
 {
 }
 

@@ -77,9 +77,6 @@
     <ClCompile Include="SJH_Mouse.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor</Filter>
     </ClCompile>
-    <ClCompile Include="SJH_Yuki.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor</Filter>
-    </ClCompile>
     <ClCompile Include="PJW_GameController.cpp">
       <Filter>01.GameObject\98.PJW\PJW_Controller</Filter>
     </ClCompile>
@@ -142,6 +139,9 @@
     </ClCompile>
     <ClCompile Include="YSJ_Char.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="SJH_Yuki.cpp">
+      <Filter>01.GameObject\99.SJH\01.Actor\02.Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -289,6 +289,9 @@
     <Filter Include="01.GameObject\98.PJW\PJW_Mouse">
       <UniqueIdentifier>{9b3c5cbd-9465-477f-a8a3-07a4f123ed7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\99.SJH\01.Actor\02.Player">
+      <UniqueIdentifier>{88dd0ad6-4776-4dc2-accf-d582c66c26bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -376,9 +379,6 @@
     <ClInclude Include="SJH_Mouse.h">
       <Filter>01.GameObject\99.SJH\01.Actor</Filter>
     </ClInclude>
-    <ClInclude Include="SJH_Yuki.h">
-      <Filter>01.GameObject\99.SJH\01.Actor</Filter>
-    </ClInclude>
     <ClInclude Include="PJW_GameController.h">
       <Filter>01.GameObject\98.PJW\PJW_Controller</Filter>
     </ClInclude>
@@ -435,6 +435,9 @@
     </ClInclude>
     <ClInclude Include="YSJ_Char.h">
       <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="SJH_Yuki.h">
+      <Filter>01.GameObject\99.SJH\01.Actor\02.Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
