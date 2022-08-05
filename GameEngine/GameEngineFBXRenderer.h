@@ -104,7 +104,7 @@ private:
 
 public:
 	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex = 0, bool _isLoop = true);
-	void ChangeFBXAnimation(const std::string& _AnimationName);
+	void ChangeFBXAnimation(const std::string& _AnimationName, bool _bForceChange = false);
 
 private:
 
