@@ -307,6 +307,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="YSJ_Char.cpp" />
+    <ClCompile Include="YSJ_Char_State.cpp" />
     <ClCompile Include="YSJ_LumiaMap.cpp" />
     <ClCompile Include="YSJ_Player.cpp" />
     <ClCompile Include="YSJ_PlayLevel.cpp" />
@@ -429,6 +431,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="YSJ_Char.h" />
     <ClInclude Include="YSJ_LumiaMap.h" />
     <ClInclude Include="YSJ_Player.h" />
     <ClInclude Include="YSJ_PlayLevel.h" />

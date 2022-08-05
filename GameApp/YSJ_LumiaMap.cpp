@@ -18,16 +18,17 @@ YSJ_LumiaMap::~YSJ_LumiaMap()
 
 void YSJ_LumiaMap::Start()
 {
-	/*FBXNaviRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	FBXNaviRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXNaviRenderer->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
 
 	for (UINT i = 0; i < FBXNaviRenderer->GetRenderSetCount(); i++)
 	{
 		FBXNaviRenderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+		FBXNaviRenderer->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
 	}
 
 	FBXNaviRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	*/
+	
 	FBXWallRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXWallRenderer->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
 
@@ -37,8 +38,6 @@ void YSJ_LumiaMap::Start()
 	}
 
 	FBXWallRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	FBXWallRenderer->GetTransform()->SetLocalPosition({ 100.0f, 100.0f, 50.0f });
-	FBXWallRenderer->GetTransform()->SetLocalRotationDegree({ 0.0f, 70.0f, 0.0f });
 
 	//// SCHOOL ONLY
 	//FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());

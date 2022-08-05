@@ -137,6 +137,12 @@
     <ClCompile Include="YSJ_Player.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor</Filter>
     </ClCompile>
+    <ClCompile Include="YSJ_Char_State.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="YSJ_Char.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -425,6 +431,9 @@
       <Filter>01.GameObject\99.LGH</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_Player.h">
+      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="YSJ_Char.h">
       <Filter>01.GameObject\99.YSJ\02Actor</Filter>
     </ClInclude>
   </ItemGroup>
