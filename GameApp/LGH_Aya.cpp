@@ -30,27 +30,20 @@ void LGH_Aya::Start()
 	Mesh->CreateRenderingBuffer();
 
 	{
-		std::string MeshName = "LGH_Aya.FBX";
+		std::string MeshName = "LGH_Aya.fbx";
 
 
 		FBXRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 
-		FBXRenderer_->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 0); //body
-		FBXRenderer_->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 1); //face
-		//Renderer->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 2); //glass
-		FBXRenderer_->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 3); //hair
-		//Renderer->SetFBXMeshRenderSet("LGH_Aya.fbx", "TextureDeferredLight", 4); //Gun
+		FBXRenderer_->SetFBXMesh(MeshName, "TextureDeferredLightAni");
 
+		for (UINT i = 0; i < FBXRenderer_->GetRenderSetCount(); i++)
+		{
+			FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex" , "Aya_01_LOD1.png");
+		}
 
 		FBXRenderer_->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });
 		FBXRenderer_->GetTransform()->SetWorldRotationDegree({ 0.0f, 180.0f, 0.0f });
-
-		FBXRenderer_->GetRenderSet(0).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Body.Png");
-		FBXRenderer_->GetRenderSet(1).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Body.Png");
-		FBXRenderer_->GetRenderSet(2).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Face.Png");
-		FBXRenderer_->GetRenderSet(3).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Face.Png");
-		FBXRenderer_->GetRenderSet(4).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Hair.Png");
-		FBXRenderer_->GetRenderSet(5).ShaderHelper->SettingTexture("DiffuseTex", "Aya_01_Hair.Png");
 
 
 		GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(FBXFolder.PathToPlusFileName("LGH_Aya.fbx"));
@@ -61,7 +54,8 @@ void LGH_Aya::Start()
 		}
 
 		FBXRenderer_->CreateFBXAnimation("Run", "LGH_Aya.fbx", 0);
-		FBXRenderer_->CreateFBXAnimation("Idle", "LGH_Aya.fbx", 1);
+		FBXRenderer_->CreateFBXAnimation("Wait", "LGH_Aya.fbx", 1);
+		FBXRenderer_->ChangeFBXAnimation("Run");
 	}
 }
 
@@ -69,5 +63,5 @@ void LGH_Aya::Start()
 
 void LGH_Aya::Update(float _DeltaTime)
 {
-	FBXRenderer_->ChangeFBXAnimation("Run");
+	
 }
