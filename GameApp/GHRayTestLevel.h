@@ -26,6 +26,7 @@ private:
 	void loadResource();
 	void releaseResource();
 	void createActor();
+	void adjustCamera();
 
 	void initRenderWindow();
 	void releaseRenderWindow();

@@ -7,6 +7,7 @@
 #include <GameApp/GHRio.h>
 #include <GameEngine/LightActor.h>
 #include <GameEngine/SKySphereActor.h>
+#include <GameApp/GHMap.h>
 
 GHRayTestLevel::GHRayTestLevel()
 {
@@ -50,9 +51,7 @@ void GHRayTestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	initRenderWindow();
 	loadResource();
 	createActor();
-
-	GetMainCameraActor()->FreeCameraModeSwitch();
-	GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 10.f, -20.f });
+	adjustCamera();
 }
 
 
@@ -65,11 +64,14 @@ void GHRayTestLevel::loadResource()
 
 	std::string meshName = "Rio_Run.fbx";
 
-	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName(meshName));
-
+	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
 	mesh->CreateRenderingBuffer();
 
-	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName(meshName));
+	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Bg_NaviMesh_Cobalt.fbx"));
+	mesh->CreateRenderingBuffer();
+
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Wait.fbx"));
 }
 
 void GHRayTestLevel::releaseResource()
@@ -82,6 +84,8 @@ void GHRayTestLevel::releaseResource()
 void GHRayTestLevel::createActor()
 {
 	CreateActor<GHRio>();
+	CreateActor<GHMap>();
+	
 	SKySphereActor* Actor = CreateActor<SKySphereActor>();
 
 
@@ -90,19 +94,26 @@ void GHRayTestLevel::createActor()
 
 
 		Actor = CreateActor<LightActor>();
-		Actor->GetLight()->SetDiffusePower(0.3f);
-		Actor->GetLight()->SetSpacularLightPow(50.0f);
+		Actor->GetLight()->SetDiffusePower(1.f);
+		Actor->GetLight()->SetSpacularLightPow(1000.f);
 
 		Actor = CreateActor<LightActor>();
 		Actor->GetLight()->SetDiffusePower(0.3f);
 		Actor->GetLight()->SetSpacularLightPow(50.0f);
-		Actor->GetTransform()->SetLocalRotationDegree({ 45.0f, 0.0f, 0.0f });
+		//Actor->GetTransform()->SetLocalRotationDegree({ 45.0f, 0.0f, 0.0f });
 
 		Actor = CreateActor<LightActor>();
 		Actor->GetLight()->SetDiffusePower(0.3f);
 		Actor->GetLight()->SetSpacularLightPow(50.0f);
-		Actor->GetTransform()->SetLocalRotationDegree({ 0.0f, 90.0f, 0.0f });
+		//Actor->GetTransform()->SetLocalRotationDegree({ 0.0f, 90.0f, 0.0f });
 	}
+}
+
+void GHRayTestLevel::adjustCamera()
+{
+	GetMainCameraActor()->GetCamera()->SetFov(60.f);
+	GetMainCameraActor()->FreeCameraModeSwitch();
+	GetMainCameraActor()->GetTransform()->SetWorldPosition({ 0.0f, 100.f, -200.f });
 }
 
 void GHRayTestLevel::initRenderWindow()

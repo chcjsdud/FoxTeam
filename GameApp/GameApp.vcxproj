@@ -190,6 +190,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Character_ProtoType_State.cpp" />
+    <ClCompile Include="GHMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GHRio.cpp">
       <SubType>
       </SubType>
@@ -314,6 +318,10 @@
   <ItemGroup>
     <ClInclude Include="AIController.h" />
     <ClInclude Include="Character_ProtoType.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GHMap.h">
       <SubType>
       </SubType>
     </ClInclude>

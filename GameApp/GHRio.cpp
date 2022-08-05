@@ -5,7 +5,6 @@
 
 GHRio::GHRio()
 	: renderer_(nullptr)
-
 {
 
 }
@@ -17,20 +16,30 @@ GHRio::~GHRio()
 
 void GHRio::Start()
 {
+
 	std::string meshName = "Rio_Run.fbx";
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	renderer_->SetFBXMesh(meshName, "TextureDeferredLight");
 
-	//int count = renderer_->GetRenderSetCount();
+	renderer_->SetFBXMesh(meshName, "TextureDeferredLightAni");
 
-	//for (int i = 0; i < count; i++)
-	//{
-	//	renderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Rio_000_LOD1.png");
-	//}
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
+	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
+
+	//renderer_->CreateFBXAnimation("Run", "Rio_Run.fbx");
+	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx");
+
+	renderer_->ChangeFBXAnimation("Wait");
 }
 
 void GHRio::Update(float _deltaTime)
 {
+	//if (GameEngineInput::GetInst().Press("W"))
+	//{
+	//	renderer_->ChangeFBXAnimation("Run");
+	//}
+	//else
+	//{
+	//	renderer_->ChangeFBXAnimation("Wait");
+	//}
 }
