@@ -104,33 +104,6 @@ bool SJH_Ray::IsMeshPicked(GameEngineFBXMesh* _Mesh, const float4& _MousePos, fl
         }
     }
 
-
-
-
-
-
-
-    // 교차체크
-    //float Dist = 0.0f;
-    //for (int i = 0; i < vecMeshMap.size(); i++)
-    //{
-    //    for (int j = 0; j < vecMeshInfos[i].FaceNum; j++)
-    //    {
-    //        // 삼각형을 이루는 정점
-    //        float4 V0 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[i][0][j * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-    //        float4 V1 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[i][0][j * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-    //        float4 V2 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[i][0][j * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-
-    //        // 교차성공시 교차점까지의 거리를 이용하여 해당 좌표를 반환
-    //        if (true == DirectX::TriangleTests::Intersects(OriginPos_.DirectVector, Direction_.DirectVector, V0.DirectVector, V1.DirectVector, V2.DirectVector, Dist))
-    //        {
-    //            // 교차한 지점의 좌표를 반환
-    //            _PickedPos = OriginPos_ + (Direction_ * Dist);
-    //            return true;
-    //        }
-    //    }
-    //}
-
     return false;
 }
 
