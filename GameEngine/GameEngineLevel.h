@@ -47,6 +47,9 @@ public:
 	template<typename ActorType>
 	ActorType* CreateActor(int _UpdateOrder = 0);
 
+	template<typename ActorType>
+	ActorType* CreateActor(std::string _Name, int _UpdateOrder = 0);
+
 	void SetLevelActorMove(GameEngineLevel* _NextLevel, GameEngineActor* _Actor);
 
 	template<typename UserEnumType>
@@ -155,3 +158,17 @@ inline ActorType* GameEngineLevel::CreateActor(int _UpdateOrder)
 	return dynamic_cast<ActorType*>(NewActor);
 }
 
+template<typename ActorType>
+inline ActorType* GameEngineLevel::CreateActor(std::string _Name , int _UpdateOrder)
+{
+	GameEngineActor* NewActor = new ActorType();
+	NewActor->SetLevel(this);
+	NewActor->Start();
+	NewActor->SetOrder(_UpdateOrder);
+	NewActor->SetName(_Name);
+
+	// Insert + Find
+	std::list<GameEngineActor*>& List = ActorList_[_UpdateOrder];
+	List.push_back(NewActor);
+	return dynamic_cast<ActorType*>(NewActor);
+}

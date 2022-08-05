@@ -10,10 +10,7 @@ class PlayLevel : public GameEngineLevel
 public:
 	PlayLevel();
 	~PlayLevel();
-	PlayLevel(const PlayLevel& _Other) = delete;
-	PlayLevel(PlayLevel&& _Other) noexcept = delete;
-	PlayLevel& operator=(const PlayLevel& _Other) = delete;
-	PlayLevel& operator=(PlayLevel&& _Other) noexcept = delete;
+
 
 public:
 	virtual void LevelStart() override;
@@ -24,10 +21,14 @@ public:
 protected:
 
 private:
-	PlayController* controller_;
+	PlayController* Controller_;
 
-private:
 	GameEngineFSM LoadState_;
+public:
+	PlayController* GetPlayController()
+	{
+		return Controller_;
+	}
 
 private:
 	void CreateActorLevel();
@@ -41,5 +42,11 @@ private:
 	void Play_Start();
 	void Play_Update(float _DeltaTime);
 	void Play_End();
+
+private:
+	PlayLevel(const PlayLevel& _Other) = delete;
+	PlayLevel(PlayLevel&& _Other) = delete;
+	PlayLevel& operator=(const PlayLevel& _Other) = delete;
+	PlayLevel& operator=(PlayLevel&& _Other) = delete;
 };
 

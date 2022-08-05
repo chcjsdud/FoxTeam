@@ -22,6 +22,7 @@ Player_Yuki::~Player_Yuki()
 
 void Player_Yuki::Start()
 {
+	Player::Start();
 	StateInit();
 	ComponenetInit();
 	UIInit();

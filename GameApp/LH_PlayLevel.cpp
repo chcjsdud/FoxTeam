@@ -1,6 +1,6 @@
 #include "PreCompile.h"
 #include "LH_PlayLevel.h"
-#include "LH_Player.h"
+//#include "LH_Player.h"
 #include "UI_Skill.h"
 #include "LH_TestMonster.h"
 #include "LH_Map.h"
@@ -23,7 +23,7 @@
 #include "UserGame.h"
 
 PlayLevel::PlayLevel() 
-	: controller_(nullptr)
+	: Controller_(nullptr)
 {
 }
 
@@ -78,16 +78,21 @@ void PlayLevel::Load_Start()
 	//	loadingimage->GetTransform()->SetLocalScaling({ 1920.f,1080.f,1.f });
 	//	loadingimage->GetTransform()->SetWorldPosition({ 0.f,0.f, -400.f });
 	//}
+	{
+		UserGame::LoadingFolder++;
 
-	GameEngineDirectory Directory;
-	Directory.MoveParent("FoxTeam");
-	Directory.MoveChild("EngineResources");
-	Directory.MoveChild("FBX");
+		GameEngineDirectory Directory;
+		Directory.MoveParent("FoxTeam");
+		Directory.MoveChild("EngineResources");
+		Directory.MoveChild("FBX");
 
-	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(Directory.PathToPlusFileName("AnimMan.fbx"));
-	Mesh->CreateRenderingBuffer();
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(Directory.PathToPlusFileName("AnimMan.fbx"));
+		Mesh->CreateRenderingBuffer();
 
-	GameEngineFBXAnimationManager::GetInst().Load(Directory.PathToPlusFileName("ALS_N_RUN_F.FBX"));
+		GameEngineFBXAnimationManager::GetInst().Load(Directory.PathToPlusFileName("ALS_N_RUN_F.FBX"));
+
+		UserGame::LoadingFolder--;
+	}
 }
 
 void PlayLevel::Load_Update(float _DeltaTime)
@@ -196,9 +201,17 @@ void PlayLevel::CreateActorLevel()
 	}
 
 	{
+		Controller_ = CreateActor<PlayController>();
+	}
+
+	{
 	//	GameMouse* mouse = CreateActor<GameMouse>();
 	//
-	//	Player* Actor = CreateActor<Player>();
+		Player* Actor = CreateActor<Player>("LH_Yuki");
+		Controller_->AddPlayerMap(Actor);
+
+		Controller_->SwitchMainPlayer("LH_Yuki");
+
 	//	Actor->SetParentMouse(mouse); // 플레이어 캐릭터를 종속시킬 마우스 커서를 알려줍니다. 게임매니저 생성 시 삭제될 함수
 	//
 	//	TestMonster* Monster = CreateActor<TestMonster>();
@@ -207,9 +220,6 @@ void PlayLevel::CreateActorLevel()
 
 	}
 
-	{
-		//controller_ = CreateActor<PlayController>();
-	}
 
 	{
 		Map* Actor = CreateActor<Map>(); 

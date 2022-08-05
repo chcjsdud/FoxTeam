@@ -5,6 +5,8 @@
 #include "Enums.h"
 #include "LH_Status.h"
 
+#include "AIController.h"
+
 class GameEngineCollision;
 class GameEngineFBXRenderer;
 class Unit : public GameEngineActor
@@ -14,6 +16,8 @@ public:
 	~Unit();
 
 protected: // 기본정보
+	AIController* AIController_;
+
 	CharacterType CharacterType_;		// (0: AI, 1: MAIN) : default(AI)
 
 	GameEngineFSM State_;
@@ -29,29 +33,34 @@ protected: // 기본정보
 	// 캐릭터 최종 스텟
 	Status Status_Final_;
 
+
+
+#pragma region 조작 변수
 	//키 방향 07.26, 조작으로 인해 움직여야할 방향, 
 	float4 KeyDir_;
 
 	//락온된 대상의 방향, 움직일 방향보단 바라봐야할 방향에 가까움
 	float4 TargetDir_;
+	float4 TargetPos_;
+	bool IsMove_;
+	bool IsAttack_;
+
+#pragma endregion
 
 	//바라봐야 할 방향
 	float4 FowordDir_;
-
 	//현재 바라보는 방향
 	float4 CurFowordDir_;
-
 	//Y축 회전 속도
 	float YRotateSpeed_;
 
-	bool IsMove_;
-
-	//공격 텀
+	// 사거리
+	float AttackDist_;
+	//공격 텀, 공격 속도
 	float AttackTurm_;
-	//공격 에니메이션 단계
-	int AttackLevel_;
-	//공격 시간, 이 시간 이내에 공격키를 누르면 다음 단계 공격을 함
-	float AttackTime_;
+	// 히트박스 활성화 전에 뜸들이는 시간 (에니메이션)
+	float AttackBuffer_;
+
 	//Attack Hit Box 활성화 시간
 	float AttackHitTime_;
 
@@ -84,8 +93,8 @@ protected:
 
 	void CurDirUpdate(float _DeltaTime);
 	//RockOn 중일때 방향 업데이트
-	void RockOnDirUpdate(float _DeltaTime);
-	void KeyDirUpdate(float _DeltaTime);
+	//void RockOnDirUpdate(float _DeltaTime);
+	//void KeyDirUpdate(float _DeltaTime);
 	void MoveUpdate(float _DeltaTime);
 
 	//캐릭터가 바라보는 방향이 바로 바로 안변하고 천천히 변함(이동과는 무관하게), 
@@ -102,16 +111,18 @@ protected:
 	virtual void Walk_Update(float _DeltaTime) = 0;
 	virtual void Walk_End() = 0;
 
-	virtual void Run_Start() = 0;
-	virtual void Run_Update(float _DeltaTime) = 0;
-	virtual void Run_End() = 0;
+	//virtual void Run_Start() = 0;
+	//virtual void Run_Update(float _DeltaTime) = 0;
+	//virtual void Run_End() = 0;
 
 	virtual void Attack_Start() = 0;
 	virtual void Attack_Update(float _DeltaTime) = 0;
 	virtual void Attack_End() = 0;
 
-protected: 
-	// 스텟에 변화가 생길때마다 적용함
+	// 공격과 공격 사이 에니메이션 잠깐 재생하는 구간, 공격이 완료된 직후이며, 이 단계에서 Attack를 끝낼지 게속할지 판별한다.
+	virtual void Attack_Ready_Start() = 0; 
+	virtual void Attack_Ready_Update(float _DeltaTime) = 0;
+	virtual void Attack_Ready_End() = 0;
 
 public:
 	void AddBaseStat(Status _Status);
@@ -120,10 +131,37 @@ public:
 	void RemoveBuff(std::string _Name);
 	void RemoveAllBuff(std::string _Name);
 
+
 public:
+
+	void Unit_ChangeState(std::string _Name)
+	{
+		State_.ChangeState(_Name);
+	}
+
+	void Unit_SetTargetDir(float4 _Dir)
+	{
+		TargetDir_ = _Dir;
+	}
+
+	void Unit_SetTargetPos(float4 _Pos)
+	{
+		TargetPos_ = _Pos;
+	}
+
 	void Unit_ChangeState(std::string _State)
 	{
 		State_.ChangeState(_State);
+	}
+
+	void Unit_SetMove(bool _IsMove)
+	{
+		IsMove_ = _IsMove;
+	}
+
+	std::string Unit_GetStateName()
+	{
+		return State_.GetCurrentState()->Name_;
 	}
 
 	inline void Unit_SetCharacterType(CharacterType _Type)

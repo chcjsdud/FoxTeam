@@ -9,9 +9,9 @@ Unit::Unit()
 	, YRotateSpeed_(900.f)
 	, IsMove_(false)
 	, AttackTurm_(0.f)
-	, AttackTime_(0.f)
+	//, AttackTime_(0.f)
 	, AttackHitTime_(0.f)
-	, AttackLevel_(0)
+	//, AttackLevel_(0)
 	, UnitGroundCollision_(nullptr)
 	, UnitSightCollision_(nullptr)
 	, UnitHitBoxCollision_(nullptr)
@@ -20,7 +20,7 @@ Unit::Unit()
 	{
 		State_.CreateState<Unit>("Idle", this, &Unit::Idle_Start, &Unit::Idle_Update, &Unit::Idle_End);;
 		State_.CreateState<Unit>("Walk", this, &Unit::Walk_Start, &Unit::Walk_Update, &Unit::Walk_End);;
-		State_.CreateState<Unit>("Run", this, &Unit::Run_Start, &Unit::Run_Update, &Unit::Run_End);;
+		//State_.CreateState<Unit>("Run", this, &Unit::Run_Start, &Unit::Run_Update, &Unit::Run_End);;
 		State_.CreateState<Unit>("Attack", this, &Unit::Attack_Start, &Unit::Attack_Update, &Unit::Attack_End);;
 
 		State_.ChangeState("Idle");
@@ -44,6 +44,8 @@ Unit::~Unit()
 	}
 
 	BufferList_.clear();
+
+	AIController_->Death();
 }
 
 void Unit::Start()
@@ -157,69 +159,67 @@ void Unit::CurDirUpdate(float _DeltaTime)	// 마우스 커서 우클릭한 위치로의 방향 
 {
 	// RockOnUpdate(_DeltaTime);
 
-	KeyDirUpdate(_DeltaTime);
+	//KeyDirUpdate(_DeltaTime);
+
+
 }
 
-void Unit::RockOnDirUpdate(float _DeltaTime)
-{
-	if (nullptr != Target_)
-	{
-		float4 MoveDir = CalculateTargetDir(Target_->GetTransform()->GetWorldPosition());
-
-		MoveDir.Normalize3D();
-		TargetDir_ = MoveDir;
-		FowordDir_ = MoveDir;
-	}
-}
-
-void Unit::KeyDirUpdate(float _DeltaTime)
-{
-	float4 MoveDir = float4::ZERO;
-
-	bool Key = false;
-
-	if (true == GameEngineInput::GetInst().Press("D"))
-	{
-		MoveDir.x += 1.f;
-
-		//IsMove_ = true;
-		Key = true;
-	}
-	if (true == GameEngineInput::GetInst().Press("A"))
-	{
-		MoveDir.x -= 1.f;
-
-		//IsMove_ = true;
-		Key = true;
-	}
-	if (true == GameEngineInput::GetInst().Press("W"))
-	{
-		MoveDir.z += 1.f;
-
-		//IsMove_ = true;
-		Key = true;
-	}
-	if (true == GameEngineInput::GetInst().Press("S"))
-	{
-		MoveDir.z -= 1.f;
-
-		//IsMove_ = true;
-		Key = true;
-	}
-
-	//if (true == IsMove_)
-	if (true == Key)
-	{
-		MoveDir.Normalize3D();
-		KeyDir_ = MoveDir;
-
-		if (Target_ == nullptr)
-		{
-			FowordDir_ = KeyDir_;
-		}
-		//IsMove_ = false;
-	}
-}
+//void Unit::RockOnDirUpdate(float _DeltaTime)
+//{
+//	if (nullptr != Target_)
+//	{
+//		float4 MoveDir = CalculateTargetDir(Target_->GetTransform()->GetWorldPosition());
+//
+//		MoveDir.Normalize3D();
+//		TargetDir_ = MoveDir;
+//		FowordDir_ = MoveDir;
+//	}
+//}
+//
+//void Unit::KeyDirUpdate(float _DeltaTime)
+//{
+//	float4 MoveDir = float4::ZERO;
+//
+//	bool Key = false;
+//
+//	//if (true == GameEngineInput::GetInst().Press("D"))
+//	//{
+//	//	MoveDir.x += 1.f;
+//	//	//IsMove_ = true;
+//	//	Key = true;
+//	//}
+//	//if (true == GameEngineInput::GetInst().Press("A"))
+//	//{
+//	//	MoveDir.x -= 1.f;
+//	//	//IsMove_ = true;
+//	//	Key = true;
+//	//}
+//	//if (true == GameEngineInput::GetInst().Press("W"))
+//	//{
+//	//	MoveDir.z += 1.f;
+//	//	//IsMove_ = true;
+//	//	Key = true;
+//	//}
+//	//if (true == GameEngineInput::GetInst().Press("S"))
+//	//{
+//	//	MoveDir.z -= 1.f;
+//	//	//IsMove_ = true;
+//	//	Key = true;
+//	//}
+//	//if (true == IsMove_)
+//
+//	if (true == Key)
+//	{
+//		MoveDir.Normalize3D();
+//		KeyDir_ = MoveDir;
+//
+//		if (Target_ == nullptr)
+//		{
+//			FowordDir_ = KeyDir_;
+//		}
+//		//IsMove_ = false;
+//	}
+//}
 
 void Unit::MoveUpdate(float _DeltaTime)
 {

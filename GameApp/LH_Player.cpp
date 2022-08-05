@@ -1,6 +1,8 @@
 #include "PreCompile.h"
 #include "LH_Player.h"
 
+#include "PlayController.h"
+
 #include <GameEngine/GameEngineCollision.h>
 
 #include "LH_LockOnUI.h"
@@ -20,6 +22,8 @@ Player::~Player()
 
 void Player::Start()
 {
+
+	PlayController_->AddPlayerMap(GetName(), this);
 	//GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 }
 
@@ -53,31 +57,31 @@ void Player::StaminaRecoverUpdate(float _DeltaTime)
 //	return false;
 //}
 
-void Player::RockOnUpdate(float _DeltaTime)
-{
-	if (true == GameEngineInput::GetInst().Press("RockOn"))
-	{
-		LockOnUI_->On();
-
-		GameEngineCollision* RockOnPtr = UnitSightCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
-
-		//PlayerRockOnCollision_->Collision(CollisionType::CirCle, CollisionType::AABBBox3D, static_cast<int>(CollisionGroup::Player), std::bind(&Player::test, this));
-
-		if (RockOnPtr != nullptr)
-		{
-			Target_ = RockOnPtr->GetActor();
-
-			RockOnDirUpdate(_DeltaTime);
-		}
-		else
-		{
-			Target_ = nullptr;
-		}
-	}
-
-	else
-	{
-		LockOnUI_->Off();
-		Target_ = nullptr;
-	}
-}
+//void Player::RockOnUpdate(float _DeltaTime)
+//{
+//	if (true == GameEngineInput::GetInst().Press("RockOn"))
+//	{
+//		LockOnUI_->On();
+//
+//		GameEngineCollision* RockOnPtr = UnitSightCollision_->CollisionPtr(CINT(CollisionGroup::Monster));
+//
+//		//PlayerRockOnCollision_->Collision(CollisionType::CirCle, CollisionType::AABBBox3D, static_cast<int>(CollisionGroup::Player), std::bind(&Player::test, this));
+//
+//		if (RockOnPtr != nullptr)
+//		{
+//			Target_ = RockOnPtr->GetActor();
+//
+//			RockOnDirUpdate(_DeltaTime);
+//		}
+//		else
+//		{
+//			Target_ = nullptr;
+//		}
+//	}
+//
+//	else
+//	{
+//		LockOnUI_->Off();
+//		Target_ = nullptr;
+//	}
+//}

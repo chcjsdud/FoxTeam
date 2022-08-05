@@ -38,9 +38,9 @@ private:
 	void Walk_Update(float _DeltaTime) override;
 	void Walk_End() override;
 
-	void Run_Start() override;
-	void Run_Update(float _DeltaTime) override;
-	void Run_End() override;
+	//void Run_Start() override;
+	//void Run_Update(float _DeltaTime) override;
+	//void Run_End() override;
 
 	void Attack_Start() override;
 	void Attack_Update(float _DeltaTime) override;
