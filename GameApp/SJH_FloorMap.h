@@ -9,7 +9,10 @@ class GameEngineFBXMesh;
 class SJH_FloorMap : public GameEngineActor
 {
 public:
-	void Initialize(CollisionType _ColliderType);
+	static SJH_FloorMap* FloorMap;
+
+public:
+	GameEngineFBXMesh* GetFloorMapMesh();
 
 protected:
 
@@ -34,10 +37,6 @@ public:
 protected:
 
 private:
-	GameEngineCollision* Collider_;
-	GameEngineFBXMesh* Mesh_;
-
-private:
-	GameEngineRenderer* Renderer_;
+	GameEngineFBXRenderer* FloorMap_;
 };
 

@@ -80,6 +80,12 @@ public:
 
 	bool CheckIntersects(const float4& _Position, const float4& _Direction, const float _Distance = 5.0f);
 
+public:
+	inline GameEngineFBXMesh* GetMesh()
+	{
+		return FBXMesh;
+	}
+
 protected:
 	void Start() override;
 

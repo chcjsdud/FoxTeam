@@ -3,6 +3,8 @@
 #include "GameEngineLevel.h"
 #include "GameEngineTransform.h"
 
+#include "GameEngineFBXMesh.h"
+
 
 std::function<bool(GameEngineTransform*, GameEngineTransform*)>
 GameEngineCollision::CollisionCheckFunction[static_cast<int>(CollisionType::MAX)][static_cast<int>(CollisionType::MAX)];
@@ -84,7 +86,7 @@ bool GameEngineCollision::AABBToCirCle(GameEngineTransform* _Left, GameEngineTra
 }
 
 //===================================================== SJH
-bool GameEngineCollision::RayCollision(CollisionType _ThisType, const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
+bool GameEngineCollision::BoundingToRayCollision(CollisionType _ThisType, const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
 {
 	switch (_ThisType)
 	{
@@ -105,7 +107,7 @@ bool GameEngineCollision::RayCollision(CollisionType _ThisType, const float4& _R
 	return false;
 }
 
-bool GameEngineCollision::RayCollision(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
+bool GameEngineCollision::BoundingToRayCollision(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
 {
 	switch (ColType_)
 	{

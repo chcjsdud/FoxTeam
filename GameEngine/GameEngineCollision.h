@@ -9,6 +9,7 @@
 // 설명 :
 class GameEngineCore;
 class GameEngineLevel;
+class GameEngineFBXMesh;
 class GameEngineCollision : public GameEngineTransformComponent
 {
 	friend GameEngineCore;
@@ -37,9 +38,9 @@ private: // 타입별 광선과의 교차검사
 	bool Sphere3DToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
 	bool AABBBoxToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
 
-public:
-	bool RayCollision(CollisionType _ThisType, const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
-	bool RayCollision(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
+public: // 바운딩박스,구를 이용한 광선과의 충돌체크
+	bool BoundingToRayCollision(CollisionType _ThisType, const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
+	bool BoundingToRayCollision(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
 
 public:
 	inline CollisionType GetCollisionType()

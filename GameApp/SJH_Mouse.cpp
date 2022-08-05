@@ -8,6 +8,8 @@
 #include "SJH_Ray.h"
 #include "SJH_Yuki.h"
 
+#include "SJH_FloorMap.h"
+
 void SJH_Mouse::Start()
 {
 	Renderer_ = CreateTransformComponent<GameEngineUIRenderer>();
@@ -37,14 +39,26 @@ void SJH_Mouse::Update(float _DeltaTime)
 			return;
 		}
 
-		// 카메라로부터 마우스클릭지점으로 향하는 방향벡터를 생성하고 그와 교차하는 충돌체를 탐색하여
-		// 교차하는 충돌체 발견시 해당 위치를 반환해준다
-		SJH_Ray* Ray =  Ray_->RayAtViewSpace(GameEngineInput::GetInst().GetMousePos());
 		float4 MovePos = float4::ZERO;
-		if (true == Ray->IsPicked(MovePos))
+
+#pragma region BoundingCollider To Ray CrossCheck (220805 SJH 주석처리)
+		//// 카메라로부터 마우스클릭지점으로 향하는 방향벡터를 생성하고 그와 교차하는 충돌체를 탐색하여
+		//// 교차하는 충돌체 발견시 해당 위치를 반환해준다
+		//if (true == Ray_->IsColliderPicked(GameEngineInput::GetInst().GetMousePos(), MovePos))
+		//{
+		//	SJH_Yuki::MainPlayer->GetTransform()->SetWorldPosition(MovePos);
+		//}
+#pragma endregion
+
+#pragma region Mesh To Ray CrossCheck
+		if (nullptr != SJH_FloorMap::FloorMap)
 		{
-			SJH_Yuki::MainPlayer->GetTransform()->SetWorldPosition(MovePos);
+			if (true == Ray_->IsPicked(GameEngineInput::GetInst().GetMousePos(), MovePos, SJH_FloorMap::FloorMap->GetFloorMapMesh()))
+			{
+				SJH_Yuki::MainPlayer->GetTransform()->SetWorldPosition(MovePos);
+			}
 		}
+#pragma endregion
 	}
 
 	// 

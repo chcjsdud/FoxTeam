@@ -113,16 +113,7 @@ void SJH_PlayLevel::CreateActorLevel()
 
 	// ¸Ê
 	FloorMap_ = CreateActor<SJH_FloorMap>();
-	FloorMap_->Initialize(CollisionType::OBBBox3D);
-
-	// Å×½ºÆ® ¸Ê
-	SJH_FloorMap* TestMap1 = CreateActor<SJH_FloorMap>();
-	TestMap1->Initialize(CollisionType::Sphere3D);
-	TestMap1->GetTransform()->SetWorldPosition(float4(-1500.f, 0.f, -1500.f));
-
-	SJH_FloorMap* TestMap2 = CreateActor<SJH_FloorMap>();
-	TestMap2->Initialize(CollisionType::Sphere3D);
-	TestMap2->GetTransform()->SetWorldPosition(float4(1500.f, 0.f, 1500.f));
+	SJH_FloorMap::FloorMap = FloorMap_;
 
 	// ¸¶¿ì½º
 	InGameMouse_ = CreateActor<SJH_Mouse>();

@@ -4,17 +4,20 @@
 // 분류 : 광선(Ray)
 // 용도 : 
 // 설명 : 
+class GameEngineFBXMesh;
 class GameEngineCollision;
 class SJH_Ray : public GameEngineActor
 {
-public:
-	SJH_Ray* RayAtViewSpace(float _MousePosX, float _MousePosY);
-	SJH_Ray* RayAtViewSpace(float4 _MousePos);
-
-public: // 
-	bool IsPicked(float4& _PickedPos);
+public: // 광선체크
+	bool IsPicked(const float4& _MousePos, float4& _PickedPos, GameEngineFBXMesh* _Mesh = nullptr);
+	bool IsColliderPicked(const float4& _MousePos, float4& _PickedPos);
+	bool IsMeshPicked(GameEngineFBXMesh* _Mesh, const float4& _MousePos, float4& _PickedPos);
 
 protected:
+
+private:
+	bool RayAtViewSpace(float _MousePosX, float _MousePosY);
+	bool RayAtViewSpace(float4 _MousePos);
 
 private:
 	void Start() override;

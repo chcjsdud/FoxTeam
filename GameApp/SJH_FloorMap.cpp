@@ -4,69 +4,54 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
-void SJH_FloorMap::Initialize(CollisionType _ColliderType)
+SJH_FloorMap* SJH_FloorMap::FloorMap = nullptr;
+
+GameEngineFBXMesh* SJH_FloorMap::GetFloorMapMesh()
 {
-	// 테스트용 충돌체
-	Collider_ = CreateTransformComponent<GameEngineCollision>();
-	Collider_->GetTransform()->SetLocalScaling(float4(1000.f, 1000.f, 1000.f));
-	Collider_->SetCollisionType(_ColliderType);
-
-	// 테스트 메쉬
-	Renderer_ = CreateTransformComponent<GameEngineRenderer>();
-
-	switch (_ColliderType)
+	if (nullptr == FloorMap_)
 	{
-	case CollisionType::Sphere3D:
-		Renderer_->SetRenderingPipeLine("ColorSphere");
-		break;
-	case CollisionType::AABBBox3D:
-		break;
-	case CollisionType::OBBBox3D:
-		Renderer_->SetRenderingPipeLine("ColorBox");
-		break;
+		return nullptr;
 	}
 
-	Renderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4(1.0f, 0.0f, 1.0f, 1.0f));
-	Renderer_->GetTransform()->SetLocalScaling(float4(1000.f, 1000.f, 1000.f));
+	return FloorMap_->GetMesh();
 }
 
 void SJH_FloorMap::Start()
 {
-	//GetTransform()->SetLocalPosition(float4(0.0f, -100.0f, 0.0f));
+	// FBX Files 경로 지정
+	GameEngineDirectory Directory;
+	Directory.MoveParent("FoxTeam");
+	Directory.MoveChild("Resources");
+	Directory.MoveChild("FBX");
+	Directory.MoveChild("YSJ");
 
-	//// 메쉬 로드
-	//GameEngineDirectory Directory;
-	//Directory.MoveParent("FoxTeam");
-	//Directory.MoveChild("Resources");
-	//Directory.MoveChild("FBX");
+	std::string MeshName = "NaviCol.fbx";
 
-	//Mesh_ = GameEngineFBXMeshManager::GetInst().Load(Directory.PathToPlusFileName("Map_Lumia_01.fbx"));
-	//Mesh_->CreateRenderingBuffer();
+	// Mesh Load
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(Directory.PathToPlusFileName(MeshName)))
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(Directory.PathToPlusFileName(MeshName));
+		Mesh->CreateRenderingBuffer();
+	}
 
-	//GameEngineFBXRenderer* Renderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	//Renderer->SetFBXMesh("Map_Lumia_01.fbx", "TextureDeferredLight");
-	//Renderer->GetTransform()->SetLocalScaling(float4());
+	// Create Renderer
+	FloorMap_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	FloorMap_->SetFBXMesh(MeshName, "TextureDeferredLight");
+
+	for (UINT i = 0; i < FloorMap_->GetRenderSetCount(); i++)
+	{
+		FloorMap_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
+	}
+
+	//FloorMap_->GetTransform()->SetLocalRotationDegree({ 0.0f, 70.0f, 0.0f });
 }
 
 void SJH_FloorMap::Update(float _DeltaTime)
 {
-#ifdef _DEBUG
-	if (nullptr != Renderer_)
-	{
-		//GetLevel()->PushDebugRender(Renderer_->GetTransform(), CollisionType::Sphere3D, float4(1.f, 0.f, 1.f));
-	}
-
-	if (nullptr != Collider_)
-	{
-		//GetLevel()->PushDebugRender(Collider_->GetTransform(), CollisionType::Sphere3D, float4::RED);
-	}
-#endif // _DEBUG
 }
 
 SJH_FloorMap::SJH_FloorMap()
-	: Collider_(nullptr)
-	, Mesh_(nullptr)
-	, Renderer_(nullptr)
+	: FloorMap_(nullptr)
 {
 }
 

@@ -64,7 +64,7 @@ public:
 
 	std::vector<std::vector<FbxExRenderingPipeLineSettingData>> MatialData;
 
-	std::vector<std::vector<std::vector<UINT>>> Indexs;
+	std::vector<std::vector<std::vector<UINT>>> Indexs; // 메쉬<재질<인덱스>>>
 
 	std::vector<GameEngineVertexBuffer*> GameEngineVertexBuffers;
 	std::vector<std::vector<GameEngineIndexBuffer*>> GameEngineIndexBuffers;

@@ -6,9 +6,135 @@
 #include <GameEngine/GameEngineDevice.h>
 #include <GameEngine/GameEngineCore.h>
 #include <GameEngine/CameraComponent.h>
+#include <GameEngine/GameEngineFBXMesh.h>
 #include <GameEngine/GameEngineCollision.h>
 
-SJH_Ray* SJH_Ray::RayAtViewSpace(float _MousePosX, float _MousePosY)
+bool SJH_Ray::IsPicked(const float4& _MousePos, float4& _PickedPos, GameEngineFBXMesh* _Mesh)
+{
+    if (nullptr == _Mesh)
+    {
+        return IsColliderPicked(_MousePos, _PickedPos);
+    }
+    else
+    {
+        return IsMeshPicked(_Mesh, _MousePos, _PickedPos);
+    }
+
+    return false;
+}
+
+bool SJH_Ray::IsColliderPicked(const float4& _MousePos, float4& _PickedPos)
+{
+    // 광선을 월드영역으로 이동
+    // 결과값 : 광선시작위치, 광선의방향
+    if (false == RayAtViewSpace(_MousePos))
+    {
+        return false;
+    }
+
+    // 현재 레벨의 모든 충돌체 목록 Get
+    std::map<int, std::list<GameEngineCollision*>> AllList = GetLevel()->GetAllCollision();
+
+    // 해당 광선과 교차하는 충돌체 탐색
+    int GroupCnt = AllList.size();
+    for (int Group = 0; Group < GroupCnt; ++Group)
+    {
+        std::list<GameEngineCollision*>::iterator StartIter = AllList[Group].begin();
+        std::list<GameEngineCollision*>::iterator EndIter = AllList[Group].end();
+        for (; StartIter != EndIter; ++StartIter)
+        {
+            // 광선의 시작지점에서부터 선택된 충돌체와 교차하는 지점까지의 거리
+            float Dist = 0.0f;
+            if (true == (*StartIter)->BoundingToRayCollision((*StartIter)->GetCollisionType(), OriginPos_, Direction_, Dist))
+            {
+                // 교차한 지점의 좌표를 반환
+                _PickedPos = OriginPos_ + (Direction_ * Dist);
+                return true;
+            }
+        }
+    }
+
+    // 충돌하는 충돌체가 존재하지않다면 실패
+    return false;
+}
+
+bool SJH_Ray::IsMeshPicked(GameEngineFBXMesh* _Mesh, const float4& _MousePos, float4& _PickedPos)
+{
+    // 광선을 월드영역으로 이동
+    // 결과값 : 광선시작위치, 광선의방향
+    if (false == RayAtViewSpace(_MousePos))
+    {
+        return false;
+    }
+
+    // Mesh가 없다면 처리 불가
+    if (nullptr == _Mesh)
+    {
+        return false;
+    }
+
+    // 광선교차검사를 위한 Mesh 정보 Get
+    std::vector<FbxMeshSet>& vecAllMeshSet = _Mesh->GetAllMeshMap();
+    std::vector<FbxExMeshInfo>& vecMeshInfo = _Mesh->GetMeshInfos();
+
+    // 교차체크
+    float Dist = 0.0f;
+    for (int MeshCnt = 0; MeshCnt < static_cast<int>(vecAllMeshSet.size()); ++MeshCnt)
+    {
+        for (int MaterialCnt = 0; MaterialCnt < static_cast<int>(vecAllMeshSet[MeshCnt].MatialData.size()); ++MaterialCnt)
+        {
+            for (int FaceNumCnt = 0; FaceNumCnt < vecMeshInfo[MeshCnt].FaceNum; ++FaceNumCnt)
+            {
+                int Vertex0_Index = vecAllMeshSet[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt + 0];
+                int Vertex1_Index = vecAllMeshSet[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt + 1];
+                int Vertex2_Index = vecAllMeshSet[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt + 2];
+
+                float4 Vertex0 = vecAllMeshSet[MeshCnt].Vertexs[Vertex0_Index].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+                float4 Vertex1 = vecAllMeshSet[MeshCnt].Vertexs[Vertex1_Index].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+                float4 Vertex2 = vecAllMeshSet[MeshCnt].Vertexs[Vertex2_Index].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+
+                // 교차성공시 교차점까지의 거리를 이용하여 해당 좌표를 반환
+                if (true == DirectX::TriangleTests::Intersects(OriginPos_.DirectVector, Direction_.DirectVector, Vertex0.DirectVector, Vertex1.DirectVector, Vertex2.DirectVector, Dist))
+                {
+                    // 교차한 지점의 좌표를 반환
+                    _PickedPos = OriginPos_ + (Direction_ * Dist);
+                    return true;
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+    // 교차체크
+    //float Dist = 0.0f;
+    //for (int i = 0; i < vecMeshMap.size(); i++)
+    //{
+    //    for (int j = 0; j < vecMeshInfos[i].FaceNum; j++)
+    //    {
+    //        // 삼각형을 이루는 정점
+    //        float4 V0 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[i][0][j * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+    //        float4 V1 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[i][0][j * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+    //        float4 V2 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[i][0][j * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+
+    //        // 교차성공시 교차점까지의 거리를 이용하여 해당 좌표를 반환
+    //        if (true == DirectX::TriangleTests::Intersects(OriginPos_.DirectVector, Direction_.DirectVector, V0.DirectVector, V1.DirectVector, V2.DirectVector, Dist))
+    //        {
+    //            // 교차한 지점의 좌표를 반환
+    //            _PickedPos = OriginPos_ + (Direction_ * Dist);
+    //            return true;
+    //        }
+    //    }
+    //}
+
+    return false;
+}
+
+bool SJH_Ray::RayAtViewSpace(float _MousePosX, float _MousePosY)
 {
     // 2D 환경에서의 마우스 클릭지점을 이용하여
     // 3D 환경에서의 마우스 좌표와 현재 카메라가 바라보는 방향을 계산한다.
@@ -41,10 +167,10 @@ SJH_Ray* SJH_Ray::RayAtViewSpace(float _MousePosX, float _MousePosY)
     OriginPos_.z = InverseViewMat._43;
     OriginPos_.w = 0.0f;
 
-    return this;
+    return true;
 }
 
-SJH_Ray* SJH_Ray::RayAtViewSpace(float4 _MouseClickPos)
+bool SJH_Ray::RayAtViewSpace(float4 _MouseClickPos)
 {
     // 2D 환경에서의 마우스 클릭지점을 이용하여
     // 3D 환경에서의 마우스 좌표와 현재 카메라가 바라보는 방향을 계산한다.
@@ -52,82 +178,6 @@ SJH_Ray* SJH_Ray::RayAtViewSpace(float4 _MouseClickPos)
     float MousePosY = _MouseClickPos.y;
 
     return RayAtViewSpace(MousePosX, MousePosY);
-}
-
-bool SJH_Ray::IsPicked(float4& _PickedPos)
-{
-    // 현재 레벨의 모든 충돌체 목록 Get
-    std::map<int, std::list<GameEngineCollision*>> AllList = GetLevel()->GetAllCollision();
-
-    // 해당 광선과 교차하는 충돌체 탐색
-    int GroupCnt = AllList.size();
-    for (int Group = 0; Group < GroupCnt; ++Group)
-    {
-        std::list<GameEngineCollision*>::iterator StartIter = AllList[Group].begin();
-        std::list<GameEngineCollision*>::iterator EndIter = AllList[Group].end();
-        for (; StartIter != EndIter; ++StartIter)
-        {
-            bool CrossCheck = false;
-
-            // 광선의 시작지점에서부터 선택된 충돌체와 교차하는 지점까지의 거리
-            float Dist = 0.0f;
-            if (true == (*StartIter)->RayCollision(OriginPos_, Direction_, Dist))
-            {
-                // 교차한 지점의 좌표를 반환
-                _PickedPos = OriginPos_ + (Direction_ * Dist);
-
-                return true;
-            }
-          
-#pragma region 광선교차 공통화작업으로 인한 주석
-            //======================= 220804 SJH 임시주석
-            //// 현재 검색하는 구의 센터와 반지름 Get
-            //DirectX::XMFLOAT3 CurColliderCenter = CurCollider->GetTransform()->GetCollisionData().Sphere.Center;
-            //float4 fCenter = float4(CurColliderCenter.x, CurColliderCenter.y, CurColliderCenter.z);
-            //float Radius = CurCollider->GetTransform()->GetCollisionData().Sphere.Radius;
-
-            //// 거리와 교차여부를 판단하기 위한 데이터 계산
-            //float4 Connect = fCenter - OriginPos_;
-            //float s = float4::Dot3D(Connect, Direction_);
-            //float l = float4::Dot3D(Connect, Connect);
-            //float r = std::pow(Radius, 2);
-
-            //// 광선이 구의 반대방향을 향하거나 구를 지나친다.
-            //if (s < 0 && l > r)
-            //{
-            //    return false;
-            //}
-
-            //// 광선이 구를 비껴나가는 경우
-            //float m = l - static_cast<float>(std::pow(s, 2));
-            //if (m > r)
-            //{
-            //    return false;
-            //}
-
-            //// 광선의 시작점으로부터 교차점까지의 거리
-            //float q = static_cast<float>(std::sqrt(r - m));
-            //float Distance = 0.0f;
-            //if (l > r)
-            //{
-            //    Distance = s - q;
-            //}
-            //else
-            //{
-            //    Distance = s + q;
-            //}
-
-            //// 광선 원위치 + (t * 광선방향) = 교차한점의 좌표
-            //// Dist : 출발점(원위치)로부터 충돌(교차)한 지점까지의 거리
-            //_PickedPos = OriginPos_ + (Direction_ * Distance);
-
-            //return true;
-#pragma endregion
-        }
-    }
-
-    // 충돌하는 충돌체가 존재하지않다면 실패
-    return false;
 }
 
 void SJH_Ray::Start()
