@@ -88,58 +88,58 @@ void YSJ_Char::Walk_End()
 	IsMove_ = false;
 }
 
-//Run
-void YSJ_Char::Run_Start()
-{
-	IsMove_ = true;
-	//Speed_ = 600.f;
-}
-void YSJ_Char::Run_Update(float _DeltaTime)
-{
-	if (GameEngineInput::GetInst().Press("Attack"))
-	{
-		State_.ChangeState("Attack");
-		return;
-	}
-
-	if (false == GameEngineInput::GetInst().Press("Space"))
-	{
-		if (true == GameEngineInput::GetInst().Press("W") ||
-			true == GameEngineInput::GetInst().Press("A") ||
-			true == GameEngineInput::GetInst().Press("S") ||
-			true == GameEngineInput::GetInst().Press("D"))
-		{
-			State_.ChangeState("Walk");
-
-			return;
-		}
-	}
-
-	if (false == GameEngineInput::GetInst().Press("W") &&
-		false == GameEngineInput::GetInst().Press("A") &&
-		false == GameEngineInput::GetInst().Press("S") &&
-		false == GameEngineInput::GetInst().Press("D"))
-	{
-		State_.ChangeState("Idle");
-
-		return;
-	}
-
-	Status_Final_.Stat_Stamina_ -= _DeltaTime;
-
-	if (Status_Final_.Stat_Stamina_ < 0.f)
-	{
-		Status_Final_.Stat_Stamina_ = 0.f;
-	}
-
-	CurDirUpdate(_DeltaTime);
-	MoveUpdate(_DeltaTime);
-	MoveRotateUpdate(_DeltaTime);
-}
-void YSJ_Char::Run_End()
-{
-	IsMove_ = false;
-}
+////Run
+//void YSJ_Char::Run_Start()
+//{
+//	IsMove_ = true;
+//	//Speed_ = 600.f;
+//}
+//void YSJ_Char::Run_Update(float _DeltaTime)
+//{
+//	if (GameEngineInput::GetInst().Press("Attack"))
+//	{
+//		State_.ChangeState("Attack");
+//		return;
+//	}
+//
+//	if (false == GameEngineInput::GetInst().Press("Space"))
+//	{
+//		if (true == GameEngineInput::GetInst().Press("W") ||
+//			true == GameEngineInput::GetInst().Press("A") ||
+//			true == GameEngineInput::GetInst().Press("S") ||
+//			true == GameEngineInput::GetInst().Press("D"))
+//		{
+//			State_.ChangeState("Walk");
+//
+//			return;
+//		}
+//	}
+//
+//	if (false == GameEngineInput::GetInst().Press("W") &&
+//		false == GameEngineInput::GetInst().Press("A") &&
+//		false == GameEngineInput::GetInst().Press("S") &&
+//		false == GameEngineInput::GetInst().Press("D"))
+//	{
+//		State_.ChangeState("Idle");
+//
+//		return;
+//	}
+//
+//	Status_Final_.Stat_Stamina_ -= _DeltaTime;
+//
+//	if (Status_Final_.Stat_Stamina_ < 0.f)
+//	{
+//		Status_Final_.Stat_Stamina_ = 0.f;
+//	}
+//
+//	CurDirUpdate(_DeltaTime);
+//	MoveUpdate(_DeltaTime);
+//	MoveRotateUpdate(_DeltaTime);
+//}
+//void YSJ_Char::Run_End()
+//{
+//	IsMove_ = false;
+//}
 
 //Attack
 void YSJ_Char::Attack_Start()
@@ -152,10 +152,10 @@ void YSJ_Char::Attack_Start()
 	}
 
 	// 이 시간 안에 추가 공격 하면 연속기가 나감, 공격시 갱신
-	AttackTime_ = 0.5f;
+	//AttackTime_ = 0.5f;
 
 	//연속기 단계, 3단계 넘으면 다시 0으로
-	AttackLevel_ = 0;
+	//AttackLevel_ = 0;
 
 	//0.5초 간격으로 공격한다. 공격시 갱신
 	AttackTurm_ = 0.25f;
@@ -174,10 +174,10 @@ void YSJ_Char::Attack_Start()
 }
 void YSJ_Char::Attack_Update(float _DeltaTime)
 {
-	KeyDirUpdate(_DeltaTime);
+	//KeyDirUpdate(_DeltaTime);
 
 	AttackTurm_ -= _DeltaTime;
-	AttackTime_ -= _DeltaTime;
+	//AttackTime_ -= _DeltaTime;
 	AttackHitTime_ -= _DeltaTime;
 
 	if (AttackHitTime_ <= 0)
@@ -186,34 +186,34 @@ void YSJ_Char::Attack_Update(float _DeltaTime)
 		AttackHitBoxCollision_->Off();
 	}
 
-	if (AttackTime_ > 0.f)
-	{
-		if (AttackTurm_ <= 0.f)
-		{
-			if (GameEngineInput::GetInst().Press("Attack"))
-			{
-				//다음 단계 공격, 에니메이션 바꾸기
-				AttackHitBoxCollision_->On();
+	//if (AttackTime_ > 0.f)
+	//{
+	//	if (AttackTurm_ <= 0.f)
+	//	{
+	//		if (GameEngineInput::GetInst().Press("Attack"))
+	//		{
+	//			//다음 단계 공격, 에니메이션 바꾸기
+	//			AttackHitBoxCollision_->On();
 
-				//Status_Final_.Stat_Stamina_ -= Status_Final_.Stat_Attack_Stamina_;
+	//			//Status_Final_.Stat_Stamina_ -= Status_Final_.Stat_Attack_Stamina_;
 
-				//if (Status_Final_.Stat_Stamina_ < 0.f)
-				//{
-				//	Status_Final_.Stat_Stamina_ = 0.f;
-				//}
+	//			//if (Status_Final_.Stat_Stamina_ < 0.f)
+	//			//{
+	//			//	Status_Final_.Stat_Stamina_ = 0.f;
+	//			//}
 
-				AttackTime_ = 1.f;
-				AttackTurm_ = 0.5f;
-				AttackHitTime_ = 0.1f;
+	//			AttackTime_ = 1.f;
+	//			AttackTurm_ = 0.5f;
+	//			AttackHitTime_ = 0.1f;
 
-				++AttackLevel_;
-				if (AttackLevel_ == 2)
-				{
-					AttackLevel_ = 0;
-				}
-			}
-		}
-	}
+	//			++AttackLevel_;
+	//			if (AttackLevel_ == 2)
+	//			{
+	//				AttackLevel_ = 0;
+	//			}
+	//		}
+	//	}
+	//}
 
 	else
 	{
@@ -224,12 +224,24 @@ void YSJ_Char::Attack_Update(float _DeltaTime)
 void YSJ_Char::Attack_End()
 {
 	AttackTurm_ = 0.f;
-	AttackTime_ = 0.f;
-	AttackLevel_ = 0;
+	//AttackTime_ = 0.f;
+	//AttackLevel_ = 0;
 	AttackHitTime_ = 0.f;
 
 	//맞거나 이런저런 상황으로 강제로 State가 종료 되었을때
 	AttackHitBoxCollision_->Off();
+}
+
+void YSJ_Char::Attack_Ready_Start()
+{
+}
+
+void YSJ_Char::Attack_Ready_Update(float _DeltaTime)
+{
+}
+
+void YSJ_Char::Attack_Ready_End()
+{
 }
 
 

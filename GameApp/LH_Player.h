@@ -20,7 +20,7 @@ public:
 protected:
 	bool Iscontrolled_;
 
-	class PlayController* PlayController_;
+	class PlayerController* PlayController_;
 	class UI_Skill* SkillUI_;
 	class LockOnUI* LockOnUI_;
 	//class Inventory* Inventory_;

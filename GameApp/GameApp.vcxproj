@@ -183,6 +183,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AIController.cpp" />
     <ClCompile Include="Appmain.cpp" />
     <ClCompile Include="Character_ProtoType.cpp">
       <SubType>
@@ -208,6 +209,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="UI_CharPicture.cpp" />
     <ClCompile Include="UI_Equip.cpp" />
     <ClCompile Include="UI_Inventory.cpp" />
@@ -232,10 +234,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="PJW_Player.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="PlayController.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -314,6 +312,7 @@
     <ClCompile Include="YSJ_PlayLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AIController.h" />
     <ClInclude Include="Character_ProtoType.h">
       <SubType>
       </SubType>
@@ -339,6 +338,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="UI_CharPicture.h" />
     <ClInclude Include="UI_Equip.h" />
     <ClInclude Include="UI_Inventory.h" />
@@ -370,10 +370,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PJW_Player.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="PlayController.h">
       <SubType>
       </SubType>
     </ClInclude>

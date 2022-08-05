@@ -5,7 +5,7 @@
 #include "LH_TestMonster.h"
 #include "LH_Map.h"
 #include "GameMouse.h"
-#include "PlayController.h"
+#include "PlayerController.h"
 
 #include "LH_Yuki.h"
 
@@ -23,7 +23,7 @@
 #include "UserGame.h"
 
 PlayLevel::PlayLevel() 
-	: Controller_(nullptr)
+	: PlayerController_(nullptr)
 {
 }
 
@@ -201,16 +201,16 @@ void PlayLevel::CreateActorLevel()
 	}
 
 	{
-		Controller_ = CreateActor<PlayController>();
+		PlayerController_ = CreateActor<PlayerController>();
 	}
 
 	{
 	//	GameMouse* mouse = CreateActor<GameMouse>();
 	//
-		Player* Actor = CreateActor<Player>("LH_Yuki");
-		Controller_->AddPlayerMap(Actor);
+		Player* Actor = CreateActor<Player_Yuki>("LH_Yuki");
+		PlayerController_->AddPlayerMap(Actor);
 
-		Controller_->SwitchMainPlayer("LH_Yuki");
+		PlayerController_->SwitchMainPlayer("LH_Yuki");
 
 	//	Actor->SetParentMouse(mouse); // 플레이어 캐릭터를 종속시킬 마우스 커서를 알려줍니다. 게임매니저 생성 시 삭제될 함수
 	//

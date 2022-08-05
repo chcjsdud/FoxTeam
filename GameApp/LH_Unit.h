@@ -134,11 +134,6 @@ public:
 
 public:
 
-	void Unit_ChangeState(std::string _Name)
-	{
-		State_.ChangeState(_Name);
-	}
-
 	void Unit_SetTargetDir(float4 _Dir)
 	{
 		TargetDir_ = _Dir;
@@ -149,9 +144,9 @@ public:
 		TargetPos_ = _Pos;
 	}
 
-	void Unit_ChangeState(std::string _State)
+	void Unit_ChangeState(std::string _StateName)
 	{
-		State_.ChangeState(_State);
+		State_.ChangeState(_StateName);
 	}
 
 	void Unit_SetMove(bool _IsMove)

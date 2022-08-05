@@ -46,6 +46,10 @@ private:
 	void Attack_Update(float _DeltaTime) override;
 	void Attack_End() override;
 
+	void Attack_Ready_Start() override;
+	void Attack_Ready_Update(float _DeltaTime) override;
+	void Attack_Ready_End() override;
+
 private:		// delete constructer
 	Player_Yuki(const Player_Yuki& _other) = delete;
 	Player_Yuki(Player_Yuki&& _other) = delete;

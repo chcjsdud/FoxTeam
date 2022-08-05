@@ -53,7 +53,7 @@ private:
 	//void InitActor();
 	void UIInit();
 
-	void PlayerStateUpdate();
+	//void PlayerStateUpdate();
 	void KeyStateUpdate();
 
 private:
@@ -64,13 +64,7 @@ private:
 	void Update(float _DeltaTime) override;
 
 public:
-	void ChangePlayerState(std::string _State)
-	{
-		if (MainUnit_->Unit_GetStateName() != _State)
-		{
-			MainUnit_->Unit_ChangeState(_State);
-		}
-	}
+	void ChangePlayerState(std::string _State);
 
 	void SetMainActor(Unit* _MainUnit)
 	{

@@ -38,13 +38,17 @@ private:
 	void Walk_Update(float _DeltaTime) override;
 	void Walk_End() override;
 
-	void Run_Start() override;
-	void Run_Update(float _DeltaTime) override;
-	void Run_End() override;
+	//void Run_Start() override;
+	//void Run_Update(float _DeltaTime) override;
+	//void Run_End() override;
 
 	void Attack_Start() override;
 	void Attack_Update(float _DeltaTime) override;
 	void Attack_End() override;
+
+	void Attack_Ready_Start() override;
+	void Attack_Ready_Update(float _DeltaTime) override;
+	void Attack_Ready_End() override;
 
 private:		// delete constructer
 	YSJ_Char(const YSJ_Char& _other) = delete;

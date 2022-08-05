@@ -119,9 +119,6 @@
     <ClCompile Include="LH_Yuki_State.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
     </ClCompile>
-    <ClCompile Include="PlayController.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
-    </ClCompile>
     <ClCompile Include="Character_ProtoType.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
     </ClCompile>
@@ -142,6 +139,12 @@
     </ClCompile>
     <ClCompile Include="SJH_Yuki.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\02.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerController.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
+    </ClCompile>
+    <ClCompile Include="AIController.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -421,9 +424,6 @@
     <ClInclude Include="LH_Yuki.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
     </ClInclude>
-    <ClInclude Include="PlayController.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
-    </ClInclude>
     <ClInclude Include="Character_ProtoType.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
     </ClInclude>
@@ -438,6 +438,12 @@
     </ClInclude>
     <ClInclude Include="SJH_Yuki.h">
       <Filter>01.GameObject\99.SJH\01.Actor\02.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerController.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
+    </ClInclude>
+    <ClInclude Include="AIController.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

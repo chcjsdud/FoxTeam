@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "LH_Player.h"
 
-#include "PlayController.h"
+#include "PlayerController.h"
 
 #include <GameEngine/GameEngineCollision.h>
 

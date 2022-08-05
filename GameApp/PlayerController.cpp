@@ -67,6 +67,39 @@ void PlayerController::SwitchMainPlayer(std::string _Name)
 	MainPlayer_->Player_SetIscontrolled(true);
 }
 
+void PlayerController::ChangePlayerState(std::string _State)
+{
+	if (MainPlayer_->Unit_GetStateName() != _State)
+	{
+		MainPlayer_->Unit_ChangeState(_State);
+	}
+}
+
+void PlayerController::AddPlayerMap(std::string _Name, Player* _Player)
+{
+	PlayerMap_.insert(std::make_pair(_Name, _Player));
+
+	if (MainPlayer_ == nullptr)
+	{
+		MainPlayer_ = _Player;
+	}
+}
+
+void PlayerController::AddPlayerMap(Player* _Player)
+{
+	if (_Player->GetName() == "")
+	{
+		GameEngineDebug::MsgBoxError("캐릭터 이름을 지어주지 않았습니다.");
+	}
+
+	PlayerMap_.insert(std::make_pair(_Player->GetName(), _Player));
+
+	if (MainPlayer_ == nullptr)
+	{
+		MainPlayer_ = _Player;
+	}
+}
+
 void PlayerController::Start()
 {
 	InitInput();

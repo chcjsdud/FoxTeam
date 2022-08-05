@@ -87,39 +87,12 @@ private:
 public:
 	void SwitchMainPlayer(std::string _Name);
 
-	void ChangePlayerState(std::string _State)
-	{
-		if (MainPlayer_->Unit_GetStateName() != _State)
-		{
-			MainPlayer_->Unit_ChangeState(_State);
-		}
-	}
+	void ChangePlayerState(std::string _State);
 
-	void AddPlayerMap(std::string _Name, Player* _Player)
-	{
-		PlayerMap_.insert(std::make_pair(_Name, _Player));
-
-		if (MainPlayer_ == nullptr)
-		{
-			MainPlayer_ = _Player;
-		}
-	}
+	void AddPlayerMap(std::string _Name, Player* _Player);
 
 	//이름을 지어 줬을경우
-	void AddPlayerMap(Player* _Player)
-	{
-		if (_Player->GetName() == "")
-		{
-			GameEngineDebug::MsgBoxError("캐릭터 이름을 지어주지 않았습니다.");
-		}
-
-		PlayerMap_.insert(std::make_pair(_Player->GetName(), _Player));
-
-		if (MainPlayer_ == nullptr)
-		{
-			MainPlayer_ = _Player;
-		}
-	}
+	void AddPlayerMap(Player* _Player);
 
 	void ErasePlayerMap(std::string _Name)
 	{

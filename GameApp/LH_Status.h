@@ -4,8 +4,8 @@
 struct Status
 {
 	Status()
-		: Stat_AttackPower_(0.f)
-		, Stat_Health_(0.f)
+		: Stat_AttackPower_(0)
+		, Stat_Health_(0)
 		, Stat_HealthRecovery_(0.f)
 		, Stat_Stamina_(0.f)
 		, Stat_StaminaRecovery_(0.f)
@@ -18,8 +18,8 @@ struct Status
 	{}
 
 	Status(bool Mult_true)
-		: Stat_AttackPower_(1.f)
-		, Stat_Health_(1.f)
+		: Stat_AttackPower_(1)
+		, Stat_Health_(1)
 		, Stat_HealthRecovery_(1.f)
 		, Stat_Stamina_(1.f)
 		, Stat_StaminaRecovery_(1.f)
@@ -48,10 +48,10 @@ struct Status
 
 	bool Stat_IsMult_;
 
-	float	Stat_AttackPower_;				// 공격력
+	int		Stat_AttackPower_;				// 공격력
 	int		Stat_Health_;					// 체력
 	float	Stat_HealthRecovery_;			// 체력재생
-	int		Stat_Stamina_;					// 스태미너
+	float	Stat_Stamina_;					// 스태미너
 	float	Stat_StaminaRecovery_;			// 스태미너 재생
 	float	Stat_Defense_;					// 방어력
 	float	Stat_AttackSpeed_;				// 공격속도
@@ -61,7 +61,7 @@ struct Status
 
 	void Reset()
 	{
-		Stat_AttackPower_ = 0.f;
+		Stat_AttackPower_ = 0;
 		Stat_Health_ = 0;
 		Stat_HealthRecovery_ = 0.f;
 		Stat_Stamina_ = 0;
@@ -77,7 +77,7 @@ struct Status
 
 	void Reset_mult()
 	{
-		Stat_AttackPower_ = 1.f;
+		Stat_AttackPower_ = 1;
 		Stat_Health_ = 1;
 		Stat_HealthRecovery_ = 1.f;
 		Stat_Stamina_ = 1;
@@ -106,6 +106,7 @@ struct Status
 		ret.Stat_CriticalHit_ += _value.Stat_CriticalHit_;
 		ret.Stat_MoveSpeed_ += _value.Stat_MoveSpeed_;
 		ret.Stat_Eyesight_ += _value.Stat_Eyesight_;
+
 		return Status(ret);
 	}
 
@@ -146,8 +147,8 @@ struct Status
 	const Status& operator*(const float _value) const
 	{
 		Status ret = *this;
-		ret.Stat_AttackPower_ *= _value;
-		ret.Stat_Health_ *= _value;
+		ret.Stat_AttackPower_ = static_cast<int>(ret.Stat_AttackPower_ * _value);
+		ret.Stat_Health_ = static_cast<int>(ret.Stat_Health_ *_value);
 		ret.Stat_HealthRecovery_ *= _value;
 		ret.Stat_Stamina_ *= _value;
 		ret.Stat_StaminaRecovery_ *= _value;
@@ -209,8 +210,8 @@ struct Status
 	}
 	Status& operator*=(const float _value)
 	{
-		Stat_AttackPower_ *= _value;
-		Stat_Health_ *= _value;
+		Stat_AttackPower_ = static_cast<int>(Stat_AttackPower_ * _value);
+		Stat_Health_ = static_cast<int>(Stat_Health_ * _value);
 		Stat_HealthRecovery_ *= _value;
 		Stat_Stamina_ *= _value;
 		Stat_StaminaRecovery_ *= _value;

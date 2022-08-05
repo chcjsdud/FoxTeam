@@ -156,6 +156,18 @@ void Player_Yuki::Attack_End()
 	AttackHitBoxCollision_->Off();
 }
 
+void Player_Yuki::Attack_Ready_Start()
+{
+}
+
+void Player_Yuki::Attack_Ready_Update(float _DeltaTime)
+{
+}
+
+void Player_Yuki::Attack_Ready_End()
+{
+}
+
 
 
 // 마우스 커서 이동용

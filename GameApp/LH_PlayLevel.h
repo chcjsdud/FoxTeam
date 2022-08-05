@@ -4,7 +4,7 @@
 #include <GameEngine/GameEngineFSM.h>
 
 
-class PlayController;
+class PlayerController;
 class PlayLevel : public GameEngineLevel
 {
 public:
@@ -21,13 +21,13 @@ public:
 protected:
 
 private:
-	PlayController* Controller_;
+	PlayerController* PlayerController_;
 
 	GameEngineFSM LoadState_;
 public:
-	PlayController* GetPlayController()
+	PlayerController* GetPlayerController()
 	{
-		return Controller_;
+		return PlayerController_;
 	}
 
 private:

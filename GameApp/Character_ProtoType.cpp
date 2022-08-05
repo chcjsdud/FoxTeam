@@ -13,13 +13,13 @@
 
 #include "Enums.h"
 
-Character_ProtoType::Character_ProtoType()
-{
-}
-
-Character_ProtoType::~Character_ProtoType()
-{
-}
+//Character_ProtoType::Character_ProtoType()
+//{
+//}
+//
+//Character_ProtoType::~Character_ProtoType()
+//{
+//}
 
 //void Character_ProtoType::Start()
 //{
