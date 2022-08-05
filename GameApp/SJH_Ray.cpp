@@ -71,7 +71,7 @@ bool SJH_Ray::IsPicked(float4& _PickedPos)
 
             // 광선의 시작지점에서부터 선택된 충돌체와 교차하는 지점까지의 거리
             float Dist = 0.0f;
-            if (true == (*StartIter)->RayCollision((*StartIter)->GetCollisionType(), OriginPos_, Direction_, Dist))
+            if (true == (*StartIter)->RayCollision(OriginPos_, Direction_, Dist))
             {
                 // 교차한 지점의 좌표를 반환
                 _PickedPos = OriginPos_ + (Direction_ * Dist);

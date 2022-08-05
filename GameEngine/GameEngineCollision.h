@@ -39,6 +39,7 @@ private: // 타입별 광선과의 교차검사
 
 public:
 	bool RayCollision(CollisionType _ThisType, const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
+	bool RayCollision(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
 
 public:
 	inline CollisionType GetCollisionType()

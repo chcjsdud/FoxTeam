@@ -105,6 +105,27 @@ bool GameEngineCollision::RayCollision(CollisionType _ThisType, const float4& _R
 	return false;
 }
 
+bool GameEngineCollision::RayCollision(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
+{
+	switch (ColType_)
+	{
+		case CollisionType::Sphere3D:
+		{
+			return Sphere3DToRay(_RayOriginPos, _RayDirection, _Dist);
+		}
+		case CollisionType::AABBBox3D:
+		{
+			return AABBBoxToRay(_RayOriginPos, _RayDirection, _Dist);
+		}
+		case CollisionType::OBBBox3D:
+		{
+			return OBBBoxToRay(_RayOriginPos, _RayDirection, _Dist);
+		}
+	}
+
+	return false;
+}
+
 bool GameEngineCollision::OBBBoxToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist)
 {
 	return GetTransform()->GetOBB().Intersects(_RayOriginPos.DirectVector, _RayDirection.DirectVector, _Dist);
