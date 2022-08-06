@@ -53,7 +53,7 @@ void SJH_Mouse::Update(float _DeltaTime)
 #pragma region Mesh To Ray CrossCheck
 		if (nullptr != SJH_FloorMap::FloorMap)
 		{
-			if (true == Ray_->IsPicked(GameEngineInput::GetInst().GetMousePos(), MovePos, SJH_FloorMap::FloorMap->GetFloorMapMesh()))
+			if (true == Ray_->IsPicked(GameEngineInput::GetInst().GetMousePos(), MovePos, SJH_FloorMap::FloorMap->GetFloorMapRenderer()))
 			{
 				SJH_Yuki::MainPlayer->GetTransform()->SetWorldPosition(MovePos);
 			}

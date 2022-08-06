@@ -9,7 +9,7 @@
 #include <GameEngine/GameEngineFBXMesh.h>
 #include <GameEngine/GameEngineCollision.h>
 
-bool SJH_Ray::IsPicked(const float4& _MousePos, float4& _PickedPos, GameEngineFBXMesh* _Mesh)
+bool SJH_Ray::IsPicked(const float4& _MousePos, float4& _PickedPos, GameEngineFBXRenderer* _Mesh)
 {
     if (nullptr == _Mesh)
     {
@@ -58,7 +58,7 @@ bool SJH_Ray::IsColliderPicked(const float4& _MousePos, float4& _PickedPos)
     return false;
 }
 
-bool SJH_Ray::IsMeshPicked(GameEngineFBXMesh* _Mesh, const float4& _MousePos, float4& _PickedPos)
+bool SJH_Ray::IsMeshPicked(GameEngineFBXRenderer* _Mesh, const float4& _MousePos, float4& _PickedPos)
 {
     // 광선을 월드영역으로 이동
     // 결과값 : 광선시작위치, 광선의방향
@@ -74,8 +74,8 @@ bool SJH_Ray::IsMeshPicked(GameEngineFBXMesh* _Mesh, const float4& _MousePos, fl
     }
 
     // 광선교차검사를 위한 Mesh 정보 Get
-    std::vector<FbxMeshSet>& vecAllMeshSet = _Mesh->GetAllMeshMap();
-    std::vector<FbxExMeshInfo>& vecMeshInfo = _Mesh->GetMeshInfos();
+    std::vector<FbxMeshSet>& vecAllMeshSet = _Mesh->GetMesh()->GetAllMeshMap();
+    std::vector<FbxExMeshInfo>& vecMeshInfo = _Mesh->GetMesh()->GetMeshInfos();
 
     // 교차체크
     float Dist = 0.0f;
@@ -89,9 +89,9 @@ bool SJH_Ray::IsMeshPicked(GameEngineFBXMesh* _Mesh, const float4& _MousePos, fl
                 int Vertex1_Index = vecAllMeshSet[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt + 1];
                 int Vertex2_Index = vecAllMeshSet[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt + 2];
 
-                float4 Vertex0 = vecAllMeshSet[MeshCnt].Vertexs[Vertex0_Index].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-                float4 Vertex1 = vecAllMeshSet[MeshCnt].Vertexs[Vertex1_Index].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-                float4 Vertex2 = vecAllMeshSet[MeshCnt].Vertexs[Vertex2_Index].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+                float4 Vertex0 = vecAllMeshSet[MeshCnt].Vertexs[Vertex0_Index].POSITION * _Mesh->GetTransform()->GetTransformData().WorldWorld_;
+                float4 Vertex1 = vecAllMeshSet[MeshCnt].Vertexs[Vertex1_Index].POSITION * _Mesh->GetTransform()->GetTransformData().WorldWorld_;
+                float4 Vertex2 = vecAllMeshSet[MeshCnt].Vertexs[Vertex2_Index].POSITION * _Mesh->GetTransform()->GetTransformData().WorldWorld_;
 
                 // 교차성공시 교차점까지의 거리를 이용하여 해당 좌표를 반환
                 if (true == DirectX::TriangleTests::Intersects(OriginPos_.DirectVector, Direction_.DirectVector, Vertex0.DirectVector, Vertex1.DirectVector, Vertex2.DirectVector, Dist))

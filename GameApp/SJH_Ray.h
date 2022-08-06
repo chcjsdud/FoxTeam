@@ -6,12 +6,13 @@
 // 설명 : 
 class GameEngineFBXMesh;
 class GameEngineCollision;
+class GameEngineFBXRenderer;
 class SJH_Ray : public GameEngineActor
 {
 public: // 광선체크
-	bool IsPicked(const float4& _MousePos, float4& _PickedPos, GameEngineFBXMesh* _Mesh = nullptr);
+	bool IsPicked(const float4& _MousePos, float4& _PickedPos, GameEngineFBXRenderer* _Mesh = nullptr);
 	bool IsColliderPicked(const float4& _MousePos, float4& _PickedPos);
-	bool IsMeshPicked(GameEngineFBXMesh* _Mesh, const float4& _MousePos, float4& _PickedPos);
+	bool IsMeshPicked(GameEngineFBXRenderer* _Mesh, const float4& _MousePos, float4& _PickedPos);
 
 protected:
 

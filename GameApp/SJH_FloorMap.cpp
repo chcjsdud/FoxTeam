@@ -16,6 +16,11 @@ GameEngineFBXMesh* SJH_FloorMap::GetFloorMapMesh()
 	return FloorMap_->GetMesh();
 }
 
+GameEngineFBXRenderer* SJH_FloorMap::GetFloorMapRenderer()
+{
+	return FloorMap_;
+}
+
 void SJH_FloorMap::Start()
 {
 	// FBX Files 경로 지정

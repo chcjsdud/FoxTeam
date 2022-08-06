@@ -6,6 +6,7 @@
 // Ό³Έν : 
 class GameEngineCollision;
 class GameEngineFBXMesh;
+class GameEngineFBXRenderer;
 class SJH_FloorMap : public GameEngineActor
 {
 public:
@@ -13,6 +14,7 @@ public:
 
 public:
 	GameEngineFBXMesh* GetFloorMapMesh();
+	GameEngineFBXRenderer* GetFloorMapRenderer();
 
 protected:
 
