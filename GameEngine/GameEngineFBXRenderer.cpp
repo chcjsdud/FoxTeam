@@ -382,15 +382,15 @@ bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position,
 
 	float4 Dir = _Direction.NormalizeReturn3D();
 
-	for (size_t MeshCnt = 0; MeshCnt < vecMeshMap.size(); MeshCnt++)
+	for (size_t i = 0; i < vecMeshMap.size(); i++)
 	{
-		for (int MaterialCnt = 0; MaterialCnt < static_cast<int>(vecMeshMap[MeshCnt].MatialData.size()); ++MaterialCnt)
+		for (size_t j = 0; j < vecMeshMap[i].Indexs[0].size(); ++j)
 		{
-			for (size_t FaceNumCnt = 0; FaceNumCnt < vecMeshInfos[MeshCnt].FaceNum; FaceNumCnt++)
+			for (size_t k = 0; k < vecMeshInfos[i].FaceNum; k++)
 			{
-				float4 V0 = vecMeshMap[MeshCnt].Vertexs[vecMeshMap[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-				float4 V1 = vecMeshMap[MeshCnt].Vertexs[vecMeshMap[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-				float4 V2 = vecMeshMap[MeshCnt].Vertexs[vecMeshMap[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+				float4 V0 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][j][k * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+				float4 V1 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][j][k * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+				float4 V2 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][j][k * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
 
 				Check = DirectX::TriangleTests::Intersects(_Position.DirectVector,
 					Dir.DirectVector,
