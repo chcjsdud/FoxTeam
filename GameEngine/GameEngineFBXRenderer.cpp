@@ -372,40 +372,58 @@ void FBXAnimation::Update(float _DeltaTime)
 	}
 }
 
-bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position,
-	const float4& _Direction, const float _Distance/* = 5.0f*/)
+bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position, 
+	const float4& _Direction, float& _Distance)
 {
 	std::vector<FbxMeshSet>& vecMeshMap = FBXMesh->GetAllMeshMap();
 	std::vector<FbxExMeshInfo>& vecMeshInfos = FBXMesh->GetMeshInfos();
-
+	
 	bool Check = false;
 
 	float4 Dir = _Direction.NormalizeReturn3D();
 
-	for (size_t i = 0; i < vecMeshMap.size(); i++)
+	for (size_t MeshCnt = 0; MeshCnt < vecMeshMap.size(); MeshCnt++)
 	{
-
-		for (size_t j = 0; j < vecMeshInfos[i].FaceNum; j++)
+		for (int MaterialCnt = 0; MaterialCnt < static_cast<int>(vecMeshMap[MeshCnt].MatialData.size()); ++MaterialCnt)
 		{
-			float dist = 0.0f;
-
-			float4 V0 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-			float4 V1 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-			float4 V2 = vecMeshMap[i].Vertexs[vecMeshMap[i].Indexs[0][0][j * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-
-			Check = DirectX::TriangleTests::Intersects(_Position.DirectVector,
-				Dir.DirectVector,
-				V0.DirectVector,
-				V1.DirectVector,
-				V2.DirectVector,
-				dist);
-
-			if (true == Check && _Distance >= dist
-				&& 0.0f < dist)
+			for (size_t FaceNumCnt = 0; FaceNumCnt < vecMeshInfos[MeshCnt].FaceNum; FaceNumCnt++)
 			{
-				return true;
+				float4 V0 = vecMeshMap[MeshCnt].Vertexs[vecMeshMap[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+				float4 V1 = vecMeshMap[MeshCnt].Vertexs[vecMeshMap[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+				float4 V2 = vecMeshMap[MeshCnt].Vertexs[vecMeshMap[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+
+				Check = DirectX::TriangleTests::Intersects(_Position.DirectVector,
+					Dir.DirectVector,
+					V0.DirectVector,
+					V1.DirectVector,
+					V2.DirectVector,
+					_Distance);
+
+				if (true == Check)
+				{
+					return true;
+				}
 			}
 		}
+	}
+
+	return false;
+}
+
+bool GameEngineFBXRenderer::CheckMeshToPointCollision(const float4& _Position, 
+	const float4& _Direction, const float _Range)
+{
+	float dist = 0.0f;
+
+	if (false == CheckIntersects(_Position, _Direction, dist))
+	{
+		return false;
+	}
+
+	if (_Range >= dist
+		&& 0.0f < dist)
+	{
+		return true;
 	}
 
 	return false;

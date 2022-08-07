@@ -56,7 +56,8 @@ void YSJ_LumiaMap::Update(float _DeltaTime)
 {
 	if (nullptr != YSJ_Player::MainPlayer)
 	{
-		if (true == FBXWallRenderer->CheckIntersects(YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition(), float4::DOWN))
+		if (true == FBXWallRenderer->CheckMeshToPointCollision(
+			YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition(),float4::DOWN, 5.0f))
 		{
 			YSJ_Player::MainPlayer->SetColor(float4::GREEN);
 		}

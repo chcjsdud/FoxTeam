@@ -78,7 +78,11 @@ public:
 		return RenderSets[_Index];
 	}
 
-	bool CheckIntersects(const float4& _Position, const float4& _Direction, const float _Distance = 5.0f);
+
+	bool CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance);
+
+	bool CheckMeshToPointCollision(const float4& _Position, const float4& _Direction, 
+		const float _Range);
 
 public:
 	inline GameEngineFBXMesh* GetMesh()

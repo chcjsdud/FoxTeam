@@ -27,7 +27,7 @@ void YSJ_PlayLevel::LevelStart()
 	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 300.0f, -300.0f));
 	GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeX(30.0f);
 
-	//YSJ_Player* Player = CreateActor<YSJ_Player>();
+	YSJ_Player* Player = CreateActor<YSJ_Player>();
 
 	GameEngineDirectory tempDir;
 
@@ -81,16 +81,16 @@ void YSJ_PlayLevel::LevelStart()
 	tempDir.MoveChild("EngineResources");
 	tempDir.MoveChild("FBX");
 
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("AnimMan.fbx")))
-	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("AnimMan.fbx"));
-		Mesh->CreateRenderingBuffer();
-		GameEngineFBXAnimationManager::GetInst().Load(tempDir.PathToPlusFileName("ALS_N_RUN_F.FBX"));
-	}
+	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("AnimMan.fbx")))
+	//{
+	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("AnimMan.fbx"));
+	//	Mesh->CreateRenderingBuffer();
+	//	GameEngineFBXAnimationManager::GetInst().Load(tempDir.PathToPlusFileName("ALS_N_RUN_F.FBX"));
+	//}
 
 
-	YSJ_Char* Player = CreateActor<YSJ_Char>();
-	Player->GetTransform()->SetWorldScaling({0.5f,0.5f, 0.5f });
+	//YSJ_Char* Player = CreateActor<YSJ_Char>();
+	//Player->GetTransform()->SetWorldScaling({0.5f,0.5f, 0.5f });
 
 	if (false == GameEngineInput::GetInst().IsKey("FreeCam"))
 	{
