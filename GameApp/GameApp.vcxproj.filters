@@ -149,6 +149,9 @@
     <ClCompile Include="AIController.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
     </ClCompile>
+    <ClCompile Include="GHMousePointer.cpp">
+      <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -450,6 +453,9 @@
     </ClInclude>
     <ClInclude Include="AIController.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
+    </ClInclude>
+    <ClInclude Include="GHMousePointer.h">
+      <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

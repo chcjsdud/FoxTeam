@@ -194,6 +194,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GHMousePointer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GHRio.cpp">
       <SubType>
       </SubType>
@@ -322,6 +326,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GHMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GHMousePointer.h">
       <SubType>
       </SubType>
     </ClInclude>

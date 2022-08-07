@@ -8,6 +8,8 @@
 #include <GameEngine/LightActor.h>
 #include <GameEngine/SKySphereActor.h>
 #include <GameApp/GHMap.h>
+#include <GameApp/GHRayTestBox.h>
+#include <GameApp/GHMousePointer.h>
 
 GHRayTestLevel::GHRayTestLevel()
 {
@@ -85,6 +87,8 @@ void GHRayTestLevel::createActor()
 {
 	CreateActor<GHRio>();
 	CreateActor<GHMap>();
+	CreateActor<GHRayTestBox>();
+	CreateActor<GHMousePointer>();
 	
 	SKySphereActor* Actor = CreateActor<SKySphereActor>();
 
