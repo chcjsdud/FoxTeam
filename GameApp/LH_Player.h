@@ -18,7 +18,6 @@ public:
 	~Player();
 
 protected:
-	bool Iscontrolled_;
 
 	class PlayerController* PlayController_;
 	class UI_Skill* SkillUI_;

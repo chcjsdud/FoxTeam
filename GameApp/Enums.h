@@ -11,6 +11,7 @@ enum class CollisionGroup
 	MonsterAttack,
 	PlayerSight,
 	Item,
+	UI,
 
 
 	MAX = 999
@@ -34,7 +35,7 @@ enum class JobType // 직업타입
 	ZAHIR,		// 자히르
 	NADINE,		// 나딘
 				// ....
-	MAX
+				MAX
 };
 
 #pragma endregion

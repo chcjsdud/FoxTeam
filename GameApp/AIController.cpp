@@ -10,28 +10,19 @@
 
 AIController::AIController() // default constructer 디폴트 생성자
 {
+	AIState_.CreateState<AIController>
+		("Idle", this, &AIController::Idle_Start, &AIController::Idle_Update, &AIController::Idle_End);
+	AIState_.CreateState<AIController>
+		("Chase", this, &AIController::Chase_Start, &AIController::Chase_Update, &AIController::Chase_End);
+	AIState_.CreateState<AIController>
+		("Attack", this, &AIController::Attack_Start, &AIController::Attack_Update, &AIController::Attack_End);
 
+	AIState_.ChangeState("Idle");
 }
 
 AIController::~AIController() // default destructer 디폴트 소멸자
 {
 
-}
-
-void AIController::InitInput()
-{
-
-}
-
-void AIController::UIInit()
-{
-
-}
-
-
-void AIController::Start()
-{
-	InitInput();
 }
 
 //void AIController::PlayerStateUpdate()
@@ -65,20 +56,9 @@ void AIController::Start()
 //	}
 //}
 
-void AIController::KeyStateUpdate()
-{
-	Key_RB_ = GameEngineInput::GetInst().Down("Key_RB");
-	Key_LB_ = GameEngineInput::GetInst().Down("Key_LB");
-	Key_Stop_ = GameEngineInput::GetInst().Down("Key_Stop");
-}
-
 void AIController::Update(float _DeltaTime)
 {
-	KeyStateUpdate();
-	//MouseUpdate();
-
-	//PlayerStateUpdate();
-	//CameraUpdate(_DeltaTime);
+	AIState_.Update(_DeltaTime);
 }
 
 void AIController::ChangePlayerState(std::string _State)
@@ -89,20 +69,53 @@ void AIController::ChangePlayerState(std::string _State)
 	}
 }
 
-void AIController::CameraUpdate_EternalReturn(float _DeltaTime)
+void AIController::AIController_Off()
 {
-	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
-	{
-		return;
-	}
-	else
-	{
-		float4 CamPos = MainUnit_->GetTransform()->GetWorldPosition();
-		CamPos.y += 700.f;
-		CamPos.z -= 550;
 
-		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldPosition(CamPos);
-		GetLevel()->GetMainCameraActor()->GetTransform()->SetWorldRotationDegree({ 60.f,0.f,0.f });
+}
 
-	}
+void AIController::AIController_On()
+{
+
+}
+
+
+
+
+
+
+void AIController::Idle_Start()
+{
+}
+
+void AIController::Idle_Update(float _DeltaTime)
+{
+}
+
+void AIController::Idle_End()
+{
+}
+
+void AIController::Chase_Start()
+{
+}
+
+void AIController::Chase_Update(float _DeltaTime)
+{
+}
+
+void AIController::Chase_End()
+{
+}
+
+void AIController::Attack_Start()
+{
+}
+
+void AIController::Attack_Update(float _DeltaTime)
+{
+}
+
+void AIController::Attack_End()
+{
 }

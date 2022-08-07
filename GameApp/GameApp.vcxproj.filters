@@ -152,6 +152,9 @@
     <ClCompile Include="GHMousePointer.cpp">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
     </ClCompile>
+    <ClCompile Include="LH_Mouse.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -456,6 +459,9 @@
     </ClInclude>
     <ClInclude Include="GHMousePointer.h">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="LH_Mouse.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 #pragma once
-#include <GameEngine/GameEngineActor.h>
+//#include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
 
 
@@ -7,11 +7,13 @@
 // 각기AI 유닛마다 보유할 수 있게 해줄 생각
 //
 
+// 이거 필요한가? 
+
 class Unit;
-class AIController : public GameEngineActor
+class AIController //: public GameEngineActor
 {
 public:
-	AIController(); 
+	AIController();
 	~AIController();
 
 private:
@@ -23,10 +25,12 @@ private:
 	bool Key_LB_;
 	bool Key_Stop_;
 
+	GameEngineFSM AIState_;
+
 	GameEngineActor* TargetActor_;
 	bool Stopkey_;
 	bool isClick_;
-	
+
 	bool IsAttack_;
 
 	//임시, 마우스로 클릭한 좌표, 마우스 클릭시 딱 1번 정해짐, 나중에 현 좌표와 이 좌표가 같아지면 초기화
@@ -43,25 +47,31 @@ private:
 
 	2. 좌클릭 우클릭
 	3. 좌클릭 공격
-	4. A키, 공격 (있나?)	
+	4. A키, 공격 (있나?)
 	*/
 
 #pragma endregion
 
-private:
-	void InitInput();
-	//void InitActor();
-	void UIInit();
+public:
+	void Update(float _DeltaTime);
 
-	//void PlayerStateUpdate();
-	void KeyStateUpdate();
+	void AIController_Off();
+	void AIController_On();
 
 private:
-	void CameraUpdate_EternalReturn(float _DeltaTime);
 
-private:
-	void Start() override;
-	void Update(float _DeltaTime) override;
+	void Idle_Start();
+	void Idle_Update(float _DeltaTime);
+	void Idle_End();
+
+	void Chase_Start();
+	void Chase_Update(float _DeltaTime);
+	void Chase_End();
+
+	void Attack_Start();
+	void Attack_Update(float _DeltaTime);
+	void Attack_End();
+
 
 public:
 	void ChangePlayerState(std::string _State);

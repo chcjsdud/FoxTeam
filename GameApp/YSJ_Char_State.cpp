@@ -19,13 +19,13 @@ void YSJ_Char::Idle_Start()
 }
 void YSJ_Char::Idle_Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::GetInst().Press("W")||
-		true == GameEngineInput::GetInst().Press("A")||
-		true == GameEngineInput::GetInst().Press("S")||
+	if (true == GameEngineInput::GetInst().Press("W") ||
+		true == GameEngineInput::GetInst().Press("A") ||
+		true == GameEngineInput::GetInst().Press("S") ||
 		true == GameEngineInput::GetInst().Press("D"))
 	{
 		//MPLAYERChangeState("Walk");
-		
+
 		State_.ChangeState("Walk");
 		return;
 	}
@@ -49,7 +49,7 @@ void YSJ_Char::Idle_End()
 //Walk
 void YSJ_Char::Walk_Start()
 {
-	IsMove_ = true;
+	//IsMove_ = true;
 	//Speed_ = 300.f;
 }
 void YSJ_Char::Walk_Update(float _DeltaTime)
@@ -85,7 +85,7 @@ void YSJ_Char::Walk_Update(float _DeltaTime)
 }
 void YSJ_Char::Walk_End()
 {
-	IsMove_ = false;
+	//IsMove_ = false;
 }
 
 ////Run

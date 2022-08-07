@@ -83,6 +83,11 @@ public:
 		return CollisionList_;
 	}
 
+	inline std::list<GameEngineCollision*>& GetCollisionGroup(int _Group)
+	{
+		return CollisionList_[_Group];
+	}
+
 private:
 	void Init();
 	void LevelChangeEndActorEvent(GameEngineLevel* _NextLevel);
@@ -92,11 +97,6 @@ private:
 	void TimeEventUpdate();
 
 	void ChangeCollisionGroup(int _Group, GameEngineCollision* _Collision);
-
-	inline std::list<GameEngineCollision*>& GetCollisionGroup(int _Group)
-	{
-		return CollisionList_[_Group];
-	}
 
 private:
 	std::map<int, std::list<GameEngineActor*>> ActorList_;

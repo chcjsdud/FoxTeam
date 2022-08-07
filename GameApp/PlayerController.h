@@ -1,17 +1,23 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+#include "LH_Mouse.h"
 
 /*
-하는일 : 플에이어 조작 화면이 구현된 클레스, 
+하는일 : 플에이어 조작 화면이 구현된 클레스,
 		1. UI 표시와 플레이어 캐릭터 조작에 관한 기능
 		2. 모든 플레이어를 저장해 놓고, 스위칭하며 컨트롤 할 대상을 조정할 수 있음
 		3. 플레이어의 키 조작과 명령을 가지고 있는 플레이어에게 하달하는 중간 역할
-		4. 사람 -> 플레이어 컨트롤러 -> 플레이어 
+		4. 사람 -> 플레이어 컨트롤러 -> 플레이어
 
 왜 있냐? : 플레이어를 스위칭해 가며 조종할 수 있게끔 만든것
 			모든 플레이어들을 미리 스폰해 놓고, 그중에서 조종하고 싶은 대상을 고를 수 있다.
 
+
+
+	노트 1
+	1. 플레이어 컨트롤러는 플레이어의 조작에 관해,
+	2. 플레이어 클레스는 조작에 의한 세부 동작에 관해
 */
 
 class Player;
@@ -26,7 +32,7 @@ public:
 	~PlayerController(); // default destructer 디폴트 소멸자
 
 private:
-	GameMouse* testGameMouse_;
+	LH_Mouse* GameMouse_;
 
 	GameEngineFSM CameraState_;
 
@@ -38,12 +44,16 @@ private:
 	bool Key_RB_;
 	bool Key_LB_;
 	bool Key_Stop_;
+	bool Key_Attack_;
 
-	GameEngineActor* TargetActor_;
-	bool Stopkey_;
-	bool isClick_;
-	
+
 	bool IsAttack_;
+	bool IsMove_;
+
+	bool Mouse_NavoCol_; // 마우스가 네비메쉬를 클릭 했을때
+	//bool Mouse_ActorCol_; // 마우스가 엑터를 클릭 했을때
+	GameEngineActor* Mouse_TargetActor_; // nullptr 인가를 조사해서 bool 값처럼 사용
+	bool Mouse_UICol_; // 마우스가 UI를 클릭 했을때
 
 	//임시, 마우스로 클릭한 좌표, 마우스 클릭시 딱 1번 정해짐, 나중에 현 좌표와 이 좌표가 같아지면 초기화
 	float4 TempMousePos_; // 맵과 충돌한 마우스의 좌표를 가져와야함, 별개로 UI 클릭할 마우스 좌표도 필요함
@@ -59,7 +69,7 @@ private:
 
 	2. 좌클릭 우클릭
 	3. 좌클릭 공격
-	4. A키, 공격 (있나?)	
+	4. A키, 공격 (있나?)
 	*/
 
 #pragma endregion
@@ -68,7 +78,6 @@ private:
 
 private:
 	void InitInput();
-	void UIInit();
 
 	void MouseUpdate();
 	void PlayerStateUpdate();

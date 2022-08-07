@@ -11,20 +11,21 @@
 //Player Global Func
 //
 
-Player::Player() 
+Player::Player()
+	: PlayController_(nullptr)
+	, SkillUI_(nullptr)
+	, LockOnUI_(nullptr)
+	, JobType_(JobType::NONE)
 {
 }
 
-Player::~Player() 
+Player::~Player()
 {
 
 }
 
 void Player::Start()
 {
-
-	PlayController_->AddPlayerMap(GetName(), this);
-	//GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 }
 
 void Player::Update(float _DeltaTime)
@@ -35,11 +36,9 @@ void Player::Update(float _DeltaTime)
 	//CameraState_.Update(_DeltaTime);
 }
 
-
-
 void Player::StaminaRecoverUpdate(float _DeltaTime)
 {
-	Status_Final_.Stat_StaminaRecovery_ += _DeltaTime* Status_Final_.Stat_StaminaRecovery_;
+	Status_Final_.Stat_StaminaRecovery_ += _DeltaTime * Status_Final_.Stat_StaminaRecovery_;
 
 	if (Status_Final_.Stat_StaminaRecovery_ > 100.f)
 	{

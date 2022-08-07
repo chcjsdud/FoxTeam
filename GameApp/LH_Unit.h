@@ -5,7 +5,7 @@
 #include "Enums.h"
 #include "LH_Status.h"
 
-#include "AIController.h"
+//#include "AIController.h"
 
 class GameEngineCollision;
 class GameEngineFBXRenderer;
@@ -16,11 +16,16 @@ public:
 	~Unit();
 
 protected: // 기본정보
-	AIController* AIController_;
+
+	bool Iscontrolled_;
+
+	//AIController AIController_;
+	GameEngineFSM AIController_;
 
 	CharacterType CharacterType_;		// (0: AI, 1: MAIN) : default(AI)
 
 	GameEngineFSM State_;
+
 
 	//버프 리스트, 
 	std::map <std::string, Buff*> BufferList_;
@@ -42,14 +47,15 @@ protected: // 기본정보
 	//락온된 대상의 방향, 움직일 방향보단 바라봐야할 방향에 가까움
 	float4 TargetDir_;
 	float4 TargetPos_;
-	bool IsMove_;
 	bool IsAttack_;
+
+	bool EnemyInSight_; //시야에 적이 있음
 
 #pragma endregion
 
-	//바라봐야 할 방향
+	// 유닛의 이동 방향, 유닛이 바라봐야 할 방향
 	float4 FowordDir_;
-	//현재 바라보는 방향
+	// 유닛이 현재 바라보는 방향 (이동과 무관함)
 	float4 CurFowordDir_;
 	//Y축 회전 속도
 	float YRotateSpeed_;
@@ -60,7 +66,6 @@ protected: // 기본정보
 	float AttackTurm_;
 	// 히트박스 활성화 전에 뜸들이는 시간 (에니메이션)
 	float AttackBuffer_;
-
 	//Attack Hit Box 활성화 시간
 	float AttackHitTime_;
 
@@ -92,6 +97,7 @@ protected:
 	void UpdateBuff(float _DeltaTime);
 
 	void CurDirUpdate(float _DeltaTime);
+	void TargetDirUpdate(float _DeltaTime);
 	//RockOn 중일때 방향 업데이트
 	//void RockOnDirUpdate(float _DeltaTime);
 	//void KeyDirUpdate(float _DeltaTime);
@@ -101,7 +107,7 @@ protected:
 //07.18 바라보는 방향을 넣어줘야함
 	void MoveRotateUpdate(float _DeltaTime);
 
-protected: 
+protected:
 	// 캐릭터 State, 가상함수를 통해 캐릭터 클레스가 기본적으로 가지고 있어야 할 state를 지정
 	virtual void Idle_Start() = 0;
 	virtual void Idle_Update(float _DeltaTime) = 0;
@@ -120,7 +126,7 @@ protected:
 	virtual void Attack_End() = 0;
 
 	// 공격과 공격 사이 에니메이션 잠깐 재생하는 구간, 공격이 완료된 직후이며, 이 단계에서 Attack를 끝낼지 게속할지 판별한다.
-	virtual void Attack_Ready_Start() = 0; 
+	virtual void Attack_Ready_Start() = 0;
 	virtual void Attack_Ready_Update(float _DeltaTime) = 0;
 	virtual void Attack_Ready_End() = 0;
 
@@ -133,6 +139,17 @@ public:
 
 
 public:
+
+	void Unit_AIController_Off()
+	{
+		Iscontrolled_ = false;
+		//AIController_->AIController_Off();
+	}
+	void Unit_AIController_On()
+	{
+		Iscontrolled_ = true;
+		//AIController_->AIController_On();
+	}
 
 	void Unit_SetTargetDir(float4 _Dir)
 	{
@@ -149,10 +166,10 @@ public:
 		State_.ChangeState(_StateName);
 	}
 
-	void Unit_SetMove(bool _IsMove)
-	{
-		IsMove_ = _IsMove;
-	}
+	//void Unit_SetMove(bool _IsMove)
+	//{
+	//	IsMove_ = _IsMove;
+	//}
 
 	std::string Unit_GetStateName()
 	{

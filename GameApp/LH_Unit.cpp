@@ -1,13 +1,13 @@
 #include "PreCompile.h"
 #include "LH_Unit.h"
 
-Unit::Unit() 
+Unit::Unit()
 	: CharacterType_(CharacterType::AI)
 	, CurFowordDir_{ 0.f,0.f,1.f,0.f }
 	, KeyDir_{ 0.f,0.f,1.f,0.f }
 	, FowordDir_{ 0.f,0.f,1.f,0.f }
 	, YRotateSpeed_(900.f)
-	, IsMove_(false)
+	//, IsMove_(false)
 	, AttackTurm_(0.f)
 	//, AttackTime_(0.f)
 	, AttackHitTime_(0.f)
@@ -15,6 +15,12 @@ Unit::Unit()
 	, UnitGroundCollision_(nullptr)
 	, UnitSightCollision_(nullptr)
 	, UnitHitBoxCollision_(nullptr)
+	, Target_(nullptr)
+	, AttackDist_(0.f)
+	, AttackBuffer_(0.f)
+	, IsAttack_(false)
+	, EnemyInSight_(false)
+	, Iscontrolled_(false)
 
 {
 	{
@@ -23,6 +29,8 @@ Unit::Unit()
 		State_.CreateState<Unit>("Attack", this, &Unit::Attack_Start, &Unit::Attack_Update, &Unit::Attack_End);;
 
 		State_.ChangeState("Idle");
+
+		//AIController_.SetMainActor(this);
 
 		//UnitGroundCollision_ = CreateTransformComponent<GameEngineCollision>();
 		//UnitSightCollision_ = CreateTransformComponent<GameEngineCollision>();
@@ -43,8 +51,6 @@ Unit::~Unit()
 	}
 
 	BufferList_.clear();
-
-	AIController_->Death();
 }
 
 void Unit::Start()
@@ -53,7 +59,7 @@ void Unit::Start()
 
 void Unit::Update(float _DeltaTime)
 {
-	UpdateBuff(_DeltaTime);
+
 }
 
 void Unit::SyncStatus()
@@ -102,10 +108,10 @@ void Unit::SetBaseStat(Status _Status)
 void Unit::AddBuff(std::string _Name, Status _Status, float _Time)
 {
 	Buff* _Buff = new Buff;
-	
-	*_Buff = { _Name, _Time , _Status , nullptr};
 
-	BufferList_.insert(std::make_pair( _Name, _Buff));
+	*_Buff = { _Name, _Time , _Status , nullptr };
+
+	BufferList_.insert(std::make_pair(_Name, _Buff));
 }
 
 void Unit::RemoveBuff(std::string _Name)
@@ -156,11 +162,26 @@ void Unit::UpdateBuff(float _DeltaTime)
 
 void Unit::CurDirUpdate(float _DeltaTime)	// 마우스 커서 우클릭한 위치로의 방향 벡터를 계산합니다.
 {
+	if (Target_ == nullptr)
+	{
+		FowordDir_ = TargetDir_;
+	}
+
+
 	// RockOnUpdate(_DeltaTime);
 
 	//KeyDirUpdate(_DeltaTime);
 
 
+}
+
+void Unit::TargetDirUpdate(float _DeltaTime)
+{
+	if (Target_ != nullptr)
+	{
+		TargetDir_ = GetTransform()->GetWorldPosition() - Target_->GetTransform()->GetWorldPosition();
+		TargetDir_.Normalize3D();
+	}
 }
 
 //void Unit::RockOnDirUpdate(float _DeltaTime)
@@ -222,10 +243,7 @@ void Unit::CurDirUpdate(float _DeltaTime)	// 마우스 커서 우클릭한 위치로의 방향 
 
 void Unit::MoveUpdate(float _DeltaTime)
 {
-	if (true == IsMove_)
-	{
-		GetTransform()->SetWorldMove(KeyDir_ * Status_Final_.Stat_MoveSpeed_ * _DeltaTime);
-	}
+	GetTransform()->SetWorldMove(FowordDir_ * Status_Final_.Stat_MoveSpeed_ * _DeltaTime);
 }
 
 

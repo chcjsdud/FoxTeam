@@ -148,7 +148,7 @@ struct Status
 	{
 		Status ret = *this;
 		ret.Stat_AttackPower_ = static_cast<int>(ret.Stat_AttackPower_ * _value);
-		ret.Stat_Health_ = static_cast<int>(ret.Stat_Health_ *_value);
+		ret.Stat_Health_ = static_cast<int>(ret.Stat_Health_ * _value);
 		ret.Stat_HealthRecovery_ *= _value;
 		ret.Stat_Stamina_ *= _value;
 		ret.Stat_StaminaRecovery_ *= _value;
@@ -281,6 +281,18 @@ struct Status
 
 struct Buff
 {
+	Buff()
+		: Time_(0.f)
+		, Name_("")
+	{}
+
+	Buff(std::string _Name, float _Time, Status _Status, std::function<void()> _BuffFunc = nullptr)
+		: Name_(_Name)
+		, Time_(_Time)
+		, Status_(_Status)
+		, BuffFunc_(_BuffFunc)
+	{}
+
 	std::string Name_;
 	float Time_;
 	Status Status_;

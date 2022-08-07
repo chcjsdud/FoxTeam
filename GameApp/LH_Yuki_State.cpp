@@ -19,24 +19,9 @@ void Player_Yuki::Idle_Start()
 }
 void Player_Yuki::Idle_Update(float _DeltaTime)
 {
-	// 컨트롤러로 부터 조작 명령이 내려지면 이동 방향이 지정되게끔
-
-	//if (true == GameEngineInput::GetInst().Press("W")||
-	//	true == GameEngineInput::GetInst().Press("A")||
-	//	true == GameEngineInput::GetInst().Press("S")||
-	//	true == GameEngineInput::GetInst().Press("D"))
-	if(IsMove_ == true)
+	if (EnemyInSight_ == true) //적이 시야 내에 있으면
 	{
-		//MPLAYERChangeState("Walk");
-		
-		State_.ChangeState("Walk");
-		return;
-	}
-
-	if (GameEngineInput::GetInst().Press("Attack"))
-	{
-		State_.ChangeState("Attack");
-		return;
+		//사거리까지 적을 추적함
 	}
 
 	StaminaRecoverUpdate(_DeltaTime);
@@ -52,40 +37,24 @@ void Player_Yuki::Idle_End()
 //Walk
 void Player_Yuki::Walk_Start()
 {
+	FowordDir_ = TargetDir_;
 	//IsMove_ = true;
 	//Speed_ = 300.f;
 }
 void Player_Yuki::Walk_Update(float _DeltaTime)
 {
-	// 크기가 2짜리 큐를 만들고, 2번째는 인접 Key가 아니면 return 시킴, 그리고 안눌렸으면 다시 반환시켜서 먼저 누른거 2개만 남게 해주기
-	// 
-	if (GameEngineInput::GetInst().Press("Attack"))
-	{
-		State_.ChangeState("Attack");
-		return;
-	}
-
-	//if (false == GameEngineInput::GetInst().Press("W") &&
-	//	false == GameEngineInput::GetInst().Press("A") &&
-	//	false == GameEngineInput::GetInst().Press("S") &&
-	//	false == GameEngineInput::GetInst().Press("D"))
-	if(IsMove_ == false)
-	{
-		State_.ChangeState("Idle");
-
-		return;
-	}
-
-	if (true == GameEngineInput::GetInst().Press("Space"))
-	{
-		State_.ChangeState("Run");
-
-		return;
-	}
-
 	CurDirUpdate(_DeltaTime);
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
+	// 걷다가 중간에 공격을 해도 회전을 끝마쳐야함
+
+	// 사거리 안에 적이 있고, 특별한 명령이 내려지지 않았거나 공격 명령이 내려진 상태라면 적을 공격함
+
+	if (GetTransform()->GetWorldPosition() == Target_->GetTransform()->GetWorldPosition())
+	{
+		State_.ChangeState("Idle");
+		return;
+	}
 }
 void Player_Yuki::Walk_End()
 {
@@ -122,6 +91,7 @@ void Player_Yuki::Attack_Start()
 	//{
 	//	Status_Final_.Stat_Stamina_ = 0.f;
 	//}
+	;
 }
 void Player_Yuki::Attack_Update(float _DeltaTime)
 {
@@ -130,6 +100,10 @@ void Player_Yuki::Attack_Update(float _DeltaTime)
 	AttackTurm_ -= _DeltaTime;
 	//AttackTime_ -= _DeltaTime;
 	AttackHitTime_ -= _DeltaTime;
+
+	FowordDir_ = TargetDir_;
+	//TargetDir_을 실시간으로 업데이트 해 줘야함
+	// 어디서??
 
 	// Attack Ready도 구현해야함
 

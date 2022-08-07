@@ -22,7 +22,6 @@ Player_Yuki::~Player_Yuki()
 
 void Player_Yuki::Start()
 {
-	Player::Start();
 	StateInit();
 	ComponenetInit();
 	UIInit();
@@ -30,12 +29,20 @@ void Player_Yuki::Start()
 
 void Player_Yuki::Update(float _DeltaTime)
 {
+	if (Iscontrolled_ == false)
+	{
+		//AIController_->Update(_DeltaTime);
+	}
+
 	DEBUGUpdate(_DeltaTime);
+
+	UpdateBuff(_DeltaTime);
+
+	EnemyInSight_ = UnitSightCollision_->Collision(static_cast<int>(CollisionGroup::Monster));
 
 	State_.Update(_DeltaTime);
 	//CameraState_.Update(_DeltaTime);
 }
-
 
 void Player_Yuki::ComponenetInit()
 {
