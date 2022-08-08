@@ -161,6 +161,9 @@
     <ClCompile Include="SJH_NaviCell.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell</Filter>
     </ClCompile>
+    <ClCompile Include="YSJ_Ray.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor\Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -312,6 +315,9 @@
     </Filter>
     <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell">
       <UniqueIdentifier>{e2601656-afd5-4123-9cfd-62db29b76bb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.YSJ\02Actor\Component">
+      <UniqueIdentifier>{94f6da51-dc73-4c9a-a830-084f83fd418f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -477,6 +483,9 @@
     </ClInclude>
     <ClInclude Include="SJH_NaviCell.h">
       <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell</Filter>
+    </ClInclude>
+    <ClInclude Include="YSJ_Ray.h">
+      <Filter>01.GameObject\99.YSJ\02Actor\Component</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

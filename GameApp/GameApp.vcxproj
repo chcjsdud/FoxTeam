@@ -321,6 +321,7 @@
     <ClCompile Include="YSJ_Mouse.cpp" />
     <ClCompile Include="YSJ_Player.cpp" />
     <ClCompile Include="YSJ_PlayLevel.cpp" />
+    <ClCompile Include="YSJ_Ray.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIController.h" />
@@ -453,6 +454,7 @@
     <ClInclude Include="YSJ_Mouse.h" />
     <ClInclude Include="YSJ_Player.h" />
     <ClInclude Include="YSJ_PlayLevel.h" />
+    <ClInclude Include="YSJ_Ray.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

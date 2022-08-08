@@ -5,10 +5,15 @@
 #include <GameEngine/GameEngineCollision.h>
 
 #include "Enums.h"
-#include "SJH_Ray.h"
+#include "YSJ_Ray.h"
 #include "YSJ_Player.h"
 
 YSJ_Mouse* YSJ_Mouse::MainMouse = nullptr;
+
+bool AStarFunc(PathIndex _Index)
+{
+	return false;
+}
 
 YSJ_Mouse::YSJ_Mouse()
 	: Renderer_(nullptr)
@@ -36,7 +41,7 @@ void YSJ_Mouse::Start()
 	Collider_->SetCollisionInfo(static_cast<int>(CollisionGroup::MousePointer), CollisionType::AABBBox3D);
 	
 	// ±¤¼± »ý¼º
-	Ray_ = GetLevel()->CreateActor<SJH_Ray>();
+	Ray_ = CreateComponent<YSJ_Ray>();
 }
 
 void YSJ_Mouse::Update(float _DeltaTime)
@@ -58,7 +63,15 @@ void YSJ_Mouse::Update(float _DeltaTime)
 		{
 			if (true == Ray_->IsPicked(GameEngineInput::GetInst().GetMousePos(), ClickPoint_, Picking_))
 			{
-				YSJ_Player::MainPlayer->GetTransform()->SetWorldPosition(ClickPoint_);
+				//YSJ_Player::MainPlayer->GetTransform()->SetWorldPosition(ClickPoint_);
+
+				float4 PlayerPos = YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition();
+
+				PathIndex Start = { PlayerPos.ix(), PlayerPos.iz() };
+				PathIndex End = { ClickPoint_.ix(), ClickPoint_.iz() };
+				std::list<PathIndex> AStarlist = AStar_.AStarFind4Way(Start, End, AStarFunc);
+
+				int a = 0;
 			}
 		}
 #pragma endregion
