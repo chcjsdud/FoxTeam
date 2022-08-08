@@ -20,6 +20,8 @@ public:
 	LGH_Aya* player_;
 
 	class UI_Skill* SkillUI_;
+	class UI_Equip* EquipUI_;
+	class UI_Inventory* InventoryUI_;
 
 protected:
 	LGH_PlayLevel(const LGH_PlayLevel& _other) = delete;

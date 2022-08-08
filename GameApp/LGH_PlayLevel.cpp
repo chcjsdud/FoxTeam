@@ -13,7 +13,9 @@
 #include <GameEngine/SKySphereActor.h>
 #include <GameApp/LGH_Aya.h>
 #include "UI_Skill.h"
-//#include "LH_Map.h"
+#include "UI_Inventory.h"
+#include "UI_Equip.h"
+
 #include <GameEngine/GameEngineFBXWindow.h>
 #include <GameEngine/GameEngineFBXMesh.h>
 
@@ -32,7 +34,16 @@ void LGH_PlayLevel::LevelStart()
 
 	{
 		SkillUI_ = CreateActor<UI_Skill>();
-		SkillUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
+	//	SkillUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
+	}
+
+	{
+		EquipUI_ = CreateActor<UI_Equip>();
+		//SkillUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
+	}
+
+	{
+		InventoryUI_ = CreateActor<UI_Inventory>();
 	}
 
 	{
