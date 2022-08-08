@@ -219,6 +219,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="SJH_NaviCell.cpp" />
     <ClCompile Include="UI_CharPicture.cpp" />
     <ClCompile Include="UI_Equip.cpp" />
     <ClCompile Include="UI_Inventory.cpp" />
@@ -358,6 +359,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="SJH_NaviCell.h" />
     <ClInclude Include="UI_CharPicture.h" />
     <ClInclude Include="UI_Equip.h" />
     <ClInclude Include="UI_Inventory.h" />

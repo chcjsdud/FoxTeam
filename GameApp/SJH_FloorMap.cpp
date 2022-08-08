@@ -49,6 +49,8 @@ void SJH_FloorMap::Start()
 	}
 
 	//FloorMap_->GetTransform()->SetLocalRotationDegree({ 0.0f, 70.0f, 0.0f });
+
+	
 }
 
 void SJH_FloorMap::Update(float _DeltaTime)

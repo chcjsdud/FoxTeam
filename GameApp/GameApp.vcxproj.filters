@@ -158,6 +158,9 @@
     <ClCompile Include="YSJ_Mouse.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor</Filter>
     </ClCompile>
+    <ClCompile Include="SJH_NaviCell.cpp">
+      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -306,6 +309,9 @@
     </Filter>
     <Filter Include="01.GameObject\99.SJH\01.Actor\02.Player">
       <UniqueIdentifier>{88dd0ad6-4776-4dc2-accf-d582c66c26bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell">
+      <UniqueIdentifier>{e2601656-afd5-4123-9cfd-62db29b76bb5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -468,6 +474,9 @@
     </ClInclude>
     <ClInclude Include="YSJ_Mouse.h">
       <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="SJH_NaviCell.h">
+      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
