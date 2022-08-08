@@ -298,3 +298,10 @@ struct Buff
 	Status Status_;
 	std::function<void()> BuffFunc_;
 };
+
+struct Skill  //°¡Á¦
+{
+	bool IsTargettting_;
+	float TargetDist_;
+	std::function<void()> SkillFunc_;
+};

@@ -21,6 +21,7 @@
 */
 
 class Player;
+class Unit;
 class GameMouse;
 class PlayerController : public GameEngineActor
 {
@@ -52,7 +53,7 @@ private:
 
 	bool Mouse_NavoCol_; // 마우스가 네비메쉬를 클릭 했을때
 	//bool Mouse_ActorCol_; // 마우스가 엑터를 클릭 했을때
-	GameEngineActor* Mouse_TargetActor_; // nullptr 인가를 조사해서 bool 값처럼 사용
+	Unit* Mouse_TargetActor_; // nullptr 인가를 조사해서 bool 값처럼 사용
 	bool Mouse_UICol_; // 마우스가 UI를 클릭 했을때
 
 	//임시, 마우스로 클릭한 좌표, 마우스 클릭시 딱 1번 정해짐, 나중에 현 좌표와 이 좌표가 같아지면 초기화

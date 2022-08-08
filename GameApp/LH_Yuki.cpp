@@ -13,6 +13,8 @@
 #include "LH_Yuki.h"
 
 Player_Yuki::Player_Yuki()
+	: FBXRenderer_(nullptr)
+	, AttackHitBoxCollision_(nullptr)
 {
 }
 

@@ -86,7 +86,7 @@ void PlayerController::MouseUpdate()
 			if (Mouse_UICol_ == false)
 			{
 				// 1-2. UI가 아니면 Actor를 눌렀나?
-				Mouse_TargetActor_ = GameMouse_->Mouse_GetCollisionActor(CollisionGroup::Monster);
+				Mouse_TargetActor_ = dynamic_cast<Unit*>(GameMouse_->Mouse_GetCollisionActor(CollisionGroup::Monster));
 			}
 
 			else if (Mouse_TargetActor_ == nullptr)
@@ -142,8 +142,6 @@ void PlayerController::MouseUpdate()
 
 void PlayerController::PlayerStateUpdate()
 {
-	//마우스 클릭과 별도로 지시를 내려줄 알고리즘 필요
-
 	if (Key_RB_ == true)
 	{
 		if (IsAttack_ = true)
