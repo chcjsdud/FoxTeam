@@ -7,6 +7,7 @@
 class GameEngineCollision;
 class GameEngineFBXMesh;
 class GameEngineFBXRenderer;
+class SJH_NaviCell;
 class SJH_FloorMap : public GameEngineActor
 {
 public:
@@ -40,5 +41,8 @@ protected:
 
 private:
 	GameEngineFBXRenderer* FloorMap_;
+
+private:
+	std::vector<SJH_NaviCell*> NavigationCellInfos_;	
 };
 

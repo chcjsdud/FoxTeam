@@ -1,128 +1,122 @@
 #pragma once
-#include <list>
-#include <map>
-#include <set>
 #include "GameEngineMath.h"
-#include <functional>
+#include <set>
 
-
-class PathIndex 
+class PathIndex
 {
 public:
-	union 
+	union
 	{
-		struct 
+		struct
 		{
-			int X;
-			int Y;
+			int X_;
+			int Y_;
 		};
 
-		__int64 Key;
+		__int64 Index_;
 	};
 
 public:
 	PathIndex operator + (const PathIndex& _Other)
 	{
-		return { _Other.X + X, _Other.Y + Y };
+		return { _Other.X_ + X_, _Other.Y_ + Y_ };
 	}
 
 	bool operator == (const PathIndex& _Other)
 	{
-		return _Other.X == X && _Other.Y == Y;
+		return _Other.X_ == X_ && _Other.Y_ == Y_;
 	}
 
 	bool operator != (const PathIndex& _Other)
 	{
-		return _Other.X != X || _Other.Y != Y;
+		return _Other.X_ != X_ || _Other.Y_ != Y_;
 	}
 
 public:
-	PathIndex() 
+	PathIndex() :
+		X_(0), Y_(0)
 	{
-
 	}
 
-	PathIndex(int _X, int _Y)
-		: X(_X), Y(_Y)
+	PathIndex(int _X, int _Y) :
+		X_(_X), Y_(_Y)
 	{
-
 	}
 };
 
-///////////////////////////////////////////// AStar
 class AStarNode
 {
 public:
-	PathIndex Index;
-	AStarNode* Parent;
-	float PathLen;
-	float EndLen;
-	float TotalLen;
+	PathIndex Index_;
+	AStarNode* Parent_;
+	float PathLen_;
+	float EndLen_;
+	float TotalLen_;
 
 public:
 	void CalLen(PathIndex _EndIndex)
 	{
-		if (nullptr == Parent)
+		if (nullptr == Parent_)
 		{
-			PathLen = 0.0f;
+			PathLen_ = 0.0f;
 		}
-		else 
+		else
 		{
-			float4 ParentIndex = { static_cast<float>(Parent->Index.X), static_cast<float>(Parent->Index.Y) };
-			float4 ThisIndex = { static_cast<float>(Index.X),static_cast<float>(Index.Y) };
-			PathLen = Parent->PathLen + (ParentIndex - ThisIndex).Len2D();
+			float4 ParentIndex = float4(static_cast<float>(Parent_->Index_.X_), static_cast<float>(Parent_->Index_.Y_));
+			float4 ThisIndex = float4(static_cast<float>(Index_.X_), static_cast<float>(Index_.Y_));
+			PathLen_ = Parent_->PathLen_ + (ParentIndex - ThisIndex).Len2D();
 		}
 
-		float4 EndIndex = { static_cast<float>(_EndIndex.X), static_cast<float>(_EndIndex.Y) };
-		float4 ThisIndex = { static_cast<float>(Index.X),static_cast<float>(Index.Y) };
-		EndLen = (EndIndex - ThisIndex).Len2D();
+		float4 EndIndex = float4(static_cast<float>(_EndIndex.X_), static_cast<float>(_EndIndex.Y_));
+		float4 ThisIndex = float4(static_cast<float>(Index_.X_), static_cast<float>(Index_.Y_));
+		EndLen_ = (EndIndex - ThisIndex).Len2D();
 
-		TotalLen = PathLen + EndLen;
+		TotalLen_ = PathLen_ + EndLen_;
 	}
 
-	void Reset() 
+	void Reset()
 	{
 		memset(this, 0x00, sizeof(*this));
 	}
 };
 
-
-// 지역변수로 사용하지 마세요.
-// 설명 :
+// 분류 : 
+// 용도 : 
+// 설명 : 
 class GameEnginePathFind
 {
+private:	// member Var
+	int PoolCount_;
+	std::vector<AStarNode> NodePool_;
+
+private:
+	std::multimap<float, AStarNode*> OpenList_;
+	std::set<__int64> OpenKeys_;
+
+private:
+	std::list<AStarNode*> CloseList_;
+	std::set<__int64> CloseKeys_;
+
 public:
-	// constrcuter destructer
 	GameEnginePathFind();
 	~GameEnginePathFind();
 
-	// delete Function
-	GameEnginePathFind(const GameEnginePathFind& _Other) = delete;
-	GameEnginePathFind(GameEnginePathFind&& _Other) noexcept = delete;
-	GameEnginePathFind& operator=(const GameEnginePathFind& _Other) = delete;
-	GameEnginePathFind& operator=(GameEnginePathFind&& _Other) noexcept = delete;
+protected:		// delete constructer
+	GameEnginePathFind(const GameEnginePathFind& _other) = delete;
+	GameEnginePathFind(GameEnginePathFind&& _other) noexcept = delete;
 
-	// 대각선 안탐색
-	std::list<PathIndex> AStarFind4Way(PathIndex Start, PathIndex End, std::function<bool(PathIndex)> _OpenFunction, int _Maximum = 1000);
+private:		//delete operator
+	GameEnginePathFind& operator=(const GameEnginePathFind& _other) = delete;
+	GameEnginePathFind& operator=(const GameEnginePathFind&& _other) = delete;
 
-	// FindTile(0, 2);
-
-	// 대각선도 탐색
-	std::list<PathIndex> AStarFind8Way(PathIndex Start, PathIndex End, std::function<bool(PathIndex)> _OpenFunction, int _Maximum = 1000);
+private:
+	std::list<PathIndex> CalReturn(AStarNode* _EndNode);
 
 protected:
 	AStarNode* CreateNode(PathIndex _Index, PathIndex End, AStarNode* _ParentNode = nullptr);
 
-private:
-	int PoolCount;
-	std::vector<AStarNode> NodePool;
-
-	// new AStarNode(Start);
-	std::multimap<float, AStarNode*> OpenList; // 찾아야할 리스트들.
-	std::set<__int64> OpenKeys;
-	std::list<AStarNode*> CloseList; // 닫힌 노드.
-	std::set<__int64> CloseKeys;
-
-	std::list<PathIndex> CalReturn(AStarNode* _EndNode);
+public:
+	std::list<PathIndex> AStarFind4Way(PathIndex Start, PathIndex End, std::function<bool(PathIndex)> _OpenFunction, int _Maximum = 1000);	// 이웃노드(4방향탐색)
+	std::list<PathIndex> AStarFind8Way(PathIndex Start, PathIndex End, std::function<bool(PathIndex)> _OpenFunction, int _Maximum = 1000);	// 이웃노드(8방향탐색)
 };
 
