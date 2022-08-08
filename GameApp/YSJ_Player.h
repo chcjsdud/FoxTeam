@@ -27,6 +27,16 @@ public:
 	}
 
 protected:
+
+private:
+	void Start() override;
+	void Update(float _DeltaTime) override;
+
+	void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
+
+
+
+private:
 	GameEngineCollision* PlayerCollision;
 
 	GameEngineFSM StateManager_;
@@ -34,10 +44,5 @@ protected:
 	float Speed;
 	float4 Color_;
 
-private:
-	void Start() override;
-	void Update(float _DeltaTime) override;
-
-	void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 };
 

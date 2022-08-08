@@ -29,6 +29,49 @@ YSJ_Mouse::~YSJ_Mouse()
 {
 }
 
+void YSJ_Mouse::MeshPicking()
+{
+	// 단, 화면범위를 벗어나면 리턴
+	if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
+	{
+		return;
+	}
+
+	if (nullptr == Picking_)
+	{
+		return;
+	}
+
+	if (false == Ray_->IsPicked(GameEngineInput::GetInst().GetMousePos(), ClickPoint_, Picking_))
+	{
+		return;
+	}
+
+	if (nullptr == YSJ_Player::MainPlayer)
+	{
+		GameEngineDebug::MsgBoxError("MainPlayer가 설정되어있지 않습니다.");
+		return;
+	}
+
+	//YSJ_Player::MainPlayer->GetTransform()->SetWorldPosition(ClickPoint_);
+	float4 PlayerPos = YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition();
+
+	PathIndex Start = { PlayerPos.ix(), PlayerPos.iz() };
+	PathIndex End = { ClickPoint_.ix(), ClickPoint_.iz() };
+
+	if (Start == End)
+	{
+		return;
+	}
+
+	AStarlist_ = AStar_.AStarFind8Way(Start, End, AStarFunc);
+}
+
+void YSJ_Mouse::PlayerMove()
+{	
+
+}
+
 void YSJ_Mouse::Start()
 {
 	Renderer_ = CreateTransformComponent<GameEngineUIRenderer>();
@@ -52,29 +95,11 @@ void YSJ_Mouse::Update(float _DeltaTime)
 	// 키체크
 	if (true == GameEngineInput::GetInst().Press("LBUTTON"))
 	{
-		// 단, 화면범위를 벗어나면 리턴
-		if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
-		{
-			return;
-		}
+		MeshPicking();
+	}
 
-#pragma region Mesh To Ray CrossCheck
-		if (nullptr != Picking_)
-		{
-			if (true == Ray_->IsPicked(GameEngineInput::GetInst().GetMousePos(), ClickPoint_, Picking_))
-			{
-				//YSJ_Player::MainPlayer->GetTransform()->SetWorldPosition(ClickPoint_);
-
-				float4 PlayerPos = YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition();
-
-				PathIndex Start = { PlayerPos.ix(), PlayerPos.iz() };
-				PathIndex End = { ClickPoint_.ix(), ClickPoint_.iz() };
-				std::list<PathIndex> AStarlist = AStar_.AStarFind4Way(Start, End, AStarFunc);
-
-				int a = 0;
-			}
-		}
-#pragma endregion
-
+	if (false == AStarlist_.empty())
+	{
+		PlayerMove();
 	}
 }

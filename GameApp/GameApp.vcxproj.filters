@@ -155,14 +155,14 @@
     <ClCompile Include="LH_Mouse.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object</Filter>
     </ClCompile>
-    <ClCompile Include="YSJ_Mouse.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
-    </ClCompile>
     <ClCompile Include="SJH_NaviCell.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_Ray.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\Component</Filter>
+      <Filter>01.GameObject\99.YSJ\02Actor\Mouse\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="YSJ_Mouse.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor\Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,7 +316,10 @@
     <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell">
       <UniqueIdentifier>{e2601656-afd5-4123-9cfd-62db29b76bb5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.YSJ\02Actor\Component">
+    <Filter Include="01.GameObject\99.YSJ\02Actor\Mouse">
+      <UniqueIdentifier>{fb0f78e1-88e0-459c-b1f6-255290736a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.YSJ\02Actor\Mouse\Component">
       <UniqueIdentifier>{94f6da51-dc73-4c9a-a830-084f83fd418f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -478,14 +481,14 @@
     <ClInclude Include="LH_Mouse.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object</Filter>
     </ClInclude>
-    <ClInclude Include="YSJ_Mouse.h">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
-    </ClInclude>
     <ClInclude Include="SJH_NaviCell.h">
       <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_Ray.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\Component</Filter>
+      <Filter>01.GameObject\99.YSJ\02Actor\Mouse\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="YSJ_Mouse.h">
+      <Filter>01.GameObject\99.YSJ\02Actor\Mouse</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -40,6 +40,9 @@ private:
 	YSJ_Mouse& operator=(const YSJ_Mouse& _other) = delete;
 	YSJ_Mouse& operator=(const YSJ_Mouse&& _other) = delete;
 
+	void MeshPicking();
+	void PlayerMove();
+
 public:
 
 protected:
@@ -51,6 +54,8 @@ private:
 private:
 	YSJ_Ray* Ray_;
 	float4 ClickPoint_;
+
 	GameEnginePathFind AStar_;
+	std::list<PathIndex> AStarlist_;
 };
 
