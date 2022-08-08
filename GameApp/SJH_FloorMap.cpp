@@ -54,23 +54,34 @@ void SJH_FloorMap::Start()
 
 #pragma region 네비게이션 테스트
 //====================================== Navigation Cell
+	// 해당 네비게이션 메쉬의 정보를 Get
+	std::vector<FbxExMeshInfo>& AllMeshInfo = FloorMap_->GetMesh()->GetMeshInfos();		// Mesh당 면의 갯수 및 버텍스갯수등 정보
+	std::vector<FbxMeshSet>& AllMeshMap = FloorMap_->GetMesh()->GetAllMeshMap();		// Mesh의 모든 정보 집합
 
+	// 해당 Navigation FBX File이 가지는 모든 메쉬를 탐색
+	int MeshCount = static_cast<int>(AllMeshInfo.size());
+	for (int MeshNumber = 0; MeshNumber < MeshCount; ++MeshNumber)
+	{
+		// 해당 Mesh를 구성하는 모든면의 갯수만큼 반복문 실행
+		int FaceCount = AllMeshInfo[MeshNumber].FaceNum;
+		for (int FaceNumber = 0; FaceNumber < FaceCount; ++FaceNumber)
+		{
+			// 해당 면을 구성하는 정점 및 기본정보를 SJH_NaviCell 정보로 셋팅
+			// 메쉬 -> 삼각형(면)들의 집합 -> 세정점들의집합
+			std::vector<float4> VertexList;
+			for (int VertexNumber = 0; VertexNumber < 3; ++VertexNumber)
+			{
+				int VertexIndex = 0;
+				float4 Vertex = float4::ZERO;
+				VertexList.push_back(Vertex);
+			}
 
-
-
-
-
-
-
-	// 정보 추가
-	SJH_NaviCell* NewCellInfo = new SJH_NaviCell();
-	NavigationCellInfos_.push_back(NewCellInfo);
-
-
-
-
-
-
+			// Map에서 해당 맵을 구성하는 모든 셀(삼각형) 정보를 관리
+			SJH_NaviCell* NewCellInfo = new SJH_NaviCell();
+			NewCellInfo->CreateNavigationCellInfo(MeshNumber, FaceNumber, VertexList);
+			NavigationCellInfos_.push_back(NewCellInfo);
+		}
+	}
 
 //====================================== Navigation Cell
 #pragma endregion
