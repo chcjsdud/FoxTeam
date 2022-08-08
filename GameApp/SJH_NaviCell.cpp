@@ -13,6 +13,9 @@ void SJH_NaviCell::CreateNavigationCellInfo(int _MeshIndex, int _FaceIndex, std:
 
 	// 수신받은 3개의 정점으로 무게중심 계산
 	CenterOfGravityCalculation();
+
+	// 각 중점과 무게중심을 연결하는 방향벡터 생성
+
 }
 
 void SJH_NaviCell::SearchAdjacentTriangles()
