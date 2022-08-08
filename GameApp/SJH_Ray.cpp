@@ -72,36 +72,14 @@ bool SJH_Ray::IsMeshPicked(GameEngineFBXRenderer* _Mesh, const float4& _MousePos
     {
         return false;
     }
-
-    // 광선교차검사를 위한 Mesh 정보 Get
-    std::vector<FbxMeshSet>& vecAllMeshSet = _Mesh->GetMesh()->GetAllMeshMap();
-    std::vector<FbxExMeshInfo>& vecMeshInfo = _Mesh->GetMesh()->GetMeshInfos();
-
-    // 교차체크
+    
     float Dist = 0.0f;
-    for (int MeshCnt = 0; MeshCnt < static_cast<int>(vecAllMeshSet.size()); ++MeshCnt)
+
+    // 교차성공시 교차점까지의 거리를 이용하여 해당 좌표를 반환
+    if (true == _Mesh->CheckIntersects(OriginPos_, Direction_, Dist))
     {
-        for (int MaterialCnt = 0; MaterialCnt < static_cast<int>(vecAllMeshSet[MeshCnt].MatialData.size()); ++MaterialCnt)
-        {
-            for (int FaceNumCnt = 0; FaceNumCnt < vecMeshInfo[MeshCnt].FaceNum; ++FaceNumCnt)
-            {
-                int Vertex0_Index = vecAllMeshSet[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt + 0];
-                int Vertex1_Index = vecAllMeshSet[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt + 1];
-                int Vertex2_Index = vecAllMeshSet[MeshCnt].Indexs[0][MaterialCnt][FaceNumCnt + 2];
-
-                float4 Vertex0 = vecAllMeshSet[MeshCnt].Vertexs[Vertex0_Index].POSITION * _Mesh->GetTransform()->GetTransformData().WorldWorld_;
-                float4 Vertex1 = vecAllMeshSet[MeshCnt].Vertexs[Vertex1_Index].POSITION * _Mesh->GetTransform()->GetTransformData().WorldWorld_;
-                float4 Vertex2 = vecAllMeshSet[MeshCnt].Vertexs[Vertex2_Index].POSITION * _Mesh->GetTransform()->GetTransformData().WorldWorld_;
-
-                // 교차성공시 교차점까지의 거리를 이용하여 해당 좌표를 반환
-                if (true == DirectX::TriangleTests::Intersects(OriginPos_.DirectVector, Direction_.DirectVector, Vertex0.DirectVector, Vertex1.DirectVector, Vertex2.DirectVector, Dist))
-                {
-                    // 교차한 지점의 좌표를 반환
-                    _PickedPos = OriginPos_ + (Direction_ * Dist);
-                    return true;
-                }
-            }
-        }
+        _PickedPos = OriginPos_ + (Direction_ * Dist);
+        return true;
     }
 
     return false;

@@ -2,6 +2,7 @@
 #include "YSJ_LumiaMap.h"
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include "YSJ_Player.h"
+#include "YSJ_Mouse.h"
 
 YSJ_LumiaMap::YSJ_LumiaMap()
 	: FBXNaviRenderer(nullptr)
@@ -29,6 +30,7 @@ void YSJ_LumiaMap::Start()
 
 	FBXNaviRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 	
+
 	FBXWallRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXWallRenderer->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
 

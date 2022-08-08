@@ -9,7 +9,7 @@
 #include "YSJ_LumiaMap.h"
 #include "YSJ_Player.h"
 #include "YSJ_Char.h"
-
+#include "YSJ_Mouse.h"
 
 YSJ_PlayLevel::YSJ_PlayLevel()
 {
@@ -26,6 +26,15 @@ void YSJ_PlayLevel::LevelStart()
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
 	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 300.0f, -300.0f));
 	GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeX(30.0f);
+
+	GameEngineInput::GetInst().CreateKey("MoveLeft", 'A');
+	GameEngineInput::GetInst().CreateKey("MoveRight", 'D');
+	GameEngineInput::GetInst().CreateKey("MoveForward", 'W');
+	GameEngineInput::GetInst().CreateKey("MoveBack", 'S');
+	GameEngineInput::GetInst().CreateKey("MoveUp", 'Q');
+	GameEngineInput::GetInst().CreateKey("MoveDown", 'E');
+	GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
+	GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 
 	YSJ_Player* Player = CreateActor<YSJ_Player>();
 
@@ -153,4 +162,6 @@ void YSJ_PlayLevel::CreateActorLevel()
 
 	SKySphereActor* SkyActor = CreateActor<SKySphereActor>();
 	YSJ_LumiaMap* LumiaMap = CreateActor<YSJ_LumiaMap>();
+	YSJ_Mouse* Mouse = CreateActor<YSJ_Mouse>();
+	Mouse->SetPickingRenderer(LumiaMap->GetFBXNaviRenderer());
 }

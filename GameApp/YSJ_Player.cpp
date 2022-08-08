@@ -35,20 +35,9 @@ void YSJ_Player::Start()
 			ParentRenderer = Renderer;
 		}
 
-		GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
+		//GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
 		GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 10, 10.0f, -20.0f });
 		GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 15, 0.0f, 0.0f });
-	}
-
-	if (false == GameEngineInput::GetInst().IsKey("YSJ_PlayerMove"))
-	{
-		GameEngineInput::GetInst().CreateKey("MoveLeft", 'A');
-		GameEngineInput::GetInst().CreateKey("MoveRight", 'D');
-		GameEngineInput::GetInst().CreateKey("MoveForward", 'W');
-		GameEngineInput::GetInst().CreateKey("MoveBack", 'S');
-		GameEngineInput::GetInst().CreateKey("MoveUp", 'Q');
-		GameEngineInput::GetInst().CreateKey("MoveDown", 'E');
-		GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 	}
 
 	GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
