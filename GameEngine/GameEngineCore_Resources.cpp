@@ -868,6 +868,17 @@ void GameEngineCore::EngineResourcesCreate()
 	}
 
 	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DeferredColor");
+		Pipe->SetInputAssembler1VertexBufferSetting("Box");
+		Pipe->SetVertexShader("DeferredColor_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Box");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		Pipe->SetPixelShader("DeferredColor_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
+
+	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TextureLight");
 		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
 		Pipe->SetVertexShader("TextureLight_VS");
