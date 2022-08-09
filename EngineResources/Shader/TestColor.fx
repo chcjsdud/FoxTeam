@@ -66,7 +66,7 @@ float4 TestColor_PS(VertexOut _In) : SV_Target0
     }
     
     
-    Color = _In.ViewNormal;
+    //Color = _In.ViewNormal;
     
     Color.w = 1.0f;
     return Color;
