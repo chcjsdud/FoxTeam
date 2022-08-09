@@ -7,9 +7,9 @@ struct SideLine
 	float4 MidPoint_;			// 선분의 중점
 };
 
-// 분류 : 삼각형
-// 용도 : 
-// 설명 : 메쉬를 이루는 삼각형들을 집합중 한개
+// 분류 : 삼각형(면)
+// 용도 : 길찾기알고리즘 베이스
+// 설명 : 메쉬를 이루는 삼각형집합 중 한개
 class SJH_NaviCell
 {
 public:
