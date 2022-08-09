@@ -15,6 +15,7 @@
 #include "UI_Skill.h"
 #include "UI_Inventory.h"
 #include "UI_Equip.h"
+#include "UI_Status.h"
 
 #include <GameEngine/GameEngineFBXWindow.h>
 #include <GameEngine/GameEngineFBXMesh.h>
@@ -44,6 +45,11 @@ void LGH_PlayLevel::LevelStart()
 
 	{
 		InventoryUI_ = CreateActor<UI_Inventory>();
+	}
+
+
+	{
+		StatusUI_ = CreateActor<UI_Status>();
 	}
 
 	{
