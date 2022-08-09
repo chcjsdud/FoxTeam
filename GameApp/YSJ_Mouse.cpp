@@ -7,11 +7,22 @@
 #include "Enums.h"
 #include "YSJ_Ray.h"
 #include "YSJ_Player.h"
+#include "YSJ_LumiaMap.h"
 
 YSJ_Mouse* YSJ_Mouse::MainMouse = nullptr;
 
 bool AStarFunc(PathIndex _Index)
 {
+	float4 CheckPos = { static_cast<float>(_Index.X_), 100.0f, static_cast<float>(_Index.Y_) };
+
+	float tmp = 0.0f;
+
+	// 교차하지 않음, navimesh 바깥쪽이므로 가면 안됨
+	if (false == YSJ_LumiaMap::MainMap->GetFBXNaviRenderer()->CheckIntersects(CheckPos, float4::DOWN, tmp))
+	{
+		return true;
+	}
+
 	return false;
 }
 

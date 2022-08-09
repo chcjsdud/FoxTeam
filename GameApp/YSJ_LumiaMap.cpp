@@ -4,12 +4,14 @@
 #include "YSJ_Player.h"
 #include "YSJ_Mouse.h"
 
+YSJ_LumiaMap* YSJ_LumiaMap::MainMap = nullptr;
+
 YSJ_LumiaMap::YSJ_LumiaMap()
 	: FBXNaviRenderer(nullptr)
 	, FBXWallRenderer(nullptr)
 	, FBXSchoolMap(nullptr)
 {
-
+	MainMap = this;
 }
 
 YSJ_LumiaMap::~YSJ_LumiaMap()

@@ -37,6 +37,7 @@ void YSJ_PlayLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 
 	YSJ_Player* Player = CreateActor<YSJ_Player>();
+	Player->GetTransform()->SetWorldMove(float4::RIGHT * 15.0f);
 
 	GameEngineDirectory tempDir;
 

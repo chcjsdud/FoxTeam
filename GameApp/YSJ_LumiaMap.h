@@ -6,7 +6,8 @@ class GameEngineFBXRenderer;
 class YSJ_LumiaMap : public GameEngineActor
 {
 public:
-	
+	static YSJ_LumiaMap* MainMap;
+
 public:
 	YSJ_LumiaMap();
 	~YSJ_LumiaMap();
