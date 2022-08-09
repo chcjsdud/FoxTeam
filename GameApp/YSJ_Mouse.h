@@ -41,7 +41,7 @@ private:
 	YSJ_Mouse& operator=(const YSJ_Mouse&& _other) = delete;
 
 	void MeshPicking();
-	void PlayerMove();
+	void PlayerMove(float _DeltaTime);
 
 public:
 

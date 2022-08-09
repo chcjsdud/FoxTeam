@@ -64,12 +64,29 @@ void YSJ_Mouse::MeshPicking()
 		return;
 	}
 
-	AStarlist_ = AStar_.AStarFind8Way(Start, End, AStarFunc);
+	AStarlist_ = AStar_.AStarFind8Way(Start, End, AStarFunc, 10000);
+
+	int a = 0;
 }
 
-void YSJ_Mouse::PlayerMove()
+void YSJ_Mouse::PlayerMove(float _DeltaTime)
 {	
+	static float Time = 0.0f;
 
+	Time += _DeltaTime;
+
+	if (0.001f >= Time)
+	{
+		return;
+	}
+
+	PathIndex NextIndex = AStarlist_.front();
+
+	YSJ_Player::MainPlayer->GetTransform()->SetWorldPosition({ 
+		static_cast<float>(NextIndex.X_), 0.0f, static_cast<float>(NextIndex.Y_) });
+
+	AStarlist_.pop_front();
+	Time = 0.0f;
 }
 
 void YSJ_Mouse::Start()
@@ -93,13 +110,13 @@ void YSJ_Mouse::Update(float _DeltaTime)
 	GetTransform()->SetWorldPosition(GameEngineInput::GetInst().GetMouse3DPos());
 
 	// Űüũ
-	if (true == GameEngineInput::GetInst().Press("LBUTTON"))
+	if (true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
 		MeshPicking();
 	}
 
 	if (false == AStarlist_.empty())
 	{
-		PlayerMove();
+		PlayerMove(_DeltaTime);
 	}
 }
