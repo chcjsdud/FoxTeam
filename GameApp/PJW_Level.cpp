@@ -99,7 +99,8 @@ void PJW_Level::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 void PJW_Level::Init_Resources()
 {	
-	std::string MeshName = "Jackie_01_LOD1.FBX";
+	std::string MeshName = "Hyunwoo_01_LOD1.FBX";
+
 	GameEngineDirectory dir;
 
 	dir.MoveParent("FoxTeam");
@@ -107,18 +108,27 @@ void PJW_Level::Init_Resources()
 	dir.MoveChild("FBX");
 	dir.MoveChild("PJW");
 	// ·»´õ·¯		
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(dir.PathToPlusFileName(MeshName)))
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(dir.PathToPlusFileName("Hyunwoo_01_LOD1.FBX")))
 	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName(MeshName));
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_01_LOD1.FBX"));
 		Mesh->CreateRenderingBuffer();
 	}
 
-	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_01_LOD1.FBX"));
+	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_01_LOD1_Run.FBX"));
 
 	for (size_t i = 0; i < Animation->AnimationCount(); i++)
 	{
 		auto Data = Animation->GetAnimationData(i);
 	}
+
+
+	GameEngineFBXAnimation* Animation1 = GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_01_LOD1.FBX"));
+
+	for (size_t i = 0; i < Animation1->AnimationCount(); i++)
+	{
+		auto Data = Animation1->GetAnimationData(i);
+	}
+
 }
 
 

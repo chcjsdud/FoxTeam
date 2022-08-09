@@ -36,7 +36,7 @@ void PJW_Hyunwoo::Init_FBX()
 {
 	// 렌더링용 버텍스, 인덱스 버퍼 생성
 	FBXRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FBXRenderer_->SetFBXMesh("Jackie_01_LOD1.FBX", "TextureDeferredLightAni");
+	FBXRenderer_->SetFBXMesh("Hyunwoo_01_LOD1.FBX", "TextureDeferredLightAni");
 	FBXRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
 	FBXRenderer_->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
 	FBXRenderer_->GetTransform()->SetLocalRotationDegree({-90.0f, 0.0f, 0.0f});
@@ -44,14 +44,13 @@ void PJW_Hyunwoo::Init_FBX()
 	curDir_ = { 0.0f,0.0f,1.0f,1.0f };
 	for (UINT i = 0; i < FBXRenderer_->GetRenderSetCount(); i++)
 	{
-		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Jackie_01_LOD1.png");
+		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
 	}
 
-	FBXRenderer_->CreateFBXAnimation("Idle", "Jackie_01_LOD1.FBX", 0);
+	FBXRenderer_->CreateFBXAnimation("Move", "Hyunwoo_01_LOD1_Run.FBX", 0);
 
-
-	FBXRenderer_->CreateFBXAnimation("Move", "Jackie_01_LOD1.FBX", 1); // 루프 애니메이션
-	FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 2, false); // 루프안함
+	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 0); // 루프 애니메이션
+//	FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 2, false); // 루프안함
 	
 	FBXRenderer_->ChangeFBXAnimation("Idle");
 }
