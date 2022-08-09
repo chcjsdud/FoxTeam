@@ -44,7 +44,7 @@ private: // 수신받는 정보
 	std::vector<float4> VertexList_;					// 해당 면을 구성하는 정점목록(3개)
 
 private: // 해당 면을 감싸는 선분목록
-	std::vector<SideLine> SideLines_;					// 3개의 정점을 각각 연결하는 선분의 정보
+	std::vector<SideLine> SideLines_;					// 3개의 정점을 각각 연결하는 선분의 정보(선분의 2정점, 중점)
 
 private: // 무게중심 및 인접한 면목록
 	float4 CenterOfGravity_;							// 해당 면(삼각형)의 무게중심
