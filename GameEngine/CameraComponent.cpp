@@ -104,47 +104,6 @@ void CameraComponent::Render(float _DeltaTime)
 		++LightIndex;
 	}
 
-	// 카메라 전용 렌더타겟으로 셋팅
-	// 
-
-
-	// 렌더링 전 카메라의 최종행렬을 계산한다.
-
-	// 디버그 기념 랜더링 구조 회의
-	// 디퍼드와 포워드를 구분해야할 이유가 생겼어.
-
-	// 구분단위 rendering파이프라인 => isdefferd
-
-	// 0. 랜더러가 랜더러 내부에서 구분하자.
-	// 1. 내부에서 그냥 if로 처리하자 지금 디퍼드로 그리는지 포워드로 그리는지 랜더러에게 알려주고
-
-	// 1. 랜더러단위로 구분하자.
-	// 랜더러 단위로 포워드와 디퍼드를 구분하자
-	// 문제 => fbx매쉬 랜더러는 안에 파이프라인이 여러개인데
-	// 디퍼드로 그릴지
-	// 포워드로 그릴지 
-	// fbx매쉬 랜더는 
-	// ForwardRenderers_
-	// DefferdRenderers_
-
-	// 2. 랜더러를 모으지 말고 랜더 셋을 모으자.
-	// class RenderSet
-	// ShaderHelper
-	// PipeLine
-	// Renderers_ => 순수 저장용
-	// ForwardRendererSets_ // 
-	// DeferredRendererSets_
-
-
-	// 3아예 랜더러 구조는 그대로 두고 함수로 구분하자.
-	// Renderer->ForwardRender(_DeltaTime);
-	// Renderer->DeferredRender(_DeltaTime);
-
-	// 종하 => 랜더셋으로 하자.
-	// 규현 => if
-	// 석진 => 함수로 구분
-	// 이현 => 기권
-	// 종원 => if
 	CameraForwardTarget_->Clear();
 	CameraForwardTarget_->Setting();
 
