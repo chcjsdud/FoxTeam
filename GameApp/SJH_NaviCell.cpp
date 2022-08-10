@@ -20,7 +20,7 @@ void SJH_NaviCell::SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell, bool 
 {
 	if (true == _3Direction)
 	{
-		// 조건: 한개의 사이드라인의 중점과 2개의 정점을 공유하는 면이라면 인접한 면으로 판단 -> 3방향의 인접한면을 가지고있게된다.
+		// 조건: 2개의 정점을 공유하고 무게중심이 다른 면이라면 인접한 면으로 판단 -> 3방향의 인접한면을 가지고있게된다.
 		int ThisVertexSize = static_cast<int>(VertexList_.size());
 
 		int SharedVerticesCount = 0;
