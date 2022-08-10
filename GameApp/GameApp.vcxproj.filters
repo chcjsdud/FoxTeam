@@ -176,6 +176,9 @@
     <ClCompile Include="NaviActor.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor</Filter>
     </ClCompile>
+    <ClCompile Include="PJW_NavMesh.cpp">
+      <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -333,6 +336,9 @@
     </Filter>
     <Filter Include="01.GameObject\99.YSJ\02Actor\Mouse\Component">
       <UniqueIdentifier>{94f6da51-dc73-4c9a-a830-084f83fd418f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\98.PJW\PJW_NavMesh">
+      <UniqueIdentifier>{acc9dade-c0a9-40f1-834f-aa60efa9d758}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -512,6 +518,9 @@
     </ClInclude>
     <ClInclude Include="NaviActor.h">
       <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="PJW_NavMesh.h">
+      <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

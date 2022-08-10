@@ -159,37 +159,37 @@ void PJW_Level::Init_Actors()
 {
 	// 바이너리 파일 추출을 완료했다면 하단 예시처럼 액터의 메시와 애니메이션을 생성해주면 됩니다.
 
-//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(FBXWindow->UserMeshSaveFolder.PathToPlusFileName("Hyunwoo_01_LOD1.UserMesh"));
-//	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().LoadUser(FBXWindow->UserAnimationSaveFolder.PathToPlusFileName("Hyunwoo_01_LOD1.UserAnimation"));
-//	
-//	GameEngineActor* NewActor = CreateActor<GameEngineActor>();
-//	GameEngineFBXRenderer* Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
-//	
-//	Renderer->SetFBXMesh(Mesh->GetName(), "TextureDeferredLightAni");
-//	
-//	for (size_t i = 0; i < Renderer->GetRenderSetCount(); i++)
-//	{
-//		Renderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
-//	}
-//	
-//	Renderer->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
-//	Renderer->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
-//	Renderer->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
-//	
-//	Renderer->CreateFBXAnimation("Idle", Animation->GetName(), 0); // 루프 애니메이션
-//	Renderer->CreateFBXAnimation("Skill_R_Start", Animation->GetName(), 1, false); // 루프안함
-//	Renderer->CreateFBXAnimation("Skill_R_Charge", Animation->GetName(), 2); // 루프안함
-//	Renderer->CreateFBXAnimation("Skill_R_End", Animation->GetName(), 3, false); // 루프안함
-//	Renderer->CreateFBXAnimation("Dash", Animation->GetName(), 5, false); // 루프안함
-//	Renderer->CreateFBXAnimation("Skill_Q", Animation->GetName(), 8, false); // 루프안함
-//	Renderer->CreateFBXAnimation("Attack0", Animation->GetName(), 10, false); // 루프안함
-//	Renderer->CreateFBXAnimation("Attack1", Animation->GetName(), 11, false); // 루프안함
-//	Renderer->CreateFBXAnimation("Skill_Weapon", Animation->GetName(), 12, false); // 루프안함
-//	Renderer->ChangeFBXAnimation("Skill_R_Charge");
-
-
+	//GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(FBXWindow->UserMeshSaveFolder.PathToPlusFileName("Hyunwoo_01_LOD1.UserMesh"));
+	//GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().LoadUser(FBXWindow->UserAnimationSaveFolder.PathToPlusFileName("Hyunwoo_01_LOD1.UserAnimation"));
+	//
+	//GameEngineActor* NewActor = CreateActor<GameEngineActor>();
+	//GameEngineFBXRenderer* Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
+	//
+	//Renderer->SetFBXMesh(Mesh->GetName(), "TextureDeferredLightAni");
+	//
+	//for (size_t i = 0; i < Renderer->GetRenderSetCount(); i++)
+	//{
+	//	Renderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
+	//}
+	//
+	//Renderer->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
+	//Renderer->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
+	//Renderer->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
+	//
+	//Renderer->CreateFBXAnimation("Idle", Animation->GetName(), 0); // 루프 애니메이션
+	//Renderer->CreateFBXAnimation("Skill_R_Start", Animation->GetName(), 1, false); // 루프안함
+	//Renderer->CreateFBXAnimation("Skill_R_Charge", Animation->GetName(), 2); // 루프안함
+	//Renderer->CreateFBXAnimation("Skill_R_End", Animation->GetName(), 3, false); // 루프안함
+	//Renderer->CreateFBXAnimation("Dash", Animation->GetName(), 5, false); // 루프안함
+	//Renderer->CreateFBXAnimation("Skill_Q", Animation->GetName(), 8, false); // 루프안함
+	//Renderer->CreateFBXAnimation("Attack0", Animation->GetName(), 10, false); // 루프안함
+	//Renderer->CreateFBXAnimation("Attack1", Animation->GetName(), 11, false); // 루프안함
+	//Renderer->CreateFBXAnimation("Skill_Weapon", Animation->GetName(), 12, false); // 루프안함
+	//Renderer->ChangeFBXAnimation("Skill_R_Charge");
+	//
+	//
 	gameController_ = CreateActor<PJW_GameController>();
-
+	
 	{
 		SKySphereActor* Actor = CreateActor<SKySphereActor>();
 	}
