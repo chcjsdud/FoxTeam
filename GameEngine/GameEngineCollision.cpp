@@ -25,7 +25,6 @@ void GameEngineCollision::Init()
 	CollisionCheckFunction[static_cast<int>(CollisionType::AABBBox3D)][static_cast<int>(CollisionType::AABBBox3D)]
 		= std::bind(&GameEngineCollision::AABBToAABB, std::placeholders::_1, std::placeholders::_2);
 
-
 	CollisionCheckFunction[static_cast<int>(CollisionType::OBBBox3D)][static_cast<int>(CollisionType::OBBBox3D)]
 		= std::bind(&GameEngineCollision::OBBToOBB, std::placeholders::_1, std::placeholders::_2);
 
@@ -40,6 +39,18 @@ void GameEngineCollision::Init()
 
 	CollisionCheckFunction[static_cast<int>(CollisionType::AABBBox3D)][static_cast<int>(CollisionType::Ray)]
 		= std::bind(&GameEngineCollision::AABBToRay, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::Ray)][static_cast<int>(CollisionType::OBBBox3D)]
+		= std::bind(&GameEngineCollision::RayToOBB, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::OBBBox3D)][static_cast<int>(CollisionType::Ray)]
+		= std::bind(&GameEngineCollision::OBBToRay, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::Ray)][static_cast<int>(CollisionType::Sphere3D)]
+		= std::bind(&GameEngineCollision::RayToSphere, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::Sphere3D)][static_cast<int>(CollisionType::Ray)]
+		= std::bind(&GameEngineCollision::SphereToRay, std::placeholders::_1, std::placeholders::_2);
 }
 
 
@@ -101,6 +112,30 @@ bool GameEngineCollision::RayToAABB(GameEngineTransform* _left, GameEngineTransf
 bool GameEngineCollision::AABBToRay(GameEngineTransform* _left, GameEngineTransform* _right)
 {
 	return RayToAABB(_right, _left);
+}
+
+bool GameEngineCollision::RayToOBB(GameEngineTransform* _left, GameEngineTransform* _right)
+{
+	DirectX::BoundingOrientedBox Right = _right->GetOBB();
+	float distance;
+	return Right.Intersects(static_cast<DirectX::FXMVECTOR>(_left->GetRayOrigin().DirectVector), static_cast<DirectX::FXMVECTOR>(_left->GetRayDirection().DirectVector), distance);
+}
+
+bool GameEngineCollision::OBBToRay(GameEngineTransform* _left, GameEngineTransform* _right)
+{
+	return RayToOBB(_right, _left);
+}
+
+bool GameEngineCollision::RayToSphere(GameEngineTransform* _left, GameEngineTransform* _right)
+{
+	DirectX::BoundingSphere Right = _right->GetSphere();
+	float distance;
+	return Right.Intersects(static_cast<DirectX::FXMVECTOR>(_left->GetRayOrigin().DirectVector), static_cast<DirectX::FXMVECTOR>(_left->GetRayDirection().DirectVector), distance);
+}
+
+bool GameEngineCollision::SphereToRay(GameEngineTransform* _left, GameEngineTransform* _right)
+{
+	return RayToSphere(_right, _left);
 }
 
 //===================================================== SJH

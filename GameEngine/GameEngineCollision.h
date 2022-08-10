@@ -34,6 +34,12 @@ public:
 	static bool RayToAABB(GameEngineTransform* _left, GameEngineTransform* _right);
 	static bool AABBToRay(GameEngineTransform* _left, GameEngineTransform* _right);
 
+	static bool RayToOBB(GameEngineTransform* _left, GameEngineTransform* _right);
+	static bool OBBToRay(GameEngineTransform* _left, GameEngineTransform* _right);
+
+	static bool RayToSphere(GameEngineTransform* _left, GameEngineTransform* _right);
+	static bool SphereToRay(GameEngineTransform* _left, GameEngineTransform* _right);
+
 //======================================== SJH
 private: // 타입별 광선과의 교차검사
 	bool OBBBoxToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);
