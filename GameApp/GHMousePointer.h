@@ -2,6 +2,7 @@
 
 #include <GameEngine/GameEngineActor.h>
 
+class GameEngineCollision;
 class GHMousePointer : public GameEngineActor
 {
 public:
@@ -17,5 +18,14 @@ public:
 public:
 	void Start() override;
 	void Update(float _deltaTime) override;
+
+private:
+	void updateMouseRay();
+
+private:
+	float4 rayDirection_;
+	float4 rayOrigin_;
+
+	GameEngineCollision* rayCollision_;
 };
 

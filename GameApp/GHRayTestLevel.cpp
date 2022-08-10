@@ -85,11 +85,19 @@ void GHRayTestLevel::releaseResource()
 
 void GHRayTestLevel::createActor()
 {
-	CreateActor<GHRio>();
+	//CreateActor<GHRio>();
 	CreateActor<GHMap>();
-	CreateActor<GHRayTestBox>();
 	CreateActor<GHMousePointer>();
-	
+
+	for (int z = 0; z < 10; z++)
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			GHRayTestBox* box = CreateActor<GHRayTestBox>();
+			box->GetTransform()->SetWorldPosition({ 200.f * x, 0.0f, 200.f * -z });
+		}
+	}
+
 	SKySphereActor* Actor = CreateActor<SKySphereActor>();
 
 
@@ -99,17 +107,18 @@ void GHRayTestLevel::createActor()
 
 		Actor = CreateActor<LightActor>();
 		Actor->GetLight()->SetDiffusePower(1.f);
-		Actor->GetLight()->SetSpacularLightPow(1000.f);
+		Actor->GetLight()->SetAmbientPower(10.f);
+		Actor->GetLight()->SetSpacularLightPow(10.f);
 
-		Actor = CreateActor<LightActor>();
-		Actor->GetLight()->SetDiffusePower(0.3f);
-		Actor->GetLight()->SetSpacularLightPow(50.0f);
-		//Actor->GetTransform()->SetLocalRotationDegree({ 45.0f, 0.0f, 0.0f });
+		//Actor = CreateActor<LightActor>();
+		//Actor->GetLight()->SetDiffusePower(0.3f);
+		//Actor->GetLight()->SetSpacularLightPow(50.0f);
+		////Actor->GetTransform()->SetLocalRotationDegree({ 45.0f, 0.0f, 0.0f });
 
-		Actor = CreateActor<LightActor>();
-		Actor->GetLight()->SetDiffusePower(0.3f);
-		Actor->GetLight()->SetSpacularLightPow(50.0f);
-		//Actor->GetTransform()->SetLocalRotationDegree({ 0.0f, 90.0f, 0.0f });
+		//Actor = CreateActor<LightActor>();
+		//Actor->GetLight()->SetDiffusePower(0.3f);
+		//Actor->GetLight()->SetSpacularLightPow(50.0f);
+		////Actor->GetTransform()->SetLocalRotationDegree({ 0.0f, 90.0f, 0.0f });
 	}
 }
 

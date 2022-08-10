@@ -27,9 +27,9 @@ void GHRio::Start()
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	//renderer_->CreateFBXAnimation("Run", "Rio_Run.fbx");
-	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx");
+	//renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx");
 
-	renderer_->ChangeFBXAnimation("Wait");
+	//renderer_->ChangeFBXAnimation("Wait");
 }
 
 void GHRio::Update(float _deltaTime)

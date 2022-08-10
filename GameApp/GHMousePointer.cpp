@@ -1,7 +1,11 @@
 #include "PreCompile.h"
 #include "GHMousePointer.h"
 
+#include <GameEngine/GameEngineCollision.h>
+
 GHMousePointer::GHMousePointer()
+	: rayCollision_(nullptr)
+	, rayDirection_(0.0f, 0.0f, 1.0f, 1.0f)
 {
 
 }
@@ -13,21 +17,34 @@ GHMousePointer::~GHMousePointer()
 
 void GHMousePointer::Start()
 {
+	rayCollision_ = CreateTransformComponent<GameEngineCollision>();
+	rayCollision_->SetCollisionType(CollisionType::Ray);
+	rayCollision_->SetCollisionGroup(eCollisionGroup::MouseRay);
+
 }
 
 void GHMousePointer::Update(float _deltaTime)
 {
-	ID3D11DeviceContext* dc = GameEngineDevice::GetContext();
+	updateMouseRay();
+	rayCollision_->SetRayData(rayOrigin_, rayDirection_);
+}
 
-	// 뷰포트 개수를 가져옵니다. 하나만 가져올 것이기 때문에 1
+void GHMousePointer::updateMouseRay()
+{
+	// 뷰포트 개수를 가져옵니다. 보통 뷰포트는 하나만 사용하고, 하나만 가져올 것이기 때문에 1
 	UINT numViewport = 1;
 	D3D11_VIEWPORT viewports = { 0, };
 
-	// 입력된 수 만큼 뷰포트를 가져옵니다.
+	// 입력된 첫 번째 인자 수 만큼 뷰포트를 가져옵니다.
 	// 만약 2번째 인자가 NULL 이면, 첫번째 인자로 넣은 UINT에 값이 채워집니다.
-	// 값은 현재 래스터라이저에 바인딩 된 뷰포트 수 입니다.
+	// 채워진 값은 현재 래스터라이저에 바인딩 된 뷰포트 수 입니다.
 	//dc->RSGetViewports(&numViewport, nullptr);
-	dc->RSGetViewports(&numViewport, &viewports);
+	GameEngineDevice::GetContext()->RSGetViewports(&numViewport, &viewports);
+
+	if (viewports.Width == 0.0f || viewports.Height == 0.0f)
+	{
+		return;
+	}
 
 	// 인풋 클래스에서 마우스를 위치를 가져옵니다.
 	float4 mousePosition = GameEngineInput::GetInst().GetMousePos();
@@ -57,22 +74,24 @@ void GHMousePointer::Update(float _deltaTime)
 	pointX = ((2.0f * pointX) / viewports.Width) - 1.0f;
 	pointY = (((2.0f * pointY) / viewports.Height) - 1.0f) * -1.0f;
 
-	// 뷰포트의 종횡비를 고려하여 투영 행렬을 사용하여 점을 조정합니다
+	// 뷰포트의 종횡비를 고려하여 투영 행렬을 사용해 점을 조정합니다
 	float4x4 matProjection = GetLevel()->GetMainCameraActor()->GetProjectionMatrix();
 
 	pointX = pointX / matProjection._11;
 	pointY = pointY / matProjection._22;
 
-	// 뷰 행렬의 역함수를 구합니다.
-	float4x4 matView = GetLevel()->GetMainCameraActor()->GetViewMatrix();
-	matView = matView.InverseReturn();
+	// 뷰 행렬의 역행렬을 구합니다.
+	float4x4 inverseViewMatrix = GetLevel()->GetMainCameraActor()->GetViewMatrix().InverseReturn();
 
-	float4 direction;
-	direction.x = pointX;
-	direction.y = pointY;
-	direction.z = 1.0f;
-	direction.w = 0.0f;
+	// 뷰 역행렬을 곱해 방향을 알아냅니다.
+	rayDirection_.x = pointX;
+	rayDirection_.y = pointY;
+	rayDirection_.z = 1.0f;
+	rayDirection_.w = 0.0f;
 
-	direction = direction * matView;
+	rayDirection_ = rayDirection_ * inverseViewMatrix;
+	rayDirection_.Normalize3D();
 
+	// 뷰 역행렬의 4행은 곧 카메라의 위치입니다.
+	rayOrigin_ = inverseViewMatrix.vw;
 }
