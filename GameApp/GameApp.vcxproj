@@ -226,6 +226,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="NaviActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="NaviMesh.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="SJH_NaviCell.cpp" />
     <ClCompile Include="UI_CharPicture.cpp" />
@@ -373,6 +381,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Item.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="NaviActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="NaviMesh.h">
       <SubType>
       </SubType>
     </ClInclude>

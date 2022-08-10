@@ -29,7 +29,6 @@ protected:
 	void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
 private:
-
 	GameEngineFBXRenderer* FBXNaviRenderer;
 	GameEngineFBXRenderer* FBXWallRenderer;
 	GameEngineFBXRenderer* FBXSchoolMap;

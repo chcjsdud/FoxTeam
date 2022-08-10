@@ -1,11 +1,12 @@
 #pragma once
-#include <GameEngine/GameEngineActor.h>
+//#include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+#include "NaviActor.h"
 
 // Ό³Έν :
 class GameEngineLevel;
 class GameEngineImageRenderer;
-class YSJ_Player : public GameEngineActor
+class YSJ_Player : public NaviActor
 {
 public:
 	static YSJ_Player* MainPlayer;
@@ -33,8 +34,6 @@ private:
 	void Update(float _DeltaTime) override;
 
 	void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
-
-
 
 private:
 	GameEngineCollision* PlayerCollision;

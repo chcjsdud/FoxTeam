@@ -2,6 +2,8 @@
 #include <GameEngine/GameEngineLevel.h>
 
 // Ό³Έν : 
+class NaviMesh;
+class YSJ_Player;
 class YSJ_PlayLevel : public GameEngineLevel
 {
 public:
@@ -20,5 +22,9 @@ protected:
 
 private:
 	void CreateActorLevel();
+
+private:
+	NaviMesh* NaviMesh_;
+	YSJ_Player* Player_;
 };
 

@@ -10,8 +10,11 @@
 #include "YSJ_Player.h"
 #include "YSJ_Char.h"
 #include "YSJ_Mouse.h"
+#include "NaviMesh.h"
 
 YSJ_PlayLevel::YSJ_PlayLevel()
+	: NaviMesh_(nullptr)
+	, Player_(nullptr)
 {
 
 }
@@ -36,8 +39,7 @@ void YSJ_PlayLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 	GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 
-	YSJ_Player* Player = CreateActor<YSJ_Player>();
-	Player->GetTransform()->SetWorldMove(float4::RIGHT * 15.0f);
+	Player_ = CreateActor<YSJ_Player>();
 
 	GameEngineDirectory tempDir;
 
@@ -165,4 +167,28 @@ void YSJ_PlayLevel::CreateActorLevel()
 	YSJ_LumiaMap* LumiaMap = CreateActor<YSJ_LumiaMap>();
 	YSJ_Mouse* Mouse = CreateActor<YSJ_Mouse>();
 	Mouse->SetPickingRenderer(LumiaMap->GetFBXNaviRenderer());
+
+	NaviMesh_ = CreateActor<NaviMesh>();
+
+	std::vector<GameEngineVertex> Vertex = std::vector<GameEngineVertex>(3 * 2);
+
+	Vertex[0] = { float4({ -10.0f, 0.0f, -10.0f }),  { 0.0f, 0.0f } };
+	Vertex[1] = { float4({ 10.0f, 0.0f, -10.0f }),  { 1.0f, 0.0f } };
+	Vertex[2] = { float4({ 0.0f, 0.0f, 10.0f }),  { 0.0f, 1.0f } };
+
+	Vertex[3] = { float4::RotateYDegree(Vertex[0].POSITION, 180.0f) + float4({ 10.0f, 0.0f, -0.0f, 0.0f }),	{ 0.0f, 0.0f }};
+	Vertex[4] = { float4::RotateYDegree(Vertex[1].POSITION, 180.0f) + float4({ 10.0f, 0.0f, -0.0f, 0.0f }),	{ 1.0f, 0.0f }};
+	Vertex[5] = { float4::RotateYDegree(Vertex[2].POSITION, 180.0f) + float4({ 10.0f, 0.0f, -0.0f, 0.0f }),	{ 0.0f, 1.0f }};
+
+	std::vector<UINT> Index;
+
+	for (int i = 0; i < 2; i++)
+	{
+		Index.push_back(i * 3 + 2);
+		Index.push_back(i * 3 + 1);
+		Index.push_back(i * 3 + 0);
+	}
+
+	NaviMesh_->CreateNaviMesh(Vertex, Index);
+	Player_->SetNaviMesh(NaviMesh_);
 }

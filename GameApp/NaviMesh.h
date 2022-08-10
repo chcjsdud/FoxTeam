@@ -1,0 +1,88 @@
+#pragma once
+#include <GameEngine/GameEngineActor.h>
+
+// 파일입출력 적용
+// void CreateNaviMesh(Renderer);
+// void CreateNaviMesh(FBXRenderer); 만들기
+
+class NaviInfo
+{
+	friend class Navi;
+	friend class NaviMesh;
+	friend class NaviActor;
+public:
+	NaviInfo()
+		: Index(0)
+	{
+
+	}
+	~NaviInfo()
+	{
+
+	}
+private:
+	float4 Vertex[3];
+	UINT Index;
+	std::vector<UINT> Link;
+};
+
+class Navi
+{
+	friend class NaviMesh;
+	friend class NaviActor;
+public:
+	Navi()
+		: AllNavi(nullptr)
+	{
+
+	}
+	~Navi()
+	{
+
+	}
+
+	float YCheck(GameEngineTransform* _Transform);
+
+	bool OutCheck(GameEngineTransform* _Transform)
+	{
+		float Dist = 0.0f;
+		return OutCheck(_Transform, Dist);
+	}
+
+	bool OutCheck(GameEngineTransform* _Transform, float& _Dist);
+
+	Navi* MoveCheck(GameEngineTransform* _Transform);
+
+private:
+
+	NaviInfo Info;
+	std::vector<Navi>* AllNavi;
+};
+
+class NaviMesh : public GameEngineActor
+{
+public:
+	NaviMesh();
+	~NaviMesh();
+
+	NaviMesh(const NaviMesh& _other) = delete; 
+	NaviMesh(NaviMesh&& _other) noexcept = delete;
+	NaviMesh& operator=(const NaviMesh& _other) = delete;
+	NaviMesh& operator=(const NaviMesh&& _other) = delete;
+
+	void CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex, const std::vector<UINT>& _Index);
+
+	Navi* CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir);
+
+protected:
+
+private:
+	bool LinkCheck(const Navi& _Left, const Navi& _Right);
+
+	std::vector<Navi> Navis;
+
+	GameEngineRenderer* NaviRenderer;
+	GameEngineVertexBuffer* NewVertex;
+	GameEngineIndexBuffer* NewIndex;
+};
+

@@ -457,6 +457,27 @@ void GameEngineCore::EngineResourcesCreate_Mesh()
 		GameEngineIndexBufferManager::GetInst().Create("FullRect", RectIndex, D3D11_USAGE::D3D11_USAGE_DEFAULT);
 	}
 
+	{
+		std::vector<GameEngineVertex> Vertex = std::vector<GameEngineVertex>(3);
+
+		{
+			Vertex[0] = { float4({ -0.5f, -0.5f, 0.0f }),  { 0.0f, 0.0f } };
+			Vertex[1] = { float4({ 0.5f, -0.5f, 0.0f }),  { 1.0f, 0.0f } };
+			Vertex[2] = { float4({ 0.0f, 0.5f, 0.0f }),  { 1.0f, 1.0f } };
+		}
+
+		GameEngineVertexBufferManager::GetInst().Create("Tri", Vertex, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+	}
+
+	{
+		std::vector<UINT> Index;
+
+		Index.push_back(0);
+		Index.push_back(1);
+		Index.push_back(2);
+
+		GameEngineIndexBufferManager::GetInst().Create("Tri", Index, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+	}
 }
 
 void GameEngineCore::EngineResourcesCreate_Rasterizer()

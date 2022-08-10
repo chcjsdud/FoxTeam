@@ -3,6 +3,7 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include "YSJ_Player.h"
 #include "YSJ_Mouse.h"
+#include "NaviMesh.h"
 
 YSJ_LumiaMap* YSJ_LumiaMap::MainMap = nullptr;
 
@@ -21,7 +22,7 @@ YSJ_LumiaMap::~YSJ_LumiaMap()
 
 void YSJ_LumiaMap::Start()
 {
-	FBXNaviRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	/*FBXNaviRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXNaviRenderer->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
 
 	for (UINT i = 0; i < FBXNaviRenderer->GetRenderSetCount(); i++)
@@ -41,7 +42,7 @@ void YSJ_LumiaMap::Start()
 		FBXWallRenderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
 	}
 
-	FBXWallRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
+	FBXWallRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });*/
 
 	//// SCHOOL ONLY
 	//FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
@@ -58,7 +59,7 @@ void YSJ_LumiaMap::Start()
 
 void YSJ_LumiaMap::Update(float _DeltaTime)
 {
-	if (nullptr != YSJ_Player::MainPlayer)
+	/*if (nullptr != YSJ_Player::MainPlayer)
 	{
 		if (true == FBXWallRenderer->CheckMeshToPointCollision(
 			YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition(),float4::DOWN, 5.0f))
@@ -69,7 +70,7 @@ void YSJ_LumiaMap::Update(float _DeltaTime)
 		{
 			YSJ_Player::MainPlayer->SetColor(float4::RED);
 		}
-	}
+	}*/
 	
 }
 
