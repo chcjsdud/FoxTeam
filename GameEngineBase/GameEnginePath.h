@@ -9,7 +9,7 @@ protected:	// member Var
 
 public:		
 	GameEnginePath(); // default constructer 디폴트 생성자
-	GameEnginePath(std::filesystem::path _path);
+	GameEnginePath(const std::filesystem::path& _path);
 	~GameEnginePath(); // default destructer 디폴트 소멸자
 
 public:		// delete constructer
@@ -21,11 +21,13 @@ public:		//delete operator
 	GameEnginePath& operator=(const GameEnginePath&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
 
 public:
-	static std::string GetFileName(std::string _Path);
+	static std::string GetFileName(const std::string& _Path);
 	std::string GetFileName();
 
 	static bool IsExist(std::string Path);
 
+
+	static std::string GetFileNameWithOutExtension(const std::string& _Path);
 	std::string GetFileNameWithOutExtension();
 
 	std::string GetExtension();

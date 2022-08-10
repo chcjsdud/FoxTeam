@@ -1,5 +1,6 @@
 #pragma once
 #include "GameEnginePath.h"
+#include "GameEngineMath.h"
 #include <iostream>
 
 // 분류 :
@@ -49,12 +50,32 @@ public:
 	// short 저장하는게 없어요 
 	void Write(const std::string& _Data);
 	void Write(const int& _Data);
+	void Write(const float& _Data);
+	void Write(const unsigned int& _Data);
+	void Write(const float4& _Data);
+
+	template<typename DataType>
+	void Write(const DataType& _Data)
+	{
+		_Data.Write(this);
+	}
 
 	template<typename DataType>
 	void Write(std::vector<DataType>& _Data)
 	{
 		int Size = static_cast<int>(_Data.size());
 		Write(&Size, sizeof(int));
+
+
+		//if (0 != Size)
+		//{
+		//	// Write(&_Data[0], Size * sizeof(DataType));
+		//	Write(&_Data[0], Size * sizeof(DataType));
+		//}
+		//for (size_t i = 0; i < _Data.size(); i++)
+		//{
+		//	Write(&_Data[i], sizeof(_Data[i]));
+		//}
 
 		for (size_t i = 0; i < _Data.size(); i++)
 		{
@@ -63,7 +84,7 @@ public:
 	}
 
 	template<typename DataType>
-	void Write(std::list<DataType>& _Data)
+	void Write(const std::list<DataType>& _Data)
 	{
 		int Size = static_cast<int>(_Data.size());
 		Write(&Size, sizeof(int));
@@ -80,7 +101,7 @@ public:
 	}
 
 	template<typename KeyType, typename DataType>
-	void Write(std::map<KeyType, DataType>& _Data)
+	void Write(const std::map<KeyType, DataType>& _Data)
 	{
 		int Size = static_cast<int>(_Data.size());
 		Write(&Size, sizeof(int));
@@ -100,10 +121,18 @@ public:
 	// 크기가 변하는 자료형은 정말정말 위험하다.
 	void Write(const size_t& _Data) = delete;
 
+	template<typename DataType>
+	void Read(DataType& _Data)
+	{
+		_Data.Read(this);
+	}
+
 	void Read(void* _Buffer, size_t _BufferSize, size_t _Size);
 	void Read(std::string& _Data);
 	void Read(int& _Data);
-
+	void Read(float& _Data);
+	void Read(unsigned int& _Data);
+	void Read(float4& _Data);
 
 
 	template<typename DataType>

@@ -41,6 +41,7 @@
 #include "GameEngineRenderingPipeLine.h"
 
 
+
 class GameEngineManagerHelper 
 {
 public:
@@ -48,6 +49,8 @@ public:
 	{
 		GameEngineSoundManager::Destroy();
 
+		GameEngineFBXAnimationManager::Destroy();
+		GameEngineFBXMeshManager::Destroy();
 		GameEngineFontManager::Destroy();
 		GameEngineRenderingPipeLineManager::Destroy();
 		GameEngineConstantBufferManager::Destroy();

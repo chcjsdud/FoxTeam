@@ -4,7 +4,7 @@
 #include <string>
 #include <GameEngine/GameEngineDevice.h>
 #include <GameEngine/GameEngineShader.h>
-
+#include <GameEngineBase/GameEngineFile.h>
 class GameEngineLayOut
 {
 public:
@@ -38,4 +38,14 @@ public:
 	float4 BINORMAL;
 	float4 WEIGHT; // °¡ÁßÄ¡¶û
 	int BLENDINDICES[4] = {0, }; // 12 51 78
+
+	void Write(GameEngineFile* _File) const
+	{
+		_File->Write(this, sizeof(GameEngineVertex));
+	}
+
+	void Read(GameEngineFile* _File)
+	{
+		_File->Read(this, sizeof(GameEngineVertex), sizeof(GameEngineVertex));
+	}
 };

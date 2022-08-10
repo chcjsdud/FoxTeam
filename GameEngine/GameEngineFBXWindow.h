@@ -37,6 +37,7 @@ protected:
 
 public:
 	GameEngineDirectory FBXFolder;
+	GameEngineDirectory UserSaveFolder;
 
 	int FBXFileSelect;
 	int ActorSelect;

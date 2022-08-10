@@ -489,6 +489,27 @@ void GameEngineFBXWindow::OnGUI()
 		}
 	}
 
+
+	if (nullptr != SelectMesh
+		&& 0 != SelectMesh->GetAllMeshMap().size()
+		&& ImGui::Button("User MeshSave"))
+	{
+		std::string Name = SelectMesh->GetName();
+		Name = GameEnginePath::GetFileNameWithOutExtension(Name);
+		Name += ".UserMesh";
+		SelectMesh->UserSave(UserSaveFolder.PathToPlusFileName(Name));
+	}
+
+	if (nullptr != SelectMesh
+		&& 0 != SelectMesh->GetAllMeshMap().size()
+		&& ImGui::Button("User MeshLoad"))
+	{
+		std::string Name = SelectMesh->GetName();
+		Name = GameEnginePath::GetFileNameWithOutExtension(Name);
+		Name += ".UserMesh";
+		SelectMesh->UserLoad(UserSaveFolder.PathToPlusFileName(Name));
+	}
+
 	ImGui::Text(GameEngineString::AnsiToUTF8Return(info).c_str());
 
 	ActorControl();

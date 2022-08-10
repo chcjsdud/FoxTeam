@@ -32,6 +32,44 @@ public:
 	std::string SpcTextureName; // 텍스처경로
 
 public:
+	void Write(GameEngineFile* _File) const
+	{
+		_File->Write(Name);
+		_File->Write(AmbColor); // 빛
+		_File->Write(SpcColor); // 빛
+		_File->Write(EmvColor); // 빛
+		_File->Write(SpecularPower);
+		_File->Write(TransparencyFactor);
+		_File->Write(Shininess);
+		_File->Write(DifTexturePath);	// 텍스처
+		_File->Write(NorTexturePath); // 텍스처
+		_File->Write(SpcTexturePath); // 텍스처
+		_File->Write(DifTextureName);	// 텍스처
+		_File->Write(NorTextureName); // 텍스처
+		_File->Write(SpcTextureName); // 텍스처
+
+	}
+
+	void Read(GameEngineFile* _File)
+	{
+		_File->Read(Name);
+		_File->Read(AmbColor); // 빛
+		_File->Read(SpcColor); // 빛
+		_File->Read(EmvColor); // 빛
+		_File->Read(SpecularPower);
+		_File->Read(TransparencyFactor);
+		_File->Read(Shininess);
+		_File->Read(DifTexturePath);	// 텍스처
+		_File->Read(NorTexturePath); // 텍스처
+		_File->Read(SpcTexturePath); // 텍스처
+		_File->Read(DifTextureName);	// 텍스처
+		_File->Read(NorTextureName); // 텍스처
+		_File->Read(SpcTextureName); // 텍스처
+	}
+
+
+public:
+
 	FbxExRenderingPipeLineSettingData()
 		: SpecularPower(0.f)
 		, TransparencyFactor(0.f)
@@ -64,7 +102,7 @@ public:
 
 	std::vector<std::vector<FbxExRenderingPipeLineSettingData>> MatialData;
 
-	std::vector<std::vector<std::vector<UINT>>> Indexs; // 메쉬<재질<인덱스>>>
+	std::vector<std::vector<std::vector<unsigned int>>> Indexs; // 메쉬<재질<인덱스>>>
 
 	std::vector<GameEngineVertexBuffer*> GameEngineVertexBuffers;
 	std::vector<std::vector<GameEngineIndexBuffer*>> GameEngineIndexBuffers;
@@ -419,6 +457,15 @@ public:
 	fbxsdk::FbxCluster* Cluster = nullptr;
 	fbxsdk::FbxMesh* Mesh = nullptr;
 	std::string LinkName;
+
+public:
+	FbxClusterData()
+		: Mesh(nullptr)
+		, Cluster(nullptr)
+		, LinkName("")
+	{
+
+	}
 };
 
 // 설명 :
@@ -468,6 +515,10 @@ public:
 	}
 
 	bool ImportBone();
+
+	void UserSave(const std::string& _Path);
+	void UserLoad(const std::string& _Path);
+
 
 protected:
 	void MeshLoad();

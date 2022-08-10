@@ -20,7 +20,7 @@ public:
 
 protected:		// delete constructer
 	UserGame(const UserGame& _other) = delete; // default Copy constructer 디폴트 복사생성자
-	UserGame(UserGame&& _other) noexcept; // default RValue Copy constructer 디폴트 RValue 복사생성자
+	UserGame(UserGame&& _other) noexcept; // 
 
 private:		//delete operator
 	UserGame& operator=(const UserGame& _other) = delete; // default Copy operator 디폴트 대입 연산자

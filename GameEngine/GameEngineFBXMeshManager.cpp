@@ -27,6 +27,30 @@ GameEngineFBXMeshManager::GameEngineFBXMeshManager(GameEngineFBXMeshManager&& _o
 
 }
 
+GameEngineFBXMesh* GameEngineFBXMeshManager::LoadUser(const std::string& _Path)
+{
+	return LoadUser(GameEnginePath::GetFileName(_Path), _Path);
+}
+GameEngineFBXMesh* GameEngineFBXMeshManager::LoadUser(const std::string& _Name, const std::string& _Path)
+{
+	std::string UpperName = GameEngineString::toupper(_Name);
+
+	GameEngineFBXMesh* FindRes = Find(UpperName);
+
+	if (nullptr != FindRes)
+	{
+		GameEngineDebug::MsgBoxError(_Name + " Is Overlap Load");
+	}
+
+	GameEngineFBXMesh* NewRes = new GameEngineFBXMesh();
+	NewRes->SetName(UpperName);
+	NewRes->UserLoad(_Path);
+
+	ResourcesMap.insert(std::map<std::string, GameEngineFBXMesh*>::value_type(UpperName, NewRes));
+	return NewRes;
+
+}
+
 GameEngineFBXMesh* GameEngineFBXMeshManager::Load(const std::string& _Path)
 {
 	return Load(GameEnginePath::GetFileName(_Path), _Path);

@@ -1,6 +1,7 @@
 #include "PreCompile.h"
 #include "GameEngineFBXMesh.h"
 #include "GameEngineStructuredBuffer.h"
+#include <GameEngineBase/GameEngineFile.h>
 
 GameEngineFBXMesh::GameEngineFBXMesh() 
 	: IsAnimationLoadOnce(false)
@@ -800,7 +801,7 @@ void GameEngineFBXMesh::LoadUv(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshM
 		{
 			result.x = static_cast<float>(pElement->GetDirectArray().GetAt(_Index).mData[0]);
 			result.y = static_cast<float>(pElement->GetDirectArray().GetAt(_Index).mData[1]);
-			result.z = static_cast<float>(pElement->GetDirectArray().GetAt(_Index).mData[2]);
+			//result.z = static_cast<float>(pElement->GetDirectArray().GetAt(_Index).mData[2]);
 		}
 		break;
 
@@ -809,7 +810,7 @@ void GameEngineFBXMesh::LoadUv(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshM
 			int index = pElement->GetIndexArray().GetAt(_Index);
 			result.x = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[0]);
 			result.y = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[1]);
-			result.z = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[2]);
+			//result.z = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[2]);
 		}
 		break;
 		default:
@@ -826,7 +827,7 @@ void GameEngineFBXMesh::LoadUv(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshM
 		{
 			result.x = static_cast<float>(pElement->GetDirectArray().GetAt(VtxId).mData[0]);
 			result.y = static_cast<float>(pElement->GetDirectArray().GetAt(VtxId).mData[1]);
-			result.z = static_cast<float>(pElement->GetDirectArray().GetAt(VtxId).mData[2]);
+			//result.z = static_cast<float>(pElement->GetDirectArray().GetAt(VtxId).mData[2]);
 		}
 		break;
 
@@ -835,7 +836,7 @@ void GameEngineFBXMesh::LoadUv(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshM
 			int index = pElement->GetIndexArray().GetAt(VertexCount);
 			result.x = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[0]);
 			result.y = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[1]);
-			result.z = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[2]);
+		//	result.z = static_cast<float>(pElement->GetDirectArray().GetAt(index).mData[2]);
 		}
 		break;
 		default:
@@ -853,8 +854,8 @@ void GameEngineFBXMesh::LoadUv(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshM
 
 void GameEngineFBXMesh::VertexBufferCheck()
 {
-	size_t meshInfoSize = MeshInfos.size();
-	for (size_t meshInfoIndex = 0; meshInfoIndex < meshInfoSize; ++meshInfoIndex)
+	int meshInfoSize = static_cast<int>(MeshInfos.size());
+	for (int meshInfoIndex = 0; meshInfoIndex < meshInfoSize; ++meshInfoIndex)
 	{
 		FbxExMeshInfo& meshInfo = MeshInfos.at(meshInfoIndex);
 		fbxsdk::FbxNode* pMeshNode = meshInfo.Mesh->GetNode();
@@ -1624,4 +1625,59 @@ bool GameEngineFBXMesh::ImportBone()
 	LoadSkinAndCluster();
 
 	return true;
+}
+
+void GameEngineFBXMesh::UserSave(const std::string& _Path)
+{
+	// 연산적 최적화를 하고 있는겁니다.
+	// int Hp;
+	// int Def;
+	// float 감소량; Def / 2;
+	// 그걸 저장해 놓으면 연산할 필요가 없잖아.
+
+	// 공간적 최적화를 하고 있는겁니다.
+	// int Hp;
+	// int Def;
+	// void Damage(int Damge) 
+	// {
+	//    float 감소량 = Def / 2;
+	//    Hp -= Damge * 감소량;
+	// }
+
+	GameEngineFile NewFile = GameEngineFile(_Path, "wb");
+	// NewFile.Open("wb");
+	NewFile.Write(static_cast<int>(AllMeshMap.size()));
+	for (auto& Data : AllMeshMap)
+	{
+		NewFile.Write(Data.MatialData);
+		NewFile.Write(Data.Vertexs);
+		NewFile.Write(Data.Indexs);
+	}
+}
+
+void GameEngineFBXMesh::UserLoad(const std::string& _Path)
+{
+	AllMeshMap.clear();
+
+	GameEngineFile NewFile = GameEngineFile(_Path, "rb");
+
+	int Size = 0;
+
+	NewFile.Read(Size);
+
+	if (0 == Size)
+	{
+		GameEngineDebug::MsgBoxError("매쉬의 유저 데이터가 존재하지 않는 매쉬 입니다.");
+	}
+
+	AllMeshMap.resize(Size);
+
+	for (size_t i = 0; i < Size; i++)
+	{
+		NewFile.Read(AllMeshMap[i].MatialData);
+		NewFile.Read(AllMeshMap[i].Vertexs);
+		NewFile.Read(AllMeshMap[i].Indexs);
+	}
+
+	CreateRenderingBuffer();
 }

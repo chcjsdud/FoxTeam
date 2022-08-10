@@ -981,14 +981,14 @@ void GameEngineCore::EngineResourcesCreate()
 
 	{
 		// 0810 ╧за╬©Ь
-		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("Outline");
-		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
-		Pipe->SetVertexShader("Outline_VS");
-		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
-		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		Pipe->SetRasterizer("EngineBaseRasterizerBack");
-		Pipe->SetPixelShader("Outline_PS");
-		Pipe->SetOutputMergerBlend("AlphaBlend");
+		//GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("Outline");
+		//Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		//Pipe->SetVertexShader("Outline_VS");
+		//Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		//Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		//Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		//Pipe->SetPixelShader("Outline_PS");
+		//Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
 
 }

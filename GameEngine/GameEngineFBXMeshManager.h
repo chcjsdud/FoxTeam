@@ -35,6 +35,10 @@ public:
 	// 이름 직접 지정
 	GameEngineFBXMesh* Load(const std::string& _Name, const std::string& _Path);
 	// 목록에서 찾는다.
+
+
+	GameEngineFBXMesh* LoadUser(const std::string& _Path);
+	GameEngineFBXMesh* LoadUser(const std::string& _Name, const std::string& _Path);
 	GameEngineFBXMesh* Find(const std::string& _Name);
 
 	void DeletePath(const std::string& _Path);

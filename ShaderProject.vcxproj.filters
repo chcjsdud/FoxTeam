@@ -72,8 +72,5 @@
     <FxCompile Include="EngineResources\Shader\TextureDeferredLightAni.fx">
       <Filter>Engine</Filter>
     </FxCompile>
-    <FxCompile Include="EngineResources\Shader\Outline.fx">
-      <Filter>User\PJW</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>
