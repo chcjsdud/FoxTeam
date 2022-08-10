@@ -8,19 +8,6 @@
 
 SJH_FloorMap* SJH_FloorMap::FloorMap = nullptr;
 
-SJH_NaviCell* SJH_FloorMap::SearchPickedCellInfo(const float4& _PickedPos)
-{
-	for (int CellNumber = 0; CellNumber < static_cast<int>(NavigationCellInfos_.size()); ++CellNumber)
-	{
-		if (nullptr != NavigationCellInfos_[CellNumber]->IsPickedCellInfo(_PickedPos))
-		{
-			return NavigationCellInfos_[CellNumber];
-		}
-	}
-
-	return nullptr;
-}
-
 GameEngineFBXMesh* SJH_FloorMap::GetFloorMapMesh()
 {
 	if (nullptr == FloorMap_)
@@ -34,6 +21,20 @@ GameEngineFBXMesh* SJH_FloorMap::GetFloorMapMesh()
 GameEngineFBXRenderer* SJH_FloorMap::GetFloorMapRenderer()
 {
 	return FloorMap_;
+}
+
+SJH_NaviCell* SJH_FloorMap::GetNaviCellInfo(const float4& _Vertex0, const float4& _Vertex1, const float4& _Vertex2)
+{
+	int CellInfoSize = static_cast<int>(NavigationCellInfos_.size());
+	for (int CellNumber = 0; CellNumber < CellInfoSize; ++CellNumber)
+	{
+		if(nullptr != NavigationCellInfos_[CellNumber]->CompareVertices(_Vertex0, _Vertex1, _Vertex2))
+		{
+			return NavigationCellInfos_[CellNumber];
+		}
+	}
+
+	return nullptr;
 }
 
 void SJH_FloorMap::Start()
@@ -116,7 +117,6 @@ void SJH_FloorMap::FindAdjacentFaces()
 			// 기본적으로 3방향 인접한 면을 찾아낸다.
 			// 두번째 인자에 false 전달시 6방향 인접한 면을 찾아낸다.
 			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
-			//NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber], false);
 		}
 	}
 }

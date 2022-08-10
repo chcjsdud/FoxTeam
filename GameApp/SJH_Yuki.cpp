@@ -4,15 +4,37 @@
 #include <GameEngine/GameEngineFBXMesh.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
+#include "SJH_NaviCell.h"
+
 SJH_Yuki* SJH_Yuki::MainPlayer = nullptr;
 
-void SJH_Yuki::Move(const float4& _TargetPos)
+void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 {
-	// 이동 Flag On
-	IsMove_ = true;
+	// 이동중지
+	MoveFlag_ = false;
 
-	// 목표위치 저장
-	MoveTargetPos_ = _TargetPos;
+	// 기존 이동경로가 남아있다면
+	if (!MovePath_.empty())
+	{
+		// 플레이어의 현재위치에 따라 삼각형정보를 갱신
+		//CurNaviCell_ = 
+
+		// 기존 이동경로를 삭제
+		MovePath_.clear();
+	}
+
+	// 이동타겟 삼각형이 변경되었다면
+	if (CurNaviCell_ != _TargetNaviCell)
+	{
+		// 이동목표지점의 삼각형 갱신
+		TargetNaviCell_ = _TargetNaviCell;
+		
+		// 현재 플레이어 위치 ~ _MoveTargetPos까지의 이동경로 생성
+		//MovePath_ = 
+
+		// 이동경로 생성완료 후 Flag On
+		MoveFlag_ = true;
+	}
 }
 
 void SJH_Yuki::Start()
@@ -128,17 +150,28 @@ void SJH_Yuki::Start()
 
 void SJH_Yuki::Update(float _DeltaTime)
 {
-	// 이동 Flag On일때 이동
-	if (true == IsMove_)
+	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동한다.
+	if (true == MoveFlag_)
 	{
+		// 이동경로에 따라 이동시작
 
+
+		// 이동경로 모두 소진시 현재 위치한 삼각형을 갱신
+		if (MovePath_.empty())
+		{
+			CurNaviCell_ = TargetNaviCell_;
+		}
+
+		int a = 0;
 	}
 }
 
 SJH_Yuki::SJH_Yuki()
 	: Mesh_(nullptr)
 	, AnimRenderer_(nullptr)
-	, IsMove_(false)
+	, CurNaviCell_(nullptr)
+	, TargetNaviCell_(nullptr)
+	, MoveFlag_(false)
 {
 }
 

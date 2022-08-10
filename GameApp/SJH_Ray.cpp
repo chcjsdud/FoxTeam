@@ -9,6 +9,8 @@
 #include <GameEngine/GameEngineFBXMesh.h>
 #include <GameEngine/GameEngineCollision.h>
 
+#include "SJH_FloorMap.h"
+
 bool SJH_Ray::IsPicked(const float4& _MousePos, float4& _PickedPos, GameEngineFBXRenderer* _Mesh)
 {
     if (nullptr == _Mesh)
@@ -83,6 +85,56 @@ bool SJH_Ray::IsMeshPicked(GameEngineFBXRenderer* _Mesh, const float4& _MousePos
     }
 
     return false;
+}
+
+SJH_NaviCell* SJH_Ray::IsPickedCell(GameEngineFBXRenderer* _Mesh, const float4& _MousePos, float4& _PickedPos)
+{
+    // 광선을 월드영역으로 이동
+ // 결과값 : 광선시작위치, 광선의방향
+    if (false == RayAtViewSpace(_MousePos))
+    {
+        return nullptr;
+    }
+
+    // Mesh가 없다면 처리 불가
+    if (nullptr == _Mesh)
+    {
+        return nullptr;
+    }
+
+    float Dist = 0.0f;
+
+    // 교차성공시 교차점까지의 거리를 이용하여 해당 좌표를 반환
+    std::vector<FbxMeshSet>& vecMeshMap = _Mesh->GetMesh()->GetAllMeshMap();
+    std::vector<FbxExMeshInfo>& vecMeshInfos = _Mesh->GetMesh()->GetMeshInfos();
+
+    for (int MeshNumber = 0; MeshNumber < static_cast<int>(vecMeshMap.size()); ++MeshNumber)
+    {
+        // 해당 Mesh가 포함하는 면(Face) 갯수 저장
+        int CurMeshFaceSize = vecMeshInfos[MeshNumber].FaceNum;
+
+        for (int MaterialNumber = 0; MaterialNumber < vecMeshInfos[MeshNumber].MaterialNum; ++MaterialNumber)
+        {
+            for (int FaceNumber = 0; FaceNumber < CurMeshFaceSize; ++FaceNumber)
+            {
+                float4 V0 = vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+                float4 V1 = vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+                float4 V2 = vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+
+                // 해당 함수는 Ray가 교차하는 점이 삼각형 내부에 존재하는지 판단하고, 그 교차한 지점의 위치좌표를 반환
+                if (true == DirectX::TriangleTests::Intersects(OriginPos_.DirectVector, Direction_.DirectVector, V0.DirectVector, V1.DirectVector, V2.DirectVector, Dist))
+                {
+                    // 교차했다면 그 교차점의 좌표를 반환하며
+                    _PickedPos = OriginPos_ + (Direction_ * Dist);
+                    return SJH_FloorMap::FloorMap->GetNaviCellInfo(vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 0]].POSITION,
+                        vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 1]].POSITION,
+                        vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 2]].POSITION);
+                }
+            }
+        }
+    }
+
+    return nullptr;
 }
 
 bool SJH_Ray::RayAtViewSpace(float _MousePosX, float _MousePosY)

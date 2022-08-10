@@ -20,9 +20,14 @@ public:
 class SJH_NaviCell
 {
 public:
-	inline bool GetFaceInfomationFlag()
+	inline bool GetFaceInfomationFlag() const
 	{
 		return FaceInfoCompleted_;
+	}
+
+	inline float4 GetCenterToGravity() const
+	{
+		return CenterOfGravity_;
 	}
 
 public:
@@ -30,7 +35,7 @@ public:
 	void SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell, bool _3Direction = true);
 
 public:
-	SJH_NaviCell* IsPickedCellInfo(const float4& _PickedPos);
+	SJH_NaviCell* CompareVertices(const float4& _V0, const float4& _V1, const float4& _V2);
 
 protected:
 

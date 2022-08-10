@@ -63,9 +63,29 @@ void SJH_NaviCell::SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell, bool 
 	}
 }
 
-SJH_NaviCell* SJH_NaviCell::IsPickedCellInfo(const float4& _PickedPos)
+SJH_NaviCell* SJH_NaviCell::CompareVertices(const float4& _V0, const float4& _V1, const float4& _V2)
 {
-	if (CenterOfGravity_ == _PickedPos)
+	std::vector<float4> CompareVertexList;
+	CompareVertexList.push_back(_V0);
+	CompareVertexList.push_back(_V1);
+	CompareVertexList.push_back(_V2);
+
+	// 세개의 버텍스를 모두 포함하고 있다면 나 자신을 반환
+	int ThisVertexSize = static_cast<int>(VertexList_.size());
+	int SameVertexCnt = 0;
+	for (int ThisVertexNumber = 0; ThisVertexNumber < ThisVertexSize; ++ThisVertexNumber)
+	{
+		for (int CompareVertexNumber = 0; CompareVertexNumber < static_cast<int>(CompareVertexList.size()); ++CompareVertexNumber)
+		{
+			if (VertexList_[ThisVertexNumber] == CompareVertexList[CompareVertexNumber])
+			{
+				++SameVertexCnt;
+				break;
+			}
+		}
+	}
+
+	if (3 == SameVertexCnt)
 	{
 		return this;
 	}

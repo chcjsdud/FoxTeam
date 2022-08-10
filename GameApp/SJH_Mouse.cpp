@@ -9,6 +9,7 @@
 #include "SJH_Yuki.h"
 
 #include "SJH_FloorMap.h"
+#include "SJH_NaviCell.h"
 
 void SJH_Mouse::Start()
 {
@@ -53,20 +54,16 @@ void SJH_Mouse::Update(float _DeltaTime)
 #pragma region Mesh To Ray CrossCheck
 		if (nullptr != SJH_FloorMap::FloorMap)
 		{
-			// Ray_->IsPicked() <= 해당 함수는 Ray가 교차하는 점이 삼각형 내부에 존재하는지 판단하고, 그 교차한 지점의 위치좌표를 반환
-			if (true == Ray_->IsPicked(GameEngineInput::GetInst().GetMousePos(), MovePos, SJH_FloorMap::FloorMap->GetFloorMapRenderer()))
+			// 220810 SJH 임시주석처리
+			//if (true == Ray_->IsPicked(GameEngineInput::GetInst().GetMousePos(), MovePos, SJH_FloorMap::FloorMap->GetFloorMapRenderer()))
+			//{
+			//	SJH_Yuki::MainPlayer->GetTransform()->SetWorldPosition(MovePos);
+			//}
+
+			SJH_NaviCell* PickedNaviCell = Ray_->IsPickedCell(SJH_FloorMap::FloorMap->GetFloorMapRenderer(), GameEngineInput::GetInst().GetMousePos(), MovePos);
+			if (nullptr != PickedNaviCell)
 			{
-				// 해당 지점의 네비셀이 어느것인지 찾아낸다.
-				SJH_NaviCell* PickedCell = SJH_FloorMap::FloorMap->SearchPickedCellInfo(MovePos);
-				if(nullptr != PickedCell)
-				{
-					int a = 0;
-				}
-
-
-				int a = 0;
-
-				//SJH_Yuki::MainPlayer->GetTransform()->SetWorldPosition(MovePos);
+				SJH_Yuki::MainPlayer->Move(PickedNaviCell, MovePos);
 			}
 		}
 #pragma endregion

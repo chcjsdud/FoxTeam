@@ -7,12 +7,16 @@
 class GameEngineFBXMesh;
 class GameEngineCollision;
 class GameEngineFBXRenderer;
+class SJH_NaviCell;
 class SJH_Ray : public GameEngineActor
 {
 public: // ±¤¼±Ã¼Å©
 	bool IsPicked(const float4& _MousePos, float4& _PickedPos, GameEngineFBXRenderer* _Mesh = nullptr);
 	bool IsColliderPicked(const float4& _MousePos, float4& _PickedPos);
 	bool IsMeshPicked(GameEngineFBXRenderer* _Mesh, const float4& _MousePos, float4& _PickedPos);
+
+public: // ±¤¼±°ú NaviCellÀÇ ±³Â÷
+	SJH_NaviCell* IsPickedCell(GameEngineFBXRenderer* _Mesh, const float4& _MousePos, float4& _PickedPos);
 
 protected:
 
