@@ -97,6 +97,8 @@ void SJH_FloorMap::Start()
 	// 모든 면을 검사하여 인접한 면을 찾아내서 정보에 저장
 	FindAdjacentFaces();
 
+	int a = 0;
+
 //====================================== Navigation Cell
 #pragma endregion
 }
@@ -114,8 +116,7 @@ void SJH_FloorMap::FindAdjacentFaces()
 				continue;
 			}
 
-			// 기본적으로 3방향 인접한 면을 찾아낸다.
-			// 두번째 인자에 false 전달시 6방향 인접한 면을 찾아낸다.
+			// 기준면의 인접한 면을 모두 찾아낸다.
 			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
 		}
 	}
