@@ -8,6 +8,19 @@
 
 SJH_FloorMap* SJH_FloorMap::FloorMap = nullptr;
 
+SJH_NaviCell* SJH_FloorMap::SearchPickedCellInfo(const float4& _PickedPos)
+{
+	for (int CellNumber = 0; CellNumber < static_cast<int>(NavigationCellInfos_.size()); ++CellNumber)
+	{
+		if (nullptr != NavigationCellInfos_[CellNumber]->IsPickedCellInfo(_PickedPos))
+		{
+			return NavigationCellInfos_[CellNumber];
+		}
+	}
+
+	return nullptr;
+}
+
 GameEngineFBXMesh* SJH_FloorMap::GetFloorMapMesh()
 {
 	if (nullptr == FloorMap_)
@@ -50,8 +63,6 @@ void SJH_FloorMap::Start()
 		FloorMap_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
 	}
 
-	//FloorMap_->GetTransform()->SetLocalRotationDegree({ 0.0f, 70.0f, 0.0f });
-
 #pragma region 네비게이션 테스트
 //====================================== Navigation Cell
 	// 해당 네비게이션 메쉬의 정보를 Get
@@ -59,40 +70,55 @@ void SJH_FloorMap::Start()
 	std::vector<FbxMeshSet>& AllMeshMap = FloorMap_->GetMesh()->GetAllMeshMap();		// Mesh의 모든 정보 집합
 
 	// 해당 Navigation FBX File이 가지는 모든 메쉬를 탐색
-	int MeshCount = static_cast<int>(AllMeshInfo.size());
-	for (int MeshNumber = 0; MeshNumber < MeshCount; ++MeshNumber)
+	for (int MeshNumber = 0; MeshNumber < static_cast<int>(AllMeshInfo.size()); ++MeshNumber)
 	{
-		// 해당 Mesh를 구성하는 모든면의 갯수만큼 반복문 실행
-		int FaceCount = AllMeshInfo[MeshNumber].FaceNum;
-		for (int FaceNumber = 0; FaceNumber < FaceCount; ++FaceNumber)
+		for (int MaterialNumber = 0; MaterialNumber < AllMeshInfo[MeshNumber].MaterialNum; ++MaterialNumber)
 		{
-			// 해당 면을 구성하는 정점 및 기본정보를 SJH_NaviCell 정보로 셋팅
-			// 메쉬 -> 삼각형(면)들의 집합 -> 세정점들의집합
-			std::vector<float4> VertexList;
-			for (int VertexNumber = 0; VertexNumber < 3; ++VertexNumber)
+			for (int FaceNumber = 0; FaceNumber < AllMeshInfo[MeshNumber].FaceNum; ++FaceNumber)
 			{
-				int VertexIndex = 0;
-				float4 Vertex = float4::ZERO;
-				VertexList.push_back(Vertex);
-			}
+				std::vector<float4> VertexList;
+				std::vector<UINT> IndexList;
+				for (int VertexNumber = 0; VertexNumber < 3; ++VertexNumber)
+				{
+					UINT VertexIndex = AllMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + VertexNumber];
+					float4 Vertex = AllMeshMap[MeshNumber].Vertexs[VertexIndex].POSITION;
+					VertexList.push_back(Vertex);
+					IndexList.push_back(VertexIndex);
+				}
 
-			// Map에서 해당 맵을 구성하는 모든 셀(삼각형) 정보를 관리
-			SJH_NaviCell* NewCellInfo = new SJH_NaviCell();
-			NewCellInfo->CreateNavigationCellInfo(MeshNumber, FaceNumber, VertexList);
-			NavigationCellInfos_.push_back(NewCellInfo);
+				SJH_NaviCell* NewCellInfo = new SJH_NaviCell();
+				NewCellInfo->CreateNavigationCellInfo(MeshNumber, FaceNumber, VertexList, IndexList);
+				NavigationCellInfos_.push_back(NewCellInfo);
+			}
 		}
 	}
 
-	// 각각의 메쉬가 보유한 모든 셀을 탐색하여 지정한 셀과 인접한 셀을 찾아내서 정보저장
-	for (int MeshNumber = 0; MeshNumber < MeshCount; ++MeshNumber)
-	{
-
-	}
-
-	// GetFaceInfomationFlag()
+	// 모든 면을 검사하여 인접한 면을 찾아내서 정보에 저장
+	FindAdjacentFaces();
 
 //====================================== Navigation Cell
 #pragma endregion
+}
+
+void SJH_FloorMap::FindAdjacentFaces()
+{
+	int CellInfoSize = static_cast<int>(NavigationCellInfos_.size());
+	for (int CurCellNumber = 0; CurCellNumber < CellInfoSize; ++CurCellNumber)
+	{
+		for (int CompareCellNumber = 0; CompareCellNumber < CellInfoSize; ++CompareCellNumber)
+		{
+			// 단, 현재 기준면과 상대의 기준면이 동일한 면이라면 무시
+			if (CurCellNumber == CompareCellNumber)
+			{
+				continue;
+			}
+
+			// 기본적으로 3방향 인접한 면을 찾아낸다.
+			// 두번째 인자에 false 전달시 6방향 인접한 면을 찾아낸다.
+			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
+			//NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber], false);
+		}
+	}
 }
 
 void SJH_FloorMap::Update(float _DeltaTime)
@@ -106,14 +132,10 @@ SJH_FloorMap::SJH_FloorMap()
 
 SJH_FloorMap::~SJH_FloorMap()
 {
-	int NavigationCellInfoSize = static_cast<int>(NavigationCellInfos_.size());
-	if (0 != NavigationCellInfoSize)
+	for (int CellInfoNum = 0; CellInfoNum < static_cast<int>(NavigationCellInfos_.size()); ++CellInfoNum)
 	{
-		for (int i = 0; i < NavigationCellInfoSize; ++i)
-		{
-			delete NavigationCellInfos_[i];
-			NavigationCellInfos_[i] = nullptr;
-		}
+		delete NavigationCellInfos_[CellInfoNum];
+		NavigationCellInfos_[CellInfoNum] = nullptr;
 	}
 	NavigationCellInfos_.clear();
 }

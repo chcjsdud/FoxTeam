@@ -14,10 +14,16 @@ public:
 	static SJH_FloorMap* FloorMap;
 
 public:
+	SJH_NaviCell* SearchPickedCellInfo(const float4& _PickedPos);
+
+public:
 	GameEngineFBXMesh* GetFloorMapMesh();
 	GameEngineFBXRenderer* GetFloorMapRenderer();
 
 protected:
+
+private:
+	void FindAdjacentFaces();
 
 private:
 	void Start() override;
@@ -43,6 +49,6 @@ private:
 	GameEngineFBXRenderer* FloorMap_;
 
 private:
-	std::vector<SJH_NaviCell*> NavigationCellInfos_;	
+	std::vector<SJH_NaviCell*> NavigationCellInfos_;			// NavigationCellInfos_[MeshNumber][FaceNumber]
 };
 

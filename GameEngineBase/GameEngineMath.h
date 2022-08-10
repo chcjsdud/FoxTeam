@@ -222,6 +222,11 @@ public:
 		return DirectX::XMVectorDivide(DirectVector, _value.DirectVector);
 	}
 
+	float4 operator/(const float _Value) const
+	{
+		return DirectX::XMVectorDivide(DirectVector, DirectX::XMVectorReplicate(_Value));
+	}
+
 
 	float4& operator+=(const float4 _value)
 	{
