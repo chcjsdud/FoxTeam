@@ -52,7 +52,9 @@ public:
 	void Write(const int& _Data);
 	void Write(const float& _Data);
 	void Write(const unsigned int& _Data);
+	void Write(const double& _Data);
 	void Write(const float4& _Data);
+	void Write(const float4x4& _Data);
 
 	template<typename DataType>
 	void Write(const DataType& _Data)
@@ -61,7 +63,7 @@ public:
 	}
 
 	template<typename DataType>
-	void Write(std::vector<DataType>& _Data)
+	void Write(const std::vector<DataType>& _Data)
 	{
 		int Size = static_cast<int>(_Data.size());
 		Write(&Size, sizeof(int));
@@ -132,8 +134,9 @@ public:
 	void Read(int& _Data);
 	void Read(float& _Data);
 	void Read(unsigned int& _Data);
+	void Read(double& _Data);
 	void Read(float4& _Data);
-
+	void Read(float4x4& _Data);
 
 	template<typename DataType>
 	void Read(std::vector<DataType>& _Data)

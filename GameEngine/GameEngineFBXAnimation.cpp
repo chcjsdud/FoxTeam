@@ -181,6 +181,13 @@ void GameEngineFBXAnimation::CalFbxExBoneFrameTransMatrix(GameEngineFBXMesh* _Me
 		return;
 	}
 
+	if (0 != AnimationDatas[_AnimationIndex].AniFrameData.size())
+	{
+		// 0810 업데이트 : 먼젓번에 이 함수를 지나친 메시면 리턴
+		return;
+	}
+
+
 	AnimationDatas[_AnimationIndex].AniFrameData.resize(_Mesh->MeshInfos.size());
 	for (UINT MeshCount = 0; MeshCount < _Mesh->MeshInfos.size(); MeshCount++)
 	{
@@ -323,4 +330,14 @@ bool GameEngineFBXAnimation::AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::Fbx
 	}
 
 	return true;
+}
+
+
+void GameEngineFBXAnimation::UserSave(const std::string& _Path)
+{
+
+}
+void GameEngineFBXAnimation::UserLoad(const std::string& _Path)
+{
+
 }

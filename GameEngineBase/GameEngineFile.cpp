@@ -1,4 +1,4 @@
-#include "PreCompile.h"
+ #include "PreCompile.h"
 #include "GameEngineFile.h"
 #include "GameEngineDebug.h"
 
@@ -132,9 +132,20 @@ void GameEngineFile::Write(const unsigned int& _Data)
 	Write(&_Data, sizeof(unsigned int));
 }
 
+void GameEngineFile::Write(const double& _Data)
+{
+	Write(&_Data, sizeof(double));
+}
+
+
 void GameEngineFile::Write(const float4& _Data)
 {
 	Write(&_Data, sizeof(float4));
+}
+
+void GameEngineFile::Write(const float4x4& _Data)
+{
+	Write(&_Data, sizeof(float4x4));
 }
 
 void GameEngineFile::Write(const float& _Data)
@@ -154,6 +165,12 @@ void GameEngineFile::Read(int& _Data)
 	Read(&_Data, sizeof(int), sizeof(int));
 }
 
+void GameEngineFile::Read(double& _Data)
+{
+	Read(&_Data, sizeof(double), sizeof(double));
+}
+
+
 void GameEngineFile::Read(unsigned int& _Data)
 {
 	Read(&_Data, sizeof(unsigned int), sizeof(unsigned int));
@@ -167,6 +184,11 @@ void GameEngineFile::Read(float& _Data)
 void GameEngineFile::Read(float4& _Data)
 {
 	Read(&_Data, sizeof(float4), sizeof(float4));
+}
+
+void GameEngineFile::Read(float4x4& _Data)
+{
+	Read(&_Data, sizeof(float4x4), sizeof(float4x4));
 }
 
 
