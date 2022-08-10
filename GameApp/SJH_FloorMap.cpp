@@ -83,6 +83,14 @@ void SJH_FloorMap::Start()
 		}
 	}
 
+	// 각각의 메쉬가 보유한 모든 셀을 탐색하여 지정한 셀과 인접한 셀을 찾아내서 정보저장
+	for (int MeshNumber = 0; MeshNumber < MeshCount; ++MeshNumber)
+	{
+
+	}
+
+	// GetFaceInfomationFlag()
+
 //====================================== Navigation Cell
 #pragma endregion
 }
