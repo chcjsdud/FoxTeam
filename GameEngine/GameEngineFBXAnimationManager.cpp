@@ -27,6 +27,33 @@ GameEngineFBXAnimationManager::GameEngineFBXAnimationManager(GameEngineFBXAnimat
 
 }
 
+
+
+GameEngineFBXAnimation* GameEngineFBXAnimationManager::LoadUser(const std::string& _Path)
+{
+	return LoadUser(GameEnginePath::GetFileName(_Path), _Path);
+}
+
+GameEngineFBXAnimation* GameEngineFBXAnimationManager::LoadUser(const std::string& _Name, const std::string& _Path)
+{
+	std::string UpperName = GameEngineString::toupper(_Name);
+
+	GameEngineFBXAnimation* FindRes = Find(UpperName);
+
+	if (nullptr != FindRes)
+	{
+		GameEngineDebug::MsgBoxError(_Name + " Is Overlap Load");
+	}
+
+	GameEngineFBXAnimation* NewRes = new GameEngineFBXAnimation();
+	NewRes->SetName(UpperName);
+	NewRes->UserLoad(_Path);
+
+	ResourcesMap.insert(std::map<std::string, GameEngineFBXAnimation*>::value_type(UpperName, NewRes));
+	return NewRes;
+}
+
+
 GameEngineFBXAnimation* GameEngineFBXAnimationManager::Load(const std::string& _Path)
 {
 	return Load(GameEnginePath::GetFileName(_Path), _Path);

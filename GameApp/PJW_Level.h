@@ -26,6 +26,9 @@ public:
 	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
+protected:
+	class GameEngineFBXWindow* FBXWindow;
+
 private:
 	void Init_Resources();
 	void Init_Actors();

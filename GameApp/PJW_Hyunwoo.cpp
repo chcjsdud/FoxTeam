@@ -27,7 +27,7 @@ void PJW_Hyunwoo::Start()
 	status_ATK_ = 20.0f;
 	status_HP_ = 100.0f;
 	curHP_ = 100.0f;
-	Init_FBX();
+	//Init_FBX();
 	Init_FSM();
 	Init_Collision();
 }
@@ -47,12 +47,19 @@ void PJW_Hyunwoo::Init_FBX()
 		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
 	}
 
-	FBXRenderer_->CreateFBXAnimation("Move", "Hyunwoo_01_LOD1_Run.FBX", 0);
 
-	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 0); // 루프 애니메이션
-//	FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 2, false); // 루프안함
-	
-	FBXRenderer_->ChangeFBXAnimation("Idle");
+
+//	FBXRenderer_->CreateFBXAnimation("Move", "Hyunwoo_01_LOD1_Run.FBX", 0);
+//	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 0); // 루프 애니메이션
+	//FBXRenderer_->CreateFBXAnimation("Skill_R_Start", "Hyunwoo_01_LOD1.FBX", 1, false); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Skill_R_Charge", "Hyunwoo_01_LOD1.FBX", 2); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Skill_R_End", "Hyunwoo_01_LOD1.FBX", 3, false); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Dash", "Hyunwoo_01_LOD1.FBX", 5, false); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Skill_Q", "Hyunwoo_01_LOD1.FBX", 8, false); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 10, false); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Attack1", "Hyunwoo_01_LOD1.FBX", 11, false); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Skill_Weapon", "Hyunwoo_01_LOD1.FBX", 12, false); // 루프안함
+	//FBXRenderer_->ChangeFBXAnimation("Idle");
 }
 
 void PJW_Hyunwoo::Init_FSM()

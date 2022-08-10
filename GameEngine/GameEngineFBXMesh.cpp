@@ -1608,6 +1608,15 @@ bool GameEngineFBXMesh::ImportBone()
 
 	}
 
+	CreateAnimationBuffer();
+
+	LoadSkinAndCluster();
+
+	return true;
+}
+
+void GameEngineFBXMesh::CreateAnimationBuffer()
+{
 	AnimationBuffers.resize(AllBones.size());
 
 	for (size_t i = 0; i < AllBones.size(); i++)
@@ -1621,10 +1630,6 @@ bool GameEngineFBXMesh::ImportBone()
 		AnimationBuffers[i] = new GameEngineStructuredBuffer();
 		AnimationBuffers[i]->Create(sizeof(float4x4), static_cast<UINT>(AllBones[i].size()), nullptr);
 	}
-
-	LoadSkinAndCluster();
-
-	return true;
 }
 
 void GameEngineFBXMesh::UserSave(const std::string& _Path)
@@ -1653,6 +1658,8 @@ void GameEngineFBXMesh::UserSave(const std::string& _Path)
 		NewFile.Write(Data.Vertexs);
 		NewFile.Write(Data.Indexs);
 	}
+
+	NewFile.Write(AllBones);
 }
 
 void GameEngineFBXMesh::UserLoad(const std::string& _Path)
@@ -1679,5 +1686,9 @@ void GameEngineFBXMesh::UserLoad(const std::string& _Path)
 		NewFile.Read(AllMeshMap[i].Indexs);
 	}
 
+
+	NewFile.Read(AllBones);
+
+	CreateAnimationBuffer();
 	CreateRenderingBuffer();
 }

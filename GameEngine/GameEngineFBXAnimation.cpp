@@ -335,9 +335,24 @@ bool GameEngineFBXAnimation::AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::Fbx
 
 void GameEngineFBXAnimation::UserSave(const std::string& _Path)
 {
+	GameEngineFile NewFile = GameEngineFile(_Path, "wb");
+	//NewFile.Open("wb");
 
+	//if (1 < AnimationDatas.size())
+	//{
+	//	for (int i = 0; i < AnimationDatas.size(); i++)
+	//	{
+	//		NewFile.Write(AnimationDatas[i]);
+	//	}
+	//
+	//	return;
+	//}
+
+	NewFile.Write(AnimationDatas);
 }
 void GameEngineFBXAnimation::UserLoad(const std::string& _Path)
 {
-
+	GameEngineFile NewFile = GameEngineFile(_Path, "rb");
+	// NewFile.Open("wb");
+	NewFile.Read(AnimationDatas);
 }

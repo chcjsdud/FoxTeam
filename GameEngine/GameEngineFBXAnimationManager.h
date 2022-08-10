@@ -30,6 +30,9 @@ private:	// member Var
 	std::map<std::string, GameEngineFBXAnimation*> ResourcesMap;
 
 public:
+	GameEngineFBXAnimation* LoadUser(const std::string& _Path);
+	GameEngineFBXAnimation* LoadUser(const std::string& _Name, const std::string& _Path);
+
 	// 파일에서 로드
 	GameEngineFBXAnimation* Load(const std::string& _Path);
 	// 이름 직접 지정

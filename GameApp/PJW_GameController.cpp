@@ -33,27 +33,27 @@ void PJW_GameController::Start()
 void PJW_GameController::Init_Player()
 {
 	// 플레이어리스트에 플레이어를 채운다 (로비에서 캐릭터를 고르던... 인위적으로 정하던...)
-	playerList_.reserve(2);
-
-	PJW_Hyunwoo* p1_ = GetLevel()->CreateActor<PJW_Hyunwoo>();
-	p1_->SetCollisionBody(InGameCollisionType::Player1_Body);
-	p1_->SetCollisionAttackRange(InGameCollisionType::Player1_AttackRange);
-
-	playerList_.push_back(p1_);
-
-	PJW_Hyunwoo* p2_ = GetLevel()->CreateActor<PJW_Hyunwoo>();
-	p2_->SetCollisionBody(InGameCollisionType::Player2_Body);
-	p2_->SetCollisionAttackRange(InGameCollisionType::Player2_AttackRange);
-
-	playerList_.push_back(p2_);
-	// 일단 인위적으로 디버깅 위해 현우로 두 명을 생성
-	playerList_[1]->GetTransform()->SetWorldPosition({ 300.0f, 0.0f, 300.0f });
-
-
-	// 현재 컨트롤 주도권을 가진 플레이어 설정
-	curPlayer_ = playerList_[0];
-
-
+	//playerList_.reserve(2);
+	//
+	//PJW_Hyunwoo* p1_ = GetLevel()->CreateActor<PJW_Hyunwoo>();
+	//p1_->SetCollisionBody(InGameCollisionType::Player1_Body);
+	//p1_->SetCollisionAttackRange(InGameCollisionType::Player1_AttackRange);
+	//
+	//playerList_.push_back(p1_);
+	//
+	//PJW_Hyunwoo* p2_ = GetLevel()->CreateActor<PJW_Hyunwoo>();
+	//p2_->SetCollisionBody(InGameCollisionType::Player2_Body);
+	//p2_->SetCollisionAttackRange(InGameCollisionType::Player2_AttackRange);
+	//
+	//playerList_.push_back(p2_);
+	//// 일단 인위적으로 디버깅 위해 현우로 두 명을 생성
+	//playerList_[1]->GetTransform()->SetWorldPosition({ 300.0f, 0.0f, 300.0f });
+	//
+	//
+	//// 현재 컨트롤 주도권을 가진 플레이어 설정
+	//curPlayer_ = playerList_[0];
+	//
+	//
 	map_ = GetLevel()->CreateActor<PJW_Map>();
 }
 

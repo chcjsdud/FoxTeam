@@ -314,8 +314,9 @@ void GameEngineFBXWindow::OnGUI()
 			},
 				1
 				);
+
 	}
-	else if(nullptr != SelectAnimation)
+	else if (nullptr != SelectAnimation)
 	{
 	bool Check = true;
 	SelectAnimation->RecursiveAllNode(
@@ -426,57 +427,192 @@ void GameEngineFBXWindow::OnGUI()
 
 	ImGui::EndChildFrame();
 
-	if (nullptr == SelectMesh)
-	{
-		if (ImGui::Button("MeshLoad"))
-		{
-			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(Files[FBXFileSelect].GetFullPath());
+	//if (nullptr == SelectMesh)
+	//{
+	//	if (ImGui::Button("MeshLoad"))
+	//	{
+	//		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(Files[FBXFileSelect].GetFullPath());
 
-			if (0 == Mesh->GetAllMeshMap().size())
-			{
-				GameEngineDebug::MsgBox("매쉬정보가 존재하지 않는 FBX입니다");
-				GameEngineFBXMeshManager::GetInst().DeletePath(Files[FBXFileSelect].GetFullPath());
+	//		if (0 == Mesh->GetAllMeshMap().size())
+	//		{
+	//			GameEngineDebug::MsgBox("매쉬정보가 존재하지 않는 FBX입니다");
+	//			GameEngineFBXMeshManager::GetInst().DeletePath(Files[FBXFileSelect].GetFullPath());
+	//		}
+	//		else
+	//		{
+	//			Mesh->CreateRenderingBuffer();
+	//		}
+	//	}
+	//}
+
+
+	static std::string SelectAnimationBaseName = { 0 };
+	static std::string SelectAnimationName = { 0 };
+
+
+	{
+
+		if (true == ImGui::Button("BaseMeshSelect"))
+		{
+			OPENFILENAME OFN;
+			char filePathName[100] = "";
+			char lpstrFile[100] = "";
+			static char filter[] = "모든 파일\0*.*\0텍스트 파일\0*.txt\0fbx 파일\0*.fbx";
+
+			memset(&OFN, 0, sizeof(OPENFILENAME));
+			OFN.lStructSize = sizeof(OPENFILENAME);
+			OFN.hwndOwner = nullptr;
+			OFN.lpstrFilter = filter;
+			OFN.lpstrFile = lpstrFile;
+			OFN.nMaxFile = 100;
+			OFN.lpstrInitialDir = ".";
+
+			char PrevDir[256] = { 0 };
+			GetCurrentDirectoryA(256, PrevDir);
+
+			if (GetOpenFileName(&OFN) != 0) {
+				// wsprintf(filePathName, "%s 파일을 열겠습니까?", OFN.lpstrFile);
+				// MessageBox(nullptr, filePathName, "열기 선택", MB_OK);
+				// OFN.lpstrFile;
+
+				// FBXMesh.Reset();
+				// FBXMesh.Load(OFN.lpstrFile);
+				SetCurrentDirectoryA(PrevDir);
 			}
-			else
+
+			// SelectAnimationBaseName = OFN.lpstrFile;
+			SelectAnimationBaseName = GameEnginePath::GetFileName(OFN.lpstrFile);
+
+			if (SelectAnimationBaseName[0] != 0 && nullptr == GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName))
 			{
-				Mesh->CreateRenderingBuffer();
+				GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(OFN.lpstrFile);
+
+				if (0 == Mesh->GetAllMeshMap().size())
+				{
+					GameEngineDebug::MsgBox("매쉬정보가 존재하지 않는 FBX입니다");
+					GameEngineFBXMeshManager::GetInst().DeletePath(Files[FBXFileSelect].GetFullPath());
+				}
+				else
+				{
+					Mesh->CreateRenderingBuffer();
+				}
 			}
 		}
 	}
 
-	if (nullptr == SelectAnimation)
+	if (SelectAnimationBaseName[0] != 0)
 	{
-		if (ImGui::Button("AnimationLoad"))
-		{
-			GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(Files[FBXFileSelect].GetFullPath());
+		ImGui::SameLine();
+		ImGui::Text(SelectAnimationBaseName.c_str());
+		ImGui::SameLine();
 
-			if (0 >= Animation->GetAnimationCount())
+		if (ImGui::Button("Animation Select"))
+		{
+
+			OPENFILENAME OFN;
+			char filePathName[100] = "";
+			char lpstrFile[100] = "";
+			static char filter[] = "모든 파일\0*.*\0텍스트 파일\0*.txt\0fbx 파일\0*.fbx";
+
+			memset(&OFN, 0, sizeof(OPENFILENAME));
+			OFN.lStructSize = sizeof(OPENFILENAME);
+			OFN.hwndOwner = nullptr;
+			OFN.lpstrFilter = filter;
+			OFN.lpstrFile = lpstrFile;
+			OFN.nMaxFile = 100;
+			OFN.lpstrInitialDir = ".";
+
+			char PrevDir[256] = { 0 };
+			GetCurrentDirectoryA(256, PrevDir);
+
+			if (GetOpenFileName(&OFN) != 0) {
+				SetCurrentDirectoryA(PrevDir);
+			}
+
+			SelectAnimationName = GameEnginePath::GetFileName(OFN.lpstrFile);
+
+			if (SelectAnimationName[0] != 0 && nullptr == GameEngineFBXAnimationManager::GetInst().Find(SelectAnimationName))
 			{
-				GameEngineDebug::MsgBox("애니메이션이 존재하지 않는 FBX입니다");
-				GameEngineFBXAnimationManager::GetInst().DeletePath(Files[FBXFileSelect].GetFullPath());
+				GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(OFN.lpstrFile);
+
+				if (0 >= Animation->GetAnimationCount())
+				{
+					GameEngineDebug::MsgBox("애니메이션이 존재하지 않는 FBX입니다");
+					GameEngineFBXAnimationManager::GetInst().DeletePath(Files[FBXFileSelect].GetFullPath());
+				}
+
+				GameEngineFBXMesh* BaseMesh = GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName);
+
+				for (size_t i = 0; i < Animation->AnimationCount(); i++)
+				{
+					Animation->CalFbxExBoneFrameTransMatrix(BaseMesh, i);
+				}
+			}
+
+		}
+	}
+
+	if (SelectAnimationName[0] != 0)
+	{
+		ImGui::SameLine();
+		ImGui::Text(SelectAnimationName.c_str());
+	}
+
+	if (SelectAnimationBaseName[0] != 0 &&
+		nullptr != GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName))
+	{
+		if (ImGui::Button("User MeshSave"))
+		{
+			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName);
+			std::string SaveName = GameEnginePath::GetFileNameWithOutExtension(SelectAnimationBaseName);
+			SaveName += ".UserMesh";
+			if (nullptr != Mesh)
+			{
+				Mesh->UserSave(UserMeshSaveFolder.PathToPlusFileName(SaveName));
+			}
+		}
+	}
+
+	if (SelectAnimationName[0] != 0 &&
+		nullptr != GameEngineFBXAnimationManager::GetInst().Find(SelectAnimationName))
+	{
+		if (nullptr != GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName))
+		{
+			ImGui::SameLine();
+		}
+
+		if (ImGui::Button("User AnimationSave"))
+		{
+			GameEngineFBXAnimation* Mesh = GameEngineFBXAnimationManager::GetInst().Find(SelectAnimationName);
+			std::string SaveName = GameEnginePath::GetFileNameWithOutExtension(SelectAnimationName);
+			SaveName += ".UserAnimation";
+			if (nullptr != Mesh)
+			{
+				Mesh->UserSave(UserAnimationSaveFolder.PathToPlusFileName(SaveName));
 			}
 		}
 	}
 
 
-	if (nullptr != SelectMesh
-		&& 0 != SelectMesh->GetAllMeshMap().size()
-		&& ImGui::Button("Actor Create"))
+	if (SelectAnimationBaseName[0] != 0 &&
+		nullptr != GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName) && ImGui::Button("Actor Create"))
 	{
-		if (0 == SelectMesh->GetAllMeshMap().size())
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName);
+
+		if (0 == Mesh->GetAllMeshMap().size())
 		{
 			// SelectMesh->MeshLoad();
-			SelectMesh->CreateRenderingBuffer();
+			Mesh->CreateRenderingBuffer();
 		}
 
-		if (0 != SelectMesh->GetAllMeshMap().size())
+		if (0 != Mesh->GetAllMeshMap().size())
 		{
 			GameEngineActor* NewActor = GameEngineCore::CurrentLevel()->CreateActor<GameEngineActor>();
 			Actors.push_back(NewActor);
 
 			GameEngineFBXRenderer* Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
 
-			Renderer->SetFBXMesh(SelectMesh->GetName(), "Color");
+			Renderer->SetFBXMesh(Mesh->GetName(), "Color");
 
 			for (size_t i = 0; i < Renderer->GetRenderSetCount(); i++)
 			{
@@ -489,26 +625,79 @@ void GameEngineFBXWindow::OnGUI()
 		}
 	}
 
-
-	if (nullptr != SelectMesh
-		&& 0 != SelectMesh->GetAllMeshMap().size()
-		&& ImGui::Button("User MeshSave"))
+	if (SelectAnimationName[0] != 0 &&
+		nullptr != GameEngineFBXAnimationManager::GetInst().Find(SelectAnimationName) &&
+		ImGui::Button("Animation Actor Create"))
 	{
-		std::string Name = SelectMesh->GetName();
-		Name = GameEnginePath::GetFileNameWithOutExtension(Name);
-		Name += ".UserMesh";
-		SelectMesh->UserSave(UserSaveFolder.PathToPlusFileName(Name));
+		if (SelectAnimationBaseName[0] != 0 &&
+			nullptr != GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName))
+		{
+			ImGui::SameLine();
+		}
+
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName);
+		GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Find(SelectAnimationName);
+
+		if (0 == Mesh->GetAllMeshMap().size())
+		{
+			// SelectMesh->MeshLoad();
+			Mesh->CreateRenderingBuffer();
+		}
+
+		if (0 != Mesh->GetAllMeshMap().size())
+		{
+			GameEngineActor* NewActor = GameEngineCore::CurrentLevel()->CreateActor<GameEngineActor>();
+			Actors.push_back(NewActor);
+
+			GameEngineFBXRenderer* Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
+
+			Renderer->SetFBXMesh(Mesh->GetName(), "ColorAni");
+
+			for (size_t i = 0; i < Renderer->GetRenderSetCount(); i++)
+			{
+				Renderer->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
+			}
+
+			Renderer->CreateFBXAnimation(Animation->GetName(), Animation->GetName(), 0);
+			Renderer->ChangeFBXAnimation(Animation->GetName());
+
+		}
+		else
+		{
+			GameEngineDebug::MsgBox("매쉬노드 존재하지 않는 FBX 입니다.");
+		}
+
 	}
 
-	if (nullptr != SelectMesh
-		&& 0 != SelectMesh->GetAllMeshMap().size()
-		&& ImGui::Button("User MeshLoad"))
+	if (ImGui::Button("TestLoad"))
 	{
-		std::string Name = SelectMesh->GetName();
-		Name = GameEnginePath::GetFileNameWithOutExtension(Name);
-		Name += ".UserMesh";
-		SelectMesh->UserLoad(UserSaveFolder.PathToPlusFileName(Name));
+	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(UserMeshSaveFolder.PathToPlusFileName("Hyunwoo_01_LOD1.UserMesh"));
+	//	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().LoadUser(UserAnimationSaveFolder.PathToPlusFileName("Hyunwoo_01_LOD1.UserAnimation"));
+	//
+	//	GameEngineActor* NewActor = GameEngineCore::CurrentLevel()->CreateActor<GameEngineActor>();
+	//	Actors.push_back(NewActor);
+	//
+	//	GameEngineFBXRenderer* Renderer = NewActor->CreateTransformComponent<GameEngineFBXRenderer>(NewActor->GetTransform());
+	//
+	//	Renderer->SetFBXMesh(Mesh->GetName(), "TextureDeferredLightAni");
+	//	Renderer->GetTransform()->SetLocalPosition({ 100.0f, -50.0f, -50.0f });
+	//	Renderer->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
+	//	Renderer->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
+	//
+	//	for (size_t i = 0; i < Renderer->GetRenderSetCount(); i++)
+	//	{
+	//		Renderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
+	//	}
+	//
+	//	Renderer->CreateFBXAnimation(Animation->GetName(), Animation->GetName(), 0);
+	//	Renderer->CreateFBXAnimation("Test", Animation->GetName(), 1);
+	//	Renderer->ChangeFBXAnimation(Animation->GetName());
+
+
+		return;
 	}
+
+
 
 	ImGui::Text(GameEngineString::AnsiToUTF8Return(info).c_str());
 

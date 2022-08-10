@@ -172,6 +172,42 @@ struct JointPos
 	float YSize;
 	float ZSize;
 
+	void Write(GameEngineFile* _File) const
+	{
+		_File->Write(Scale);
+		_File->Write(Rotation); // ÄõÅÍ´Ï¿Â.
+		_File->Write(Translation);
+		_File->Write(GlobalScale);
+		_File->Write(GlobalRotation);
+		_File->Write(GlobalTranslation);
+		_File->Write(Offset);
+		_File->Write(SotredOffset);
+		_File->Write(Local);
+		_File->Write(Global);
+		_File->Write(Length);
+		_File->Write(XSize);
+		_File->Write(YSize);
+		_File->Write(ZSize);
+	}
+
+	void Read(GameEngineFile* _File)
+	{
+		_File->Read(Scale);
+		_File->Read(Rotation); // ÄõÅÍ´Ï¿Â.
+		_File->Read(Translation);
+		_File->Read(GlobalScale);
+		_File->Read(GlobalRotation);
+		_File->Read(GlobalTranslation);
+		_File->Read(Offset);
+		_File->Read(SotredOffset);
+		_File->Read(Local);
+		_File->Read(Global);
+		_File->Read(Length);
+		_File->Read(XSize);
+		_File->Read(YSize);
+		_File->Read(ZSize);
+	}
+
 	void BuildMatrix()
 	{
 		Global = float4x4::Transformation(GlobalScale, GlobalRotation, GlobalTranslation);
@@ -408,6 +444,26 @@ struct Bone
 		ParentIndex = 0;
 		BonePos.Reset();
 	}
+
+	void Write(GameEngineFile* _File) const
+	{
+		_File->Write(Name);
+		_File->Write(Flags);
+		_File->Write(NumChildren);
+		_File->Write(Index);
+		_File->Write(ParentIndex);
+		_File->Write(BonePos);
+	}
+
+	void Read(GameEngineFile* _File)
+	{
+		_File->Read(Name);
+		_File->Read(Flags);
+		_File->Read(NumChildren);
+		_File->Read(Index);
+		_File->Read(ParentIndex);
+		_File->Read(BonePos);
+	}
 };
 
 
@@ -539,6 +595,7 @@ private:
 
 	fbxsdk::FbxNode* RecursiveFindParentLodGroup(fbxsdk::FbxNode* parentNode);
 
+	void CreateAnimationBuffer();
 	void MeshNodeCheck();
 	void VertexBufferCheck();
 
