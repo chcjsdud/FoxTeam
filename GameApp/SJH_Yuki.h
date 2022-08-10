@@ -49,5 +49,11 @@ private:
 	bool MoveFlag_;							// 이동경로 생성 완료시 On
 	std::list<PathIndex> MovePath_;			// 이동 경로
 
+private: // 테스트용
+	float4 MoveStartPos_;					// 이동시작위치
+	float4 MoveTargetPos_;					// 이동목표위치
+	float4 MoveDir_;						// 이동방향
+	float MoveSpeed_;						// 이동속도
+
 };
 

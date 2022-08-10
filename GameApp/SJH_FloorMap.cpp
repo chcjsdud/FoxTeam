@@ -97,8 +97,6 @@ void SJH_FloorMap::Start()
 	// 모든 면을 검사하여 인접한 면을 찾아내서 정보에 저장
 	FindAdjacentFaces();
 
-	int a = 0;
-
 //====================================== Navigation Cell
 #pragma endregion
 }

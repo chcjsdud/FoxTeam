@@ -28,12 +28,19 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 	{
 		// 이동목표지점의 삼각형 갱신
 		TargetNaviCell_ = _TargetNaviCell;
-		
+
 		// 현재 플레이어 위치 ~ _MoveTargetPos까지의 이동경로 생성
 		//MovePath_ = 
 
 		// 이동경로 생성완료 후 Flag On
 		MoveFlag_ = true;
+
+#pragma region 테스트용
+		MoveStartPos_ = GetTransform()->GetWorldPosition();
+		MoveTargetPos_ = _MoveTargetPos;
+		MoveDir_ = MoveTargetPos_ - MoveStartPos_;
+		MoveDir_.Normalize3D();
+#pragma endregion
 	}
 }
 
@@ -154,15 +161,13 @@ void SJH_Yuki::Update(float _DeltaTime)
 	if (true == MoveFlag_)
 	{
 		// 이동경로에 따라 이동시작
-
+		//GetTransform()->SetWorldMove(MoveDir_ * MoveSpeed_ * _DeltaTime);
 
 		// 이동경로 모두 소진시 현재 위치한 삼각형을 갱신
 		if (MovePath_.empty())
 		{
 			CurNaviCell_ = TargetNaviCell_;
 		}
-
-		int a = 0;
 	}
 }
 
@@ -172,6 +177,10 @@ SJH_Yuki::SJH_Yuki()
 	, CurNaviCell_(nullptr)
 	, TargetNaviCell_(nullptr)
 	, MoveFlag_(false)
+	, MoveStartPos_(float4::ZERO)
+	, MoveTargetPos_(float4::ZERO)
+	, MoveDir_(float4::ZERO)
+	, MoveSpeed_(5.0f)
 {
 }
 
