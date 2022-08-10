@@ -1,21 +1,21 @@
 #include "PreCompile.h"
-#include "GHRayTestBox.h"
+#include "GHRayTestOBBBox.h"
 
 #include <GameEngine/GameEngineCollision.h>
 
-GHRayTestBox::GHRayTestBox()
+GHRayTestOBBBox::GHRayTestOBBBox()
 	: collision_(nullptr)
 	, renderer_(nullptr)
 {
 
 }
 
-GHRayTestBox::~GHRayTestBox()
+GHRayTestOBBBox::~GHRayTestOBBBox()
 {
 
 }
 
-void GHRayTestBox::Start()
+void GHRayTestOBBBox::Start()
 {
 	renderer_ = CreateTransformComponent<GameEngineRenderer>();
 	renderer_->SetRenderingPipeLine("ColorBox");
@@ -26,13 +26,15 @@ void GHRayTestBox::Start()
 
 	collision_ = CreateTransformComponent<GameEngineCollision>(renderer_->GetTransform());
 	collision_->SetCollisionGroup(100);
-	collision_->SetCollisionType(CollisionType::AABBBox3D);
+	collision_->SetCollisionType(CollisionType::OBBBox3D);
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 }
 
-void GHRayTestBox::Update(float _deltaTime)
+void GHRayTestOBBBox::Update(float _deltaTime)
 {
+	renderer_->GetTransform()->AddLocalDeltaTimeRotation({ 30.0f, 90.f, 60.0f });
+
 	if (collision_->Collision(eCollisionGroup::MouseRay))
 	{
 		renderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4(0.0f, 1.0f, 0.0f, 1.0f));

@@ -164,6 +164,12 @@
     <ClCompile Include="YSJ_Mouse.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\Mouse</Filter>
     </ClCompile>
+    <ClCompile Include="GHRayTestOBBBox.cpp">
+      <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="GHRayTestSphere.cpp">
+      <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -393,8 +399,6 @@
     <ClInclude Include="PJW_Enum.h">
       <Filter>01.GameObject\98.PJW\PJW_Enum</Filter>
     </ClInclude>
-    <ClInclude Include="Monsters.h" />
-    <ClInclude Include="Objects.h" />
     <ClInclude Include="LH_Player.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player</Filter>
     </ClInclude>
@@ -490,6 +494,12 @@
     </ClInclude>
     <ClInclude Include="eCollisionGroup.h">
       <Filter>01.GameObject\00.Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="GHRayTestOBBBox.h">
+      <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="GHRayTestSphere.h">
+      <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

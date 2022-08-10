@@ -31,7 +31,7 @@ void GHMousePointer::Update(float _deltaTime)
 
 void GHMousePointer::updateMouseRay()
 {
-	// 뷰포트 개수를 가져옵니다. 보통 뷰포트는 하나만 사용하고, 하나만 가져올 것이기 때문에 1
+	// 뷰포트 개수를 가져옵니다. 뷰포트는 하나만 사용했고, 하나만 가져올 것이기 때문에 1 로 초기화합니다.
 	UINT numViewport = 1;
 	D3D11_VIEWPORT viewports = { 0, };
 

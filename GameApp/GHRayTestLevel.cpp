@@ -10,6 +10,8 @@
 #include <GameApp/GHMap.h>
 #include <GameApp/GHRayTestBox.h>
 #include <GameApp/GHMousePointer.h>
+#include <GameApp/GHRayTestOBBBox.h>
+#include <GameApp/GHRayTestSphere.h>
 
 GHRayTestLevel::GHRayTestLevel()
 {
@@ -95,6 +97,24 @@ void GHRayTestLevel::createActor()
 		{
 			GHRayTestBox* box = CreateActor<GHRayTestBox>();
 			box->GetTransform()->SetWorldPosition({ 200.f * x, 0.0f, 200.f * -z });
+		}
+	}
+
+	for (int z = 0; z < 10; z++)
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			GHRayTestOBBBox* box = CreateActor<GHRayTestOBBBox>();
+			box->GetTransform()->SetWorldPosition({ 200.f * x, 0.0f, 300 + 200.f * z });
+		}
+	}
+
+	for (int z = 0; z < 10; z++)
+	{
+		for (int x = 0; x < 10; x++)
+		{
+			GHRayTestSphere* box = CreateActor<GHRayTestSphere>();
+			box->GetTransform()->SetWorldPosition({ -200.f - 200.f * x, 0.0f, 200.f * z });
 		}
 	}
 

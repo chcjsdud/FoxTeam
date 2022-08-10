@@ -198,6 +198,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GHRayTestOBBBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GHRayTestSphere.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GHRio.cpp">
       <SubType>
       </SubType>
@@ -335,6 +343,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GHMousePointer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GHRayTestOBBBox.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GHRayTestSphere.h">
       <SubType>
       </SubType>
     </ClInclude>
