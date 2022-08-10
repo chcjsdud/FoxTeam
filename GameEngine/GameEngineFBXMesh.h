@@ -100,7 +100,7 @@ public:
 
 	std::vector<GameEngineVertex> Vertexs;
 
-	std::vector<std::vector<FbxExRenderingPipeLineSettingData>> MatialData;
+	std::vector<std::vector<FbxExRenderingPipeLineSettingData>> MaterialData;
 
 	std::vector<std::vector<std::vector<unsigned int>>> Indexs; // 메쉬<재질<인덱스>>>
 

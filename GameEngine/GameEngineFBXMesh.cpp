@@ -646,9 +646,9 @@ void GameEngineFBXMesh::FbxMeshSetMaterialSetting(fbxsdk::FbxNode* _Node, FbxMes
 
 	if (MtrlCount > 0)
 	{
-		_RenderData->MatialData.push_back(std::vector<FbxExRenderingPipeLineSettingData>());
+		_RenderData->MaterialData.push_back(std::vector<FbxExRenderingPipeLineSettingData>());
 
-		std::vector<FbxExRenderingPipeLineSettingData>& MatrialSet = _RenderData->MatialData[_RenderData->MatialData.size() - 1];
+		std::vector<FbxExRenderingPipeLineSettingData>& MatrialSet = _RenderData->MaterialData[_RenderData->MaterialData.size() - 1];
 
 		for (int i = 0; i < MtrlCount; i++)
 		{
@@ -1649,7 +1649,7 @@ void GameEngineFBXMesh::UserSave(const std::string& _Path)
 	NewFile.Write(static_cast<int>(AllMeshMap.size()));
 	for (auto& Data : AllMeshMap)
 	{
-		NewFile.Write(Data.MatialData);
+		NewFile.Write(Data.MaterialData);
 		NewFile.Write(Data.Vertexs);
 		NewFile.Write(Data.Indexs);
 	}
@@ -1674,7 +1674,7 @@ void GameEngineFBXMesh::UserLoad(const std::string& _Path)
 
 	for (size_t i = 0; i < Size; i++)
 	{
-		NewFile.Read(AllMeshMap[i].MatialData);
+		NewFile.Read(AllMeshMap[i].MaterialData);
 		NewFile.Read(AllMeshMap[i].Vertexs);
 		NewFile.Read(AllMeshMap[i].Indexs);
 	}

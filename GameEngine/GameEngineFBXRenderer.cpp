@@ -87,7 +87,7 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 
 		for (int IndexBufferIndex = 0; IndexBufferIndex < IndexBufferVector.size(); IndexBufferIndex++)
 		{
-			FbxExRenderingPipeLineSettingData* MatData = &(StartMesh.MatialData[VertexBufferIndex][IndexBufferIndex]);
+			FbxExRenderingPipeLineSettingData* MatData = &(StartMesh.MaterialData[VertexBufferIndex][IndexBufferIndex]);
 			GameEngineVertexBuffer* VertexBuffer = VertexBufferVector[VertexBufferIndex];
 			GameEngineIndexBuffer* IndexBuffer = IndexBufferVector[IndexBufferIndex];
 

@@ -129,7 +129,7 @@ bool LH_Mouse::LH_Ray::IsPickedMesh(const float4 & _MousePos, float4 & _PickedPo
     float Dist = 0.0f;
     for (int MeshCnt = 0; MeshCnt < static_cast<int>(vecAllMeshSet.size()); ++MeshCnt)
     {
-        for (int MaterialCnt = 0; MaterialCnt < static_cast<int>(vecAllMeshSet[MeshCnt].MatialData.size()); ++MaterialCnt)
+        for (int MaterialCnt = 0; MaterialCnt < static_cast<int>(vecAllMeshSet[MeshCnt].MaterialData.size()); ++MaterialCnt)
         {
             for (int FaceNumCnt = 0; FaceNumCnt < vecMeshInfo[MeshCnt].FaceNum; ++FaceNumCnt)
             {
