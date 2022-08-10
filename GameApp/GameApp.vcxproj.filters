@@ -390,8 +390,6 @@
     <ClInclude Include="PJW_Map.h">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Monsters.h" />
-    <ClInclude Include="Objects.h" />
     <ClInclude Include="PJW_Enum.h">
       <Filter>01.GameObject\98.PJW\PJW_Enum</Filter>
     </ClInclude>
@@ -489,6 +487,9 @@
     </ClInclude>
     <ClInclude Include="YSJ_Mouse.h">
       <Filter>01.GameObject\99.YSJ\02Actor\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="eCollisionGroup.h">
+      <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -31,6 +31,8 @@ public:
 	static bool CirCleToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
 	static bool AABBToCirCle(GameEngineTransform* _Left, GameEngineTransform* _Right);
 
+	static bool RayToAABB(GameEngineTransform* _left, GameEngineTransform* _right);
+	static bool AABBToRay(GameEngineTransform* _left, GameEngineTransform* _right);
 
 //======================================== SJH
 private: // 타입별 광선과의 교차검사
@@ -48,6 +50,9 @@ public:
 		return ColType_;
 	}
 //======================================== SJH
+
+public:
+	inline void SetRayData(const float4& _origin, const float4& _direction) { GetTransform()->SetRayData(_origin, _direction); }
 
 public:
 	// constrcuter destructer
@@ -92,6 +97,7 @@ public:
 
 	//충돌 여부를 Bool 값으로 리턴
 	bool Collision(int _OtherGroup);
+	template <typename T> bool Collision(T _OtherGroup);;
 	//충돌한 가장 가까운 ptr 리턴
 	GameEngineCollision* CollisionPtr(int _OtherGroup);
 	//충돌한 새끼들 싹다 리스트로 리턴
@@ -117,3 +123,5 @@ private:
 	void Update(float _DeltaTime) override;
 };
 
+template<typename T>
+inline bool GameEngineCollision::Collision(T _OtherGroup) { return Collision(static_cast<int>(_OtherGroup)); }

@@ -34,6 +34,12 @@ void GameEngineCollision::Init()
 
 	CollisionCheckFunction[static_cast<int>(CollisionType::AABBBox3D)][static_cast<int>(CollisionType::CirCle)]
 		= std::bind(&GameEngineCollision::AABBToCirCle, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::Ray)][static_cast<int>(CollisionType::AABBBox3D)]
+		= std::bind(&GameEngineCollision::RayToAABB, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::AABBBox3D)][static_cast<int>(CollisionType::Ray)]
+		= std::bind(&GameEngineCollision::AABBToRay, std::placeholders::_1, std::placeholders::_2);
 }
 
 
@@ -83,6 +89,18 @@ bool GameEngineCollision::CirCleToAABB(GameEngineTransform* _Left, GameEngineTra
 bool GameEngineCollision::AABBToCirCle(GameEngineTransform* _Left, GameEngineTransform* _Right)
 {
 	return CirCleToAABB(_Right, _Left);
+}
+
+bool GameEngineCollision::RayToAABB(GameEngineTransform* _left, GameEngineTransform* _right)
+{
+	DirectX::BoundingBox Right = _right->GetAABB();
+	float distance;
+	return Right.Intersects(static_cast<DirectX::FXMVECTOR>(_left->GetRayOrigin().DirectVector), static_cast<DirectX::FXMVECTOR>(_left->GetRayDirection().DirectVector), distance);
+}
+
+bool GameEngineCollision::AABBToRay(GameEngineTransform* _left, GameEngineTransform* _right)
+{
+	return RayToAABB(_right, _left);
 }
 
 //===================================================== SJH

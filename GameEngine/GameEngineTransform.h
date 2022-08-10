@@ -6,6 +6,17 @@
 #include <DirectXCollision.h>
 #include <DirectXCollision.inl>
 
+struct RayData
+{
+	float4 Origin;
+	float4 Direction;
+
+	RayData()
+		: Origin(0.0f, 0.0f, 0.0f)
+		, Direction(0.0f, 0.0f, 1.0f)
+	{
+	}
+};
 
 union CollisionData
 {
@@ -14,14 +25,14 @@ public:
 	DirectX::BoundingBox AABB; // 회전이 고려하면 안되는 박스
 	DirectX::BoundingOrientedBox OBB; // 회전한 박스
 
-	CollisionData() 
+	CollisionData()
 		: OBB()
 	{
 
 	}
 };
 
-class TransformData 
+class TransformData
 {
 public:
 	float4 vWorldPosition_;
@@ -47,7 +58,7 @@ public:
 	float4x4 WVP_;
 
 public:
-	TransformData() 
+	TransformData()
 		: vWorldScaling_(float4::ONE)
 		, vLocalScaling_(float4::ONE)
 	{
@@ -63,7 +74,7 @@ public:
 		LocalWorld_ = LocalScaling_ * LocalRotation_ * LocalPosition_;
 	}
 
-	void ParentSetting(const float4x4& _Parent) 
+	void ParentSetting(const float4x4& _Parent)
 	{
 		Parent_ = _Parent;
 		WorldWorld_ = LocalWorld_;
@@ -81,7 +92,7 @@ public:
 		WV_ = WorldWorld_ * View_;
 	}
 
-	void RootCalculation() 
+	void RootCalculation()
 	{
 		WorldWorld_ = LocalWorld_;
 	}
@@ -97,7 +108,7 @@ public:
 
 // 충돌도 이녀석이 담당할것이기 때문에 어마어마하게 중요하고 잘만들어야 한다.
 // 설명 :
-class GameEngineTransform 
+class GameEngineTransform
 {
 public:
 	// constrcuter destructer
@@ -148,7 +159,7 @@ public:
 	void SetLocalRotationDegree(const float4& _Value);
 	void SetWorldRotationDegree(const float4& _Value);
 
-	void AddLocalRotationDegreeX(const float _Value) 
+	void AddLocalRotationDegreeX(const float _Value)
 	{
 		float4 Local = TransformData_.vLocalRotation_;
 		Local.x += _Value;
@@ -277,17 +288,26 @@ public:
 		return ColData_.OBB;
 	}
 
-	inline const DirectX::BoundingBox& GetAABB() 
+	inline const DirectX::BoundingBox& GetAABB()
 	{
 		return ColData_.AABB;
 	}
 
-	void Copy(const GameEngineTransform& _Other);
+	inline float4 GetRayOrigin() const { return RayData_.Origin; }
+	inline float4 GetRayDirection() const { return RayData_.Direction; }
 
+	inline void SetRayData(const float4& _origin, const float4& _direction)
+	{
+		RayData_.Origin = _origin;
+		RayData_.Direction = _direction;
+	}
+
+	void Copy(const GameEngineTransform& _Other);
 
 protected:
 	TransformData TransformData_;
 	CollisionData ColData_;
+	RayData RayData_;
 
 	GameEngineTransform* Parent_;
 	std::vector<GameEngineTransform*> Childs_;

@@ -14,3 +14,4 @@
 #include <GameEngine/GameEngineLevel.h>
 
 #include "Macro.h"
+#include "eCollisionGroup.h"

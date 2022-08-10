@@ -12,6 +12,7 @@ enum class CollisionType
 	Sphere3D,
 	AABBBox3D,
 	OBBBox3D,
+	Ray,
 	MAX,
 };
 

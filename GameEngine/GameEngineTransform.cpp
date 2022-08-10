@@ -37,9 +37,9 @@ void GameEngineTransform::TransformUpdate()
 		TransformData_.RootCalculation();
 	}
 
+	ColData_.OBB.Center = TransformData_.vWorldPosition_.DxXmfloat3;
 	ColData_.OBB.Extents = TransformData_.vWorldScaling_.halffloat4().DxXmfloat3;
 	ColData_.OBB.Orientation = TransformData_.vWorldRotation_.ToDegreeQuaternion().DxXmfloat4;
-	ColData_.OBB.Center = TransformData_.vWorldPosition_.DxXmfloat3;
 
 	for (GameEngineTransform* ChildTransform_ : Childs_)
 	{

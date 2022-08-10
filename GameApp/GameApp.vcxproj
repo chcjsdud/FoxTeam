@@ -329,6 +329,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="eCollisionGroup.h" />
     <ClInclude Include="GHMap.h">
       <SubType>
       </SubType>
@@ -366,11 +367,6 @@
     <ClInclude Include="UI_Inventory.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="LH_Map.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Monsters.h" />
-    <ClInclude Include="Objects.h">
       <SubType>
       </SubType>
     </ClInclude>
