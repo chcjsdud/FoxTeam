@@ -17,6 +17,23 @@ PJW_NavMesh::PJW_NavMesh(PJW_NavMesh&& _other) noexcept  // default RValue Copy 
 }
 
 
+PJW_NavAgent::PJW_NavAgent()
+	: curTile_(nullptr)
+{
+
+}
+
+PJW_NavAgent::~PJW_NavAgent()
+{
+
+}
+
+PJW_NavAgent::PJW_NavAgent(PJW_NavAgent&& _other) noexcept 
+{
+
+}
+
+
 bool Check(PJW_NavTile& _left, PJW_NavTile& _right)
 {
 	// 두 네브 타일의 세 버텍스를 3x3 돌아서
@@ -81,9 +98,6 @@ void PJW_NavMesh::CreateNavMesh(std::vector<GameEngineVertex> _vertex, std::vect
 				
 				// 이러면, 완전히 순간이동 하지 않는 이상 모두 통용된다.
 			}
-
-
-
 		}
 	}
 }
@@ -97,4 +111,23 @@ PJW_NavTile* PJW_NavMesh::CurNavTileCheck(GameEngineTransform* _check, float4& _
 	{
 		return &navTiles_[i];
 	}
+}
+
+
+
+
+
+void PJW_NavAgent::Start()
+{
+
+}
+
+void PJW_NavAgent::Update()
+{
+
+}
+
+void PJW_NavAgent::CheckCurTile()
+{
+
 }

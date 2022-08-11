@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngineBase/GameEngineMath.h>
 #include <GameEngine/EngineVertex.h>
+#include <GameEngine/GameEngineActor.h>
 #include "GameEngine/GameEngineTransform.h"
 // 분류 : 
 // 용도 : 
@@ -19,12 +20,17 @@ public:
 class PJW_NavMesh;
 class PJW_NavTile
 {
-public:
+	friend PJW_NavMesh;
 
+public:
 	PJW_NavTile_Info info_;
 	PJW_NavMesh* parentNavMesh_;
 	std::vector<PJW_NavTile>* allNavi_;
 
+
+	// 하기의 함수들은 네브메시 내에서 for 문으로 모든 Navtile 들을 돌면서 실행시켜줄 함수들
+	// *** 주의!!! 실시간 플레이 중 사용하면 메모리 지옥을 맛 볼것.
+// 그냥 디버깅이나 개발 중 특정 위치를 리턴받아 알고 싶을 때나 사용하길.
 	float YCheck(GameEngineTransform& _transform)
 	{
 		return true;
@@ -45,16 +51,39 @@ public:
 	}
 };
 
-// 판 위에서 움직이는 모든 액터는
-// 다 자기 네비메시를 가지게?? 네브타일을 가지게??
-// 액터가 가질 수 있는 것은 네브 에이전트
-// 마치 반복자마냥 네브 타일들을 훑어 내 체크하는 역할을 한다.
-class PJW_NavAgent
-{
-public:
-	GameEngineTransform* transform_;
 
-	void Update();
+class PJW_NavTile;
+class PJW_NavAgent : public GameEngineActor
+{
+	friend PJW_NavTile;
+	// 자신의 부모와 연동된 트랜스폼을 가지고
+	// 그 위치를 Update() 에서 체크해서 현재 위치한 NavTile 을 알아낸다.
+	// 다만 이것도 삼각형일 필요가 있을까?
+	
+public:
+	PJW_NavTile* GetCurNavTile()
+	{
+		return curTile_;
+	}
+
+public:
+	PJW_NavAgent();
+	~PJW_NavAgent();
+	PJW_NavAgent(const PJW_NavAgent& _other) = delete;
+	PJW_NavAgent(PJW_NavAgent&& _other) noexcept;
+	PJW_NavAgent& operator=(const PJW_NavAgent& _other) = delete;
+	PJW_NavAgent& operator=(const PJW_NavAgent&& _other) = delete;
+
+protected:
+	virtual void Start();
+	virtual	void Update();
+	void CheckCurTile();
+	// 현재 위치를 받아, 어느 타일에 위치해있는가? 를 알아내야 한다.
+	// 고정된 삼각형(버텍스 3개의 위치) 범위 밖으로 벗어나면, 타일처럼 똑같이 OutCheck() 후 다음 타일을 찾아 값 업데이트
+	// 
+
+private:
+	PJW_NavTile* curTile_;
 };
 
 
@@ -77,8 +106,5 @@ public:
 
 	PJW_NavTile* CurNavTileCheck(GameEngineTransform* _check, float4& _dir);
 	// 파라미터 1에 특정 액터의 트랜스폼을 넣으면, 현재 위치한 네브타일을 리턴한다!!!
-
-	
-
 };
 
