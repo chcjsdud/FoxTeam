@@ -179,6 +179,9 @@
     <ClCompile Include="PJW_NavMesh.cpp">
       <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
     </ClCompile>
+    <ClCompile Include="SJH_PathFinder.cpp">
+      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\00.PathFinder</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -339,6 +342,9 @@
     </Filter>
     <Filter Include="01.GameObject\98.PJW\PJW_NavMesh">
       <UniqueIdentifier>{acc9dade-c0a9-40f1-834f-aa60efa9d758}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell\00.PathFinder">
+      <UniqueIdentifier>{7a2868fa-2556-4890-b00e-0e75065ccc37}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -521,6 +527,9 @@
     </ClInclude>
     <ClInclude Include="PJW_NavMesh.h">
       <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="SJH_PathFinder.h">
+      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\00.PathFinder</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
