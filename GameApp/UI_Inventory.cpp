@@ -30,7 +30,7 @@ void UI_Inventory::Start()
 	{
 		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
-		float4 Inventory_BackGroundPos = { 247.0f, -315.0f, 0.0f };
+		float4 Inventory_BackGroundPos = { 248.0f, -315.0f, 0.0f };
 		
 		{
 			Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());

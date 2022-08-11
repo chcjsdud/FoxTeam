@@ -34,7 +34,7 @@ void UI_Equip::Start()
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
 
 
-	float4 Eqiup_BackGroundPos = { -225.0f, -315.0f, 0.0f };
+	float4 Eqiup_BackGroundPos = { -215.0f, -315.0f, 0.0f };
 
 	{
 		Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());

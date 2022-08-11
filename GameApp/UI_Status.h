@@ -40,5 +40,7 @@ private:
 private:
 	Player* Player_;
 
+	GameEngineUIRenderer* StatusAttack_Renderer;
+
 };
 

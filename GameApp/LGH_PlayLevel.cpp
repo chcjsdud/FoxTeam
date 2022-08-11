@@ -29,18 +29,15 @@ void LGH_PlayLevel::LevelStart()
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
 	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 100.0f, -300.0f));
 
-	
-
 	player_ = CreateActor<LGH_Aya>();
+
 
 	{
 		SkillUI_ = CreateActor<UI_Skill>();
-	//	SkillUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
 	}
 
 	{
 		EquipUI_ = CreateActor<UI_Equip>();
-		//SkillUI_->GetTransform()->SetWorldPosition(float4(0.0f, 0.0f, 0.0f, 0.f));
 	}
 
 	{
@@ -126,6 +123,7 @@ void LGH_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	if (false == GameEngineInput::GetInst().IsKey("PlayerMove"))
 	{
 		GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
+		GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
 	}
 }
 
