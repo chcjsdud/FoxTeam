@@ -20,13 +20,17 @@ void GHMousePointer::Start()
 	rayCollision_ = CreateTransformComponent<GameEngineCollision>();
 	rayCollision_->SetCollisionType(CollisionType::Ray);
 	rayCollision_->SetCollisionGroup(eCollisionGroup::MouseRay);
-
 }
 
 void GHMousePointer::Update(float _deltaTime)
 {
 	updateMouseRay();
 	rayCollision_->SetRayData(rayOrigin_, rayDirection_);
+}
+
+float4 GHMousePointer::GetIntersectionYAxisPlane(float _height, float _rayLength)
+{
+	return DirectX::XMPlaneIntersectLine({ 0.0f, 1.0f, 0.0f, -_height }, rayOrigin_.DirectVector, (rayOrigin_ + rayDirection_ * _rayLength).DirectVector);;
 }
 
 void GHMousePointer::updateMouseRay()

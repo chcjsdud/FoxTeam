@@ -19,6 +19,12 @@ public:
 	void Start() override;
 	void Update(float _deltaTime) override;
 
+public:
+	float4 GetRayDirection() { return rayDirection_; }
+	float4 GetRayOrigin() { return rayOrigin_; }
+
+	float4 GetIntersectionYAxisPlane(float _height, float _rayLength);
+
 private:
 	void updateMouseRay();
 

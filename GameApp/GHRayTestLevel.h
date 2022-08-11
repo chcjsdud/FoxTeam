@@ -2,6 +2,7 @@
 
 #include <GameEngine\GameEngineLevel.h>
 
+class GHMousePointer;
 class GHRayTestLevel : public GameEngineLevel
 {
 public:
@@ -21,6 +22,8 @@ public:
 	void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 	void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
+public:
+	GHMousePointer* GetMousePointer() { return mouse_; }
 
 private:
 	void loadResource();
@@ -31,5 +34,8 @@ private:
 	void initRenderWindow();
 	void releaseRenderWindow();
 
+
+private:
+	GHMousePointer* mouse_;
 };
 

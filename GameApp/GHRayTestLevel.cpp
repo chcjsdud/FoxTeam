@@ -87,36 +87,36 @@ void GHRayTestLevel::releaseResource()
 
 void GHRayTestLevel::createActor()
 {
-	//CreateActor<GHRio>();
+	CreateActor<GHRio>();
 	CreateActor<GHMap>();
-	CreateActor<GHMousePointer>();
+	mouse_= CreateActor<GHMousePointer>();
 
-	for (int z = 0; z < 10; z++)
-	{
-		for (int x = 0; x < 10; x++)
-		{
-			GHRayTestBox* box = CreateActor<GHRayTestBox>();
-			box->GetTransform()->SetWorldPosition({ 200.f * x, 0.0f, 200.f * -z });
-		}
-	}
+	//for (int z = 0; z < 10; z++)
+	//{
+	//	for (int x = 0; x < 10; x++)
+	//	{
+	//		GHRayTestBox* box = CreateActor<GHRayTestBox>();
+	//		box->GetTransform()->SetWorldPosition({ 200.f * x, 0.0f, 200.f * -z });
+	//	}
+	//}
 
-	for (int z = 0; z < 10; z++)
-	{
-		for (int x = 0; x < 10; x++)
-		{
-			GHRayTestOBBBox* box = CreateActor<GHRayTestOBBBox>();
-			box->GetTransform()->SetWorldPosition({ 200.f * x, 0.0f, 300 + 200.f * z });
-		}
-	}
+	//for (int z = 0; z < 10; z++)
+	//{
+	//	for (int x = 0; x < 10; x++)
+	//	{
+	//		GHRayTestOBBBox* box = CreateActor<GHRayTestOBBBox>();
+	//		box->GetTransform()->SetWorldPosition({ 200.f * x, 0.0f, 300 + 200.f * z });
+	//	}
+	//}
 
-	for (int z = 0; z < 10; z++)
-	{
-		for (int x = 0; x < 10; x++)
-		{
-			GHRayTestSphere* box = CreateActor<GHRayTestSphere>();
-			box->GetTransform()->SetWorldPosition({ -200.f - 200.f * x, 0.0f, 200.f * z });
-		}
-	}
+	//for (int z = 0; z < 10; z++)
+	//{
+	//	for (int x = 0; x < 10; x++)
+	//	{
+	//		GHRayTestSphere* box = CreateActor<GHRayTestSphere>();
+	//		box->GetTransform()->SetWorldPosition({ -200.f - 200.f * x, 0.0f, 200.f * z });
+	//	}
+	//}
 
 	SKySphereActor* Actor = CreateActor<SKySphereActor>();
 
