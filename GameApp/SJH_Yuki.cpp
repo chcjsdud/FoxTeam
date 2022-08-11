@@ -4,23 +4,37 @@
 #include <GameEngine/GameEngineFBXMesh.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
+#include "SJH_FloorMap.h"
 #include "SJH_NaviCell.h"
 
 SJH_Yuki* SJH_Yuki::MainPlayer = nullptr;
 
+void SJH_Yuki::Initialize(SJH_NaviCell* _CurNaviCell, const float4& _InitPos)
+{
+	// 현재 플레이어가 위치한 삼각형(셀)을 지정
+	CurNaviCell_ = _CurNaviCell;
+
+	// 시작위치를 셋팅
+	GetTransform()->SetWorldPosition(_InitPos);
+}
+
 void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 {
 	// 이동중지
-	MoveFlag_ = false;
+	MoveStartFlag_ = false;
 
 	// 기존 이동경로가 남아있다면
-	if (!MovePath_.empty())
+	if (false == MovePath_.empty())
 	{
-		// 플레이어의 현재위치에 따라 삼각형정보를 갱신
-		//CurNaviCell_ = 
-
-		// 기존 이동경로를 삭제
+		// 기존 이동경로를 삭제하고
 		MovePath_.clear();
+
+		// 플레이어의 현재위치좌표를 이용하여 현재 속한 삼각형(셀)을 알아내어 셋팅
+		SJH_NaviCell* CurCell = SJH_FloorMap::FloorMap->SearchCurrentPosToNaviCell(GetTransform()->GetWorldPosition());
+		if (nullptr != CurCell)
+		{
+			CurNaviCell_ = CurCell;
+		}
 	}
 
 	// 이동타겟 삼각형이 변경되었다면
@@ -29,18 +43,12 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 		// 이동목표지점의 삼각형 갱신
 		TargetNaviCell_ = _TargetNaviCell;
 
-		// 현재 플레이어 위치 ~ _MoveTargetPos까지의 이동경로 생성
-		//MovePath_ = 
-
-		// 이동경로 생성완료 후 Flag On
-		MoveFlag_ = true;
-
-#pragma region 테스트용
-		MoveStartPos_ = GetTransform()->GetWorldPosition();
-		MoveTargetPos_ = _MoveTargetPos;
-		MoveDir_ = MoveTargetPos_ - MoveStartPos_;
-		MoveDir_.Normalize3D();
-#pragma endregion
+		// 현재 플레이어의 NaviCell ~ _TargetNaviCell까지의 이동경로 생성
+		if (true == SJH_FloorMap::FloorMap->MoveFacePath(CurNaviCell_, TargetNaviCell_, MovePath_))
+		{
+			// 이동경로 생성완료 후 Flag On
+			MoveStartFlag_ = true;
+		}
 	}
 }
 
@@ -70,10 +78,10 @@ void SJH_Yuki::Start()
 	AnimRenderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
 
 	// Yuki_01_LOD1.png
-	//for (UINT i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
-	//{
-		//AnimRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Yuki_01_LOD1.png");
-	//}
+	for (UINT i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
+	{
+		AnimRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Yuki_01_LOD1.png");
+	}
 
 	// 애니메이션 로드
 	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(Directory.PathToPlusFileName(MeshName));
@@ -158,15 +166,34 @@ void SJH_Yuki::Start()
 void SJH_Yuki::Update(float _DeltaTime)
 {
 	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동한다.
-	if (true == MoveFlag_)
+	if (true == MoveStartFlag_)
 	{
-		// 이동경로에 따라 이동시작
-		//GetTransform()->SetWorldMove(MoveDir_ * MoveSpeed_ * _DeltaTime);
+		// 이동 처리
 
-		// 이동경로 모두 소진시 현재 위치한 삼각형을 갱신
-		if (MovePath_.empty())
+
+
+
+
+		// 이동경로가 존재한다면 이동을 위한 정보 셋팅
+		if (false == MovePath_.empty())
 		{
+			// 현재 위치 ~ MovePath_의 가장 첫번째 삼각형의 무게중심까지 이동 경로 설정
+
+
+
+
+		}
+		// 이동경로가 모두 소진되었다면
+		else
+		{
+			// 현재 플레이어가 위치한 삼각형(셀)을 셋팅하고
 			CurNaviCell_ = TargetNaviCell_;
+
+			// 목표 삼각형을 초기화
+			TargetNaviCell_ = nullptr;
+
+			// 이동종료
+			MoveStartFlag_ = false;
 		}
 	}
 }
@@ -176,11 +203,10 @@ SJH_Yuki::SJH_Yuki()
 	, AnimRenderer_(nullptr)
 	, CurNaviCell_(nullptr)
 	, TargetNaviCell_(nullptr)
-	, MoveFlag_(false)
+	, MoveStartFlag_(false)
 	, MoveStartPos_(float4::ZERO)
-	, MoveTargetPos_(float4::ZERO)
+	, MoveEndPos_(float4::ZERO)
 	, MoveDir_(float4::ZERO)
-	, MoveSpeed_(5.0f)
 {
 }
 

@@ -1,6 +1,5 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
-#include <GameEngineBase/GameEnginePathFind.h>
 
 // 분류 : 
 // 용도 : 
@@ -11,9 +10,14 @@ class SJH_NaviCell;
 class SJH_Yuki : public GameEngineActor
 {
 public:
+	void Initialize(SJH_NaviCell* _CurNaviCell, const float4& _InitPos);
+
+public:
 	void Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos);
 
 protected:
+
+private:
 
 private:
 	void Start() override;
@@ -46,14 +50,14 @@ private:
 private:
 	SJH_NaviCell* CurNaviCell_;				// 현재 플레이어가 위치하고 있는 삼각형
 	SJH_NaviCell* TargetNaviCell_;			// 현재 플레이어가 이동하려는 목표지점의 위치한 삼각형
-	bool MoveFlag_;							// 이동경로 생성 완료시 On
-	std::list<PathIndex> MovePath_;			// 이동 경로
+	bool MoveStartFlag_;					// 이동경로 생성 완료시 On
 
-private: // 테스트용
-	float4 MoveStartPos_;					// 이동시작위치
-	float4 MoveTargetPos_;					// 이동목표위치
-	float4 MoveDir_;						// 이동방향
-	float MoveSpeed_;						// 이동속도
+private:
+	std::vector<SJH_NaviCell*> MovePath_;	// 이동 경로 : 목표지점까지의 이동가능한 삼각형(셀) 목록
 
+private:
+	float4 MoveStartPos_;					// 이동경로의 시작 위치
+	float4 MoveEndPos_;						// 이동경로의 목표 위치
+	float4 MoveDir_;						// 이동경로의 이동방향
 };
 

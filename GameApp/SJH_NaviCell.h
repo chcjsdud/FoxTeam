@@ -1,15 +1,16 @@
 #pragma once
+#include <GameEngine/EngineVertex.h>
 
 struct SideLine
 {
 public:
-	float4 StartVertex_;		// 선분의 시작점
-	float4 EndVertex_;			// 선분의 끝점
-	float4 MidPoint_;			// 선분의 중점
-	float ArrivalCost_;			// 무게중심-중점까지의 거리
+	GameEngineVertex StartVertex_;		// 선분의 시작점
+	GameEngineVertex EndVertex_;		// 선분의 끝점
+	float4 MidPoint_;					// 선분의 중점
+	float ArrivalCost_;					// 무게중심-중점까지의 거리
 
 public:
-	SideLine() : StartVertex_(float4::ZERO), EndVertex_(float4::ZERO), MidPoint_(float4::ZERO), ArrivalCost_(0.0f)
+	SideLine() : StartVertex_(), EndVertex_(), MidPoint_(float4::ZERO), ArrivalCost_(0.0f)
 	{
 	}
 };
@@ -31,11 +32,12 @@ public:
 	}
 
 public:
-	void CreateNavigationCellInfo(int _MeshIndex, int _FaceNumber, std::vector<float4> _VertexList, std::vector<UINT> _IndexList);
-	void SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell, bool _3Direction = true);
+	void CreateNavigationCellInfo(int _MeshIndex, int _FaceNumber, std::vector<GameEngineVertex> _VertexList, std::vector<UINT> _IndexList);
+	void SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell, bool _2Vertex = true);
 
 public:
 	SJH_NaviCell* CompareVertices(const float4& _V0, const float4& _V1, const float4& _V2);
+	bool CheckPointisIncludedIntheTriangle(const float4& _Position);
 
 protected:
 
@@ -62,7 +64,7 @@ protected:
 private: // 수신받는 정보
 	int MeshIndex_;										// 해당 면을 포함하는 MeshIndex(탐색용)
 	int FaceIndex_;										// 해당 면의 인덱스(탐색용)
-	std::vector<float4> VertexList_;					// 해당 면을 구성하는 정점목록(3개)
+	std::vector<GameEngineVertex> VertexList_;			// 해당 면을 구성하는 정점목록(3개)
 	std::vector<UINT> IndexList_;						// 해당 면을 구성하는 인덱스목록
 
 private: // 해당 면을 감싸는 선분목록

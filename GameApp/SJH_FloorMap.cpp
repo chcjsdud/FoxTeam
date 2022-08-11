@@ -1,9 +1,11 @@
 #include "PreCompile.h"
 #include "SJH_FloorMap.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
+#include "SJH_Yuki.h"
 #include "SJH_NaviCell.h"
 
 SJH_FloorMap* SJH_FloorMap::FloorMap = nullptr;
@@ -37,6 +39,34 @@ SJH_NaviCell* SJH_FloorMap::GetNaviCellInfo(const float4& _Vertex0, const float4
 	return nullptr;
 }
 
+SJH_NaviCell* SJH_FloorMap::SearchCurrentPosToNaviCell(const float4& _Position)
+{
+	// 위치좌표를 수신받아 해당 좌표가 포함된 삼각형(셀)을 찾아내서 반환
+	for (int CellNum = 0; CellNum < static_cast<int>(NavigationCellInfos_.size()); ++CellNum)
+	{
+		if (true == NavigationCellInfos_[CellNum]->CheckPointisIncludedIntheTriangle(_Position))
+		{
+			return NavigationCellInfos_[CellNum];
+		}
+	}
+
+	return nullptr;
+}
+
+bool SJH_FloorMap::MoveFacePath(const SJH_NaviCell* _StartCell, const SJH_NaviCell* _TargetCell, std::vector<SJH_NaviCell*>& _MovePath)
+{
+	// 시작 삼각형 ~ 목표 삼각형까지의 이동 삼각형목록을 반환
+	// 단, 이동불가판단시 false를 반환하며 이동경로는 존재하지않는다.
+
+
+
+
+
+
+
+	return false;
+}
+
 void SJH_FloorMap::Start()
 {
 	// FBX Files 경로 지정
@@ -46,7 +76,7 @@ void SJH_FloorMap::Start()
 	Directory.MoveChild("FBX");
 	Directory.MoveChild("YSJ");
 
-	std::string MeshName = "NaviCol.fbx";
+	std::string MeshName = "Bg_NaviMesh.fbx";
 
 	// Mesh Load
 	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(Directory.PathToPlusFileName(MeshName)))
@@ -59,30 +89,43 @@ void SJH_FloorMap::Start()
 	FloorMap_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FloorMap_->SetFBXMesh(MeshName, "TextureDeferredLight");
 
-	for (UINT i = 0; i < FloorMap_->GetRenderSetCount(); i++)
-	{
-		FloorMap_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
-	}
+	//for (UINT i = 0; i < FloorMap_->GetRenderSetCount(); i++)
+	//{
+	//	FloorMap_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
+	//}
 
-#pragma region 네비게이션 테스트
-//====================================== Navigation Cell
+	// 네비게이션 셀정보 생성
+	CreateAllNaviCellInfo();
+
+	// NavigationCellInfos_의 랜덤한 삼각형을 선택하여 플레이어 위치좌표(랜덤한 삼각형의 무게중심) 셋팅
+	if (nullptr != SJH_Yuki::MainPlayer)
+	{
+		GameEngineRandom Random;
+		int RandomFace = Random.RandomInt(0, NavigationCellInfos_.size() - 1);
+		SJH_Yuki::MainPlayer->Initialize(NavigationCellInfos_[RandomFace], NavigationCellInfos_[RandomFace]->GetCenterToGravity());
+	}
+}
+
+void SJH_FloorMap::CreateAllNaviCellInfo()
+{
 	// 해당 네비게이션 메쉬의 정보를 Get
-	std::vector<FbxExMeshInfo>& AllMeshInfo = FloorMap_->GetMesh()->GetMeshInfos();		// Mesh당 면의 갯수 및 버텍스갯수등 정보
-	std::vector<FbxMeshSet>& AllMeshMap = FloorMap_->GetMesh()->GetAllMeshMap();		// Mesh의 모든 정보 집합
+	std::vector<FbxExMeshInfo>& AllMeshInfo = FloorMap_->GetMesh()->GetMeshInfos();
+	std::vector<FbxMeshSet>& AllMeshMap = FloorMap_->GetMesh()->GetAllMeshMap();
 
 	// 해당 Navigation FBX File이 가지는 모든 메쉬를 탐색
 	for (int MeshNumber = 0; MeshNumber < static_cast<int>(AllMeshInfo.size()); ++MeshNumber)
 	{
 		for (int MaterialNumber = 0; MaterialNumber < AllMeshInfo[MeshNumber].MaterialNum; ++MaterialNumber)
 		{
-			for (int FaceNumber = 0; FaceNumber < AllMeshInfo[MeshNumber].FaceNum; ++FaceNumber)
+			// 3개의 정점을 연결하는 인덱스목록이 존재 -> 면(삼각형) 1개를 이룸
+			for (int FaceNumber = 0; FaceNumber < static_cast<int>(AllMeshMap[MeshNumber].Indexs[0][MaterialNumber].size()) / 3; ++FaceNumber)
 			{
-				std::vector<float4> VertexList;
+				std::vector<GameEngineVertex> VertexList;
 				std::vector<UINT> IndexList;
 				for (int VertexNumber = 0; VertexNumber < 3; ++VertexNumber)
 				{
 					UINT VertexIndex = AllMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + VertexNumber];
-					float4 Vertex = AllMeshMap[MeshNumber].Vertexs[VertexIndex].POSITION;
+					GameEngineVertex Vertex = AllMeshMap[MeshNumber].Vertexs[VertexIndex];
 					VertexList.push_back(Vertex);
 					IndexList.push_back(VertexIndex);
 				}
@@ -97,8 +140,7 @@ void SJH_FloorMap::Start()
 	// 모든 면을 검사하여 인접한 면을 찾아내서 정보에 저장
 	FindAdjacentFaces();
 
-//====================================== Navigation Cell
-#pragma endregion
+	int a = 0;
 }
 
 void SJH_FloorMap::FindAdjacentFaces()
@@ -115,7 +157,7 @@ void SJH_FloorMap::FindAdjacentFaces()
 			}
 
 			// 기준면의 인접한 면을 모두 찾아낸다.
-			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
+			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber], false);
 		}
 	}
 }

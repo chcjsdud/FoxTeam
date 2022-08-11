@@ -21,9 +21,14 @@ public:
 public:
 	SJH_NaviCell* GetNaviCellInfo(const float4& _Vertex0, const float4& _Vertex1, const float4& _Vertex2);
 
+public:
+	SJH_NaviCell* SearchCurrentPosToNaviCell(const float4& _Position);
+	bool MoveFacePath(const SJH_NaviCell* _StartCell, const SJH_NaviCell* _TargetCell, std::vector<SJH_NaviCell*>& _MovePath);
+
 protected:
 
 private:
+	void CreateAllNaviCellInfo();
 	void FindAdjacentFaces();
 
 private:

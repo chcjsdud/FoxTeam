@@ -110,16 +110,13 @@ SJH_NaviCell* SJH_Ray::IsPickedCell(GameEngineFBXRenderer* _Mesh, const float4& 
 
     for (int MeshNumber = 0; MeshNumber < static_cast<int>(vecMeshMap.size()); ++MeshNumber)
     {
-        // 해당 Mesh가 포함하는 면(Face) 갯수 저장
-        int CurMeshFaceSize = vecMeshInfos[MeshNumber].FaceNum;
-
         for (int MaterialNumber = 0; MaterialNumber < vecMeshInfos[MeshNumber].MaterialNum; ++MaterialNumber)
         {
-            for (int FaceNumber = 0; FaceNumber < CurMeshFaceSize; ++FaceNumber)
+            for (int FaceNumber = 0; FaceNumber < vecMeshInfos[MeshNumber].FaceNum; ++FaceNumber)
             {
-                float4 V0 = vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 0]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-                float4 V1 = vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 1]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
-                float4 V2 = vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 2]].POSITION * GetTransform()->GetTransformData().WorldWorld_;
+                float4 V0 = vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 0]].POSITION * _Mesh->GetTransform()->GetTransformData().WorldWorld_;
+                float4 V1 = vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 1]].POSITION * _Mesh->GetTransform()->GetTransformData().WorldWorld_;
+                float4 V2 = vecMeshMap[MeshNumber].Vertexs[vecMeshMap[MeshNumber].Indexs[0][MaterialNumber][FaceNumber * 3 + 2]].POSITION * _Mesh->GetTransform()->GetTransformData().WorldWorld_;
 
                 // 해당 함수는 Ray가 교차하는 점이 삼각형 내부에 존재하는지 판단하고, 그 교차한 지점의 위치좌표를 반환
                 if (true == DirectX::TriangleTests::Intersects(OriginPos_.DirectVector, Direction_.DirectVector, V0.DirectVector, V1.DirectVector, V2.DirectVector, Dist))
