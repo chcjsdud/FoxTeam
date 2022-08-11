@@ -36,10 +36,12 @@ void YSJ_Player::Start()
 			ParentRenderer = Renderer;
 		}
 
-		//GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
-		GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 10, 10.0f, -20.0f });
-		GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 15, 0.0f, 0.0f });
+
 	}
+
+	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
+	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, -100.0f });
+	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 15, 0.0f, 0.0f });
 
 	GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 }
@@ -84,6 +86,13 @@ void YSJ_Player::Update(float _DeltaTime)
 	MoveDir.Normalize3D();
 
 	GetTransform()->SetWorldDeltaTimeMove(MoveDir * Speed);
+
+	if (nullptr != GetCurrentNavi())
+	{
+		float Dist = GetCurrentNavi()->YCheck(GetTransform());
+		GetTransform()->SetWorldMove({ 0.0f, -Dist, 0.0f });
+	}
+	
 }
 
 void YSJ_Player::LevelChangeEndEvent(GameEngineLevel* _NextLevel)

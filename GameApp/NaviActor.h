@@ -1,9 +1,8 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
+#include "NaviMesh.h"
 
 // Ό³Έν : 
-class Navi;
-class NaviMesh;
 class NaviActor : public GameEngineActor
 {
 public:
@@ -15,6 +14,11 @@ public:
 	NaviActor& operator=(const NaviActor&& _other) = delete;
 
 	void SetNaviMesh(NaviMesh* _NaviMesh);
+
+	Navi* GetCurrentNavi()
+	{
+		return CurrentNavi_;
+	}
 
 protected:
 	void Start() override;

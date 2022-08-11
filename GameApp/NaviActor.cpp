@@ -1,6 +1,5 @@
 #include "PreCompile.h"
 #include "NaviActor.h"
-#include "NaviMesh.h"
 
 NaviActor::NaviActor()
 	: CurrentNavi_(nullptr)
@@ -26,16 +25,12 @@ void NaviActor::Start()
 
 void NaviActor::Update(float _DeltaTime)
 {
-	if (nullptr == CurrentNavi_)
+	if (nullptr != CurrentNavi_)
 	{
-		return;
+		if (true == CurrentNavi_->OutCheck(GetTransform()))
+		{
+			CurrentNavi_ = CurrentNavi_->MoveCheck(GetTransform());
+		}
 	}
-
-	if (true == CurrentNavi_->OutCheck(GetTransform()))
-	{
-		CurrentNavi_ = CurrentNavi_->MoveCheck(GetTransform());
-	}
-
-	float Dist = CurrentNavi_->YCheck(GetTransform());
 }
 

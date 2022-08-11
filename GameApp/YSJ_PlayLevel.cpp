@@ -145,6 +145,8 @@ void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size * 3);
 		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredTarget(), Size * 3);
 	}
+
+	
 }
 
 void YSJ_PlayLevel::CreateActorLevel()
@@ -170,19 +172,35 @@ void YSJ_PlayLevel::CreateActorLevel()
 
 	NaviMesh_ = CreateActor<NaviMesh>();
 
-	std::vector<GameEngineVertex> Vertex = std::vector<GameEngineVertex>(3 * 2);
+	std::vector<GameEngineVertex> Vertex = std::vector<GameEngineVertex>(3 * 6);
 
-	Vertex[0] = { float4({ -10.0f, 0.0f, -10.0f }),  { 0.0f, 0.0f } };
-	Vertex[1] = { float4({ 10.0f, 0.0f, -10.0f }),  { 1.0f, 0.0f } };
-	Vertex[2] = { float4({ 0.0f, 0.0f, 10.0f }),  { 0.0f, 1.0f } };
+	Vertex[0] = { float4({ -50.0f, 0.0f, -50.0f }),  { 0.0f, 0.0f } };
+	Vertex[1] = { float4({ 50.0f, 0.0f, -50.0f }),  { 1.0f, 0.0f } };
+	Vertex[2] = { float4({ 0.0f, 0.0f, 50.0f }),  { 0.0f, 1.0f } };
 
-	Vertex[3] = { float4::RotateYDegree(Vertex[0].POSITION, 180.0f) + float4({ 10.0f, 0.0f, -0.0f, 0.0f }),	{ 0.0f, 0.0f }};
-	Vertex[4] = { float4::RotateYDegree(Vertex[1].POSITION, 180.0f) + float4({ 10.0f, 0.0f, -0.0f, 0.0f }),	{ 1.0f, 0.0f }};
-	Vertex[5] = { float4::RotateYDegree(Vertex[2].POSITION, 180.0f) + float4({ 10.0f, 0.0f, -0.0f, 0.0f }),	{ 0.0f, 1.0f }};
+	Vertex[3] = { float4::RotateYDegree(Vertex[0].POSITION, 180.0f) + float4({ 50.0f, 0.0f, 0.0f, 0.0f }),	{ 0.0f, 0.0f }};
+	Vertex[4] = { float4::RotateYDegree(Vertex[1].POSITION, 180.0f) + float4({ 50.0f, 0.0f, 0.0f, 0.0f }),	{ 1.0f, 0.0f }};
+	Vertex[5] = { float4::RotateYDegree(Vertex[2].POSITION, 180.0f) + float4({ 50.0f, 0.0f, 0.0f, 0.0f }),	{ 0.0f, 1.0f }};
+
+	Vertex[6] = { Vertex[0].POSITION + float4({ 100.0f, 0.0f, 0.0f, 0.0f }),	{ 0.0f, 0.0f } };
+	Vertex[7] = { Vertex[1].POSITION + float4({ 100.0f, 0.0f, 0.0f, 0.0f }),	{ 1.0f, 0.0f } };
+	Vertex[8] = { Vertex[2].POSITION + float4({ 100.0f, 0.0f, 0.0f, 0.0f }),	{ 0.0f, 1.0f } };
+
+	Vertex[9] =  { Vertex[3].POSITION + float4({ 100.0f, 50.0f, 0.0f, 0.0f }),	{ 0.0f, 0.0f } };
+	Vertex[10] = { Vertex[4].POSITION + float4({ 100.0f, 0.0f, 0.0f, 0.0f }),	{ 1.0f, 0.0f } };
+	Vertex[11] = { Vertex[5].POSITION + float4({ 100.0f, 0.0f, 0.0f, 0.0f }),	{ 0.0f, 1.0f } };
+
+	Vertex[12] = { Vertex[0].POSITION + float4({ 200.0f, 0.0f, 0.0f, 0.0f }),	{ 0.0f, 0.0f } };
+	Vertex[13] = { Vertex[1].POSITION + float4({ 200.0f, 50.0f, 0.0f, 0.0f }),	{ 1.0f, 0.0f } };
+	Vertex[14] = { Vertex[2].POSITION + float4({ 200.0f, 50.0f, 0.0f, 0.0f }),	{ 0.0f, 1.0f } };
+
+	Vertex[15] = { Vertex[3].POSITION + float4({ 200.0f, 50.0f, 0.0f, 0.0f }),	{ 0.0f, 0.0f } };
+	Vertex[16] = { Vertex[4].POSITION + float4({ 200.0f, 50.0f, 0.0f, 0.0f }),	{ 1.0f, 0.0f } };
+	Vertex[17] = { Vertex[5].POSITION + float4({ 200.0f, 50.0f, 0.0f, 0.0f }),	{ 0.0f, 1.0f } };
 
 	std::vector<UINT> Index;
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		Index.push_back(i * 3 + 2);
 		Index.push_back(i * 3 + 1);
