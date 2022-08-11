@@ -13,6 +13,7 @@
 
 #include "SJH_PlayLevel.h"
 #include "PJW_Level.h"
+#include "LGH_PlayLevel.h"
 #include <GameApp/GHRayTestLevel.h>
 #include "YSJ_PlayLevel.h"
 

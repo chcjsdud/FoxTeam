@@ -43,7 +43,7 @@ void LGH_Aya::Start()
 		}
 
 		FBXRenderer_->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });
-		FBXRenderer_->GetTransform()->SetWorldRotationDegree({ 0.0f, 180.0f, 0.0f });
+		FBXRenderer_->GetTransform()->SetWorldRotationDegree({ -90.0f, 180.0f, 0.0f });
 
 
 		GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(FBXFolder.PathToPlusFileName("LGH_Aya.fbx"));
