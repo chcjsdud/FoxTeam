@@ -92,24 +92,6 @@ void SJH_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 void SJH_PlayLevel::CreateActorLevel()
 {
 #pragma region 액터생성
-	// 조명
-	LightActor* Light1 = CreateActor<LightActor>();
-	Light1->GetLight()->SetDiffusePower(1.f);
-	Light1->GetLight()->SetDiffusePower(10.0f);
-	Light1->GetLight()->SetSpacularLightPow(10.0f);
-
-	LightActor* Light2 = CreateActor<LightActor>();
-	Light2->GetLight()->SetDiffusePower(1.f);
-	Light2->GetLight()->SetDiffusePower(10.0f);
-	Light2->GetLight()->SetSpacularLightPow(10.0f);
-	Light2->GetTransform()->SetLocalRotationDegree(float4(0.0f, 90.0f, 0.0f));
-
-	LightActor* Light3 = CreateActor<LightActor>();
-	Light3->GetLight()->SetDiffusePower(1.f);
-	Light3->GetLight()->SetDiffusePower(10.0f);
-	Light3->GetLight()->SetSpacularLightPow(10.0f);
-	Light3->GetTransform()->SetLocalRotationDegree(float4(45.0f, 0.0f, 0.0f));
-
 	// 배경
 	Background_ = CreateActor<SKySphereActor>();
 
@@ -123,6 +105,24 @@ void SJH_PlayLevel::CreateActorLevel()
 
 	// 마우스
 	InGameMouse_ = CreateActor<SJH_Mouse>();
+
+	// 조명
+	LightActor* Light1 = CreateActor<LightActor>();
+	Light1->GetLight()->SetDiffusePower(1.f);
+	Light1->GetLight()->SetAmbientPower(10.f);
+	Light1->GetLight()->SetSpacularLightPow(10.0f);
+
+	//LightActor* Light2 = CreateActor<LightActor>();
+	//Light2->GetLight()->SetDiffusePower(1.f);
+	//Light2->GetLight()->SetAmbientPower(10.f);
+	//Light2->GetLight()->SetSpacularLightPow(10.0f);
+	//Light2->GetTransform()->SetLocalRotationDegree(float4(0.0f, 90.0f, 0.0f));
+
+	//LightActor* Light3 = CreateActor<LightActor>();
+	//Light3->GetLight()->SetDiffusePower(1.f);
+	//Light3->GetLight()->SetAmbientPower(10.f);
+	//Light3->GetLight()->SetSpacularLightPow(10.0f);
+	//Light3->GetTransform()->SetLocalRotationDegree(float4(45.0f, 0.0f, 0.0f));
 
 #pragma endregion
 

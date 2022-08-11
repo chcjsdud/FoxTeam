@@ -38,7 +38,7 @@ bool SJH_Ray::IsColliderPicked(const float4& _MousePos, float4& _PickedPos)
     std::map<int, std::list<GameEngineCollision*>> AllList = GetLevel()->GetAllCollision();
 
     // 해당 광선과 교차하는 충돌체 탐색
-    int GroupCnt = AllList.size();
+    int GroupCnt = static_cast<int>(AllList.size());
     for (int Group = 0; Group < GroupCnt; ++Group)
     {
         std::list<GameEngineCollision*>::iterator StartIter = AllList[Group].begin();

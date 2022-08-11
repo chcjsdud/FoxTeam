@@ -12,17 +12,17 @@ SJH_FloorMap* SJH_FloorMap::FloorMap = nullptr;
 
 GameEngineFBXMesh* SJH_FloorMap::GetFloorMapMesh()
 {
-	if (nullptr == FloorMap_)
+	if (nullptr == NaviMeshRenderer_)
 	{
 		return nullptr;
 	}
 
-	return FloorMap_->GetMesh();
+	return NaviMeshRenderer_->GetMesh();
 }
 
 GameEngineFBXRenderer* SJH_FloorMap::GetFloorMapRenderer()
 {
-	return FloorMap_;
+	return NaviMeshRenderer_;
 }
 
 SJH_NaviCell* SJH_FloorMap::GetNaviCellInfo(const float4& _Vertex0, const float4& _Vertex1, const float4& _Vertex2)
@@ -76,23 +76,25 @@ void SJH_FloorMap::Start()
 	Directory.MoveChild("FBX");
 	Directory.MoveChild("YSJ");
 
-	std::string MeshName = "Bg_NaviMesh.fbx";
+//=============================================== NaviMesh Load & Create NaviCell Info
+	std::string NaviMeshName = "Bg_NaviMesh.fbx";
 
 	// Mesh Load
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(Directory.PathToPlusFileName(MeshName)))
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(Directory.PathToPlusFileName(NaviMeshName)))
 	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(Directory.PathToPlusFileName(MeshName));
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(Directory.PathToPlusFileName(NaviMeshName));
 		Mesh->CreateRenderingBuffer();
 	}
 
 	// Create Renderer
-	FloorMap_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FloorMap_->SetFBXMesh(MeshName, "TextureDeferredLight");
+	NaviMeshRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	NaviMeshRenderer_->SetFBXMesh(NaviMeshName, "TextureDeferredLight");
 
-	//for (UINT i = 0; i < FloorMap_->GetRenderSetCount(); i++)
-	//{
-	//	FloorMap_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
-	//}
+	for (UINT i = 0; i < NaviMeshRenderer_->GetRenderSetCount(); i++)
+	{
+		NaviMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+		NaviMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
+	}
 
 	// 네비게이션 셀정보 생성
 	CreateAllNaviCellInfo();
@@ -101,16 +103,34 @@ void SJH_FloorMap::Start()
 	if (nullptr != SJH_Yuki::MainPlayer)
 	{
 		GameEngineRandom Random;
-		int RandomFace = Random.RandomInt(0, NavigationCellInfos_.size() - 1);
+		int RandomFace = Random.RandomInt(0, static_cast<int>(NavigationCellInfos_.size()) - 1);
 		SJH_Yuki::MainPlayer->Initialize(NavigationCellInfos_[RandomFace], NavigationCellInfos_[RandomFace]->GetCenterToGravity());
+	}
+
+//=============================================== NaviColMesh Load
+	std::string NaviColMeshName = "NaviCol.fbx";
+
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(Directory.PathToPlusFileName(NaviColMeshName)))
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(Directory.PathToPlusFileName(NaviColMeshName));
+		Mesh->CreateRenderingBuffer();
+	}
+
+	// Create Renderer
+	NaviColMeshRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	NaviColMeshRenderer_->SetFBXMesh(NaviColMeshName, "TextureDeferredLight");
+
+	for (UINT i = 0; i < NaviColMeshRenderer_->GetRenderSetCount(); i++)
+	{
+		NaviColMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
 	}
 }
 
 void SJH_FloorMap::CreateAllNaviCellInfo()
 {
 	// 해당 네비게이션 메쉬의 정보를 Get
-	std::vector<FbxExMeshInfo>& AllMeshInfo = FloorMap_->GetMesh()->GetMeshInfos();
-	std::vector<FbxMeshSet>& AllMeshMap = FloorMap_->GetMesh()->GetAllMeshMap();
+	std::vector<FbxExMeshInfo>& AllMeshInfo = NaviMeshRenderer_->GetMesh()->GetMeshInfos();
+	std::vector<FbxMeshSet>& AllMeshMap = NaviMeshRenderer_->GetMesh()->GetAllMeshMap();
 
 	// 해당 Navigation FBX File이 가지는 모든 메쉬를 탐색
 	for (int MeshNumber = 0; MeshNumber < static_cast<int>(AllMeshInfo.size()); ++MeshNumber)
@@ -167,7 +187,8 @@ void SJH_FloorMap::Update(float _DeltaTime)
 }
 
 SJH_FloorMap::SJH_FloorMap()
-	: FloorMap_(nullptr)
+	: NaviMeshRenderer_(nullptr)
+	, NaviColMeshRenderer_(nullptr)
 {
 }
 

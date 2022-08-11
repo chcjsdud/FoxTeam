@@ -88,7 +88,7 @@ void SJH_Yuki::Start()
 
 	// 局聪皋捞记 积己
 	AnimationNameList_.clear();
-	for (size_t i = 0; i < Animation->AnimationCount(); i++)
+	for (int i = 0; i < static_cast<int>(Animation->AnimationCount()); i++)
 	{
 		auto Data = Animation->GetAnimationData(i);
 

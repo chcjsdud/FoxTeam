@@ -52,7 +52,8 @@ public:
 protected:
 
 private:
-	GameEngineFBXRenderer* FloorMap_;
+	GameEngineFBXRenderer* NaviMeshRenderer_;					// NaviMesh(실질적인 네비게이션)
+	GameEngineFBXRenderer* NaviColMeshRenderer_;				// NaviMesh Col(벽 or ..)
 
 private:
 	std::vector<SJH_NaviCell*> NavigationCellInfos_;			// NavigationCellInfos_[FaceNumber]
