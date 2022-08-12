@@ -131,7 +131,7 @@ void YSJ_PlayLevel::LevelUpdate(float _DeltaTime)
 
 	if (nullptr == Player_->GetCurrentNavi() && true == isLoaded)
 	{
-		NaviMesh_->CurrentCheck(Player_->GetTransform(), float4::DOWN);
+		Player_->SetCurrentNavi(NaviMesh_->CurrentCheck(Player_->GetTransform(), float4::DOWN));
 	}
 }
 

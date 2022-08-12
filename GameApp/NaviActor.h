@@ -20,6 +20,11 @@ public:
 		return CurrentNavi_;
 	}
 
+	void SetCurrentNavi(Navi* _Navi)
+	{
+		CurrentNavi_ = _Navi;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

@@ -10,6 +10,7 @@ class NaviInfo
 	friend class NaviActor;
 public:
 	NaviInfo()
+		: Index(0)
 	{
 
 	}
