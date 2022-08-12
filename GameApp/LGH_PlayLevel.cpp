@@ -29,6 +29,23 @@ void LGH_PlayLevel::LevelStart()
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
 	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 100.0f, -300.0f));
 
+	{
+		GameEngineDirectory FontDir;
+		FontDir.MoveParent("FoxTeam");
+		//연산자 / = MoveChild
+		FontDir / "EngineResources" / "Font";
+	
+		string Fontname = FontDir.GetFullPath();
+		Fontname += "\\KBIZM.ttf";
+		//윈도우 함수 AddFontResource
+		//현재 시스템에 지정된 폰트를 추가시키는 함수
+		AddFontResource(Fontname.c_str());
+	}
+
+
+	GameEngineFontManager::GetInst().Load("휴먼옛체");
+	GameEngineFontManager::GetInst().Load("KBIZ한마음고딕 M");
+
 	player_ = CreateActor<LGH_Aya>();
 
 

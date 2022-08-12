@@ -49,8 +49,14 @@ void UI_Status::Start()
 
 	{
 		StatusAttack_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		StatusAttack_Renderer->TextSetting("±Ã¼­","Test", 20, float4::WHITE);
+		StatusAttack_Renderer->TextSetting("ÈÞ¸Õ¿¾Ã¼","Å×½ºÆ®",100, float4::WHITE);
 		StatusAttack_Renderer->GetTransform()->SetLocalPosition({0.0f, 0.0f, 0.0f, 0.0f});
+	}
+
+	{
+		StatusDefence_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		StatusDefence_Renderer->TextSetting("KBIZÇÑ¸¶À½°íµñ M", "½ÃÇè", 100, float4::WHITE);
+		StatusDefence_Renderer->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, 0.0f, 0.0f });
 	}
 
 
@@ -77,12 +83,14 @@ void UI_Status::Update(float _Time)
 			MainStatusRenderer->Off();
 			SubStatusRenderer->Off();
 			StatusAttack_Renderer->Off();
+			StatusDefence_Renderer->Off();
 		}
 		else
 		{
 			MainStatusRenderer->On();
 			SubStatusRenderer->On();
 			StatusAttack_Renderer->On();
+			StatusDefence_Renderer->On();
 		}
 	}
 
