@@ -53,16 +53,21 @@ SJH_NaviCell* SJH_FloorMap::SearchCurrentPosToNaviCell(const float4& _Position)
 	return nullptr;
 }
 
-bool SJH_FloorMap::MoveFacePath(const SJH_NaviCell* _StartCell, const SJH_NaviCell* _TargetCell, std::vector<SJH_NaviCell*>& _MovePath)
+bool SJH_FloorMap::MoveFacePath(SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<SJH_NaviCell*>& _MovePath)
 {
 	// 시작 삼각형 ~ 목표 삼각형까지의 이동 삼각형목록을 반환
 	// 단, 이동불가판단시 false를 반환하며 이동경로는 존재하지않는다.
+	if (nullptr == PathFinder_)
+	{
+		PathFinder_ = new SJH_PathFinder();
+	}
 
-
-
-
-
-
+	// 경로 탐색 시작
+	_MovePath = PathFinder_->AStarMovePath(_StartCell, _TargetCell, static_cast<int>(NavigationCellInfos_.size()));
+	if (false == _MovePath.empty())
+	{
+		return true;
+	}
 
 	return false;
 }
@@ -151,7 +156,7 @@ void SJH_FloorMap::CreateAllNaviCellInfo()
 				}
 
 				SJH_NaviCell* NewCellInfo = new SJH_NaviCell();
-				NewCellInfo->CreateNavigationCellInfo(MeshNumber, FaceNumber, VertexList, IndexList);
+				NewCellInfo->CreateNavigationCellInfo(static_cast<int>(NavigationCellInfos_.size()), MeshNumber, FaceNumber, VertexList, IndexList);
 				NavigationCellInfos_.push_back(NewCellInfo);
 			}
 		}
@@ -177,7 +182,8 @@ void SJH_FloorMap::FindAdjacentFaces()
 			}
 
 			// 기준면의 인접한 면을 모두 찾아낸다.
-			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber], false);
+			//NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber], false);
+			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
 		}
 	}
 }
@@ -189,6 +195,7 @@ void SJH_FloorMap::Update(float _DeltaTime)
 SJH_FloorMap::SJH_FloorMap()
 	: NaviMeshRenderer_(nullptr)
 	, NaviColMeshRenderer_(nullptr)
+	, PathFinder_(nullptr)
 {
 }
 

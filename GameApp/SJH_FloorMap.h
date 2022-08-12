@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
-#include <GameEngineBase/GameEnginePathFind.h>
+
+#include "SJH_PathFinder.h"
 
 // 분류 : 
 // 용도 : 
@@ -23,7 +24,7 @@ public:
 
 public:
 	SJH_NaviCell* SearchCurrentPosToNaviCell(const float4& _Position);
-	bool MoveFacePath(const SJH_NaviCell* _StartCell, const SJH_NaviCell* _TargetCell, std::vector<SJH_NaviCell*>& _MovePath);
+	bool MoveFacePath(SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<SJH_NaviCell*>& _MovePath);
 
 protected:
 
@@ -59,6 +60,6 @@ private:
 	std::vector<SJH_NaviCell*> NavigationCellInfos_;			// NavigationCellInfos_[FaceNumber]
 
 private:
-	//std::map<NavigationObjectType, std::vector<GameEnginePathFind*>> Navigation_;	// 각각의 액터별 해당 맵의 이동경로 관리
+	SJH_PathFinder* PathFinder_;								// A* 경로탐색
 };
 

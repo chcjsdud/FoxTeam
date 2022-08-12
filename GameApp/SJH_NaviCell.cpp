@@ -1,9 +1,10 @@
 #include "Precompile.h"
 #include "SJH_NaviCell.h"
 
-void SJH_NaviCell::CreateNavigationCellInfo(int _MeshIndex, int _FaceIndex, std::vector<GameEngineVertex> _VertexList, std::vector<UINT> _IndexList)
+void SJH_NaviCell::CreateNavigationCellInfo(int _Index, int _MeshIndex, int _FaceIndex, std::vector<GameEngineVertex> _VertexList, std::vector<UINT> _IndexList)
 {
 	// 기본정보 저장
+	Index_ = _Index;
 	MeshIndex_ = _MeshIndex;
 	FaceIndex_ = _FaceIndex;
 	VertexList_ = _VertexList;
@@ -158,10 +159,12 @@ void SJH_NaviCell::CenterOfGravityCalculation()
 }
 
 SJH_NaviCell::SJH_NaviCell()
-	: MeshIndex_(-1)
+	: Index_(-1)
+	, MeshIndex_(-1)
 	, FaceIndex_(-1)
 	, CenterOfGravity_(float4::ZERO)
 	, FaceInfoCompleted_(false)
+	, OntheFaceActor_(nullptr)
 {
 }
 

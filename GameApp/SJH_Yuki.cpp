@@ -21,7 +21,7 @@ void SJH_Yuki::Initialize(SJH_NaviCell* _CurNaviCell, const float4& _InitPos)
 void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 {
 	// 이동중지
-	MoveStartFlag_ = false;
+	MoveStart_ = false;
 
 	// 기존 이동경로가 남아있다면
 	if (false == MovePath_.empty())
@@ -46,8 +46,23 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 		// 현재 플레이어의 NaviCell ~ _TargetNaviCell까지의 이동경로 생성
 		if (true == SJH_FloorMap::FloorMap->MoveFacePath(CurNaviCell_, TargetNaviCell_, MovePath_))
 		{
+			// 시작위치, 목표위치, 이동방향 설정
+			MoveStartPos_ = GetTransform()->GetWorldPosition();
+
+			MovePathTarget_ = MovePath_.front();
+			if (nullptr != MovePathTarget_)
+			{
+				MoveEndPos_ = MovePathTarget_->GetCenterToGravity();
+			}
+			
+			MoveDir_ = MoveEndPos_ - MoveStartPos_;
+			MoveDir_.Normalize3D();
+
+			// 사용끝난 경로 제거
+			MovePath_.pop_front();
+
 			// 이동경로 생성완료 후 Flag On
-			MoveStartFlag_ = true;
+			MoveStart_ = true;
 		}
 	}
 }
@@ -55,7 +70,7 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 void SJH_Yuki::Start()
 {
 	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
-	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, 0.0f });
+	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 5.0f, 0.0f });
 	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 80.0f, 0.0f, 0.0f });
 
 	// FBX Files 경로 지정
@@ -74,7 +89,7 @@ void SJH_Yuki::Start()
 	// 렌더러 생성
 	AnimRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	AnimRenderer_->SetFBXMesh(MeshName, "TextureDeferredLightAni");
-	AnimRenderer_->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
+	//AnimRenderer_->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
 	AnimRenderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
 
 	// Yuki_01_LOD1.png
@@ -160,40 +175,85 @@ void SJH_Yuki::Start()
 #pragma endregion
 
 	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0);
+	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[14], MeshName, 14);
 	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
+
+	if (false == GameEngineInput::GetInst().IsKey("SJH_TEST1"))
+	{
+		GameEngineInput::GetInst().CreateKey("SJH_TEST1", VK_DOWN);
+	}
+
+	if (false == GameEngineInput::GetInst().IsKey("SJH_TEST2"))
+	{
+		GameEngineInput::GetInst().CreateKey("SJH_TEST2", VK_UP);
+	}
 }
 
 void SJH_Yuki::Update(float _DeltaTime)
 {
+	if (true == GameEngineInput::GetInst().Down("SJH_TEST1"))
+	{
+		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
+	}
+
+	if (true == GameEngineInput::GetInst().Down("SJH_TEST2"))
+	{
+		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[14]);
+	}
+
 	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동한다.
-	if (true == MoveStartFlag_)
+	if (true == MoveStart_)
 	{
 		// 이동 처리
+		LerpMoveTime_ += GameEngineTime::GetInst().GetDeltaTime(MoveSpeed_);
+		float4 LerpPos = float4::Lerp(MoveStartPos_, MoveEndPos_, LerpMoveTime_);
 
+		//GetTransform()->SetWorldMove(LerpPos * MoveSpeed_);
+		GetTransform()->SetWorldPosition(LerpPos);
 
-
-
-
-		// 이동경로가 존재한다면 이동을 위한 정보 셋팅
-		if (false == MovePath_.empty())
+		// 현재 이동경로 목표지점(셀)에 도착시 이동정보 갱신
+		// 현재 이동목표 삼각형(셀)의 무게중심과 거리가 5 이하이면 이동완료판단???
+		if(1.0f < LerpMoveTime_)
 		{
-			// 현재 위치 ~ MovePath_의 가장 첫번째 삼각형의 무게중심까지 이동 경로 설정
+			LerpMoveTime_ = 0.0f;
 
+			// 남아있는 경로가 있다면
+			if (false == MovePath_.empty())
+			{
+				// 시작위치, 목표위치, 이동방향 설정
+				MoveStartPos_ = GetTransform()->GetWorldPosition();
 
+				MovePathTarget_ = MovePath_.front();
+				if (nullptr != MovePathTarget_)
+				{
+					MoveEndPos_ = MovePathTarget_->GetCenterToGravity();
+				}
 
+				//MoveDir_ = MoveEndPos_ - MoveStartPos_;
+				//MoveDir_.Normalize3D();
 
-		}
-		// 이동경로가 모두 소진되었다면
-		else
-		{
-			// 현재 플레이어가 위치한 삼각형(셀)을 셋팅하고
-			CurNaviCell_ = TargetNaviCell_;
+				// 사용끝난 경로 제거
+				MovePath_.pop_front();
+			}
+			// 남은경로가 없다면
+			else
+			{
+				// 현재 플레이어가 위치한 삼각형(셀)을 셋팅하고
+				CurNaviCell_ = TargetNaviCell_;
 
-			// 목표 삼각형을 초기화
-			TargetNaviCell_ = nullptr;
+				// 이동목표 삼각형(셀)을 초기화
+				TargetNaviCell_ = nullptr;
 
-			// 이동종료
-			MoveStartFlag_ = false;
+				// 이동종료 및 이동정보 초기화
+				MoveStart_ = false;
+				MoveStartPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
+				MoveEndPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
+				MoveDir_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+				// 이동종료
+				MoveStart_ = false;
+				MovePath_.clear();
+			}
 		}
 	}
 }
@@ -203,10 +263,13 @@ SJH_Yuki::SJH_Yuki()
 	, AnimRenderer_(nullptr)
 	, CurNaviCell_(nullptr)
 	, TargetNaviCell_(nullptr)
-	, MoveStartFlag_(false)
+	, MoveStart_(false)
+	, MovePathTarget_(nullptr)
 	, MoveStartPos_(float4::ZERO)
 	, MoveEndPos_(float4::ZERO)
 	, MoveDir_(float4::ZERO)
+	, MoveSpeed_(5.0f)
+	, LerpMoveTime_(0.0f)
 {
 }
 
