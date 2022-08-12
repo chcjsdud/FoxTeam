@@ -9,6 +9,11 @@ NaviMesh::NaviMesh()
 {
 	NewVertex = new GameEngineVertexBuffer();
 	NewIndex = new GameEngineIndexBuffer();
+
+	NaviMeshFolder.MoveParent("FoxTeam");
+	NaviMeshFolder.MoveChild("Resources");
+	NaviMeshFolder.MoveChild("FBX");
+	NaviMeshFolder.MoveChild("UserMesh");
 }
 
 NaviMesh::~NaviMesh()
@@ -65,46 +70,22 @@ void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer)
 {
 	std::vector<FbxMeshSet>& AllMesh = _FBXRenderer->GetMesh()->GetAllMeshMap();
 
-	int Index = 0;
+	std::string FileName = "NaviMesh.NaviMesh";
+	std::vector<GameEngineFile> vecFile = NaviMeshFolder.GetAllFile(".NaviMesh");
 
-	for (size_t i = 0; i < AllMesh.size(); i++)
+	if (true == vecFile.empty())
 	{
-		for (size_t j = 0; j < AllMesh[i].Indexs[0][0].size() / 3; j++)
-		{
-			Navi& Navi = Navis.emplace_back();
-
-			if (1 != AllMesh[i].GameEngineIndexBuffers[0].size())
-			{
-				GameEngineDebug::MsgBoxError("서브셋이 존재합니다.");
-			}
-
-			Navi.Info.Vertex[0] = AllMesh[i].Vertexs[AllMesh[i].Indexs[0][0][j * 3 + 0]].POSITION;
-			Navi.Info.Vertex[1] = AllMesh[i].Vertexs[AllMesh[i].Indexs[0][0][j * 3 + 1]].POSITION;
-			Navi.Info.Vertex[2] = AllMesh[i].Vertexs[AllMesh[i].Indexs[0][0][j * 3 + 2]].POSITION;
-
-			Navi.Info.Index = Index++;
-			Navi.AllNavi = &Navis;
-			Navi.Parent = this;
-		}
+		SaveNavisData(AllMesh);
+		UserSave(NaviMeshFolder.PathToPlusFileName(FileName));
 	}
-
-	// Link 정보 세팅
-	for (UINT i = 0; i < Navis.size(); i++)
+	else
 	{
-		Navi& Navi = Navis[i];
-
-		for (UINT j = 0; j < Navis.size(); j++)
+		if (1 < vecFile.size())
 		{
-			if (i == j)
-			{
-				continue;
-			}
-
-			if (LinkCheck(Navi, Navis[j]))
-			{
-				Navi.Info.Link.push_back(j);
-			}
+			GameEngineDebug::MsgBoxError("NaviMesh 파일이 2개 이상 있습니다.");
 		}
+
+		UserLoad(NaviMeshFolder.PathToPlusFileName(vecFile[0].FileName()));
 	}
 
 	NaviRenderers.resize(AllMesh.size());
@@ -116,7 +97,7 @@ void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer)
 		NaviRenderers[i]->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
 		NaviRenderers[i]->SetMesh(AllMesh[i].GameEngineVertexBuffers[0], AllMesh[i].GameEngineIndexBuffers[0][0]);
 
-		if (1 != AllMesh[i].GameEngineIndexBuffers[0].size())
+		if (1 < AllMesh[i].GameEngineIndexBuffers[0].size())
 		{
 			GameEngineDebug::MsgBoxError("서브셋이 존재합니다.");
 		}
@@ -153,6 +134,111 @@ Navi* NaviMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir
 	}
 
 	return nullptr;
+}
+
+void NaviMesh::SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh)
+{
+	int Index = 0;
+
+	for (size_t i = 0; i < _AllMesh.size(); i++)
+	{
+		for (size_t j = 0; j < _AllMesh[i].Indexs[0][0].size() / 3; j++)
+		{
+			Navi& Navi = Navis.emplace_back();
+
+			if (1 != _AllMesh[i].GameEngineIndexBuffers[0].size())
+			{
+				GameEngineDebug::MsgBoxError("서브셋이 존재합니다.");
+			}
+
+			Navi.Info.Vertex[0] = _AllMesh[i].Vertexs[_AllMesh[i].Indexs[0][0][j * 3 + 0]].POSITION;
+			Navi.Info.Vertex[1] = _AllMesh[i].Vertexs[_AllMesh[i].Indexs[0][0][j * 3 + 1]].POSITION;
+			Navi.Info.Vertex[2] = _AllMesh[i].Vertexs[_AllMesh[i].Indexs[0][0][j * 3 + 2]].POSITION;
+
+			Navi.Info.Index = Index++;
+			Navi.AllNavi = &Navis;
+			Navi.Parent = this;
+		}
+	}
+
+	// Link 정보 세팅
+	for (UINT i = 0; i < Navis.size(); i++)
+	{
+		Navi& Navi = Navis[i];
+
+		for (UINT j = 0; j < Navis.size(); j++)
+		{
+			if (i == j)
+			{
+				continue;
+			}
+
+			if (LinkCheck(Navi, Navis[j]))
+			{
+				Navi.Info.Link.push_back(j);
+			}
+		}
+	}
+}
+
+void NaviMesh::UserLoad(const std::string& _Path)
+{
+	GameEngineFile NewFile = GameEngineFile(_Path, "rb");
+
+	int Size = 0;
+
+	NewFile.Read(Size);
+
+	if (0 == Size)
+	{
+		GameEngineDebug::MsgBoxError("존재하지 않는 NaviMesh 파일입니다.");
+	}
+
+	Navis.resize(Size);
+
+	for (auto& Data : Navis)
+	{
+		NewFile.Read(Data.Info.Vertex[0]);
+		NewFile.Read(Data.Info.Vertex[1]);
+		NewFile.Read(Data.Info.Vertex[2]);
+		NewFile.Read(Data.Info.Index);
+
+		int LinkSize = 0;
+
+		NewFile.Read(LinkSize);
+
+		Data.Info.Link.resize(LinkSize);
+
+		for (size_t i = 0; i < Data.Info.Link.size(); i++)
+		{
+			NewFile.Read(Data.Info.Link[i]);
+		}
+
+		Data.AllNavi = &Navis;
+		Data.Parent = this;
+	}
+}
+
+void NaviMesh::UserSave(const std::string& _Path)
+{
+	GameEngineFile NewFile = GameEngineFile(_Path, "wb");
+
+	NewFile.Write(static_cast<int>(Navis.size()));
+
+	for (auto& Data : Navis)
+	{
+		NewFile.Write(Data.Info.Vertex[0]);
+		NewFile.Write(Data.Info.Vertex[1]);
+		NewFile.Write(Data.Info.Vertex[2]);
+		NewFile.Write(Data.Info.Index);
+
+		NewFile.Write(static_cast<int>(Data.Info.Link.size()));
+
+		for (size_t i = 0; i < Data.Info.Link.size(); i++)
+		{
+			NewFile.Write(Data.Info.Link[i]);
+		}
+	}
 }
 
 bool NaviMesh::LinkCheck(const Navi& _Left, const Navi& _Right)

@@ -1,8 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
-// 파일입출력 적용
-
 class NaviInfo
 {
 	friend class Navi;
@@ -60,7 +58,6 @@ private:
 
 class NaviMesh : public GameEngineActor
 {
-	friend class Navi;
 public:
 	NaviMesh();
 	~NaviMesh();
@@ -71,6 +68,8 @@ public:
 	NaviMesh& operator=(const NaviMesh&& _other) = delete;
 
 	void CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex, const std::vector<UINT>& _Index);
+
+	// 유저 세이브 파일이 없다면 만들고, 있다면 UserLoad() 를 실행한다. 
 	void CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer);
 
 	Navi* CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir);
@@ -83,7 +82,14 @@ public:
 protected:
 
 private:
+	void SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh);
+
+	void UserLoad(const std::string& _Path);
+	void UserSave(const std::string& _Path);
+
 	bool LinkCheck(const Navi& _Left, const Navi& _Right);
+
+	GameEngineDirectory NaviMeshFolder;
 
 	std::vector<Navi> Navis;
 	std::vector<GameEngineRenderer*> NaviRenderers;
