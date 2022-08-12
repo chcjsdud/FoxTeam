@@ -21,6 +21,11 @@ public:
 class SJH_NaviCell
 {
 public:
+	inline int GetCellInfomationIndex() const
+	{
+		return Index_;
+	}
+
 	inline bool GetFaceInfomationFlag() const
 	{
 		return FaceInfoCompleted_;
@@ -31,8 +36,13 @@ public:
 		return CenterOfGravity_;
 	}
 
+	inline std::vector<SJH_NaviCell*> GetAdjacentTriangles() const
+	{
+		return AdjacentTriangles_;
+	}
+
 public:
-	void CreateNavigationCellInfo(int _MeshIndex, int _FaceNumber, std::vector<GameEngineVertex> _VertexList, std::vector<UINT> _IndexList);
+	void CreateNavigationCellInfo(int _Index, int _MeshIndex, int _FaceNumber, std::vector<GameEngineVertex> _VertexList, std::vector<UINT> _IndexList);
 	void SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell, bool _2Vertex = true);
 
 public:
@@ -41,9 +51,12 @@ public:
 
 protected:
 
-private:
+private: // 셀 상세정보 생성
 	void CreateSideLineInfo();
 	void CenterOfGravityCalculation();
+
+private: // 현재 셀에 존재하는 액터 탐색(갱신용)
+	void StandingOntheCellCheck();
 
 public:
 	SJH_NaviCell();
@@ -62,6 +75,7 @@ public:
 protected:
 
 private: // 수신받는 정보
+	int Index_;											// 현재 목록에 해당하는 Index(탐색용)
 	int MeshIndex_;										// 해당 면을 포함하는 MeshIndex(탐색용)
 	int FaceIndex_;										// 해당 면의 인덱스(탐색용)
 	std::vector<GameEngineVertex> VertexList_;			// 해당 면을 구성하는 정점목록(3개)
@@ -76,5 +90,8 @@ private: // 무게중심 및 인접한 면목록
 
 private:
 	bool FaceInfoCompleted_;							// 해당 면의 정보 수집완료 Flag
+
+private:
+	GameEngineActor* OntheFaceActor_;					// 해당 면에 존재하는 액터(아무것도 없을때 nullptr)
 };
 

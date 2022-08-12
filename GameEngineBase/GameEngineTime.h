@@ -86,9 +86,9 @@ public:
 		return deltaTime_;
 	}
 
-	float GetDeltaTime()
+	float GetDeltaTime(float _Speed = 1.0f)
 	{
-		return static_cast<float>(deltaTime_);
+		return static_cast<float>(deltaTime_) * _Speed;
 	}
 
 	float GetDeltaTime(int _Index)

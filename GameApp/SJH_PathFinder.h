@@ -1,4 +1,5 @@
 #pragma once
+#include "SJH_NaviCell.h"
 
 // A* 노드 정보
 class SJH_NaviCell;
@@ -12,24 +13,22 @@ public:
 	float TotalLen_;
 
 public:
-	void CalLen(SJH_NaviCell* _EndNaviCell)
+	void CalLen(SJH_NaviCell* _CellInfo)
 	{
-		//if (nullptr == Parent_)
-		//{
-		//	PathLen_ = 0.0f;
-		//}
-		//else
-		//{
-		//	float4 ParentIndex = float4(static_cast<float>(Parent_->Index_.X_), static_cast<float>(Parent_->Index_.Y_));
-		//	float4 ThisIndex = float4(static_cast<float>(Index_.X_), static_cast<float>(Index_.Y_));
-		//	PathLen_ = Parent_->PathLen_ + (ParentIndex - ThisIndex).Len2D();
-		//}
-		//
-		//float4 EndIndex = float4(static_cast<float>(_EndIndex.X_), static_cast<float>(_EndIndex.Y_));
-		//float4 ThisIndex = float4(static_cast<float>(Index_.X_), static_cast<float>(Index_.Y_));
-		//EndLen_ = (EndIndex - ThisIndex).Len2D();
-		//
-		//TotalLen_ = PathLen_ + EndLen_;
+		// 부모노드가 없는경우 : 시작노드일때
+		if (nullptr == Parent_)
+		{
+			PathLen_ = 0.0f;
+		}
+		// 부모노드가 존재하는경우 : 탐색노드일때
+		else
+		{
+			// 무게중심기준 거리 측정
+			PathLen_ = Parent_->PathLen_ + (Parent_->CellInfo_->GetCenterToGravity() - CellInfo_->GetCenterToGravity()).Len3D();
+		}
+
+		EndLen_ = (_CellInfo->GetCenterToGravity() - CellInfo_->GetCenterToGravity()).Len3D();
+		TotalLen_ = PathLen_ + EndLen_;
 	}
 
 	void Reset()
@@ -42,8 +41,13 @@ public:
 class SJH_PathFinder
 {
 public:
+	std::list<SJH_NaviCell*> AStarMovePath(SJH_NaviCell* _StartCell, SJH_NaviCell* _EndCell, int _Maximum = 1000);
+
 protected:
+
 private:
+	SJH_AStarNode* CreateNode(SJH_NaviCell* _StartCell, SJH_NaviCell* _EndCell, SJH_AStarNode* _ParentNode = nullptr);
+	std::list<SJH_NaviCell*> CalReturn(SJH_AStarNode* _EndNode);
 
 public:
 	SJH_PathFinder();
@@ -61,16 +65,16 @@ public:
 
 protected:
 
-private:
-	int PoolCount_;
-	std::vector<SJH_AStarNode> NodePool_;
+private: // 노드생성
+	int PoolCount_;										// 최대 노드생성횟수(고정)
+	std::vector<SJH_AStarNode> NodePool_;				// 생성노드목록
 
-private:
-	std::multimap<float, SJH_AStarNode*> OpenList_;
-	std::set<__int64> OpenKeys_;
+private: // 열린노드목록
+	std::multimap<float, SJH_AStarNode*> OpenList_;		// (거리, 열린노드) 목록
+	std::set<int> OpenKeys_;							// 열린노드 Key
 
-private:
-	std::list<SJH_AStarNode*> CloseList_;
-	std::set<__int64> CloseKeys_;
+private: // 닫힌노드목록
+	std::list<SJH_AStarNode*> CloseList_;				// 닫힌노드목록
+	std::set<int> CloseKeys_;							// 닫힌노드 Key
 };
 

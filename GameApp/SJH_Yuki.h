@@ -49,15 +49,20 @@ private:
 
 private:
 	SJH_NaviCell* CurNaviCell_;				// 현재 플레이어가 위치하고 있는 삼각형
-	SJH_NaviCell* TargetNaviCell_;			// 현재 플레이어가 이동하려는 목표지점의 위치한 삼각형
-	bool MoveStartFlag_;					// 이동경로 생성 완료시 On
+	SJH_NaviCell* TargetNaviCell_;			// 현재 플레이어가 이동하려는 최종목표지점의 위치한 삼각형
+	bool MoveStart_;						// 이동경로 생성 완료시 On
 
 private:
-	std::vector<SJH_NaviCell*> MovePath_;	// 이동 경로 : 목표지점까지의 이동가능한 삼각형(셀) 목록
+	std::list<SJH_NaviCell*> MovePath_;		// 이동 경로 : 목표지점까지의 이동가능한 삼각형(셀) 목록
+	SJH_NaviCell* MovePathTarget_;			// 이동완료 체크용
 
 private:
 	float4 MoveStartPos_;					// 이동경로의 시작 위치
 	float4 MoveEndPos_;						// 이동경로의 목표 위치
 	float4 MoveDir_;						// 이동경로의 이동방향
+	float MoveSpeed_;						// 이동속도
+
+private:
+	float LerpMoveTime_;
 };
 
