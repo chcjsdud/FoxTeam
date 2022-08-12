@@ -38,19 +38,21 @@ public:
 
 	}
 
+	// _Transform 에서 NaviMesh 사이의 거리를 반환한다.
 	float YCheck(GameEngineTransform* _Transform);
 
+	// NaviActor가 가지고있는 CurrentNavi_ 바깥으로 나갔는지 여부를 체크한다.
 	bool OutCheck(GameEngineTransform* _Transform)
 	{
 		float Dist = 0.0f;
 		return OutCheck(_Transform, Dist);
 	}
 
-	bool OutCheck(GameEngineTransform* _Transform, float& _Dist);
-
 	Navi* MoveCheck(GameEngineTransform* _Transform);
 
 private:
+	bool OutCheck(GameEngineTransform* _Transform, float& _Dist);
+
 	NaviInfo Info;
 	std::vector<Navi>* AllNavi;
 	GameEngineActor* Parent;
@@ -69,8 +71,8 @@ public:
 
 	void CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex, const std::vector<UINT>& _Index);
 
-	// 유저 세이브 파일이 없다면 만들고, 있다면 UserLoad() 를 실행한다. 
-	void CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer);
+	// 유저 세이브 파일이 없다면 만들고, 있다면 UserLoad()를 실행한다. 
+	void CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, std::string _FileName = "Default");
 
 	Navi* CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir);
 

@@ -66,26 +66,29 @@ void NaviMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex,
 	NaviRenderer->ShaderHelper.SettingConstantBufferLink("ResultColor", Color);
 }
 
-void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer)
+void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, 
+	std::string _FileName /*= "Default"*/)
 {
 	std::vector<FbxMeshSet>& AllMesh = _FBXRenderer->GetMesh()->GetAllMeshMap();
 
-	std::string FileName = "NaviMesh.NaviMesh";
+	std::string FileName = _FileName.append(".NaviMesh");
 	std::vector<GameEngineFile> vecFile = NaviMeshFolder.GetAllFile(".NaviMesh");
 
-	if (true == vecFile.empty())
+	bool isLoaded = false;
+
+	for(GameEngineFile& File : vecFile)
+	{
+		if (std::string::npos != File.GetFileName().find(_FileName))
+		{
+			UserLoad(File.GetFullPath());
+			isLoaded = true;
+		}
+	}
+
+	if (false == isLoaded)
 	{
 		SaveNavisData(AllMesh);
 		UserSave(NaviMeshFolder.PathToPlusFileName(FileName));
-	}
-	else
-	{
-		if (1 < vecFile.size())
-		{
-			GameEngineDebug::MsgBoxError("NaviMesh 파일이 2개 이상 있습니다.");
-		}
-
-		UserLoad(NaviMeshFolder.PathToPlusFileName(vecFile[0].FileName()));
 	}
 
 	NaviRenderers.resize(AllMesh.size());
@@ -112,7 +115,6 @@ Navi* NaviMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir
 	float Dist = 0.0f;
 
 	bool Check = false;
-
 
 	for (auto& Navi : Navis)
 	{
