@@ -22,7 +22,7 @@ YSJ_LumiaMap::~YSJ_LumiaMap()
 
 void YSJ_LumiaMap::Start()
 {
-	/*FBXNaviRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	FBXNaviRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXNaviRenderer->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
 
 	for (UINT i = 0; i < FBXNaviRenderer->GetRenderSetCount(); i++)
@@ -32,9 +32,9 @@ void YSJ_LumiaMap::Start()
 	}
 
 	FBXNaviRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	
+	FBXNaviRenderer->Off();
 
-	FBXWallRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	/*FBXWallRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXWallRenderer->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
 
 	for (UINT i = 0; i < FBXWallRenderer->GetRenderSetCount(); i++)
@@ -59,10 +59,12 @@ void YSJ_LumiaMap::Start()
 
 void YSJ_LumiaMap::Update(float _DeltaTime)
 {
-	/*if (nullptr != YSJ_Player::MainPlayer)
+	if (nullptr != YSJ_Player::MainPlayer)
 	{
-		if (true == FBXWallRenderer->CheckMeshToPointCollision(
-			YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition(),float4::DOWN, 5.0f))
+		float dist = 0.0f;
+
+		if (true == FBXNaviRenderer->CheckIntersects(
+			YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition() + float4{0.0f, 100.0f, 0.0f}, float4::DOWN, dist))
 		{
 			YSJ_Player::MainPlayer->SetColor(float4::GREEN);
 		}
@@ -70,8 +72,7 @@ void YSJ_LumiaMap::Update(float _DeltaTime)
 		{
 			YSJ_Player::MainPlayer->SetColor(float4::RED);
 		}
-	}*/
-	
+	}
 }
 
 void YSJ_LumiaMap::ReleaseEvent()

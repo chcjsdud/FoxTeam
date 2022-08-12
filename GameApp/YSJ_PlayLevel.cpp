@@ -40,6 +40,7 @@ void YSJ_PlayLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 
 	Player_ = CreateActor<YSJ_Player>();
+	Player_->GetTransform()->SetWorldMove({ 10.0f, 0.0f, 0.0f });
 
 	GameEngineDirectory tempDir;
 
@@ -127,6 +128,11 @@ void YSJ_PlayLevel::LevelUpdate(float _DeltaTime)
 	{
 		GetMainCameraActor()->FreeCameraModeSwitch();
 	}
+
+	if (nullptr == Player_->GetCurrentNavi() && true == isLoaded)
+	{
+		NaviMesh_->CurrentCheck(Player_->GetTransform(), float4::DOWN);
+	}
 }
 
 void YSJ_PlayLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
@@ -145,8 +151,6 @@ void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size * 3);
 		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredTarget(), Size * 3);
 	}
-
-	
 }
 
 void YSJ_PlayLevel::CreateActorLevel()
@@ -207,6 +211,8 @@ void YSJ_PlayLevel::CreateActorLevel()
 		Index.push_back(i * 3 + 0);
 	}
 
-	NaviMesh_->CreateNaviMesh(Vertex, Index);
+	//NaviMesh_->CreateNaviMesh(Vertex, Index);
+	NaviMesh_->CreateNaviMesh(LumiaMap->GetFBXNaviRenderer());
+	NaviMesh_->GetTransform()->SetWorldScaling({ 3.0f, 3.0f, 3.0f });
 	Player_->SetNaviMesh(NaviMesh_);
 }

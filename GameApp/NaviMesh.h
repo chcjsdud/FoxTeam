@@ -2,8 +2,6 @@
 #include <GameEngine/GameEngineActor.h>
 
 // 파일입출력 적용
-// void CreateNaviMesh(Renderer);
-// void CreateNaviMesh(FBXRenderer); 만들기
 
 class NaviInfo
 {
@@ -12,7 +10,6 @@ class NaviInfo
 	friend class NaviActor;
 public:
 	NaviInfo()
-		: Index(0)
 	{
 
 	}
@@ -22,7 +19,7 @@ public:
 	}
 private:
 	float4 Vertex[3];
-	UINT Index;
+	int Index;
 	std::vector<UINT> Link;
 };
 
@@ -33,6 +30,7 @@ class Navi
 public:
 	Navi()
 		: AllNavi(nullptr)
+		, Parent(nullptr)
 	{
 
 	}
@@ -54,13 +52,14 @@ public:
 	Navi* MoveCheck(GameEngineTransform* _Transform);
 
 private:
-
 	NaviInfo Info;
 	std::vector<Navi>* AllNavi;
+	GameEngineActor* Parent;
 };
 
 class NaviMesh : public GameEngineActor
 {
+	friend class Navi;
 public:
 	NaviMesh();
 	~NaviMesh();
@@ -71,8 +70,14 @@ public:
 	NaviMesh& operator=(const NaviMesh&& _other) = delete;
 
 	void CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex, const std::vector<UINT>& _Index);
+	void CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer);
 
 	Navi* CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir);
+
+	void SetColor(float4 _Color)
+	{
+		Color = _Color;
+	}
 
 protected:
 
@@ -80,9 +85,12 @@ private:
 	bool LinkCheck(const Navi& _Left, const Navi& _Right);
 
 	std::vector<Navi> Navis;
+	std::vector<GameEngineRenderer*> NaviRenderers;
 
 	GameEngineRenderer* NaviRenderer;
 	GameEngineVertexBuffer* NewVertex;
 	GameEngineIndexBuffer* NewIndex;
+
+	float4 Color;
 };
 

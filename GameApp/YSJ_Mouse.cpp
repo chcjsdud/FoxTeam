@@ -65,7 +65,7 @@ void YSJ_Mouse::MeshPicking()
 	}
 
 	//YSJ_Player::MainPlayer->GetTransform()->SetWorldPosition(ClickPoint_);
-	float4 PlayerPos = YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition();
+	/*float4 PlayerPos = YSJ_Player::MainPlayer->GetTransform()->GetWorldPosition();
 
 	PathIndex Start = { PlayerPos.ix(), PlayerPos.iz() };
 	PathIndex End = { ClickPoint_.ix(), ClickPoint_.iz() };
@@ -77,7 +77,7 @@ void YSJ_Mouse::MeshPicking()
 
 	AStarlist_ = AStar_.AStarFind8Way(Start, End, AStarFunc, 10000);
 
-	int a = 0;
+	int a = 0;*/
 }
 
 void YSJ_Mouse::PlayerMove(float _DeltaTime)
