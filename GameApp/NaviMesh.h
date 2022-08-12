@@ -72,7 +72,7 @@ public:
 	void CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex, const std::vector<UINT>& _Index);
 
 	// 유저 세이브 파일이 없다면 만들고, 있다면 UserLoad()를 실행한다. 
-	void CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, std::string _FileName = "Default");
+	void CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, const std::string& _FileName = "Default");
 
 	Navi* CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir);
 

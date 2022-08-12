@@ -67,11 +67,13 @@ void NaviMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex,
 }
 
 void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, 
-	std::string _FileName /*= "Default"*/)
+	const std::string& _FileName /*= "Default"*/)
 {
 	std::vector<FbxMeshSet>& AllMesh = _FBXRenderer->GetMesh()->GetAllMeshMap();
 
-	std::string FileName = _FileName.append(".NaviMesh");
+	std::string FileName = _FileName;
+	FileName.append(".NaviMesh");
+
 	std::vector<GameEngineFile> vecFile = NaviMeshFolder.GetAllFile(".NaviMesh");
 
 	bool isLoaded = false;
