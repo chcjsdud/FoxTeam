@@ -11,7 +11,6 @@
 #include "YSJ_Char.h"
 #include "YSJ_Mouse.h"
 #include "NaviMesh.h"
-#include "NaviMeshWindow.h"
 
 YSJ_PlayLevel::YSJ_PlayLevel()
 	: NaviMesh_(nullptr)
@@ -113,8 +112,6 @@ void YSJ_PlayLevel::LevelStart()
 	}
 
 	GetMainCameraActor()->FreeCameraModeSwitch();
-
-	NaviWindow_ = GameEngineGUI::GetInst()->CreateGUIWindow<NaviMeshWindow>("NaviWindow");
 }
 
 void YSJ_PlayLevel::LevelUpdate(float _DeltaTime)
@@ -219,7 +216,4 @@ void YSJ_PlayLevel::CreateActorLevel()
 	NaviMesh_->CreateNaviMesh(LumiaMap->GetFBXNaviRenderer());
 	NaviMesh_->GetTransform()->SetWorldScaling({ 3.0f, 3.0f, 3.0f });
 	Player_->SetNaviMesh(NaviMesh_);
-
-	NaviWindow_->Navi = NaviMesh_;
-	NaviWindow_->FBXRenderer = LumiaMap->GetFBXNaviRenderer();
 }
