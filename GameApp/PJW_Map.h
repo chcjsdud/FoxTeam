@@ -3,7 +3,7 @@
 #include <GameEngineBase\GameEngineRandom.h>
 #include <GameEngine/GameEngineRenderer.h>
 
-class GameEngineImageRenderer;
+class GameEngineFBXRenderer;
 class PJW_Map : public GameEngineActor
 {
 public:
@@ -21,7 +21,7 @@ protected:
 	void Start() override;
 
 private:
-	GameEngineRenderer* renderer_;
+	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* mapCollision_;
 };
 

@@ -57,7 +57,8 @@ private:
 // FBX 렌더러
 private:
 	GameEngineFBXRenderer* FBXRenderer_;
-
+	float4 destination_;
+	float4 direction_;
 
 // 충돌체
 

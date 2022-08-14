@@ -67,7 +67,7 @@ void PJW_GameController::Init_Keys()
 		GameEngineInput::GetInst().CreateKey("FreeCamera_Forward", 'W');
 		GameEngineInput::GetInst().CreateKey("FreeCamera_Back", 'S');
 		GameEngineInput::GetInst().CreateKey("Skill_Q", 'Q');
-		GameEngineInput::GetInst().CreateKey("Test_Move", VK_RBUTTON);
+
 		
 	}
 }
@@ -79,22 +79,22 @@ void PJW_GameController::Update(float _DeltaTime)
 
 void PJW_GameController::Check_Input(float _DeltaTime)
 {
-	if (true == GameEngineInput::GetInst().Down("Test_Move"))
-	{
-		curPlayer_->SetTarget(playerList_[1]);
-		curPlayer_->isAttacking_ = false;
-		curPlayer_->isMoving_ = true;
-		// 컨트롤러의 인풋을 인식해 현재 플레이어 캐릭터의 bool 변수값을 스위칭한다.
-		// 동작이 끝나 false 로 돌리는 것은 플레이어 캐릭터가 한다.
-
-
-
-	}
-
-	if (true == GameEngineInput::GetInst().Down("Skill_Q"))
-	{
-		//curPlayer_->isMoving_ = false;
-		//curPlayer_->isAttacking_ = true;
-		
-	}
+	//if (true == GameEngineInput::GetInst().Down("Test_Move"))
+	//{
+	//	curPlayer_->SetTarget(playerList_[1]);
+	//	curPlayer_->isAttacking_ = false;
+	//	curPlayer_->isMoving_ = true;
+	//	// 컨트롤러의 인풋을 인식해 현재 플레이어 캐릭터의 bool 변수값을 스위칭한다.
+	//	// 동작이 끝나 false 로 돌리는 것은 플레이어 캐릭터가 한다.
+	//
+	//
+	//
+	//}
+	//
+	//if (true == GameEngineInput::GetInst().Down("Skill_Q"))
+	//{
+	//	//curPlayer_->isMoving_ = false;
+	//	//curPlayer_->isAttacking_ = true;
+	//	
+	//}
 }

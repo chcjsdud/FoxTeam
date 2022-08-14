@@ -1,9 +1,11 @@
 #include "PreCompile.h"
 #include "PJW_Hyunwoo.h"
 #include "PJW_Enum.h"
-
+#include "PJW_Level.h"
+#include "PJW_Mouse.h"
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
+#include <GameEngine/GameEngineLevel.h>
 
 PJW_Hyunwoo::PJW_Hyunwoo() // default constructer 디폴트 생성자
 	:FBXRenderer_(nullptr)
@@ -23,11 +25,12 @@ PJW_Hyunwoo::PJW_Hyunwoo(PJW_Hyunwoo&& _other) noexcept  // default RValue Copy 
 
 void PJW_Hyunwoo::Start()
 {
+	GameEngineInput::GetInst().CreateKey("M1", VK_LBUTTON);
 	status_MoveSpeed_ = 50.0f;
 	status_ATK_ = 20.0f;
 	status_HP_ = 100.0f;
 	curHP_ = 100.0f;
-	//Init_FBX();
+	Init_FBX();
 	Init_FSM();
 	Init_Collision();
 }
@@ -35,31 +38,59 @@ void PJW_Hyunwoo::Start()
 void PJW_Hyunwoo::Init_FBX()
 {
 	// 렌더링용 버텍스, 인덱스 버퍼 생성
-	FBXRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	FBXRenderer_->SetFBXMesh("Hyunwoo_01_LOD1.FBX", "TextureDeferredLightAni");
-	FBXRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
-	FBXRenderer_->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
-	FBXRenderer_->GetTransform()->SetLocalRotationDegree({-90.0f, 0.0f, 0.0f});
+	GameEngineDirectory dir;
+	dir.MoveParent("FoxTeam");
+	dir.MoveChild("Resources");
+	dir.MoveChild("FBX");
+	//dir.MoveChild("UserMesh");
+	dir.MoveChild("PJW");
 
-	curDir_ = { 0.0f,0.0f,1.0f,1.0f };
-	for (UINT i = 0; i < FBXRenderer_->GetRenderSetCount(); i++)
+	GameEngineDirectory dir1;
+	dir1.MoveParent("FoxTeam");
+	dir1.MoveChild("Resources");
+	dir1.MoveChild("FBX");
+	dir1.MoveChild("UserAni");
+
+	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_01_LOD1.fbx"));
+	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_01_LOD1.fbx"));
+	Mesh->CreateRenderingBuffer();
+	//GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(dir.PathToPlusFileName("Hyunwoo_01_LOD1.UserMesh"));
+	//GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().LoadUser(dir1.PathToPlusFileName("Hyunwoo_01_LOD1.UserAnimation"));
+
+
+	FBXRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+
+	FBXRenderer_->SetFBXMesh(Mesh->GetName(), "TextureDeferredLightAni");
+
+	for (size_t i = 0; i < FBXRenderer_->GetRenderSetCount(); i++)
 	{
-		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
+		FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_Onlyrun.png");
 	}
 
+	FBXRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -50.0f, 0.0f });
+	FBXRenderer_->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
+	FBXRenderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
 
+	FBXRenderer_->CreateFBXAnimation("1", Animation->GetName(), 0);
+	//FBXRenderer_->CreateFBXAnimation("Idle", Animation->GetName(), 0); // 루프 애니메이션
+	FBXRenderer_->CreateFBXAnimation("2", Animation->GetName(), 1); // 루프안함
+	FBXRenderer_->CreateFBXAnimation("3", Animation->GetName(), 2); // 루프안함
+	FBXRenderer_->CreateFBXAnimation("4", Animation->GetName(), 3); // 루프안함
+	FBXRenderer_->CreateFBXAnimation("5", Animation->GetName(), 4); // 루프안함
+	FBXRenderer_->CreateFBXAnimation("6", Animation->GetName(), 5); // 루프안함
+	FBXRenderer_->CreateFBXAnimation("7", Animation->GetName(), 6); // 루프안함
+	FBXRenderer_->CreateFBXAnimation("8", Animation->GetName(), 7); // 루프안함
+	FBXRenderer_->CreateFBXAnimation("9", Animation->GetName(), 8); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Skill_R_Charge", Animation->GetName(), 2); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Skill_R_End", Animation->GetName(), 3, false); // 루프안함
 
-//	FBXRenderer_->CreateFBXAnimation("Move", "Hyunwoo_01_LOD1_Run.FBX", 0);
-//	FBXRenderer_->CreateFBXAnimation("Idle", "Hyunwoo_01_LOD1.FBX", 0); // 루프 애니메이션
-	//FBXRenderer_->CreateFBXAnimation("Skill_R_Start", "Hyunwoo_01_LOD1.FBX", 1, false); // 루프안함
-	//FBXRenderer_->CreateFBXAnimation("Skill_R_Charge", "Hyunwoo_01_LOD1.FBX", 2); // 루프안함
-	//FBXRenderer_->CreateFBXAnimation("Skill_R_End", "Hyunwoo_01_LOD1.FBX", 3, false); // 루프안함
-	//FBXRenderer_->CreateFBXAnimation("Dash", "Hyunwoo_01_LOD1.FBX", 5, false); // 루프안함
-	//FBXRenderer_->CreateFBXAnimation("Skill_Q", "Hyunwoo_01_LOD1.FBX", 8, false); // 루프안함
-	//FBXRenderer_->CreateFBXAnimation("Attack0", "Hyunwoo_01_LOD1.FBX", 10, false); // 루프안함
-	//FBXRenderer_->CreateFBXAnimation("Attack1", "Hyunwoo_01_LOD1.FBX", 11, false); // 루프안함
-	//FBXRenderer_->CreateFBXAnimation("Skill_Weapon", "Hyunwoo_01_LOD1.FBX", 12, false); // 루프안함
-	//FBXRenderer_->ChangeFBXAnimation("Idle");
+	//	FBXRenderer_->SetAnimationFrame("Dash", 0, 10);
+
+	//FBXRenderer_->CreateFBXAnimation("Skill_Q", Animation->GetName(), 8, false); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Attack0", Animation->GetName(), 10, false); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Attack1", Animation->GetName(), 11, false); // 루프안함
+	//FBXRenderer_->CreateFBXAnimation("Skill_Weapon", Animation->GetName(), 12, false); // 루프안함
+	FBXRenderer_->ChangeFBXAnimation("Dash");
 }
 
 void PJW_Hyunwoo::Init_FSM()
@@ -96,6 +127,47 @@ void PJW_Hyunwoo::Update(float _DeltaTime)
 	Check_HP();
 	Check_DebugRect(_DeltaTime);
 	Check_Collision(_DeltaTime);
+
+	//PJW_Level* level = dynamic_cast<PJW_Level*>(GetLevel());
+	//PJW_Mouse* mouse = nullptr;
+	//
+	//if (nullptr != GetLevel())
+	//{
+	//	mouse = level->GetMousePointer();
+	//}
+	//
+	//if (GameEngineInput::GetInst().Down("M1"))
+	//{
+	//
+	//	int a = 0;
+	//	if (nullptr != mouse)
+	//	{
+	//		destination_ = mouse->GetIntersectionYAxisPlane(0.0f, 1000.f);
+	//	}
+	//}
+	//
+	//if ((destination_ - GetTransform()->GetWorldPosition()).Len3D() > 10.f)
+	//{
+	//	FBXRenderer_->ChangeFBXAnimation("Dash");
+	//
+	//
+	//	direction_ = destination_ - GetTransform()->GetWorldPosition();
+	//	direction_.Normalize3D();
+	//
+	//	float4 cross = float4::Cross3D(direction_, { 0.0f, 0.0f, 1.0f });
+	//	cross.Normalize3D();
+	//
+	//	float angle = float4::DegreeDot3DToACosAngle(direction_, { 0.0f, 0.0f, 1.0f });
+	//
+	//	GetTransform()->SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
+	//
+	//	GetTransform()->SetWorldDeltaTimeMove(direction_ * 300.0f);
+	//}
+	//else
+	//{
+	//	FBXRenderer_->ChangeFBXAnimation("Idle");
+	//}
+
 	hyunwooState_.Update(_DeltaTime);
 }	
 
@@ -120,7 +192,7 @@ void PJW_Hyunwoo::Check_Collision(float _DeltaTime)
 
 void PJW_Hyunwoo::Idle_Start()
 {
-	FBXRenderer_->ChangeFBXAnimation("Idle");
+	FBXRenderer_->ChangeFBXAnimation("Dash");
 	isMoving_ = false;
 	isAttacking_ = false;
 	return;

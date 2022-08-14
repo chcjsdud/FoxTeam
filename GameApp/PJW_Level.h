@@ -1,11 +1,12 @@
 #pragma once
-
+#include "PJW_Mouse.h"
 #include <GameEngine/GameEngineLevel.h>
 #include <GameEngine/GameEngineFSM.h>
 
 // 분류 : 
 // 용도 : 
 // 설명 : 
+class PJW_Mouse;
 class PJW_GameController;
 class LightActor;
 class PJW_Hyunwoo;
@@ -42,5 +43,10 @@ private:
 	LightActor* light_A;
 	LightActor* light_B;
 
+	PJW_Mouse* mouse_;
+
+public:
+	PJW_Mouse* GetMousePointer() { return mouse_; }
+	
 };
 
