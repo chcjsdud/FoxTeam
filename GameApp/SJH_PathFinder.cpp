@@ -114,6 +114,8 @@ std::list<SJH_NaviCell*> SJH_PathFinder::CalReturn(SJH_AStarNode* _EndNode)
 		FindNode = FindNode->Parent_;
 	}
 
+	NodePool_.clear();
+
 	return ReturnList;
 }
 

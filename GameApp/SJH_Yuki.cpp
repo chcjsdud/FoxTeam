@@ -73,6 +73,49 @@ void SJH_Yuki::Start()
 	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 5.0f, 0.0f });
 	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 80.0f, 0.0f, 0.0f });
 
+#pragma region UserFiles Load
+	//// User FBX Files
+	//GameEngineDirectory MeshPath;
+	//MeshPath.MoveParent("FoxTeam");
+	//MeshPath.MoveChild("Resources");
+	//MeshPath.MoveChild("FBX");
+	//MeshPath.MoveChild("UserMesh");
+
+	//GameEngineDirectory AnimationPath;
+	//AnimationPath.MoveParent("FoxTeam");
+	//AnimationPath.MoveChild("Resources");
+	//AnimationPath.MoveChild("FBX");
+	//AnimationPath.MoveChild("UserAni");
+
+	//Mesh_ = GameEngineFBXMeshManager::GetInst().LoadUser(MeshPath.PathToPlusFileName("Yuki_01_LOD1.UserMesh"));
+	//GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_01_LOD1.UserAnimation"));
+
+	//AnimRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	//AnimRenderer_->SetFBXMesh(Mesh_->GetName(), "TextureDeferredLightAni");
+	//AnimRenderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
+
+	//for (size_t i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
+	//{
+	//	AnimRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Yuki_01_LOD1.png");
+	//}
+
+	//// 애니메이션 이름 목록생성
+	//AnimationNameList_.clear();
+	//for (int i = 0; i < static_cast<int>(Animation->AnimationCount()); i++)
+	//{
+	//	auto Data = Animation->GetAnimationData(i);
+	//
+	//	std::string AnimationName = Data.AniName;
+	//	AnimationNameList_.push_back(AnimationName);
+	//}
+
+	//AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], Animation->GetName(), 0);
+	//AnimRenderer_->CreateFBXAnimation(AnimationNameList_[14], Animation->GetName(), 14);
+	//AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
+
+#pragma endregion
+
+#pragma region FBXFiles Load
 	// FBX Files 경로 지정
 	GameEngineDirectory Directory;
 	Directory.MoveParent("FoxTeam");
@@ -89,7 +132,6 @@ void SJH_Yuki::Start()
 	// 렌더러 생성
 	AnimRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	AnimRenderer_->SetFBXMesh(MeshName, "TextureDeferredLightAni");
-	//AnimRenderer_->GetTransform()->SetLocalScaling(float4(10.f, 10.f, 10.f));
 	AnimRenderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
 
 	// Yuki_01_LOD1.png
@@ -176,7 +218,9 @@ void SJH_Yuki::Start()
 
 	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0);
 	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[14], MeshName, 14);
-	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
+	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[14]);
+
+#pragma endregion
 
 	if (false == GameEngineInput::GetInst().IsKey("SJH_TEST1"))
 	{
@@ -229,8 +273,8 @@ void SJH_Yuki::Update(float _DeltaTime)
 					MoveEndPos_ = MovePathTarget_->GetCenterToGravity();
 				}
 
-				//MoveDir_ = MoveEndPos_ - MoveStartPos_;
-				//MoveDir_.Normalize3D();
+				MoveDir_ = MoveEndPos_ - MoveStartPos_;
+				MoveDir_.Normalize3D();
 
 				// 사용끝난 경로 제거
 				MovePath_.pop_front();

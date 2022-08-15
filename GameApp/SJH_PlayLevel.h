@@ -4,6 +4,7 @@
 // 분류 : 
 // 용도 : 
 // 설명 : 
+class GameEngineFBXWindow;
 class SKySphereActor;
 class SJH_FloorMap;
 class SJH_Mouse;
@@ -39,6 +40,9 @@ private:
 public:
 
 protected:
+
+private:
+	GameEngineFBXWindow* FBXWindow;
 
 private:
 	SKySphereActor* Background_;

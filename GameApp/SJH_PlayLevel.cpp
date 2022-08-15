@@ -2,6 +2,7 @@
 #include "SJH_PlayLevel.h"
 
 #include <GameEngine/GameEngineGUI.h>
+#include <GameEngine/GameEngineFBXWindow.h>
 #include <GameEngine/GameEngineRenderWindow.h>
 #include <GameEngine/SKySphereActor.h>
 #include <GameEngine/LightActor.h>
@@ -86,7 +87,25 @@ void SJH_PlayLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void SJH_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	FBXWindow = GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineFBXWindow>("FBXWindow");
 
+	// FBXFolder : 가져 올 FBX 가 들어 있는 폴더
+	FBXWindow->FBXFolder.MoveParent("FoxTeam");
+	FBXWindow->FBXFolder.MoveChild("Resources");
+	FBXWindow->FBXFolder.MoveChild("FBX");
+	FBXWindow->FBXFolder.MoveChild("SJH");
+
+	// UserMeshSaveFolder : 메시 바이너리 파일이 세이브될 폴더
+	FBXWindow->UserMeshSaveFolder.MoveParent("FoxTeam");
+	FBXWindow->UserMeshSaveFolder.MoveChild("Resources");
+	FBXWindow->UserMeshSaveFolder.MoveChild("FBX");
+	FBXWindow->UserMeshSaveFolder.MoveChild("UserMesh");
+
+	// UserAnimationSaveFolder : 애니메이션 바이너리 파일이 세이브될 폴더
+	FBXWindow->UserAnimationSaveFolder.MoveParent("FoxTeam");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("Resources");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("FBX");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("UserAni");
 }
 
 void SJH_PlayLevel::CreateActorLevel()
