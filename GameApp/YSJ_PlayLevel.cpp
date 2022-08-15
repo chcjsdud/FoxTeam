@@ -11,11 +11,13 @@
 #include "YSJ_Char.h"
 #include "YSJ_Mouse.h"
 #include "NaviMesh.h"
+#include "ItemBoxManager.h"
 
 YSJ_PlayLevel::YSJ_PlayLevel()
 	: NaviMesh_(nullptr)
 	, Player_(nullptr)
 	, NaviWindow_(nullptr)
+	, ItemBox_(nullptr)
 {
 
 }
@@ -148,29 +150,22 @@ void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		}
 	}
 
-	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Downtown.fbx")))
-	//{
-	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
-	//	Mesh->CreateRenderingBuffer();
-	//}
+	tempDir.MoveParent("FBX");
+	tempDir.MoveChild("YSJ");
+	tempDir.MoveChild("ItemBox");
 
-	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("TestBox.fbx")))
-	//{
-	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("TestBox.fbx"));
-	//	Mesh->CreateRenderingBuffer();
-	//}
+	vecFile = tempDir.GetAllFile(".FBX");
 
-	tempDir.MoveParent("FoxTeam");
-	tempDir.MoveChild("EngineResources");
-	tempDir.MoveChild("FBX");
+	ItemBox_ = CreateActor<ItemBoxManager>();
 
-	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("AnimMan.fbx")))
-	//{
-	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("AnimMan.fbx"));
-	//	Mesh->CreateRenderingBuffer();
-	//	GameEngineFBXAnimationManager::GetInst().Load(tempDir.PathToPlusFileName("ALS_N_RUN_F.FBX"));
-	//}
-
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+		{
+			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(vecFile[i].GetFullPath());
+			ItemBox_->CreateItemBoxInfo(vecFile[i].GetFileName());
+		}
+	}
 
 	//YSJ_Char* Player = CreateActor<YSJ_Char>();
 	//Player->GetTransform()->SetWorldScaling({0.5f,0.5f, 0.5f });
@@ -185,7 +180,12 @@ void YSJ_PlayLevel::CreateActorLevel()
 	Light->GetLight()->SetAmbientPower(1.0f);
 
 	SKySphereActor* SkyActor = CreateActor<SKySphereActor>();
+
 	YSJ_LumiaMap* LumiaMap = CreateActor<YSJ_LumiaMap>();
+	LumiaMap->GetTransform()->SetWorldScaling({ 3.0f, 3.0f, 3.0f });
+
+	ItemBox_->GetTransform()->AttachTransform(LumiaMap->GetTransform());
+
 	YSJ_Mouse* Mouse = CreateActor<YSJ_Mouse>();
 	//Mouse->SetPickingRenderer(LumiaMap->GetFBXNaviRenderer());
 
@@ -230,4 +230,6 @@ void YSJ_PlayLevel::CreateActorLevel()
 	//NaviMesh_->SetColor(float4::GREEN);
 	NaviMesh_->CreateNaviMesh(LumiaMap->GetFBXNaviRenderer());
 	Player_->SetNaviMesh(NaviMesh_);
+
+	
 }

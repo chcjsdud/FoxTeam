@@ -382,7 +382,7 @@ void CameraComponent::ChangeRendererGroup(int _Group, GameEngineRendererBase* _R
 
 void CameraComponent::Start()
 {
-	DebugVector_.resize(1000);
+	DebugVector_.resize(2000);
 	DebugRenderCount_ = 0;
 
 	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("DebugRect");

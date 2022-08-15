@@ -4,6 +4,7 @@
 #include "YSJ_Player.h"
 #include "YSJ_Mouse.h"
 #include "NaviMesh.h"
+#include "ItemBoxManager.h"
 
 YSJ_LumiaMap* YSJ_LumiaMap::MainMap = nullptr;
 
@@ -31,7 +32,7 @@ void YSJ_LumiaMap::Start()
 		FBXNaviRenderer->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
 
-	FBXNaviRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
+	//FBXNaviRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 
 	/*FBXWallRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXWallRenderer->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
@@ -64,23 +65,25 @@ void YSJ_LumiaMap::Start()
 
 	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
 
-	for (size_t i = 0; i < vecFile.size(); i++)
+	/*for (size_t i = 0; i < vecFile.size(); i++)
 	{
 		FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 		FBXSchoolMap->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
 		FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	}
+	}*/
 
 	tempDir.MoveParent("UserMesh");
 	tempDir.MoveChild("ItemBox");
 
 	vecFile = tempDir.GetAllFile(".UserMesh");
 
+	ItemBoxManager ItemBox;
+
 	for (size_t i = 0; i < vecFile.size(); i++)
 	{
 		FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 		FBXSchoolMap->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
-		FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
+		//FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 	}
 }
 

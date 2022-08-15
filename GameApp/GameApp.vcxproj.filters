@@ -185,6 +185,9 @@
     <ClCompile Include="PJW_Mouse.cpp">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClCompile>
+    <ClCompile Include="ItemBoxManager.cpp">
+      <Filter>01.GameObject\99.YSJ</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -536,6 +539,9 @@
     </ClInclude>
     <ClInclude Include="PJW_Mouse.h">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBoxManager.h">
+      <Filter>01.GameObject\99.YSJ</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

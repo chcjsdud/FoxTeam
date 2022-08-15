@@ -210,6 +210,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ItemBoxManager.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="LGH_Aya.cpp" />
     <ClCompile Include="LGH_PlayLevel.cpp" />
     <ClCompile Include="LH_Mouse.cpp" />
@@ -372,6 +376,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="GHRio.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ItemBoxManager.h">
       <SubType>
       </SubType>
     </ClInclude>
