@@ -229,8 +229,6 @@ bool GameEngineFBXAnimation::AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::Fbx
 	int deformerCount = pCurrMesh->GetDeformerCount();
 	fbxsdk::FbxAMatrix geometryTransform = GetGeometryTransformation(_Node);
 
-
-
 	fbxsdk::FbxTakeInfo* takeInfo = Scene->GetTakeInfo(AnimationDatas[AnimationIndex].AniName.c_str());
 	fbxsdk::FbxTime start = takeInfo->mLocalTimeSpan.GetStart();
 	fbxsdk::FbxTime end = takeInfo->mLocalTimeSpan.GetStop();
@@ -256,7 +254,6 @@ bool GameEngineFBXAnimation::AnimationLoad(GameEngineFBXMesh* _Mesh, fbxsdk::Fbx
 	fbxsdk::FbxLongLong startTime;
 
 	fbxsdk::FbxTime currTime;
-
 
 	for (int deformerIndex = 0; deformerIndex < deformerCount; ++deformerIndex)
 	{

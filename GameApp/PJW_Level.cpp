@@ -190,5 +190,7 @@ void PJW_Level::Init_Actors()
 		light_A->GetLight()->SetSpacularLightPow(10.0f);
 		light_A->GetLight()->SetAmbientPower(10.0f);
 	}
+
+//	map_ = CreateActor<PJW_Map>();
 }
 

@@ -159,6 +159,7 @@ class FBXAnimation;
 class GameEngineFBXAnimation : public GameEngineFBX
 {
 	friend FBXAnimation;
+
 public:
 	// constrcuter destructer
 	GameEngineFBXAnimation();

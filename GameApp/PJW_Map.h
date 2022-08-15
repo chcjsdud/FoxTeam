@@ -3,9 +3,12 @@
 #include <GameEngineBase\GameEngineRandom.h>
 #include <GameEngine/GameEngineRenderer.h>
 
+class PJW_Hyunwoo;
 class GameEngineFBXRenderer;
 class PJW_Map : public GameEngineActor
 {
+	friend PJW_Hyunwoo;
+
 public:
 	PJW_Map();
 	~PJW_Map();
@@ -15,6 +18,10 @@ public:
 	PJW_Map& operator=(const PJW_Map&& _other) = delete; 
 
 public:
+	void SetMainPlayer(PJW_Hyunwoo* _player)
+	{
+		mainPlayer_ = _player;
+	}
 
 protected:
 
@@ -23,5 +30,8 @@ protected:
 private:
 	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* mapCollision_;
+	PJW_Hyunwoo* mainPlayer_;
+
+
 };
 

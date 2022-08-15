@@ -1,11 +1,11 @@
 #include "PreCompile.h"
 #include "PJW_Mouse.h"
-
+#include <GameEngine/GameEngineLevel.h>
 #include <GameEngine/GameEngineCollision.h>
+#include "PJW_Level.h"
 
 PJW_Mouse::PJW_Mouse()
-	: rayCollision_(nullptr)
-	, rayDirection_(0.0f, 0.0f, 1.0f, 1.0f)
+	: originPos_(float4::ZERO), direction_(float4::ZERO)
 {
 
 }
@@ -15,95 +15,158 @@ PJW_Mouse::~PJW_Mouse()
 
 }
 
+bool PJW_Mouse::isPicked(const float4& _mousePos, float4& _pickedPos, GameEngineFBXRenderer* _mesh)
+{
+	if (nullptr == _mesh)
+	{
+		// 메시가 null 이면... 충돌체 피킹으로
+		return isCollPicked(_mousePos, _pickedPos);
+	}
+	else
+	{
+		return isMeshPicked(_mesh, _mousePos, _pickedPos);
+	}
+
+	// 이도저도 아니면..
+	return false;
+}
+
+bool PJW_Mouse::isCollPicked(const float4& _mousePos, float4& _pickedPos, GameEngineCollision* _collision)
+{
+	if (false == Ray2Dto3D(_mousePos))
+	{
+		// 마우스 위치 변환
+		// 실패하면 false 리턴
+		return false; 
+	}
+
+	// 해당 씬의 모든 콜리젼 리스트를 가져온다.
+	std::map<int, std::list<GameEngineCollision*>> allCollisions = GetLevel()->GetAllCollision();
+
+
+	// 위에서 계산한 광선과 교차하는 충돌체를 탐색한다.
+	int groupCount = static_cast<int>(allCollisions.size());
+
+	for (int group = 0; group < groupCount; group++)
+	{
+		std::list<GameEngineCollision*>::iterator startIter = allCollisions[group].begin();
+		std::list<GameEngineCollision*>::iterator endIter = allCollisions[group].end();
+
+		for (;startIter != endIter; startIter++)
+		{
+			float distance = 0.0f;
+			// 거리 초기화
+
+			if (true == (*startIter)->BoundingToRayCollision((*startIter)->GetCollisionType(), originPos_, direction_, distance))
+			{
+				// 그 레이의 원점과 방향으로 쭉 나가서 해당 콜리젼과 만난다?
+				// 그렇다면 교차한 지점의 좌표를 반환
+				_pickedPos = originPos_ + (direction_ * distance);
+				// 원점 벡터에 + 방향*거리로 실제 위치 벡터를 더해서 찾아낸다.
+				return true;
+
+			}
+
+		}
+	}
+
+	return false;
+}
+
+
+bool PJW_Mouse::isMeshPicked(GameEngineFBXRenderer* _mesh, const float4& _mousePos, float4& _pickedPos)
+{
+	if (false == Ray2Dto3D(_mousePos))
+	{
+		return false;
+	}
+
+	if (nullptr == _mesh)
+	{
+		return false;
+	}
+
+	float distance = 0.0f;
+
+	// 기제작된 메쉬의 인터섹츠를 이용하자.
+	if (true == _mesh->CheckIntersects(originPos_, direction_, distance))
+	{
+		_pickedPos = originPos_ + (direction_ * distance);
+		return true;
+	}
+
+	return false;
+}
+
+
+
 void PJW_Mouse::Start()
 {
-	rayCollision_ = CreateTransformComponent<GameEngineCollision>();
-	rayCollision_->SetCollisionType(CollisionType::Ray);
-	rayCollision_->SetCollisionGroup(eCollisionGroup::MouseRay);
 }
 
 void PJW_Mouse::Update(float _deltaTime)
 {
-	updateMouseRay();
-	rayCollision_->SetRayData(rayOrigin_, rayDirection_);
 }
 
-float4 PJW_Mouse::GetIntersectionYAxisPlane(float _height, float _rayLength)
+bool PJW_Mouse::Ray2Dto3D(float _mouseX, float _mouseY)
 {
-	// Y축?? 평면과 선 간의 교집합을 찾는 함수
-	return DirectX::XMPlaneIntersectLine({ 0.0f, 1.0f, 0.0f, -_height }, rayOrigin_.DirectVector, (rayOrigin_ + rayDirection_ * _rayLength).DirectVector);;
+	// 2차원의 모니터 좌표를 입력받아
+	// 월드에서의 마우스 위치로 변환해줍니다.
+	// 다만 리턴값은 성공/실패로 리턴되며,
+	// 변환된 값은 내부 멤버 변수인 originPos 와 direction 을 갱신합니다.
+
+	float4 originPos = { 0.f,0.f,0.f,0.f };
+	// 뷰 포트 가져오기 (우리는 뷰 포트를 한개만 쓴다)
+	UINT viewPortNum = 1;
+	D3D11_VIEWPORT viewPort = {};
+
+	GameEngineDevice::GetInst().GetContext()->RSGetViewports(&viewPortNum, &viewPort);
+	// 컨텍스트에 현재 사용하는 뷰 포트를 가져와서 변수에 저장한다.
+
+	// 1. 뷰포트 -> 투영변환
+	float PointX = ((2.0f * _mouseX) / viewPort.Width) - 1.0f;
+	float PointY = (((2.0f * _mouseY) / viewPort.Height) - 1.0f) * -1.0f;
+	float PointZ = 1.0f;
+	// 마우스의 2D 좌표를 -1 ~ 1 사이로 넣는다
+
+	// 2. 투영 -> 뷰 변환
+	// 투영에서 뷰 변환은 
+	float4x4 tempProjectionMat = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().Projection_;
+	// 투영행렬 가져오기
+	PointX = PointX / tempProjectionMat._11;
+	PointY = PointY / tempProjectionMat._22;
+	// 이 부분은 잘 모르겠음... 왜?
+
+	// 3. 뷰 -> 월드변환
+	// 카메라의 역행렬을 곱하면, 월드로 바로 바뀐다! (뷰는 월드에서 카메라의 시점을 대입한 것이기 때문에)
+	float4x4 tempCameraMat = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().View_;
+	// InverseReturn() 사용해 카메라의 역행렬을 구한다
+	float4x4 tempCameraInverseMat = tempCameraMat.InverseReturn();
+
+	// 이게 이 역행렬을, 멤버 변수들에게 곱해 주기...
+	direction_.x = PointX;
+	direction_.y = PointY;
+	direction_.z = 1.0f;
+	direction_.w = 0.0f;
+
+	direction_ = direction_ * tempCameraInverseMat;
+	direction_.Normalize3D();
+	// 마지막으로 구해진 2D->3D 화된 벡터를 정규화해 방향 벡터로 만든다!
+	direction_.Normalize3D();
+
+	// 마지막으로 원점 pos 역시 넣어주자
+	// 왜 카메라의 역행렬의 4행이 원점의 위치였나?
+	originPos_.x = tempCameraInverseMat._41;
+	originPos_.y = tempCameraInverseMat._42;
+	originPos_.z = tempCameraInverseMat._43;
+	originPos_.w = 0.0f;
+	
+	return true;
 }
 
-void PJW_Mouse::updateMouseRay()
+
+bool PJW_Mouse::Ray2Dto3D(float4 _mousePos)
 {
-	// 뷰포트 개수를 가져옵니다. 뷰포트는 하나만 사용했고, 하나만 가져올 것이기 때문에 1 로 초기화합니다.
-	UINT numViewport = 1;
-	D3D11_VIEWPORT viewports = { 0, };
-
-	// 입력된 첫 번째 인자 수 만큼 뷰포트를 가져옵니다.
-	// 만약 2번째 인자가 NULL 이면, 첫번째 인자로 넣은 UINT에 값이 채워집니다.
-	// 채워진 값은 현재 래스터라이저에 바인딩 된 뷰포트 수 입니다.
-	//dc->RSGetViewports(&numViewport, nullptr);
-	GameEngineDevice::GetContext()->RSGetViewports(&numViewport, &viewports);
-
-	if (viewports.Width == 0.0f || viewports.Height == 0.0f)
-	{
-		// 뷰 포트가 없으면 리턴
-		return;
-	}
-
-	// 인풋 클래스에서 마우스를 위치를 가져옵니다.
-	float4 mousePosition = GameEngineInput::GetInst().GetMousePos();
-	float pointX = mousePosition.x;
-	float pointY = mousePosition.y;
-
-	// 마우스의 위치는 뷰포트를 벗어날 수 없습니다.
-	if (pointX <= 0.0f)
-	{
-		pointX = 0.0f;
-	}
-	else if (pointX >= viewports.Width)
-	{
-		pointX = viewports.Width;
-	}
-
-	if (pointY <= 0.0f)
-	{
-		pointY = 0.0f;
-	}
-	else if (pointY >= viewports.Height)
-	{
-		pointY = viewports.Height;
-	}
-
-	// 1. 뷰포트 -> 투영 단계 역계산
-	// 마우스 커서 좌표를 -1에서 +1 범위로 바꾸자...
-	pointX = ((2.0f * pointX) / viewports.Width) - 1.0f;
-	pointY = (((2.0f * pointY) / viewports.Height) - 1.0f) * -1.0f;
-
-	// 뷰포트의 종횡비를 고려하여 투영 행렬을 사용해 점을 조정합니다.
-	// 투영 행렬 가져오기.
-	float4x4 matProjection = GetLevel()->GetMainCameraActor()->GetProjectionMatrix();
-
-	// 2. 투영 -> 뷰 단계
-	pointX = pointX / matProjection._11;
-	pointY = pointY / matProjection._22;
-
-	// 뷰 행렬의 역행렬을 구합니다.
-	float4x4 inverseViewMatrix = GetLevel()->GetMainCameraActor()->GetViewMatrix().InverseReturn();
-
-
-	// 뷰 역행렬을 곱해 방향을 알아냅니다.
-	rayDirection_.x = pointX;
-	rayDirection_.y = pointY;
-	rayDirection_.z = 1.0f;
-	rayDirection_.w = 0.0f;
-
-	// 3. 뷰 -> 월드 단계
-	// 뷰의 역행렬 (카메라의 역행렬) 을 곱해서 원래의 월드 값을 알아냅니다.
-	rayDirection_ = rayDirection_ * inverseViewMatrix;
-	rayDirection_.Normalize3D();
-
-	// 뷰 역행렬의 4행은 곧 카메라의 위치입니다.
-	rayOrigin_ = inverseViewMatrix.vw;
+	return Ray2Dto3D(_mousePos.x, _mousePos.y);
 }
+

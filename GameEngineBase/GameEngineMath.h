@@ -653,7 +653,15 @@ public:
 		return *this;
 	}
 
+	bool operator==(float4x4 const& value)
+	{
+		if (DirectMatrix.r == value.DirectMatrix.r)
+		{
+			return true;
+		}
 
+		return false;
+	}
 public: // 크기변환 행렬
 	void Scaling(const float4& _Value)
 	{

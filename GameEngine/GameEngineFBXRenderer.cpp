@@ -270,7 +270,14 @@ void FBXAnimation::Init(int _Index, bool _isLoop)
 	Animation->CalFbxExBoneFrameTransMatrix(Mesh, _Index);
 	PixAniData = &Animation->AnimationDatas[_Index];
 	Start = 0;
+
+
+
 	End = PixAniData->TimeEndCount;
+	
+	
+	
+	
 	FrameTime = 0.02f;
 
 	// 0805 박종원 : 애니메이션 만들 시 루프/어웨이크를 결정짓는 bool 값입니다.
@@ -293,6 +300,9 @@ void FBXAnimation::Update(float _DeltaTime)
 		++CurFrame;
 	}
 
+	int NextFrame = CurFrame;
+	++NextFrame;
+
 	if (CurFrame >= End) // 현 프레임이 끝 프레임에 다다랐을 때
 	{
 		// 0805 박종원 : 루프 애니메이션이 아니면 더 이상의 프레임 갱신을 하지 않습니다.
@@ -304,20 +314,16 @@ void FBXAnimation::Update(float _DeltaTime)
 		CurFrame = Start;
 	}
 
-	int NextFrame = CurFrame;
-
-	++NextFrame;
-
 	if (NextFrame >= End)
 	{
 		NextFrame = 0;
 	}
 
-	for (size_t i = 0; i < ParentRenderer->RenderSets.size(); i++)
+	for (int o = 0; o < ParentRenderer->RenderSets.size(); o++)
 	{
-		RenderSet& Render = ParentRenderer->RenderSets[i];
+		RenderSet& Render = ParentRenderer->RenderSets[o];
 
-		for (int i = 0; i < Render.BoneData.size(); i++)
+		for (int i = 0; i < Render.BoneData.size(); i++)  // 메시의 모든 본을 for 문으로 돌며 애니메이션을 갱신시켜줌.
 		{
 			Bone* BoneData = ParentRenderer->FBXMesh->FindBone(Render.Index, i);
 
@@ -335,6 +341,12 @@ void FBXAnimation::Update(float _DeltaTime)
 			FbxExBoneFrameData& CurData = PixAniData->AniFrameData[Render.Index][i].BoneMatData[CurFrame];
 			// 다음프레임의 정보가 필요한데
 			FbxExBoneFrameData& NextData = PixAniData->AniFrameData[Render.Index][i].BoneMatData[NextFrame];
+
+			if (CurData.FrameMat == NextData.FrameMat)
+			{
+				int a = 0;
+				return;
+			}
 
 
 			// 로컬 스케일
@@ -370,6 +382,8 @@ void FBXAnimation::Update(float _DeltaTime)
 			// ParentRenderer->BoneData[i].Transpose();
 		}
 	}
+
+
 }
 
 bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position, 

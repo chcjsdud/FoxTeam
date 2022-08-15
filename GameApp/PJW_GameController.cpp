@@ -66,9 +66,12 @@ void PJW_GameController::Init_Keys()
 		GameEngineInput::GetInst().CreateKey("FreeCamera_Right", 'D');
 		GameEngineInput::GetInst().CreateKey("FreeCamera_Forward", 'W');
 		GameEngineInput::GetInst().CreateKey("FreeCamera_Back", 'S');
-		GameEngineInput::GetInst().CreateKey("Skill_Q", 'Q');
 
-		
+
+		GameEngineInput::GetInst().CreateKey("Q", 'Q');
+		GameEngineInput::GetInst().CreateKey("W", 'W');
+		GameEngineInput::GetInst().CreateKey("E", 'E');
+		GameEngineInput::GetInst().CreateKey("R", 'R');
 	}
 }
 
