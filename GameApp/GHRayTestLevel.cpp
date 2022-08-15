@@ -14,6 +14,8 @@
 #include <GameApp/GHRayTestSphere.h>
 
 GHRayTestLevel::GHRayTestLevel()
+	: mouse_(nullptr)
+	, map_(nullptr)
 {
 
 }
@@ -68,14 +70,14 @@ void GHRayTestLevel::loadResource()
 
 	std::string meshName = "Rio_Run.fbx";
 
-	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
+
+	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Bg_NaviMesh_Cobalt.fbx"));
 	mesh->CreateRenderingBuffer();
 
-	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Bg_NaviMesh_Cobalt.fbx"));
-	mesh->CreateRenderingBuffer();
 
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Wait.fbx"));
+	GameEngineFBXMeshManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserMesh"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Run.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserAnimation"));
 }
 
 void GHRayTestLevel::releaseResource()
@@ -88,7 +90,7 @@ void GHRayTestLevel::releaseResource()
 void GHRayTestLevel::createActor()
 {
 	CreateActor<GHRio>();
-	CreateActor<GHMap>();
+	map_ = CreateActor<GHMap>();
 	mouse_= CreateActor<GHMousePointer>();
 
 	//for (int z = 0; z < 10; z++)

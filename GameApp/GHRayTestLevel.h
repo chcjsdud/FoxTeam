@@ -3,6 +3,7 @@
 #include <GameEngine\GameEngineLevel.h>
 
 class GHMousePointer;
+class GHMap;
 class GHRayTestLevel : public GameEngineLevel
 {
 public:
@@ -37,5 +38,6 @@ private:
 
 private:
 	GHMousePointer* mouse_;
+	GHMap* map_;
 };
 

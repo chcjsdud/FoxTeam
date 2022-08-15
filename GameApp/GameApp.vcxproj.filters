@@ -188,6 +188,9 @@
     <ClCompile Include="ItemBoxManager.cpp">
       <Filter>01.GameObject\99.YSJ</Filter>
     </ClCompile>
+    <ClCompile Include="GHNavMesh.cpp">
+      <Filter>01.GameObject\99.조규현\RayTestLevel\NavMesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -351,6 +354,9 @@
     </Filter>
     <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell\00.PathFinder">
       <UniqueIdentifier>{7a2868fa-2556-4890-b00e-0e75065ccc37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.조규현\RayTestLevel\NavMesh">
+      <UniqueIdentifier>{334917f0-e7bf-42b0-9856-9d921017c925}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\99.LGH\UI">
       <UniqueIdentifier>{cc38f788-6dae-4ceb-a1a8-e3f2b5009f80}</UniqueIdentifier>
@@ -524,6 +530,9 @@
     </ClInclude>
     <ClInclude Include="SJH_PathFinder.h">
       <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\00.PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="GHNavMesh.h">
+      <Filter>01.GameObject\99.조규현\RayTestLevel\NavMesh</Filter>
     </ClInclude>
     <ClInclude Include="PJW_Mouse.h">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
