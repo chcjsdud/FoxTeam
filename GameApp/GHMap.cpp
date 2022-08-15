@@ -2,11 +2,11 @@
 #include "GHMap.h"
 
 #include <GameEngine/GameEngineFBXRenderer.h>
-
+#include <GameEngine/EngineVertex.h>
 
 
 GHMap::GHMap()
-	: renderer_(nullptr)
+	: navMeshRenderer_(nullptr)
 {
 
 }
@@ -18,84 +18,110 @@ GHMap::~GHMap()
 
 void GHMap::Start()
 {
-	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	renderer_->SetFBXMesh("Bg_NaviMesh_Cobalt.fbx", "TextureDeferredLight");
+	navMeshRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	navMeshRenderer_->SetFBXMesh("Bg_NaviMesh_Cobalt.fbx", "TextureDeferredLight");
 
-	int count = renderer_->GetRenderSetCount();
-	for (int i = 0; i < count; i++)
+	size_t count = navMeshRenderer_->GetRenderSetCount();
+	for (size_t i = 0; i < count; i++)
 	{
-		renderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
+		navMeshRenderer_->GetRenderSet(static_cast<unsigned int>(i)).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
 
-	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
+	navMeshRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
+	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -20.f });
 
-
-	GameEngineTime::GetInst().TimeCheck();
+	//navMeshRenderer_->Off();
 
 	// 모든 메쉬를 네비메쉬로
+
+	GameEngineFBXMesh* fbxMesh = navMeshRenderer_->GetMesh();
+
+	std::vector<FbxMeshSet>& allMeshSet = fbxMesh->GetAllMeshMap();
+	std::vector<FbxExMeshInfo>& allMeshInfo = fbxMesh->GetMeshInfos();
+	size_t meshSetCount = allMeshSet.size();
+
+	size_t triangleCount = 0;
+	for (FbxExMeshInfo& info : allMeshInfo)
 	{
-		GameEngineFBXMesh* fbxMesh = renderer_->GetMesh();
+		triangleCount += info.FaceNum;
+	}
 
-		std::vector<FbxMeshSet>& allMeshSet = fbxMesh->GetAllMeshMap();
-		std::vector<FbxExMeshInfo>& allMeshInfo = fbxMesh->GetMeshInfos();
-		int meshSetCount = allMeshSet.size();
+	navMeshes_.reserve(triangleCount);
 
-		size_t triangleCount = 0;
-		for (FbxExMeshInfo& info : allMeshInfo)
+	size_t navMeshCounter = 0;
+	for (size_t i = 0; i < meshSetCount; ++i)
+	{
+		FbxMeshSet* mesh = &allMeshSet[i];
+		FbxExMeshInfo* meshInfo = &allMeshInfo[i];
+
+		int numTriangle = meshInfo->FaceNum;
+		for (int j = 0; j < numTriangle; ++j)
 		{
-			triangleCount += info.FaceNum;
-		}
 
-		navMeshes_.reserve(triangleCount);
+			GHNavMesh newNavMesh;
+			newNavMesh.Vertices[0] = mesh->Vertexs[mesh->Indexs[0][0][j * 3 + 0]].POSITION;
+			newNavMesh.Vertices[1] = mesh->Vertexs[mesh->Indexs[0][0][j * 3 + 1]].POSITION;
+			newNavMesh.Vertices[2] = mesh->Vertexs[mesh->Indexs[0][0][j * 3 + 2]].POSITION;
 
-		int navMeshCounter = 0;
-		for (int i = 0; i < meshSetCount; ++i)
-		{
-			FbxMeshSet* mesh = &allMeshSet[i];
-			FbxExMeshInfo* meshInfo = &allMeshInfo[i];
+			newNavMesh.Index = static_cast<int>(navMeshCounter);
 
-			int numTriangle = meshInfo->FaceNum;
-			for (int j = 0; j < numTriangle; ++j)
-			{
+			navMeshes_.push_back(newNavMesh);
 
-				GHNavMesh newNavMesh;
-				newNavMesh.Vertices[0] = mesh->Vertexs[mesh->Indexs[0][0][j * 3 + 0]].POSITION;
-				newNavMesh.Vertices[1] = mesh->Vertexs[mesh->Indexs[0][0][j * 3 + 1]].POSITION;
-				newNavMesh.Vertices[2] = mesh->Vertexs[mesh->Indexs[0][0][j * 3 + 2]].POSITION;
-
-				newNavMesh.Index = navMeshCounter;
-
-				navMeshes_.push_back(newNavMesh);
-
-				++navMeshCounter;
-			}
+			++navMeshCounter;
 		}
 	}
+
 
 	// 네비메쉬 인접성 검사
-	{
-		int navMeshCount = navMeshes_.size();
-		for (GHNavMesh& currentMesh : navMeshes_)
-		{
-			for (size_t meshIndex = 0; meshIndex < navMeshCount; meshIndex++)
-			{
-				if (meshIndex == currentMesh.Index)
-				{
-					continue;
-				}
 
-				if (true == checkNavMeshAdjacency(currentMesh, navMeshes_[meshIndex]))
-				{
-					currentMesh.AdjacentMeshIndex.push_back(meshIndex);
-				}
+	size_t navMeshCount = navMeshes_.size();
+	for (GHNavMesh& currentMesh : navMeshes_)
+	{
+		for (size_t meshIndex = 0; meshIndex < navMeshCount; meshIndex++)
+		{
+			if (meshIndex == currentMesh.Index)
+			{
+				continue;
+			}
+
+			if (true == checkNavMeshAdjacency(currentMesh, navMeshes_[meshIndex]))
+			{
+				currentMesh.AdjacentMeshIndices.push_back(static_cast<int>(meshIndex));
 			}
 		}
 	}
 
-	GameEngineTime::GetInst().TimeCheck();
 
-	float elapsedTime = GameEngineTime::GetInst().GetDeltaTime();
-	int a = 0;
+	//GameEngineVertexBuffer* NewVertex = new GameEngineVertexBuffer();
+	//GameEngineIndexBuffer* NewIndex = new GameEngineIndexBuffer();
+
+	//std::vector<GameEngineVertex> vertices;
+	//std::vector<UINT> indices;
+	//vertices.reserve(triangleCount);
+	//indices.reserve(triangleCount * 3);
+
+	//int counter = 0;
+	//for (auto n : navMeshes_)
+	//{
+	//	for (size_t i = 0; i < 3; i++)
+	//	{
+	//		GameEngineVertex v;
+	//		v.POSITION = n.Vertices[i];
+	//		vertices.push_back(v);
+	//		indices.push_back(counter++);
+	//	}
+	//}
+
+	//NewVertex->Create(vertices, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+	//NewIndex->Create(indices, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+
+	//GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
+	//Renderer->SetRenderingPipeLine("Color");
+	//Renderer->SetMesh(NewVertex, NewIndex);
+	//Renderer->ShaderHelper.SettingConstantBufferLink("ResultColor", float4::BLUE);
+	//Renderer->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
+
+	//Renderer->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
 }
 
 void GHMap::Update(float _deltaTime)
@@ -104,16 +130,51 @@ void GHMap::Update(float _deltaTime)
 
 GHNavMesh* GHMap::GetCurrentNavMesh(const float4& _position)
 {
+	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
+	float distance = 0.f;
 	for (GHNavMesh& nav : navMeshes_)
 	{
-		float distance = 0;
 		if (DirectX::TriangleTests::Intersects(_position.DirectVector, float4::DOWN.DirectVector,
-			nav.Vertices[0].DirectVector, nav.Vertices[1].DirectVector, nav.Vertices[2].DirectVector,
+			(nav.Vertices[0] * matWorld).DirectVector, (nav.Vertices[1] * matWorld).DirectVector, (nav.Vertices[2] * matWorld).DirectVector,
 			distance))
 		{
 			return &nav;
 		}
 	}
+	return nullptr;
+}
+
+bool GHMap::IsIntersectionMesh(const GHNavMesh& _mesh, const float4& _position)
+{
+	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
+	float distance = 0;
+	return DirectX::TriangleTests::Intersects(_position.DirectVector, float4::DOWN.DirectVector,
+		(_mesh.Vertices[0] * matWorld).DirectVector, (_mesh.Vertices[1] * matWorld).DirectVector, (_mesh.Vertices[2] * matWorld).DirectVector,
+		distance);
+}
+
+GHNavMesh* GHMap::FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position)
+{
+	// 전체 탐색
+	for (GHNavMesh& n : navMeshes_)
+	{
+		if (IsIntersectionMesh(n, _position))
+		{
+			return &n;
+		}
+	}
+
+	//size_t adjacentMeshCount = _currentMesh.AdjacentMeshIndices.size();
+	//for (size_t i = 0; i < adjacentMeshCount; i++)
+	//{
+	//	int index = _currentMesh.AdjacentMeshIndices[i];
+
+	//	if (true == IsIntersectionMesh(navMeshes_[index], _position))
+	//	{
+	//		return &navMeshes_[index];
+	//	}
+	//}
+
 	return nullptr;
 }
 

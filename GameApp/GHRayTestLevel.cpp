@@ -16,6 +16,7 @@
 GHRayTestLevel::GHRayTestLevel()
 	: mouse_(nullptr)
 	, map_(nullptr)
+	, player_(nullptr)
 {
 
 }
@@ -42,6 +43,12 @@ void GHRayTestLevel::LevelUpdate(float _DeltaTime)
 	if (GameEngineInput::GetInst().Down("O"))
 	{
 		GetMainCameraActor()->FreeCameraModeSwitch();
+	}
+
+	if (GetMainCameraActor()->IsFreeCameraMode())
+	{
+		GetMainCameraActor()->GetTransform()->SetWorldPosition(player_->GetTransform()->GetWorldPosition() + float4(-200.0f, 800.f, -200.f));
+		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 70.0f, 45.0f, 0.0f });
 	}
 }
 
@@ -89,9 +96,10 @@ void GHRayTestLevel::releaseResource()
 
 void GHRayTestLevel::createActor()
 {
-	CreateActor<GHRio>();
 	map_ = CreateActor<GHMap>();
 	mouse_= CreateActor<GHMousePointer>();
+
+	player_ = CreateActor<GHRio>();
 
 	//for (int z = 0; z < 10; z++)
 	//{

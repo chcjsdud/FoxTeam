@@ -25,6 +25,7 @@ public:
 
 public:
 	GHMousePointer* GetMousePointer() { return mouse_; }
+	GHMap* GetMap() { return map_; }
 
 private:
 	void loadResource();
@@ -39,5 +40,6 @@ private:
 private:
 	GHMousePointer* mouse_;
 	GHMap* map_;
+	GameEngineActor* player_;
 };
 

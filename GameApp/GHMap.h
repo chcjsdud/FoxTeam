@@ -21,11 +21,14 @@ public:
 public:
 	GHNavMesh* GetCurrentNavMesh(const float4& _position);
 
+	bool IsIntersectionMesh(const GHNavMesh& _mesh, const float4& _position);
+	GHNavMesh* FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position);
+
 private:
 	bool checkNavMeshAdjacency(const GHNavMesh& _left, const GHNavMesh& _right);
 
 private:
-	GameEngineFBXRenderer* renderer_;
+	GameEngineFBXRenderer* navMeshRenderer_;
 
 	std::vector<GHNavMesh> navMeshes_;
 };

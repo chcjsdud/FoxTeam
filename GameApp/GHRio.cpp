@@ -2,12 +2,16 @@
 #include "GHRio.h"
 #include "GHRayTestLevel.h"
 #include "GHMousePointer.h"
+#include "GHMap.h"
+#include "GHNavMesh.h"
 
 #include <GameEngine/GameEngineFBXRenderer.h>
 
 
 GHRio::GHRio()
 	: renderer_(nullptr)
+	, currentMap_(nullptr)
+	, currentNavMesh_(nullptr)
 {
 
 }
@@ -26,7 +30,7 @@ void GHRio::Start()
 
 	for (size_t i = 0; i < renderer_->GetRenderSetCount(); i++)
 	{
-		renderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Rio_000_LOD1.png");
+		renderer_->GetRenderSet(static_cast<unsigned int>(i)).ShaderHelper->SettingTexture("DiffuseTex", "Rio_000_LOD1.png");
 	}
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
@@ -40,7 +44,19 @@ void GHRio::Start()
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
 	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
 
-	
+	currentMap_ = GetLevelConvert<GHRayTestLevel>()->GetMap();
+
+	if (nullptr == currentMap_)
+	{
+		GameEngineDebug::MsgBoxError("레벨에 맵이 배치되지 않았습니다.");
+	}
+
+	currentNavMesh_ = currentMap_->GetCurrentNavMesh(GetTransform()->GetWorldPosition());
+
+	if (nullptr == currentNavMesh_)
+	{
+		GameEngineDebug::MsgBoxError("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
+	}
 }
 
 void GHRio::Update(float _deltaTime)
@@ -60,12 +76,13 @@ void GHRio::Update(float _deltaTime)
 		}
 	}
 
-	if ((destination_ - GetTransform()->GetWorldPosition()).Len3D() > 10.f)
+	float4 worldPosition = GetTransform()->GetWorldPosition();
+	if ((destination_ - worldPosition).Len3D() > 10.f)
 	{
 		renderer_->ChangeFBXAnimation("Run");
 
 
-		direction_ = destination_ - GetTransform()->GetWorldPosition();
+		direction_ = destination_ - worldPosition;
 		direction_.Normalize3D();
 
 		float4 cross = float4::Cross3D(direction_, { 0.0f, 0.0f, 1.0f });
@@ -75,7 +92,30 @@ void GHRio::Update(float _deltaTime)
 
 		GetTransform()->SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
 
-		GetTransform()->SetWorldDeltaTimeMove(direction_ * SPEED);
+
+		float4 moveSpeed = direction_ * SPEED * _deltaTime;
+		float4 nextMovePosition = worldPosition + moveSpeed;
+
+		if (true == currentMap_->IsIntersectionMesh(*currentNavMesh_, nextMovePosition))
+		{
+			GetTransform()->SetWorldPosition(nextMovePosition);
+		}
+		else
+		{
+			GHNavMesh* adjacentMesh = currentMap_->FindAdjacentMeshIntersect(*currentNavMesh_, nextMovePosition);
+
+			if (nullptr == adjacentMesh)
+			{
+				destination_ = worldPosition;
+			}
+			else
+			{
+				currentNavMesh_ = adjacentMesh;
+				GetTransform()->SetWorldPosition(nextMovePosition);
+			}
+		}
+
+		//GetTransform()->SetWorldPosition(nextMovePosition);
 	}
 	else
 	{

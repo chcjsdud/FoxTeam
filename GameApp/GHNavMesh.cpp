@@ -2,6 +2,7 @@
 #include "GHNavMesh.h"
 
 GHNavMesh::GHNavMesh()
+	: Index(-1)
 {
 
 }

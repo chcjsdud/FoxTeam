@@ -7,8 +7,8 @@ public:
 	~GHNavMesh();
 
 public:
-	UINT Index;
-	std::vector<UINT> AdjacentMeshIndex;
+	int Index;
+	std::vector<int> AdjacentMeshIndices;
 	float4 Vertices[3];
 };
 

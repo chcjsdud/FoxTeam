@@ -4,6 +4,8 @@
 #include <GameEngine/GameEngineFSM.h>
 
 class GameEngineFBXRenderer;
+class GHMap;
+class GHNavMesh;
 class GHRio : public GameEngineActor
 {
 public:
@@ -36,4 +38,7 @@ private:
 
 	float4 destination_;
 	float4 direction_;
+
+	GHMap* currentMap_;
+	GHNavMesh* currentNavMesh_;
 };
