@@ -31,7 +31,7 @@ public:
 	{
 		return ClickPoint_;
 	}
-
+	GameEngineCollision* GetPickCollision(const float4& _MousePos, int _Order);
 protected:
 	YSJ_Mouse(const YSJ_Mouse& _other) = delete;
 	YSJ_Mouse(YSJ_Mouse&& _other) noexcept = delete;

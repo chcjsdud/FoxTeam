@@ -1,8 +1,10 @@
 #include "PreCompile.h"
 #include "ItemBoxManager.h"
 #include <GameEngine/GameEngineCollision.h>
+#include "YSJ_Mouse.h"
 
 ItemBoxManager::ItemBoxManager()
+	: SelectBox(nullptr)
 {
 
 }
@@ -29,6 +31,8 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 		AreaName.erase(AreaName.find(".FBX"));
 	}
 
+	std::vector<ItemBox> vecItemBox;
+
 	for (size_t i = 0; i < AllMesh.size(); i++)
 	{
 		//if (std::string::npos == MeshInfos[i].Name.find("ItemBox"))
@@ -36,7 +40,7 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 		//	continue;
 		//}
 
-		ItemBox& Item = ItemBoxs.emplace_back();
+		ItemBox& Item = vecItemBox.emplace_back();
 
 		float4 AllAddVtxPos = float4::ZERO;
 
@@ -52,53 +56,99 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 		Item.Info.Pos = AllAddVtxPos;
 		Item.Info.Scale = { 2.0f, 2.0f, 2.0f };
 
-		Item.Col = CreateTransformComponent<GameEngineCollision>();
+		Item.Col = CreateTransformComponent<GameEngineCollision>(1);
 		Item.Col->GetTransform()->SetLocalPosition(Item.Info.Pos);
 		Item.Col->GetTransform()->SetLocalScaling(Item.Info.Scale);
+	}	
 
-		Item.Area = AreaName;
-	}
+	ItemBoxs.insert(std::pair(AreaName, vecItemBox));
 
 	UserSave(AreaName);
 }
 
 void ItemBoxManager::BoxSelectUpdate()
 {
+	GameEngineCollision* Col = YSJ_Mouse::MainMouse->GetPickCollision(GameEngineInput::GetInst().GetMousePos(), 1);
+
+	if (nullptr != Col)
+	{
+		GetLevel()->PushDebugRender(Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+		int a = 0;
+	}
 }
 
 void ItemBoxManager::Start()
 {
+/*
+#pragma region UserSave용
+	GameEngineDirectory tempDir;
+
+	tempDir.MoveParent("FoxTeam");
+	tempDir.MoveChild("Resources");
+	tempDir.MoveChild("FBX");
+	tempDir.MoveChild("YSJ");
+	tempDir.MoveChild("ItemBox");
+
+	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".FBX");
+
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(vecFile[i].GetFullPath());
+		CreateItemBoxInfo(vecFile[i].FileName());
+	}
+
+	int a = 0;
+#pragma endregion
+*/
 }
 
 void ItemBoxManager::Update(float _DeltaTime)
 {
-	for (size_t i = 0; i < ItemBoxs.size(); i++)
+	for (auto& ItemBox : ItemBoxs)
 	{
-		GetLevel()->PushDebugRender(ItemBoxs[i].Col->GetTransform(), CollisionType::AABBBox3D);
+		for (size_t i = 0; i < ItemBox.second.size(); i++)
+		{
+			GetLevel()->PushDebugRender(ItemBox.second[i].Col->GetTransform(), CollisionType::AABBBox3D);
+		}
 	}
 
-	BoxSelectUpdate();
+	//BoxSelectUpdate();
 }
 
 void ItemBoxManager::UserSave(const std::string& _Path)
 {
 	GameEngineFile NewFile = GameEngineFile(_Path + ".ItemBoxInfo", "wb");
 
-	NewFile.Write(static_cast<int>(ItemBoxs.size()));
+	std::string AreaName = _Path;
+	AreaName = GameEngineString::toupper(AreaName);
 
-	for (auto& Data : ItemBoxs)
+	std::map<std::string, std::vector<ItemBox>>::iterator iter = ItemBoxs.find(AreaName);
+
+	if (ItemBoxs.end() == iter)
 	{
-		NewFile.Write(Data.Info.Name);
-		NewFile.Write(Data.Info.Index);
-		NewFile.Write(Data.Info.Pos);
-		NewFile.Write(Data.Info.Scale);
-		NewFile.Write(Data.Area);
+		GameEngineDebug::MsgBoxError("if (ItemBoxs.end() == ItemBoxs.find(AreaName))");
+		return;
+	}
+
+	NewFile.Write(AreaName);
+	NewFile.Write(static_cast<int>((*iter).second.size()));
+
+	for (size_t i = 0; i < (*iter).second.size(); i++)
+	{
+		NewFile.Write((*iter).second[i].Info.Name);
+		NewFile.Write((*iter).second[i].Info.Index);
+		NewFile.Write((*iter).second[i].Info.Pos);
+		NewFile.Write((*iter).second[i].Info.Scale);
 	}
 }
 
 void ItemBoxManager::UserLoad(const std::string& _Path)
 {
 	GameEngineFile NewFile = GameEngineFile(_Path, "rb");
+
+	std::string AreaName;
+
+	NewFile.Read(AreaName);
 
 	int Size = 0;
 
@@ -109,17 +159,28 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 		GameEngineDebug::MsgBoxError("존재하지 않는 ItemBoxInfo 파일입니다.");
 	}
 
-	ItemBoxs.resize(Size);
+	std::vector<ItemBox> vecItemBox;
 
-	for (auto& Data : ItemBoxs)
+	ItemBoxs.insert(std::pair(AreaName, vecItemBox));
+	
+	std::map<std::string, std::vector<ItemBox>>::iterator iter = ItemBoxs.find(AreaName);
+
+	if (ItemBoxs.end() == iter)
+	{
+		GameEngineDebug::MsgBoxError("if (ItemBoxs.end() == ItemBoxs.find(AreaName))");
+		return;
+	}
+
+	(*iter).second.resize(Size);
+
+	for (auto& Data : (*iter).second)
 	{
 		NewFile.Read(Data.Info.Name);
 		NewFile.Read(Data.Info.Index);
 		NewFile.Read(Data.Info.Pos);
 		NewFile.Read(Data.Info.Scale);
-		NewFile.Read(Data.Area);
 
-		Data.Col = CreateTransformComponent<GameEngineCollision>();
+		Data.Col = CreateTransformComponent<GameEngineCollision>(1);
 		Data.Col->GetTransform()->SetLocalPosition(Data.Info.Pos);
 		Data.Col->GetTransform()->SetLocalScaling(Data.Info.Scale);
 	}

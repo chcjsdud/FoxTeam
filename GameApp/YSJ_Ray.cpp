@@ -58,6 +58,35 @@ bool YSJ_Ray::IsColliderPicked(const float4& _MousePos, float4& _PickedPos)
     return false;
 }
 
+GameEngineCollision* YSJ_Ray::GetPickCollision(const float4& _MousePos, int _Order)
+{
+    // 광선을 월드영역으로 이동
+    // 결과값 : 광선시작위치, 광선의방향
+    if (false == RayAtViewSpace(_MousePos))
+    {
+        return nullptr;
+    }
+
+    // 현재 레벨의 모든 충돌체 목록 Get
+    std::map<int, std::list<GameEngineCollision*>> AllList = GetLevel()->GetAllCollision();
+   
+    // 해당 광선과 교차하는 충돌체 탐색
+    std::list<GameEngineCollision*>::iterator StartIter = AllList[_Order].begin();
+    std::list<GameEngineCollision*>::iterator EndIter = AllList[_Order].end();
+
+    for (; StartIter != EndIter; ++StartIter)
+    {
+        // 광선의 시작지점에서부터 선택된 충돌체와 교차하는 지점까지의 거리
+        float Dist = 0.0f;
+        if (true == (*StartIter)->BoundingToRayCollision((*StartIter)->GetCollisionType(), OriginPos_, Direction_, Dist))
+        {
+            return (*StartIter);
+        }
+    }
+
+    return nullptr;
+}
+
 bool YSJ_Ray::IsMeshPicked(GameEngineFBXRenderer* _Mesh, const float4& _MousePos, float4& _PickedPos)
 {
     // 광선을 월드영역으로 이동
@@ -92,11 +121,8 @@ bool YSJ_Ray::RayAtViewSpace(float _MousePosX, float _MousePosY)
     OriginPos_ = float4(0.f, 0.f, 0.f, 0.f);
 
     // 1. 광선을 뷰포트영역 -> 투영영역
-    UINT ViewPortNo = 1;
-    D3D11_VIEWPORT ViewPort_ = {};
-    GameEngineDevice::GetInst().GetContext()->RSGetViewports(&ViewPortNo, &ViewPort_);
-    float PointX = ((2.0f * _MousePosX) / ViewPort_.Width) - 1.0f;
-    float PointY = (((2.0f * _MousePosY) / ViewPort_.Height) - 1.0f) * -1.0f;
+    float PointX = ((2.0f * _MousePosX) / GameEngineWindow::GetInst().GetSize().x) - 1.0f;
+    float PointY = (((2.0f * _MousePosY) / GameEngineWindow::GetInst().GetSize().y) - 1.0f) * -1.0f;
     float PointZ = 1.0f;
 
     // 2. 광선을 투영영역 -> 뷰영역

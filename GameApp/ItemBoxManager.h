@@ -16,12 +16,12 @@ public:
 };
 
 class GameEngineCollision;
+class YSJ_Ray;
 class ItemBox
 {
 public:
 	ItemBoxInfo Info;
 	GameEngineCollision* Col;
-	std::string Area;
 
 	ItemBox()
 		: Col(nullptr)
@@ -53,6 +53,7 @@ private:
 	void BoxSelectUpdate();
 
 private:
-	std::vector<ItemBox> ItemBoxs;
+	std::map<std::string, std::vector<ItemBox>> ItemBoxs;
+	ItemBox* SelectBox;
 };
 

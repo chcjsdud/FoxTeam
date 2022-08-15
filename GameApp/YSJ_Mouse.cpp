@@ -40,6 +40,11 @@ YSJ_Mouse::~YSJ_Mouse()
 {
 }
 
+GameEngineCollision* YSJ_Mouse::GetPickCollision(const float4& _MousePos, int _Order)
+{
+	return Ray_->GetPickCollision(_MousePos, _Order);
+}
+
 void YSJ_Mouse::MeshPicking()
 {
 	// 단, 화면범위를 벗어나면 리턴

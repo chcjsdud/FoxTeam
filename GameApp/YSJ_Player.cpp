@@ -36,7 +36,6 @@ void YSJ_Player::Start()
 			ParentRenderer = Renderer;
 		}
 	}
-	GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 }
 
 void YSJ_Player::Update(float _DeltaTime)

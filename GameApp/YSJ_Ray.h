@@ -12,6 +12,7 @@ class YSJ_Ray : public GameEngineComponent
 public: // ±¤¼±Ã¼Å©
 	bool IsPicked(const float4& _MousePos, float4& _PickedPos, GameEngineFBXRenderer* _Mesh = nullptr);
 	bool IsColliderPicked(const float4& _MousePos, float4& _PickedPos);
+	GameEngineCollision* GetPickCollision(const float4& _MousePos, int _Order);
 	bool IsMeshPicked(GameEngineFBXRenderer* _Mesh, const float4& _MousePos, float4& _PickedPos);
 
 protected:

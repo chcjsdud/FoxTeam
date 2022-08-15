@@ -12,6 +12,7 @@
 #include "YSJ_Mouse.h"
 #include "NaviMesh.h"
 #include "ItemBoxManager.h"
+#include <GameEngine/GameEngineCollision.h>
 
 YSJ_PlayLevel::YSJ_PlayLevel()
 	: NaviMesh_(nullptr)
@@ -45,7 +46,7 @@ void YSJ_PlayLevel::LevelStart()
 		GameEngineInput::GetInst().CreateKey("FreeCam", 'o');
 	}
 
-	GetMainCameraActor()->FreeCameraModeSwitch();
+	//GetMainCameraActor()->FreeCameraModeSwitch();
 }
 
 void YSJ_PlayLevel::LevelUpdate(float _DeltaTime)
@@ -155,13 +156,14 @@ void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 	vecFile = tempDir.GetAllFile(".ItemBoxInfo");
 
+	std::map<int, std::list<GameEngineCollision*>>& Collist = GetAllCollision();
+
 	ItemBox_ = CreateActor<ItemBoxManager>();
 
 	for (size_t i = 0; i < vecFile.size(); i++)
 	{
 		ItemBox_->UserLoad(vecFile[i].GetFullPath());
 	}
-
 
 	//YSJ_Char* Player = CreateActor<YSJ_Char>();
 	//Player->GetTransform()->SetWorldScaling({0.5f,0.5f, 0.5f });
@@ -233,6 +235,4 @@ void YSJ_PlayLevel::CreateActorLevel()
 	//NaviMesh_->SetColor(float4::GREEN);
 	NaviMesh_->CreateNaviMesh(LumiaMap->GetFBXNaviRenderer());
 	Player_->SetNaviMesh(NaviMesh_);
-
-	
 }
