@@ -32,9 +32,6 @@
     <ClCompile Include="LH_TestMonsterState.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster</Filter>
     </ClCompile>
-    <ClCompile Include="UI_Skill.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClCompile>
     <ClCompile Include="LH_LockOnUI.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
@@ -97,18 +94,6 @@
     </ClCompile>
     <ClCompile Include="SJH_Ray.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\01.Ray</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_Inventory.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_Status.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_CharPicture.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_Equip.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClCompile>
     <ClCompile Include="LH_Unit.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
@@ -184,6 +169,21 @@
     </ClCompile>
     <ClCompile Include="PJW_Mouse.cpp">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_CharPicture.cpp">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Equip.cpp">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Inventory.cpp">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Skill.cpp">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Status.cpp">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -349,6 +349,9 @@
     <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell\00.PathFinder">
       <UniqueIdentifier>{7a2868fa-2556-4890-b00e-0e75065ccc37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\99.LGH\UI">
+      <UniqueIdentifier>{cc38f788-6dae-4ceb-a1a8-e3f2b5009f80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -383,9 +386,6 @@
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>01.GameObject\99.LH\PlayLevel\ENUMs</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Skill.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
     <ClInclude Include="LH_LockOnUI.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
@@ -452,18 +452,6 @@
     </ClInclude>
     <ClInclude Include="SJH_Ray.h">
       <Filter>01.GameObject\99.SJH\01.Actor\01.Ray</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Inventory.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Status.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_CharPicture.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Equip.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
     </ClInclude>
     <ClInclude Include="LH_Unit.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
@@ -536,6 +524,21 @@
     </ClInclude>
     <ClInclude Include="PJW_Mouse.h">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_CharPicture.h">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Equip.h">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Inventory.h">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Skill.h">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Status.h">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
