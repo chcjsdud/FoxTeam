@@ -68,7 +68,7 @@ void GHRio::Update(float _deltaTime)
 		mouse = level->GetMousePointer();
 	}
 
-	if (GameEngineInput::GetInst().Down("LButton"))
+	if (GameEngineInput::GetInst().Press("RButton"))
 	{
 		if (nullptr != mouse)
 		{

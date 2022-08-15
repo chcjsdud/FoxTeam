@@ -45,7 +45,7 @@ void GHRayTestLevel::LevelUpdate(float _DeltaTime)
 		GetMainCameraActor()->FreeCameraModeSwitch();
 	}
 
-	if (GetMainCameraActor()->IsFreeCameraMode())
+	if (!GetMainCameraActor()->IsFreeCameraMode())
 	{
 		GetMainCameraActor()->GetTransform()->SetWorldPosition(player_->GetTransform()->GetWorldPosition() + float4(-200.0f, 800.f, -200.f));
 		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 70.0f, 45.0f, 0.0f });
