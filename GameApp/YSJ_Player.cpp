@@ -90,9 +90,6 @@ void YSJ_Player::Update(float _DeltaTime)
 
 void YSJ_Player::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
-	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
-	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, -50.0f });
-	GetLevel()->GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeX(45.0f);
 }
 
 void YSJ_Player::LevelChangeEndEvent(GameEngineLevel* _NextLevel)

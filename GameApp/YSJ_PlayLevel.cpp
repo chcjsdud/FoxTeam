@@ -40,8 +40,6 @@ void YSJ_PlayLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 	GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 
-	
-
 	if (false == GameEngineInput::GetInst().IsKey("FreeCam"))
 	{
 		GameEngineInput::GetInst().CreateKey("FreeCam", 'o');
@@ -66,9 +64,12 @@ void YSJ_PlayLevel::LevelUpdate(float _DeltaTime)
 		GetMainCameraActor()->FreeCameraModeSwitch();
 	}
 
-	if (nullptr == Player_->GetCurrentNavi() && true == isLoaded)
+	if (nullptr != Player_)
 	{
-		Player_->SetCurrentNavi(NaviMesh_->CurrentCheck(Player_->GetTransform(), float4::DOWN));
+		if (nullptr == Player_->GetCurrentNavi() && true == isLoaded)
+		{
+			Player_->SetCurrentNavi(NaviMesh_->CurrentCheck(Player_->GetTransform(), float4::DOWN));
+		}
 	}
 }
 
@@ -100,9 +101,6 @@ void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	{
 		return;
 	}
-
-	Player_ = CreateActor<YSJ_Player>();
-	Player_->GetTransform()->SetWorldMove({ 10.0f, 0.0f, 0.0f });
 
 	GameEngineDirectory tempDir;
 
@@ -151,21 +149,19 @@ void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	}
 
 	tempDir.MoveParent("FBX");
-	tempDir.MoveChild("YSJ");
+	tempDir.MoveChild("UserMesh");
 	tempDir.MoveChild("ItemBox");
+	tempDir.MoveChild("ItemBoxInfo");
 
-	vecFile = tempDir.GetAllFile(".FBX");
+	vecFile = tempDir.GetAllFile(".ItemBoxInfo");
 
 	ItemBox_ = CreateActor<ItemBoxManager>();
 
 	for (size_t i = 0; i < vecFile.size(); i++)
 	{
-		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
-		{
-			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(vecFile[i].GetFullPath());
-			ItemBox_->CreateItemBoxInfo(vecFile[i].GetFileName());
-		}
+		ItemBox_->UserLoad(vecFile[i].GetFullPath());
 	}
+
 
 	//YSJ_Char* Player = CreateActor<YSJ_Char>();
 	//Player->GetTransform()->SetWorldScaling({0.5f,0.5f, 0.5f });
@@ -175,6 +171,13 @@ void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 void YSJ_PlayLevel::CreateActorLevel()
 {
+	Player_ = CreateActor<YSJ_Player>();
+	Player_->GetTransform()->SetWorldMove({ 10.0f, 0.0f, 0.0f });
+
+	GetMainCameraActor()->GetTransform()->AttachTransform(Player_->GetTransform());
+	GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, -50.0f });
+	GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeX(45.0f);
+
 	LightActor* Light = CreateActor<LightActor>();
 	Light->GetLight()->SetSpacularLightPow(1.0f);
 	Light->GetLight()->SetAmbientPower(1.0f);

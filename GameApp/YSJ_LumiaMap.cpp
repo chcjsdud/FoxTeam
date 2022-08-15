@@ -32,8 +32,6 @@ void YSJ_LumiaMap::Start()
 		FBXNaviRenderer->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
 
-	//FBXNaviRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-
 	/*FBXWallRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXWallRenderer->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
 
@@ -43,17 +41,6 @@ void YSJ_LumiaMap::Start()
 	}
 
 	FBXWallRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });*/
-
-	//// SCHOOL ONLY
-	//FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	//FBXSchoolMap->SetFBXMesh("School.UserMesh", "TextureDeferredLight");
-	//FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-
-	//{
-	//	GameEngineFBXRenderer* FBX = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	//	FBX->SetFBXMesh("Downtown.fbx", "TextureDeferredLight");
-	//	FBX->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	//}
 
 	GameEngineDirectory tempDir;
 
@@ -69,7 +56,6 @@ void YSJ_LumiaMap::Start()
 	{
 		FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 		FBXSchoolMap->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
-		FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 	}*/
 
 	tempDir.MoveParent("UserMesh");
@@ -83,7 +69,6 @@ void YSJ_LumiaMap::Start()
 	{
 		FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 		FBXSchoolMap->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
-		//FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 	}
 }
 
