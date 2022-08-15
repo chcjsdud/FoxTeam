@@ -28,11 +28,10 @@ void YSJ_LumiaMap::Start()
 	for (UINT i = 0; i < FBXNaviRenderer->GetRenderSetCount(); i++)
 	{
 		FBXNaviRenderer->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
-		FBXNaviRenderer->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
+		FBXNaviRenderer->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
 
 	FBXNaviRenderer->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
-	FBXNaviRenderer->Off();
 
 	/*FBXWallRenderer = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	FBXWallRenderer->SetFBXMesh("NaviCol.fbx", "TextureDeferredLight");
@@ -46,7 +45,7 @@ void YSJ_LumiaMap::Start()
 
 	//// SCHOOL ONLY
 	//FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	//FBXSchoolMap->SetFBXMesh("School.fbx", "TextureDeferredLight");
+	//FBXSchoolMap->SetFBXMesh("School.UserMesh", "TextureDeferredLight");
 	//FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 
 	//{
@@ -55,6 +54,34 @@ void YSJ_LumiaMap::Start()
 	//	FBX->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
 	//}
 
+	GameEngineDirectory tempDir;
+
+	tempDir.MoveParent("FoxTeam");
+	tempDir.MoveChild("Resources");
+	tempDir.MoveChild("FBX");
+	tempDir.MoveChild("UserMesh");
+	tempDir.MoveChild("Map");
+
+	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+		FBXSchoolMap->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
+		FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
+	}
+
+	tempDir.MoveParent("UserMesh");
+	tempDir.MoveChild("ItemBox");
+
+	vecFile = tempDir.GetAllFile(".UserMesh");
+
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+		FBXSchoolMap->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
+		FBXSchoolMap->GetTransform()->SetLocalScaling({ 3.0f, 3.0f, 3.0f });
+	}
 }
 
 void YSJ_LumiaMap::Update(float _DeltaTime)

@@ -28,8 +28,6 @@ YSJ_PlayLevel::~YSJ_PlayLevel()
 void YSJ_PlayLevel::LevelStart()
 {
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
-	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 300.0f, -300.0f));
-	GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeX(30.0f);
 
 	GameEngineInput::GetInst().CreateKey("MoveLeft", 'A');
 	GameEngineInput::GetInst().CreateKey("MoveRight", 'D');
@@ -40,71 +38,7 @@ void YSJ_PlayLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 	GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 
-	Player_ = CreateActor<YSJ_Player>();
-	Player_->GetTransform()->SetWorldMove({ 10.0f, 0.0f, 0.0f });
-
-	GameEngineDirectory tempDir;
-
-	tempDir.MoveParent("FoxTeam");
-	tempDir.MoveChild("Resources");
-	tempDir.MoveChild("FBX");
-	tempDir.MoveChild("YSJ");
-
-	//std::vector<GameEngineFile> vecFile = tempDir.GetAllFile("FBX");
-
-	//for (size_t i = 0; i < vecFile.size(); i++)
-	//{
-	//	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
-	//	{
-	//		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(vecFile[i].GetFullPath());
-	//		Mesh->CreateRenderingBuffer();
-	//	}
-	//}
-
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx")))
-	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx"));
-		Mesh->CreateRenderingBuffer();
-	}
-
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("NaviCol.fbx")))
-	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("NaviCol.fbx"));
-		Mesh->CreateRenderingBuffer();
-	}
-
-	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("School.fbx")))
-	//{
-	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("School.fbx"));
-	//	Mesh->CreateRenderingBuffer();
-	//}
-	//
-	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Downtown.fbx")))
-	//{
-	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
-	//	Mesh->CreateRenderingBuffer();
-	//}
-
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("TestBox.fbx")))
-	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("TestBox.fbx"));
-		Mesh->CreateRenderingBuffer();
-	}
-
-	tempDir.MoveParent("FoxTeam");
-	tempDir.MoveChild("EngineResources");
-	tempDir.MoveChild("FBX");
-
-	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("AnimMan.fbx")))
-	//{
-	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("AnimMan.fbx"));
-	//	Mesh->CreateRenderingBuffer();
-	//	GameEngineFBXAnimationManager::GetInst().Load(tempDir.PathToPlusFileName("ALS_N_RUN_F.FBX"));
-	//}
-
-
-	//YSJ_Char* Player = CreateActor<YSJ_Char>();
-	//Player->GetTransform()->SetWorldScaling({0.5f,0.5f, 0.5f });
+	
 
 	if (false == GameEngineInput::GetInst().IsKey("FreeCam"))
 	{
@@ -138,6 +72,11 @@ void YSJ_PlayLevel::LevelUpdate(float _DeltaTime)
 
 void YSJ_PlayLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
+	if (nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow"))
+	{
+		GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+		Window->ClaerRenderTarget();
+	}
 }
 
 void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
@@ -152,28 +91,103 @@ void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size * 3);
 		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredTarget(), Size * 3);
 	}
+
+	static bool Check = false;
+
+	if (Check == true)
+	{
+		return;
+	}
+
+	Player_ = CreateActor<YSJ_Player>();
+	Player_->GetTransform()->SetWorldMove({ 10.0f, 0.0f, 0.0f });
+
+	GameEngineDirectory tempDir;
+
+	tempDir.MoveParent("FoxTeam");
+	tempDir.MoveChild("Resources");
+	tempDir.MoveChild("FBX");
+	tempDir.MoveChild("YSJ");
+
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx")))
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx"));
+		Mesh->CreateRenderingBuffer();
+	}
+
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("NaviCol.fbx")))
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("NaviCol.fbx"));
+		Mesh->CreateRenderingBuffer();
+	}
+
+	tempDir.MoveParent("FBX");
+	tempDir.MoveChild("UserMesh");
+	tempDir.MoveChild("Map");
+
+	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+		{
+			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
+		}
+	}
+
+	tempDir.MoveParent("UserMesh");
+	tempDir.MoveChild("ItemBox");
+
+	vecFile = tempDir.GetAllFile(".UserMesh");
+
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+		{
+			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
+		}
+	}
+
+	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Downtown.fbx")))
+	//{
+	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
+	//	Mesh->CreateRenderingBuffer();
+	//}
+
+	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("TestBox.fbx")))
+	//{
+	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("TestBox.fbx"));
+	//	Mesh->CreateRenderingBuffer();
+	//}
+
+	tempDir.MoveParent("FoxTeam");
+	tempDir.MoveChild("EngineResources");
+	tempDir.MoveChild("FBX");
+
+	//if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("AnimMan.fbx")))
+	//{
+	//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("AnimMan.fbx"));
+	//	Mesh->CreateRenderingBuffer();
+	//	GameEngineFBXAnimationManager::GetInst().Load(tempDir.PathToPlusFileName("ALS_N_RUN_F.FBX"));
+	//}
+
+
+	//YSJ_Char* Player = CreateActor<YSJ_Char>();
+	//Player->GetTransform()->SetWorldScaling({0.5f,0.5f, 0.5f });
+
+	Check = true;
 }
 
 void YSJ_PlayLevel::CreateActorLevel()
 {
-	LightActor* Light1 = CreateActor<LightActor>();
-	Light1->GetLight()->SetDiffusePower(0.3f);
-	Light1->GetLight()->SetSpacularLightPow(50.0f);
-
-	LightActor* Light2 = CreateActor<LightActor>();
-	Light2->GetLight()->SetDiffusePower(0.3f);
-	Light2->GetLight()->SetSpacularLightPow(50.0f);
-	Light2->GetTransform()->SetLocalRotationDegree(float4(0.0f, 90.0f, 0.0f));
-
-	LightActor* Light3 = CreateActor<LightActor>();
-	Light3->GetLight()->SetDiffusePower(0.3f);
-	Light3->GetLight()->SetSpacularLightPow(50.0f);
-	Light3->GetTransform()->SetLocalRotationDegree(float4(45.0f, 0.0f, 0.0f));
+	LightActor* Light = CreateActor<LightActor>();
+	Light->GetLight()->SetSpacularLightPow(1.0f);
+	Light->GetLight()->SetAmbientPower(1.0f);
 
 	SKySphereActor* SkyActor = CreateActor<SKySphereActor>();
 	YSJ_LumiaMap* LumiaMap = CreateActor<YSJ_LumiaMap>();
 	YSJ_Mouse* Mouse = CreateActor<YSJ_Mouse>();
-	Mouse->SetPickingRenderer(LumiaMap->GetFBXNaviRenderer());
+	//Mouse->SetPickingRenderer(LumiaMap->GetFBXNaviRenderer());
 
 	NaviMesh_ = CreateActor<NaviMesh>();
 
@@ -213,7 +227,7 @@ void YSJ_PlayLevel::CreateActorLevel()
 	}
 
 	//NaviMesh_->CreateNaviMesh(Vertex, Index);
+	//NaviMesh_->SetColor(float4::GREEN);
 	NaviMesh_->CreateNaviMesh(LumiaMap->GetFBXNaviRenderer());
-	NaviMesh_->GetTransform()->SetWorldScaling({ 3.0f, 3.0f, 3.0f });
 	Player_->SetNaviMesh(NaviMesh_);
 }

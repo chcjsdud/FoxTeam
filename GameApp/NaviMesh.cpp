@@ -14,6 +14,7 @@ NaviMesh::NaviMesh()
 	NaviMeshFolder.MoveChild("Resources");
 	NaviMeshFolder.MoveChild("FBX");
 	NaviMeshFolder.MoveChild("UserMesh");
+	NaviMeshFolder.MoveChild("Map");
 }
 
 NaviMesh::~NaviMesh()
@@ -60,10 +61,11 @@ void NaviMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex,
 	NewVertex->Create(_Vertex, D3D11_USAGE::D3D11_USAGE_DEFAULT);
 	NewIndex->Create(_Index, D3D11_USAGE::D3D11_USAGE_DEFAULT);
 
-	NaviRenderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
-	NaviRenderer->SetRenderingPipeLine("Color");
-	NaviRenderer->SetMesh(NewVertex, NewIndex);
-	NaviRenderer->ShaderHelper.SettingConstantBufferLink("ResultColor", Color);
+	GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
+	Renderer->SetRenderingPipeLine("Color");
+	Renderer->SetMesh(NewVertex, NewIndex);
+	Renderer->ShaderHelper.SettingConstantBufferLink("ResultColor", Color);
+	NaviRenderer = Renderer;
 }
 
 void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, 
@@ -93,22 +95,7 @@ void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer,
 		UserSave(NaviMeshFolder.PathToPlusFileName(FileName));
 	}
 
-	NaviRenderers.resize(AllMesh.size());
-
-	for (size_t i = 0; i < AllMesh.size(); i++)
-	{
-		NaviRenderers[i] = CreateTransformComponent<GameEngineRenderer>(GetTransform());
-		NaviRenderers[i]->SetRenderingPipeLine("Color");
-		NaviRenderers[i]->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
-		NaviRenderers[i]->SetMesh(AllMesh[i].GameEngineVertexBuffers[0], AllMesh[i].GameEngineIndexBuffers[0][0]);
-
-		if (1 < AllMesh[i].GameEngineIndexBuffers[0].size())
-		{
-			GameEngineDebug::MsgBoxError("서브셋이 존재합니다.");
-		}
-
-		NaviRenderers[i]->ShaderHelper.SettingConstantBufferLink("ResultColor", Color);
-	}
+	NaviRenderer = _FBXRenderer;
 }
 
 Navi* NaviMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir)
@@ -120,9 +107,9 @@ Navi* NaviMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir
 
 	for (auto& Navi : Navis)
 	{
-		float4 V0 = Navi.Info.Vertex[0] * Navi.Parent->GetTransform()->GetTransformData().WorldWorld_;
-		float4 V1 = Navi.Info.Vertex[1] * Navi.Parent->GetTransform()->GetTransformData().WorldWorld_;
-		float4 V2 = Navi.Info.Vertex[2] * Navi.Parent->GetTransform()->GetTransformData().WorldWorld_;
+		float4 V0 = Navi.Info.Vertex[0] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+		float4 V1 = Navi.Info.Vertex[1] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+		float4 V2 = Navi.Info.Vertex[2] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
 
 		Check = DirectX::TriangleTests::Intersects(RayPos.DirectVector,
 			_Dir.DirectVector,
@@ -279,9 +266,9 @@ bool Navi::OutCheck(GameEngineTransform* _Transform, float& _Dist)
 
 	bool Check = false;
 
-	float4 V0 = Info.Vertex[0] * Parent->GetTransform()->GetTransformData().WorldWorld_;
-	float4 V1 = Info.Vertex[1] * Parent->GetTransform()->GetTransformData().WorldWorld_;
-	float4 V2 = Info.Vertex[2] * Parent->GetTransform()->GetTransformData().WorldWorld_;
+	float4 V0 = Info.Vertex[0] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
+	float4 V1 = Info.Vertex[1] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
+	float4 V2 = Info.Vertex[2] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
 
 	Check = DirectX::TriangleTests::Intersects(RayPos.DirectVector,
 		float4::DOWN.DirectVector,

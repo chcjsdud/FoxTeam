@@ -25,7 +25,6 @@ private:
 class Navi
 {
 	friend class NaviMesh;
-	friend class NaviActor;
 public:
 	Navi()
 		: AllNavi(nullptr)
@@ -55,7 +54,7 @@ private:
 
 	NaviInfo Info;
 	std::vector<Navi>* AllNavi;
-	GameEngineActor* Parent;
+	NaviMesh* Parent;
 };
 
 class NaviMesh : public GameEngineActor
@@ -81,6 +80,11 @@ public:
 		Color = _Color;
 	}
 
+	GameEngineRendererBase* GetNaviRenderer()
+	{
+		return NaviRenderer;
+	}
+
 protected:
 
 private:
@@ -94,9 +98,9 @@ private:
 	GameEngineDirectory NaviMeshFolder;
 
 	std::vector<Navi> Navis;
-	std::vector<GameEngineRenderer*> NaviRenderers;
 
-	GameEngineRenderer* NaviRenderer;
+	GameEngineRendererBase* NaviRenderer;
+
 	GameEngineVertexBuffer* NewVertex;
 	GameEngineIndexBuffer* NewIndex;
 

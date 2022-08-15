@@ -35,14 +35,7 @@ void YSJ_Player::Start()
 			Renderer->ShaderHelper.SettingConstantBufferLink("ResultColor", Color_);
 			ParentRenderer = Renderer;
 		}
-
-
 	}
-
-	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
-	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, -100.0f });
-	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 15, 0.0f, 0.0f });
-
 	GetLevel()->GetMainCameraActor()->FreeCameraModeSwitch();
 }
 
@@ -95,14 +88,14 @@ void YSJ_Player::Update(float _DeltaTime)
 	
 }
 
+void YSJ_Player::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
+{
+	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
+	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, -50.0f });
+	GetLevel()->GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeX(45.0f);
+}
+
 void YSJ_Player::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
-	if (std::string::npos != _NextLevel->GetName().find("Title"))
-	{
-		return;
-	}
-
-	GetLevel()->SetLevelActorMove(_NextLevel, this);
-	_NextLevel->GetMainCameraActor()->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition() + float4(0.0f, 0.0F, -100.0F));
 
 }

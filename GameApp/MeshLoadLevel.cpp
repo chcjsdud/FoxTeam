@@ -33,7 +33,11 @@ void MeshLoadLevel::LevelStart()
 	FBXWindow->FBXFolder.MoveParent("FoxTeam");
 	FBXWindow->FBXFolder.MoveChild("EngineResources");
 	FBXWindow->FBXFolder.MoveChild("FBX");
-	
+
+	FBXWindow->UserMeshSaveFolder.MoveParent("FoxTeam");
+	FBXWindow->UserMeshSaveFolder.MoveChild("Resources");
+	FBXWindow->UserMeshSaveFolder.MoveChild("FBX");
+	FBXWindow->UserMeshSaveFolder.MoveChild("UserMesh");
 
 	//GameEngineGUIWindow::inst
 
@@ -61,58 +65,35 @@ void MeshLoadLevel::LevelStart()
 		GameEngineInput::GetInst().CreateKey("LevelControl", 'i');
 	}
 
-	//float _Dir,// 1
-	//float Speed, // 
-	//int Clip = 0
+	/*GameEngineDirectory tempDir;
 
-	/*FadeEffect = AddPostProcessCameraMergeNext<PostFade>();
-	FadeEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
+	tempDir.MoveParent("FoxTeam");
+	tempDir.MoveChild("Resources");
+	tempDir.MoveChild("Texture");
+	tempDir.MoveChild("Map");
 
-	GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
-	float4 Size = { 128, 72 };
-	Window->PushRenderTarget("PostEffectFade", FadeEffect->GetResult(), Size * 3);
+	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile("FBX");
 
-	FadeEffect->set(10, "BlurFilter.png");*/
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+		{
+			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(vecFile[i].GetFullPath());
+		}
+	}
 
-	//{
-	//	SmallPostBlur* BlurEffect = AddPostProcessCameraMergeNext<SmallPostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFileName());
+		std::string SaveName = GameEnginePath::GetFileNameWithOutExtension(vecFile[i].GetFileName());
+		SaveName += ".UserMesh";
+		if (nullptr != Mesh)
+		{
+			Mesh->UserSave(FBXWindow->UserMeshSaveFolder.PathToPlusFileName(SaveName));
+		}
+	}
 
-
-	//{
-	//	SmallPostBlur* BlurEffect = AddPostProcessCameraMergeNext<SmallPostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-	//{
-	//	SmallPostBlur* BlurEffect = AddPostProcessCameraMergeNext<SmallPostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-
-	//{
-	//	PostBlur* BlurEffect = AddPostProcessCameraMergeNext<PostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-	//{
-	//	PostBlur* BlurEffect = AddPostProcessCameraMergeNext<PostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-	//{
-	//	PostBlur* BlurEffect = AddPostProcessCameraMergeNext<PostBlur>();
-	//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
-	//	BlurEffect->SetFilter("BlurFilter.png");
-	//}
-
-
+	int a = 0;*/
 }
 
 void MeshLoadLevel::LevelUpdate(float _DeltaTime)
