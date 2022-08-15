@@ -207,4 +207,10 @@ SJH_FloorMap::~SJH_FloorMap()
 		NavigationCellInfos_[CellInfoNum] = nullptr;
 	}
 	NavigationCellInfos_.clear();
+
+	if (nullptr != PathFinder_)
+	{
+		delete PathFinder_;
+		PathFinder_ = nullptr;
+	}
 }
