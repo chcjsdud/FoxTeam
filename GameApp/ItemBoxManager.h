@@ -41,7 +41,6 @@ public:
 	ItemBoxManager& operator=(const ItemBoxManager& _other) = delete;
 	ItemBoxManager& operator=(const ItemBoxManager&& _other) = delete;
 
-
 	void UserSave(const std::string& _Path);
 	void UserLoad(const std::string& _Path);
 
@@ -51,6 +50,7 @@ protected:
 
 private:
 	void CreateItemBoxInfo(const std::string& _Name);
+	void BoxSelectUpdate();
 
 private:
 	std::vector<ItemBox> ItemBoxs;

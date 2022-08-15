@@ -62,6 +62,10 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 	UserSave(AreaName);
 }
 
+void ItemBoxManager::BoxSelectUpdate()
+{
+}
+
 void ItemBoxManager::Start()
 {
 }
@@ -72,6 +76,8 @@ void ItemBoxManager::Update(float _DeltaTime)
 	{
 		GetLevel()->PushDebugRender(ItemBoxs[i].Col->GetTransform(), CollisionType::AABBBox3D);
 	}
+
+	BoxSelectUpdate();
 }
 
 void ItemBoxManager::UserSave(const std::string& _Path)

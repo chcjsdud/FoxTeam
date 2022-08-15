@@ -155,12 +155,6 @@
     <ClCompile Include="GHRayTestSphere.cpp">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
     </ClCompile>
-    <ClCompile Include="NaviMesh.cpp">
-      <Filter>01.GameObject\99.YSJ</Filter>
-    </ClCompile>
-    <ClCompile Include="NaviActor.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
-    </ClCompile>
     <ClCompile Include="PJW_NavMesh.cpp">
       <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
     </ClCompile>
@@ -185,11 +179,17 @@
     <ClCompile Include="UI_Status.cpp">
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ItemBoxManager.cpp">
-      <Filter>01.GameObject\99.YSJ</Filter>
-    </ClCompile>
     <ClCompile Include="GHNavMesh.cpp">
       <Filter>01.GameObject\99.조규현\RayTestLevel\NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemBoxManager.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviActor.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviMesh.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +361,12 @@
     <Filter Include="01.GameObject\99.LGH\UI">
       <UniqueIdentifier>{cc38f788-6dae-4ceb-a1a8-e3f2b5009f80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\99.YSJ\02Actor\ItemBox">
+      <UniqueIdentifier>{9d59b63a-92d1-40aa-98c2-e7108f6f4c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.YSJ\02Actor\NaviMesh">
+      <UniqueIdentifier>{f2e313e9-535c-4ab4-a91a-9c5db971f7f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -519,12 +525,6 @@
     <ClInclude Include="GHRayTestSphere.h">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
     </ClInclude>
-    <ClInclude Include="NaviMesh.h">
-      <Filter>01.GameObject\99.YSJ</Filter>
-    </ClInclude>
-    <ClInclude Include="NaviActor.h">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
-    </ClInclude>
     <ClInclude Include="PJW_NavMesh.h">
       <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
     </ClInclude>
@@ -553,7 +553,13 @@
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClInclude>
     <ClInclude Include="ItemBoxManager.h">
-      <Filter>01.GameObject\99.YSJ</Filter>
+      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviActor.h">
+      <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh.h">
+      <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
