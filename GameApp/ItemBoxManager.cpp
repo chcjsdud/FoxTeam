@@ -14,7 +14,6 @@ ItemBoxManager::~ItemBoxManager()
 
 }
 
-int ItemBoxIndex = 0;
 
 void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 {
@@ -32,6 +31,7 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 	}
 
 	std::vector<ItemBox> vecItemBox;
+	int ItemBoxIndex = 0;
 
 	for (size_t i = 0; i < AllMesh.size(); i++)
 	{
@@ -73,14 +73,12 @@ void ItemBoxManager::BoxSelectUpdate()
 	if (nullptr != Col)
 	{
 		GetLevel()->PushDebugRender(Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
-		int a = 0;
 	}
 }
 
 void ItemBoxManager::Start()
 {
-/*
-#pragma region UserSave¿ë
+#ifdef USERSAVE
 	GameEngineDirectory tempDir;
 
 	tempDir.MoveParent("FoxTeam");
@@ -98,8 +96,7 @@ void ItemBoxManager::Start()
 	}
 
 	int a = 0;
-#pragma endregion
-*/
+#endif
 }
 
 void ItemBoxManager::Update(float _DeltaTime)
@@ -112,7 +109,7 @@ void ItemBoxManager::Update(float _DeltaTime)
 		}
 	}
 
-	//BoxSelectUpdate();
+	BoxSelectUpdate();
 }
 
 void ItemBoxManager::UserSave(const std::string& _Path)
@@ -183,6 +180,7 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 		Data.Col = CreateTransformComponent<GameEngineCollision>(1);
 		Data.Col->GetTransform()->SetLocalPosition(Data.Info.Pos);
 		Data.Col->GetTransform()->SetLocalScaling(Data.Info.Scale);
+		Data.Col->SetCollisionType(CollisionType::AABBBox3D);
 	}
 }
 

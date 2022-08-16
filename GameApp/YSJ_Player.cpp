@@ -36,11 +36,23 @@ void YSJ_Player::Start()
 			ParentRenderer = Renderer;
 		}
 	}
+	PlayerCollision = CreateTransformComponent<GameEngineCollision>();
+	PlayerCollision->SetCollisionType(CollisionType::AABBBox3D);
+	PlayerCollision->GetTransform()->SetLocalScaling({ 5.0f, 5.0f, 5.0f });
 }
 
 void YSJ_Player::Update(float _DeltaTime)
 {
 	NaviActor::Update(_DeltaTime);
+
+	GetLevel()->GetMainCamera()->PushDebugRender(PlayerCollision->GetTransform(), CollisionType::AABBBox3D);
+
+	std::list<GameEngineCollision*> Collist = PlayerCollision->CollisionPtrGroup(1);
+
+	if (false == Collist.empty())
+	{
+		int a = 0;
+	}
 
 	if (true == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
 	{

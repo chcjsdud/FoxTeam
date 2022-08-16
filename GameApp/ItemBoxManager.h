@@ -1,6 +1,8 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
+//#define USERSAVE
+
 class ItemBoxInfo
 {
 public:

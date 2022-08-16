@@ -121,8 +121,17 @@ bool YSJ_Ray::RayAtViewSpace(float _MousePosX, float _MousePosY)
     OriginPos_ = float4(0.f, 0.f, 0.f, 0.f);
 
     // 1. 광선을 뷰포트영역 -> 투영영역
-    float PointX = ((2.0f * _MousePosX) / GameEngineWindow::GetInst().GetSize().x) - 1.0f;
-    float PointY = (((2.0f * _MousePosY) / GameEngineWindow::GetInst().GetSize().y) - 1.0f) * -1.0f;
+    UINT ViewPortNo = 1;
+    D3D11_VIEWPORT ViewPort_ = {};
+    GameEngineDevice::GetInst().GetContext()->RSGetViewports(&ViewPortNo, &ViewPort_);
+
+    if (0 == ViewPortNo)
+    {
+        return false;
+    }
+
+    float PointX = ((2.0f * _MousePosX) / ViewPort_.Width) - 1.0f;
+    float PointY = (((2.0f * _MousePosY) / ViewPort_.Height) - 1.0f) * -1.0f;
     float PointZ = 1.0f;
 
     // 2. 광선을 투영영역 -> 뷰영역
