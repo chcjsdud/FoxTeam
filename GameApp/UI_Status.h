@@ -40,8 +40,16 @@ private:
 private:
 	Player* Player_;
 
-	GameEngineUIRenderer* StatusAttack_Renderer;
-	GameEngineUIRenderer* StatusDefence_Renderer;
+#pragma region 스테이터스 값 출력용 렌더러 모음
+
+	GameEngineUIRenderer* AttackValue_Renderer;
+	GameEngineUIRenderer* DefenseValue_Renderer;
+	GameEngineUIRenderer* AttackSpeedValue_Renderer;
+	GameEngineUIRenderer* MoveSpeedValue_Renderer;
+	GameEngineUIRenderer* CriticalValue_Renderer;
+
+#pragma endregion 
+
 
 };
 

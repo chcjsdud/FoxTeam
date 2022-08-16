@@ -49,16 +49,21 @@ void UI_Status::Start()
 
 	{
 		//to_string= 숫자를 string으로
-		int a = 10;
-		StatusAttack_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		StatusAttack_Renderer->TextSetting("휴먼옛체", to_string(a), 100, float4::WHITE);
-		StatusAttack_Renderer->GetTransform()->SetLocalPosition({0.0f, 0.0f, 0.0f, 0.0f});
+		int a = 0;
+		//문자출력은 x가 뒤집혀 있음 -> 정중앙 0,0 기준 x양수가 왼쪽
+		//항상 배경보다 앞에 나와야 하므로 z축값에 -1
+		//float4 NumberPos_ = { MainStatus_BackgroundPos.x *= -1.0f, MainStatus_BackgroundPos.y, MainStatus_BackgroundPos.z += -1.0f };
+		//float4 pivot = {0.0f,0.0f};
+		//NumberPos_ += pivot;
+		AttackValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		AttackValue_Renderer->TextSetting("굴림", to_string(a), 100, float4::WHITE);
+		AttackValue_Renderer->GetTransform()->SetLocalPosition({0.0f,0.0f,0.0f});
 	}
 
 	{
-		StatusDefence_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		StatusDefence_Renderer->TextSetting("KBIZ한마음고딕 M", "시험", 100, float4::WHITE);
-		StatusDefence_Renderer->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, 0.0f, 0.0f });
+		DefenseValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		DefenseValue_Renderer->TextSetting("KBIZ한마음고딕 M", "시험", 100, float4::WHITE);
+		DefenseValue_Renderer->GetTransform()->SetLocalPosition({ 100.0f, 100.0f, 0.0f, 0.0f });
 	}
 
 
@@ -84,15 +89,15 @@ void UI_Status::Update(float _Time)
 		{
 			MainStatusRenderer->Off();
 			SubStatusRenderer->Off();
-			StatusAttack_Renderer->Off();
-			StatusDefence_Renderer->Off();
+			AttackValue_Renderer->Off();
+			DefenseValue_Renderer->Off();
 		}
 		else
 		{
 			MainStatusRenderer->On();
 			SubStatusRenderer->On();
-			StatusAttack_Renderer->On();
-			StatusDefence_Renderer->On();
+			AttackValue_Renderer->On();
+			DefenseValue_Renderer->On();
 		}
 	}
 

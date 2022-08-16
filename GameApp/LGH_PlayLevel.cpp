@@ -43,10 +43,10 @@ void LGH_PlayLevel::LevelStart()
 	}
 
 
-	GameEngineFontManager::GetInst().Load("휴먼옛체");
+	GameEngineFontManager::GetInst().Load("굴림");
 	GameEngineFontManager::GetInst().Load("KBIZ한마음고딕 M");
 
-	player_ = CreateActor<LGH_Aya>();
+	//player_ = CreateActor<LGH_Aya>();
 
 
 	{
@@ -133,8 +133,8 @@ void LGH_PlayLevel::LevelUpdate(float _DeltaTime)
 	}
 	else
 	{
-		float4 CharPosition_ = player_->GetTransform()->GetWorldPosition();
-		GetMainCameraActor()->GetTransform()->SetWorldPosition({ CharPosition_.x,  CharPosition_.y, -400.0f});
+		//float4 CharPosition_ = player_->GetTransform()->GetWorldPosition();
+		//GetMainCameraActor()->GetTransform()->SetWorldPosition({ CharPosition_.x,  CharPosition_.y, -400.0f});
 	}
 }
 
@@ -160,5 +160,14 @@ LGH_PlayLevel::LGH_PlayLevel()
 
 LGH_PlayLevel::~LGH_PlayLevel()
 {
+	GameEngineDirectory FontDir;
+	FontDir.MoveParent("FoxTeam");
+	//연산자 / = MoveChild
+	FontDir / "EngineResources" / "Font";
 
+	string Fontname = FontDir.GetFullPath();
+	Fontname += "\\KBIZM.ttf";
+	//윈도우 함수 RemoveFontResource
+	//AddFontResource로 추가된 폰트를 삭제하는 함수
+	RemoveFontResource(Fontname.c_str());
 }

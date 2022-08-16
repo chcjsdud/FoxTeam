@@ -92,7 +92,9 @@ void GameEngineUIRenderer::Render(float _DeltaTime, bool _IsDeferred)
 	FontTarget_->Setting();
 
 	GameEngineFont* Font = GameEngineFontManager::GetInst().Find(FontName_);
-	Font->DrawFont(PrintText_, FontSize_, ScreenSize - UIPos, Color_, FW1_CENTER);
+	Font->DrawFont(PrintText_, FontSize_, ScreenSize, UIPos, Color_, FW1_CENTER);
+	//이건호 : 새로운 오버로딩 함수 DrawFont사용, 기존 DrawFont 함수는 주석처리
+	//Font->DrawFont(PrintText_, FontSize_, ScreenSize - UIPos, Color_, FW1_CENTER);
 	GameEngineDevice::ShaderReset();
 
 	 RenderTarget->Merge(FontTarget_);
