@@ -54,6 +54,7 @@ private:
 
 private:
 	std::list<SJH_NaviCell*> MovePath_;		// 이동 경로 : 목표지점까지의 이동가능한 삼각형(셀) 목록
+	//std::list<float4> MovePath_;			// 이동경로 최적화후 해당 경로로 변환예정
 	SJH_NaviCell* MovePathTarget_;			// 이동완료 체크용
 
 private:

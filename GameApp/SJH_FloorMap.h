@@ -25,6 +25,7 @@ public:
 public:
 	SJH_NaviCell* SearchCurrentPosToNaviCell(const float4& _Position);
 	bool MoveFacePath(const float4& _StartPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<SJH_NaviCell*>& _MovePath);
+	//bool MoveFacePath(const float4& _StartPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<float4>& _MovePath);		// 내일 변경
 
 protected:
 

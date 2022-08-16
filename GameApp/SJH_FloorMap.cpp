@@ -66,7 +66,7 @@ bool SJH_FloorMap::MoveFacePath(const float4& _StartPos, SJH_NaviCell* _StartCel
 	_MovePath = PathFinder_->AStarMovePath(_StartCell, _TargetCell, static_cast<int>(NavigationCellInfos_.size()));
 	if (false == _MovePath.empty())
 	{
-		// 이동경로가 존재한다면 해당 경로의 최단거리의 직선경로를 알아낸다.
+		// 이동경로가 존재한다면 해당 경로의 최적의 직선경로를 반환
 		return StupidFunnelAlgorithm(_StartPos, _MovePath);
 	}
 
