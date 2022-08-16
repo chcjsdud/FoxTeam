@@ -17,7 +17,6 @@
 YSJ_PlayLevel::YSJ_PlayLevel()
 	: NaviMesh_(nullptr)
 	, Player_(nullptr)
-	, NaviWindow_(nullptr)
 	, ItemBox_(nullptr)
 {
 

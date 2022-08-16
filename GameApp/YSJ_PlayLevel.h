@@ -4,7 +4,6 @@
 // Ό³Έν : 
 class NaviMesh;
 class YSJ_Player;
-class NaviMeshWindow;
 class ItemBoxManager;
 class YSJ_PlayLevel : public GameEngineLevel
 {
@@ -26,7 +25,6 @@ private:
 	void CreateActorLevel();
 
 private:
-	NaviMeshWindow* NaviWindow_;
 	NaviMesh* NaviMesh_;
 	YSJ_Player* Player_;
 	ItemBoxManager* ItemBox_;

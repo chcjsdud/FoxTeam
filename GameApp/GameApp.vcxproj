@@ -214,6 +214,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ItemBoxWindow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="LGH_Aya.cpp" />
     <ClCompile Include="LGH_PlayLevel.cpp" />
     <ClCompile Include="LH_Mouse.cpp" />
@@ -251,6 +255,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="SettingItemLevel.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="SJH_NaviCell.cpp" />
     <ClCompile Include="SJH_PathFinder.cpp" />
     <ClCompile Include="UI_CharPicture.cpp" />
@@ -387,6 +395,10 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ItemBoxWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="LGH_Aya.h" />
     <ClInclude Include="LGH_PlayLevel.h" />
     <ClInclude Include="LH_Mouse.h" />
@@ -426,6 +438,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="SettingItemLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="SJH_NaviCell.h" />
     <ClInclude Include="SJH_PathFinder.h" />
     <ClInclude Include="UI_CharPicture.h" />

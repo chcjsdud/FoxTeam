@@ -11,6 +11,7 @@ enum class CollisionGroup
 	MonsterAttack,
 	PlayerSight,
 	Item,
+	ItemBox,
 	UI,
 
 

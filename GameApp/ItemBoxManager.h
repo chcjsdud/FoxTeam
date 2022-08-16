@@ -24,6 +24,7 @@ class ItemBox
 public:
 	ItemBoxInfo Info;
 	GameEngineCollision* Col;
+	std::string Area;
 
 	ItemBox()
 		: Col(nullptr)
@@ -45,6 +46,11 @@ public:
 
 	void UserSave(const std::string& _Path);
 	void UserLoad(const std::string& _Path);
+
+	ItemBox* GetSelectBox()
+	{
+		return SelectBox;
+	}
 
 protected:
 	void Start() override;

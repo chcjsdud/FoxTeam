@@ -191,6 +191,12 @@
     <ClCompile Include="NaviMesh.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
     </ClCompile>
+    <ClCompile Include="ItemBoxWindow.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingItemLevel.cpp">
+      <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -366,6 +372,12 @@
     </Filter>
     <Filter Include="01.GameObject\99.YSJ\02Actor\NaviMesh">
       <UniqueIdentifier>{f2e313e9-535c-4ab4-a91a-9c5db971f7f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.YSJ\02Actor\ItemBox\ImGui">
+      <UniqueIdentifier>{e248f191-76c6-41b3-9a24-4dd6c0ce8063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\SettingItemLevel">
+      <UniqueIdentifier>{1a76d953-e652-4ef7-a945-097cf5d62d1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -560,6 +572,12 @@
     </ClInclude>
     <ClInclude Include="NaviMesh.h">
       <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemBoxWindow.h">
+      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingItemLevel.h">
+      <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

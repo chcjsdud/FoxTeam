@@ -2,6 +2,7 @@
 #include "ItemBoxManager.h"
 #include <GameEngine/GameEngineCollision.h>
 #include "YSJ_Mouse.h"
+#include "Enums.h"
 
 ItemBoxManager::ItemBoxManager()
 	: SelectBox(nullptr)
@@ -59,6 +60,8 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 		Item.Col = CreateTransformComponent<GameEngineCollision>(1);
 		Item.Col->GetTransform()->SetLocalPosition(Item.Info.Pos);
 		Item.Col->GetTransform()->SetLocalScaling(Item.Info.Scale);
+
+		Item.Area = AreaName;
 	}	
 
 	ItemBoxs.insert(std::pair(AreaName, vecItemBox));
@@ -68,11 +71,25 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 
 void ItemBoxManager::BoxSelectUpdate()
 {
-	GameEngineCollision* Col = YSJ_Mouse::MainMouse->GetPickCollision(GameEngineInput::GetInst().GetMousePos(), 1);
+	GameEngineCollision* Col = YSJ_Mouse::MainMouse->GetPickCollision(GameEngineInput::GetInst().GetMousePos(), static_cast<int>(CollisionGroup::ItemBox));
 
 	if (nullptr != Col)
 	{
 		GetLevel()->PushDebugRender(Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+
+		if (GameEngineInput::GetInst().Down("LBUTTON"))
+		{
+			for (auto& ItemBox : ItemBoxs)
+			{
+				for (size_t i = 0; i < ItemBox.second.size(); i++)
+				{
+					if (Col == ItemBox.second[i].Col)
+					{
+						SelectBox = &ItemBox.second[i];
+					} 
+				}
+			}
+		}
 	}
 }
 
@@ -95,8 +112,8 @@ void ItemBoxManager::Start()
 		CreateItemBoxInfo(vecFile[i].FileName());
 	}
 
-	int a = 0;
 #endif
+	int a = 0;
 }
 
 void ItemBoxManager::Update(float _DeltaTime)
@@ -105,6 +122,12 @@ void ItemBoxManager::Update(float _DeltaTime)
 	{
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
+			if (SelectBox == &ItemBox.second[i])
+			{
+				GetLevel()->PushDebugRender(ItemBox.second[i].Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+				continue;
+			}
+
 			GetLevel()->PushDebugRender(ItemBox.second[i].Col->GetTransform(), CollisionType::AABBBox3D);
 		}
 	}
@@ -136,6 +159,7 @@ void ItemBoxManager::UserSave(const std::string& _Path)
 		NewFile.Write((*iter).second[i].Info.Index);
 		NewFile.Write((*iter).second[i].Info.Pos);
 		NewFile.Write((*iter).second[i].Info.Scale);
+		NewFile.Write((*iter).second[i].Area);
 	}
 }
 
@@ -176,8 +200,9 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 		NewFile.Read(Data.Info.Index);
 		NewFile.Read(Data.Info.Pos);
 		NewFile.Read(Data.Info.Scale);
+		NewFile.Read(Data.Area);
 
-		Data.Col = CreateTransformComponent<GameEngineCollision>(1);
+		Data.Col = CreateTransformComponent<GameEngineCollision>(static_cast<int>(CollisionGroup::ItemBox));
 		Data.Col->GetTransform()->SetLocalPosition(Data.Info.Pos);
 		Data.Col->GetTransform()->SetLocalScaling(Data.Info.Scale);
 		Data.Col->SetCollisionType(CollisionType::AABBBox3D);
