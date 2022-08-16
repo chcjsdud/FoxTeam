@@ -6,7 +6,7 @@
 class ItemBoxInfo
 {
 public:
-	std::string Name;
+	std::string BoxType;
 	int Index;
 
 	float4 Pos;
@@ -19,12 +19,15 @@ public:
 
 class GameEngineCollision;
 class YSJ_Ray;
+class ItemBase;
 class ItemBox
 {
 public:
 	ItemBoxInfo Info;
 	GameEngineCollision* Col;
 	std::string Area;
+
+	std::list<ItemBase*> ItemList;
 
 	ItemBox()
 		: Col(nullptr)

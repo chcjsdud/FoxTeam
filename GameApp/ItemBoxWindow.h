@@ -23,5 +23,6 @@ private:
 public:
 	ItemBoxManager* ItemBoxManager_;
 	ItemBox* SelectBox_;
+	int ListSelectItem;
 };
 

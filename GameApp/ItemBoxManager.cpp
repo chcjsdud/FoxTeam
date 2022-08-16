@@ -52,7 +52,7 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 
 		AllAddVtxPos = AllAddVtxPos / static_cast<float>(AllMesh[i].Vertexs.size());
 
-		Item.Info.Name = MeshInfos[i].Name;
+		Item.Info.BoxType = MeshInfos[i].Name;
 		Item.Info.Index = ItemBoxIndex++;
 		Item.Info.Pos = AllAddVtxPos;
 		Item.Info.Scale = { 2.0f, 2.0f, 2.0f };
@@ -155,7 +155,7 @@ void ItemBoxManager::UserSave(const std::string& _Path)
 
 	for (size_t i = 0; i < (*iter).second.size(); i++)
 	{
-		NewFile.Write((*iter).second[i].Info.Name);
+		NewFile.Write((*iter).second[i].Info.BoxType);
 		NewFile.Write((*iter).second[i].Info.Index);
 		NewFile.Write((*iter).second[i].Info.Pos);
 		NewFile.Write((*iter).second[i].Info.Scale);
@@ -196,7 +196,7 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 
 	for (auto& Data : (*iter).second)
 	{
-		NewFile.Read(Data.Info.Name);
+		NewFile.Read(Data.Info.BoxType);
 		NewFile.Read(Data.Info.Index);
 		NewFile.Read(Data.Info.Pos);
 		NewFile.Read(Data.Info.Scale);
