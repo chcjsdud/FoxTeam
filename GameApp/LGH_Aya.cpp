@@ -42,8 +42,9 @@ void LGH_Aya::Start()
 			FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex" , "Aya_01_LOD1.png");
 		}
 
-		FBXRenderer_->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });
-		FBXRenderer_->GetTransform()->SetWorldRotationDegree({ -90.0f, 180.0f, 0.0f });
+		FBXRenderer_->GetTransform()->SetLocalScaling({ 50.0f, 50.0f, 50.0f });
+		FBXRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+		FBXRenderer_->GetTransform()->SetWorldRotationDegree({ 180.0f, 0.0f, 0.0f });
 
 
 		GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(FBXFolder.PathToPlusFileName("LGH_Aya.fbx"));
@@ -55,7 +56,7 @@ void LGH_Aya::Start()
 
 		FBXRenderer_->CreateFBXAnimation("Run", "LGH_Aya.fbx", 0);
 		FBXRenderer_->CreateFBXAnimation("Wait", "LGH_Aya.fbx", 1);
-		FBXRenderer_->ChangeFBXAnimation("Run");
+		FBXRenderer_->ChangeFBXAnimation("Wait");
 	}
 }
 
@@ -63,5 +64,13 @@ void LGH_Aya::Start()
 
 void LGH_Aya::Update(float _DeltaTime)
 {
-	
+	if (true == GameEngineInput::GetInst().Press("Front"))
+	{
+		GetTransform()->SetWorldDeltaTimeMove({0.0f, 100.0f, 0.0f});
+		FBXRenderer_->ChangeFBXAnimation("Run");
+	}
+	else
+	{
+		FBXRenderer_->ChangeFBXAnimation("Wait");
+	}
 }

@@ -48,8 +48,10 @@ void UI_Status::Start()
 	}
 
 	{
+		//to_string= ¼ıÀÚ¸¦ stringÀ¸·Î
+		int a = 10;
 		StatusAttack_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		StatusAttack_Renderer->TextSetting("ÈŞ¸Õ¿¾Ã¼","Å×½ºÆ®",100, float4::WHITE);
+		StatusAttack_Renderer->TextSetting("ÈŞ¸Õ¿¾Ã¼", to_string(a), 100, float4::WHITE);
 		StatusAttack_Renderer->GetTransform()->SetLocalPosition({0.0f, 0.0f, 0.0f, 0.0f});
 	}
 

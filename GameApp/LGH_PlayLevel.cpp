@@ -27,8 +27,8 @@ void LGH_PlayLevel::LevelStart()
 {
 
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
-	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 100.0f, -300.0f));
-
+	GetMainCameraActor()->GetCamera()->SetFov(60.f);
+	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -400.0f));
 	{
 		GameEngineDirectory FontDir;
 		FontDir.MoveParent("FoxTeam");
@@ -70,19 +70,22 @@ void LGH_PlayLevel::LevelStart()
 
 		LightActor* Actor;
 
-		Actor = CreateActor<LightActor>();
-		Actor->GetLight()->SetDiffusePower(0.3f);
-		Actor->GetLight()->SetSpacularLightPow(50.0f);
+
 
 		Actor = CreateActor<LightActor>();
-		Actor->GetLight()->SetDiffusePower(0.3f);
-		Actor->GetLight()->SetSpacularLightPow(50.0f);
-		Actor->GetTransform()->SetLocalRotationDegree({ 45.0f, 0.0f, 0.0f });
+		Actor->GetLight()->SetDiffusePower(1.f);
+		Actor->GetLight()->SetAmbientPower(10.f);
+		Actor->GetLight()->SetSpacularLightPow(10.f);
 
-		Actor = CreateActor<LightActor>();
-		Actor->GetLight()->SetDiffusePower(0.3f);
-		Actor->GetLight()->SetSpacularLightPow(50.0f);
-		Actor->GetTransform()->SetLocalRotationDegree({ 0.0f, 90.0f, 0.0f });
+	//	Actor = CreateActor<LightActor>();
+	//	Actor->GetLight()->SetDiffusePower(0.3f);
+	//	Actor->GetLight()->SetSpacularLightPow(50.0f);
+	//	Actor->GetTransform()->SetLocalRotationDegree({ 45.0f, 0.0f, 0.0f });
+	//
+	//	Actor = CreateActor<LightActor>();
+	//	Actor->GetLight()->SetDiffusePower(0.3f);
+	//	Actor->GetLight()->SetSpacularLightPow(50.0f);
+	//	Actor->GetTransform()->SetLocalRotationDegree({ 0.0f, 90.0f, 0.0f });
 	}
 
 
@@ -118,7 +121,7 @@ void LGH_PlayLevel::LevelStart()
 
 	
 
-	GetMainCameraActor()->FreeCameraModeSwitch();
+	//GetMainCameraActor()->FreeCameraModeSwitch();
 
 }
 
@@ -127,6 +130,11 @@ void LGH_PlayLevel::LevelUpdate(float _DeltaTime)
 	if (true == GameEngineInput::GetInst().Down("FreeCameraOn"))
 	{
 		GetMainCameraActor()->FreeCameraModeSwitch();
+	}
+	else
+	{
+		float4 CharPosition_ = player_->GetTransform()->GetWorldPosition();
+		GetMainCameraActor()->GetTransform()->SetWorldPosition({ CharPosition_.x,  CharPosition_.y, -400.0f});
 	}
 }
 
@@ -141,6 +149,7 @@ void LGH_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	{
 		GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 		GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
+		GameEngineInput::GetInst().CreateKey("Front", 'w');
 	}
 }
 
