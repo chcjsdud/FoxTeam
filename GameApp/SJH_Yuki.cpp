@@ -14,7 +14,7 @@ void SJH_Yuki::Initialize(SJH_NaviCell* _CurNaviCell, const float4& _InitPos)
 	// 현재 플레이어가 위치한 삼각형(셀)을 지정
 	CurNaviCell_ = _CurNaviCell;
 
-	// 시작위치를 셋팅
+	// 현재 플레이어가 위치한 삼각형(셀)의 무게중심으로 시작위치 셋팅
 	GetTransform()->SetWorldPosition(_InitPos);
 }
 
@@ -43,11 +43,14 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 		// 이동목표지점의 삼각형 갱신
 		TargetNaviCell_ = _TargetNaviCell;
 
+		// 플레이어 이동 시작 위치 Get
+		MoveStartPos_ = GetTransform()->GetWorldPosition();
+
 		// 현재 플레이어의 NaviCell ~ _TargetNaviCell까지의 이동경로 생성
-		if (true == SJH_FloorMap::FloorMap->MoveFacePath(CurNaviCell_, TargetNaviCell_, MovePath_))
+		if (true == SJH_FloorMap::FloorMap->MoveFacePath(MoveStartPos_, CurNaviCell_, TargetNaviCell_, MovePath_))
 		{
-			// 시작위치, 목표위치, 이동방향 설정
-			MoveStartPos_ = GetTransform()->GetWorldPosition();
+			// 마지막 위치 셋팅
+			FinalMovePos_ = _MoveTargetPos;
 
 			MovePathTarget_ = MovePath_.front();
 			if (nullptr != MovePathTarget_)
@@ -55,9 +58,6 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 				MoveEndPos_ = MovePathTarget_->GetCenterToGravity();
 			}
 			
-			MoveDir_ = MoveEndPos_ - MoveStartPos_;
-			MoveDir_.Normalize3D();
-
 			// 사용끝난 경로 제거
 			MovePath_.pop_front();
 
@@ -218,7 +218,7 @@ void SJH_Yuki::Start()
 
 	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0);
 	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[14], MeshName, 14);
-	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[14]);
+	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0], true);
 
 #pragma endregion
 
@@ -237,12 +237,12 @@ void SJH_Yuki::Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst().Down("SJH_TEST1"))
 	{
-		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
+		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0], true);
 	}
 
 	if (true == GameEngineInput::GetInst().Down("SJH_TEST2"))
 	{
-		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[14]);
+		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[14], true);
 	}
 
 	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동한다.
@@ -252,7 +252,6 @@ void SJH_Yuki::Update(float _DeltaTime)
 		LerpMoveTime_ += GameEngineTime::GetInst().GetDeltaTime(MoveSpeed_);
 		float4 LerpPos = float4::Lerp(MoveStartPos_, MoveEndPos_, LerpMoveTime_);
 
-		//GetTransform()->SetWorldMove(LerpPos * MoveSpeed_);
 		GetTransform()->SetWorldPosition(LerpPos);
 
 		// 현재 이동경로 목표지점(셀)에 도착시 이동정보 갱신
@@ -273,30 +272,42 @@ void SJH_Yuki::Update(float _DeltaTime)
 					MoveEndPos_ = MovePathTarget_->GetCenterToGravity();
 				}
 
-				MoveDir_ = MoveEndPos_ - MoveStartPos_;
-				MoveDir_.Normalize3D();
-
 				// 사용끝난 경로 제거
 				MovePath_.pop_front();
 			}
 			// 남은경로가 없다면
 			else
 			{
-				// 현재 플레이어가 위치한 삼각형(셀)을 셋팅하고
-				CurNaviCell_ = TargetNaviCell_;
+				int a = 0;
 
-				// 이동목표 삼각형(셀)을 초기화
-				TargetNaviCell_ = nullptr;
+				// 마우스 피킹 위치가 존재한다면
+				if (FinalMovePos_ != float4(0.0f, 0.0f, 0.0f, 0.0f))
+				{
+					// 현재 위치를 시작위치로 설정
+					MoveStartPos_ = GetTransform()->GetWorldPosition();
 
-				// 이동종료 및 이동정보 초기화
-				MoveStart_ = false;
-				MoveStartPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
-				MoveEndPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
-				MoveDir_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
+					// 마지막으로 마우스피킹위치까지 이동정보 저장 후
+					MoveEndPos_ = FinalMovePos_;
 
-				// 이동종료
-				MoveStart_ = false;
-				MovePath_.clear();
+					// 마우스피킹위치 제거
+					FinalMovePos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
+				}
+				else
+				{
+					// 현재 플레이어가 위치한 삼각형(셀)을 셋팅하고
+					CurNaviCell_ = TargetNaviCell_;
+
+					// 이동목표 삼각형(셀)을 초기화
+					TargetNaviCell_ = nullptr;
+
+					// 이동종료 및 이동정보 초기화
+					MoveStartPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
+					MoveEndPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+					// 이동종료
+					MoveStart_ = false;
+					MovePath_.clear();
+				}
 			}
 		}
 	}
@@ -309,9 +320,9 @@ SJH_Yuki::SJH_Yuki()
 	, TargetNaviCell_(nullptr)
 	, MoveStart_(false)
 	, MovePathTarget_(nullptr)
-	, MoveStartPos_(float4::ZERO)
-	, MoveEndPos_(float4::ZERO)
-	, MoveDir_(float4::ZERO)
+	, MoveStartPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
+	, MoveEndPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
+	, FinalMovePos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveSpeed_(5.0f)
 	, LerpMoveTime_(0.0f)
 {

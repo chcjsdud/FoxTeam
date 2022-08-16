@@ -53,7 +53,7 @@ SJH_NaviCell* SJH_FloorMap::SearchCurrentPosToNaviCell(const float4& _Position)
 	return nullptr;
 }
 
-bool SJH_FloorMap::MoveFacePath(SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<SJH_NaviCell*>& _MovePath)
+bool SJH_FloorMap::MoveFacePath(const float4& _StartPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<SJH_NaviCell*>& _MovePath)
 {
 	// 시작 삼각형 ~ 목표 삼각형까지의 이동 삼각형목록을 반환
 	// 단, 이동불가판단시 false를 반환하며 이동경로는 존재하지않는다.
@@ -67,17 +67,7 @@ bool SJH_FloorMap::MoveFacePath(SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetC
 	if (false == _MovePath.empty())
 	{
 		// 이동경로가 존재한다면 해당 경로의 최단거리의 직선경로를 알아낸다.
-
-
-
-
-
-
-
-
-
-
-		return true;
+		return StupidFunnelAlgorithm(_StartPos, _MovePath);
 	}
 
 	return false;
@@ -175,8 +165,6 @@ void SJH_FloorMap::CreateAllNaviCellInfo()
 
 	// 모든 면을 검사하여 인접한 면을 찾아내서 정보에 저장
 	FindAdjacentFaces();
-
-	int a = 0;
 }
 
 void SJH_FloorMap::FindAdjacentFaces()
@@ -197,6 +185,37 @@ void SJH_FloorMap::FindAdjacentFaces()
 			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
 		}
 	}
+}
+
+bool SJH_FloorMap::StupidFunnelAlgorithm(const float4& _StartPos, std::list<SJH_NaviCell*>& _MovePath)
+{
+	// A* 로 알아낸 이동경로에서 최적의 직선경로로 최적화작업!!!!
+
+
+	// 경로의 하나의 삼각형(셀)을 포탈로 지정하여 출발지점 ~ 도착지점까지의 최적의 직선경로로 변환
+	float4 CurPosition = _StartPos;
+
+	// 현재위치 -> 도착위치 방향을 알아내고,
+
+
+	// 
+
+
+
+
+	int a = 0;
+
+	//std::list<SJH_NaviCell*>::iterator StartIter = _MovePath.begin();
+	//std::list<SJH_NaviCell*>::iterator EndIter = _MovePath.end();
+	//for (; StartIter != EndIter; ++StartIter)
+	//{
+	//	// CurPosition ~ 포탈(Index)
+
+
+
+	//}
+
+	return true;
 }
 
 void SJH_FloorMap::Update(float _DeltaTime)

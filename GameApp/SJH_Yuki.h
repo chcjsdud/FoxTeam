@@ -59,7 +59,7 @@ private:
 private:
 	float4 MoveStartPos_;					// 이동경로의 시작 위치
 	float4 MoveEndPos_;						// 이동경로의 목표 위치
-	float4 MoveDir_;						// 이동경로의 이동방향
+	float4 FinalMovePos_;					// 마우스로 클릭한 위치(모든 이동경로 소진시 해당 위치까지 러프)
 	float MoveSpeed_;						// 이동속도
 
 private:

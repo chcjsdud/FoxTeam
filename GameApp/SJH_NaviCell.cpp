@@ -96,11 +96,13 @@ SJH_NaviCell* SJH_NaviCell::CompareVertices(const float4& _V0, const float4& _V1
 
 bool SJH_NaviCell::CheckPointisIncludedIntheTriangle(const float4& _Position)
 {
-	// 해당 좌표가 삼각형 내부에 포함되는지 체크
-	// 포함시 true 반환, 아니라면 false 반환
-
-
-
+	// 해당 삼각형의 내부에 한점(_Position)이 존재하면 true 반환
+	// Inside이 Zero인경우 모서리에 점이 존재
+	float4 Inside = DirectX::Internal::PointOnPlaneInsideTriangle(_Position.DirectVector, VertexList_[0].POSITION.DirectVector, VertexList_[1].POSITION.DirectVector, VertexList_[2].POSITION.DirectVector);
+	if (Inside != float4(0.0f, 0.0f, 0.0f, 0.0f))
+	{
+		return true;
+	}
 
 	return false;
 }
@@ -156,6 +158,10 @@ void SJH_NaviCell::CenterOfGravityCalculation()
 
 	// 기본정보 셋팅 완료
 	FaceInfoCompleted_ = true;
+}
+
+void SJH_NaviCell::StandingOntheCellCheck()
+{
 }
 
 SJH_NaviCell::SJH_NaviCell()
