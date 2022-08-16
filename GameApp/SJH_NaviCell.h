@@ -26,11 +26,6 @@ public:
 		return Index_;
 	}
 
-	inline bool GetFaceInfomationFlag() const
-	{
-		return FaceInfoCompleted_;
-	}
-
 	inline float4 GetCenterToGravity() const
 	{
 		return CenterOfGravity_;
@@ -48,6 +43,9 @@ public:
 public:
 	SJH_NaviCell* CompareVertices(const float4& _V0, const float4& _V1, const float4& _V2);
 	bool CheckPointisIncludedIntheTriangle(const float4& _Position);
+
+public:
+	void SetPortalVertex(SJH_NaviCell* _NextCell); // A* 경로에 해당하는 삼각형의 Portal Vertex Setting
 
 protected:
 
@@ -88,8 +86,8 @@ private: // 무게중심 및 인접한 면목록
 	float4 CenterOfGravity_;							// 해당 면(삼각형)의 무게중심
 	std::vector<SJH_NaviCell*> AdjacentTriangles_;		// 해당 면(삼각형)과 인접한 삼각형의 인덱스목록
 
-private:
-	bool FaceInfoCompleted_;							// 해당 면의 정보 수집완료 Flag
+private: // 경로로 지정된 삼각형일때 공유하는 정점목록
+	std::vector<GameEngineVertex> PortalVertex_;		// 포탈 정점
 
 private:
 	GameEngineActor* OntheFaceActor_;					// 해당 면에 존재하는 액터(아무것도 없을때 nullptr)

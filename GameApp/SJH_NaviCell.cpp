@@ -107,6 +107,22 @@ bool SJH_NaviCell::CheckPointisIncludedIntheTriangle(const float4& _Position)
 	return false;
 }
 
+void SJH_NaviCell::SetPortalVertex(SJH_NaviCell* _NextCell)
+{
+	// 다음셀과 공유하는 정점을 찾아서 저장
+	int VertexListSize = static_cast<int>(VertexList_.size());
+	for (int i = 0; i < VertexListSize; ++i)
+	{
+		for (int j = 0; j < static_cast<int>(_NextCell->VertexList_.size()); ++j)
+		{
+			if (VertexList_[i].POSITION == _NextCell->VertexList_[j].POSITION)
+			{
+				PortalVertex_.push_back(VertexList_[i]);
+			}
+		}
+	}
+}
+
 void SJH_NaviCell::CreateSideLineInfo()
 {
 	// 각 정점을 연결하는 선분들의 각각의 중점을 계산
@@ -155,9 +171,6 @@ void SJH_NaviCell::CenterOfGravityCalculation()
 		SideLines_[SideLine].ArrivalCost_ = std::sqrtf(std::powf(SideLines_[SideLine].MidPoint_.x - CenterOfGravity_.x, 2) + std::powf(SideLines_[SideLine].MidPoint_.y - CenterOfGravity_.y, 2) +
 											std::powf(SideLines_[SideLine].MidPoint_.z - CenterOfGravity_.z, 2));
 	}
-
-	// 기본정보 셋팅 완료
-	FaceInfoCompleted_ = true;
 }
 
 void SJH_NaviCell::StandingOntheCellCheck()
@@ -169,7 +182,6 @@ SJH_NaviCell::SJH_NaviCell()
 	, MeshIndex_(-1)
 	, FaceIndex_(-1)
 	, CenterOfGravity_(float4::ZERO)
-	, FaceInfoCompleted_(false)
 	, OntheFaceActor_(nullptr)
 {
 }

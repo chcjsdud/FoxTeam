@@ -99,7 +99,7 @@ void SJH_FloorMap::Start()
 	for (UINT i = 0; i < NaviMeshRenderer_->GetRenderSetCount(); i++)
 	{
 		NaviMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
-		NaviMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
+		NaviMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
 
 	// 네비게이션 셀정보 생성
@@ -181,6 +181,7 @@ void SJH_FloorMap::FindAdjacentFaces()
 			}
 
 			// 기준면의 인접한 면을 모두 찾아낸다.
+			// 두번째 인자 : false(한점이라도 공유한다면 인접한면), true(두점을 공유하고 한선분의 중점을 공유) -> default : true
 			//NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber], false);
 			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
 		}
@@ -190,30 +191,37 @@ void SJH_FloorMap::FindAdjacentFaces()
 bool SJH_FloorMap::StupidFunnelAlgorithm(const float4& _StartPos, std::list<SJH_NaviCell*>& _MovePath)
 {
 	// A* 로 알아낸 이동경로에서 최적의 직선경로로 최적화작업!!!!
-
-
-	// 경로의 하나의 삼각형(셀)을 포탈로 지정하여 출발지점 ~ 도착지점까지의 최적의 직선경로로 변환
 	float4 CurPosition = _StartPos;
 
-	// 현재위치 -> 도착위치 방향을 알아내고,
+	// 1. _MovePath를 이용하여 경로상 서로 인접한 정점(Portal)을 각각 저장
+	std::list<SJH_NaviCell*>::iterator StartIter = _MovePath.begin();
+	std::list<SJH_NaviCell*>::iterator EndIter = _MovePath.end();
+	for (; StartIter != EndIter;)
+	{
+		SJH_NaviCell* SetCell = (*StartIter);
+
+		++StartIter;
+		if (StartIter != EndIter)
+		{
+			SetCell->SetPortalVertex((*StartIter));
+		}
+	}
+
+	// 2. 
+	//    1) _StartPos 에서 첫번째 포탈(Portal)을 연결하는 절두체 생성
+	//    2) 두번째 포탈이 첫번째 포탈범위내에 존재하면 절두체를 좁힌다.
+	//    3) 계속하여 포탈을 검사하여 절두체의 넓이를 좁혀나간다.
+	//    4) 단, 좁혀나가던 절두체에서 다음 포탈을 검사했을때 교차한다면 EndPoint와 가까운정점을 WayPoint로 저장후
+	//       해당 WayPoint를 기준으로 다음 포탈을 향한 절두체를 생성하여 위와 같은 행동을 반복처리
+	//    5) 마지막포탈까지 검사완료했다면 해당 이동경로를 반환한다.
 
 
-	// 
 
 
 
 
 	int a = 0;
 
-	//std::list<SJH_NaviCell*>::iterator StartIter = _MovePath.begin();
-	//std::list<SJH_NaviCell*>::iterator EndIter = _MovePath.end();
-	//for (; StartIter != EndIter; ++StartIter)
-	//{
-	//	// CurPosition ~ 포탈(Index)
-
-
-
-	//}
 
 	return true;
 }
