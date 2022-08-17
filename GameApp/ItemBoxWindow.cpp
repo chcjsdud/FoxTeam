@@ -22,12 +22,12 @@ void ItemBoxWindow::OnGUI()
 {
 	if (true == ImGui::Button("UserSave"))
 	{
-		//ItemBoxManager_->UserSave_ItemListInfo();
+		ItemBoxManager_->UserSave_ItemListInfo();
 	}
 	ImGui::SameLine();
 	if (true == ImGui::Button("UserLoad"))
 	{
-		//ItemBoxManager_->UserLoad_ItemListInfo();
+		ItemBoxManager_->UserLoad_ItemListInfo();
 	}
 
 	SelectBox_ = ItemBoxManager_->GetSelectBox();

@@ -4,6 +4,9 @@
 #include "YSJ_Mouse.h"
 #include "Enums.h"
 #include "ItemBase.h"
+#include "EquipmentItem.h"
+#include "UseableItem.h"
+#include "MiscItem.h"
 
 ItemBoxManager::ItemBoxManager()
 	: SelectBox(nullptr)
@@ -221,12 +224,12 @@ void ItemBoxManager::UserAllLoad(GameEngineDirectory _Dir)
 	
 	ItemBoxInfoPath = _Dir.GetFullPath();
 
-	UserLoad_ItemListInfo();
+	//UserLoad_ItemListInfo();
 }
 
 void ItemBoxManager::UserSave_ItemListInfo()
 {
-	GameEngineFile NewFile = GameEngineFile(ItemBoxInfoPath + "ItemList.ItemListInfo", "wb");
+	GameEngineFile NewFile = GameEngineFile(ItemBoxInfoPath + "\\ItemList.ItemListInfo", "wb");
 
 	NewFile.Write(static_cast<int>(ItemBoxs.size()));
 
@@ -240,6 +243,7 @@ void ItemBoxManager::UserSave_ItemListInfo()
 
 			for (auto& Item : ItemBox.second[i].ItemList)
 			{
+				NewFile.Write(Item->GetName());
 				NewFile.Write(static_cast<int>(Item->Type));
 				if (nullptr == Item->Renderer)
 				{
@@ -257,6 +261,83 @@ void ItemBoxManager::UserSave_ItemListInfo()
 
 void ItemBoxManager::UserLoad_ItemListInfo()
 {
-	GameEngineFile NewFile = GameEngineFile(ItemBoxInfoPath + "ItemList.ItemListInfo", "rb");
+	GameEngineFile NewFile = GameEngineFile(ItemBoxInfoPath + "\\ItemList.ItemListInfo", "rb");
+
+	int mapSize = 0;
+
+	// map °¹¼ö
+	NewFile.Read(mapSize);
+
+	for (size_t i = 0; i < mapSize; i++)
+	{
+		std::string KeyName;
+		NewFile.Read(KeyName);
+
+		std::vector<ItemBox> vecItemBox;
+
+		int vecItemBoxSize = 0;
+		NewFile.Read(vecItemBoxSize);
+
+		vecItemBox.resize(vecItemBoxSize);
+
+		for (size_t j = 0; j < vecItemBoxSize; j++)
+		{
+			int ItemListSize = 0;
+
+			NewFile.Read(ItemListSize);
+
+			for (size_t k = 0; k < ItemListSize; k++)
+			{
+				std::string ItemName;
+				NewFile.Read(ItemName);
+				int Type = 0;
+				NewFile.Read(Type);
+
+				ItemBase* Item = nullptr;
+				
+				switch (static_cast<ItemType>(Type))
+				{
+				case ItemType::None:
+					break;
+				case ItemType::Equipment:
+					Item = GetLevel()->CreateActor<EquipmentItem>();
+					break;
+				case ItemType::Useable:
+					Item = GetLevel()->CreateActor<UseableItem>();
+					break;
+				case ItemType::Misc:
+					Item = GetLevel()->CreateActor<MiscItem>();
+					break;
+				default:
+					break;
+				}
+
+				if (nullptr != Item)
+				{
+					Item->SetName(ItemName);
+					Item->Type = static_cast<ItemType>(Type);
+				}
+
+				std::string ImageName;
+				NewFile.Read(ImageName);
+				if ("" != ImageName)
+				{
+					Item->SetImage(ImageName);
+				}
+
+				vecItemBox[j].ItemList.push_back(Item);
+			}
+
+			std::map<std::string, std::vector<ItemBox>>::iterator iter = ItemBoxs.find(KeyName);
+
+			if (ItemBoxs.end() == iter)
+			{
+				GameEngineDebug::MsgBoxError("if (ItemBoxs.end() == ItemBoxs.find(AreaName))");
+				return;
+			}
+
+			(*iter).second[j].ItemList = vecItemBox[j].ItemList;
+		}
+	}
 }
 
