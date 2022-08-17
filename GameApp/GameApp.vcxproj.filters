@@ -203,6 +203,9 @@
     <ClCompile Include="UI_ItemBox.cpp">
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClCompile>
+    <ClCompile Include="SJH_Funnel.cpp">
+      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\01.Funnel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -387,6 +390,9 @@
     </Filter>
     <Filter Include="01.GameObject\99.YSJ\02Actor\ItemBox\Item">
       <UniqueIdentifier>{d3852990-4947-495d-8087-5498048dc846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell\01.Funnel">
+      <UniqueIdentifier>{9269cfad-5c5a-46f7-80d8-a000c1eeb1c9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -593,6 +599,9 @@
     </ClInclude>
     <ClInclude Include="UI_ItemBox.h">
       <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SJH_Funnel.h">
+      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\01.Funnel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

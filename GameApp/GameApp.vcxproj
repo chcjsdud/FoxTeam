@@ -263,6 +263,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="SJH_Funnel.cpp" />
     <ClCompile Include="SJH_NaviCell.cpp" />
     <ClCompile Include="SJH_PathFinder.cpp" />
     <ClCompile Include="UI_CharPicture.cpp" />
@@ -451,6 +452,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="SJH_Funnel.h" />
     <ClInclude Include="SJH_NaviCell.h" />
     <ClInclude Include="SJH_PathFinder.h" />
     <ClInclude Include="UI_CharPicture.h" />
