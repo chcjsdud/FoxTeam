@@ -22,6 +22,8 @@ protected:
 private:
 	void PushItem();
 	void DeleteItem();
+	
+	void CreateAllItemList();
 
 public:
 	ItemBoxManager* ItemBoxManager_;
@@ -29,7 +31,7 @@ public:
 	int ListSelectItem;
 	int ListSelectItemBox;
 	
-
-	std::vector<const char*> vecArr;
+	std::list<ItemBase*> AllItemList;
+	std::vector<const char*> AllItemName;
 };
 

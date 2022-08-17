@@ -190,6 +190,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Character_ProtoType_State.cpp" />
+    <ClCompile Include="CreateItemDB.cpp" />
     <ClCompile Include="EquipmentItem.cpp">
       <SubType>
       </SubType>

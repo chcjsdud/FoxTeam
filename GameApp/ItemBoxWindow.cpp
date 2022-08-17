@@ -10,9 +10,11 @@ ItemBoxWindow::ItemBoxWindow()
 	, ListSelectItem(-1)
 	, ListSelectItemBox(-1)
 {
-	vecArr.push_back("Test1");
-	vecArr.push_back("Test2");
-	vecArr.push_back("Test3");
+	CreateAllItemList();
+
+	AllItemName.push_back("Test1");
+	AllItemName.push_back("Test2");
+	AllItemName.push_back("Test3");
 }
 
 ItemBoxWindow::~ItemBoxWindow()
@@ -42,7 +44,7 @@ void ItemBoxWindow::OnGUI()
 		}
 
 		ImGui::PushItemWidth(200);
-		ImGui::ListBox("##ItemList", &ListSelectItem, &vecArr[0], static_cast<ImGuiID>(vecArr.size()));
+		ImGui::ListBox("##ItemList", &ListSelectItem, &AllItemName[0], static_cast<ImGuiID>(AllItemName.size()));
 	
 		if (false == ItemListName.empty())
 		{
@@ -73,7 +75,7 @@ void ItemBoxWindow::PushItem()
 {
 	ItemBase* NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
 
-	NewItem->SetName(vecArr[ListSelectItem]);
+	NewItem->SetName(AllItemName[ListSelectItem]);
 
 	SelectBox_->ItemList.push_back(NewItem);
 }
@@ -96,4 +98,3 @@ void ItemBoxWindow::DeleteItem()
 		index++;
 	}
 }
-

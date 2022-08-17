@@ -1,15 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
-enum class ItemType
-{
-	// 일단 만들어봄, 필요할지 안할지는 모르겠슴 지금은 지워도 무관함
-
-	None,
-	Equipment,
-	Useable,
-	Misc
-};
 
 class Inventory;
 class Item : public GameEngineActor

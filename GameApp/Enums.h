@@ -14,7 +14,6 @@ enum class CollisionGroup
 	ItemBox,
 	UI,
 
-
 	MAX = 999
 
 };
@@ -41,3 +40,11 @@ enum class JobType // 직업타입
 
 #pragma endregion
 
+
+enum class ItemType
+{
+	None,
+	Equipment,
+	Useable,
+	Misc
+};

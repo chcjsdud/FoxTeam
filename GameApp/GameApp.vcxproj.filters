@@ -209,6 +209,9 @@
     <ClCompile Include="SJH_Funnel.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\01.Funnel</Filter>
     </ClCompile>
+    <ClCompile Include="CreateItemDB.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -270,9 +273,6 @@
     </Filter>
     <Filter Include="01.GameObject\99.LH\PlayLevel\Map">
       <UniqueIdentifier>{6b09dc04-e094-4d8f-a861-b450d419d49f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\ENUMs">
-      <UniqueIdentifier>{2e0372bc-0aab-4540-8ca0-d601cac9e32a}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\99.LH\PlayLevel\Manager">
       <UniqueIdentifier>{043d8cd8-a08b-4bb7-a9ea-5796ac32ddca}</UniqueIdentifier>
@@ -428,9 +428,6 @@
     </ClInclude>
     <ClInclude Include="LH_TestMonster.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\ENUMs</Filter>
     </ClInclude>
     <ClInclude Include="LH_LockOnUI.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
@@ -608,6 +605,9 @@
     </ClInclude>
     <ClInclude Include="SJH_Funnel.h">
       <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\01.Funnel</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
