@@ -1,5 +1,5 @@
 #pragma once
-#include "SJH_NaviCell.h"
+#include "SJH_Funnel.h"
 
 // A* 노드 정보
 class SJH_NaviCell;
@@ -37,15 +37,17 @@ public:
 	}
 };
 
-// 용도 : A* 
+// 용도 : A* 로 최단경로를 구한 후 Funnel Algorithm을 통해 최적경로를 반환
+class SJH_Funnel;
 class SJH_PathFinder
 {
 public:
-	std::list<SJH_NaviCell*> AStarMovePath(SJH_NaviCell* _StartCell, SJH_NaviCell* _EndCell, int _Maximum = 1000);
+	std::list<float4> SearchMovePath(const float4& _StartPos, const float4& _EndPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _EndCell, int _Maximum = 10000);
 
 protected:
 
-private:
+private: // A*
+	std::list<SJH_NaviCell*> AStarMovePath(SJH_NaviCell* _StartCell, SJH_NaviCell* _EndCell, int _Maximum = 1000);
 	SJH_AStarNode* CreateNode(SJH_NaviCell* _StartCell, SJH_NaviCell* _EndCell, SJH_AStarNode* _ParentNode = nullptr);
 	std::list<SJH_NaviCell*> CalReturn(SJH_AStarNode* _EndNode);
 
@@ -76,5 +78,8 @@ private: // 열린노드목록
 private: // 닫힌노드목록
 	std::list<SJH_AStarNode*> CloseList_;				// 닫힌노드목록
 	std::set<int> CloseKeys_;							// 닫힌노드 Key
+
+private:
+	SJH_Funnel* Funnel_;								// 깔때기알고리즘객체
 };
 

@@ -90,7 +90,7 @@ bool SJH_Ray::IsMeshPicked(GameEngineFBXRenderer* _Mesh, const float4& _MousePos
 SJH_NaviCell* SJH_Ray::IsPickedCell(GameEngineFBXRenderer* _Mesh, const float4& _MousePos, float4& _PickedPos)
 {
     // 광선을 월드영역으로 이동
- // 결과값 : 광선시작위치, 광선의방향
+    // 결과값 : 광선시작위치, 광선의방향
     if (false == RayAtViewSpace(_MousePos))
     {
         return nullptr;

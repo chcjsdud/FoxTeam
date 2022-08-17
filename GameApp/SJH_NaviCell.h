@@ -4,13 +4,11 @@
 struct SideLine
 {
 public:
-	GameEngineVertex StartVertex_;		// 선분의 시작점
-	GameEngineVertex EndVertex_;		// 선분의 끝점
-	float4 MidPoint_;					// 선분의 중점
-	float ArrivalCost_;					// 무게중심-중점까지의 거리
+	std::vector<GameEngineVertex> Vertex_;	// (시작점,끝점)
+	float4 MidPoint_;						// 선분의 중점
 
 public:
-	SideLine() : StartVertex_(), EndVertex_(), MidPoint_(float4::ZERO), ArrivalCost_(0.0f)
+	SideLine() : MidPoint_(float4::ZERO)
 	{
 	}
 };
@@ -45,7 +43,7 @@ public:
 	bool CheckPointisIncludedIntheTriangle(const float4& _Position);
 
 public:
-	void SetPortalVertex(SJH_NaviCell* _NextCell); // A* 경로에 해당하는 삼각형의 Portal Vertex Setting
+	std::vector<GameEngineVertex> SearchShareVertex(SJH_NaviCell* _ShareCell);
 
 protected:
 
@@ -80,16 +78,10 @@ private: // 수신받는 정보
 	std::vector<UINT> IndexList_;						// 해당 면을 구성하는 인덱스목록
 
 private: // 해당 면을 감싸는 선분목록
-	std::vector<SideLine> SideLines_;					// 3개의 정점을 각각 연결하는 선분의 정보(선분의 2정점, 중점)
+	std::vector<SideLine> SideLines_;					// 3개의 정점을 각각 연결하는 선분의 정보(선분의 2개정점, 중점)
 
 private: // 무게중심 및 인접한 면목록
 	float4 CenterOfGravity_;							// 해당 면(삼각형)의 무게중심
 	std::vector<SJH_NaviCell*> AdjacentTriangles_;		// 해당 면(삼각형)과 인접한 삼각형의 인덱스목록
-
-private: // 경로로 지정된 삼각형일때 공유하는 정점목록
-	std::vector<GameEngineVertex> PortalVertex_;		// 포탈 정점
-
-private:
-	GameEngineActor* OntheFaceActor_;					// 해당 면에 존재하는 액터(아무것도 없을때 nullptr)
 };
 

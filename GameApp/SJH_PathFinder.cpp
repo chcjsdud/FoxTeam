@@ -1,6 +1,32 @@
 #include "Precompile.h"
 #include "SJH_PathFinder.h"
 
+std::list<float4> SJH_PathFinder::SearchMovePath(const float4& _StartPos, const float4& _EndPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _EndCell, int _Maximum)
+{
+	// 1. A*를 이용하여 최단거리 반환후 최단경로 반환
+	std::list<SJH_NaviCell*> AStartPath;
+	AStartPath = AStarMovePath(_StartCell, _EndCell, _Maximum);
+	if (false == AStartPath.empty())
+	{
+		// 2. Funnel Algorithm을 이용하여 가시적인 직선경로 반환
+		if (nullptr == Funnel_)
+		{
+			// 객체 생성
+			Funnel_ = new SJH_Funnel();
+		}
+
+		std::list<float4> ReturnPath;
+		ReturnPath = Funnel_->PathOptimization(_StartPos, _EndPos, AStartPath);
+		if (false == ReturnPath.empty())
+		{
+			// 최적경로 생성완료
+			return ReturnPath;
+		}
+	}
+
+	return std::list<float4>();
+}
+
 std::list<SJH_NaviCell*> SJH_PathFinder::AStarMovePath(SJH_NaviCell* _StartCell, SJH_NaviCell* _EndCell, int _Maximum)
 {
 	// 초기화
@@ -121,9 +147,15 @@ std::list<SJH_NaviCell*> SJH_PathFinder::CalReturn(SJH_AStarNode* _EndNode)
 
 SJH_PathFinder::SJH_PathFinder()
 	: PoolCount_(0)
+	, Funnel_(nullptr)
 {
 }
 
 SJH_PathFinder::~SJH_PathFinder()
 {
+	if (nullptr != Funnel_)
+	{
+		delete Funnel_;
+		Funnel_ = nullptr;
+	}
 }

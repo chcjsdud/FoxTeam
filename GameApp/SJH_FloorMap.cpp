@@ -53,21 +53,21 @@ SJH_NaviCell* SJH_FloorMap::SearchCurrentPosToNaviCell(const float4& _Position)
 	return nullptr;
 }
 
-bool SJH_FloorMap::MoveFacePath(const float4& _StartPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<SJH_NaviCell*>& _MovePath)
+bool SJH_FloorMap::MoveFacePath(const float4& _StartPos, const float4& _EndPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<float4>& _MovePath)
 {
-	// 시작 삼각형 ~ 목표 삼각형까지의 이동 삼각형목록을 반환
-	// 단, 이동불가판단시 false를 반환하며 이동경로는 존재하지않는다.
 	if (nullptr == PathFinder_)
 	{
 		PathFinder_ = new SJH_PathFinder();
 	}
 
 	// 경로 탐색 시작
-	_MovePath = PathFinder_->AStarMovePath(_StartCell, _TargetCell, static_cast<int>(NavigationCellInfos_.size()));
+	// 1. A*로 최단거리 경로를 얻어낸 후
+	// 2. 해당 경로를 최적화작업(Funnel Algorithm)으로 최적의 경로를 반환
+	//PathFinder_->SearchMovePath(_StartPos, _EndPos, _StartCell, _TargetCell);
+	_MovePath = PathFinder_->SearchMovePath(_StartPos, _EndPos, _StartCell, _TargetCell, static_cast<int>(NavigationCellInfos_.size()));
 	if (false == _MovePath.empty())
 	{
-		// 이동경로가 존재한다면 해당 경로의 최적의 직선경로를 반환
-		return StupidFunnelAlgorithm(_StartPos, _MovePath);
+		return true;
 	}
 
 	return false;
@@ -186,44 +186,6 @@ void SJH_FloorMap::FindAdjacentFaces()
 			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
 		}
 	}
-}
-
-bool SJH_FloorMap::StupidFunnelAlgorithm(const float4& _StartPos, std::list<SJH_NaviCell*>& _MovePath)
-{
-	// A* 로 알아낸 이동경로에서 최적의 직선경로로 최적화작업!!!!
-	float4 CurPosition = _StartPos;
-
-	// 1. _MovePath를 이용하여 경로상 서로 인접한 정점(Portal)을 각각 저장
-	std::list<SJH_NaviCell*>::iterator StartIter = _MovePath.begin();
-	std::list<SJH_NaviCell*>::iterator EndIter = _MovePath.end();
-	for (; StartIter != EndIter;)
-	{
-		SJH_NaviCell* SetCell = (*StartIter);
-
-		++StartIter;
-		if (StartIter != EndIter)
-		{
-			SetCell->SetPortalVertex((*StartIter));
-		}
-	}
-
-	// 2. 
-	//    1) _StartPos 에서 첫번째 포탈(Portal)을 연결하는 절두체 생성
-	//    2) 두번째 포탈이 첫번째 포탈범위내에 존재하면 절두체를 좁힌다.
-	//    3) 계속하여 포탈을 검사하여 절두체의 넓이를 좁혀나간다.
-	//    4) 단, 좁혀나가던 절두체에서 다음 포탈을 검사했을때 교차한다면 EndPoint와 가까운정점을 WayPoint로 저장후
-	//       해당 WayPoint를 기준으로 다음 포탈을 향한 절두체를 생성하여 위와 같은 행동을 반복처리
-	//    5) 마지막포탈까지 검사완료했다면 해당 이동경로를 반환한다.
-
-
-
-
-
-
-	int a = 0;
-
-
-	return true;
 }
 
 void SJH_FloorMap::Update(float _DeltaTime)

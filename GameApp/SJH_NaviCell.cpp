@@ -107,20 +107,28 @@ bool SJH_NaviCell::CheckPointisIncludedIntheTriangle(const float4& _Position)
 	return false;
 }
 
-void SJH_NaviCell::SetPortalVertex(SJH_NaviCell* _NextCell)
+std::vector<GameEngineVertex> SJH_NaviCell::SearchShareVertex(SJH_NaviCell* _ShareCell)
 {
-	// 다음셀과 공유하는 정점을 찾아서 저장
+	std::vector<GameEngineVertex> ReturnVertex;
+
 	int VertexListSize = static_cast<int>(VertexList_.size());
 	for (int i = 0; i < VertexListSize; ++i)
 	{
-		for (int j = 0; j < static_cast<int>(_NextCell->VertexList_.size()); ++j)
+		for (int j = 0; j < static_cast<int>(_ShareCell->VertexList_.size()); ++j)
 		{
-			if (VertexList_[i].POSITION == _NextCell->VertexList_[j].POSITION)
+			if (VertexList_[i].POSITION == _ShareCell->VertexList_[j].POSITION)
 			{
-				PortalVertex_.push_back(VertexList_[i]);
+				ReturnVertex.push_back(VertexList_[i]);
 			}
 		}
 	}
+
+	if (2 == ReturnVertex.size())
+	{
+		return ReturnVertex;
+	}
+
+	return std::vector<GameEngineVertex>();
 }
 
 void SJH_NaviCell::CreateSideLineInfo()
@@ -136,18 +144,18 @@ void SJH_NaviCell::CreateSideLineInfo()
 		{
 			// A,B,C 세개의 정점을 가지는 삼각형일때
 			// 마지막정점인 C 정점순서이면 C-A 연결
-			NewSideLine.StartVertex_ = VertexList_[Vertex];
-			NewSideLine.EndVertex_ = VertexList_[0];
+			NewSideLine.Vertex_.push_back(VertexList_[Vertex]);
+			NewSideLine.Vertex_.push_back(VertexList_[0]);
 		}
 		else
 		{
 			// 아니라면 A-B, B-C 연결
-			NewSideLine.StartVertex_ = VertexList_[Vertex];
-			NewSideLine.EndVertex_ = VertexList_[Vertex + 1];
+			NewSideLine.Vertex_.push_back(VertexList_[Vertex]);
+			NewSideLine.Vertex_.push_back(VertexList_[Vertex + 1]);
 		}
 
 		// 선분의 중점을 계산하여 저장
-		float4 MidPoint = (NewSideLine.EndVertex_.POSITION - NewSideLine.StartVertex_.POSITION) * 0.5f;
+		float4 MidPoint = (NewSideLine.Vertex_[1].POSITION - NewSideLine.Vertex_[0].POSITION) * 0.5f;
 		NewSideLine.MidPoint_ = MidPoint;
 
 		// 총 3개의 사이드라인 생성
@@ -163,14 +171,6 @@ void SJH_NaviCell::CenterOfGravityCalculation()
 	float4 Vertex1 = VertexList_[1].POSITION;
 	float4 Vertex2 = VertexList_[2].POSITION;
 	CenterOfGravity_ = (Vertex0 + Vertex1 + Vertex2) / 3.0f;
-
-	// 면의 무게중심에서 각 선분의 중점을 향하는 벡터의 길이를 알아낸다.
-	int SideLineCount = static_cast<int>(SideLines_.size());
-	for (int SideLine = 0; SideLine < SideLineCount; ++SideLine)
-	{
-		SideLines_[SideLine].ArrivalCost_ = std::sqrtf(std::powf(SideLines_[SideLine].MidPoint_.x - CenterOfGravity_.x, 2) + std::powf(SideLines_[SideLine].MidPoint_.y - CenterOfGravity_.y, 2) +
-											std::powf(SideLines_[SideLine].MidPoint_.z - CenterOfGravity_.z, 2));
-	}
 }
 
 void SJH_NaviCell::StandingOntheCellCheck()
@@ -182,7 +182,6 @@ SJH_NaviCell::SJH_NaviCell()
 	, MeshIndex_(-1)
 	, FaceIndex_(-1)
 	, CenterOfGravity_(float4::ZERO)
-	, OntheFaceActor_(nullptr)
 {
 }
 

@@ -24,17 +24,13 @@ public:
 
 public:
 	SJH_NaviCell* SearchCurrentPosToNaviCell(const float4& _Position);
-	bool MoveFacePath(const float4& _StartPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<SJH_NaviCell*>& _MovePath);
-	//bool MoveFacePath(const float4& _StartPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<float4>& _MovePath);		// 내일 변경
+	bool MoveFacePath(const float4& _StartPos, const float4& _EndPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _TargetCell, std::list<float4>& _MovePath);
 
 protected:
 
 private:
 	void CreateAllNaviCellInfo();
 	void FindAdjacentFaces();
-
-private: // A*로 알아낸 경로에서 최적의 직선경로를 알아내는 함수
-	bool StupidFunnelAlgorithm(const float4& _StartPos, std::list<SJH_NaviCell*>& _MovePath);
 
 private:
 	void Start() override;

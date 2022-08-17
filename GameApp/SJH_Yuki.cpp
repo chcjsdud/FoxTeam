@@ -43,22 +43,15 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 		// 이동목표지점의 삼각형 갱신
 		TargetNaviCell_ = _TargetNaviCell;
 
-		// 플레이어 이동 시작 위치 Get
-		MoveStartPos_ = GetTransform()->GetWorldPosition();
-
 		// 현재 플레이어의 NaviCell ~ _TargetNaviCell까지의 이동경로 생성
-		if (true == SJH_FloorMap::FloorMap->MoveFacePath(MoveStartPos_, CurNaviCell_, TargetNaviCell_, MovePath_))
+		if (true == SJH_FloorMap::FloorMap->MoveFacePath(GetTransform()->GetWorldPosition(), _MoveTargetPos, CurNaviCell_, TargetNaviCell_, MovePath_))
 		{
-			// 마지막 위치 셋팅
-			FinalMovePos_ = _MoveTargetPos;
+			// 이동시작위치 지정
+			MoveStartPos_ = MovePath_.front();
+			MovePath_.pop_front();
 
-			MovePathTarget_ = MovePath_.front();
-			if (nullptr != MovePathTarget_)
-			{
-				MoveEndPos_ = MovePathTarget_->GetCenterToGravity();
-			}
-			
-			// 사용끝난 경로 제거
+			// 경로상의 이동목표위치 지정
+			MoveEndPos_ = MovePath_.front();
 			MovePath_.pop_front();
 
 			// 이동경로 생성완료 후 Flag On
@@ -245,7 +238,7 @@ void SJH_Yuki::Update(float _DeltaTime)
 		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[14], true);
 	}
 
-	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동한다.
+	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동
 	if (true == MoveStart_)
 	{
 		// 이동 처리
@@ -254,60 +247,32 @@ void SJH_Yuki::Update(float _DeltaTime)
 
 		GetTransform()->SetWorldPosition(LerpPos);
 
-		// 현재 이동경로 목표지점(셀)에 도착시 이동정보 갱신
-		// 현재 이동목표 삼각형(셀)의 무게중심과 거리가 5 이하이면 이동완료판단???
-		if(1.0f < LerpMoveTime_)
+		// 이동완료시
+		if (1.0f < LerpMoveTime_)
 		{
 			LerpMoveTime_ = 0.0f;
 
-			// 남아있는 경로가 있다면
+			// 이동경로가 남아있다면
 			if (false == MovePath_.empty())
 			{
-				// 시작위치, 목표위치, 이동방향 설정
+				// 시작위치 재설정
 				MoveStartPos_ = GetTransform()->GetWorldPosition();
 
-				MovePathTarget_ = MovePath_.front();
-				if (nullptr != MovePathTarget_)
-				{
-					MoveEndPos_ = MovePathTarget_->GetCenterToGravity();
-				}
-
-				// 사용끝난 경로 제거
+				// 목표위치 재설정
+				MoveEndPos_ = MovePath_.front();
 				MovePath_.pop_front();
+
 			}
-			// 남은경로가 없다면
+			// 남아있는 경로가 없다면
 			else
 			{
-				int a = 0;
+				// 이동종료 및 이동정보 초기화
+				MoveStartPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
+				MoveEndPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
-				// 마우스 피킹 위치가 존재한다면
-				if (FinalMovePos_ != float4(0.0f, 0.0f, 0.0f, 0.0f))
-				{
-					// 현재 위치를 시작위치로 설정
-					MoveStartPos_ = GetTransform()->GetWorldPosition();
-
-					// 마지막으로 마우스피킹위치까지 이동정보 저장 후
-					MoveEndPos_ = FinalMovePos_;
-
-					// 마우스피킹위치 제거
-					FinalMovePos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
-				}
-				else
-				{
-					// 현재 플레이어가 위치한 삼각형(셀)을 셋팅하고
-					CurNaviCell_ = TargetNaviCell_;
-
-					// 이동목표 삼각형(셀)을 초기화
-					TargetNaviCell_ = nullptr;
-
-					// 이동종료 및 이동정보 초기화
-					MoveStartPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
-					MoveEndPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
-
-					// 이동종료
-					MoveStart_ = false;
-					MovePath_.clear();
-				}
+				// 이동종료
+				MoveStart_ = false;
+				MovePath_.clear();
 			}
 		}
 	}
@@ -322,7 +287,6 @@ SJH_Yuki::SJH_Yuki()
 	, MovePathTarget_(nullptr)
 	, MoveStartPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveEndPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
-	, FinalMovePos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveSpeed_(5.0f)
 	, LerpMoveTime_(0.0f)
 {

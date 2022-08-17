@@ -53,14 +53,12 @@ private:
 	bool MoveStart_;						// 이동경로 생성 완료시 On
 
 private:
-	std::list<SJH_NaviCell*> MovePath_;		// 이동 경로 : 목표지점까지의 이동가능한 삼각형(셀) 목록
-	//std::list<float4> MovePath_;			// 이동경로 최적화후 해당 경로로 변환예정
+	std::list<float4> MovePath_;			// 이동경로
 	SJH_NaviCell* MovePathTarget_;			// 이동완료 체크용
 
 private:
 	float4 MoveStartPos_;					// 이동경로의 시작 위치
 	float4 MoveEndPos_;						// 이동경로의 목표 위치
-	float4 FinalMovePos_;					// 마우스로 클릭한 위치(모든 이동경로 소진시 해당 위치까지 러프)
 	float MoveSpeed_;						// 이동속도
 
 private:
