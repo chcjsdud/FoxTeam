@@ -3,18 +3,51 @@
 #include "ItemBoxManager.h"
 #include "ItemBase.h"
 #include <GameEngine/GameEngineCore.h>
-
-// Item List를 작성, 유저 세이브 그 이후에는 주석처리
-// 리스트정보를 유저로드로 불러옴
+#include "EquipmentItem.h"
+#include "UseableItem.h"
+#include "MiscItem.h"
 
 void ItemBoxWindow::CreateAllItemList()
 {
-	{
-		ItemBase* NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
-		NewItem->SetName("Item1");
-		NewItem->SetItemType(ItemType::Equipment);
-		// NewItem->SetImage();
+	EquipmentItem* Item = reinterpret_cast<EquipmentItem*>(CreateItem("Test1", ItemType::Equipment));
+	CreateItem("Test2", ItemType::Useable);
+	CreateItem("Test3", ItemType::Misc);
+}
 
-		AllItemList.push_back(NewItem);
+ItemBase* ItemBoxWindow::CreateItem(const std::string _Name, ItemType _Type,
+	const std::string _ImageName /*= ""*/)
+{
+	ItemBase* NewItem = nullptr;
+
+	switch (_Type)
+	{
+	case ItemType::None:
+		NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
+		break;
+	case ItemType::Equipment:
+		NewItem = GameEngineCore::CurrentLevel()->CreateActor<EquipmentItem>();
+		break;
+	case ItemType::Useable:
+		NewItem = GameEngineCore::CurrentLevel()->CreateActor<UseableItem>();
+		break;
+	case ItemType::Misc:
+		NewItem = GameEngineCore::CurrentLevel()->CreateActor<MiscItem>();
+		break;
+	default:
+		break;
 	}
+
+	NewItem->SetName(_Name);
+	NewItem->SetItemType(_Type);
+
+	if ("" != _ImageName)
+	{
+		NewItem->SetImage(_ImageName);
+	}
+
+	AllItemList.push_back(NewItem);
+
+	AllItemName.push_back(NewItem->GetName().c_str());
+
+	return NewItem;
 }

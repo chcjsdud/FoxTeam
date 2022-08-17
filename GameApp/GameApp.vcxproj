@@ -243,6 +243,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="MiscItem.cpp" />
     <ClCompile Include="NaviActor.cpp">
       <SubType>
       </SubType>
@@ -354,6 +355,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="UseableItem.cpp" />
     <ClCompile Include="UserGame.cpp">
       <SubType>
       </SubType>
@@ -436,6 +438,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MiscItem.h" />
     <ClInclude Include="NaviActor.h">
       <SubType>
       </SubType>
@@ -539,6 +542,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="UseableItem.h" />
     <ClInclude Include="UserGame.h">
       <SubType>
       </SubType>

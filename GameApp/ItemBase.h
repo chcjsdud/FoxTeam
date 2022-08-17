@@ -27,6 +27,9 @@ public:
 	}
 	void SetImage(const std::string& _ImageName, const std::string& _Sampler = "");
 
+	// ItemType 따라서 Copy 할 정보가 다름 virtual
+	ItemBase* Copy();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

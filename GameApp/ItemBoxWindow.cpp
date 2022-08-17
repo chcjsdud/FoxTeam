@@ -11,10 +11,6 @@ ItemBoxWindow::ItemBoxWindow()
 	, ListSelectItemBox(-1)
 {
 	CreateAllItemList();
-
-	AllItemName.push_back("Test1");
-	AllItemName.push_back("Test2");
-	AllItemName.push_back("Test3");
 }
 
 ItemBoxWindow::~ItemBoxWindow()
@@ -73,11 +69,23 @@ void ItemBoxWindow::OnGUI()
 
 void ItemBoxWindow::PushItem()
 {
-	ItemBase* NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
+	// ItemBase* NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
+	// NewItem->SetName(AllItemName[ListSelectItem]);
 
-	NewItem->SetName(AllItemName[ListSelectItem]);
+	int index = 0;
 
-	SelectBox_->ItemList.push_back(NewItem);
+	std::list<ItemBase*>::iterator iter = AllItemList.begin();
+
+	for (; iter != AllItemList.end(); iter++)
+	{
+		if (index == ListSelectItem)
+		{
+			SelectBox_->ItemList.push_back((*iter)->Copy());
+			break;
+		}
+
+		index++;
+	}
 }
 
 void ItemBoxWindow::DeleteItem()
