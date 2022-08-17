@@ -3,6 +3,16 @@
 
 std::list<float4> SJH_PathFinder::SearchMovePath(const float4& _StartPos, const float4& _EndPos, SJH_NaviCell* _StartCell, SJH_NaviCell* _EndCell, int _Maximum)
 {
+	std::list<float4> ReturnPath;
+
+	// 이동시작셀과 이동목표셀이 같다면 
+	if (_StartCell == _EndCell)
+	{
+		ReturnPath.push_back(_StartPos);
+		ReturnPath.push_back(_EndPos);
+		return ReturnPath;
+	}
+
 	// 1. A*를 이용하여 최단거리 반환후 최단경로 반환
 	std::list<SJH_NaviCell*> AStartPath;
 	AStartPath = AStarMovePath(_StartCell, _EndCell, _Maximum);
@@ -15,7 +25,6 @@ std::list<float4> SJH_PathFinder::SearchMovePath(const float4& _StartPos, const 
 			Funnel_ = new SJH_Funnel();
 		}
 
-		std::list<float4> ReturnPath;
 		ReturnPath = Funnel_->PathOptimization(_StartPos, _EndPos, AStartPath);
 		if (false == ReturnPath.empty())
 		{

@@ -32,12 +32,12 @@ public:
 protected:
 
 private: // 수신정보
-	float4 StartPos_;
-	float4 EndPos_;
+	float4 StartPos_;						// 이동시작위치
+	float4 EndPos_;							// 이동목표위치
 
 private: // 포탈정보
-	std::vector<float4> LeftPortal_;
-	std::vector<float4> RightPortal_;
+	std::vector<float4> LeftPortal_;		// 각 셀의 무게중심을 연결하는 벡터 기준 왼쪽의 정점목록
+	std::vector<float4> RightPortal_;		// 각 셀의 무게중심을 연결하는 벡터 기준 오른쪽의 정점목록
 
 private:
 };

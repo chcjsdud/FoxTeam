@@ -3,23 +3,17 @@
 
 std::list<float4> SJH_Funnel::PathOptimization(const float4& _StartPos, const float4& _EndPos, std::list<SJH_NaviCell*>& _MovePath)
 {
+	std::list<float4> ReturnPath;
+
 	// 수신받은 시작점과 도착점 저장
 	StartPos_ = _StartPos;
 	EndPos_ = _EndPos;
 
-	// 포탈정보 삭제 후 새로운 포탈정보 생성
-	LeftPortal_.clear();
-	RightPortal_.clear();
-
-	std::list<float4> ReturnPath;
-
-	// A*로 찾아낸 경로가 1개만 존재한다면 -> 같은삼각형내에서 이동하려고할때 경로 1개만 존재
-	if (1 == _MovePath.size())
+	// 포탈정보 삭제 후
+	if (false == LeftPortal_.empty() && false == RightPortal_.empty())
 	{
-		// 그러므로 StartPos_ -> EndPos_의 결과경로만을 반환
-		ReturnPath.push_back(StartPos_);
-		ReturnPath.push_back(EndPos_);
-		return ReturnPath;
+		LeftPortal_.clear();
+		RightPortal_.clear();
 	}
 
 	// A*로 얻어낸 최단경로를 통해 삼각형(셀)별 공유하는 Vertex를 얻어낸 뒤

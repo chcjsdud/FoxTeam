@@ -23,7 +23,8 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 	// 이동중지
 	MoveStart_ = false;
 
-	// 기존 이동경로가 남아있다면
+	// 기존 이동경로가 남아있다면 이동중 타겟위치가 변경되었으므로
+	// 현재 플레이어의 위치좌표에 해당하는 삼각형을 알아내고
 	if (false == MovePath_.empty())
 	{
 		// 기존 이동경로를 삭제하고
@@ -37,26 +38,22 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 		}
 	}
 
-	// 이동타겟 삼각형이 변경되었다면
-	if (CurNaviCell_ != _TargetNaviCell)
+	// 이동목표지점의 삼각형 갱신
+	TargetNaviCell_ = _TargetNaviCell;
+
+	// 현재 플레이어의 NaviCell ~ _TargetNaviCell까지의 이동경로 생성
+	if (true == SJH_FloorMap::FloorMap->MoveFacePath(GetTransform()->GetWorldPosition(), _MoveTargetPos, CurNaviCell_, TargetNaviCell_, MovePath_))
 	{
-		// 이동목표지점의 삼각형 갱신
-		TargetNaviCell_ = _TargetNaviCell;
+		// 이동시작위치 지정
+		MoveStartPos_ = MovePath_.front();
+		MovePath_.pop_front();
 
-		// 현재 플레이어의 NaviCell ~ _TargetNaviCell까지의 이동경로 생성
-		if (true == SJH_FloorMap::FloorMap->MoveFacePath(GetTransform()->GetWorldPosition(), _MoveTargetPos, CurNaviCell_, TargetNaviCell_, MovePath_))
-		{
-			// 이동시작위치 지정
-			MoveStartPos_ = MovePath_.front();
-			MovePath_.pop_front();
+		// 경로상의 이동목표위치 지정
+		MoveEndPos_ = MovePath_.front();
+		MovePath_.pop_front();
 
-			// 경로상의 이동목표위치 지정
-			MoveEndPos_ = MovePath_.front();
-			MovePath_.pop_front();
-
-			// 이동경로 생성완료 후 Flag On
-			MoveStart_ = true;
-		}
+		// 이동경로 생성완료 후 Flag On
+		MoveStart_ = true;
 	}
 }
 
@@ -269,6 +266,10 @@ void SJH_Yuki::Update(float _DeltaTime)
 				// 이동종료 및 이동정보 초기화
 				MoveStartPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
 				MoveEndPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+				// 모든경로를 사용하여 기존의 목표위치에 도달했다면
+				CurNaviCell_ = TargetNaviCell_;
+				TargetNaviCell_ = nullptr;
 
 				// 이동종료
 				MoveStart_ = false;
