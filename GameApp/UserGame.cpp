@@ -52,8 +52,8 @@ void UserGame::Initialize()
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
 	
 	//LevelChange("RayTestLevel");
-	LevelChange("SJH_Play");
-	//LevelChange("Play");
+	//LevelChange("SJH_Play");
+	LevelChange("Play");
 	//LevelChange("SJH_Play");
 	//LevelChange("PJW_Play");
 	//LevelChange("YSJ_Play");
