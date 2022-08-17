@@ -13,7 +13,12 @@ GameEngineLevelControlWindow::~GameEngineLevelControlWindow()
 {
 }
 
-void GameEngineLevelControlWindow::OnGUI() 
+void GameEngineLevelControlWindow::AddText(const std::string& _str)
+{
+	texts_.push_back(_str);
+}
+
+void GameEngineLevelControlWindow::OnGUI()
 {
 	static float Acc = 1.0f;
 	static std::string FrameText = "Frame : " + std::to_string(1.0f / GameEngineTime::GetInst().GetDeltaTime());
@@ -42,6 +47,14 @@ void GameEngineLevelControlWindow::OnGUI()
 			ImGui::SameLine();
 		}
 	}
+
+	for (const std::string& str : texts_)
+	{
+		ImGui::Text(str.c_str());
+		ImGui::NextColumn();
+	}
+
+	texts_.clear();
 
 	//GameEngineCore::CurrentLevel_->ActorList_;
 	//std::vector<std::string> ActorName;
