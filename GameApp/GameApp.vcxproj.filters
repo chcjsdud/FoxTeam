@@ -200,6 +200,9 @@
     <ClCompile Include="ItemBase.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
+    <ClCompile Include="EquipmentItem.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+    </ClCompile>
     <ClCompile Include="UI_ItemBox.cpp">
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClCompile>
@@ -595,6 +598,9 @@
       <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
     </ClInclude>
     <ClInclude Include="ItemBase.h">
+      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="EquipmentItem.h">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClInclude>
     <ClInclude Include="UI_ItemBox.h">

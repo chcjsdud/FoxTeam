@@ -1,9 +1,13 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
-#include <GameEngine/GameEngineUIRenderer.h>
+#include <GameEngine/GameEngineRenderer.h>
 #include "Item.h"
 
 // 설명 : 
+
+// Equipment	장비
+// Useable		소비
+// Misc			기타
 class ItemBase : public GameEngineActor
 {
 public:
@@ -23,6 +27,6 @@ protected:
 
 private:
 	ItemType Type;
-	GameEngineUIRenderer* Renderer;
+	GameEngineRenderer* Renderer;
 };
 

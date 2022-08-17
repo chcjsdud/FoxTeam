@@ -10,7 +10,7 @@ private:	// member Var
 	std::string name_;
 
 public:
-	std::string GetName()
+	std::string& GetName()
 	{
 		return name_;
 	}

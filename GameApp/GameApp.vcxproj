@@ -190,6 +190,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Character_ProtoType_State.cpp" />
+    <ClCompile Include="EquipmentItem.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GHMap.cpp">
       <SubType>
       </SubType>
@@ -377,6 +381,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="eCollisionGroup.h" />
+    <ClInclude Include="EquipmentItem.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GHMap.h">
       <SubType>
       </SubType>

@@ -4,6 +4,7 @@
 // Ό³Έν : 
 class ItemBoxManager;
 class ItemBox;
+class ItemBase;
 class ItemBoxWindow : public GameEngineGUIWindow
 {
 public:
@@ -19,10 +20,15 @@ protected:
 	void OnGUI() override;
 
 private:
+	void PushItem();
+	void DeleteItem();
 
 public:
 	ItemBoxManager* ItemBoxManager_;
 	ItemBox* SelectBox_;
 	int ListSelectItem;
+	ItemBase* NewItem;
+
+	std::vector<const char*> vecArr;
 };
 
