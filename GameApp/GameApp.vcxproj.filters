@@ -200,6 +200,9 @@
     <ClCompile Include="ItemBase.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
+    <ClCompile Include="UI_ItemBox.cpp">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -587,6 +590,9 @@
     </ClInclude>
     <ClInclude Include="ItemBase.h">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_ItemBox.h">
+      <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

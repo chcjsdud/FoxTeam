@@ -23,6 +23,7 @@ public:
 	class UI_Equip* EquipUI_;
 	class UI_Inventory* InventoryUI_;
 	class UI_Status* StatusUI_;
+	class UI_ItemBox* ItemBoxUI_;
 
 protected:
 	LGH_PlayLevel(const LGH_PlayLevel& _other) = delete;

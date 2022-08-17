@@ -320,6 +320,7 @@
     <ClCompile Include="SJH_Ray.cpp" />
     <ClCompile Include="SJH_TestActor.cpp" />
     <ClCompile Include="SJH_Yuki.cpp" />
+    <ClCompile Include="UI_ItemBox.cpp" />
     <ClCompile Include="UI_Status.cpp" />
     <ClCompile Include="TestPlayer.cpp">
       <SubType>
@@ -508,6 +509,7 @@
     <ClInclude Include="SJH_Ray.h" />
     <ClInclude Include="SJH_TestActor.h" />
     <ClInclude Include="SJH_Yuki.h" />
+    <ClInclude Include="UI_ItemBox.h" />
     <ClInclude Include="UI_Status.h" />
     <ClInclude Include="TestPlayer.h">
       <SubType>

@@ -16,6 +16,7 @@
 #include "UI_Inventory.h"
 #include "UI_Equip.h"
 #include "UI_Status.h"
+#include "UI_ItemBox.h"
 
 #include <GameEngine/GameEngineFBXWindow.h>
 #include <GameEngine/GameEngineFBXMesh.h>
@@ -65,6 +66,11 @@ void LGH_PlayLevel::LevelStart()
 	{
 		StatusUI_ = CreateActor<UI_Status>();
 	}
+
+	{
+		ItemBoxUI_ = CreateActor<UI_ItemBox>();
+	}
+
 
 	{
 
