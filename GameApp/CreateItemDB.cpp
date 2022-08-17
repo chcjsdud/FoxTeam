@@ -9,7 +9,8 @@
 
 void ItemBoxWindow::CreateAllItemList()
 {
-	EquipmentItem* Item = reinterpret_cast<EquipmentItem*>(CreateItem("Test1", ItemType::Equipment));
+	EquipmentItem* Item = reinterpret_cast<EquipmentItem*>(
+		CreateItem("Test1", ItemType::Equipment));
 	CreateItem("Test2", ItemType::Useable);
 	CreateItem("Test3", ItemType::Misc);
 }

@@ -49,6 +49,10 @@ public:
 
 	void UserSave(const std::string& _Path);
 	void UserLoad(const std::string& _Path);
+	void UserAllLoad(GameEngineDirectory _Dir);
+
+	void UserSave_ItemListInfo();
+	void UserLoad_ItemListInfo();
 
 	ItemBox* GetSelectBox()
 	{
@@ -64,6 +68,7 @@ private:
 	void BoxSelectUpdate();
 
 private:
+	std::string ItemBoxInfoPath;
 	std::map<std::string, std::vector<ItemBox>> ItemBoxs;
 	ItemBox* SelectBox;
 };

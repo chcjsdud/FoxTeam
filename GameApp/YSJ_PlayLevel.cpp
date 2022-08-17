@@ -153,16 +153,9 @@ void YSJ_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	tempDir.MoveChild("ItemBox");
 	tempDir.MoveChild("ItemBoxInfo");
 
-	vecFile = tempDir.GetAllFile(".ItemBoxInfo");
-
-	std::map<int, std::list<GameEngineCollision*>>& Collist = GetAllCollision();
-
 	ItemBox_ = CreateActor<ItemBoxManager>();
 
-	for (size_t i = 0; i < vecFile.size(); i++)
-	{
-		ItemBox_->UserLoad(vecFile[i].GetFullPath());
-	}
+	ItemBox_->UserAllLoad(tempDir);
 
 	//YSJ_Char* Player = CreateActor<YSJ_Char>();
 	//Player->GetTransform()->SetWorldScaling({0.5f,0.5f, 0.5f });

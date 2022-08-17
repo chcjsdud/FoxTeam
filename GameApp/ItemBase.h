@@ -2,14 +2,13 @@
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineImageRenderer.h>
 
-// 설명 : 
-
 // Equipment	장비
 // Useable		소비
 // Misc			기타
 
 class ItemBase : public GameEngineActor
 {
+	friend class ItemBoxManager;
 public:
 	ItemBase();
 	~ItemBase();

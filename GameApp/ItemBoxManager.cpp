@@ -3,6 +3,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include "YSJ_Mouse.h"
 #include "Enums.h"
+#include "ItemBase.h"
 
 ItemBoxManager::ItemBoxManager()
 	: SelectBox(nullptr)
@@ -207,5 +208,55 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 		Data.Col->GetTransform()->SetLocalScaling(Data.Info.Scale);
 		Data.Col->SetCollisionType(CollisionType::AABBBox3D);
 	}
+}
+
+void ItemBoxManager::UserAllLoad(GameEngineDirectory _Dir)
+{
+	std::vector<GameEngineFile> vecFile = _Dir.GetAllFile(".ItemBoxInfo");
+
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		UserLoad(vecFile[i].GetFullPath());
+	}
+	
+	ItemBoxInfoPath = _Dir.GetFullPath();
+
+	UserLoad_ItemListInfo();
+}
+
+void ItemBoxManager::UserSave_ItemListInfo()
+{
+	GameEngineFile NewFile = GameEngineFile(ItemBoxInfoPath + "ItemList.ItemListInfo", "wb");
+
+	NewFile.Write(static_cast<int>(ItemBoxs.size()));
+
+	for (auto& ItemBox : ItemBoxs)
+	{
+		NewFile.Write(ItemBox.first);
+		NewFile.Write(static_cast<int>(ItemBox.second.size()));
+		for (size_t i = 0; i < ItemBox.second.size(); i++)
+		{
+			NewFile.Write(static_cast<int>(ItemBox.second[i].ItemList.size()));
+
+			for (auto& Item : ItemBox.second[i].ItemList)
+			{
+				NewFile.Write(static_cast<int>(Item->Type));
+				if (nullptr == Item->Renderer)
+				{
+					std::string str = "";
+					NewFile.Write(str);
+				}
+				else
+				{
+					NewFile.Write(Item->Renderer->GetName());
+				}
+			}
+		}
+	}
+}
+
+void ItemBoxManager::UserLoad_ItemListInfo()
+{
+	GameEngineFile NewFile = GameEngineFile(ItemBoxInfoPath + "ItemList.ItemListInfo", "rb");
 }
 

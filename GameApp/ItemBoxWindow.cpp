@@ -20,6 +20,16 @@ ItemBoxWindow::~ItemBoxWindow()
 
 void ItemBoxWindow::OnGUI()
 {
+	if (true == ImGui::Button("UserSave"))
+	{
+		//ItemBoxManager_->UserSave_ItemListInfo();
+	}
+	ImGui::SameLine();
+	if (true == ImGui::Button("UserLoad"))
+	{
+		//ItemBoxManager_->UserLoad_ItemListInfo();
+	}
+
 	SelectBox_ = ItemBoxManager_->GetSelectBox();
 
 	if (nullptr != SelectBox_)
@@ -39,6 +49,18 @@ void ItemBoxWindow::OnGUI()
 			ItemListName.push_back(Item->GetName().c_str());
 		}
 
+		if (true == ImGui::Button("PushItem") &&
+			-1 != ListSelectItem)
+		{
+			PushItem();
+		}
+		ImGui::SameLine();
+		if (true == ImGui::Button("DeleteItem") &&
+			-1 != ListSelectItemBox)
+		{
+			DeleteItem();
+		}
+
 		ImGui::PushItemWidth(200);
 		ImGui::ListBox("##ItemList", &ListSelectItem, &AllItemName[0], static_cast<ImGuiID>(AllItemName.size()));
 	
@@ -47,20 +69,6 @@ void ItemBoxWindow::OnGUI()
 			ImGui::SameLine();
 			ImGui::PushItemWidth(200);
 			ImGui::ListBox("##ItemBoxList", &ListSelectItemBox, &ItemListName[0], static_cast<ImGuiID>(ItemListName.size()));
-		}
-
-		if (true == ImGui::Button("PushItem") &&
-			-1 != ListSelectItem)
-		{
-			PushItem();
-		}
-
-		ImGui::SameLine();
-
-		if (true == ImGui::Button("DeleteItem") &&
-			-1 != ListSelectItemBox)
-		{
-			DeleteItem();
 		}
 		
 	}

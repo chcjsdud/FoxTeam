@@ -22,7 +22,7 @@ protected:
 private:
 	void PushItem();
 	void DeleteItem();
-	
+
 	void CreateAllItemList();
 	ItemBase* CreateItem(const std::string _Name, ItemType _Type,
 		const std::string _ImageName = "");
