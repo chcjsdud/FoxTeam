@@ -28,7 +28,7 @@ void UI_ItemBox::Start()
 	//위치를 조정한 리소스들은 UIRenderMap에 String과 같이 insert됩니다.
 	//인게임정보(HP나 스태미너 상태, 착용장비여부)등을 받으면, UIRendererMap에서 이미지이름으로 Find해서 리소스를 바꿀 예정업니다.
 
-	float4 ItemBox_BackgroundPos = { 0.0f, 0.0f, 0.0f };
+	float4 ItemBox_BackgroundPos = { 0.0f, -100.0f, 0.0f };
 
 
 		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
@@ -40,6 +40,11 @@ void UI_ItemBox::Start()
 		ItemBoxBackGround_Renderer->GetTransform()->SetLocalScaling(ItemBoxBackGround_Renderer->GetCurrentTexture()->GetTextureSize());
 	}
 
+	{
+		BoxtypeFont_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		BoxtypeFont_Renderer->TextSetting("굴림", "상자", 30, float4::WHITE);
+		BoxtypeFont_Renderer->GetTransform()->SetLocalPosition(ItemBox_BackgroundPos);
+	}
 
 	//이현, Player 예제 함수
 	//int HP = Player_->PlayerGetHP();
@@ -62,10 +67,12 @@ void UI_ItemBox::Update(float _Time)
 		if (false == UIOn)
 		{
 			ItemBoxBackGround_Renderer->Off();
+			BoxtypeFont_Renderer->Off();
 		}
 		else
 		{
 			ItemBoxBackGround_Renderer->On();
+			BoxtypeFont_Renderer->On();
 		}
 	}
 
