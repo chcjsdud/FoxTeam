@@ -15,40 +15,51 @@ public:
 private:
 	//FBX Renderer
 	GameEngineFBXRenderer* FBXRenderer_;
-	GameEngineCollision* AttackHitBoxCollision_;
 
 private:		//delete operator
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-	// 렌더러, 콜리전, 등등 Componenet 초기화
+private:
 	void ComponenetInit();
-	//State 초기화
 	void StateInit();
 	void UIInit();
 
 	void DEBUGUpdate(float _DeltaTime);
 
 private:
-	void Idle_Start() override;
-	void Idle_Update(float _DeltaTime) override;
-	void Idle_End() override;
 
-	void Walk_Start() override;
-	void Walk_Update(float _DeltaTime) override;
-	void Walk_End() override;
+	virtual void Action_Idle_Start() override;
+	virtual void Action_Idle_Update(float _DeltaTime) override;
+	virtual void Action_Idle_End() override;
 
-	//void Run_Start() override;
-	//void Run_Update(float _DeltaTime) override;
-	//void Run_End() override;
+	virtual void Action_Walk_Start() override;
+	virtual void Action_Walk_Update(float _DeltaTime) override;
+	virtual void Action_Walk_End() override;
 
-	void Attack_Start() override;
-	void Attack_Update(float _DeltaTime) override;
-	void Attack_End() override;
+	virtual void Action_Attack_Start() override;
+	virtual void Action_Attack_Update(float _DeltaTime) override;
+	virtual void Action_Attack_End() override;
 
-	void Attack_Ready_Start() override;
-	void Attack_Ready_Update(float _DeltaTime) override;
-	void Attack_Ready_End() override;
+	virtual void Action_Q_Start();
+	virtual void Action_Q_Update(float _DeltaTime);
+	virtual void Action_Q_End();
+
+	virtual void Action_W_Start();
+	virtual void Action_W_Update(float _DeltaTime);
+	virtual void Action_W_End();
+
+	virtual void Action_E_Start();
+	virtual void Action_E_Update(float _DeltaTime);
+	virtual void Action_E_End();
+
+	virtual void Action_R_Start();
+	virtual void Action_R_Update(float _DeltaTime);
+	virtual void Action_R_End();
+
+	virtual void Action_D_Start();
+	virtual void Action_D_Update(float _DeltaTime);
+	virtual void Action_D_End();
 
 private:		// delete constructer
 	Player_Yuki(const Player_Yuki& _other) = delete;

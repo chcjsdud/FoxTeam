@@ -5,6 +5,7 @@ struct Status
 {
 	Status()
 		: Stat_AttackPower_(0)
+		, Stat_AttackDist_(0.f)
 		, Stat_Health_(0)
 		, Stat_HealthRecovery_(0.f)
 		, Stat_Stamina_(0.f)
@@ -19,6 +20,7 @@ struct Status
 
 	Status(bool Mult_true)
 		: Stat_AttackPower_(1)
+		, Stat_AttackDist_(1.f)
 		, Stat_Health_(1)
 		, Stat_HealthRecovery_(1.f)
 		, Stat_Stamina_(1.f)
@@ -34,6 +36,7 @@ struct Status
 	Status(const Status& _value)
 	{
 		Stat_AttackPower_ = _value.Stat_AttackPower_;
+		Stat_AttackDist_ = _value.Stat_AttackDist_;
 		Stat_Health_ = _value.Stat_Health_;
 		Stat_HealthRecovery_ = _value.Stat_HealthRecovery_;
 		Stat_Stamina_ = _value.Stat_Stamina_;
@@ -50,6 +53,7 @@ struct Status
 
 	int		Stat_AttackPower_;				// 공격력
 	int		Stat_Health_;					// 체력
+	float	Stat_AttackDist_;
 	float	Stat_HealthRecovery_;			// 체력재생
 	float	Stat_Stamina_;					// 스태미너
 	float	Stat_StaminaRecovery_;			// 스태미너 재생
@@ -63,6 +67,7 @@ struct Status
 	{
 		Stat_AttackPower_ = 0;
 		Stat_Health_ = 0;
+		Stat_AttackDist_ = 0.f;
 		Stat_HealthRecovery_ = 0.f;
 		Stat_Stamina_ = 0;
 		Stat_StaminaRecovery_ = 0.f;
@@ -80,6 +85,7 @@ struct Status
 		Stat_AttackPower_ = 1;
 		Stat_Health_ = 1;
 		Stat_HealthRecovery_ = 1.f;
+		Stat_AttackDist_ = 1.f;
 		Stat_Stamina_ = 1;
 		Stat_StaminaRecovery_ = 1.f;
 		Stat_Defense_ = 1.f;
@@ -99,6 +105,7 @@ struct Status
 		ret.Stat_AttackPower_ += _value.Stat_AttackPower_;
 		ret.Stat_Health_ += _value.Stat_Health_;
 		ret.Stat_HealthRecovery_ += _value.Stat_HealthRecovery_;
+		ret.Stat_AttackDist_ += _value.Stat_AttackDist_;
 		ret.Stat_Stamina_ += _value.Stat_Stamina_;
 		ret.Stat_StaminaRecovery_ += _value.Stat_StaminaRecovery_;
 		ret.Stat_Defense_ += _value.Stat_Defense_;
@@ -116,6 +123,7 @@ struct Status
 		ret.Stat_AttackPower_ -= _value.Stat_AttackPower_;
 		ret.Stat_Health_ -= _value.Stat_Health_;
 		ret.Stat_HealthRecovery_ -= _value.Stat_HealthRecovery_;
+		ret.Stat_AttackDist_ -= _value.Stat_AttackDist_;
 		ret.Stat_Stamina_ -= _value.Stat_Stamina_;
 		ret.Stat_StaminaRecovery_ -= _value.Stat_StaminaRecovery_;
 		ret.Stat_Defense_ -= _value.Stat_Defense_;
@@ -133,6 +141,7 @@ struct Status
 		ret.Stat_AttackPower_ *= _value.Stat_AttackPower_;
 		ret.Stat_Health_ *= _value.Stat_Health_;
 		ret.Stat_HealthRecovery_ *= _value.Stat_HealthRecovery_;
+		ret.Stat_AttackDist_ *= _value.Stat_AttackDist_;
 		ret.Stat_Stamina_ *= _value.Stat_Stamina_;
 		ret.Stat_StaminaRecovery_ *= _value.Stat_StaminaRecovery_;
 		ret.Stat_Defense_ *= _value.Stat_Defense_;
@@ -150,6 +159,7 @@ struct Status
 		ret.Stat_AttackPower_ = static_cast<int>(ret.Stat_AttackPower_ * _value);
 		ret.Stat_Health_ = static_cast<int>(ret.Stat_Health_ * _value);
 		ret.Stat_HealthRecovery_ *= _value;
+		ret.Stat_AttackDist_ *= _value;
 		ret.Stat_Stamina_ *= _value;
 		ret.Stat_StaminaRecovery_ *= _value;
 		ret.Stat_Defense_ *= _value;
@@ -166,6 +176,7 @@ struct Status
 		Stat_AttackPower_ += _value.Stat_AttackPower_;
 		Stat_Health_ += _value.Stat_Health_;
 		Stat_HealthRecovery_ += _value.Stat_HealthRecovery_;
+		Stat_AttackDist_ += _value.Stat_AttackDist_;
 		Stat_Stamina_ += _value.Stat_Stamina_;
 		Stat_StaminaRecovery_ += _value.Stat_StaminaRecovery_;
 		Stat_Defense_ += _value.Stat_Defense_;
@@ -182,6 +193,7 @@ struct Status
 		Stat_AttackPower_ -= _value.Stat_AttackPower_;
 		Stat_Health_ -= _value.Stat_Health_;
 		Stat_HealthRecovery_ -= _value.Stat_HealthRecovery_;
+		Stat_AttackDist_ -= _value.Stat_AttackDist_;
 		Stat_Stamina_ -= _value.Stat_Stamina_;
 		Stat_StaminaRecovery_ -= _value.Stat_StaminaRecovery_;
 		Stat_Defense_ -= _value.Stat_Defense_;
@@ -198,6 +210,7 @@ struct Status
 		Stat_AttackPower_ *= _value.Stat_AttackPower_;
 		Stat_Health_ *= _value.Stat_Health_;
 		Stat_HealthRecovery_ *= _value.Stat_HealthRecovery_;
+		Stat_AttackDist_ *= _value.Stat_AttackDist_;
 		Stat_Stamina_ *= _value.Stat_Stamina_;
 		Stat_StaminaRecovery_ *= _value.Stat_StaminaRecovery_;
 		Stat_Defense_ *= _value.Stat_Defense_;
@@ -213,6 +226,7 @@ struct Status
 		Stat_AttackPower_ = static_cast<int>(Stat_AttackPower_ * _value);
 		Stat_Health_ = static_cast<int>(Stat_Health_ * _value);
 		Stat_HealthRecovery_ *= _value;
+		Stat_AttackDist_ *= _value;
 		Stat_Stamina_ *= _value;
 		Stat_StaminaRecovery_ *= _value;
 		Stat_Defense_ *= _value;
@@ -229,6 +243,7 @@ struct Status
 		Stat_AttackPower_ = _value.Stat_AttackPower_;
 		Stat_Health_ = _value.Stat_Health_;
 		Stat_HealthRecovery_ = _value.Stat_HealthRecovery_;
+		Stat_AttackDist_ = _value.Stat_AttackDist_;
 		Stat_Stamina_ = _value.Stat_Stamina_;
 		Stat_StaminaRecovery_ = _value.Stat_StaminaRecovery_;
 		Stat_Defense_ = _value.Stat_Defense_;
@@ -248,6 +263,7 @@ struct Status
 			Stat_AttackPower_ == _value.Stat_AttackPower_ &&
 			Stat_Health_ == _value.Stat_Health_ &&
 			Stat_HealthRecovery_ == _value.Stat_HealthRecovery_ &&
+			Stat_AttackDist_ == _value.Stat_AttackDist_ &&
 			Stat_Stamina_ == _value.Stat_Stamina_ &&
 			Stat_StaminaRecovery_ == _value.Stat_StaminaRecovery_ &&
 			Stat_Defense_ == _value.Stat_Defense_ &&
@@ -265,6 +281,7 @@ struct Status
 			Stat_AttackPower_ != _value.Stat_AttackPower_ ||
 			Stat_Health_ != _value.Stat_Health_ ||
 			Stat_HealthRecovery_ != _value.Stat_HealthRecovery_ ||
+			Stat_AttackDist_ != _value.Stat_AttackDist_ ||
 			Stat_Stamina_ != _value.Stat_Stamina_ ||
 			Stat_StaminaRecovery_ != _value.Stat_StaminaRecovery_ ||
 			Stat_Defense_ != _value.Stat_Defense_ ||
@@ -282,26 +299,30 @@ struct Status
 struct Buff
 {
 	Buff()
-		: Time_(0.f)
+		: Time_(-1.f)
 		, Name_("")
+		, BuffFunc_(nullptr)
+		, IsSturn_(false)
 	{}
-
-	Buff(std::string _Name, float _Time, Status _Status, std::function<void()> _BuffFunc = nullptr)
+	// _Time -1 == 영구 지속
+	Buff(std::string _Name, float _Time, Status _Status, bool _IsSturn = false, std::function<void()> _BuffFunc = nullptr)
 		: Name_(_Name)
 		, Time_(_Time)
 		, Status_(_Status)
 		, BuffFunc_(_BuffFunc)
+		, IsSturn_(_IsSturn)
 	{}
 
 	std::string Name_;
+	bool IsSturn_;
 	float Time_;
 	Status Status_;
 	std::function<void()> BuffFunc_;
 };
 
-struct Skill  //가제
-{
-	bool IsTargettting_;
-	float TargetDist_;
-	std::function<void()> SkillFunc_;
-};
+//struct Skill  //가제
+//{
+//	bool IsTargettting_;
+//	float TargetDist_;
+//	std::function<void()> SkillFunc_;
+//};

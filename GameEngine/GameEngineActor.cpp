@@ -4,10 +4,25 @@
 #include "GameEngineTransform.h"
 #include "GameEngineTransformComponent.h"
 
+#pragma region 이현 임시 코드
+unsigned int GameEngineActor::ActorStaticIDNumbers_ = 1; // 0 == 제거된 상태
+#pragma endregion
+
 GameEngineActor::GameEngineActor() 
 	: Level_(nullptr)
 	, DeathTime_(-1.0f)
+	, IsDestroyed_(nullptr)
+	, NextLevelMove_(nullptr)
 {
+#pragma region 이현 임시 코드
+	ActorID_ = ActorStaticIDNumbers_;
+	ActorStaticIDNumbers_++;
+
+	if (ActorStaticIDNumbers_ == UINT32_MAX) 
+	{
+		GameEngineDebug::MsgBoxError("ActorID 최댓값 초과");
+	}
+#pragma endregion
 }
 
 GameEngineActor::~GameEngineActor() 

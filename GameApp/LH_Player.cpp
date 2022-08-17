@@ -36,6 +36,11 @@ void Player::Update(float _DeltaTime)
 	//CameraState_.Update(_DeltaTime);
 }
 
+void Player::ControllerOrderUpdate()
+{
+	Controller_Order_ = PlayController_->PlayerController_GetOrder();
+}
+
 void Player::StaminaRecoverUpdate(float _DeltaTime)
 {
 	Status_Final_.Stat_StaminaRecovery_ += _DeltaTime * Status_Final_.Stat_StaminaRecovery_;

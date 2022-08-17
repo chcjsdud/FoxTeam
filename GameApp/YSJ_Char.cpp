@@ -34,7 +34,7 @@ void YSJ_Char::Update(float _DeltaTime)
 	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition() + float4{ 0.0f, 150.0f, -150.0f });
 	DEBUGUpdate(_DeltaTime);
 
-	State_.Update(_DeltaTime);
+	ActionState_.Update(_DeltaTime);
 	//CameraState_.Update(_DeltaTime);
 
 	if (GameEngineInput::GetInst().Press("MoveUp"))

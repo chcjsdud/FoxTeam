@@ -13,11 +13,11 @@
 
 
 //Idle
-void Player_Yuki::Idle_Start()
+void Player_Yuki::Action_Idle_Start()
 {
 	//Speed_ = 0.f;
 }
-void Player_Yuki::Idle_Update(float _DeltaTime)
+void Player_Yuki::Action_Idle_Update(float _DeltaTime)
 {
 	if (EnemyInSight_ == true) //적이 시야 내에 있으면
 	{
@@ -30,44 +30,42 @@ void Player_Yuki::Idle_Update(float _DeltaTime)
 
 	MoveRotateUpdate(_DeltaTime);
 }
-void Player_Yuki::Idle_End()
+void Player_Yuki::Action_Idle_End()
 {
 }
 
 //Walk
-void Player_Yuki::Walk_Start()
+void Player_Yuki::Action_Walk_Start()
 {
-	FowordDir_ = TargetDir_;
+	//Move_ForwardDir_ = TargetDir_;
 	//IsMove_ = true;
 	//Speed_ = 300.f;
 }
-void Player_Yuki::Walk_Update(float _DeltaTime)
+void Player_Yuki::Action_Walk_Update(float _DeltaTime)
 {
-	CurDirUpdate(_DeltaTime);
 	MoveUpdate(_DeltaTime);
-	MoveRotateUpdate(_DeltaTime);
 	// 걷다가 중간에 공격을 해도 회전을 끝마쳐야함
 
 	// 사거리 안에 적이 있고, 특별한 명령이 내려지지 않았거나 공격 명령이 내려진 상태라면 적을 공격함
 
-	if (GetTransform()->GetWorldPosition() == Target_->GetTransform()->GetWorldPosition())
+	if (GetTransform()->GetWorldPosition() == Target_Unit_->GetTransform()->GetWorldPosition())
 	{
-		State_.ChangeState("Idle");
+		ActionState_.ChangeState("Idle");
 		return;
 	}
 }
-void Player_Yuki::Walk_End()
+void Player_Yuki::Action_Walk_End()
 {
 	//IsMove_ = false;
 }
 
 //Attack
-void Player_Yuki::Attack_Start()
+void Player_Yuki::Action_Attack_Start()
 {
 	if (Status_Final_.Stat_Stamina_ < 5.f)
 	{
 		//스테미나 게이지 깜빡거리기
-		State_.ChangeState("Idle");
+		ActionState_.ChangeState("Idle");
 		return;
 	}
 
@@ -83,8 +81,6 @@ void Player_Yuki::Attack_Start()
 	//0.1초 동안만 타격 판정이 있다. 공격시 갱신
 	AttackHitTime_ = 0.1f;
 
-	AttackHitBoxCollision_->On();
-
 	//Status_Final_.Stat_Stamina_ -= Status_Final_.Stat_Attack_Stamina_;
 
 	//if (Status_Final_.Stat_Stamina_ < 0.f)
@@ -93,7 +89,7 @@ void Player_Yuki::Attack_Start()
 	//}
 	;
 }
-void Player_Yuki::Attack_Update(float _DeltaTime)
+void Player_Yuki::Action_Attack_Update(float _DeltaTime)
 {
 	//KeyDirUpdate(_DeltaTime);
 
@@ -101,7 +97,7 @@ void Player_Yuki::Attack_Update(float _DeltaTime)
 	//AttackTime_ -= _DeltaTime;
 	AttackHitTime_ -= _DeltaTime;
 
-	FowordDir_ = TargetDir_;
+	//Move_ForwardDir_ = TargetDir_;
 	//TargetDir_을 실시간으로 업데이트 해 줘야함
 	// 어디서??
 
@@ -110,40 +106,82 @@ void Player_Yuki::Attack_Update(float _DeltaTime)
 	if (AttackHitTime_ <= 0)
 	{
 		MoveRotateUpdate(_DeltaTime);
-		AttackHitBoxCollision_->Off();
 	}
 
 	else
 	{
-		State_.ChangeState("Idle");
+		ActionState_.ChangeState("Idle");
 		return;
 	}
 }
-void Player_Yuki::Attack_End()
+void Player_Yuki::Action_Attack_End()
 {
 	AttackTurm_ = 0.f;
 	//AttackTime_ = 0.f;
 	//AttackLevel_ = 0;
 	AttackHitTime_ = 0.f;
-
-	//맞거나 이런저런 상황으로 강제로 State가 종료 되었을때
-	AttackHitBoxCollision_->Off();
 }
 
-void Player_Yuki::Attack_Ready_Start()
+
+void Player_Yuki::Action_Q_Start()
 {
 }
 
-void Player_Yuki::Attack_Ready_Update(float _DeltaTime)
+void Player_Yuki::Action_Q_Update(float _DeltaTime)
 {
 }
 
-void Player_Yuki::Attack_Ready_End()
+void Player_Yuki::Action_Q_End()
 {
 }
 
+void Player_Yuki::Action_W_Start()
+{
+}
 
+void Player_Yuki::Action_W_Update(float _DeltaTime)
+{
+}
 
+void Player_Yuki::Action_W_End()
+{
+}
+
+void Player_Yuki::Action_E_Start()
+{
+}
+
+void Player_Yuki::Action_E_Update(float _DeltaTime)
+{
+}
+
+void Player_Yuki::Action_E_End()
+{
+}
+
+void Player_Yuki::Action_R_Start()
+{
+}
+
+void Player_Yuki::Action_R_Update(float _DeltaTime)
+{
+}
+
+void Player_Yuki::Action_R_End()
+{
+}
+
+void Player_Yuki::Action_D_Start()
+{
+}
+
+void Player_Yuki::Action_D_Update(float _DeltaTime)
+{
+}
+
+void Player_Yuki::Action_D_End()
+{
+}
 // 마우스 커서 이동용
 // 명령을 컨트롤러에서 하달받고
 // 하달받은 스테이트와 장입된 변수만으로 일을 처리합니다.

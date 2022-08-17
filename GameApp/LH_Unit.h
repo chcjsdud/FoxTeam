@@ -1,275 +1,142 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+#include "PlayerController.h"
 
 #include "Enums.h"
 #include "LH_Status.h"
 
-//#include "AIController.h"
+// 플레이어 컨트롤러로 부터 키 조작에 의한 여러 값들을 전달받아 그대로 행동함
+// 플레이어로 옮겨야 할 부분이 많은데 일단 완성후 할것
+
+// 함수 명명
+//
+// 1. 설정 == Set
+// 2. 추가 == Add
+//
+// 3. (Set||Add||Get)(대상)(행동)
+//
+// 4. (이름)(Update)
+//
+
+
+class GameActorUpdatePaket
+{
+	//각자 계산하고 최종적으로 반영되어야 할 결과값만 패킷으로 보내자
+
+	unsigned int ObjectID_;
+	//std::string Name_;
+	//float4 Pos_;
+	//TransformData TransformData_;
+
+	float4 vWorldPosition_;
+	float4 vWorldRotation_;
+	float4 vWorldScaling_;
+
+	float4 vLocalPosition_;
+	float4 vLocalRotation_;
+	float4 vLocalScaling_;
+
+
+	int Size_;
+
+	const int GetPaketSize()
+	{
+		Size_ = sizeof(GameActorUpdatePaket);
+	}
+
+
+};
+
+
+
+	// * 계획
+	// 1. 플레이어 컨트롤러는 서버와 무관하게 각자 컴퓨터가 생성 (문제 없을듯, 되려 키 인풋 때문에 편함)
+	// 2. 서버가 플레이어 캐릭터를 생성후, 클라이언트로 부터 패킷을 받아 클라이언트의 플레이어 컨트롤러에 캐릭터 배분
+	// 3. 클라이언트가 서버로 동기화 데이터 패킷을 보냄
+	// 4. 서버가 패킷을 받고 게산후, 다시 클라이언트로 쏴줌
+	// 5. 반복
+	// 
+	// 서버에 패킷을 보내야 하는 이유
+	// 1. 동기화 시키기 위해,
+	// 2. 모든 컴퓨터들의 델타 타임이 다르기 때문에 모두 맞춰줄 필요가 있음
+	// 3. 
+	// 
+	// 서버 패킷으로 보낼것
+	//
+	//	0. 델타타임의 영향을 받을 모든것
+	//	1. 현재 유닛의 아이디
+	//	2. 서버에게 나 이만큼 이동해줘! 라고 보내기 (서버가 _deltaTime 계산후, 이동할 값 다시 보내줄것)
+	//	2. 트랜스폼 데이터
+	//	3. IsDeath
+	//	4. 에니메이션 String
+	//	5. 캐릭터 스탯 뭉텅이들
+	//
+	// 서버에게 받아야 할것
+	//	
+	//	1. 유닛 아이디(매칭시켜야 하니까) 
+	//	2. 서버가 계산한 이동 데이터
+	//	3. 서버가 계산한 트렌스폼 데이터
+	//	4. 
+	//
+	//	서버가 해줘야 할것
+	//	1. 서버의 델타타임에 맞게 계산해서 다시 쏴주기
+	//
+	// 엔진이 가져야 할 기능
+	//
+	//	1. 모든 엑터들이 고유의 ID를 가지게 할것
+	//	2. 함수를 통해 모든 엑터들의 고유 ID를 알 수 있게 할것
+	// 
+	//	3. ID로 부터 엑터 포인터들을 가져와 사용할 수 있게 할것
+	// 
+	//	4. static unsigned int IDs_ 같은걸 만들고, 엑터들이 생성 될때마다 ++ 하면서 각기 고유ID를 매겨줄것 (중복 생성시 오류)
+	//	5. 충돌 함수가 충돌한 대상의 ID 가져오기
+	//	6. ID는 1부터 시작하게끔, (0은 null 취급)
+	//
+
+enum class Team
+{
+	None,
+	Team1,
+	Team2,
+	Team3,
+	Team4,
+	Team5,
+	Team6,
+	Monster
+};
 
 class GameEngineCollision;
 class GameEngineFBXRenderer;
 class Unit : public GameEngineActor
 {
+	friend class PlayerController;
+
 public:
 	Unit();
 	~Unit();
 
-protected: // 기본정보
 
-	bool Iscontrolled_; //유닛(플레이어)가 플레이어 컨트롤러에 의해 컨트롤 되는지 판단하여 AI를 굴림
-	/*
-	각각의 명령들은 Unit class 안에서 가장 기본적인 틀로 미리 정의되어 있고, 고유 정보를 넣고 싶을땐 override 해서 사용(스킬은 무적권 순수 가상함수로)
-
-
-	1. 원초 명령 : PlayerControl, AIControll 에서 UI, 단축키, AI알고리즘을 통해 내리는 명령, 일종의 지침
-
-				1. Idle(None)
-				2. 우클릭
-				3. 좌클릭
-				4. A(Attack)
-				5. S(Stop(멈춰!, 명령 취소))
-				6. H(Hold)
-				7. P(Patrrol)
-
-				8~ . Skill 1~
-					스킬은 스킬 사거리, 타겟, 논타겟 여부를 구분함
-
-	2. 단계 명령 : 원초 명령을 받아 그것을 실행하기 위한 단계, 원초 명령을 스스로 해석하고 엑션을 취하기 위한 계산(번역)을 함
-					단계 명령에서 원초 명령에 걸맞는 동작 명령을 내림
-					원초 명령을 동작 명령으로 전달하는 해석 단계
-
-					각자 플레이어 캐릭터마다 고유의 스킬 단계 명령을 구현할 수 있게 해야함
-					각각의 플레이어 캐릭터마다 고유의 공격 알고리즘이나 그런걸 지닐 수도 있는걸 감안해야함
-					때려죽여도 원초 명령을 어차피 동일할것으로, 단계 명령은 각 캐릭터마다 오버라이딩 해서 사용할 수 있게함(오버라이드 안하면 그냥 기존꺼 사용)
-
-					0. 단계 명령을 업데이트 하는중, CC기를 맞으면 기존 명령을 취소(Stop)함 
-
-					1. Idle(None)
-					2. Detect (적이 있는가 탐지함)
-					3. Chase (공격 원초 명령이 내려 왔을때, 적을 탐지하면 추적함 (사거리 안까지 Walk 동작 명령 수행))
-								(스킬 원초 명령이 내려왔을때, 타겟 지정인지 논 타겟인지 구분)
-								(타겟 지정일 경우 적을 탐지하면 추적함 (사거리 안까지 Walk 동작 명령 수행))
-								(논타겟이면 바로 스킬 단계로 넘어감)
-
-					4-1. Attack (추적이 완료되었으면 공격함(Attack 동작 명령 수행)
-								(Attack 동작 명령 수행 후, 원초 명령이 Attack 상태면 Chase 상태로 돌아감(적이 움직이지 않았으면 다시 Attack으로 돌아올것))
-								(추적 완료후, Attack 을 수행할 시점에 적이 사망해 있거나 거리를 벗어나면 Chase or Idle 로 돌아감)
-								(Stop이나 다른 원초 명령이 내려지면 그에 걸맞는 단계 명령 수행)
-
-					4-2. Skill (추적이 완료되었으면(논 타겟이거나) 그에 걸맞는 스킬 동작 명령을 수행, 스킬이 끝났는지 판단하여 걸맞는 명령 시행) 
-
-					5. Sturn (CC기에 의해 Sturn에 걸린 상태, Sturn 동작 명령 시행후, 시간이 지나면 None 상태로 되돌림)
-
-					예) 원초 명령에서 어떤 Actor를 우클릭 하면 그게 적인지 아군인지 뭔지 판단해서 그것에 걸맞는 동작 명령을 내림
-
-					예) 공격 원초 명령중에 대상이 사라졌거나 대상이 죽었을경우, 동작 명령을 Idle로 전환하고, 원초 명령을 취소(Stop)함
-
-					예) 캐릭터마다 다른 스킬 알고리즘을 원할경우, 단계명령에서 동작 명령을 결정하는 함수를 오버라이딩 해서 사용
-
-	3. 동작 명령 : Idle, Walk, Attack, Sturn 같은 세부 동작을 수행하는 단계,
-					각각의 동작들은 서로 독립적임 
-					각기 캐릭터마다 고유한 함수를 원할경우, 오버라이드 해서 각기 구현 가능
-
-
-
-
-
-		모든 유닛은 같은 명령 단계를 공유함
-		AI는 AI 컨트롤러가, 플레이어는 플레이어 컨트롤러가 명령을 내림
-
-		각기 플레이어마다 스킬의 종류와 알고리즘이 다르기 때문에, 그 경우 각자 따로 추가하여 사용할 수 있게 해야함
-
-		AI 컨트롤러도 부모 클레스로 설계해서 각자 상속 받아서 자기만의 컨트롤러를 지니도록 해야함
-
-		플레이어 컨트롤러는 그냥 단축키 같은것에 의한 명령만 내려줄 뿐이니 중요치 않음
-
-
-		구태여 상속을 이용하고 통일된 인터페이스를 만들고자 하는 이유는 다수의 독립된 플레이어 클레스가 존재할때 알고리즘을 통일하여 서로 충돌, ㅂ그를 방지하기 위함
-
-
-
-
-	설계 의도 : 각각의 행동, 동작들에 독립성을 부여하여 다른곳에서 가져다 쓰기 용이하게 만듦
-				
-
-	디버깅 단계에서 현재 내려진 명령, 명령을 수행하기 위해 취하는 단계, 실제 엑션 등등을 가시적으로 보여줌
-	
-	
-	
-	*/
-
-
-	//AIController AIController_;
-	GameEngineFSM Primal_Order_; // 플레이어, AI등이 내리는 가장 원초적 명령단계, UI, 단축키 등을 통해 Attack, Skill, Stop, Hold, Move, Patrrol 등의 명령
-	GameEngineFSM Process_Order_; // 원초 명령을 수행하기 위한 단계적 명령, 공격을 위한 추적, 탐지, 
-	GameEngineFSM Action_Order_; // 원초 명령을 수행하기 위한 동작 단계, Attack 동작, Move 동작, Idle 동작 
-
-	//GameEngineFSM AIController_;
-
-	GameEngineFSM State_;
-
-
-	CharacterType CharacterType_;		// (0: AI, 1: MAIN) : default(AI)
-
-#pragma region 조작 변수
-	//키 방향 07.26, 조작으로 인해 움직여야할 방향, 
-	float4 KeyDir_;
-
-	//락온된 대상의 방향, 움직일 방향보단 바라봐야할 방향에 가까움
-	float4 TargetDir_;
-	float4 TargetPos_;
-	bool IsAttack_;
-
-	bool EnemyInSight_; //시야에 적이 있음
-
-#pragma endregion
-
-	//버프 리스트, 
-	std::map <std::string, Buff*> BufferList_;
-	// 캐릭터 기본 스텟
-	Status Status_Base_;
-	// 캐릭터 추가 스텟 / 덧
-	Status Status_Add_;
-	// 캐릭터 추가 스텟 / 곱
-	Status Status_Mult_;
-	// 캐릭터 최종 스텟
-	Status Status_Final_;
-
-	bool IsSturn_;
-	float SturnTime_;
-
-	// 유닛의 이동 방향, 유닛이 바라봐야 할 방향
-	float4 FowordDir_;
-	// 유닛이 현재 바라보는 방향 (이동과 무관함)
-	float4 CurFowordDir_;
-	//Y축 회전 속도
-	float YRotateSpeed_;
-
-	// 사거리
-	float AttackDist_;
-	//공격 텀, 공격 속도
-	float AttackTurm_;
-	// 히트박스 활성화 전에 뜸들이는 시간 (에니메이션) 
-	float AttackBuffer_;
-	//Attack Hit Box 활성화 시간
-	float AttackHitTime_;
-
-	Unit* Target_;
-
-	//바닥 콜리전
-	GameEngineCollision* UnitGroundCollision_;
-	//시야 충돌체
-	GameEngineCollision* UnitSightCollision_;
-	//피격 히트박스
-	GameEngineCollision* UnitHitBoxCollision_;
-
-protected:
-	virtual void Start();
-	virtual void Update(float _DeltaTime);
-
-protected:
-	void SyncStatus();
-
-	const float4 CalculateTargetDir(float4 TargetPos)
-	{
-		float4 Dir = TargetPos - GetTransform()->GetWorldPosition();
-		Dir.Normalize3D();
-
-		return Dir;
-	}
-
-protected:
-	void UpdateBuff(float _DeltaTime);
-
-	void CurDirUpdate(float _DeltaTime);
-	void TargetDirUpdate(float _DeltaTime);
-	//RockOn 중일때 방향 업데이트
-	//void RockOnDirUpdate(float _DeltaTime);
-	//void KeyDirUpdate(float _DeltaTime);
-	void MoveUpdate(float _DeltaTime);
-
-	//캐릭터가 바라보는 방향이 바로 바로 안변하고 천천히 변함(이동과는 무관하게), 
-//07.18 바라보는 방향을 넣어줘야함
-	void MoveRotateUpdate(float _DeltaTime);
-
-protected:
-	// 캐릭터 State, 가상함수를 통해 캐릭터 클레스가 기본적으로 가지고 있어야 할 state를 지정
-	virtual void Idle_Start() = 0;
-	virtual void Idle_Update(float _DeltaTime) = 0;
-	virtual void Idle_End() = 0;
-
-	virtual void Walk_Start() = 0;
-	virtual void Walk_Update(float _DeltaTime) = 0;
-	virtual void Walk_End() = 0;
-
-	virtual void Attack_Start() = 0;
-	virtual void Attack_Update(float _DeltaTime) = 0;
-	virtual void Attack_End() = 0;
-
-	// 공격과 공격 사이 에니메이션 잠깐 재생하는 구간, 공격이 완료된 직후이며, 이 단계에서 Attack를 끝낼지 게속할지 판별한다.
-	virtual void Attack_Ready_Start() = 0;
-	virtual void Attack_Ready_Update(float _DeltaTime) = 0;
-	virtual void Attack_Ready_End() = 0;
+#pragma region Public
+public:
+	void Unit_AddBaseStat(Status _Status);
+	void Unit_SetBaseStat(Status _Status);
+	void Unit_AddBuff(std::string _Name, Status _Status, float _Time = -1.f, bool _IsSturn = false, std::function<void()> _BuffFunc = nullptr); //_Time(-1.f) == 영구지속
+	void Unit_RemoveBuff(std::string _Name);
+	void Unit_RemoveAllBuff(std::string _Name);
 
 public:
-	void AddBaseStat(Status _Status);
-	void SetBaseStat(Status _Status);
-	void AddBuff(std::string _Name, Status _Status, float _Time);
-	void RemoveBuff(std::string _Name);
-	void RemoveAllBuff(std::string _Name);
-
-
-public:
-
-	void Unit_AIController_Off()
+	const Team Unit_GetTeam()
 	{
-		Iscontrolled_ = false;
-		//AIController_->AIController_Off();
-	}
-	void Unit_AIController_On()
-	{
-		Iscontrolled_ = true;
-		//AIController_->AIController_On();
+		return Team_;
 	}
 
-	void Unit_SetTargetDir(float4 _Dir)
+	void Unit_SetTeam(Team _Team)
 	{
-		TargetDir_ = _Dir;
+		Team_ = _Team;
 	}
 
-	void Unit_SetTargetPos(float4 _Pos)
-	{
-		TargetPos_ = _Pos;
-	}
-
-	void Unit_ChangeState(std::string _StateName)
-	{
-		State_.ChangeState(_StateName);
-	}
-
-	//void Unit_SetMove(bool _IsMove)
-	//{
-	//	IsMove_ = _IsMove;
-	//}
-
-	std::string Unit_GetStateName()
-	{
-		return State_.GetCurrentState()->Name_;
-	}
-
-	inline void Unit_SetCharacterType(CharacterType _Type)
-	{
-		// 잘못된 타입 수신시 실패
-		if (_Type == CharacterType::NONE || _Type == CharacterType::MAX)
-		{
-			return;
-		}
-
-		CharacterType_ = _Type;
-	}
-
-	std::map < std::string, Buff*> PlayerGetBuffList()
+	std::map < std::string, Buff*> Unit_GetPlayerBuffList()
 	{
 		return BufferList_;
 	}
@@ -306,7 +173,7 @@ public:
 
 	Unit* Unit_GetTarget()
 	{
-		return Target_;
+		return Target_Unit_;
 	}
 
 	const int Unit_GetAttackPower()
@@ -316,8 +183,242 @@ public:
 
 	void Unit_SetTarget(Unit* _Target)
 	{
-		Target_ = _Target;
+		Target_Unit_ = _Target;
 	}
+
+	//const unsigned int GetUnitID()
+	//{
+	//	return UnitID_;
+	//}
+	//void Unit_ChangeState(std::string _StateName)
+	//{
+	//	State_.ChangeState(_StateName);
+	//}
+
+	//std::string Unit_GetStateName()
+	//{
+	//	return State_.GetCurrentState()->Name_;
+	//}
+
+	//inline void Unit_SetCharacterType(CharacterType _Type)
+	//{
+	//	// 잘못된 타입 수신시 실패
+	//	if (_Type == CharacterType::NONE || _Type == CharacterType::MAX)
+	//	{
+	//		return;
+	//	}
+
+	//	CharacterType_ = _Type;
+	//}
+#pragma endregion
+
+protected:
+	virtual void Start();
+	virtual void Update(float _DeltaTime);
+
+protected:
+#pragma region 초기화
+
+#pragma endregion
+
+protected: // 기본정보
+
+	class PlayerController* PlayController_; // ==nullptr ==몬스터
+	Team Team_; //적인지 아군인지 판별함
+
+	GameEngineFSM OrderState_;
+	GameEngineFSM ActionState_;
+
+	//바닥 콜리전
+	GameEngineCollision* UnitGroundCollision_;
+	//시야 충돌체
+	GameEngineCollision* UnitSightCollision_;
+	//피격 히트박스
+	GameEngineCollision* UnitHitBoxCollision_;
+
+#pragma region 컨트롤러 에서 얻어오는 변수들
+
+	float4 Target_Pos_; // 마우스로 지정된 최종적으로 이동해야 할 위치
+	Unit* Target_Unit_; // 마우스로 타겟팅한 유닛
+	Order Controller_Order_; // 컨트롤러에서 전달된 명령
+	//unsigned int Target_ID_; //타겟이 된 유닛의 ID 확실히 엔진 단위의 기능이 필요함,
+#pragma endregion
+
+#pragma region 이동 변수
+
+	float4 Move_Navi_Temp_Pos_;	// 네비가 전해주는 임시 이동 위치
+	float4 Move_ForwardDir_;	// 유닛의 이동 방향, 유닛이 바라봐야 할 방향	
+	float4 Move_Rotate_CurForwardDir_;	// 유닛이 현재 바라보는 방향 (이동과 무관함)	
+	float Move_YRotateSpeed_;	//Y축 회전 속도
+#pragma endregion
+
+#pragma region 스텟 변수
+
+	std::map <std::string, Buff*> BufferList_;	//버프 리스트, 	
+	Status Status_Base_;		// 캐릭터 기본 스텟
+	Status Status_Add_;			// 캐릭터 추가 스텟 / 덧
+	Status Status_Mult_;		// 캐릭터 추가 스텟 / 곱	
+	Status Status_Final_;		// 캐릭터 최종 스텟
+
+	float AttackTurm_;	//공격 텀, 공격 속도
+	float AttackBuffer_;	// 히트박스 활성화 전에 뜸들이는 시간 (에니메이션) 	
+	float AttackHitTime_;	//Attack Hit Box 활성화 시간
+#pragma endregion
+
+#pragma region 유닛 컨트롤 변수
+
+	std::list<Unit*> TargetingUnits_; // 나를 타겟한 유닛들, 나를 타겟한 유닛이 아직도 날 타겟팅 했는지 매번 체크해야한다.
+									// 소멸자 호출시, 이 리스트 인원 전부의 Target_Unit_을 null로 만듦
+	bool EnemyInSight_; //시야에 적이 있음
+
+	bool IsSturn_;	// 스턴 상태
+#pragma endregion
+
+protected:
+#pragma region 업데이트
+	void Controller_Update();
+	void UnitTargetUpdate(float _DeltaTime);
+	void StateUpdate(float _DeltaTime);
+	void UpdateBuff(float _DeltaTime);
+#pragma endregion
+
+#pragma region 무브 함수
+	void MoveUpdate(float _DeltaTime);
+
+	void NaviUpdate(float _DeltaTime);
+	void CurDirUpdate(float _DeltaTime);
+	void MoveRotateUpdate(float _DeltaTime);
+
+	bool ChaseTargetUpdate(Unit* _Target_Unit, float _ChaseDist);
+	//리턴값이 true면 추적을 종료한다.
+	bool ChasePosUpdate(float4 _Target_Pos, float _ChaseDist);
+#pragma endregion
+
+
+	void SetOrderEnd();
+
+	//리턴값이 true면 추적을 종료한다.
+
+protected:
+	void SetChangeActionState(std::string _State)
+	{
+		if (ActionState_.GetCurrentState()->Name_ != _State)
+		{
+			ActionState_.ChangeState(_State);
+		}
+	}
+	
+	void SetChangeOrderState(std::string _State)
+	{
+		if (OrderState_.GetCurrentState()->Name_ != _State)
+		{
+			OrderState_.ChangeState(_State);
+		}
+	}
+
+	void SetSyncStatus();
+
+	const float4 GetTargetDir(float4 TargetPos)
+	{
+		float4 Dir = TargetPos - GetTransform()->GetWorldPosition();
+		Dir.Normalize3D();
+
+		return Dir;
+	}
+
+	void SetTargetErase()
+	{
+		Target_Unit_ = nullptr;
+	}
+
+	void SetUnitTarget(Unit* _Unit)
+	{
+		Target_Unit_ = _Unit;
+		Target_Unit_->TargetingUnits_.push_back(this);
+	}
+
+	//void SetTargetID(unsigned int _Target_ID)
+	//{
+	//	Target_ID_ = _Target_ID;
+	//}
+
+protected:
+#pragma region 명령 State
+	virtual void Order_Attack_Target_Start();
+	virtual void Order_Attack_Target_Update(float _DeltaTime);
+	virtual void Order_Attack_Target_End();
+
+	virtual void Order_Attack_Pos_Start();
+	virtual void Order_Attack_Pos_Update(float _DeltaTime);
+	virtual void Order_Attack_Pos_End();
+
+	virtual void Order_Move_Start();
+	virtual void Order_Move_Update(float _DeltaTime);
+	virtual void Order_Move_End();
+
+	virtual void Order_Stop_Start();
+	virtual void Order_Stop_Update(float _DeltaTime);
+	virtual void Order_Stop_End();
+
+	virtual void Order_Hold_Start();
+	virtual void Order_Hold_Update(float _DeltaTime);
+	virtual void Order_Hold_End();
+
+	//virtual void Order_Q_Start();
+	//virtual void Order_Q_Update(float _DeltaTime);
+	//virtual void Order_Q_End();
+
+	//virtual void Order_W_Start();
+	//virtual void Order_W_Update(float _DeltaTime);
+	//virtual void Order_W_End();
+
+	//virtual void Order_E_Start();
+	//virtual void Order_E_Update(float _DeltaTime);
+	//virtual void Order_E_End();
+
+	//virtual void Order_R_Start();
+	//virtual void Order_R_Update(float _DeltaTime);
+	//virtual void Order_R_End();
+
+	//virtual void Order_D_Start();
+	//virtual void Order_D_Update(float _DeltaTime);
+	//virtual void Order_D_End();
+
+#pragma endregion
+
+#pragma region 동작 State
+	virtual void Action_Idle_Start();
+	virtual void Action_Idle_Update(float _DeltaTime);
+	virtual void Action_Idle_End();
+
+	virtual void Action_Walk_Start();
+	virtual void Action_Walk_Update(float _DeltaTime);
+	virtual void Action_Walk_End();
+
+	virtual void Action_Attack_Start();
+	virtual void Action_Attack_Update(float _DeltaTime);
+	virtual void Action_Attack_End();
+
+	virtual void Action_Q_Start()=0;
+	virtual void Action_Q_Update(float _DeltaTime) = 0;
+	virtual void Action_Q_End() = 0;
+
+	virtual void Action_W_Start() = 0;
+	virtual void Action_W_Update(float _DeltaTime) = 0;
+	virtual void Action_W_End() = 0;
+
+	virtual void Action_E_Start() = 0;
+	virtual void Action_E_Update(float _DeltaTime) = 0;
+	virtual void Action_E_End() = 0;
+
+	virtual void Action_R_Start() = 0;
+	virtual void Action_R_Update(float _DeltaTime) = 0;
+	virtual void Action_R_End() = 0;
+
+	virtual void Action_D_Start() = 0;
+	virtual void Action_D_Update(float _DeltaTime) = 0;
+	virtual void Action_D_End() = 0;
+#pragma endregion
 
 protected:		// delete constructer
 	Unit(const Unit& _other) = delete;

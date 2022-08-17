@@ -5,14 +5,19 @@ enum class CollisionGroup
 	None = 0,
 	MousePointer,
 	Player,
+	PlayerGround,
+	PlayerSight,
 	PlayerAttack,
 	MonsterSight,
 	Monster,
 	MonsterAttack,
-	PlayerSight,
 	Item,
 	ItemBox,
 	UI,
+
+	//이현 추가
+	Unit,
+
 
 	MAX = 999
 

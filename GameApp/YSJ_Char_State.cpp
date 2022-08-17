@@ -13,11 +13,11 @@
 
 
 //Idle
-void YSJ_Char::Idle_Start()
+void YSJ_Char::Action_Idle_Start()
 {
 	//Speed_ = 0.f;
 }
-void YSJ_Char::Idle_Update(float _DeltaTime)
+void YSJ_Char::Action_Idle_Update(float _DeltaTime)
 {
 	if (true == GameEngineInput::GetInst().Press("W") ||
 		true == GameEngineInput::GetInst().Press("A") ||
@@ -26,13 +26,13 @@ void YSJ_Char::Idle_Update(float _DeltaTime)
 	{
 		//MPLAYERChangeState("Walk");
 
-		State_.ChangeState("Walk");
+		ActionState_.ChangeState("Walk");
 		return;
 	}
 
 	if (GameEngineInput::GetInst().Press("Attack"))
 	{
-		State_.ChangeState("Attack");
+		ActionState_.ChangeState("Attack");
 		return;
 	}
 
@@ -42,23 +42,23 @@ void YSJ_Char::Idle_Update(float _DeltaTime)
 
 	MoveRotateUpdate(_DeltaTime);
 }
-void YSJ_Char::Idle_End()
+void YSJ_Char::Action_Idle_End()
 {
 }
 
 //Walk
-void YSJ_Char::Walk_Start()
+void YSJ_Char::Action_Walk_Start()
 {
 	//IsMove_ = true;
 	//Speed_ = 300.f;
 }
-void YSJ_Char::Walk_Update(float _DeltaTime)
+void YSJ_Char::Action_Walk_Update(float _DeltaTime)
 {
 	// 크기가 2짜리 큐를 만들고, 2번째는 인접 Key가 아니면 return 시킴, 그리고 안눌렸으면 다시 반환시켜서 먼저 누른거 2개만 남게 해주기
 	// 
 	if (GameEngineInput::GetInst().Press("Attack"))
 	{
-		State_.ChangeState("Attack");
+		ActionState_.ChangeState("Attack");
 		return;
 	}
 
@@ -67,14 +67,14 @@ void YSJ_Char::Walk_Update(float _DeltaTime)
 		false == GameEngineInput::GetInst().Press("S") &&
 		false == GameEngineInput::GetInst().Press("D"))
 	{
-		State_.ChangeState("Idle");
+		ActionState_.ChangeState("Idle");
 
 		return;
 	}
 
 	if (true == GameEngineInput::GetInst().Press("Space"))
 	{
-		State_.ChangeState("Run");
+		ActionState_.ChangeState("Run");
 
 		return;
 	}
@@ -83,7 +83,7 @@ void YSJ_Char::Walk_Update(float _DeltaTime)
 	MoveUpdate(_DeltaTime);
 	MoveRotateUpdate(_DeltaTime);
 }
-void YSJ_Char::Walk_End()
+void YSJ_Char::Action_Walk_End()
 {
 	//IsMove_ = false;
 }
@@ -142,12 +142,12 @@ void YSJ_Char::Walk_End()
 //}
 
 //Attack
-void YSJ_Char::Attack_Start()
+void YSJ_Char::Action_Attack_Start()
 {
 	if (Status_Final_.Stat_Stamina_ < 5.f)
 	{
 		//스테미나 게이지 깜빡거리기
-		State_.ChangeState("Idle");
+		ActionState_.ChangeState("Idle");
 		return;
 	}
 
@@ -172,7 +172,7 @@ void YSJ_Char::Attack_Start()
 	//	Status_Final_.Stat_Stamina_ = 0.f;
 	//}
 }
-void YSJ_Char::Attack_Update(float _DeltaTime)
+void YSJ_Char::Action_Attack_Update(float _DeltaTime)
 {
 	//KeyDirUpdate(_DeltaTime);
 
@@ -217,11 +217,11 @@ void YSJ_Char::Attack_Update(float _DeltaTime)
 
 	else
 	{
-		State_.ChangeState("Idle");
+		ActionState_.ChangeState("Idle");
 		return;
 	}
 }
-void YSJ_Char::Attack_End()
+void YSJ_Char::Action_Attack_End()
 {
 	AttackTurm_ = 0.f;
 	//AttackTime_ = 0.f;
@@ -231,20 +231,6 @@ void YSJ_Char::Attack_End()
 	//맞거나 이런저런 상황으로 강제로 State가 종료 되었을때
 	AttackHitBoxCollision_->Off();
 }
-
-void YSJ_Char::Attack_Ready_Start()
-{
-}
-
-void YSJ_Char::Attack_Ready_Update(float _DeltaTime)
-{
-}
-
-void YSJ_Char::Attack_Ready_End()
-{
-}
-
-
 
 // 마우스 커서 이동용
 // 명령을 컨트롤러에서 하달받고
