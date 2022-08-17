@@ -16,6 +16,9 @@ std::list<float4> SJH_Funnel::PathOptimization(const float4& _StartPos, const fl
 		RightPortal_.clear();
 	}
 
+	// (경로의 갯수 - 1) = 포탈의 갯수
+	TotalPortalCount_ = static_cast<int>(_MovePath.size()) - 1;
+
 	// A*로 얻어낸 최단경로를 통해 삼각형(셀)별 공유하는 Vertex를 얻어낸 뒤
 	// 왼쪽점인지 오른쪽점인지 판단하여 목록 생성
 	CreatePortalVertexList(_MovePath);
@@ -81,9 +84,34 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 	// 시작위치 저장
 	_ReturnPath.push_back(StartPos_);
 
-	// 경로 만들기시작
+	float4 LeftPortalVertex = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	float4 RightPortalVertex = float4(0.0f, 0.0f, 0.0f, 0.0f);
+
+	// 최적경로 및 코너 정점좌표 탐색 시작
+	for (int PortalIndex = 0; PortalIndex < TotalPortalCount_; ++PortalIndex)
+	{
+		// (왼쪽 포탈정점), (왼쪽포탈정점 + 1) 비교하여 깔때기를 좁힐수있는지 판단
+		if (true == LeftPortalCheck(StartPos_, PortalIndex))
+		{
+			// 깔때기를 좁힐수 있으므로 왼쪽 깔때기를 좁힌다.
 
 
+
+		}
+
+		// (오른쪽 포탈정점), (오른쪽포탈정점 + 1) 비교하여 깔때기를 좁힐수있는지 판단
+		if (true == RightPortalCheck(StartPos_, PortalIndex))
+		{
+			// 깔때기를 좁힐수 있으므로 오른쪽 깔때기를 좁힌다.
+
+
+
+		}
+
+
+
+
+	}
 
 	// 모든 경로완성후 마지막 EndPos 저장
 	_ReturnPath.push_back(EndPos_);
@@ -95,9 +123,60 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 	return false;
 }
 
+bool SJH_Funnel::LeftPortalCheck(float4& _StartPos, int _PortalIndex)
+{
+	// 현재 오른쪽포탈까지의 벡터와 교차한다면 시작위치가 변경
+	// 교차 : 왼쪽포탈벡터가 오른쪽포탈벡터보다 오른쪽에 존재하면 교차했다고 판정
+	// 시작위치 = 현재 오른쪽포탈의 정점으로 갱신
+
+
+
+
+
+	// 왼쪽과 오른쪽포탈이 교차했으므로 오른쪽포탈정점을 경로에 추가하고 시작위치를 오른쪽포탈 정점으로 설정
+
+
+
+
+
+	// 아니고 다음 인덱스의 포탈이 현재 포탈의 오른쪽에 존재한다면 연결가능
+	// 단, 다음인덱스의 포탈이 현재 포탈의 왼쪽에 존재한다면 연결불가판정
+
+
+
+	return false;
+}
+
+bool SJH_Funnel::RightPortalCheck(float4& _StartPos, int _PortalIndex)
+{
+	// 현재 왼쪽포탈까지의 벡터와 교차한다면 시작위치가 변경
+	// 교차 : 오른쪽포탈벡터가 왼쪽포탈벡터보다 왼쪽에 존재하면 교차했다고 판명
+	// 시작위치 = 현재 왼쪽포탈의 정점으로 갱신
+
+
+
+
+
+	// 왼쪽과 오른쪽포탈이 교차했으므로 왼쪽포탈정점을 경로에 추가하고 시작위치를 왼쪽포탈 정점으로 설정
+
+
+
+
+
+	// 아니고 다음 인덱스의 포탈이 현재 포탈의 왼쪽에 존재한다면 연결가능
+	// 단, 다음인덱스의 포탈이 현재 포탈의 오른쪽에 존재한다면 연결불가판정
+
+
+
+
+
+	return false;
+}
+
 SJH_Funnel::SJH_Funnel()
 	: StartPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, EndPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
+	, TotalPortalCount_(0)
 {
 }
 
