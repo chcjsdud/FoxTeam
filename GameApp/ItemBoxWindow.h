@@ -27,7 +27,8 @@ public:
 	ItemBoxManager* ItemBoxManager_;
 	ItemBox* SelectBox_;
 	int ListSelectItem;
-	ItemBase* NewItem;
+	int ListSelectItemBox;
+	
 
 	std::vector<const char*> vecArr;
 };

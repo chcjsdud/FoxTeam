@@ -8,6 +8,7 @@ ItemBoxWindow::ItemBoxWindow()
 	: ItemBoxManager_(nullptr)
 	, SelectBox_(nullptr)
 	, ListSelectItem(-1)
+	, ListSelectItemBox(-1)
 {
 	vecArr.push_back("Test1");
 	vecArr.push_back("Test2");
@@ -42,14 +43,12 @@ void ItemBoxWindow::OnGUI()
 
 		ImGui::PushItemWidth(200);
 		ImGui::ListBox("##ItemList", &ListSelectItem, &vecArr[0], static_cast<ImGuiID>(vecArr.size()));
-		
-		int select = -1;
-
+	
 		if (false == ItemListName.empty())
 		{
 			ImGui::SameLine();
 			ImGui::PushItemWidth(200);
-			ImGui::ListBox("##ItemBoxList", &select, &ItemListName[0], static_cast<ImGuiID>(ItemListName.size()));
+			ImGui::ListBox("##ItemBoxList", &ListSelectItemBox, &ItemListName[0], static_cast<ImGuiID>(ItemListName.size()));
 		}
 
 		if (true == ImGui::Button("PushItem") &&
@@ -60,7 +59,8 @@ void ItemBoxWindow::OnGUI()
 
 		ImGui::SameLine();
 
-		if (true == ImGui::Button("DeleteItem"))
+		if (true == ImGui::Button("DeleteItem") &&
+			-1 != ListSelectItemBox)
 		{
 			DeleteItem();
 		}
@@ -71,7 +71,7 @@ void ItemBoxWindow::OnGUI()
 
 void ItemBoxWindow::PushItem()
 {
-	NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
+	ItemBase* NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
 
 	NewItem->SetName(vecArr[ListSelectItem]);
 
@@ -80,5 +80,20 @@ void ItemBoxWindow::PushItem()
 
 void ItemBoxWindow::DeleteItem()
 {
+	int index = 0;
+
+	std::list<ItemBase*>::iterator iter = SelectBox_->ItemList.begin();
+
+	for (; iter != SelectBox_->ItemList.end(); iter++)
+	{
+		if (index == ListSelectItemBox)
+		{
+			(*iter)->Death();
+			SelectBox_->ItemList.erase(iter);
+			ListSelectItemBox = -1;
+			break;
+		}
+		index++;
+	}
 }
 
