@@ -12,6 +12,7 @@
 #include <GameApp/GHMousePointer.h>
 #include <GameApp/GHRayTestOBBBox.h>
 #include <GameApp/GHRayTestSphere.h>
+#include <GameEngine/GameEngineLevelControlWindow.h>
 
 GHRayTestLevel::GHRayTestLevel()
 	: mouse_(nullptr)
@@ -35,6 +36,7 @@ void GHRayTestLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("Q", 'Q');
 	GameEngineInput::GetInst().CreateKey("E", 'E');
 	GameEngineInput::GetInst().CreateKey("O", 'o');
+	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
 
 }
 
@@ -50,6 +52,21 @@ void GHRayTestLevel::LevelUpdate(float _DeltaTime)
 		GetMainCameraActor()->GetTransform()->SetWorldPosition(player_->GetTransform()->GetWorldPosition() + float4(-200.0f, 800.f, -200.f));
 		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 70.0f, 45.0f, 0.0f });
 	}
+
+
+	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	if (nullptr != controlWindow)
+	{
+		if (nullptr != mouse_)
+		{
+			float4 position = mouse_->GetIntersectionYAxisPlane(0, 50000.f);
+
+			controlWindow->AddText("X : " + std::to_string(position.x));
+			controlWindow->AddText("Z : " + std::to_string(position.z));
+		}
+	}
+
+
 }
 
 void GHRayTestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
@@ -70,21 +87,33 @@ void GHRayTestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 void GHRayTestLevel::loadResource()
 {
-	GameEngineDirectory dir;
+	{
+		GameEngineDirectory dir;
 
-	dir.MoveParent("FoxTeam");
-	dir / "Resources" / "FBX" / "GH";
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "FBX" / "GH";
 
-	std::string meshName = "Rio_Run.fbx";
-
-
-	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Bg_NaviMesh_Cobalt.fbx"));
-	mesh->CreateRenderingBuffer();
+		std::string meshName = "Rio_Run.fbx";
 
 
-	GameEngineFBXMeshManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserMesh"));
-	GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Run.UserAnimation"));
-	GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserAnimation"));
+		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Bg_NaviMesh_Cobalt.fbx"));
+		mesh->CreateRenderingBuffer();
+
+
+		GameEngineFBXMeshManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserMesh"));
+		GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Run.UserAnimation"));
+		GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserAnimation"));
+	}
+
+	{
+		GameEngineDirectory dir;
+
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "FBX" / "YSJ";
+
+		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Bg_NaviMesh.fbx"));
+		mesh->CreateRenderingBuffer();
+	}
 }
 
 void GHRayTestLevel::releaseResource()
@@ -97,8 +126,7 @@ void GHRayTestLevel::releaseResource()
 void GHRayTestLevel::createActor()
 {
 	map_ = CreateActor<GHMap>();
-	mouse_= CreateActor<GHMousePointer>();
-
+	mouse_ = CreateActor<GHMousePointer>();
 	player_ = CreateActor<GHRio>();
 
 	//for (int z = 0; z < 10; z++)

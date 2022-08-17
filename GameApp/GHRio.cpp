@@ -23,6 +23,11 @@ GHRio::~GHRio()
 
 void GHRio::Start()
 {
+	//float4 spawnPoint = { -6780.f, 0.0f, -780.f };
+	float4 spawnPoint = { 0.f, 0.0f, 0.f };
+	GetTransform()->SetLocalPosition(spawnPoint);
+	destination_ = spawnPoint;
+	
 
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 

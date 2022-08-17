@@ -3,6 +3,7 @@
 
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include <GameEngine/EngineVertex.h>
+#include <numeric>
 
 
 GHMap::GHMap()
@@ -20,6 +21,7 @@ void GHMap::Start()
 {
 	navMeshRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	navMeshRenderer_->SetFBXMesh("Bg_NaviMesh_Cobalt.fbx", "TextureDeferredLight");
+	//navMeshRenderer_->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
 
 	size_t count = navMeshRenderer_->GetRenderSetCount();
 	for (size_t i = 0; i < count; i++)
@@ -28,7 +30,7 @@ void GHMap::Start()
 	}
 
 	navMeshRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
-	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -20.f });
+	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -50.f });
 
 	//navMeshRenderer_->Off();
 
@@ -71,7 +73,6 @@ void GHMap::Start()
 		}
 	}
 
-
 	// 네비메쉬 인접성 검사
 
 	size_t navMeshCount = navMeshes_.size();
@@ -90,6 +91,8 @@ void GHMap::Start()
 			}
 		}
 	}
+
+	makeAStarNode(100.f, 100.f);
 
 
 	//GameEngineVertexBuffer* NewVertex = new GameEngineVertexBuffer();
@@ -192,4 +195,71 @@ bool GHMap::checkNavMeshAdjacency(const GHNavMesh& _left, const GHNavMesh& _righ
 	}
 
 	return false;
+}
+
+void GHMap::makeAStarNode(float _intervalX, float _intervalZ)
+{
+	float startX = FLT_MAX;
+	float startZ = FLT_MAX;
+	float endX = -FLT_MAX;
+	float endZ = -FLT_MAX;
+	for (GHNavMesh& n : navMeshes_)
+	{
+		for (float4& f : n.Vertices)
+		{
+			if (f.x < startX)
+			{
+				startX = f.x;
+			}
+
+			if (f.z < startZ)
+			{
+				startZ = f.z;
+			}
+
+			if (f.x > endX)
+			{
+				endX = f.x;
+			}
+
+			if (f.z > endZ)
+			{
+				endZ = f.z;
+			}
+		}
+	}
+
+	startX *= navMeshRenderer_->GetTransform()->GetLocalScaling().x;
+	startZ *= navMeshRenderer_->GetTransform()->GetLocalScaling().z;
+	endX *= navMeshRenderer_->GetTransform()->GetLocalScaling().x;
+	endZ *= navMeshRenderer_->GetTransform()->GetLocalScaling().z;
+
+	float XLength = endX - startX;
+	float ZLength = endZ - startZ;
+
+	int nodeCountX = static_cast<int>(XLength / _intervalX) + 1;
+	int nodeCountZ = static_cast<int>(ZLength / _intervalZ) + 1;
+
+	allNodes_.reserve(nodeCountZ);
+	
+	for (std::vector<GHNode>& v : allNodes_)
+	{
+		v.reserve(nodeCountX);
+	}
+
+	for (size_t z = 0; z < nodeCountZ; z++)
+	{
+		allNodes_.push_back(std::vector<GHNode>());
+		for (size_t x = 0; x < nodeCountX; x++)
+		{
+			float posX = startX + x * _intervalX;
+			float posZ = startZ + z * _intervalZ;
+
+			GHNode newNode(float4(posX, 0.0f, posZ));
+
+			allNodes_[z].push_back(newNode);
+		}
+	}
+
+	int a = 0;
 }

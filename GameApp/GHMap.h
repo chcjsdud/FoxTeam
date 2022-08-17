@@ -2,6 +2,7 @@
 
 #include <GameEngine/GameEngineActor.h>
 #include "GHNavMesh.h"
+#include "GHNode.h"
 
 class GameEngineFBXRenderer;
 class GHMap : public GameEngineActor
@@ -26,10 +27,14 @@ public:
 
 private:
 	bool checkNavMeshAdjacency(const GHNavMesh& _left, const GHNavMesh& _right);
+	
+	void makeAStarNode(float _intervalX, float _intervalZ);
 
 private:
 	GameEngineFBXRenderer* navMeshRenderer_;
 
 	std::vector<GHNavMesh> navMeshes_;
+
+	std::vector<std::vector<GHNode>> allNodes_;
 };
 
