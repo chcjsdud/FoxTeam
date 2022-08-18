@@ -67,26 +67,31 @@ public:
 		_File->Read(NorTextureName); // 텍스처
 		_File->Read(SpcTextureName); // 텍스처
 
-		if (true == GameEngineDirectory::IsExist(DifTexturePath) ||
-			"" == DifTexturePath)
-		{
-			return;
-		}
-
 		std::filesystem::path path = std::filesystem::current_path();
 		path = path.parent_path();
+		std::string prevPath;
 
-		std::string prevPath = DifTexturePath;
-		prevPath.erase(DifTexturePath.find(path.filename().string()) + path.filename().string().size());
-		DifTexturePath.replace(0, prevPath.size(), path.string());
-
-		if ("" != NorTexturePath)
+		if (false == GameEngineDirectory::IsExist(DifTexturePath) &&
+			"" != DifTexturePath)
 		{
+			prevPath = DifTexturePath;
+			prevPath.erase(DifTexturePath.find(path.filename().string()) + path.filename().string().size());
+			DifTexturePath.replace(0, prevPath.size(), path.string());
+		}
+
+		if (false == GameEngineDirectory::IsExist(NorTexturePath) &&
+			"" != NorTexturePath)
+		{
+			prevPath = NorTexturePath;
+			prevPath.erase(NorTexturePath.find(path.filename().string()) + path.filename().string().size());
 			NorTexturePath.replace(0, prevPath.size(), path.string());
 		}
 
-		if ("" != SpcTexturePath)
+		if (false == GameEngineDirectory::IsExist(SpcTexturePath) &&
+			"" != SpcTexturePath)
 		{
+			prevPath = SpcTexturePath;
+			prevPath.erase(SpcTexturePath.find(path.filename().string()) + path.filename().string().size());
 			SpcTexturePath.replace(0, prevPath.size(), path.string());
 		}
 	}
