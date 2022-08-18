@@ -85,6 +85,9 @@ public:
 		return NaviRenderer;
 	}
 
+	float4 GetMousePos();
+	bool IsMouseIntersects();
+
 protected:
 
 private:
@@ -95,6 +98,10 @@ private:
 
 	bool LinkCheck(const Navi& _Left, const Navi& _Right);
 
+	bool CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance);
+	float4 CalculateCameraDir();
+
+private:
 	GameEngineDirectory NaviMeshFolder;
 
 	std::vector<Navi> Navis;

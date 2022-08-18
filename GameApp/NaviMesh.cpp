@@ -127,6 +127,93 @@ Navi* NaviMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir
 	return nullptr;
 }
 
+bool NaviMesh::CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance)
+{
+	bool Check = false;
+
+	float4 Dir = _Direction.NormalizeReturn3D();
+
+	for (size_t i = 0; i < Navis.size(); i++)
+	{
+		float4 V0 = Navis[i].Info.Vertex[0] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+		float4 V1 = Navis[i].Info.Vertex[1] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+		float4 V2 = Navis[i].Info.Vertex[2] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+
+		Check = DirectX::TriangleTests::Intersects(_Position.DirectVector,
+			Dir.DirectVector,
+			V0.DirectVector,
+			V1.DirectVector,
+			V2.DirectVector,
+			_Distance);
+
+		if (true == Check)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+float4 NaviMesh::CalculateCameraDir()
+{
+	float4 MousePos = GameEngineInput::GetInst().GetMousePos();
+
+	UINT ViewPortNo = 1;
+	D3D11_VIEWPORT ViewPort_ = {};
+	GameEngineDevice::GetInst().GetContext()->RSGetViewports(&ViewPortNo, &ViewPort_);
+
+	if (0 == ViewPortNo)
+	{
+		return float4::ZERO;
+	}
+
+	float PointX = ((2.0f * MousePos.x) / ViewPort_.Width) - 1.0f;
+	float PointY = (((2.0f * MousePos.y) / ViewPort_.Height) - 1.0f) * -1.0f;
+	float PointZ = 1.0f;
+
+	// 2. 광선을 투영영역 -> 뷰영역
+	float4x4 ProjMat = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().Projection_;
+	PointX = PointX / ProjMat._11;
+	PointY = PointY / ProjMat._22;
+
+	// 3. 광선을 뷰영역 -> 월드영역
+	float4x4 ViewMat = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().View_;
+	float4x4 InverseViewMat = ViewMat.InverseReturn();
+
+	float4 Dir = { PointX , PointY, PointZ, 0.0f };
+
+	Dir *= InverseViewMat;
+
+	return Dir.NormalizeReturn3D();
+}
+
+float4 NaviMesh::GetMousePos()
+{
+	float4 Dir = CalculateCameraDir();
+
+	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
+
+	float Dist = 0.0f;
+
+	// 교차성공시 교차점까지의 거리를 이용하여 해당 좌표를 반환
+	if (true == CheckIntersects(CameraPos, Dir, Dist))
+	{
+		return CameraPos + (Dir * Dist);;
+	}
+
+	return float4::ZERO;
+}
+
+bool NaviMesh::IsMouseIntersects()
+{
+	float4 Dir = CalculateCameraDir();
+	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
+	float Dist = 0.0f;
+
+	return CheckIntersects(CameraPos, Dir, Dist);
+}
+
 void NaviMesh::SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh)
 {
 	int Index = 0;

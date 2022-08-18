@@ -70,6 +70,12 @@ void YSJ_PlayLevel::LevelUpdate(float _DeltaTime)
 		{
 			Player_->SetCurrentNavi(NaviMesh_->CurrentCheck(Player_->GetTransform(), float4::DOWN));
 		}
+
+		if (true == GameEngineInput::GetInst().Down("LBUTTON") &&
+			true == NaviMesh_->IsMouseIntersects())
+		{
+			Player_->GetTransform()->SetWorldPosition(NaviMesh_->GetMousePos());
+		}
 	}
 }
 
