@@ -1,18 +1,6 @@
 #pragma once
 #include <GameEngine/EngineVertex.h>
 
-struct SideLine
-{
-public:
-	std::vector<GameEngineVertex> Vertex_;	// (시작점,끝점)
-	float4 MidPoint_;						// 선분의 중점
-
-public:
-	SideLine() : MidPoint_(float4::ZERO)
-	{
-	}
-};
-
 // 분류 : 삼각형(면)
 // 용도 : 길찾기알고리즘 베이스
 // 설명 : 메쉬를 이루는 삼각형집합 중 한개
@@ -48,7 +36,6 @@ public:
 protected:
 
 private: // 셀 상세정보 생성
-	void CreateSideLineInfo();
 	void CenterOfGravityCalculation();
 
 private: // 현재 셀에 존재하는 액터 탐색(갱신용)
@@ -76,9 +63,6 @@ private: // 수신받는 정보
 	int FaceIndex_;										// 해당 면의 인덱스(탐색용)
 	std::vector<GameEngineVertex> VertexList_;			// 해당 면을 구성하는 정점목록(3개)
 	std::vector<UINT> IndexList_;						// 해당 면을 구성하는 인덱스목록
-
-private: // 해당 면을 감싸는 선분목록
-	std::vector<SideLine> SideLines_;					// 3개의 정점을 각각 연결하는 선분의 정보(선분의 2개정점, 중점)
 
 private: // 무게중심 및 인접한 면목록
 	float4 CenterOfGravity_;							// 해당 면(삼각형)의 무게중심

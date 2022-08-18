@@ -207,7 +207,7 @@ void SJH_Yuki::Start()
 #pragma endregion
 
 	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0);
-	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[14], MeshName, 14);
+	//AnimRenderer_->CreateFBXAnimation(AnimationNameList_[14], MeshName, 14);
 	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0], true);
 
 #pragma endregion
@@ -232,7 +232,7 @@ void SJH_Yuki::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::GetInst().Down("SJH_TEST2"))
 	{
-		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[14], true);
+		//AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[14], true);
 	}
 
 	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동

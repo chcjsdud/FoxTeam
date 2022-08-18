@@ -10,9 +10,6 @@ void SJH_NaviCell::CreateNavigationCellInfo(int _Index, int _MeshIndex, int _Fac
 	VertexList_ = _VertexList;
 	IndexList_ = _IndexList;
 
-	// 수신받은 3개의 정점을 연결하는 선분의 중점을 계산
-	CreateSideLineInfo();
-
 	// 수신받은 3개의 정점으로 무게중심 계산
 	CenterOfGravityCalculation();
 }
@@ -116,6 +113,11 @@ std::vector<GameEngineVertex> SJH_NaviCell::SearchShareVertex(SJH_NaviCell* _Sha
 	{
 		for (int j = 0; j < static_cast<int>(_ShareCell->VertexList_.size()); ++j)
 		{
+			if (2 == ReturnVertex.size())
+			{
+				return ReturnVertex;
+			}
+
 			if (VertexList_[i].POSITION == _ShareCell->VertexList_[j].POSITION)
 			{
 				ReturnVertex.push_back(VertexList_[i]);
@@ -123,54 +125,18 @@ std::vector<GameEngineVertex> SJH_NaviCell::SearchShareVertex(SJH_NaviCell* _Sha
 		}
 	}
 
-	if (2 == ReturnVertex.size())
-	{
-		return ReturnVertex;
-	}
-
 	return std::vector<GameEngineVertex>();
-}
-
-void SJH_NaviCell::CreateSideLineInfo()
-{
-	// 각 정점을 연결하는 선분들의 각각의 중점을 계산
-	int VertexCount = static_cast<int>(VertexList_.size());
-	for (int Vertex = 0; Vertex < VertexCount; ++Vertex)
-	{
-		SideLine NewSideLine = {};
-
-		// 해당 사이드라인의 시작점-끝점 선분
-		if (VertexList_.size() == Vertex + 1)
-		{
-			// A,B,C 세개의 정점을 가지는 삼각형일때
-			// 마지막정점인 C 정점순서이면 C-A 연결
-			NewSideLine.Vertex_.push_back(VertexList_[Vertex]);
-			NewSideLine.Vertex_.push_back(VertexList_[0]);
-		}
-		else
-		{
-			// 아니라면 A-B, B-C 연결
-			NewSideLine.Vertex_.push_back(VertexList_[Vertex]);
-			NewSideLine.Vertex_.push_back(VertexList_[Vertex + 1]);
-		}
-
-		// 선분의 중점을 계산하여 저장
-		float4 MidPoint = (NewSideLine.Vertex_[1].POSITION - NewSideLine.Vertex_[0].POSITION) * 0.5f;
-		NewSideLine.MidPoint_ = MidPoint;
-
-		// 총 3개의 사이드라인 생성
-		SideLines_.push_back(NewSideLine);
-	}
 }
 
 void SJH_NaviCell::CenterOfGravityCalculation()
 {
-	// 해당 면을 이루는 사이드라인의 정보를 모두 수집했으므로
-	// 해당 면의 무게중심을 계산하고,
 	float4 Vertex0 = VertexList_[0].POSITION;
 	float4 Vertex1 = VertexList_[1].POSITION;
 	float4 Vertex2 = VertexList_[2].POSITION;
-	CenterOfGravity_ = (Vertex0 + Vertex1 + Vertex2) / 3.0f;
+
+	CenterOfGravity_.x = (Vertex0.x + Vertex1.x + Vertex2.x) / 3.0f;
+	CenterOfGravity_.y = (Vertex0.y + Vertex1.y + Vertex2.y) / 3.0f;
+	CenterOfGravity_.z = (Vertex0.z + Vertex1.z + Vertex2.z) / 3.0f;
 }
 
 void SJH_NaviCell::StandingOntheCellCheck()

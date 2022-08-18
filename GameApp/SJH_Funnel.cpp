@@ -12,6 +12,7 @@ std::list<float4> SJH_Funnel::PathOptimization(const float4& _StartPos, const fl
 	// 포탈정보 삭제 후
 	LeftPortal_.clear();
 	RightPortal_.clear();
+	PortalMidPoint_.clear();
 
 	// (경로의 갯수 - 1) = 포탈의 갯수
 	TotalPortalCount_ = static_cast<int>(_MovePath.size()) - 1;
@@ -32,7 +33,7 @@ std::list<float4> SJH_Funnel::PathOptimization(const float4& _StartPos, const fl
 
 void SJH_Funnel::CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath)
 {
-	// 왼쪽포탈과 오른쪽포탈 목록 작성
+	// 왼쪽포탈과 오른쪽포탈 목록 및 포탈별 중점 작성
 	std::list<SJH_NaviCell*>::iterator StartIter = _MovePath.begin();
 	std::list<SJH_NaviCell*>::iterator EndIter = _MovePath.end();
 	for (; StartIter != EndIter; )
@@ -49,21 +50,20 @@ void SJH_Funnel::CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath)
 			// 두개의 셀의 무게중심을 연결하는 방향벡터 생성
 			float4 FirstCellGravity = FirstCell->GetCenterToGravity();
 			float4 SecondCellGravity = (*StartIter)->GetCenterToGravity();
-			float4 vecGravityToGravity = SecondCellGravity - FirstCellGravity;
-			vecGravityToGravity.Normalize3D();
+			float4 vecGravityToGravity = (SecondCellGravity - FirstCellGravity).NormalizeReturn3D();
 
 			// 무게중심을 연결하는 방향벡터 기준 두개의 정점이 왼쪽인지 오른쪽인지 판별 후 목록에 저장
 
 			// 무게중심을 연결하는 벡터와 비교하여 왼쪽포탈과 오른쪽포탈을 알아낸다.
+			// !!!!!!!!!!!!!!!!!!! 무게중심으로 왼쪽오른쪽 구분하니까 안됨 이유모름!!!!!!!!!!!!!!!
 			for (int VertexIndex = 0; VertexIndex < static_cast<int>(ShareVertex.size()); ++VertexIndex)
 			{
 				// 시작점과 연결되는 벡터
-				float4 CheckVector = ShareVertex[VertexIndex].POSITION - FirstCellGravity;
-				CheckVector.Normalize3D();
+				float4 CheckVector = (ShareVertex[VertexIndex].POSITION - FirstCellGravity).NormalizeReturn3D();
 
 				float4 Cross = float4::Cross3D(CheckVector, vecGravityToGravity).NormalizeReturn3D();
 				float Dot = float4::Dot3D(Cross, float4(0.0f, 1.0f, 0.0f, 0.0f));
-				if (Dot >= 0)
+				if (Dot > 0)
 				{
 					LeftPortal_.push_back(ShareVertex[VertexIndex].POSITION);
 				}
@@ -72,6 +72,17 @@ void SJH_Funnel::CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath)
 					RightPortal_.push_back(ShareVertex[VertexIndex].POSITION);
 				}
 			}
+		}
+	}
+
+	// 왼쪽포탈 - 오른쪽포탈의 중점 저장
+	int LPortalCount = static_cast<int>(LeftPortal_.size());
+	int RPortalCount = static_cast<int>(RightPortal_.size());
+	if (LPortalCount == RPortalCount)
+	{
+		for (int PortalNum = 0; PortalNum < LPortalCount; ++PortalNum)
+		{
+			PortalMidPoint_.push_back((LeftPortal_[PortalNum] + RightPortal_[PortalNum]) * 0.5f);
 		}
 	}
 }
@@ -97,12 +108,11 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 	int CurRPortalIndex = 0;
 
 	// 최적경로 및 코너 정점좌표 탐색 시작
-	for (int PortalIndex = 0; PortalIndex < TotalPortalCount_; ++PortalIndex)
+	while(true)
 	{
-		// 인덱스 초과시 검사 종료
 		if (CurLPortalIndex >= static_cast<int>(LeftPortal_.size()) ||
 			CurLPortalIndex + 1 >= static_cast<int>(LeftPortal_.size()) ||
-			CurLPortalIndex >= static_cast<int>(LeftPortal_.size()) ||
+			CurRPortalIndex >= static_cast<int>(RightPortal_.size()) ||
 			CurRPortalIndex + 1 >= static_cast<int>(RightPortal_.size()))
 		{
 			break;
@@ -142,14 +152,23 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 				_ReturnPath.push_back(CheckCurRPortal);
 				StartPoint = CheckCurRPortal;
 
-				++CurRPortalIndex;
 				++CurLPortalIndex;
-
+				CurRPortalIndex = CurLPortalIndex;
 				continue;
 			}
 			else
 			{
 				++CurLPortalIndex;
+
+				// 오른쪽 포탈 검사를 위해 정보 갱신
+				if (CurLPortalIndex >= static_cast<int>(LeftPortal_.size()))
+				{
+					break;
+				}
+
+				//============================================ 왼쪽 포탈 검사 정보 셋팅 ============================================//
+				CheckCurLPortal = LeftPortal_[CurLPortalIndex];
+				StartToCurLPortal = (CheckCurLPortal - StartPoint).NormalizeReturn3D();
 			}
 		}
 
@@ -169,15 +188,28 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 				_ReturnPath.push_back(CheckCurLPortal);
 				StartPoint = CheckCurLPortal;
 
-				++CurLPortalIndex;
 				++CurRPortalIndex;
-
+				CurLPortalIndex = CurRPortalIndex;
 				continue;
 			}
 			else
 			{
 				++CurRPortalIndex;
 			}
+		}
+
+		// 포탈 연결이 모두 불가능한경우 해당 포탈의 중점을 시작위치로 셋팅하고
+		// 깔때기를 재설정 후 다시 탐색 시작
+		if (LPortalDot > 0 && RPortalDot < 0)
+		{
+			// 두개의 포털 인덱스 중 더 작은 인덱스에 초점을 맞춘 중점을 시작위치로 셋팅
+			int CheckIndex = CurLPortalIndex < CurRPortalIndex ? CurLPortalIndex : CurRPortalIndex;
+			StartPoint = PortalMidPoint_[CheckIndex];
+			_ReturnPath.push_back(StartPoint);
+			
+			++CheckIndex;
+			CurLPortalIndex = CheckIndex;
+			CurRPortalIndex = CheckIndex;
 		}
 	}
 
