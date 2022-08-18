@@ -3,6 +3,7 @@
 #include "EngineVertex.h"
 #include "GameEngineIndexBuffer.h"
 #include "GameEngineVertexBuffer.h"
+#include <GameEngineBase/GameEngineDirectory.h>
 
 class FbxExIW
 {
@@ -59,14 +60,35 @@ public:
 		_File->Read(SpecularPower);
 		_File->Read(TransparencyFactor);
 		_File->Read(Shininess);
-		_File->Read(DifTexturePath);	// 텍스처
+		_File->Read(DifTexturePath); // 텍스처
 		_File->Read(NorTexturePath); // 텍스처
 		_File->Read(SpcTexturePath); // 텍스처
 		_File->Read(DifTextureName);	// 텍스처
 		_File->Read(NorTextureName); // 텍스처
 		_File->Read(SpcTextureName); // 텍스처
-	}
 
+		if (true == GameEngineDirectory::IsExist(DifTexturePath))
+		{
+			return;
+		}
+
+		std::filesystem::path path = std::filesystem::current_path();
+		path = path.parent_path();
+
+		std::string prevPath = DifTexturePath;
+		prevPath.erase(DifTexturePath.find(path.filename().string()) + path.filename().string().size());
+		DifTexturePath.replace(0, prevPath.size(), path.string());
+
+		if ("" != NorTexturePath)
+		{
+			NorTexturePath.replace(0, prevPath.size(), path.string());
+		}
+
+		if ("" != SpcTexturePath)
+		{
+			SpcTexturePath.replace(0, prevPath.size(), path.string());
+		}
+	}
 
 public:
 
