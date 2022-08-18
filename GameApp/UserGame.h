@@ -13,6 +13,8 @@ public:
 	// 64바이트
 	static std::atomic<int> LoadingFolder;
 
+	static bool IsServer_;
+
 private:	// member Var
 public:
 	UserGame(); // default constructer 디폴트 생성자

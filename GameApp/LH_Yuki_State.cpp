@@ -11,6 +11,66 @@
 
 // 곧 다른곳으로 다 옮겨야함
 
+void Player_Yuki::Order_Q_Start()
+{
+}
+
+void Player_Yuki::Order_Q_Update(float _DeltaTime)
+{
+}
+
+void Player_Yuki::Order_Q_End()
+{
+}
+
+void Player_Yuki::Order_W_Start()
+{
+}
+
+void Player_Yuki::Order_W_Update(float _DeltaTime)
+{
+}
+
+void Player_Yuki::Order_W_End()
+{
+}
+
+void Player_Yuki::Order_E_Start()
+{
+}
+
+void Player_Yuki::Order_E_Update(float _DeltaTime)
+{
+}
+
+void Player_Yuki::Order_E_End()
+{
+}
+
+void Player_Yuki::Order_R_Start()
+{
+}
+
+void Player_Yuki::Order_R_Update(float _DeltaTime)
+{
+}
+
+void Player_Yuki::Order_R_End()
+{
+}
+
+void Player_Yuki::Order_D_Start()
+{
+}
+
+void Player_Yuki::Order_D_Update(float _DeltaTime)
+{
+}
+
+void Player_Yuki::Order_D_End()
+{
+}
+
 
 //Idle
 void Player_Yuki::Action_Idle_Start()
@@ -62,7 +122,7 @@ void Player_Yuki::Action_Walk_End()
 //Attack
 void Player_Yuki::Action_Attack_Start()
 {
-	if (Status_Final_.Stat_Stamina_ < 5.f)
+	if (Unit_Status_Final_.Stat_Stamina_ < 5.f)
 	{
 		//스테미나 게이지 깜빡거리기
 		ActionState_.ChangeState("Idle");
@@ -76,10 +136,10 @@ void Player_Yuki::Action_Attack_Start()
 	//AttackLevel_ = 0;
 
 	//0.5초 간격으로 공격한다. 공격시 갱신
-	AttackTurm_ = 0.25f;
+	Unit_AttackTurm_ = 0.25f;
 
 	//0.1초 동안만 타격 판정이 있다. 공격시 갱신
-	AttackHitTime_ = 0.1f;
+	Unit_AttackHitTime_ = 0.1f;
 
 	//Status_Final_.Stat_Stamina_ -= Status_Final_.Stat_Attack_Stamina_;
 
@@ -93,9 +153,9 @@ void Player_Yuki::Action_Attack_Update(float _DeltaTime)
 {
 	//KeyDirUpdate(_DeltaTime);
 
-	AttackTurm_ -= _DeltaTime;
+	Unit_AttackTurm_ -= _DeltaTime;
 	//AttackTime_ -= _DeltaTime;
-	AttackHitTime_ -= _DeltaTime;
+	Unit_AttackHitTime_ -= _DeltaTime;
 
 	//Move_ForwardDir_ = TargetDir_;
 	//TargetDir_을 실시간으로 업데이트 해 줘야함
@@ -103,7 +163,7 @@ void Player_Yuki::Action_Attack_Update(float _DeltaTime)
 
 	// Attack Ready도 구현해야함
 
-	if (AttackHitTime_ <= 0)
+	if (Unit_AttackHitTime_ <= 0)
 	{
 		MoveRotateUpdate(_DeltaTime);
 	}
@@ -116,10 +176,10 @@ void Player_Yuki::Action_Attack_Update(float _DeltaTime)
 }
 void Player_Yuki::Action_Attack_End()
 {
-	AttackTurm_ = 0.f;
+	Unit_AttackTurm_ = 0.f;
 	//AttackTime_ = 0.f;
 	//AttackLevel_ = 0;
-	AttackHitTime_ = 0.f;
+	Unit_AttackHitTime_ = 0.f;
 }
 
 

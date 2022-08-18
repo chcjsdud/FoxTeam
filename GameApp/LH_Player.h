@@ -19,7 +19,6 @@ public:
 
 protected:
 
-	class PlayerController* PlayController_;
 	class UI_Skill* SkillUI_;
 	class LockOnUI* LockOnUI_;
 	//class Inventory* Inventory_;
@@ -40,6 +39,11 @@ public:
 	{
 		//SkillUI_->On();
 		//LockOnUI_->On();
+	}
+
+	void Player_SetPlayController(PlayerController* _PlayerController)
+	{
+		PlayerController_ = _PlayerController;
 	}
 
 protected:

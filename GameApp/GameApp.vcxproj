@@ -183,7 +183,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AIController.cpp" />
     <ClCompile Include="Appmain.cpp" />
     <ClCompile Include="Character_ProtoType.cpp">
       <SubType>
@@ -382,7 +381,6 @@
     <ClCompile Include="YSJ_Ray.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AIController.h" />
     <ClInclude Include="Character_ProtoType.h">
       <SubType>
       </SubType>
