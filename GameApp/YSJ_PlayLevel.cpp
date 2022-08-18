@@ -173,8 +173,8 @@ void YSJ_PlayLevel::CreateActorLevel()
 	GetMainCameraActor()->GetTransform()->AddLocalRotationDegreeX(45.0f);
 
 	LightActor* Light = CreateActor<LightActor>();
-	Light->GetLight()->SetSpacularLightPow(1.0f);
-	Light->GetLight()->SetAmbientPower(1.0f);
+	Light->GetLight()->SetAmbientPower(10.f);
+	Light->GetLight()->SetSpacularLightPow(10.f);
 
 	SKySphereActor* SkyActor = CreateActor<SKySphereActor>();
 

@@ -131,9 +131,8 @@ void SettingItemLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 void SettingItemLevel::CreateActorLevel()
 {
 	LightActor* Light = CreateActor<LightActor>();
-	Light->GetLight()->SetSpacularLightPow(1.0f);
-	Light->GetLight()->SetAmbientPower(1.0f);
-
+	Light->GetLight()->SetAmbientPower(10.f);
+	Light->GetLight()->SetSpacularLightPow(10.f);
 	SKySphereActor* SkyActor = CreateActor<SKySphereActor>();
 
 	YSJ_LumiaMap* LumiaMap = CreateActor<YSJ_LumiaMap>();
