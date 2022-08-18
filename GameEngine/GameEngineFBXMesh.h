@@ -67,7 +67,8 @@ public:
 		_File->Read(NorTextureName); // 텍스처
 		_File->Read(SpcTextureName); // 텍스처
 
-		if (true == GameEngineDirectory::IsExist(DifTexturePath))
+		if (true == GameEngineDirectory::IsExist(DifTexturePath) ||
+			"" == DifTexturePath)
 		{
 			return;
 		}
