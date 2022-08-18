@@ -10,11 +10,8 @@ std::list<float4> SJH_Funnel::PathOptimization(const float4& _StartPos, const fl
 	EndPos_ = _EndPos;
 
 	// 포탈정보 삭제 후
-	if (false == LeftPortal_.empty() && false == RightPortal_.empty())
-	{
-		LeftPortal_.clear();
-		RightPortal_.clear();
-	}
+	LeftPortal_.clear();
+	RightPortal_.clear();
 
 	// (경로의 갯수 - 1) = 포탈의 갯수
 	TotalPortalCount_ = static_cast<int>(_MovePath.size()) - 1;
@@ -68,11 +65,11 @@ void SJH_Funnel::CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath)
 				float Dot = float4::Dot3D(Cross, float4(0.0f, 1.0f, 0.0f, 0.0f));
 				if (Dot >= 0)
 				{
-					RightPortal_.push_back(ShareVertex[VertexIndex].POSITION);
+					LeftPortal_.push_back(ShareVertex[VertexIndex].POSITION);
 				}
 				else if (Dot < 0)
 				{
-					LeftPortal_.push_back(ShareVertex[VertexIndex].POSITION);
+					RightPortal_.push_back(ShareVertex[VertexIndex].POSITION);
 				}
 			}
 		}
@@ -84,43 +81,110 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 	// 시작위치 저장
 	_ReturnPath.push_back(StartPos_);
 
-	float4 LeftPortalVertex = float4(0.0f, 0.0f, 0.0f, 0.0f);
-	float4 RightPortalVertex = float4(0.0f, 0.0f, 0.0f, 0.0f);
+	// 포탈 검사전 셋팅
+	// 1. 포탈을 검사할 시작위치 셋팅
+	float4 StartPoint = StartPos_;
+
+	// 2. 현재 포탈내에 다음포탈이 포함된다면 다음포탈이 현재 포탈이 된다.
+	float4 CheckCurLPortal = float4(0.0f, 0.0f, 0.0f, 0.0f);		// 현재 포탈의 왼쪽 정점
+	float4 CheckNextLPortal = float4(0.0f, 0.0f, 0.0f, 0.0f);		// 다음 포탈의 왼쪽 정점
+	float4 CheckCurRPortal = float4(0.0f, 0.0f, 0.0f, 0.0f);		// 현재 포탈의 오른쪽 정점
+	float4 CheckNextRPortal = float4(0.0f, 0.0f, 0.0f, 0.0f);		// 다음 포탈의 오른쪽 정점
+
+	// 3. 현재 시작포탈
+	// -> 다음 포탈이 현재시작포탈 내부에 존재할때 현재포탈 갱신
+	int CurLPortalIndex = 0;
+	int CurRPortalIndex = 0;
 
 	// 최적경로 및 코너 정점좌표 탐색 시작
 	for (int PortalIndex = 0; PortalIndex < TotalPortalCount_; ++PortalIndex)
 	{
-		// (왼쪽 포탈정점), (왼쪽포탈정점 + 1) 비교하여 깔때기를 좁힐수있는지 판단
-		if (true == LeftPortalCheck(StartPos_, PortalIndex))
+		// 인덱스 초과시 검사 종료
+		if (CurLPortalIndex >= static_cast<int>(LeftPortal_.size()) ||
+			CurLPortalIndex + 1 >= static_cast<int>(LeftPortal_.size()) ||
+			CurLPortalIndex >= static_cast<int>(LeftPortal_.size()) ||
+			CurRPortalIndex + 1 >= static_cast<int>(RightPortal_.size()))
 		{
-			// 깔때기를 좁힐수 있으므로 왼쪽 깔때기를 좁힌다.
-
-
-
+			break;
 		}
 
-		// (오른쪽 포탈정점), (오른쪽포탈정점 + 1) 비교하여 깔때기를 좁힐수있는지 판단
-		if (true == RightPortalCheck(StartPos_, PortalIndex))
+		//============================================ 왼쪽 포탈 검사 정보 셋팅 ============================================//
+		CheckCurLPortal = LeftPortal_[CurLPortalIndex];
+		CheckNextLPortal = LeftPortal_[CurLPortalIndex + 1];
+
+		float4 StartToCurLPortal = (CheckCurLPortal - StartPoint).NormalizeReturn3D();
+		float4 StartToNextLPortal = (CheckNextLPortal - StartPoint).NormalizeReturn3D();
+		float4 LPortalCross = float4::Cross3D(StartToNextLPortal, StartToCurLPortal).NormalizeReturn3D();
+		float LPortalDot = float4::Dot3D(LPortalCross, float4(0.0f, 1.0f, 0.0f, 0.0f));
+
+		//=========================================== 오른쪽 포탈 검사 정보 셋팅 ===========================================//
+		CheckCurRPortal = RightPortal_[CurRPortalIndex];
+		CheckNextRPortal = RightPortal_[CurRPortalIndex + 1];
+
+		float4 StartToCurRPortal = (CheckCurRPortal - StartPoint).NormalizeReturn3D();
+		float4 StartToNextRPortal = (CheckNextRPortal - StartPoint).NormalizeReturn3D();
+		float4 RPortalCross = float4::Cross3D(StartToNextRPortal, StartToCurRPortal).NormalizeReturn3D();
+		float RPortalDot = float4::Dot3D(RPortalCross, float4(0.0f, 1.0f, 0.0f, 0.0f));
+
+		// < 다음 왼쪽포탈이 현재 왼쪽포탈의 오른쪽에 위치하므로 연결가능 포탈로 판정 >
+		// 조건 1 : 현재 왼쪽포탈보다 다음 왼쪽포탈이 오른쪽에 위치하고, 오른쪽 포탈의 왼쪽에 위치한다면 연결가능한 포탈
+		// 조건 2 : 현재 왼쪽포탈보다 다음 포탈이 왼쪽에 위치한다면 연결불가
+		if (LPortalDot <= 0)
 		{
-			// 깔때기를 좁힐수 있으므로 오른쪽 깔때기를 좁힌다.
+			// < 오른쪽에 위치하거나 수평일때 >
+			//
+			// 코너 판정
+			float4 RightCornerCheck = float4::Cross3D(StartToNextLPortal, StartToCurRPortal).NormalizeReturn3D();
+			float RightCornerDot = float4::Dot3D(RightCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
+			if (RightCornerDot <= 0)
+			{
+				// 현재 오른쪽 포탈보다 다음 왼쪽포탈이 오른쪽에 위치하거나 수평하다면 현재 오른쪽 포탈이 경로로 지정
+				_ReturnPath.push_back(CheckCurRPortal);
+				StartPoint = CheckCurRPortal;
 
+				++CurRPortalIndex;
+				++CurLPortalIndex;
 
-
+				continue;
+			}
+			else
+			{
+				++CurLPortalIndex;
+			}
 		}
 
+		// < 다음 오른쪽 포탈이 현재 오른쪽 포탈의 왼쪽에 위치하므로 연결가능 포탈로 판정 >
+		// 조건 1 : 현재 오른쪽포탈보다 다음 오른쪽포탈이 왼쪽에 위치하고, 왼쪽 포탈의 오른쪽에 위치한다면 연결가능한 포탈
+		// 조건 2 : 현재 오른쪽포탈보다 다음 오른쪽포탈이 오른쪽에 위치한다면 연결불가
+		if (RPortalDot >= 0)
+		{
+			// < 왼쪽에 위치하거나 수평일때 >
+			//
+			// 코너 판정
+			float4 LeftCornerCheck = float4::Cross3D(StartToNextRPortal, StartToCurLPortal).NormalizeReturn3D();
+			float LeftCornerDot = float4::Dot3D(LeftCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
+			if (LeftCornerDot >= 0)
+			{
+				// 현재 왼쪽 포탈보다 다음 오른쪽포탈이 왼쪽에 위치하거나 수평하다면 현재 왼쪽 포탈이 경로로 지정
+				_ReturnPath.push_back(CheckCurLPortal);
+				StartPoint = CheckCurLPortal;
 
+				++CurLPortalIndex;
+				++CurRPortalIndex;
 
-
+				continue;
+			}
+			else
+			{
+				++CurRPortalIndex;
+			}
+		}
 	}
 
 	// 모든 경로완성후 마지막 EndPos 저장
 	_ReturnPath.push_back(EndPos_);
-	if (2 < _ReturnPath.size())
-	{
-		return true;
-	}
 
-	return false;
+	return true;
 }
 
 bool SJH_Funnel::LeftPortalCheck(float4& _StartPos, int _PortalIndex)

@@ -40,6 +40,7 @@ std::list<SJH_NaviCell*> SJH_PathFinder::AStarMovePath(SJH_NaviCell* _StartCell,
 {
 	// √ ±‚»≠
 	PoolCount_ = 0;
+	NodePool_.clear();
 	NodePool_.resize(_Maximum);
 	OpenList_.clear();
 	OpenKeys_.clear();

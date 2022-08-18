@@ -288,7 +288,7 @@ SJH_Yuki::SJH_Yuki()
 	, MovePathTarget_(nullptr)
 	, MoveStartPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveEndPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
-	, MoveSpeed_(5.0f)
+	, MoveSpeed_(1.0f)
 	, LerpMoveTime_(0.0f)
 {
 }
