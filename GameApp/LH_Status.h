@@ -3,6 +3,13 @@
 
 struct Status
 {
+	// 추가해야할 스탯
+	// 1. 피흡
+	// 2. 스킬 증폭
+	// 3. 쿨다운 감소
+	// 4. 레벨당 스킬 ㅈㅇ폭
+	//
+
 	Status()
 		: Stat_AttackPower_(0)
 		, Stat_AttackDist_(0.f)
@@ -320,9 +327,25 @@ struct Buff
 	std::function<void()> BuffFunc_;
 };
 
-//struct Skill  //가제
-//{
-//	bool IsTargettting_;
-//	float TargetDist_;
-//	std::function<void()> SkillFunc_;
-//};
+enum class SkillTpye
+{
+	None,
+	Passive,
+	Active_Ranged_Target,
+	Active_Ranged_Rect,
+	Active_Ranged_Circle,
+	Active_Self,
+	Active_Circle,
+	Active_,
+
+};
+
+struct SkillBase 
+{
+	SkillTpye SkillTpye_;
+	float Range_;
+	float Dist_;
+	Buff Buff_;
+	Status Status_;
+	std::function<void()> SkillFunc_;
+};

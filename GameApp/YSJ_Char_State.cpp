@@ -144,7 +144,7 @@ void YSJ_Char::Action_Walk_End()
 //Attack
 void YSJ_Char::Action_Attack_Start()
 {
-	if (Status_Final_.Stat_Stamina_ < 5.f)
+	if (Unit_Status_Final_.Stat_Stamina_ < 5.f)
 	{
 		//스테미나 게이지 깜빡거리기
 		ActionState_.ChangeState("Idle");
@@ -158,10 +158,10 @@ void YSJ_Char::Action_Attack_Start()
 	//AttackLevel_ = 0;
 
 	//0.5초 간격으로 공격한다. 공격시 갱신
-	AttackTurm_ = 0.25f;
+	Unit_AttackTurm_ = 0.25f;
 
 	//0.1초 동안만 타격 판정이 있다. 공격시 갱신
-	AttackHitTime_ = 0.1f;
+	Unit_AttackHitTime_ = 0.1f;
 
 	AttackHitBoxCollision_->On();
 
@@ -176,11 +176,11 @@ void YSJ_Char::Action_Attack_Update(float _DeltaTime)
 {
 	//KeyDirUpdate(_DeltaTime);
 
-	AttackTurm_ -= _DeltaTime;
+	Unit_AttackTurm_ -= _DeltaTime;
 	//AttackTime_ -= _DeltaTime;
-	AttackHitTime_ -= _DeltaTime;
+	Unit_AttackHitTime_ -= _DeltaTime;
 
-	if (AttackHitTime_ <= 0)
+	if (Unit_AttackHitTime_ <= 0)
 	{
 		MoveRotateUpdate(_DeltaTime);
 		AttackHitBoxCollision_->Off();
@@ -223,10 +223,10 @@ void YSJ_Char::Action_Attack_Update(float _DeltaTime)
 }
 void YSJ_Char::Action_Attack_End()
 {
-	AttackTurm_ = 0.f;
+	Unit_AttackTurm_ = 0.f;
 	//AttackTime_ = 0.f;
 	//AttackLevel_ = 0;
-	AttackHitTime_ = 0.f;
+	Unit_AttackHitTime_ = 0.f;
 
 	//맞거나 이런저런 상황으로 강제로 State가 종료 되었을때
 	AttackHitBoxCollision_->Off();

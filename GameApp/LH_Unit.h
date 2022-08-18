@@ -6,6 +6,29 @@
 #include "Enums.h"
 #include "LH_Status.h"
 
+//TODO: 체크 리스트 (이현)
+// 
+// 1. 패킷 디자인
+// 2. 유닛, 플레이어 분리작업
+// 3. 아이템 인벤토리구현
+// 4. 네비 완성시, 이동함수
+// 5. 이동 함수 완성시, 공격함수도 같이
+// 
+// 6. 네비랑 무관하게 완성시 바로 대입 가능한 수준의 이동, 공격함수 완성
+// 7. 스킬은 각자 알아서 구현, 스킬 사용 명령만 전달하는 ㅁ[쏘드 구현 근데 이게 패시브인지 엑티브인지 정도는 내가
+// 8. 스킬 구조체를 만들고 엑티브 패시브, 즉발, 타겟, 범위, 직선, 원형, 대미지, 사거리 등등 걍 다 넣어둘까?
+// 9. 정지, 홀드, 휴식 구현
+// 10. 
+//
+//
+//
+// 
+
+
+
+
+
+
 // 플레이어 컨트롤러로 부터 키 조작에 의한 여러 값들을 전달받아 그대로 행동함
 // 플레이어로 옮겨야 할 부분이 많은데 일단 완성후 할것
 
@@ -14,20 +37,17 @@
 // 1. 설정 == Set
 // 2. 추가 == Add
 //
-// 3. (Set||Add||Get)(대상)(행동)
+// 3. (클래스)_(Set||Add||Get)(대상)(행동)
 //
 // 4. (이름)(Update)
 //
 
 
-class GameActorUpdatePaket
+class GameActorUpdatePaket // 임시 구현 상태
 {
 	//각자 계산하고 최종적으로 반영되어야 할 결과값만 패킷으로 보내자
 
 	unsigned int ObjectID_;
-	//std::string Name_;
-	//float4 Pos_;
-	//TransformData TransformData_;
 
 	float4 vWorldPosition_;
 	float4 vWorldRotation_;
@@ -37,6 +57,11 @@ class GameActorUpdatePaket
 	float4 vLocalRotation_;
 	float4 vLocalScaling_;
 
+	Status Stat_;
+	Buff Buff_;
+
+	int AniFrame_;
+	std::string AniName_;
 
 	int Size_;
 
@@ -44,57 +69,9 @@ class GameActorUpdatePaket
 	{
 		Size_ = sizeof(GameActorUpdatePaket);
 	}
-
-
 };
 
-
-
-	// * 계획
-	// 1. 플레이어 컨트롤러는 서버와 무관하게 각자 컴퓨터가 생성 (문제 없을듯, 되려 키 인풋 때문에 편함)
-	// 2. 서버가 플레이어 캐릭터를 생성후, 클라이언트로 부터 패킷을 받아 클라이언트의 플레이어 컨트롤러에 캐릭터 배분
-	// 3. 클라이언트가 서버로 동기화 데이터 패킷을 보냄
-	// 4. 서버가 패킷을 받고 게산후, 다시 클라이언트로 쏴줌
-	// 5. 반복
-	// 
-	// 서버에 패킷을 보내야 하는 이유
-	// 1. 동기화 시키기 위해,
-	// 2. 모든 컴퓨터들의 델타 타임이 다르기 때문에 모두 맞춰줄 필요가 있음
-	// 3. 
-	// 
-	// 서버 패킷으로 보낼것
-	//
-	//	0. 델타타임의 영향을 받을 모든것
-	//	1. 현재 유닛의 아이디
-	//	2. 서버에게 나 이만큼 이동해줘! 라고 보내기 (서버가 _deltaTime 계산후, 이동할 값 다시 보내줄것)
-	//	2. 트랜스폼 데이터
-	//	3. IsDeath
-	//	4. 에니메이션 String
-	//	5. 캐릭터 스탯 뭉텅이들
-	//
-	// 서버에게 받아야 할것
-	//	
-	//	1. 유닛 아이디(매칭시켜야 하니까) 
-	//	2. 서버가 계산한 이동 데이터
-	//	3. 서버가 계산한 트렌스폼 데이터
-	//	4. 
-	//
-	//	서버가 해줘야 할것
-	//	1. 서버의 델타타임에 맞게 계산해서 다시 쏴주기
-	//
-	// 엔진이 가져야 할 기능
-	//
-	//	1. 모든 엑터들이 고유의 ID를 가지게 할것
-	//	2. 함수를 통해 모든 엑터들의 고유 ID를 알 수 있게 할것
-	// 
-	//	3. ID로 부터 엑터 포인터들을 가져와 사용할 수 있게 할것
-	// 
-	//	4. static unsigned int IDs_ 같은걸 만들고, 엑터들이 생성 될때마다 ++ 하면서 각기 고유ID를 매겨줄것 (중복 생성시 오류)
-	//	5. 충돌 함수가 충돌한 대상의 ID 가져오기
-	//	6. ID는 1부터 시작하게끔, (0은 null 취급)
-	//
-
-enum class Team
+enum class Unit_Team
 {
 	None,
 	Team1,
@@ -116,7 +93,6 @@ public:
 	Unit();
 	~Unit();
 
-
 #pragma region Public
 public:
 	void Unit_AddBaseStat(Status _Status);
@@ -126,49 +102,49 @@ public:
 	void Unit_RemoveAllBuff(std::string _Name);
 
 public:
-	const Team Unit_GetTeam()
+	const Unit_Team Unit_GetTeam()
 	{
-		return Team_;
+		return Unit_Team_;
 	}
 
-	void Unit_SetTeam(Team _Team)
+	void Unit_SetTeam(Unit_Team _Unit_Team)
 	{
-		Team_ = _Team;
+		Unit_Team_ = _Unit_Team;
 	}
 
 	std::map < std::string, Buff*> Unit_GetPlayerBuffList()
 	{
-		return BufferList_;
+		return Unit_BufferList_;
 	}
 
 	const Status Unit_GetBaseStat()
 	{
-		return Status_Base_;
+		return Unit_Status_Base_;
 	}
 
 	const Status Unit_GetAddStat()
 	{
-		return Status_Add_;
+		return Unit_Status_Add_;
 	}
 
 	const Status Unit_GetMultStat()
 	{
-		return Status_Mult_;
+		return Unit_Status_Mult_;
 	}
 
 	const Status Unit_GetFinalStat()
 	{
-		return Status_Final_;
+		return Unit_Status_Final_;
 	}
 
 	const int Unit_GetCurHP()
 	{
-		return Status_Final_.Stat_Health_;
+		return Unit_Status_Final_.Stat_Health_;
 	}
 
 	const float Unit_GetCurStamina()
 	{
-		return Status_Final_.Stat_Stamina_;
+		return Unit_Status_Final_.Stat_Stamina_;
 	}
 
 	Unit* Unit_GetTarget()
@@ -178,7 +154,7 @@ public:
 
 	const int Unit_GetAttackPower()
 	{
-		return Status_Final_.Stat_AttackPower_;
+		return Unit_Status_Final_.Stat_AttackPower_;
 	}
 
 	void Unit_SetTarget(Unit* _Target)
@@ -218,17 +194,19 @@ protected:
 
 protected:
 #pragma region 초기화
+	virtual void Unit_Set_State_Init();
+	void Unit_Set_Collision_Init();
 
 #pragma endregion
 
 protected: // 기본정보
 
-	class PlayerController* PlayController_; // ==nullptr ==몬스터
-	Team Team_; //적인지 아군인지 판별함
+	Unit_Team Unit_Team_; //컬리전으로 적의 타입을 알아낸 후, 적인지 아군인지 판별함
 
 	GameEngineFSM OrderState_;
 	GameEngineFSM ActionState_;
 
+	GameEngineFBXRenderer* FBXRenderer_;
 	//바닥 콜리전
 	GameEngineCollision* UnitGroundCollision_;
 	//시야 충돌체
@@ -236,11 +214,12 @@ protected: // 기본정보
 	//피격 히트박스
 	GameEngineCollision* UnitHitBoxCollision_;
 
+	PlayerController* PlayerController_; //TODO: 플레이어 헤더로 이동할것, 몬스터에게 명령을 하달하는 존재가 생겨나면 바로 옮겨도됨
 #pragma region 컨트롤러 에서 얻어오는 변수들
 
 	float4 Target_Pos_; // 마우스로 지정된 최종적으로 이동해야 할 위치
 	Unit* Target_Unit_; // 마우스로 타겟팅한 유닛
-	Order Controller_Order_; // 컨트롤러에서 전달된 명령
+	Controller_Order Controller_Order_; // 컨트롤러에서 전달된 명령
 	//unsigned int Target_ID_; //타겟이 된 유닛의 ID 확실히 엔진 단위의 기능이 필요함,
 #pragma endregion
 
@@ -254,15 +233,15 @@ protected: // 기본정보
 
 #pragma region 스텟 변수
 
-	std::map <std::string, Buff*> BufferList_;	//버프 리스트, 	
-	Status Status_Base_;		// 캐릭터 기본 스텟
-	Status Status_Add_;			// 캐릭터 추가 스텟 / 덧
-	Status Status_Mult_;		// 캐릭터 추가 스텟 / 곱	
-	Status Status_Final_;		// 캐릭터 최종 스텟
+	std::map <std::string, Buff*> Unit_BufferList_;	//버프 리스트, 	
+	Status Unit_Status_Base_;		// 캐릭터 기본 스텟
+	Status Unit_Status_Add_;			// 캐릭터 추가 스텟 / 덧
+	Status Unit_Status_Mult_;		// 캐릭터 추가 스텟 / 곱	
+	Status Unit_Status_Final_;		// 캐릭터 최종 스텟
 
-	float AttackTurm_;	//공격 텀, 공격 속도
-	float AttackBuffer_;	// 히트박스 활성화 전에 뜸들이는 시간 (에니메이션) 	
-	float AttackHitTime_;	//Attack Hit Box 활성화 시간
+	float Unit_AttackTurm_;	//공격 텀, 공격 속도
+	float Unit_AttackBuffer_;	// 히트박스 활성화 전에 뜸들이는 시간 (에니메이션) 	
+	float Unit_AttackHitTime_;	//Attack Hit Box 활성화 시간
 #pragma endregion
 
 #pragma region 유닛 컨트롤 변수
@@ -272,14 +251,15 @@ protected: // 기본정보
 	bool EnemyInSight_; //시야에 적이 있음
 
 	bool IsSturn_;	// 스턴 상태
+	bool OrderUpdate_;	// 명령 가능상태
 #pragma endregion
 
 protected:
 #pragma region 업데이트
-	void Controller_Update();
-	void UnitTargetUpdate(float _DeltaTime);
-	void StateUpdate(float _DeltaTime);
-	void UpdateBuff(float _DeltaTime);
+	void Unit_Controller_Update();
+	void Unit_TargetUpdate(float _DeltaTime);
+	virtual void Unit_StateUpdate(float _DeltaTime);
+	void Unit_UpdateBuff(float _DeltaTime);
 #pragma endregion
 
 #pragma region 무브 함수
@@ -294,13 +274,12 @@ protected:
 	bool ChasePosUpdate(float4 _Target_Pos, float _ChaseDist);
 #pragma endregion
 
-
-	void SetOrderEnd();
+	void Unit_SetOrderEnd();
 
 	//리턴값이 true면 추적을 종료한다.
 
 protected:
-	void SetChangeActionState(std::string _State)
+	void Unit_SetChangeActionState(std::string _State)
 	{
 		if (ActionState_.GetCurrentState()->Name_ != _State)
 		{
@@ -308,7 +287,7 @@ protected:
 		}
 	}
 	
-	void SetChangeOrderState(std::string _State)
+	void Unit_SetChangeOrderState(std::string _State)
 	{
 		if (OrderState_.GetCurrentState()->Name_ != _State)
 		{
@@ -316,7 +295,7 @@ protected:
 		}
 	}
 
-	void SetSyncStatus();
+	void Unit_SetSyncStatus();
 
 	const float4 GetTargetDir(float4 TargetPos)
 	{
@@ -326,15 +305,19 @@ protected:
 		return Dir;
 	}
 
-	void SetTargetErase()
+	void Unit_SetTargetErase()
 	{
 		Target_Unit_ = nullptr;
 	}
 
-	void SetUnitTarget(Unit* _Unit)
+	void Unit_SetUnitTarget(Unit* _Unit)
 	{
 		Target_Unit_ = _Unit;
-		Target_Unit_->TargetingUnits_.push_back(this);
+
+		if (_Unit != nullptr)
+		{
+			Target_Unit_->TargetingUnits_.push_back(this);
+		}
 	}
 
 	//void SetTargetID(unsigned int _Target_ID)
@@ -344,6 +327,10 @@ protected:
 
 protected:
 #pragma region 명령 State
+	virtual void Order_Idle_Start();
+	virtual void Order_Idle_Update(float _DeltaTime);
+	virtual void Order_Idle_End();
+
 	virtual void Order_Attack_Target_Start();
 	virtual void Order_Attack_Target_Update(float _DeltaTime);
 	virtual void Order_Attack_Target_End();
@@ -364,25 +351,35 @@ protected:
 	virtual void Order_Hold_Update(float _DeltaTime);
 	virtual void Order_Hold_End();
 
-	//virtual void Order_Q_Start();
-	//virtual void Order_Q_Update(float _DeltaTime);
-	//virtual void Order_Q_End();
+	virtual void Order_Rest_Start();
+	virtual void Order_Rest_Update(float _DeltaTime);
+	virtual void Order_Rest_End();
 
-	//virtual void Order_W_Start();
-	//virtual void Order_W_Update(float _DeltaTime);
-	//virtual void Order_W_End();
+	virtual void Order_Reload_Start();
+	virtual void Order_Reload_Update(float _DeltaTime);
+	virtual void Order_Reload_End();
 
-	//virtual void Order_E_Start();
-	//virtual void Order_E_Update(float _DeltaTime);
-	//virtual void Order_E_End();
+	//TODO: 이 밑부분은 나중에 플레이어.h 로 이동하게 될 것이다.
 
-	//virtual void Order_R_Start();
-	//virtual void Order_R_Update(float _DeltaTime);
-	//virtual void Order_R_End();
+	virtual void Order_Q_Start() = 0;
+	virtual void Order_Q_Update(float _DeltaTime) = 0;
+	virtual void Order_Q_End() = 0;
 
-	//virtual void Order_D_Start();
-	//virtual void Order_D_Update(float _DeltaTime);
-	//virtual void Order_D_End();
+	virtual void Order_W_Start() = 0;
+	virtual void Order_W_Update(float _DeltaTime) = 0;
+	virtual void Order_W_End() = 0;
+
+	virtual void Order_E_Start() = 0;
+	virtual void Order_E_Update(float _DeltaTime) = 0;
+	virtual void Order_E_End()=0;
+
+	virtual void Order_R_Start() = 0;
+	virtual void Order_R_Update(float _DeltaTime) = 0;
+	virtual void Order_R_End() = 0;
+
+	virtual void Order_D_Start() = 0;
+	virtual void Order_D_Update(float _DeltaTime) = 0;
+	virtual void Order_D_End() = 0;
 
 #pragma endregion
 
@@ -399,7 +396,21 @@ protected:
 	virtual void Action_Attack_Update(float _DeltaTime);
 	virtual void Action_Attack_End();
 
-	virtual void Action_Q_Start()=0;
+	virtual void Action_Stop_Start() ;
+	virtual void Action_Stop_Update(float _DeltaTime) ;
+	virtual void Action_Stop_End() ;
+
+	virtual void Action_Hold_Start();
+	virtual void Action_Hold_Update(float _DeltaTime);
+	virtual void Action_Hold_End();
+
+	virtual void Action_Rest_Start();
+	virtual void Action_Rest_Update(float _DeltaTime);
+	virtual void Action_Rest_End();
+
+	//TODO: 이 밑부분은 나중에 플레이어.h 로 이동하게 될 것이다.
+
+	virtual void Action_Q_Start() = 0;
 	virtual void Action_Q_Update(float _DeltaTime) = 0;
 	virtual void Action_Q_End() = 0;
 

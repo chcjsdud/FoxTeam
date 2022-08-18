@@ -8,13 +8,45 @@
 
 #include "LH_Player.h"
 
+
 PlayerController::PlayerController()
 	: MainPlayer_(nullptr)
+	, Controller_ItemList{nullptr}
 	, GameMouse_(nullptr)
+	, Controller_Target_Unit_(nullptr)
 	, Mouse_NaviCol_(false)
-	//, Controller_Target_ID_(0)
-	//, Mouse_ActorCol_(false)
 	, Mouse_UICol_(false)
+	, Controller_Order_(Controller_Order::None_Idle)
+	, Key_LB_(false)
+	, Key_RB_(false)
+	, Key_A_(false)
+	, Key_S_(false)
+	, Key_H_(false)
+	, Key_X_(false)
+	, Key_F_(false)
+	, Key_Q_(false)
+	, Key_W_(false)
+	, Key_E_(false)
+	, Key_R_(false)
+	, Key_D_(false)
+	, Key_Tab_(false)
+	, Key_C_(false)
+	, Key_V_(false)
+	, Key_B_(false)
+	, Key_M_(false)
+	, Key_P_(false)
+	, Key_Y_(false)
+	, Key_Esc_(false)
+	, Key_1_(false)
+	, Key_2_(false)
+	, Key_3_(false)
+	, Key_4_(false)
+	, Key_5_(false)
+	, Key_6_(false)
+	, Key_7_(false)
+	, Key_8_(false)
+	, Key_9_(false)
+	, Key_0_(false)
 {
 
 }
@@ -26,9 +58,30 @@ PlayerController::~PlayerController() // default destructer 디폴트 소멸자
 
 void PlayerController::Start()
 {
+	//ServerState_.CreateState<PlayerController>("Connecting",this,&PlayerController::, &PlayerController::, &PlayerController::);
+	//ServerState_.CreateState<PlayerController>("Waiting room",this,&PlayerController::, &PlayerController::, &PlayerController::);
+	//ServerState_.CreateState<PlayerController>("Play",this,&PlayerController::, &PlayerController::, &PlayerController::);
+
+	//ServerState_.ChangeState("Connecting");
+
 	GameMouse_ = GetLevel()->CreateActor<LH_Mouse>();
 
-	InitKeyState();
+	PlayerController_KeyState_Init();
+	CameraState_.CreateState<PlayerController>("EternalReturn", this, nullptr, &PlayerController::CameraUpdate_EternalReturn, nullptr);
+	CameraState_.ChangeState("EternalReturn");
+
+
+	//bool ServerOn = true;
+
+	//if (ServerOn == true)
+	//{
+	//	PlayerController_Init();
+	//}
+}
+
+void PlayerController::PlayerController_Init()
+{
+	PlayerController_KeyState_Init();
 
 	{
 		CameraState_.CreateState<PlayerController>("EternalReturn", this, nullptr, &PlayerController::CameraUpdate_EternalReturn, nullptr);
@@ -36,11 +89,7 @@ void PlayerController::Start()
 	}
 }
 
-void PlayerController::ControllerInit()
-{
-}
-
-void PlayerController::InitKeyState()
+void PlayerController::PlayerController_KeyState_Init()
 {
 	GameEngineInput::GetInst().CreateKey("Key_LB", VK_LBUTTON);
 	GameEngineInput::GetInst().CreateKey("Key_RB", VK_RBUTTON);
@@ -59,6 +108,7 @@ void PlayerController::InitKeyState()
 	GameEngineInput::GetInst().CreateKey("Key_Y", 'Y');
 
 	GameEngineInput::GetInst().CreateKey("Key_1", 0x31);
+	//GameEngineInput::GetInst().CreateKey("Key_1", '1');
 	GameEngineInput::GetInst().CreateKey("Key_2", 0x32);
 	GameEngineInput::GetInst().CreateKey("Key_3", 0x33);
 	GameEngineInput::GetInst().CreateKey("Key_4", 0x34);
@@ -80,21 +130,23 @@ void PlayerController::InitKeyState()
 	GameEngineInput::GetInst().CreateKey("Key_ESC", VK_ESCAPE);
 }
 
+#pragma region Update
 void PlayerController::Update(float _DeltaTime)
 {
+	//ServerState_.Update(_DeltaTime);
 	//  플레이어 컨트롤러 업데이트는 크게 3단계
 	// 1. 키 입력 업데이트
 	// 2. 마우스가 무엇을 클릭했는가(지형, Actor, UI) 업데이트
 	// 3. 키, 마우스 클릭에 걸맞게 플레이어 State 업데이트
 
-	KeyStateUpdate(_DeltaTime); // 마우스, 키보드 조작 상태를 bool 값으로 업데이트함
+	PlayerController_KeyState_Update(_DeltaTime); // 마우스, 키보드 조작 상태를 bool 값으로 업데이트함
 
-	MouseUpdate(); // 마우스 버튼을 눌렀는지 안눌렀는지 여부와 UI,Actor, Map 등 충돌을 검사함
+	PlayerController_Mouse_Update(); // 마우스 버튼을 눌렀는지 안눌렀는지 여부와 UI,Actor, Map 등 충돌을 검사함
 
-	CameraUpdate(_DeltaTime); // 모든것이 끝나고 MainPlayer 기준으로 카메라를 업데이트함
+	PlayerController_Camera_Update(_DeltaTime); // 모든것이 끝나고 MainPlayer 기준으로 카메라를 업데이트함
 }
 
-void PlayerController::KeyStateUpdate(float _DeltaTime)
+void PlayerController::PlayerController_KeyState_Update(float _DeltaTime)
 {
 	Key_LB_ = GameEngineInput::GetInst().Down("Key_LB");
 	Key_RB_ = GameEngineInput::GetInst().Down("Key_RB");
@@ -133,7 +185,7 @@ void PlayerController::KeyStateUpdate(float _DeltaTime)
 	Key_Esc_ = GameEngineInput::GetInst().Down("Key_ESC");
 }
 
-void PlayerController::MouseUpdate()
+void PlayerController::PlayerController_Mouse_Update()
 {
 	// 마우스 UI를 위해 마우스 좌표를 상시 업데이트함
 	UIMousePos3D_ = GameMouse_->Mouse_GetMousePos();
@@ -150,7 +202,7 @@ void PlayerController::MouseUpdate()
 
 			if (Key_A_ == true);
 			{
-				Controller_Order_ = Order::Attack_Pos;
+				Controller_Order_ = Controller_Order::A_Attack_Pos;
 				Controller_Target_Pos_ = UIMousePos3D_;
 			}
 		}
@@ -180,12 +232,12 @@ void PlayerController::MouseUpdate()
 			//if (Controller_Target_ID_ != 0)
 			if (Controller_Target_Unit_ != nullptr)
 			{
-				Controller_Order_ = Order::Attack_Target;
+				Controller_Order_ = Controller_Order::A_RB_Attack_Target;
 			}
 
 			else if (Mouse_NaviCol_ == true)
 			{
-				Controller_Order_ = Order::Move;
+				Controller_Order_ = Controller_Order::RB_Move;
 				Controller_Target_Pos_ = UIMousePos3D_;
 			}
 			else
@@ -199,10 +251,11 @@ void PlayerController::MouseUpdate()
 	}
 }
 
-void PlayerController::CameraUpdate(float _DeltaTime)
+void PlayerController::PlayerController_Camera_Update(float _DeltaTime)
 {
 	CameraState_.Update(_DeltaTime);
 }
+#pragma endregion
 
 void PlayerController::CameraUpdate_EternalReturn(float _DeltaTime)
 {

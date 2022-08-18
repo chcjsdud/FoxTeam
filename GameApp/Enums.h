@@ -23,6 +23,15 @@ enum class CollisionGroup
 
 };
 
+enum class ObjectType
+{
+	Player_,
+	Monster_,
+	Item_
+
+
+};
+
 #pragma region SJH
 enum class CharacterType // 캐릭터 타입
 {

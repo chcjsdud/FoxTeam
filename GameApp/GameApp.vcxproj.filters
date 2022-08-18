@@ -122,9 +122,6 @@
     <ClCompile Include="PlayerController.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
     </ClCompile>
-    <ClCompile Include="AIController.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
-    </ClCompile>
     <ClCompile Include="LH_Mouse.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object</Filter>
     </ClCompile>
@@ -529,9 +526,6 @@
       <Filter>01.GameObject\99.SJH\01.Actor\02.Player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerController.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
-    </ClInclude>
-    <ClInclude Include="AIController.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
     </ClInclude>
     <ClInclude Include="LH_Mouse.h">

@@ -3,12 +3,12 @@
 
 
 
-class PlayController;
+class PlayerController;
 class Player;
 class GameEngineCollision;
 class GameMouse : public MouseActor
 {
-	friend PlayController;
+	friend PlayerController;
 	friend Player;
 
 public:

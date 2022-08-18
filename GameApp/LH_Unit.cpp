@@ -1,4 +1,6 @@
 #include "PreCompile.h"
+#include "UserGame.h"
+
 #include "LH_Unit.h"
 #include "GameEngine/GameEngineCollision.h"
 
@@ -6,89 +8,68 @@ Unit::Unit()
 	: UnitGroundCollision_(nullptr)
 	, UnitSightCollision_(nullptr)
 	, UnitHitBoxCollision_(nullptr)
-	, PlayController_(nullptr)
+	, PlayerController_(nullptr)
 	, Target_Unit_(nullptr)
-	, Team_(Team::None)
-	, Controller_Order_(Order::None)
+	, Unit_Team_(Unit_Team::None)
+	, Controller_Order_(Controller_Order::None_Idle)
 	, Move_YRotateSpeed_(0.f)
-	, AttackTurm_(0.f)
-	, AttackBuffer_(0.f)
-	, AttackHitTime_(0.f)
+	, Unit_AttackTurm_(0.f)
+	, Unit_AttackBuffer_(0.f)
+	, Unit_AttackHitTime_(0.f)
 	, EnemyInSight_(false)
 	, IsSturn_(false)
+	, OrderUpdate_(false)
 {	
-	{
-		ActionState_.CreateState<Unit>
-			("Idle", this, &Unit::Action_Idle_Start, &Unit::Action_Idle_Update, &Unit::Action_Idle_End);
+	ActionState_.CreateState<Unit>
+		("Action_Idle", this, &Unit::Action_Idle_Start, &Unit::Action_Idle_Update, &Unit::Action_Idle_End);
 
-		ActionState_.CreateState<Unit>
-			("Walk", this, &Unit::Action_Walk_Start, &Unit::Action_Walk_Update, &Unit::Action_Walk_End);
+	ActionState_.CreateState<Unit>
+		("Action_Walk", this, &Unit::Action_Walk_Start, &Unit::Action_Walk_Update, &Unit::Action_Walk_End);
 
-		ActionState_.CreateState<Unit>
-			("Attack", this, &Unit::Action_Attack_Start, &Unit::Action_Attack_Update, &Unit::Action_Attack_End);
+	ActionState_.CreateState<Unit>
+		("Action_Attack", this, &Unit::Action_Attack_Start, &Unit::Action_Attack_Update, &Unit::Action_Attack_End);
 
-		ActionState_.CreateState<Unit>
-			("Q", this, &Unit::Action_Q_Start, &Unit::Action_Q_Update, &Unit::Action_Q_End);
-		ActionState_.CreateState<Unit>
-			("W", this, &Unit::Action_W_Start, &Unit::Action_W_Update, &Unit::Action_W_End);
-		ActionState_.CreateState<Unit>
-			("E", this, &Unit::Action_E_Start, &Unit::Action_E_Update, &Unit::Action_E_End);
-		ActionState_.CreateState<Unit>
-			("R", this, &Unit::Action_R_Start, &Unit::Action_R_Update, &Unit::Action_R_End);
+	ActionState_.CreateState<Unit>
+		("Action_Stop", this, &Unit::Action_Stop_Start, &Unit::Action_Stop_Update, &Unit::Action_Stop_End);
 
-		ActionState_.ChangeState("Idle");
-	}
+	ActionState_.CreateState<Unit>
+		("Action_Hold", this, &Unit::Action_Hold_Start, &Unit::Action_Hold_Update, &Unit::Action_Hold_End);
 
-	{
-		OrderState_.CreateState<Unit>
-			("Order_Attack_Target", this, &Unit::Order_Attack_Target_Start, &Unit::Order_Attack_Target_Update, &Unit::Order_Attack_Target_End);
+	ActionState_.CreateState<Unit>
+		("Action_Rest", this, &Unit::Action_Rest_Start, &Unit::Action_Rest_Update, &Unit::Action_Rest_End);
 
-		OrderState_.CreateState<Unit>
-			("Order_Attack_Pos", this, &Unit::Order_Attack_Pos_Start, &Unit::Order_Attack_Pos_Update, &Unit::Order_Attack_Pos_End);
 
-		OrderState_.CreateState<Unit>
-			("Order_Move", this, &Unit::Order_Move_Start, &Unit::Order_Move_Update, &Unit::Order_Move_End);
+	ActionState_.ChangeState("Action_Idle");
 
-		OrderState_.CreateState<Unit>
-			("Order_Stop", this, &Unit::Order_Stop_Start, &Unit::Order_Stop_Update, &Unit::Order_Stop_End);
 
-		OrderState_.CreateState<Unit>
-			("Order_Hold", this, &Unit::Order_Hold_Start, &Unit::Order_Hold_Update, &Unit::Order_Hold_End);
 
-		OrderState_.ChangeState("Order_Stop");
-		//OrderState_.CreateState<Unit>
-		//	("Order_Q", this, &Unit::Order_Q_Start, &Unit::Order_Q_Update, &Unit::Order_Q_End);
+	OrderState_.CreateState<Unit>
+		("Order_Idle", this, &Unit::Order_Idle_Start, &Unit::Order_Idle_Update, &Unit::Order_Idle_End);
 
-		//OrderState_.CreateState<Unit>
-		//	("Order_W", this, &Unit::Order_W_Start, &Unit::Order_W_Update, &Unit::Order_W_End);
+	OrderState_.CreateState<Unit>
+		("Order_Attack_Target", this, &Unit::Order_Attack_Target_Start, &Unit::Order_Attack_Target_Update, &Unit::Order_Attack_Target_End);
 
-		//OrderState_.CreateState<Unit>
-		//	("Order_E", this, &Unit::Order_E_Start, &Unit::Order_E_Update, &Unit::Order_E_End);
+	OrderState_.CreateState<Unit>
+		("Order_Attack_Pos", this, &Unit::Order_Attack_Pos_Start, &Unit::Order_Attack_Pos_Update, &Unit::Order_Attack_Pos_End);
 
-		//OrderState_.CreateState<Unit>
-		//	("Order_R", this, &Unit::Order_R_Start, &Unit::Order_R_Update, &Unit::Order_R_Start);
-	}
+	OrderState_.CreateState<Unit>
+		("Order_Move", this, &Unit::Order_Move_Start, &Unit::Order_Move_Update, &Unit::Order_Move_End);
 
-	{
-		Status_Base_.Stat_AttackPower_ = 0;
-		Status_Base_.Stat_Health_ = 0;
-		Status_Base_.Stat_AttackDist_ = 0.f;
-		Status_Base_.Stat_HealthRecovery_ = 0.f;
-		Status_Base_.Stat_Stamina_ = 0;
-		Status_Base_.Stat_StaminaRecovery_ = 0.f;
-		Status_Base_.Stat_Defense_ = 0.f;
-		Status_Base_.Stat_AttackSpeed_ = 0.f;
-		Status_Base_.Stat_CriticalHit_ = 0.f;
-		Status_Base_.Stat_MoveSpeed_ = 0.f;
-		Status_Base_.Stat_Eyesight_ = 0.f;
-	}
+	OrderState_.CreateState<Unit>
+		("Order_Stop", this, &Unit::Order_Stop_Start, &Unit::Order_Stop_Update, &Unit::Order_Stop_End);
+
+	OrderState_.CreateState<Unit>
+		("Order_Hold", this, &Unit::Order_Hold_Start, &Unit::Order_Hold_Update, &Unit::Order_Hold_End);
+
+
+	OrderState_.ChangeState("Order_Idle");
 }
 
 Unit::~Unit()
 {
 	{
-		auto iter0 = BufferList_.begin();
-		auto iter1 = BufferList_.end();
+		auto iter0 = Unit_BufferList_.begin();
+		auto iter1 = Unit_BufferList_.end();
 
 		for (; iter0 != iter1;)
 		{
@@ -96,7 +77,7 @@ Unit::~Unit()
 			iter0++;
 		}
 
-		BufferList_.clear();
+		Unit_BufferList_.clear();
 	}
 
 	{
@@ -105,7 +86,7 @@ Unit::~Unit()
 
 		for (; iter0 != iter1;)
 		{
-			(*iter0)->SetTargetErase();
+			(*iter0)->Unit_SetTargetErase();
 			++iter0;
 		}
 
@@ -126,23 +107,79 @@ pragma region
 #pragma region 초기화
 void Unit::Start()
 {
-
+	Unit_Set_State_Init(); // 어차피 상속받아 사용해서 의미 없는 구문, 그냥 자식 클래스가 이렇게 쓸거라는 의미
 }
 
+void Unit::Unit_Set_State_Init()
+{
+	{
+		// 이 밑부분은 나중에 플레이어.h 로 이동하게 될 것이다.
+		ActionState_.CreateState<Unit>
+			("Action_Q", this, &Unit::Action_Q_Start, &Unit::Action_Q_Update, &Unit::Action_Q_End);
+		ActionState_.CreateState<Unit>
+			("Action_W", this, &Unit::Action_W_Start, &Unit::Action_W_Update, &Unit::Action_W_End);
+		ActionState_.CreateState<Unit>
+			("Action_E", this, &Unit::Action_E_Start, &Unit::Action_E_Update, &Unit::Action_E_End);
+		ActionState_.CreateState<Unit>
+			("Action_R", this, &Unit::Action_R_Start, &Unit::Action_R_Update, &Unit::Action_R_End);
+		ActionState_.CreateState<Unit>
+			("Action_D", this, &Unit::Action_D_Start, &Unit::Action_D_Update, &Unit::Action_D_End);	
+	}
+
+	{
+		// 이 밑부분은 나중에 플레이어.h 로 이동하게 될 것이다.
+		OrderState_.CreateState<Unit>
+			("Order_Q", this, &Unit::Order_Q_Start, &Unit::Order_Q_Update, &Unit::Order_Q_End);
+
+		OrderState_.CreateState<Unit>
+			("Order_W", this, &Unit::Order_W_Start, &Unit::Order_W_Update, &Unit::Order_W_End);
+
+		OrderState_.CreateState<Unit>
+			("Order_E", this, &Unit::Order_E_Start, &Unit::Order_E_Update, &Unit::Order_E_End);
+
+		OrderState_.CreateState<Unit>
+			("Order_R", this, &Unit::Order_R_Start, &Unit::Order_R_Update, &Unit::Order_R_Start);
+
+		OrderState_.CreateState<Unit>
+			("Order_D", this, &Unit::Order_D_Start, &Unit::Order_D_Update, &Unit::Order_D_Start);
+	}
+
+	{
+		Unit_Status_Base_.Stat_AttackPower_ = 0;
+		Unit_Status_Base_.Stat_Health_ = 0;
+		Unit_Status_Base_.Stat_AttackDist_ = 0.f;
+		Unit_Status_Base_.Stat_HealthRecovery_ = 0.f;
+		Unit_Status_Base_.Stat_Stamina_ = 0;
+		Unit_Status_Base_.Stat_StaminaRecovery_ = 0.f;
+		Unit_Status_Base_.Stat_Defense_ = 0.f;
+		Unit_Status_Base_.Stat_AttackSpeed_ = 0.f;
+		Unit_Status_Base_.Stat_CriticalHit_ = 0.f;
+		Unit_Status_Base_.Stat_MoveSpeed_ = 0.f;
+		Unit_Status_Base_.Stat_Eyesight_ = 0.f;
+	}
+}
+void Unit::Unit_Set_Collision_Init()
+{
+}
 #pragma endregion
 
 #pragma region 업데이트
 void Unit::Update(float _DeltaTime)
 {
-	// AI냐 플레이어냐 에따라 Order를 얻어오는 방법이 달라질것
-	UnitTargetUpdate(_DeltaTime);
-	UpdateBuff(_DeltaTime);
-	Controller_Update();
+	if (UserGame::IsServer_ == false)
+	{
+		//return;
+	}
 
-	StateUpdate(_DeltaTime);
+	// AI냐 플레이어냐 에따라 Order를 얻어오는 방법이 달라질것
+	Unit_TargetUpdate(_DeltaTime);
+	Unit_UpdateBuff(_DeltaTime);
+	Unit_Controller_Update();
+
+	Unit_StateUpdate(_DeltaTime);
 }
 
-void Unit::UnitTargetUpdate(float _DeltaTime)
+void Unit::Unit_TargetUpdate(float _DeltaTime)
 {
 	{
 		auto iter0 = TargetingUnits_.begin();
@@ -152,7 +189,7 @@ void Unit::UnitTargetUpdate(float _DeltaTime)
 		{
 			if ((*iter0)->Target_Unit_ != this) //나를 타겟한 유닛이 아직도 나를 타겟으로 삼고 있나 검사
 			{
-				(*iter0)->SetTargetErase();
+				(*iter0)->Unit_SetTargetErase();
 
 				TargetingUnits_.erase(iter0);
 			}
@@ -162,10 +199,10 @@ void Unit::UnitTargetUpdate(float _DeltaTime)
 	}
 }
 
-void Unit::UpdateBuff(float _DeltaTime)
+void Unit::Unit_UpdateBuff(float _DeltaTime)
 {
-	auto iter0 = BufferList_.begin();
-	auto iter1 = BufferList_.end();
+	auto iter0 = Unit_BufferList_.begin();
+	auto iter1 = Unit_BufferList_.end();
 
 	for (; iter0 != iter1;)
 	{
@@ -180,8 +217,8 @@ void Unit::UpdateBuff(float _DeltaTime)
 			if (iter0->second->Time_ < 0.f)
 			{
 				delete iter0->second;
-				BufferList_.erase(iter0);
-				SetSyncStatus();
+				Unit_BufferList_.erase(iter0);
+				Unit_SetSyncStatus();
 			}
 		}
 
@@ -189,53 +226,60 @@ void Unit::UpdateBuff(float _DeltaTime)
 	}
 }
 
-void Unit::Controller_Update()
+void Unit::Unit_Controller_Update()
 {
-	Target_Pos_ = PlayController_->PlayerController_GetTarget_Pos();
+	Target_Pos_ = PlayerController_->PlayerController_GetTarget_Pos();
 
-	SetUnitTarget(PlayController_->PlayerController_GetTargetUnit());
+	Unit_SetUnitTarget(PlayerController_->PlayerController_GetTargetUnit());
 	//Target_ID_ = PlayController_->PlayerController_GetTarget_ID();
-	Controller_Order_ = PlayController_->PlayerController_GetOrder();
+	Controller_Order_ = PlayerController_->PlayerController_GetOrder();
 }
 
-void Unit::StateUpdate(float _DeltaTime)
+void Unit::Unit_StateUpdate(float _DeltaTime) // 오버로딩 가능하게 만들자
 {
-	if (IsSturn_ == false) // 명령 업데이트가 가능한 상태라면
+	
+	if (IsSturn_ == false && OrderUpdate_==true) // 명령 업데이트가 가능한 상태라면
 	{
 		switch (Controller_Order_)
 		{
-		case Order::None:
-			//SetChangeOrderState("Order_Stop");
+		case Controller_Order::None_Idle:
+			Unit_SetChangeOrderState("Order_Idle");
 			break;
-		case Order::Attack_Target:
-			SetChangeOrderState("Order_Attack_Target");
+		case Controller_Order::A_RB_Attack_Target:
+			Unit_SetChangeOrderState("Order_Attack_Target");
 			break;
-		case Order::Attack_Pos:
-			SetChangeOrderState("Order_Attack_Pos");
+		case Controller_Order::A_Attack_Pos:
+			Unit_SetChangeOrderState("Order_Attack_Pos");
 			break;
-		case Order::Move:
-			SetChangeOrderState("Order_Move");
+		case Controller_Order::RB_Move:
+			Unit_SetChangeOrderState("Order_Move");
 			break;
-		case Order::Stop:
-			SetChangeOrderState("Order_Stop");
+		case Controller_Order::S_Stop:
+			Unit_SetChangeOrderState("Order_Stop");
 			break;
-		case Order::Hold:
-			SetChangeOrderState("Order_Hold");
+		case Controller_Order::H_Hold:
+			Unit_SetChangeOrderState("Order_Hold");
 			break;
-		case Order::Pattrol:
-			//SetChangeOrderState("Order_Pattrol");
+		case Controller_Order::X_Rest:
+			Unit_SetChangeOrderState("Rest");
 			break;
-		case Order::Q:
-			//SetChangeOrderState("Order_Q");
+		case Controller_Order::F_ReLoad:
+			Unit_SetChangeOrderState("ReLoad");
 			break;
-		case Order::W:
-			//SetChangeOrderState("Order_W");
+		case Controller_Order::Q_Skill:
+			Unit_SetChangeOrderState("Order_Q");
 			break;
-		case Order::E:
-			//SetChangeOrderState("Order_E");
+		case Controller_Order::W_Skill:
+			Unit_SetChangeOrderState("Order_W");
 			break;
-		case Order::R:
-			//SetChangeOrderState("Order_R");
+		case Controller_Order::E_Skill:
+			Unit_SetChangeOrderState("Order_E");
+			break;
+		case Controller_Order::R_Skill:
+			Unit_SetChangeOrderState("Order_R");
+			break;
+		case Controller_Order::D_Weapon_Skill:
+			Unit_SetChangeOrderState("Order_D");
 			break;
 		default:
 			GameEngineDebug::MsgBoxError("올바르지 않은 Order");
@@ -251,16 +295,16 @@ void Unit::StateUpdate(float _DeltaTime)
 #pragma endregion
 
 #pragma region 스탯
-void Unit::SetSyncStatus()
+void Unit::Unit_SetSyncStatus()
 {
 	// 스텟 초기화
-	Status_Mult_.Reset_mult();
-	Status_Add_.Reset();
-	Status_Final_.Reset();
+	Unit_Status_Mult_.Reset_mult();
+	Unit_Status_Add_.Reset();
+	Unit_Status_Final_.Reset();
 
 	//플레이어 버프 리스트
-	auto iter0 = BufferList_.begin();
-	auto iter1 = BufferList_.end();
+	auto iter0 = Unit_BufferList_.begin();
+	auto iter1 = Unit_BufferList_.end();
 
 	for (; iter0 != iter1;)
 	{
@@ -268,11 +312,11 @@ void Unit::SetSyncStatus()
 		// 곱해야 할 스텟은 PlayerStatusMult_에 더해줌
 		if (true == iter0->second->Status_.Stat_IsMult_)
 		{
-			Status_Mult_ += iter0->second->Status_;
+			Unit_Status_Mult_ += iter0->second->Status_;
 		}
 		else
 		{
-			Status_Add_ += iter0->second->Status_;
+			Unit_Status_Add_ += iter0->second->Status_;
 		}
 		iter0++;
 	}
@@ -280,23 +324,23 @@ void Unit::SetSyncStatus()
 	// 최종적으로 사용되는 스탯은 PlayerStatusFinal_임
 	// PlayerStatusFinal_은 PlayerStatusBase_에 더해야할 스텟을 먼저 더하고 마지막에 곱해야할 스텟을 곱해주어 계산함
 
-	Status_Final_ = Status_Base_ + Status_Add_;
-	Status_Final_ *= Status_Mult_;
+	Unit_Status_Final_ = Unit_Status_Base_ + Unit_Status_Add_;
+	Unit_Status_Final_ *= Unit_Status_Mult_;
 }
 
 void Unit::Unit_AddBaseStat(Status _Status)
 {
-	Status_Base_ += _Status;
+	Unit_Status_Base_ += _Status;
 }
 
 void Unit::Unit_SetBaseStat(Status _Status)
 {
-	Status_Base_ = _Status;
+	Unit_Status_Base_ = _Status;
 }
 
 void Unit::Unit_AddBuff(std::string _Name, Status _Status, float _Time, bool _IsSturn, std::function<void()> _BuffFunc)
 {
-	auto iter = BufferList_.find("_Name");
+	auto iter = Unit_BufferList_.find("_Name");
 
 	if (iter->first == _Name)
 	{
@@ -309,18 +353,18 @@ void Unit::Unit_AddBuff(std::string _Name, Status _Status, float _Time, bool _Is
 
 	*_Buff = { _Name, _Time , _Status, _IsSturn , _BuffFunc };
 
-	BufferList_.insert(std::make_pair(_Name, _Buff));
+	Unit_BufferList_.insert(std::make_pair(_Name, _Buff));
 }
 
 void Unit::Unit_RemoveBuff(std::string _Name)
 {
-	BufferList_.erase(BufferList_.find(_Name));
+	Unit_BufferList_.erase(Unit_BufferList_.find(_Name));
 }
 
 void Unit::Unit_RemoveAllBuff(std::string _Name)
 {
-	auto iter0 = BufferList_.begin();
-	auto iter1 = BufferList_.end();
+	auto iter0 = Unit_BufferList_.begin();
+	auto iter1 = Unit_BufferList_.end();
 
 	for (; iter0 != iter1;)
 	{
@@ -328,7 +372,7 @@ void Unit::Unit_RemoveAllBuff(std::string _Name)
 		iter0++;
 	}
 
-	BufferList_.clear();
+	Unit_BufferList_.clear();
 }
 
 #pragma endregion
@@ -340,7 +384,7 @@ void Unit::MoveUpdate(float _DeltaTime)
 	CurDirUpdate(_DeltaTime); // 네비게이션 업데이트를 통해 FBX가 회전해야 할 방향을 업데이트함
 	MoveRotateUpdate(_DeltaTime); // 업데이트된 회전 방향으로 회전시켜줌
 
-	GetTransform()->SetWorldMove(Move_ForwardDir_ * Status_Final_.Stat_MoveSpeed_ * _DeltaTime); //이동을 수행함
+	GetTransform()->SetWorldMove(Move_ForwardDir_ * Unit_Status_Final_.Stat_MoveSpeed_ * _DeltaTime); //이동을 수행함
 }
 
 void Unit::NaviUpdate(float _DeltaTime)
@@ -421,10 +465,7 @@ void Unit::MoveRotateUpdate(float _DeltaTime)
 
 bool Unit::ChaseTargetUpdate(Unit* _Target_Unit, float _ChaseDist)
 {
-	if (_Target_Unit == nullptr)
-	{
-		return true;
-	}
+	//TODO: 적을 발견하고 추적할지 말지 여부정도만 넘겨주게끔 하면 좋겠다.
 
 	// _ChaseDist == 추적할 사거리, 이 거리 안까지 추적하면 추적을 멈춤
 	// return true == 추적 완료
@@ -438,7 +479,6 @@ bool Unit::ChaseTargetUpdate(Unit* _Target_Unit, float _ChaseDist)
 		//Move_ForwardDir_.Normalize3D();
 
 		//공격 사거리 안에 적이 없으면 움직임
-		SetChangeActionState("Walk");
 		return false;
 	}
 	else
@@ -449,6 +489,8 @@ bool Unit::ChaseTargetUpdate(Unit* _Target_Unit, float _ChaseDist)
 
 bool Unit::ChasePosUpdate(float4 _Target_Pos, float _ChaseDist)
 {
+	//TODO: 없애고 위에껄로 대체해도 될거같다.
+
 	//if (Target_ID_ == 0)
 	if (Target_Unit_ == nullptr)
 	{
@@ -497,12 +539,30 @@ bool Unit::ChasePosUpdate(float4 _Target_Pos, float _ChaseDist)
 }
 #pragma endregion
 
-void Unit::SetOrderEnd()
+void Unit::Unit_SetOrderEnd()
 {
-	PlayController_->SetController_Order(Order::Stop);
+	PlayerController_->PlayerController_SetController_Order(Controller_Order::None_Idle);
+	OrderState_.ChangeState("Idle");
+	ActionState_.ChangeState("Idle");
+
+	OrderUpdate_ = true;
 }
 
 #pragma region 명령 State
+
+void Unit::Order_Idle_Start()
+{
+	OrderUpdate_ = true;
+	//FBXRenderer_->ChangeFBXAnimation("Unit_Ani_Idle");
+}
+
+void Unit::Order_Idle_Update(float _DeltaTime)
+{
+}
+
+void Unit::Order_Idle_End()
+{
+}
 
 void Unit::Order_Attack_Target_Start()
 {
@@ -510,11 +570,21 @@ void Unit::Order_Attack_Target_Start()
 
 void Unit::Order_Attack_Target_Update(float _DeltaTime)
 {
+	if (Target_Unit_ == nullptr)
+	{
+		Unit_SetOrderEnd();
+	}
+
 	// 공격 사거리 안에 적이 나타날때까지 Target_Unit_ 방향이나 Target_Pos_로 움직임
-	if (ChaseTargetUpdate(Target_Unit_, Status_Final_.Stat_AttackDist_) == true);
+	if (ChaseTargetUpdate(Target_Unit_, Unit_Status_Final_.Stat_AttackDist_) == true)
 	{
 		// Target_Unit_ 에게 공격을 가함
-		SetChangeActionState("Attack");
+		Unit_SetChangeActionState("Action_Attack");
+	}
+	else
+	{
+		// 적 방향으로 움직이게 설정해주기
+		Unit_SetChangeActionState("Action_Walk");
 	}
 }
 
@@ -531,16 +601,53 @@ void Unit::Order_Attack_Pos_Update(float _DeltaTime)
 	if (GetTransform()->GetWorldPosition() == Target_Pos_)
 	{
 		// 명령 종료
-		SetOrderEnd();
+		Unit_SetOrderEnd();
 	}
 	else
 	{
-		SetChangeActionState("Walk");
+		//타겟 좌표 방향으로 이동하게 설정해주기
+		Unit_SetChangeActionState("Walk");
 
-		if (ChasePosUpdate(Target_Pos_, Status_Final_.Stat_AttackDist_));
+		// 움직이던중 적이 시야에 들어오면 그놈을 공격하고, 시야에서 벗어나거나 죽어버리면 마저 가던길 가게 하기
+		std::list<GameEngineCollision*> collist = UnitSightCollision_->CollisionPtrGroup(static_cast<int>(CollisionGroup::Unit));
+
+		auto iter0 = collist.begin();
+		auto iter1 = collist.end();
+
+		for (; iter0 != iter1;)
+		{		
+			Unit* colunit = dynamic_cast<Unit*>((*iter0)->GetActor());
+			
+			if (colunit->Unit_GetTeam() != Unit_Team_) // 자신과 다른팀일경우
+			{
+				// 타겟으로 지정함
+				Unit_SetUnitTarget(colunit);
+			}
+		}
+
+		if (Target_Unit_ == nullptr)
+		{
+			Unit_SetOrderEnd();
+		}
+
+		// 공격 사거리 안에 적이 나타날때까지 Target_Unit_ 방향이나 Target_Pos_로 움직임
+		if (ChaseTargetUpdate(Target_Unit_, Unit_Status_Final_.Stat_AttackDist_) == true)
 		{
 			// Target_Unit_ 에게 공격을 가함
-			SetChangeActionState("Attack");
+			Unit_SetChangeActionState("Action_Attack");
+		}
+		else
+		{
+			// 적 방향으로 움직이게 설정해주기
+			Unit_SetChangeActionState("Action_Walk");
+		}
+
+
+
+
+		if (ChasePosUpdate(Target_Pos_, Unit_Status_Final_.Stat_AttackDist_));
+		{
+			Unit_SetChangeActionState("Attack");
 		}
 	}
 
@@ -555,23 +662,23 @@ void Unit::Order_Attack_Pos_Update(float _DeltaTime)
 		// 어택땅 상태에서 시야에 적이 들어오게 된다면 TargetActor_를 세팅해 주고, 위 if문으로 들어가게 된다.
 		// 이 상태에서 적을 물리쳤을 경우, 다시 가던길을 마저 가게 해 주어야 한다.
 
-		std::list<GameEngineCollision*> collist = UnitSightCollision_->CollisionPtrGroup(static_cast<int>(CollisionGroup::Unit));
-		//std::list<GameEngineCollision*> CollisionIDlist;
+		//std::list<GameEngineCollision*> collist = UnitSightCollision_->CollisionPtrGroup(static_cast<int>(CollisionGroup::Unit));
+		////std::list<GameEngineCollision*> CollisionIDlist;
 
-		auto iter0 = collist.begin();
-		auto iter1 = collist.end();
+		//auto iter0 = collist.begin();
+		//auto iter1 = collist.end();
 
-		for (; iter0 != iter1;)
-		{
-			Unit* colunit = dynamic_cast<Unit*>((*iter0)->GetActor());
-			//unsigned int CollisionTargetID =0; // =(*iter0)->GetID();
+		//for (; iter0 != iter1;)
+		//{
+		//	Unit* colunit = dynamic_cast<Unit*>((*iter0)->GetActor());
+		//	//unsigned int CollisionTargetID =0; // =(*iter0)->GetID();
 
-			if (colunit->Unit_GetTeam() != Team_) // 자신과 다른팀일경우
-			{
-				//SetTargetID(CollisionTargetID);
-				SetUnitTarget(colunit);
-			}
-		}
+		//	if (colunit->Unit_GetTeam() != Unit_Team_) // 자신과 다른팀일경우
+		//	{
+		//		//SetTargetID(CollisionTargetID);
+		//		Unit_SetUnitTarget(colunit);
+		//	}
+		//}
 	}
 	//A키를 이용한 공격 명령이 내려지면 이곳에서 적을 추적할지, 추적을 종료할지, 시야에 들어온 적을 공격할지 판별한다.
 
@@ -596,7 +703,7 @@ void Unit::Order_Attack_Pos_Update(float _DeltaTime)
 	//}
 
 
-	if (Controller_Order_ == Order::Attack_Pos) // 지정한 타겟이 없는 어택땅 상태면
+	if (Controller_Order_ == Controller_Order::A_Attack_Pos) // 지정한 타겟이 없는 어택땅 상태면
 	{
 		if (Target_Unit_ == nullptr)
 		{
@@ -619,10 +726,10 @@ void Unit::Order_Attack_Pos_Update(float _DeltaTime)
 				Unit* colunit = dynamic_cast<Unit*>((*iter0)->GetActor());
 				//unsigned int CollisionTargetID=0; // =(*iter0)->GetID();
 
-				if (colunit->Unit_GetTeam() != Team_) // 자신과 다른팀일경우
+				if (colunit->Unit_GetTeam() != Unit_Team_) // 자신과 다른팀일경우
 				{
 					//SetTargetID(CollisionTargetID);
-					SetUnitTarget(colunit);
+					Unit_SetUnitTarget(colunit);
 				}
 			}
 		}
@@ -670,6 +777,30 @@ void Unit::Order_Hold_End()
 {
 }
 
+void Unit::Order_Rest_Start()
+{
+}
+
+void Unit::Order_Rest_Update(float _DeltaTime)
+{
+}
+
+void Unit::Order_Rest_End()
+{
+}
+
+void Unit::Order_Reload_Start()
+{
+}
+
+void Unit::Order_Reload_Update(float _DeltaTime)
+{
+}
+
+void Unit::Order_Reload_End()
+{
+}
+
 #pragma endregion
 
 #pragma region 동작 State
@@ -699,6 +830,7 @@ void Unit::Action_Walk_End()
 
 void Unit::Action_Attack_Start()
 {
+	OrderUpdate_ = false;
 }
 
 void Unit::Action_Attack_Update(float _DeltaTime)
@@ -707,53 +839,42 @@ void Unit::Action_Attack_Update(float _DeltaTime)
 
 void Unit::Action_Attack_End()
 {
+	OrderUpdate_ = true;
 }
 
-void Unit::Action_Q_Start()
+void Unit::Action_Stop_Start()
 {
 }
 
-void Unit::Action_Q_Update(float _DeltaTime)
+void Unit::Action_Stop_Update(float _DeltaTime)
 {
 }
 
-void Unit::Action_Q_End()
+void Unit::Action_Stop_End()
 {
 }
 
-void Unit::Action_W_Start()
+void Unit::Action_Hold_Start()
 {
 }
 
-void Unit::Action_W_Update(float _DeltaTime)
+void Unit::Action_Hold_Update(float _DeltaTime)
 {
 }
 
-void Unit::Action_W_End()
+void Unit::Action_Hold_End()
 {
 }
 
-void Unit::Action_E_Start()
+void Unit::Action_Rest_Start()
 {
 }
 
-void Unit::Action_E_Update(float _DeltaTime)
+void Unit::Action_Rest_Update(float _DeltaTime)
 {
 }
 
-void Unit::Action_E_End()
-{
-}
-
-void Unit::Action_R_Start()
-{
-}
-
-void Unit::Action_R_Update(float _DeltaTime)
-{
-}
-
-void Unit::Action_R_End()
+void Unit::Action_Rest_End()
 {
 }
 #pragma endregion

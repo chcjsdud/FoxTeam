@@ -209,7 +209,8 @@ void PlayLevel::CreateActorLevel()
 	//
 		Player* Actor = CreateActor<Player_Yuki>("LH_Yuki");
 
-		PlayerController_->SetMainActor(Actor);
+		PlayerController_->PlayerController_SetMainPlayer(Actor);
+		Actor-> Player_SetPlayController(PlayerController_);
 
 	//	Actor->SetParentMouse(mouse); // 플레이어 캐릭터를 종속시킬 마우스 커서를 알려줍니다. 게임매니저 생성 시 삭제될 함수
 	//

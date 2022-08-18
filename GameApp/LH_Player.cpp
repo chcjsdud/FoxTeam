@@ -12,8 +12,7 @@
 //
 
 Player::Player()
-	: PlayController_(nullptr)
-	, SkillUI_(nullptr)
+	: SkillUI_(nullptr)
 	, LockOnUI_(nullptr)
 	, JobType_(JobType::NONE)
 {
@@ -38,16 +37,16 @@ void Player::Update(float _DeltaTime)
 
 void Player::ControllerOrderUpdate()
 {
-	Controller_Order_ = PlayController_->PlayerController_GetOrder();
+	Controller_Order_ = PlayerController_->PlayerController_GetOrder();
 }
 
 void Player::StaminaRecoverUpdate(float _DeltaTime)
 {
-	Status_Final_.Stat_StaminaRecovery_ += _DeltaTime * Status_Final_.Stat_StaminaRecovery_;
+	Unit_Status_Final_.Stat_StaminaRecovery_ += _DeltaTime * Unit_Status_Final_.Stat_StaminaRecovery_;
 
-	if (Status_Final_.Stat_StaminaRecovery_ > 100.f)
+	if (Unit_Status_Final_.Stat_StaminaRecovery_ > 100.f)
 	{
-		Status_Final_.Stat_StaminaRecovery_ = 100.f;
+		Unit_Status_Final_.Stat_StaminaRecovery_ = 100.f;
 	}
 }
 

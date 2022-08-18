@@ -39,11 +39,11 @@ void YSJ_Char::Update(float _DeltaTime)
 
 	if (GameEngineInput::GetInst().Press("MoveUp"))
 	{
-		GetTransform()->SetWorldMove(float4::UP * Status_Final_.Stat_MoveSpeed_ * _DeltaTime);
+		GetTransform()->SetWorldMove(float4::UP * Unit_Status_Final_.Stat_MoveSpeed_ * _DeltaTime);
 	}
 	if (GameEngineInput::GetInst().Press("MoveDown"))
 	{
-		GetTransform()->SetWorldMove(float4::DOWN * Status_Final_.Stat_MoveSpeed_ * _DeltaTime);
+		GetTransform()->SetWorldMove(float4::DOWN * Unit_Status_Final_.Stat_MoveSpeed_ * _DeltaTime);
 	}
 }
 
@@ -97,7 +97,7 @@ void YSJ_Char::ComponenetInit()
 	GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
 	GameEngineInput::GetInst().CreateKey("RockOn", VK_LSHIFT);
 
-	Status_Final_.Stat_MoveSpeed_ = 100.0f;
+	Unit_Status_Final_.Stat_MoveSpeed_ = 100.0f;
 }
 
 void YSJ_Char::StateInit()
