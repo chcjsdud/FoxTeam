@@ -71,5 +71,9 @@ private:
 	std::string ItemBoxInfoPath;
 	std::map<std::string, std::vector<ItemBox>> ItemBoxs;
 	ItemBox* SelectBox;
+
+	//이건호 UI아이템 박스 작업
+private:
+	class UI_ItemBox* ItemBoxUI_;
 };
 

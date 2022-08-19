@@ -18,22 +18,29 @@ public:
 	UI_ItemBox& operator=(const UI_ItemBox& _Other) = delete;
 	UI_ItemBox& operator=(UI_ItemBox&& _Other) noexcept = delete;
 
-	bool UIOn;
+
+
 
 public:
 	void SetPlayer(Player* _Player)
 	{
 		Player_ = _Player;
 	}
+
+	void RenderOff();
 	
+	void RenderOn();
+
 protected:
 	GameEngineUIRenderer* ItemBoxBackGround_Renderer;
 	
 	//박스냐 시체냐 보급이냐에 따라 달라지는 것
 	//종류가 몇개 없어서 통 이미지로 대체될 수도 있음
 	GameEngineUIRenderer* BoxtypeFont_Renderer;
+	
+private:
 	float Time;
-
+	bool UI_On;
 
 private:
 	void Start() override;

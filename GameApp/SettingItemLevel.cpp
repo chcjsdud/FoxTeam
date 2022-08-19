@@ -32,6 +32,7 @@ void SettingItemLevel::LevelStart()
 
 	GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 	GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
+	GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
 
 	if (false == GameEngineInput::GetInst().IsKey("FreeCam"))
 	{

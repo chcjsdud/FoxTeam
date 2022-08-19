@@ -7,6 +7,7 @@
 #include "EquipmentItem.h"
 #include "UseableItem.h"
 #include "MiscItem.h"
+#include <GameApp/UI_ItemBox.h>
 
 ItemBoxManager::ItemBoxManager()
 	: SelectBox(nullptr)
@@ -89,6 +90,14 @@ void ItemBoxManager::BoxSelectUpdate()
 				{
 					if (Col == ItemBox.second[i].Col)
 					{
+						if (ItemBoxUI_ != nullptr)
+						{
+							//이건호: 아이템박스가 켜져있는 상태에서 다시 박스를 클릭하면 원래 켜져 있던 박스는 없어지도록 했습니다
+							ItemBoxUI_->Release();
+							ItemBoxUI_ = nullptr;
+						}
+						ItemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
+						ItemBoxUI_->RenderOn();
 						SelectBox = &ItemBox.second[i];
 					} 
 				}

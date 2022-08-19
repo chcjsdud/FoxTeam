@@ -5,8 +5,9 @@
 
 #include "LH_Player.h"
 
+
 UI_ItemBox::UI_ItemBox()
-	: Time(1.0f), UIOn(false)
+	: Time(1.0f), UI_On(false)
 {
 }
 
@@ -42,8 +43,8 @@ void UI_ItemBox::Start()
 
 	{
 		BoxtypeFont_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		BoxtypeFont_Renderer->TextSetting("굴림", "상자", 30, float4::WHITE);
-		BoxtypeFont_Renderer->GetTransform()->SetLocalPosition(ItemBox_BackgroundPos);
+	//	BoxtypeFont_Renderer->TextSetting("굴림", "상자", 30, float4::WHITE);
+	//	BoxtypeFont_Renderer->GetTransform()->SetLocalPosition(ItemBox_BackgroundPos);
 	}
 
 	//이현, Player 예제 함수
@@ -64,7 +65,7 @@ void UI_ItemBox::Update(float _Time)
 	
 	//UI 온오프 체크
 	{
-		if (false == UIOn)
+		if (false == UI_On)
 		{
 			ItemBoxBackGround_Renderer->Off();
 			BoxtypeFont_Renderer->Off();
@@ -78,14 +79,23 @@ void UI_ItemBox::Update(float _Time)
 
 	if (true == GameEngineInput::GetInst().Down("Esc"))
 	{
-		if (UIOn == true)
+		if (UI_On == true)
 		{
-			UIOn = false;
+			RenderOff();
 		}
 		else
 		{
-			UIOn = true;
+			RenderOn();
 		}
 	}
 }
 
+void UI_ItemBox::RenderOff()
+{
+	UI_On = false;
+}
+
+void UI_ItemBox::RenderOn()
+{
+	UI_On = true;
+}
