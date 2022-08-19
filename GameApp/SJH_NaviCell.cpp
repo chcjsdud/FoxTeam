@@ -113,16 +113,17 @@ std::vector<GameEngineVertex> SJH_NaviCell::SearchShareVertex(SJH_NaviCell* _Sha
 	{
 		for (int j = 0; j < static_cast<int>(_ShareCell->VertexList_.size()); ++j)
 		{
-			if (2 == ReturnVertex.size())
-			{
-				return ReturnVertex;
-			}
-
 			if (VertexList_[i].POSITION == _ShareCell->VertexList_[j].POSITION)
 			{
 				ReturnVertex.push_back(VertexList_[i]);
+				break;
 			}
 		}
+	}
+
+	if (2 == ReturnVertex.size())
+	{
+		return ReturnVertex;
 	}
 
 	return std::vector<GameEngineVertex>();
@@ -134,9 +135,13 @@ void SJH_NaviCell::CenterOfGravityCalculation()
 	float4 Vertex1 = VertexList_[1].POSITION;
 	float4 Vertex2 = VertexList_[2].POSITION;
 
+	CenterOfGravity_ = Vertex0;
 	CenterOfGravity_.x = (Vertex0.x + Vertex1.x + Vertex2.x) / 3.0f;
-	CenterOfGravity_.y = (Vertex0.y + Vertex1.y + Vertex2.y) / 3.0f;
 	CenterOfGravity_.z = (Vertex0.z + Vertex1.z + Vertex2.z) / 3.0f;
+	CenterOfGravity_.w = 1.0f;
+
+	// 220819 SJH 주석처리
+	//CenterOfGravity_ = DirectX::XMVectorBaryCentric(Vertex0.DirectVector, Vertex1.DirectVector, Vertex2.DirectVector, 1.0f, 2.0f);
 }
 
 void SJH_NaviCell::StandingOntheCellCheck()

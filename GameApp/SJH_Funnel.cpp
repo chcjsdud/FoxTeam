@@ -12,7 +12,6 @@ std::list<float4> SJH_Funnel::PathOptimization(const float4& _StartPos, const fl
 	// 포탈정보 삭제 후
 	LeftPortal_.clear();
 	RightPortal_.clear();
-	PortalMidPoint_.clear();
 
 	// (경로의 갯수 - 1) = 포탈의 갯수
 	TotalPortalCount_ = static_cast<int>(_MovePath.size()) - 1;
@@ -50,39 +49,25 @@ void SJH_Funnel::CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath)
 			// 두개의 셀의 무게중심을 연결하는 방향벡터 생성
 			float4 FirstCellGravity = FirstCell->GetCenterToGravity();
 			float4 SecondCellGravity = (*StartIter)->GetCenterToGravity();
-			float4 vecGravityToGravity = (SecondCellGravity - FirstCellGravity).NormalizeReturn3D();
+			float4 FrontVector = SecondCellGravity - FirstCellGravity;
 
 			// 무게중심을 연결하는 방향벡터 기준 두개의 정점이 왼쪽인지 오른쪽인지 판별 후 목록에 저장
-
-			// 무게중심을 연결하는 벡터와 비교하여 왼쪽포탈과 오른쪽포탈을 알아낸다.
-			// !!!!!!!!!!!!!!!!!!! 무게중심으로 왼쪽오른쪽 구분하니까 안됨 이유모름!!!!!!!!!!!!!!!
 			for (int VertexIndex = 0; VertexIndex < static_cast<int>(ShareVertex.size()); ++VertexIndex)
 			{
 				// 시작점과 연결되는 벡터
-				float4 CheckVector = (ShareVertex[VertexIndex].POSITION - FirstCellGravity).NormalizeReturn3D();
+				float4 TargetVector = ShareVertex[VertexIndex].POSITION - FirstCellGravity;
 
-				float4 Cross = float4::Cross3D(CheckVector, vecGravityToGravity).NormalizeReturn3D();
+				float4 Cross = float4::Cross3D(TargetVector, FrontVector).NormalizeReturn3D();
 				float Dot = float4::Dot3D(Cross, float4(0.0f, 1.0f, 0.0f, 0.0f));
-				if (Dot > 0)
+				if (Dot > 0.0f)
 				{
 					LeftPortal_.push_back(ShareVertex[VertexIndex].POSITION);
 				}
-				else if (Dot < 0)
+				else
 				{
 					RightPortal_.push_back(ShareVertex[VertexIndex].POSITION);
 				}
 			}
-		}
-	}
-
-	// 왼쪽포탈 - 오른쪽포탈의 중점 저장
-	int LPortalCount = static_cast<int>(LeftPortal_.size());
-	int RPortalCount = static_cast<int>(RightPortal_.size());
-	if (LPortalCount == RPortalCount)
-	{
-		for (int PortalNum = 0; PortalNum < LPortalCount; ++PortalNum)
-		{
-			PortalMidPoint_.push_back((LeftPortal_[PortalNum] + RightPortal_[PortalNum]) * 0.5f);
 		}
 	}
 }
@@ -135,6 +120,10 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 		float4 StartToNextRPortal = (CheckNextRPortal - StartPoint).NormalizeReturn3D();
 		float4 RPortalCross = float4::Cross3D(StartToNextRPortal, StartToCurRPortal).NormalizeReturn3D();
 		float RPortalDot = float4::Dot3D(RPortalCross, float4(0.0f, 1.0f, 0.0f, 0.0f));
+
+		//////// 수정필요 더이상의 직선경로 연결불가까지 검사하여 직선경로를 만들고
+		//////// 더이상 직선경로가 불가한 시점에 시작포인트를 재지정하고 다시 직선경로탐색시작
+
 
 		// < 다음 왼쪽포탈이 현재 왼쪽포탈의 오른쪽에 위치하므로 연결가능 포탈로 판정 >
 		// 조건 1 : 현재 왼쪽포탈보다 다음 왼쪽포탈이 오른쪽에 위치하고, 오른쪽 포탈의 왼쪽에 위치한다면 연결가능한 포탈
@@ -204,7 +193,12 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 		{
 			// 두개의 포털 인덱스 중 더 작은 인덱스에 초점을 맞춘 중점을 시작위치로 셋팅
 			int CheckIndex = CurLPortalIndex < CurRPortalIndex ? CurLPortalIndex : CurRPortalIndex;
-			StartPoint = PortalMidPoint_[CheckIndex];
+
+			float4 Left = LeftPortal_[CheckIndex];
+			float4 Right = RightPortal_[CheckIndex];
+			float4 MidPoint = (Left + Right) * 0.5f;
+
+			StartPoint = MidPoint;
 			_ReturnPath.push_back(StartPoint);
 			
 			++CheckIndex;
