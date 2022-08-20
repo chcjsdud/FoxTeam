@@ -112,39 +112,6 @@ void GHMap::Start()
 	makeAStarNode(50.f, 50.f);
 	checkASterNodeObstacle();
 	updateAStarNodeVertexInfo();
-
-	//FindPath(float4::ZERO, float4(350.f, 0.0f, 214.f));
-
-	//GameEngineVertexBuffer* NewVertex = new GameEngineVertexBuffer();
-	//GameEngineIndexBuffer* NewIndex = new GameEngineIndexBuffer();
-
-	//std::vector<GameEngineVertex> vertices;
-	//std::vector<UINT> indices;
-	//vertices.reserve(triangleCount);
-	//indices.reserve(triangleCount * 3);
-
-	//int counter = 0;
-	//for (auto n : navMeshes_)
-	//{
-	//	for (size_t i = 0; i < 3; i++)
-	//	{
-	//		GameEngineVertex v;
-	//		v.POSITION = n.Vertices[i];
-	//		vertices.push_back(v);
-	//		indices.push_back(counter++);
-	//	}
-	//}
-
-	//NewVertex->Create(vertices, D3D11_USAGE::D3D11_USAGE_DEFAULT);
-	//NewIndex->Create(indices, D3D11_USAGE::D3D11_USAGE_DEFAULT);
-
-	//GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
-	//Renderer->SetRenderingPipeLine("Color");
-	//Renderer->SetMesh(NewVertex, NewIndex);
-	//Renderer->ShaderHelper.SettingConstantBufferLink("ResultColor", float4::BLUE);
-	//Renderer->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
-
-	//Renderer->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
 }
 
 void GHMap::Update(float _deltaTime)
