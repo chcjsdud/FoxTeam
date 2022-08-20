@@ -99,7 +99,11 @@ std::vector<float4> GHNode::GetPath()
 		oldParent->parent_ = nullptr;
 	}
 
-	ret.pop_back();
-	ret.pop_back();
+	// 자연스러운 움직임을 위한 첫 포인트 제거
+	if (!ret.empty())
+	{
+		ret.pop_back();
+	}
+
 	return ret;
 }
