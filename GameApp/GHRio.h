@@ -41,4 +41,6 @@ private:
 
 	GHMap* currentMap_;
 	GHNavMesh* currentNavMesh_;
+
+	std::vector<float4> destinations_;
 };

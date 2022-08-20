@@ -9,7 +9,7 @@
 class GameEngineVertexBuffer : public GameEngineObjectNameBase
 {
 
-private:	// member Var
+public:	// member Var
 	ID3D11Buffer* Buffer_;
 	UINT Size_;
 	UINT Count_;

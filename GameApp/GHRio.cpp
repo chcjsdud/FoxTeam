@@ -6,6 +6,7 @@
 #include "GHNavMesh.h"
 
 #include <GameEngine/GameEngineFBXRenderer.h>
+#include <GameEngine/GameEngineLevelControlWindow.h>
 
 
 GHRio::GHRio()
@@ -27,7 +28,7 @@ void GHRio::Start()
 	float4 spawnPoint = { 0.f, 0.0f, 0.f };
 	GetTransform()->SetLocalPosition(spawnPoint);
 	destination_ = spawnPoint;
-	
+
 
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 
@@ -66,6 +67,8 @@ void GHRio::Start()
 
 void GHRio::Update(float _deltaTime)
 {
+	static float pathFindTime = 0.f;
+	float4 worldPosition = GetTransform()->GetWorldPosition();
 	GHRayTestLevel* level = dynamic_cast<GHRayTestLevel*>(GetLevel());
 	GHMousePointer* mouse = nullptr;
 	if (nullptr != level)
@@ -73,7 +76,7 @@ void GHRio::Update(float _deltaTime)
 		mouse = level->GetMousePointer();
 	}
 
-	if (GameEngineInput::GetInst().Press("RButton"))
+	if (GameEngineInput::GetInst().Press("LButton"))
 	{
 		if (nullptr != mouse)
 		{
@@ -81,7 +84,26 @@ void GHRio::Update(float _deltaTime)
 		}
 	}
 
-	float4 worldPosition = GetTransform()->GetWorldPosition();
+	if (GameEngineInput::GetInst().Up("LButton"))
+	{
+		destination_ = worldPosition;
+		GHMap* map = level->GetMap();
+		if (nullptr != map && nullptr != mouse)
+		{
+			GameEngineTime::GetInst().TimeCheck();
+			destinations_ = map->FindPath(worldPosition, mouse->GetIntersectionYAxisPlane(0.0f, 1000.f));
+			GameEngineTime::GetInst().TimeCheck();
+			pathFindTime = GameEngineTime::GetInst().GetDeltaTime();
+		}
+	}
+
+	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	if (nullptr != controlWindow)
+	{
+		controlWindow->AddText("Path find time elapsed : " + std::to_string(pathFindTime) + " sec");
+	}
+
+
 	if ((destination_ - worldPosition).Len3D() > 10.f)
 	{
 		renderer_->ChangeFBXAnimation("Run");
@@ -124,7 +146,15 @@ void GHRio::Update(float _deltaTime)
 	}
 	else
 	{
-		renderer_->ChangeFBXAnimation("Wait");
+		if (!destinations_.empty())
+		{
+			destination_ = destinations_.back();
+			destinations_.pop_back();
+		}
+		else
+		{
+			renderer_->ChangeFBXAnimation("Wait");
+		}
 	}
 }
 
