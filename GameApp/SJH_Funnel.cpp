@@ -67,8 +67,6 @@ void SJH_Funnel::CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath)
 			}
 		}
 	}
-
-	int a = 0;
 }
 
 bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
@@ -119,6 +117,28 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 		float4 StartToNextRPortal = (CheckNextRPortal - StartPoint).NormalizeReturn3D();
 		float4 RPortalCross = float4::Cross3D(StartToNextRPortal, StartToCurRPortal).NormalizeReturn3D();
 		float RPortalDot = float4::Dot3D(RPortalCross, float4(0.0f, 1.0f, 0.0f, 0.0f));
+
+		// 포탈 연결이 모두 불가능한경우 해당 포탈의 중점을 시작위치로 셋팅하고 깔때기를 재설정 후 다시 탐색 시작
+		if (LPortalDot > 0 && RPortalDot < 0)
+		{
+			// 두개의 포털 인덱스 중 더 작은 인덱스에 초점을 맞춘 중점을 시작위치로 셋팅
+			int CheckIndex = CurLPortalIndex < CurRPortalIndex ? CurLPortalIndex : CurRPortalIndex;
+
+			// 두 포탈의 중점 계산
+			float4 Left = LeftPortal_[CheckIndex];
+			float4 Right = RightPortal_[CheckIndex];
+			float4 MidPoint = (Left + Right) * 0.5f;
+
+			// 탐색시작위치 변경 및 경로 추가
+			StartPoint = MidPoint;
+			_ReturnPath.push_back(StartPoint);
+
+			// 다음 탐색을 위한 인덱스 증가
+			++CheckIndex;
+			CurLPortalIndex = CheckIndex;
+			CurRPortalIndex = CheckIndex;
+			continue;
+		}
 
 		// < 다음 왼쪽포탈이 현재 왼쪽포탈의 오른쪽에 위치하므로 연결가능 포탈로 판정 >
 		// 조건 1 : 현재 왼쪽포탈보다 다음 왼쪽포탈이 오른쪽에 위치하고, 오른쪽 포탈의 왼쪽에 위치한다면 연결가능한 포탈
@@ -180,25 +200,6 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 			{
 				++CurRPortalIndex;
 			}
-		}
-
-		// 포탈 연결이 모두 불가능한경우 해당 포탈의 중점을 시작위치로 셋팅하고
-		// 깔때기를 재설정 후 다시 탐색 시작
-		if (LPortalDot > 0 && RPortalDot < 0)
-		{
-			// 두개의 포털 인덱스 중 더 작은 인덱스에 초점을 맞춘 중점을 시작위치로 셋팅
-			int CheckIndex = CurLPortalIndex < CurRPortalIndex ? CurLPortalIndex : CurRPortalIndex;
-
-			float4 Left = LeftPortal_[CheckIndex];
-			float4 Right = RightPortal_[CheckIndex];
-			float4 MidPoint = (Left + Right) * 0.5f;
-
-			StartPoint = MidPoint;
-			_ReturnPath.push_back(StartPoint);
-			
-			++CheckIndex;
-			CurLPortalIndex = CheckIndex;
-			CurRPortalIndex = CheckIndex;
 		}
 	}
 
