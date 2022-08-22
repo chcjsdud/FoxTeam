@@ -24,7 +24,7 @@ public:
 
 public:
 	void CreateNavigationCellInfo(int _Index, int _MeshIndex, int _FaceNumber, std::vector<GameEngineVertex> _VertexList, std::vector<UINT> _IndexList);
-	void SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell, bool _2Vertex = true);
+	void SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell);
 
 public:
 	SJH_NaviCell* CompareVertices(const float4& _V0, const float4& _V1, const float4& _V2);

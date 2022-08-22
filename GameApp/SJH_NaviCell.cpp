@@ -14,47 +14,26 @@ void SJH_NaviCell::CreateNavigationCellInfo(int _Index, int _MeshIndex, int _Fac
 	CenterOfGravityCalculation();
 }
 
-void SJH_NaviCell::SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell, bool _2Vertex)
+void SJH_NaviCell::SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell)
 {
-	if (true == _2Vertex)
+	// 2개의 정점을 공유하는 면을 인접한 면으로 판단
+	int SharedVerticesCount = 0;
+	int ThisVertexSize = static_cast<int>(VertexList_.size());
+	for (int ThisVertex = 0; ThisVertex < ThisVertexSize; ++ThisVertex)
 	{
-		// 조건: 2개의 정점을 공유하고 무게중심이 다른 면이라면 인접한 면으로 판단 -> 최대 수평인면이 3개의 면이 인접한다
-		int ThisVertexSize = static_cast<int>(VertexList_.size());
-
-		int SharedVerticesCount = 0;
-		for (int ThisVertex = 0; ThisVertex < ThisVertexSize; ++ThisVertex)
+		int CompareVertexSize = static_cast<int>(_CompareNaviCell->VertexList_.size());
+		for (int CompareVertex = 0; CompareVertex < CompareVertexSize; ++CompareVertex)
 		{
-			int CompareVertexSize = static_cast<int>(_CompareNaviCell->VertexList_.size());
-			for (int CompareVertex = 0; CompareVertex < CompareVertexSize; ++CompareVertex)
+			if (VertexList_[ThisVertex].POSITION == _CompareNaviCell->VertexList_[CompareVertex].POSITION)
 			{
-				if (VertexList_[ThisVertex].POSITION == _CompareNaviCell->VertexList_[CompareVertex].POSITION)
-				{
-					++SharedVerticesCount;
-				}
-
-				// 2개의 정점을 공유할때 인접한 면으로 판단
-				if (2 == SharedVerticesCount)
-				{
-					AdjacentTriangles_.push_back(_CompareNaviCell);
-					return;
-				}
+				++SharedVerticesCount;
 			}
-		}
-	}
-	else
-	{
-		// 조건 : 3개의 정점 중 1개의 정점이라도 공유하는 면이라면 인접한 면으로 판단	 -> 최대 수평인면이 12개의 면이 인접한다
-		int ThisVertexSize = static_cast<int>(VertexList_.size());
-		for (int ThisVertex = 0; ThisVertex < ThisVertexSize; ++ThisVertex)
-		{
-			int CompareVertexSize = static_cast<int>(_CompareNaviCell->VertexList_.size());
-			for (int CompareVertex = 0; CompareVertex < CompareVertexSize; ++CompareVertex)
+
+			// 2개의 정점을 공유할때 인접한 면으로 판단
+			if (2 == SharedVerticesCount)
 			{
-				if (VertexList_[ThisVertex].POSITION == _CompareNaviCell->VertexList_[CompareVertex].POSITION)
-				{
-					AdjacentTriangles_.push_back(_CompareNaviCell);
-					return;
-				}
+				AdjacentTriangles_.push_back(_CompareNaviCell);
+				return;
 			}
 		}
 	}

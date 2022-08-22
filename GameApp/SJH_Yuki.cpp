@@ -253,10 +253,9 @@ void SJH_Yuki::Update(float _DeltaTime)
 		}
 		else // 이동종료시
 		{
+			// 남은 경로가 존재할때
 			if (false == MovePath_.empty())
 			{
-				// 남은 경로가 존재할때
-
 				// 시작위치 재설정
 				MoveStartPos_ = GetTransform()->GetWorldPosition();
 
@@ -264,10 +263,8 @@ void SJH_Yuki::Update(float _DeltaTime)
 				MoveEndPos_ = MovePath_.front();
 				MovePath_.pop_front();
 			}
-			else
+			else // 더이상의 경로가 존재하지않을때
 			{
-				// 더이상의 경로가 존재하지않을때
-
 				// 이동종료 및 이동정보 초기화
 				MoveStartPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
 				MoveEndPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);

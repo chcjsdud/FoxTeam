@@ -180,9 +180,7 @@ void SJH_FloorMap::FindAdjacentFaces()
 				continue;
 			}
 
-			// 기준면의 인접한 면을 모두 찾아낸다.
-			// 두번째 인자 : false(한점이라도 공유한다면 인접한면), true(두점을 공유하고 한선분의 중점을 공유) -> default : true
-			//NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber], false);
+			// 기준면의 인접한 면 탐색
 			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
 		}
 	}
