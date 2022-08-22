@@ -98,7 +98,7 @@ void SJH_FloorMap::Start()
 
 	for (UINT i = 0; i < NaviMeshRenderer_->GetRenderSetCount(); i++)
 	{
-		NaviMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+		NaviMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
 		//NaviMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
 		NaviMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
@@ -129,7 +129,7 @@ void SJH_FloorMap::Start()
 
 	for (UINT i = 0; i < NaviColMeshRenderer_->GetRenderSetCount(); i++)
 	{
-		NaviColMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
+		NaviColMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
 	}
 }
 

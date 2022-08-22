@@ -15,10 +15,6 @@ private:
 	void CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath);
 	bool OptimizationStart(std::list<float4>& _ReturnPath);
 
-private:
-	bool LeftPortalCheck(float4& _StartPos, int _PortalIndex);
-	bool RightPortalCheck(float4& _StartPos, int _PortalIndex);
-
 public:
 	SJH_Funnel();
 	~SJH_Funnel();

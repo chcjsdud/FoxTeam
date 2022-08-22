@@ -121,146 +121,124 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 		float4 RPortalCross = float4::Cross3D(StartToNextRPortal, StartToCurRPortal).NormalizeReturn3D();
 		float RPortalDot = float4::Dot3D(RPortalCross, float4(0.0f, 1.0f, 0.0f, 0.0f));
 
-		//////// 수정필요 더이상의 직선경로 연결불가까지 검사하여 직선경로를 만들고
-		//////// 더이상 직선경로가 불가한 시점에 시작포인트를 재지정하고 다시 직선경로탐색시작
+		//==================================== 직선이동가능여부 판단 ====================================//
 
-
-		// < 다음 왼쪽포탈이 현재 왼쪽포탈의 오른쪽에 위치하므로 연결가능 포탈로 판정 >
-		// 조건 1 : 현재 왼쪽포탈보다 다음 왼쪽포탈이 오른쪽에 위치하고, 오른쪽 포탈의 왼쪽에 위치한다면 연결가능한 포탈
-		// 조건 2 : 현재 왼쪽포탈보다 다음 포탈이 왼쪽에 위치한다면 연결불가
-		if (LPortalDot <= 0)
+		// < 왼쪽 >
+		if (LPortalDot < 0)
 		{
-			// < 오른쪽에 위치하거나 수평일때 >
-			//
-			// 코너 판정
-			float4 RightCornerCheck = float4::Cross3D(StartToNextLPortal, StartToCurRPortal).NormalizeReturn3D();
-			float RightCornerDot = float4::Dot3D(RightCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
-			if (RightCornerDot <= 0)
+			++CurLPortalIndex;
+
+			// 오른쪽 포탈 검사를 위해 정보 갱신
+			if (CurLPortalIndex >= static_cast<int>(LeftPortal_.size()))
 			{
-				// 현재 오른쪽 포탈보다 다음 왼쪽포탈이 오른쪽에 위치하거나 수평하다면 현재 오른쪽 포탈이 경로로 지정
-				_ReturnPath.push_back(CheckCurRPortal);
-				StartPoint = CheckCurRPortal;
-
-				++CurLPortalIndex;
-				CurRPortalIndex = CurLPortalIndex;
-				continue;
+				break;
 			}
-			else
-			{
-				++CurLPortalIndex;
 
-				// 오른쪽 포탈 검사를 위해 정보 갱신
-				if (CurLPortalIndex >= static_cast<int>(LeftPortal_.size()))
-				{
-					break;
-				}
-
-				//============================================ 왼쪽 포탈 검사 정보 셋팅 ============================================//
-				CheckCurLPortal = LeftPortal_[CurLPortalIndex];
-				StartToCurLPortal = (CheckCurLPortal - StartPoint).NormalizeReturn3D();
-			}
+			//============================================ 왼쪽 포탈 검사 정보 셋팅 ============================================//
+			CheckCurLPortal = LeftPortal_[CurLPortalIndex];
+			StartToCurLPortal = (CheckCurLPortal - StartPoint).NormalizeReturn3D();
 		}
 
-		// < 다음 오른쪽 포탈이 현재 오른쪽 포탈의 왼쪽에 위치하므로 연결가능 포탈로 판정 >
-		// 조건 1 : 현재 오른쪽포탈보다 다음 오른쪽포탈이 왼쪽에 위치하고, 왼쪽 포탈의 오른쪽에 위치한다면 연결가능한 포탈
-		// 조건 2 : 현재 오른쪽포탈보다 다음 오른쪽포탈이 오른쪽에 위치한다면 연결불가
-		if (RPortalDot >= 0)
+		// < 오른쪽 >
+		if (RPortalDot > 0)
 		{
-			// < 왼쪽에 위치하거나 수평일때 >
-			//
-			// 코너 판정
-			float4 LeftCornerCheck = float4::Cross3D(StartToNextRPortal, StartToCurLPortal).NormalizeReturn3D();
-			float LeftCornerDot = float4::Dot3D(LeftCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
-			if (LeftCornerDot >= 0)
-			{
-				// 현재 왼쪽 포탈보다 다음 오른쪽포탈이 왼쪽에 위치하거나 수평하다면 현재 왼쪽 포탈이 경로로 지정
-				_ReturnPath.push_back(CheckCurLPortal);
-				StartPoint = CheckCurLPortal;
-
-				++CurRPortalIndex;
-				CurLPortalIndex = CurRPortalIndex;
-				continue;
-			}
-			else
-			{
-				++CurRPortalIndex;
-			}
+			++CurRPortalIndex;
 		}
 
-		// 포탈 연결이 모두 불가능한경우 해당 포탈의 중점을 시작위치로 셋팅하고
-		// 깔때기를 재설정 후 다시 탐색 시작
-		if (LPortalDot > 0 && RPortalDot < 0)
+		// 더이상의 직선 경로 탐색 불가인 포탈의 중점을 경로에 추가하며 해당 포인트부터 직선경로 탐색 시작
+		if (LPortalDot >= 0 && RPortalDot <= 0)
 		{
-			// 두개의 포털 인덱스 중 더 작은 인덱스에 초점을 맞춘 중점을 시작위치로 셋팅
 			int CheckIndex = CurLPortalIndex < CurRPortalIndex ? CurLPortalIndex : CurRPortalIndex;
-
 			float4 Left = LeftPortal_[CheckIndex];
 			float4 Right = RightPortal_[CheckIndex];
 			float4 MidPoint = (Left + Right) * 0.5f;
 
 			StartPoint = MidPoint;
 			_ReturnPath.push_back(StartPoint);
-			
+				
 			++CheckIndex;
 			CurLPortalIndex = CheckIndex;
 			CurRPortalIndex = CheckIndex;
 		}
+
+#pragma region 220822 주석처리
+		//// < 다음 왼쪽포탈이 현재 왼쪽포탈의 오른쪽에 위치하므로 연결가능 포탈로 판정 >
+		//// 조건 1 : 현재 왼쪽포탈보다 다음 왼쪽포탈이 오른쪽에 위치하고, 오른쪽 포탈의 왼쪽에 위치한다면 연결가능한 포탈
+		//// 조건 2 : 현재 왼쪽포탈보다 다음 포탈이 왼쪽에 위치한다면 연결불가
+		//if (LPortalDot <= 0)
+		//{
+		//	// < 오른쪽에 위치하거나 수평일때 >
+		//	//
+		//	// 코너 판정
+		//	float4 RightCornerCheck = float4::Cross3D(StartToNextLPortal, StartToCurRPortal).NormalizeReturn3D();
+		//	float RightCornerDot = float4::Dot3D(RightCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
+		//	if (RightCornerDot <= 0)
+		//	{
+		//		// 현재 오른쪽 포탈보다 다음 왼쪽포탈이 오른쪽에 위치하거나 수평하다면 현재 오른쪽 포탈이 경로로 지정
+		//		_ReturnPath.push_back(CheckCurRPortal);
+		//		StartPoint = CheckCurRPortal;
+
+		//		++CurLPortalIndex;
+		//		CurRPortalIndex = CurLPortalIndex;
+		//		continue;
+		//	}
+		//	else
+		//	{
+		//		++CurLPortalIndex;
+		//	}
+		//}
+
+		//// < 다음 오른쪽 포탈이 현재 오른쪽 포탈의 왼쪽에 위치하므로 연결가능 포탈로 판정 >
+		//// 조건 1 : 현재 오른쪽포탈보다 다음 오른쪽포탈이 왼쪽에 위치하고, 왼쪽 포탈의 오른쪽에 위치한다면 연결가능한 포탈
+		//// 조건 2 : 현재 오른쪽포탈보다 다음 오른쪽포탈이 오른쪽에 위치한다면 연결불가
+		//if (RPortalDot >= 0)
+		//{
+		//	// < 왼쪽에 위치하거나 수평일때 >
+		//	//
+		//	// 코너 판정
+		//	float4 LeftCornerCheck = float4::Cross3D(StartToNextRPortal, StartToCurLPortal).NormalizeReturn3D();
+		//	float LeftCornerDot = float4::Dot3D(LeftCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
+		//	if (LeftCornerDot >= 0)
+		//	{
+		//		// 현재 왼쪽 포탈보다 다음 오른쪽포탈이 왼쪽에 위치하거나 수평하다면 현재 왼쪽 포탈이 경로로 지정
+		//		_ReturnPath.push_back(CheckCurLPortal);
+		//		StartPoint = CheckCurLPortal;
+
+		//		++CurRPortalIndex;
+		//		CurLPortalIndex = CurRPortalIndex;
+		//		continue;
+		//	}
+		//	else
+		//	{
+		//		++CurRPortalIndex;
+		//	}
+		//}
+
+		//// 포탈 연결이 모두 불가능한경우 해당 포탈의 중점을 시작위치로 셋팅하고
+		//// 깔때기를 재설정 후 다시 탐색 시작
+		//if (LPortalDot > 0 && RPortalDot < 0)
+		//{
+		//	// 두개의 포털 인덱스 중 더 작은 인덱스에 초점을 맞춘 중점을 시작위치로 셋팅
+		//	int CheckIndex = CurLPortalIndex < CurRPortalIndex ? CurLPortalIndex : CurRPortalIndex;
+
+		//	float4 Left = LeftPortal_[CheckIndex];
+		//	float4 Right = RightPortal_[CheckIndex];
+		//	float4 MidPoint = (Left + Right) * 0.5f;
+
+		//	StartPoint = MidPoint;
+		//	_ReturnPath.push_back(StartPoint);
+		//	
+		//	++CheckIndex;
+		//	CurLPortalIndex = CheckIndex;
+		//	CurRPortalIndex = CheckIndex;
+		//}
+#pragma endregion
 	}
 
 	// 모든 경로완성후 마지막 EndPos 저장
 	_ReturnPath.push_back(EndPos_);
 
 	return true;
-}
-
-bool SJH_Funnel::LeftPortalCheck(float4& _StartPos, int _PortalIndex)
-{
-	// 현재 오른쪽포탈까지의 벡터와 교차한다면 시작위치가 변경
-	// 교차 : 왼쪽포탈벡터가 오른쪽포탈벡터보다 오른쪽에 존재하면 교차했다고 판정
-	// 시작위치 = 현재 오른쪽포탈의 정점으로 갱신
-
-
-
-
-
-	// 왼쪽과 오른쪽포탈이 교차했으므로 오른쪽포탈정점을 경로에 추가하고 시작위치를 오른쪽포탈 정점으로 설정
-
-
-
-
-
-	// 아니고 다음 인덱스의 포탈이 현재 포탈의 오른쪽에 존재한다면 연결가능
-	// 단, 다음인덱스의 포탈이 현재 포탈의 왼쪽에 존재한다면 연결불가판정
-
-
-
-	return false;
-}
-
-bool SJH_Funnel::RightPortalCheck(float4& _StartPos, int _PortalIndex)
-{
-	// 현재 왼쪽포탈까지의 벡터와 교차한다면 시작위치가 변경
-	// 교차 : 오른쪽포탈벡터가 왼쪽포탈벡터보다 왼쪽에 존재하면 교차했다고 판명
-	// 시작위치 = 현재 왼쪽포탈의 정점으로 갱신
-
-
-
-
-
-	// 왼쪽과 오른쪽포탈이 교차했으므로 왼쪽포탈정점을 경로에 추가하고 시작위치를 왼쪽포탈 정점으로 설정
-
-
-
-
-
-	// 아니고 다음 인덱스의 포탈이 현재 포탈의 왼쪽에 존재한다면 연결가능
-	// 단, 다음인덱스의 포탈이 현재 포탈의 오른쪽에 존재한다면 연결불가판정
-
-
-
-
-
-	return false;
 }
 
 SJH_Funnel::SJH_Funnel()
