@@ -60,8 +60,5 @@ private:
 	float4 MoveStartPos_;					// 이동경로의 시작 위치
 	float4 MoveEndPos_;						// 이동경로의 목표 위치
 	float MoveSpeed_;						// 이동속도
-
-private:
-	float LerpMoveTime_;
 };
 

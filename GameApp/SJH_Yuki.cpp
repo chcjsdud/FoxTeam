@@ -241,22 +241,20 @@ void SJH_Yuki::Update(float _DeltaTime)
 	}
 
 	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동
+	float4 CurPos = GetTransform()->GetWorldPosition();
 	if (true == MoveStart_)
 	{
-		// 이동 처리
-		LerpMoveTime_ += GameEngineTime::GetInst().GetDeltaTime(MoveSpeed_);
-		float4 LerpPos = float4::Lerp(MoveStartPos_, MoveEndPos_, LerpMoveTime_);
-
-		GetTransform()->SetWorldPosition(LerpPos);
-
-		// 이동완료시
-		if (1.0f < LerpMoveTime_)
+		if ((MoveEndPos_ - CurPos).Len3D() > 1.f)
 		{
-			LerpMoveTime_ = 0.0f;
-
-			// 이동경로가 남아있다면
+			float4 MoveDir = (MoveEndPos_ - CurPos).NormalizeReturn3D();
+			GetTransform()->SetWorldPosition(CurPos + (MoveDir * MoveSpeed_ * _DeltaTime));
+		}
+		else // 이동종료시
+		{
 			if (false == MovePath_.empty())
 			{
+				// 남은 경로가 존재할때
+
 				// 시작위치 재설정
 				MoveStartPos_ = GetTransform()->GetWorldPosition();
 
@@ -267,9 +265,10 @@ void SJH_Yuki::Update(float _DeltaTime)
 				// 여전히 이동중
 				AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[37]);
 			}
-			// 남아있는 경로가 없다면
 			else
 			{
+				// 더이상의 경로가 존재하지않을때
+
 				// 이동종료 및 이동정보 초기화
 				MoveStartPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
 				MoveEndPos_ = float4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -298,8 +297,7 @@ SJH_Yuki::SJH_Yuki()
 	, MovePathTarget_(nullptr)
 	, MoveStartPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveEndPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
-	, MoveSpeed_(1.0f)
-	, LerpMoveTime_(0.0f)
+	, MoveSpeed_(50.0f)
 {
 }
 

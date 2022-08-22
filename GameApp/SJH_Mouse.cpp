@@ -32,7 +32,7 @@ void SJH_Mouse::Update(float _DeltaTime)
 	GetTransform()->SetWorldPosition(GameEngineInput::GetInst().GetMouse3DPos());
 
 	// 키체크
-	if (true == GameEngineInput::GetInst().Press("LBUTTON"))
+	if (true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
 		// 단, 화면범위를 벗어나면 리턴
 		if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
