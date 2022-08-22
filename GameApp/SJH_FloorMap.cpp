@@ -187,8 +187,6 @@ void SJH_FloorMap::FindAdjacentFaces()
 			NavigationCellInfos_[CurCellNumber]->SearchAdjacentTriangles(NavigationCellInfos_[CompareCellNumber]);
 		}
 	}
-
-	int a = 0;
 }
 
 void SJH_FloorMap::Update(float _DeltaTime)

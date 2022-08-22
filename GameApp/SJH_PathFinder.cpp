@@ -13,12 +13,12 @@ std::list<float4> SJH_PathFinder::SearchMovePath(const float4& _StartPos, const 
 		return ReturnPath;
 	}
 
-	// 1. A*를 이용하여 최단거리 반환후 최단경로 반환
+	// 1. A*를 이용하여 최단경로를 탐색한 후
 	std::list<SJH_NaviCell*> AStartPath;
 	AStartPath = AStarMovePath(_StartCell, _EndCell, _Maximum);
 	if (false == AStartPath.empty())
 	{
-		// 2. Funnel Algorithm을 이용하여 가시적인 직선경로 반환
+		// 2. Funnel Algorithm을 이용하여 가시적인 최적직선경로 반환
 		if (nullptr == Funnel_)
 		{
 			// 객체 생성
@@ -81,7 +81,7 @@ std::list<SJH_NaviCell*> SJH_PathFinder::AStarMovePath(SJH_NaviCell* _StartCell,
 		int AdjacentTriCount = static_cast<int>(AdjacentTri.size());
 		for (int Tri = 0; Tri < AdjacentTriCount; ++Tri)
 		{
-			// 
+			// 인접한 셀 Get
 			SJH_NaviCell* CheckNode = AdjacentTri[Tri];
 
 			// 열린노드목록에 해당 노드가 존재하면 Continue
@@ -104,14 +104,14 @@ std::list<SJH_NaviCell*> SJH_PathFinder::AStarMovePath(SJH_NaviCell* _StartCell,
 				NewNode->Parent_ = FirstNode;
 
 				// 목표 노드에 도착했다면 이동경로 반환
-				if (_EndCell == CheckNode)
+				if (_EndCell == NewNode->CellInfo_)
 				{
 					return CalReturn(NewNode);
 				}
 
 				// 아니라면 열린목록에 추가
 				OpenList_.insert(std::make_pair(NewNode->TotalLen_, NewNode));
-				OpenKeys_.insert(FirstNode->CellInfo_->GetCellInfomationIndex());
+				OpenKeys_.insert(NewNode->CellInfo_->GetCellInfomationIndex());
 			}
 		}
 	}

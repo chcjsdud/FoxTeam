@@ -23,6 +23,8 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 	// 이동중지
 	MoveStart_ = false;
 
+	MovePathTarget_ = _TargetNaviCell;
+
 	// 기존 이동경로가 남아있다면 이동중 타겟위치가 변경되었으므로
 	// 현재 플레이어의 위치좌표에 해당하는 삼각형을 알아내고
 	if (false == MovePath_.empty())
@@ -54,6 +56,9 @@ void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 
 		// 이동경로 생성완료 후 Flag On
 		MoveStart_ = true;
+
+		// 이동시작
+		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[37]);
 	}
 }
 
@@ -206,9 +211,9 @@ void SJH_Yuki::Start()
 
 #pragma endregion
 
-	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0);
-	//AnimRenderer_->CreateFBXAnimation(AnimationNameList_[14], MeshName, 14);
-	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0], true);
+	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0, true);
+	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[37], MeshName, 37, true);
+	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
 
 #pragma endregion
 
@@ -232,7 +237,7 @@ void SJH_Yuki::Update(float _DeltaTime)
 
 	if (true == GameEngineInput::GetInst().Down("SJH_TEST2"))
 	{
-		//AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[14], true);
+		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[37], true);
 	}
 
 	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동
@@ -259,6 +264,8 @@ void SJH_Yuki::Update(float _DeltaTime)
 				MoveEndPos_ = MovePath_.front();
 				MovePath_.pop_front();
 
+				// 여전히 이동중
+				AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[37]);
 			}
 			// 남아있는 경로가 없다면
 			else
@@ -274,6 +281,9 @@ void SJH_Yuki::Update(float _DeltaTime)
 				// 이동종료
 				MoveStart_ = false;
 				MovePath_.clear();
+
+				// 완전히 이동종료
+				AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
 			}
 		}
 	}
