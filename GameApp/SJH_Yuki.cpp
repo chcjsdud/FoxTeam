@@ -234,30 +234,10 @@ void SJH_Yuki::Start()
 	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
 
 #pragma endregion
-
-	if (false == GameEngineInput::GetInst().IsKey("SJH_TEST1"))
-	{
-		GameEngineInput::GetInst().CreateKey("SJH_TEST1", VK_DOWN);
-	}
-
-	if (false == GameEngineInput::GetInst().IsKey("SJH_TEST2"))
-	{
-		GameEngineInput::GetInst().CreateKey("SJH_TEST2", VK_UP);
-	}
 }
 
 void SJH_Yuki::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::GetInst().Down("SJH_TEST1"))
-	{
-		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0], true);
-	}
-
-	if (true == GameEngineInput::GetInst().Down("SJH_TEST2"))
-	{
-		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[37], true);
-	}
-
 	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동
 	if (true == MoveStart_)
 	{
