@@ -148,7 +148,8 @@ void SJH_PlayLevel::CreateActorLevel()
 }
 
 SJH_PlayLevel::SJH_PlayLevel()
-	: Background_(nullptr)
+	: FBXWindow(nullptr)
+	, Background_(nullptr)
 	, FloorMap_(nullptr)
 	, InGameMouse_(nullptr)
 	, Yuki_(nullptr)
