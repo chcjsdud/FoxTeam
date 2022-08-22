@@ -15,6 +15,13 @@ public: // 스폰위치 셋팅
 public: // 이동관련
 	void MoveStart(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos);
 
+public: // 기타액션
+	void Detect(const GameEngineActor* _DetectTarget);
+	void Attack(const GameEngineActor* _AttackTarget);
+	void SkillAttack(const GameEngineActor* _AttackTarget);
+	void Block(const GameEngineActor* _BlockTarget);
+	void GetHit(const GameEngineActor* _GetHitTarget);
+
 protected:
 private:
 
