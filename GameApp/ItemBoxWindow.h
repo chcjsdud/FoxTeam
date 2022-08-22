@@ -5,6 +5,7 @@
 class ItemBoxManager;
 class ItemBox;
 class ItemBase;
+class UI_ItemBox;
 class ItemBoxWindow : public GameEngineGUIWindow
 {
 public:
@@ -30,6 +31,7 @@ private:
 public:
 	ItemBoxManager* ItemBoxManager_;
 	ItemBox* SelectBox_;
+	UI_ItemBox* BoxUI_;
 	int ListSelectItem;
 	int ListSelectItemBox;
 	

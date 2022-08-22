@@ -17,6 +17,7 @@ public:
 	{}
 };
 
+class UI_ItemBox;
 class GameEngineCollision;
 class YSJ_Ray;
 class ItemBase;
@@ -59,6 +60,12 @@ public:
 		return SelectBox;
 	}
 
+	UI_ItemBox* GetItemBoxUI()
+	{
+		return ItemBoxUI_;
+	}
+
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -74,6 +81,6 @@ private:
 
 	//이건호 UI아이템 박스 작업
 private:
-	class UI_ItemBox* ItemBoxUI_;
+	UI_ItemBox* ItemBoxUI_;
 };
 
