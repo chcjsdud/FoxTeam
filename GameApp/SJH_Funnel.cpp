@@ -56,7 +56,7 @@ void SJH_Funnel::CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath)
 
 				float4 Cross = float4::Cross3D(TargetVector, FrontVector).NormalizeReturn3D();
 				float Dot = float4::Dot3D(Cross, float4(0.0f, 1.0f, 0.0f, 0.0f));
-				if (Dot > 0.0f)
+				if (Dot >= 0.0f)
 				{
 					LeftPortal_.push_back(ShareVertex[VertexIndex].POSITION);
 				}
@@ -67,6 +67,8 @@ void SJH_Funnel::CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath)
 			}
 		}
 	}
+
+	int a = 0;
 }
 
 bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)

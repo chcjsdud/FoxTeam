@@ -32,9 +32,8 @@ void SJH_NaviCell::SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell, bool 
 					++SharedVerticesCount;
 				}
 
-				// 2개의 정점을 공유하면서 무게중심이 다를때 인접한 면으로 판단한다.
-				if (2 == SharedVerticesCount &&																	// 2개의 정점을 공유하고
-					CenterOfGravity_ != _CompareNaviCell->CenterOfGravity_)										// 각각의 면의 무게중심이 다른경우
+				// 2개의 정점을 공유할때 인접한 면으로 판단
+				if (2 == SharedVerticesCount)
 				{
 					AdjacentTriangles_.push_back(_CompareNaviCell);
 					return;
@@ -135,8 +134,9 @@ void SJH_NaviCell::CenterOfGravityCalculation()
 	float4 Vertex1 = VertexList_[1].POSITION;
 	float4 Vertex2 = VertexList_[2].POSITION;
 
-	CenterOfGravity_ = Vertex0;
+	//CenterOfGravity_ = Vertex0;
 	CenterOfGravity_.x = (Vertex0.x + Vertex1.x + Vertex2.x) / 3.0f;
+	CenterOfGravity_.y = (Vertex0.y + Vertex1.y + Vertex2.y) / 3.0f;
 	CenterOfGravity_.z = (Vertex0.z + Vertex1.z + Vertex2.z) / 3.0f;
 	CenterOfGravity_.w = 1.0f;
 
