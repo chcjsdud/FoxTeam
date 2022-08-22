@@ -41,6 +41,7 @@ protected:
 private:
 	float Time;
 	bool UI_On;
+	GameEngineCollision* ItemBoxCollision;
 
 private:
 	void Start() override;
@@ -59,8 +60,10 @@ private:
 
 #pragma endregion 
 
+
+#pragma region 참고사항
 	/*
-	참고사항
+
 	아이템 박스의 위치는 항상 고정, 같은 종류의 박스면 항상 고정이다
 
 
@@ -75,6 +78,28 @@ private:
 	->시체의 경우 장비칸 8칸+인벤토리 8칸해서 16칸짜리 아이템 정보가 담긴 박스가 나옴
 	-> 우선순위 낮음, 일단은 8칸짜리 필드에서 루팅하는 8칸 짜리 박스부터 제작
 
+	*UI가 가지고 있어야할 정보의 상한선
+	1. 아이템 정보를 받아서 UI에서 출력할걸 찾아서 정하는 경우
+	이경우는 SendItemData_Slot1(아이템정보)
+	이런식의 함수로 데이터를 보내주면
+	UI에서 데이터를 받아서 데이터내 멤버변수들을 이용해서 아이템 박스에 출력
+
+
+	2. UI가 받는건 단순 enum이나 index, bool
+	모든 데이터는 ItemBoxManager가 관리하고,
+	UI가 가진건 오직 enum/switch등을 이용한 단순처리과정
+
+	ex)
+	enum class item
+	{
+		bottle,
+		needle
+	}
+
+	PushItem_Slot1(item::bottle)
+	이런식으로 넣어주면
+	enum을 받아서 UI에서 렌더링을 해준다
+	이런방식
 
 
 	들어갈 기능
@@ -87,16 +112,16 @@ private:
 	인벤토리에 아이템 렌더러를 On한다
 
 
-	
-
 	* Box_to_Inventory() 함수?
-	박스에서 아이템이 이동햇을때 
+	박스에서 아이템이 이동햇을때
+	이건 이제 UI끼리 서로 알게 하느냐 아니면 ItemBoxManager가 관리하느냐의 여부
 	
-
+	*마우스와의 충돌여부를 확인할수 있는 충돌체 만들기
 
 
 	
 	*/
+#pragma endregion 
 
 };
 

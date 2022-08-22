@@ -2,6 +2,7 @@
 #include "UI_ItemBox.h"
 #include "GameEngine/GameEngineUIRenderer.h"
 #include "GameEngine/GameEngineInput.h"
+#include "GameEngine/GameEngineCollision.h"
 
 #include "LH_Player.h"
 
@@ -53,6 +54,13 @@ void UI_ItemBox::Start()
 	//Player_->PlayerSetHP(10);
 	//Player_->PlayerSetStamina(100.f);
 
+	{
+		ItemBoxCollision = CreateTransformComponent<GameEngineCollision>();
+		ItemBoxCollision->GetTransform()->SetLocalPosition({0.0f, 0.0f, 0.0f});
+		ItemBoxCollision->GetTransform()->SetLocalScaling(float4{ 500.0f, 500.0f, 0.0f });
+		ItemBoxCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
+	}
+
 
 }
 
@@ -62,7 +70,7 @@ void UI_ItemBox::Update(float _Time)
 	{
 		//TopRenderer->SetAlpha(Time);
 	}
-	
+
 	//UI 온오프 체크
 	{
 		if (false == UI_On)
@@ -74,6 +82,9 @@ void UI_ItemBox::Update(float _Time)
 		{
 			ItemBoxBackGround_Renderer->On();
 			BoxtypeFont_Renderer->On();
+			//UI 렌더러용 디버깅렌더러가 필요할수도
+			// 현재의 디버그 렌더러는 메인카메라의 위치를 받아서 하므로 제대로 출력이 안됨
+			//GetLevel()->PushDebugRenderUI(ItemBoxCollision->GetTransform(), CollisionType::Rect);
 		}
 	}
 
@@ -88,6 +99,11 @@ void UI_ItemBox::Update(float _Time)
 			RenderOn();
 		}
 	}
+
+	//if (true == ItemBoxCollision->Collision((int)CollisionGroup::MousePointer))
+	//{
+	//	
+	//}
 }
 
 void UI_ItemBox::RenderOff()
