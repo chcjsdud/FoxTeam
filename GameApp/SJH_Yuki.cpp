@@ -18,12 +18,10 @@ void SJH_Yuki::Initialize(SJH_NaviCell* _CurNaviCell, const float4& _InitPos)
 	GetTransform()->SetWorldPosition(_InitPos);
 }
 
-void SJH_Yuki::Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
+void SJH_Yuki::MoveStart(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos)
 {
 	// 이동중지
 	MoveStart_ = false;
-
-	MovePathTarget_ = _TargetNaviCell;
 
 	// 기존 이동경로가 남아있다면 이동중 타겟위치가 변경되었으므로
 	// 현재 플레이어의 위치좌표에 해당하는 삼각형을 알아내고
@@ -241,12 +239,16 @@ void SJH_Yuki::Update(float _DeltaTime)
 	}
 
 	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동
-	float4 CurPos = GetTransform()->GetWorldPosition();
 	if (true == MoveStart_)
 	{
+		float4 CurPos = GetTransform()->GetWorldPosition();
 		if ((MoveEndPos_ - CurPos).Len3D() > 1.f)
 		{
+			// 이동 및 회전
 			float4 MoveDir = (MoveEndPos_ - CurPos).NormalizeReturn3D();
+			float4 MoveCross = float4::Cross3D(MoveDir, float4(0.0f, 0.0f, 1.0f, 0.0f)).NormalizeReturn3D();
+			float MoveAngle = float4::DegreeDot3DToACosAngle(float4(0.0f, 0.0f, 1.0f, 0.0f), MoveDir);
+			GetTransform()->SetLocalRotationDegree(float4(0.0f, MoveAngle * -MoveCross.y, 0.0f));
 			GetTransform()->SetWorldPosition(CurPos + (MoveDir * MoveSpeed_ * _DeltaTime));
 		}
 		else // 이동종료시
@@ -261,9 +263,6 @@ void SJH_Yuki::Update(float _DeltaTime)
 				// 목표위치 재설정
 				MoveEndPos_ = MovePath_.front();
 				MovePath_.pop_front();
-
-				// 여전히 이동중
-				AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[37]);
 			}
 			else
 			{
@@ -294,10 +293,9 @@ SJH_Yuki::SJH_Yuki()
 	, CurNaviCell_(nullptr)
 	, TargetNaviCell_(nullptr)
 	, MoveStart_(false)
-	, MovePathTarget_(nullptr)
 	, MoveStartPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveEndPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
-	, MoveSpeed_(50.0f)
+	, MoveSpeed_(10.0f)
 {
 }
 

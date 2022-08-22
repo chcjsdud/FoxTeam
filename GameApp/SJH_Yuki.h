@@ -9,14 +9,13 @@ class GameEngineFBXRenderer;
 class SJH_NaviCell;
 class SJH_Yuki : public GameEngineActor
 {
-public:
+public: // 스폰위치 셋팅
 	void Initialize(SJH_NaviCell* _CurNaviCell, const float4& _InitPos);
 
-public:
-	void Move(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos);
+public: // 이동관련
+	void MoveStart(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTargetPos);
 
 protected:
-
 private:
 
 private:
@@ -47,6 +46,7 @@ private:
 private:
 	std::vector<std::string> AnimationNameList_;
 
+#pragma region 이동관련
 private:
 	SJH_NaviCell* CurNaviCell_;				// 현재 플레이어가 위치하고 있는 삼각형
 	SJH_NaviCell* TargetNaviCell_;			// 현재 플레이어가 이동하려는 최종목표지점의 위치한 삼각형
@@ -54,11 +54,13 @@ private:
 
 private:
 	std::list<float4> MovePath_;			// 이동경로
-	SJH_NaviCell* MovePathTarget_;			// 이동완료 체크용
 
 private:
 	float4 MoveStartPos_;					// 이동경로의 시작 위치
 	float4 MoveEndPos_;						// 이동경로의 목표 위치
 	float MoveSpeed_;						// 이동속도
+#pragma endregion
+
+private:
 };
 

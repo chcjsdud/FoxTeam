@@ -63,7 +63,7 @@ void SJH_Mouse::Update(float _DeltaTime)
 			SJH_NaviCell* PickedNaviCell = Ray_->IsPickedCell(SJH_FloorMap::FloorMap->GetFloorMapRenderer(), GameEngineInput::GetInst().GetMousePos(), MovePos);
 			if (nullptr != PickedNaviCell)
 			{
-				SJH_Yuki::MainPlayer->Move(PickedNaviCell, MovePos);
+				SJH_Yuki::MainPlayer->MoveStart(PickedNaviCell, MovePos);
 			}
 		}
 #pragma endregion
