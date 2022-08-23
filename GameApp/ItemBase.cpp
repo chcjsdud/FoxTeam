@@ -5,7 +5,6 @@ ItemBase::ItemBase()
 	: Type(ItemType::None)
 	, Renderer(nullptr)
 {
-	//Renderer = CreateTransformComponent<GameEngineImageRenderer>();
 }
 
 ItemBase::~ItemBase()
@@ -30,6 +29,7 @@ ItemBase* ItemBase::Copy()
 
 void ItemBase::Start()
 {
+	Renderer = CreateTransformComponent<GameEngineImageRenderer>();
 }
 
 void ItemBase::Update(float _DeltaTime)

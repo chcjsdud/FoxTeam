@@ -168,20 +168,22 @@ float4 NaviMesh::CalculateCameraDir()
 		return float4::ZERO;
 	}
 
-	float PointX = ((2.0f * MousePos.x) / ViewPort_.Width) - 1.0f;
-	float PointY = (((2.0f * MousePos.y) / ViewPort_.Height) - 1.0f) * -1.0f;
-	float PointZ = 1.0f;
+	float4 Dir;
+
+	Dir.x = ((2.0f * MousePos.x) / ViewPort_.Width) - 1.0f;
+	Dir.y = (((2.0f * MousePos.y) / ViewPort_.Height) - 1.0f) * -1.0f;
+	Dir.z = 1.0f;
+	Dir.w = 0.0f;
 
 	// 2. ±¤¼±À» Åõ¿µ¿µ¿ª -> ºä¿µ¿ª
 	float4x4 ProjMat = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().Projection_;
-	PointX = PointX / ProjMat._11;
-	PointY = PointY / ProjMat._22;
+
+	Dir.x /= ProjMat._11;
+	Dir.y /= ProjMat._22;
 
 	// 3. ±¤¼±À» ºä¿µ¿ª -> ¿ùµå¿µ¿ª
 	float4x4 ViewMat = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().View_;
 	float4x4 InverseViewMat = ViewMat.InverseReturn();
-
-	float4 Dir = { PointX , PointY, PointZ, 0.0f };
 
 	Dir *= InverseViewMat;
 

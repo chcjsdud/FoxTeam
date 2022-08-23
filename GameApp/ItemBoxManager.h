@@ -3,39 +3,9 @@
 
 //#define USERSAVE
 
-class ItemBoxInfo
-{
-public:
-	std::string BoxType;
-	int Index;
-
-	float4 Pos;
-	float4 Scale;
-
-	ItemBoxInfo()
-		: Index(0)
-	{}
-};
-
-class UI_ItemBox;
-class GameEngineCollision;
-class YSJ_Ray;
-class ItemBase;
-class ItemBox
-{
-public:
-	ItemBoxInfo Info;
-	GameEngineCollision* Col;
-	std::string Area;
-
-	std::list<ItemBase*> ItemList;
-
-	ItemBox()
-		: Col(nullptr)
-	{}
-};
-
 // 설명 : 
+class ItemBox;
+class UI_ItemBox;
 class GameEngineFBXRenderer;
 class ItemBoxManager : public GameEngineActor
 {
@@ -76,7 +46,7 @@ private:
 
 private:
 	std::string ItemBoxInfoPath;
-	std::map<std::string, std::vector<ItemBox>> ItemBoxs;
+	std::map<std::string, std::vector<ItemBox*>> ItemBoxs;
 	ItemBox* SelectBox;
 
 	//이건호 UI아이템 박스 작업

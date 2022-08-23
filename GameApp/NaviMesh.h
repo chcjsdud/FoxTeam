@@ -85,7 +85,10 @@ public:
 		return NaviRenderer;
 	}
 
+	bool CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance);
+
 	float4 GetMousePos();
+
 	bool IsMouseIntersects();
 
 protected:
@@ -98,7 +101,6 @@ private:
 
 	bool LinkCheck(const Navi& _Left, const Navi& _Right);
 
-	bool CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance);
 	float4 CalculateCameraDir();
 
 private:

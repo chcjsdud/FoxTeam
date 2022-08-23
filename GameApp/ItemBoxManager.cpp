@@ -7,10 +7,12 @@
 #include "EquipmentItem.h"
 #include "UseableItem.h"
 #include "MiscItem.h"
+#include "ItemBox.h"
 #include <GameApp/UI_ItemBox.h>
 
 ItemBoxManager::ItemBoxManager()
 	: SelectBox(nullptr)
+	, ItemBoxUI_(nullptr)
 {
 
 }
@@ -36,7 +38,7 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 		AreaName.erase(AreaName.find(".FBX"));
 	}
 
-	std::vector<ItemBox> vecItemBox;
+	std::vector<ItemBox*> vecItemBox;
 	int ItemBoxIndex = 0;
 
 	for (size_t i = 0; i < AllMesh.size(); i++)
@@ -46,27 +48,29 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 		//	continue;
 		//}
 
-		ItemBox& Item = vecItemBox.emplace_back();
+		ItemBox* Item = GetLevel()->CreateActor<ItemBox>();
+
+		vecItemBox.push_back(Item);
 
 		float4 AllAddVtxPos = float4::ZERO;
 
-		for (auto& Vertex : AllMesh[i].Vertexs)
+		for (const auto& Vertex : AllMesh[i].Vertexs)
 		{
 			AllAddVtxPos += Vertex.POSITION;
 		}
 
 		AllAddVtxPos = AllAddVtxPos / static_cast<float>(AllMesh[i].Vertexs.size());
 
-		Item.Info.BoxType = MeshInfos[i].Name;
-		Item.Info.Index = ItemBoxIndex++;
-		Item.Info.Pos = AllAddVtxPos;
-		Item.Info.Scale = { 2.0f, 2.0f, 2.0f };
+		Item->Info.BoxType = MeshInfos[i].Name;
+		Item->Info.Index = ItemBoxIndex++;
+		Item->Info.Pos = AllAddVtxPos;
+		Item->Info.Scale = { 2.0f, 2.0f, 2.0f };
 
-		Item.Col = CreateTransformComponent<GameEngineCollision>(1);
-		Item.Col->GetTransform()->SetLocalPosition(Item.Info.Pos);
-		Item.Col->GetTransform()->SetLocalScaling(Item.Info.Scale);
+		Item->Col = CreateTransformComponent<GameEngineCollision>(1);
+		Item->Col->GetTransform()->SetLocalPosition(Item->Info.Pos);
+		Item->Col->GetTransform()->SetLocalScaling(Item->Info.Scale);
 
-		Item.Area = AreaName;
+		Item->Area = AreaName;
 	}	
 
 	ItemBoxs.insert(std::pair(AreaName, vecItemBox));
@@ -84,11 +88,11 @@ void ItemBoxManager::BoxSelectUpdate()
 
 		if (GameEngineInput::GetInst().Down("LBUTTON"))
 		{
-			for (auto& ItemBox : ItemBoxs)
+			for (const auto& ItemBox : ItemBoxs)
 			{
 				for (size_t i = 0; i < ItemBox.second.size(); i++)
 				{
-					if (Col == ItemBox.second[i].Col)
+					if (Col == ItemBox.second[i]->Col)
 					{
 						if (ItemBoxUI_ != nullptr)
 						{
@@ -98,7 +102,7 @@ void ItemBoxManager::BoxSelectUpdate()
 						}
 						ItemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
 						ItemBoxUI_->RenderOn();
-						SelectBox = &ItemBox.second[i];
+						SelectBox = ItemBox.second[i];
 					} 
 				}
 			}
@@ -131,17 +135,17 @@ void ItemBoxManager::Start()
 
 void ItemBoxManager::Update(float _DeltaTime)
 {
-	for (auto& ItemBox : ItemBoxs)
+	for (const auto& ItemBox : ItemBoxs)
 	{
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
-			if (SelectBox == &ItemBox.second[i])
+			if (SelectBox == ItemBox.second[i])
 			{
-				GetLevel()->PushDebugRender(ItemBox.second[i].Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+				GetLevel()->PushDebugRender(ItemBox.second[i]->Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
 				continue;
 			}
 
-			GetLevel()->PushDebugRender(ItemBox.second[i].Col->GetTransform(), CollisionType::AABBBox3D);
+			GetLevel()->PushDebugRender(ItemBox.second[i]->Col->GetTransform(), CollisionType::AABBBox3D);
 		}
 	}
 
@@ -155,7 +159,7 @@ void ItemBoxManager::UserSave(const std::string& _Path)
 	std::string AreaName = _Path;
 	AreaName = GameEngineString::toupper(AreaName);
 
-	std::map<std::string, std::vector<ItemBox>>::iterator iter = ItemBoxs.find(AreaName);
+	std::map<std::string, std::vector<ItemBox*>>::iterator iter = ItemBoxs.find(AreaName);
 
 	if (ItemBoxs.end() == iter)
 	{
@@ -168,11 +172,11 @@ void ItemBoxManager::UserSave(const std::string& _Path)
 
 	for (size_t i = 0; i < (*iter).second.size(); i++)
 	{
-		NewFile.Write((*iter).second[i].Info.BoxType);
-		NewFile.Write((*iter).second[i].Info.Index);
-		NewFile.Write((*iter).second[i].Info.Pos);
-		NewFile.Write((*iter).second[i].Info.Scale);
-		NewFile.Write((*iter).second[i].Area);
+		NewFile.Write((*iter).second[i]->Info.BoxType);
+		NewFile.Write((*iter).second[i]->Info.Index);
+		NewFile.Write((*iter).second[i]->Info.Pos);
+		NewFile.Write((*iter).second[i]->Info.Scale);
+		NewFile.Write((*iter).second[i]->Area);
 	}
 }
 
@@ -193,11 +197,11 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 		GameEngineDebug::MsgBoxError("존재하지 않는 ItemBoxInfo 파일입니다.");
 	}
 
-	std::vector<ItemBox> vecItemBox;
+	std::vector<ItemBox*> vecItemBox;
 
 	ItemBoxs.insert(std::pair(AreaName, vecItemBox));
 	
-	std::map<std::string, std::vector<ItemBox>>::iterator iter = ItemBoxs.find(AreaName);
+	std::map<std::string, std::vector<ItemBox*>>::iterator iter = ItemBoxs.find(AreaName);
 
 	if (ItemBoxs.end() == iter)
 	{
@@ -209,16 +213,18 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 
 	for (auto& Data : (*iter).second)
 	{
-		NewFile.Read(Data.Info.BoxType);
-		NewFile.Read(Data.Info.Index);
-		NewFile.Read(Data.Info.Pos);
-		NewFile.Read(Data.Info.Scale);
-		NewFile.Read(Data.Area);
+		Data = GetLevel()->CreateActor<ItemBox>();
 
-		Data.Col = CreateTransformComponent<GameEngineCollision>(static_cast<int>(CollisionGroup::ItemBox));
-		Data.Col->GetTransform()->SetLocalPosition(Data.Info.Pos);
-		Data.Col->GetTransform()->SetLocalScaling(Data.Info.Scale);
-		Data.Col->SetCollisionType(CollisionType::AABBBox3D);
+		NewFile.Read(Data->Info.BoxType);
+		NewFile.Read(Data->Info.Index);
+		NewFile.Read(Data->Info.Pos);
+		NewFile.Read(Data->Info.Scale);
+		NewFile.Read(Data->Area);
+
+		Data->Col = CreateTransformComponent<GameEngineCollision>(static_cast<int>(CollisionGroup::ItemBox));
+		Data->Col->GetTransform()->SetLocalPosition(Data->Info.Pos);
+		Data->Col->GetTransform()->SetLocalScaling(Data->Info.Scale);
+		Data->Col->SetCollisionType(CollisionType::AABBBox3D);
 	}
 }
 
@@ -242,15 +248,15 @@ void ItemBoxManager::UserSave_ItemListInfo()
 
 	NewFile.Write(static_cast<int>(ItemBoxs.size()));
 
-	for (auto& ItemBox : ItemBoxs)
+	for (const auto& ItemBox : ItemBoxs)
 	{
 		NewFile.Write(ItemBox.first);
 		NewFile.Write(static_cast<int>(ItemBox.second.size()));
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
-			NewFile.Write(static_cast<int>(ItemBox.second[i].ItemList.size()));
+			NewFile.Write(static_cast<int>(ItemBox.second[i]->ItemList.size()));
 
-			for (auto& Item : ItemBox.second[i].ItemList)
+			for (const auto& Item : ItemBox.second[i]->ItemList)
 			{
 				NewFile.Write(Item->GetName());
 				NewFile.Write(static_cast<int>(Item->Type));
@@ -282,12 +288,8 @@ void ItemBoxManager::UserLoad_ItemListInfo()
 		std::string KeyName;
 		NewFile.Read(KeyName);
 
-		std::vector<ItemBox> vecItemBox;
-
 		int vecItemBoxSize = 0;
 		NewFile.Read(vecItemBoxSize);
-
-		vecItemBox.resize(vecItemBoxSize);
 
 		for (size_t j = 0; j < vecItemBoxSize; j++)
 		{
@@ -334,18 +336,8 @@ void ItemBoxManager::UserLoad_ItemListInfo()
 					Item->SetImage(ImageName);
 				}
 
-				vecItemBox[j].ItemList.push_back(Item);
+				ItemBoxs.find(KeyName)->second[j]->ItemList.push_back(Item);
 			}
-
-			std::map<std::string, std::vector<ItemBox>>::iterator iter = ItemBoxs.find(KeyName);
-
-			if (ItemBoxs.end() == iter)
-			{
-				GameEngineDebug::MsgBoxError("if (ItemBoxs.end() == ItemBoxs.find(AreaName))");
-				return;
-			}
-
-			(*iter).second[j].ItemList = vecItemBox[j].ItemList;
 		}
 	}
 }

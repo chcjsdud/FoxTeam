@@ -2,6 +2,7 @@
 #include "ItemBoxWindow.h"
 #include "ItemBoxManager.h"
 #include "ItemBase.h"
+#include "ItemBox.h"
 #include "UI_ItemBox.h"
 #include <GameEngine/GameEngineCore.h>
 

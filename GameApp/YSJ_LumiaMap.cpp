@@ -52,11 +52,11 @@ void YSJ_LumiaMap::Start()
 
 	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
 
-	for (size_t i = 0; i < vecFile.size(); i++)
-	{
-		FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-		FBXSchoolMap->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
-	}
+	//for (size_t i = 0; i < vecFile.size(); i++)
+	//{
+	//	FBXSchoolMap = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+	//	FBXSchoolMap->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
+	//}
 
 	tempDir.MoveParent("UserMesh");
 	tempDir.MoveChild("ItemBox");
