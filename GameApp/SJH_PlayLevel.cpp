@@ -92,7 +92,7 @@ void SJH_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	FBXWindow->FBXFolder.MoveParent("FoxTeam");
 	FBXWindow->FBXFolder.MoveChild("Resources");
 	FBXWindow->FBXFolder.MoveChild("FBX");
-	FBXWindow->FBXFolder.MoveChild("SJH");
+	//FBXWindow->FBXFolder.MoveChild("SJH");
 
 	// UserMeshSaveFolder : 메시 바이너리 파일이 세이브될 폴더
 	FBXWindow->UserMeshSaveFolder.MoveParent("FoxTeam");
