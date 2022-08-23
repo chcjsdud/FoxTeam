@@ -166,8 +166,11 @@ void SJH_Yuki::Start()
 	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_skill04_end.UserAnimation"));
 	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_wait.UserAnimation"));
 
-	// 01. ...
-	// 02. ...
+	// 01. 2Hand
+	// 02. BareHands
+	// 03. Dual
+	// 04. Empty
+	// 05. Lobby
 
 	//========================================= Create Animation Frame =========================================//
 	for (size_t i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
