@@ -83,9 +83,13 @@ private:
 	GameEngineFBXMesh* BaseMesh_;
 	GameEngineFBXRenderer* AnimRenderer_;
 
+#pragma region 애니메이션 관리관련
 private:
 	std::vector<std::string> AnimNameList_;
 	int CurAnimationIndex_;
+
+private:
+#pragma endregion
 
 #pragma region 이동관련
 private:
