@@ -13,9 +13,11 @@ UseableItem::~UseableItem()
 
 void UseableItem::Start()
 {
+	ItemBase::Start();
 }
 
 void UseableItem::Update(float _DeltaTime)
 {
+	ItemBase::Update(_DeltaTime);
 }
 

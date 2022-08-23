@@ -48,7 +48,7 @@ void ItemBoxWindow::OnGUI()
 
 		for (auto& Item : SelectBox_->ItemList)
 		{
-			ItemListName.push_back(Item->GetName().c_str());
+			ItemListName.push_back(GameEngineString::AnsiToUTF8Return(Item->GetName()).c_str());
 		}
 
 		if (true == ImGui::Button("PushItem") &&

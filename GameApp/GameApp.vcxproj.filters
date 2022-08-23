@@ -209,9 +209,6 @@
     <ClCompile Include="SJH_Funnel.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\01.Funnel</Filter>
     </ClCompile>
-    <ClCompile Include="CreateItemDB.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="MiscItem.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
@@ -219,6 +216,9 @@
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
     <ClCompile Include="ItemBox.cpp">
+      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CreateItemDB.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
     </ClCompile>
   </ItemGroup>

@@ -5,6 +5,7 @@ ItemBase::ItemBase()
 	: Type(ItemType::None)
 	, Renderer(nullptr)
 {
+	
 }
 
 ItemBase::~ItemBase()

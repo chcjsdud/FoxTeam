@@ -13,9 +13,11 @@ MiscItem::~MiscItem()
 
 void MiscItem::Start()
 {
+	ItemBase::Start();
 }
 
 void MiscItem::Update(float _DeltaTime)
 {
+	ItemBase::Update(_DeltaTime);
 }
 
