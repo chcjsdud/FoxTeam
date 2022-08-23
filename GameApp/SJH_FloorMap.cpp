@@ -5,8 +5,9 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
 
-#include "SJH_Yuki.h"
 #include "SJH_NaviCell.h"
+#include "SJH_Yuki.h"
+#include "SJH_Wolf.h"
 
 SJH_FloorMap* SJH_FloorMap::FloorMap = nullptr;
 
@@ -111,6 +112,14 @@ void SJH_FloorMap::Start()
 		GameEngineRandom Random;
 		int RandomFace = Random.RandomInt(0, static_cast<int>(NavigationCellInfos_.size()) - 1);
 		SJH_Yuki::MainPlayer->Initialize(NavigationCellInfos_[RandomFace], NavigationCellInfos_[RandomFace]->GetCenterToGravity());
+	}
+
+	// NavigationCellInfos_의 랜덤한 삼각형을 선택하여 몬스터 위치좌표(랜덤한 삼각형의 무게중심) 셋팅
+	if (nullptr != SJH_Wolf::MainWolf)
+	{
+		GameEngineRandom Random;
+		int RandomFace = Random.RandomInt(0, static_cast<int>(NavigationCellInfos_.size()) - 1);
+		SJH_Wolf::MainWolf->Initialize(NavigationCellInfos_[RandomFace], NavigationCellInfos_[RandomFace]->GetCenterToGravity());
 	}
 
 //=============================================== NaviColMesh Load

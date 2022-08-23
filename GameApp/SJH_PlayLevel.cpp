@@ -93,24 +93,24 @@ void SJH_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	FBXWindow->FBXFolder.MoveParent("FoxTeam");
 	FBXWindow->FBXFolder.MoveChild("Resources");
 	FBXWindow->FBXFolder.MoveChild("FBX");
-	//FBXWindow->FBXFolder.MoveChild("SJH");
+	FBXWindow->FBXFolder.MoveChild("SJH");
 
 	// UserMeshSaveFolder : 메시 바이너리 파일이 세이브될 폴더
 	FBXWindow->UserMeshSaveFolder.MoveParent("FoxTeam");
 	FBXWindow->UserMeshSaveFolder.MoveChild("Resources");
 	FBXWindow->UserMeshSaveFolder.MoveChild("FBX");
 	FBXWindow->UserMeshSaveFolder.MoveChild("UserMesh");
-	FBXWindow->UserMeshSaveFolder.MoveChild("Character");
-	FBXWindow->UserMeshSaveFolder.MoveChild("Yuki");
+	FBXWindow->UserMeshSaveFolder.MoveChild("Monster");
+	FBXWindow->UserMeshSaveFolder.MoveChild("Wolf");
 
 	// UserAnimationSaveFolder : 애니메이션 바이너리 파일이 세이브될 폴더
 	FBXWindow->UserAnimationSaveFolder.MoveParent("FoxTeam");
 	FBXWindow->UserAnimationSaveFolder.MoveChild("Resources");
 	FBXWindow->UserAnimationSaveFolder.MoveChild("FBX");
 	FBXWindow->UserAnimationSaveFolder.MoveChild("UserAni");
-	FBXWindow->UserAnimationSaveFolder.MoveChild("Character");
-	FBXWindow->UserAnimationSaveFolder.MoveChild("Yuki");
-	FBXWindow->UserAnimationSaveFolder.MoveChild("Common");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("Monster");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("Wolf");
+	//FBXWindow->UserAnimationSaveFolder.MoveChild("Common");
 }
 
 void SJH_PlayLevel::CreateActorLevel()
@@ -123,8 +123,13 @@ void SJH_PlayLevel::CreateActorLevel()
 	Yuki_ = CreateActor<SJH_Yuki>();
 	SJH_Yuki::MainPlayer = Yuki_;
 
-	// 몬스터(Wolf)
-	//Wolf_ = CreateActor<SJH_Wolf>();
+	// 몬스터
+
+	// 1. Wolf
+	Wolf_ = CreateActor<SJH_Wolf>();
+	SJH_Wolf::MainWolf = Wolf_;
+
+	// 2. ...
 
 	// 맵
 	FloorMap_ = CreateActor<SJH_FloorMap>();

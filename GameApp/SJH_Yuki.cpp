@@ -85,7 +85,7 @@ void SJH_Yuki::GetHit(const GameEngineActor* _GetHitTarget)
 void SJH_Yuki::InputKeyStateCheck(float _DeltaTime)
 {
 	// 테스트키 체크
-	if (true == GameEngineInput::GetInst().Down("AnimationIndexUP"))
+	if (true == GameEngineInput::GetInst().Down("Yuki_AnimationIndexUP"))
 	{
 		++CurAnimationIndex_;
 		if (CurAnimationIndex_ > static_cast<int>(AnimNameList_.size()) - 1)
@@ -95,7 +95,7 @@ void SJH_Yuki::InputKeyStateCheck(float _DeltaTime)
 		AnimRenderer_->ChangeFBXAnimation(AnimNameList_[CurAnimationIndex_]);
 	}
 
-	if (true == GameEngineInput::GetInst().Down("AnimationIndexDOWN"))
+	if (true == GameEngineInput::GetInst().Down("Yuki_AnimationIndexDOWN"))
 	{
 		--CurAnimationIndex_;
 		if (CurAnimationIndex_ < 0)
@@ -108,6 +108,8 @@ void SJH_Yuki::InputKeyStateCheck(float _DeltaTime)
 	// 이동체크
 	if (true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
+		//return;
+
 		// 단, 화면범위를 벗어나면 리턴
 		if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
 		{
@@ -128,6 +130,8 @@ void SJH_Yuki::InputKeyStateCheck(float _DeltaTime)
 	// 타깃지정체크
 	if (true == GameEngineInput::GetInst().Down("RBUTTON"))
 	{
+		//return;
+
 		// 단, 화면범위를 벗어나면 리턴
 		if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
 		{
@@ -180,15 +184,15 @@ void SJH_Yuki::Start()
 	AnimationPath.MoveChild("Yuki");
 	AnimationPath.MoveChild("Common");
 
-	//================================================== Create Animation Renderer ==================================================//
+	//============================================== Create Animation Renderer ==============================================//
 	AnimRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 	AnimRenderer_->GetTransform()->SetLocalRotationDegree(float4(-90.0f, 0.0f, 0.0f, 0.0f));
 
-	//===================================================== Mesh Load =====================================================//
+	//====================================================== Mesh Load ======================================================//
 	BaseMesh_ = GameEngineFBXMeshManager::GetInst().LoadUser(MeshPath.PathToPlusFileName("Yuki_BaseMesh.UserMesh"));
 	AnimRenderer_->SetFBXMesh(BaseMesh_->GetName(), "TextureDeferredLightAni");
 
-	//==================================================== Animation Load ====================================================//
+	//==================================================== Animation Load ===================================================//
 	// 00. Common
 	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_arrive.UserAnimation"));
 	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_boxopen.UserAnimation"));
@@ -223,12 +227,12 @@ void SJH_Yuki::Start()
 	// 04. Empty
 	// 05. Lobby
 
-	//========================================= Create Animation Frame =========================================//
 	for (size_t i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
 	{
 		AnimRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Yuki_01_LOD1.png");
 	}
 
+	//=============================================== Create Animation Frame ================================================//
 	AnimRenderer_->CreateFBXAnimation("Yuki_Common_arrive", "Yuki_Common_arrive.UserAnimation", 0);
 	AnimRenderer_->CreateFBXAnimation("Yuki_Common_boxopen", "Yuki_Common_boxopen.UserAnimation", 0);
 	AnimRenderer_->CreateFBXAnimation("Yuki_Common_collect", "Yuki_Common_collect.UserAnimation", 0);
@@ -261,15 +265,21 @@ void SJH_Yuki::Start()
 	AnimNameList_ = AnimRenderer_->GetAnimationNameList();
 #pragma endregion
 
+#pragma region 충돌체 생성
+	//BodyCollider_
+	//AttackCollider_
+
+#pragma endregion
+
 #pragma region 테스트키 생성
-	if (false == GameEngineInput::GetInst().IsKey("AnimationIndexUP"))
+	if (false == GameEngineInput::GetInst().IsKey("Yuki_AnimationIndexUP"))
 	{
-		GameEngineInput::GetInst().CreateKey("AnimationIndexUP", VK_UP);
+		GameEngineInput::GetInst().CreateKey("Yuki_AnimationIndexUP", VK_UP);
 	}
 
-	if (false == GameEngineInput::GetInst().IsKey("AnimationIndexDOWN"))
+	if (false == GameEngineInput::GetInst().IsKey("Yuki_AnimationIndexDOWN"))
 	{
-		GameEngineInput::GetInst().CreateKey("AnimationIndexDOWN", VK_DOWN);
+		GameEngineInput::GetInst().CreateKey("Yuki_AnimationIndexDOWN", VK_DOWN);
 	}
 
 #pragma endregion
@@ -329,6 +339,8 @@ void SJH_Yuki::Update(float _DeltaTime)
 SJH_Yuki::SJH_Yuki()
 	: BaseMesh_(nullptr)
 	, AnimRenderer_(nullptr)
+	, BodyCollider_(nullptr)
+	, AttackCollider_(nullptr)
 	, CurAnimationIndex_(0)
 	, CurState_(Yuki_State::MAX)
 	, CurNaviCell_(nullptr)

@@ -37,6 +37,7 @@ enum class Yuki_State
 // 설명 : 
 class GameEngineFBXMesh;
 class GameEngineFBXRenderer;
+class GameEngineCollision;
 class SJH_NaviCell;
 class SJH_Yuki : public GameEngineActor
 {
@@ -82,6 +83,10 @@ protected:
 private:
 	GameEngineFBXMesh* BaseMesh_;
 	GameEngineFBXRenderer* AnimRenderer_;
+
+private:
+	GameEngineCollision* BodyCollider_;
+	GameEngineCollision* AttackCollider_;
 
 #pragma region 애니메이션 관리관련
 private:
