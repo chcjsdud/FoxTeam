@@ -56,7 +56,7 @@ void SJH_Yuki::MoveStart(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTarge
 		MoveStart_ = true;
 
 		// 이동시작
-		AnimRenderer_->ChangeFBXAnimation("Yuki_Common_run");
+		AnimRenderer_->ChangeFBXAnimation(AnimNameList_[static_cast<int>(Yuki_State::COM_RUN)]);
 	}
 }
 
@@ -266,7 +266,7 @@ void SJH_Yuki::Update(float _DeltaTime)
 				MovePath_.clear();
 
 				// 완전히 이동종료
-				AnimRenderer_->ChangeFBXAnimation("Yuki_Common_wait");
+				AnimRenderer_->ChangeFBXAnimation(AnimNameList_[static_cast<int>(Yuki_State::COM_WAIT)]);
 			}
 		}
 	}
