@@ -10,6 +10,7 @@ class SJH_FloorMap;
 class SJH_Mouse;
 class SJH_Yuki;
 class SJH_TestActor;
+class SJH_Wolf;
 class SJH_PlayLevel : public GameEngineLevel
 {
 public:
@@ -49,6 +50,9 @@ private:
 	SJH_FloorMap* FloorMap_;
 	SJH_Mouse* InGameMouse_;
 	SJH_Yuki* Yuki_;
+
+private:
+	SJH_Wolf* Wolf_;
 
 private: // 마우스 피킹용 오브젝트
 	SJH_TestActor* TestBox_;

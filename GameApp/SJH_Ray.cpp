@@ -134,6 +134,39 @@ SJH_NaviCell* SJH_Ray::IsPickedCell(GameEngineFBXRenderer* _Mesh, const float4& 
     return nullptr;
 }
 
+GameEngineActor* SJH_Ray::IsPickedTarget(const float4& _MousePos, float4& _PickedPos)
+{
+    // 현재 광선과 제일처음 충돌하는 충돌체를 탐색
+    if (false == RayAtViewSpace(_MousePos))
+    {
+        return nullptr;
+    }
+
+    // 현재 레벨의 모든 충돌체 목록 Get
+    std::map<int, std::list<GameEngineCollision*>> AllList = GetLevel()->GetAllCollision();
+
+    // 해당 광선과 교차하는 충돌체 탐색
+    int GroupCnt = static_cast<int>(AllList.size());
+    for (int Group = 0; Group < GroupCnt; ++Group)
+    {
+        std::list<GameEngineCollision*>::iterator StartIter = AllList[Group].begin();
+        std::list<GameEngineCollision*>::iterator EndIter = AllList[Group].end();
+        for (; StartIter != EndIter; ++StartIter)
+        {
+            // 광선의 시작지점에서부터 선택된 충돌체와 교차하는 지점까지의 거리
+            float Dist = 0.0f;
+            if (true == (*StartIter)->BoundingToRayCollision((*StartIter)->GetCollisionType(), OriginPos_, Direction_, Dist))
+            {
+                // 교차한 지점의 좌표를 반환
+                _PickedPos = OriginPos_ + (Direction_ * Dist);
+                return (*StartIter)->GetActor();
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 bool SJH_Ray::RayAtViewSpace(float _MousePosX, float _MousePosY)
 {
     // 2D 환경에서의 마우스 클릭지점을 이용하여

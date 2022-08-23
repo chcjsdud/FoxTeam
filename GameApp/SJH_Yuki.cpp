@@ -114,9 +114,9 @@ void SJH_Yuki::InputKeyStateCheck(float _DeltaTime)
 			return;
 		}
 
-		float4 MovePos = float4::ZERO;
 		if (nullptr != SJH_FloorMap::FloorMap && nullptr != SJH_Mouse::MainMouse)
 		{
+			float4 MovePos = float4::ZERO;
 			SJH_NaviCell* PickedNaviCell = SJH_Mouse::MainMouse->GetCurRay()->IsPickedCell(SJH_FloorMap::FloorMap->GetFloorMapRenderer(), GameEngineInput::GetInst().GetMousePos(), MovePos);
 			if (nullptr != PickedNaviCell)
 			{
@@ -134,7 +134,24 @@ void SJH_Yuki::InputKeyStateCheck(float _DeltaTime)
 			return;
 		}
 
+		// 타깃지정
+		if (nullptr != SJH_Mouse::MainMouse)
+		{
+			float4 TargetPos = float4::ZERO;
+			GameEngineActor* TargetActor = SJH_Mouse::MainMouse->GetCurRay()->IsPickedTarget(GameEngineInput::GetInst().GetMousePos(), TargetPos);
+			if (nullptr != TargetActor)
+			{
+				// 타겟 지정
+				CurTarget_ = TargetActor;
 
+				// 타겟과의 거리측정하여 일정거리까지 이동
+
+				// 타겟이 공격범위내 진입시 공격 기능 활성
+
+
+				int a = 0;
+			}
+		}
 	}
 }
 
@@ -313,13 +330,15 @@ SJH_Yuki::SJH_Yuki()
 	: BaseMesh_(nullptr)
 	, AnimRenderer_(nullptr)
 	, CurAnimationIndex_(0)
+	, CurState_(Yuki_State::MAX)
 	, CurNaviCell_(nullptr)
 	, TargetNaviCell_(nullptr)
 	, MoveStart_(false)
 	, MoveStartPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveEndPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveSpeed_(10.0f)
-	, CurState_(Yuki_State::MAX)
+	, CurTarget_(nullptr)
+	, BattleMode_(false)
 {
 }
 

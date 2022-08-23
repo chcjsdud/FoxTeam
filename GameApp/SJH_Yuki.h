@@ -108,5 +108,9 @@ private:
 	float4 MoveEndPos_;						// 이동경로의 목표 위치
 	float MoveSpeed_;						// 이동속도
 #pragma endregion
+
+private:
+	GameEngineActor* CurTarget_;			// 현재 선택된 타겟
+	bool BattleMode_;						// 현재 지정된 타겟과 전투모드 활성화
 };
 

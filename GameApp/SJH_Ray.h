@@ -18,6 +18,9 @@ public: // 광선체크
 public: // 광선과 NaviCell의 교차
 	SJH_NaviCell* IsPickedCell(GameEngineFBXRenderer* _Mesh, const float4& _MousePos, float4& _PickedPos);
 
+public: // 광선과 타겟충돌체의 교차
+	GameEngineActor* IsPickedTarget(const float4& _MousePos, float4& _PickedPos);
+
 protected:
 
 private:

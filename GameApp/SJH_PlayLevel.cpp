@@ -11,6 +11,7 @@
 #include "SJH_FloorMap.h"
 #include "SJH_Mouse.h"
 #include "SJH_Yuki.h"
+#include "SJH_Wolf.h"
 
 #include "SJH_TestActor.h"
 
@@ -122,6 +123,9 @@ void SJH_PlayLevel::CreateActorLevel()
 	Yuki_ = CreateActor<SJH_Yuki>();
 	SJH_Yuki::MainPlayer = Yuki_;
 
+	// ∏ÛΩ∫≈Õ(Wolf)
+	//Wolf_ = CreateActor<SJH_Wolf>();
+
 	// ∏ 
 	FloorMap_ = CreateActor<SJH_FloorMap>();
 	SJH_FloorMap::FloorMap = FloorMap_;
@@ -146,6 +150,7 @@ SJH_PlayLevel::SJH_PlayLevel()
 	, FloorMap_(nullptr)
 	, InGameMouse_(nullptr)
 	, Yuki_(nullptr)
+	, Wolf_(nullptr)
 	, TestBox_(nullptr)
 {
 

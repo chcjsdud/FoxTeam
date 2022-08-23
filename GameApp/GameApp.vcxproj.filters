@@ -126,7 +126,7 @@
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object</Filter>
     </ClCompile>
     <ClCompile Include="SJH_NaviCell.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell</Filter>
+      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_Ray.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\Mouse\Component</Filter>
@@ -138,7 +138,7 @@
       <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
     </ClCompile>
     <ClCompile Include="SJH_PathFinder.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\00.PathFinder</Filter>
+      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder</Filter>
     </ClCompile>
     <ClCompile Include="PJW_Mouse.cpp">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
@@ -207,7 +207,7 @@
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClCompile>
     <ClCompile Include="SJH_Funnel.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\01.Funnel</Filter>
+      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\01.Funnel</Filter>
     </ClCompile>
     <ClCompile Include="MiscItem.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
@@ -220,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="CreateItemDB.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+    </ClCompile>
+    <ClCompile Include="SJH_Wolf.cpp">
+      <Filter>01.GameObject\99.SJH\01.Actor\03.Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,9 +370,6 @@
     <Filter Include="01.GameObject\99.SJH\01.Actor\02.Player">
       <UniqueIdentifier>{88dd0ad6-4776-4dc2-accf-d582c66c26bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell">
-      <UniqueIdentifier>{e2601656-afd5-4123-9cfd-62db29b76bb5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\99.YSJ\02Actor\Mouse">
       <UniqueIdentifier>{fb0f78e1-88e0-459c-b1f6-255290736a84}</UniqueIdentifier>
     </Filter>
@@ -378,9 +378,6 @@
     </Filter>
     <Filter Include="01.GameObject\98.PJW\PJW_NavMesh">
       <UniqueIdentifier>{acc9dade-c0a9-40f1-834f-aa60efa9d758}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell\00.PathFinder">
-      <UniqueIdentifier>{7a2868fa-2556-4890-b00e-0e75065ccc37}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\99.조규현\RayTestLevel\NavMesh">
       <UniqueIdentifier>{334917f0-e7bf-42b0-9856-9d921017c925}</UniqueIdentifier>
@@ -409,8 +406,17 @@
     <Filter Include="01.GameObject\99.YSJ\02Actor\ItemBox\Item">
       <UniqueIdentifier>{d3852990-4947-495d-8087-5498048dc846}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\03.NaviCell\01.Funnel">
+    <Filter Include="01.GameObject\99.SJH\01.Actor\04.NaviCell">
+      <UniqueIdentifier>{e2601656-afd5-4123-9cfd-62db29b76bb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder">
+      <UniqueIdentifier>{7a2868fa-2556-4890-b00e-0e75065ccc37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.SJH\01.Actor\04.NaviCell\01.Funnel">
       <UniqueIdentifier>{9269cfad-5c5a-46f7-80d8-a000c1eeb1c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.SJH\01.Actor\03.Monster">
+      <UniqueIdentifier>{9237cd3c-80d1-4df0-be1b-c7fdc61fda0a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -535,7 +541,7 @@
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object</Filter>
     </ClInclude>
     <ClInclude Include="SJH_NaviCell.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell</Filter>
+      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_Ray.h">
       <Filter>01.GameObject\99.YSJ\02Actor\Mouse\Component</Filter>
@@ -550,7 +556,7 @@
       <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
     </ClInclude>
     <ClInclude Include="SJH_PathFinder.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\00.PathFinder</Filter>
+      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder</Filter>
     </ClInclude>
     <ClInclude Include="GHNavMesh.h">
       <Filter>01.GameObject\99.조규현\RayTestLevel\NavMesh</Filter>
@@ -619,7 +625,7 @@
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClInclude>
     <ClInclude Include="SJH_Funnel.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\03.NaviCell\01.Funnel</Filter>
+      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\01.Funnel</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>01.GameObject\00.Constant</Filter>
@@ -632,6 +638,9 @@
     </ClInclude>
     <ClInclude Include="ItemBox.h">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+    </ClInclude>
+    <ClInclude Include="SJH_Wolf.h">
+      <Filter>01.GameObject\99.SJH\01.Actor\03.Monster</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
