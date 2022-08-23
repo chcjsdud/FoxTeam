@@ -199,6 +199,16 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 			else
 			{
 				++CurRPortalIndex;
+
+				// 정보 갱신
+				if (CurRPortalIndex >= static_cast<int>(RightPortal_.size()))
+				{
+					break;
+				}
+
+				//============================================ 왼쪽 포탈 검사 정보 셋팅 ============================================//
+				CheckCurRPortal = RightPortal_[CurRPortalIndex];
+				StartToCurRPortal = (CheckCurRPortal - StartPoint).NormalizeReturn3D();
 			}
 		}
 	}

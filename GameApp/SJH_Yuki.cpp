@@ -3,6 +3,7 @@
 
 #include <GameEngine/GameEngineFBXMesh.h>
 #include <GameEngine/GameEngineFBXRenderer.h>
+#include <GameEngine/GameEngineCollision.h>
 
 #include "SJH_FloorMap.h"
 #include "SJH_NaviCell.h"
@@ -294,6 +295,10 @@ void SJH_Yuki::Start()
 
 void SJH_Yuki::Update(float _DeltaTime)
 {
+#ifdef _DEBUG
+	//GetLevel()->GetMainCamera()->PushDebugRender(GetTransform(), CollisionType::OBBBox3D);
+#endif // _DEBUG
+
 	// InputKey State Check
 	InputKeyStateCheck(_DeltaTime);
 
