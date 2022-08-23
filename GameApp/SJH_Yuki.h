@@ -85,8 +85,11 @@ private:
 
 #pragma region 애니메이션 관리관련
 private:
-	std::vector<std::string> AnimNameList_;
-	int CurAnimationIndex_;
+	std::vector<std::string> AnimNameList_;	// 현재 캐릭터가 사용하는 애니메이션 이름 목록
+	int CurAnimationIndex_;					// 현재 캐릭터 애니메이션 인덱스
+
+private:
+	Yuki_State CurState_;					// 현재 캐릭터 상태
 
 private:
 #pragma endregion
@@ -105,8 +108,5 @@ private:
 	float4 MoveEndPos_;						// 이동경로의 목표 위치
 	float MoveSpeed_;						// 이동속도
 #pragma endregion
-
-private:
-	Yuki_State CurState_;					// 현재 캐릭터 상태
 };
 
