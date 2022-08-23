@@ -6,6 +6,8 @@
 
 #include "SJH_FloorMap.h"
 #include "SJH_NaviCell.h"
+#include "SJH_Mouse.h"
+#include "SJH_Ray.h"
 
 SJH_Yuki* SJH_Yuki::MainPlayer = nullptr;
 
@@ -101,6 +103,38 @@ void SJH_Yuki::InputKeyStateCheck(float _DeltaTime)
 			CurAnimationIndex_ = static_cast<int>(AnimNameList_.size()) - 1;
 		}
 		AnimRenderer_->ChangeFBXAnimation(AnimNameList_[CurAnimationIndex_]);
+	}
+
+	// 이동체크
+	if (true == GameEngineInput::GetInst().Down("LBUTTON"))
+	{
+		// 단, 화면범위를 벗어나면 리턴
+		if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
+		{
+			return;
+		}
+
+		float4 MovePos = float4::ZERO;
+		if (nullptr != SJH_FloorMap::FloorMap && nullptr != SJH_Mouse::MainMouse)
+		{
+			SJH_NaviCell* PickedNaviCell = SJH_Mouse::MainMouse->GetCurRay()->IsPickedCell(SJH_FloorMap::FloorMap->GetFloorMapRenderer(), GameEngineInput::GetInst().GetMousePos(), MovePos);
+			if (nullptr != PickedNaviCell)
+			{
+				MoveStart(PickedNaviCell, MovePos);
+			}
+		}
+	}
+
+	// 타깃지정체크
+	if (true == GameEngineInput::GetInst().Down("RBUTTON"))
+	{
+		// 단, 화면범위를 벗어나면 리턴
+		if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
+		{
+			return;
+		}
+
+
 	}
 }
 

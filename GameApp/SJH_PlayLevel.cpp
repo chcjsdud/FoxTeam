@@ -128,6 +128,7 @@ void SJH_PlayLevel::CreateActorLevel()
 
 	// 마우스
 	InGameMouse_ = CreateActor<SJH_Mouse>();
+	SJH_Mouse::MainMouse = InGameMouse_;
 
 	// 조명
 	LightActor* Light1 = CreateActor<LightActor>();

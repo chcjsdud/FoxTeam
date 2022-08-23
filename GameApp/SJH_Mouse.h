@@ -10,6 +10,11 @@ class SJH_Ray;
 class SJH_Mouse : public GameEngineActor
 {
 public:
+	inline SJH_Ray* GetCurRay()
+	{
+		return Ray_;
+	}
+
 protected:
 private:
 
@@ -30,6 +35,7 @@ private:
 	SJH_Mouse& operator=(const SJH_Mouse&& _other) = delete;
 
 public:
+	static SJH_Mouse* MainMouse;
 
 protected:
 

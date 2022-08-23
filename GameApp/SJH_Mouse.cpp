@@ -11,6 +11,8 @@
 #include "SJH_FloorMap.h"
 #include "SJH_NaviCell.h"
 
+SJH_Mouse* SJH_Mouse::MainMouse = nullptr;
+
 void SJH_Mouse::Start()
 {
 	Renderer_ = CreateTransformComponent<GameEngineUIRenderer>();
@@ -30,32 +32,6 @@ void SJH_Mouse::Update(float _DeltaTime)
 {
 	// 마우스 위치갱신
 	GetTransform()->SetWorldPosition(GameEngineInput::GetInst().GetMouse3DPos());
-
-	// 키체크
-	if (true == GameEngineInput::GetInst().Down("LBUTTON"))
-	{
-		// 단, 화면범위를 벗어나면 리턴
-		if (true == GameEngineWindow::GetInst().IsWindowRangeOut(GameEngineInput::GetInst().GetMousePos()))
-		{
-			return;
-		}
-
-		float4 MovePos = float4::ZERO;
-		if (nullptr != SJH_FloorMap::FloorMap)
-		{
-			SJH_NaviCell* PickedNaviCell = Ray_->IsPickedCell(SJH_FloorMap::FloorMap->GetFloorMapRenderer(), GameEngineInput::GetInst().GetMousePos(), MovePos);
-			if (nullptr != PickedNaviCell)
-			{
-				SJH_Yuki::MainPlayer->MoveStart(PickedNaviCell, MovePos);
-			}
-		}
-	}
-
-	// 
-	if (true == GameEngineInput::GetInst().Down("RBUTTON"))
-	{
-
-	}
 }
 
 SJH_Mouse::SJH_Mouse()
