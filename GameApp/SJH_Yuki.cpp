@@ -234,9 +234,9 @@ void SJH_Yuki::Update(float _DeltaTime)
 		{
 			// 이동 및 회전
 			float4 MoveDir = (MoveEndPos_ - CurPos).NormalizeReturn3D();
-			float4 MoveCross = float4::Cross3D(MoveDir, float4(0.0f, 0.0f, 1.0f, 0.0f)).NormalizeReturn3D();
 			float MoveAngle = float4::DegreeDot3DToACosAngle(float4(0.0f, 0.0f, 1.0f, 0.0f), MoveDir);
-			GetTransform()->SetLocalRotationDegree(float4(0.0f, MoveAngle * -MoveCross.y, 0.0f));
+			float4 MoveCross = float4::Cross3D(MoveDir, float4(0.0f, 0.0f, 1.0f, 0.0f)).NormalizeReturn3D();
+			AnimRenderer_->GetTransform()->SetWorldRotationDegree(float4(-90.0f, MoveAngle * -MoveCross.y, 0.0f));
 			GetTransform()->SetWorldPosition(CurPos + (MoveDir * MoveSpeed_ * _DeltaTime));
 		}
 		else // 이동종료시
