@@ -1,6 +1,37 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
+enum class Yuki_State
+{
+	COM_ARRIVE,
+	COM_BOXOPEN,
+	COM_COLLECT,
+	COM_COLLECT_STONE,
+	COM_COLLECT_WATER,
+	COM_COLLECT_WOOD,
+	COM_CRAFTFOOD,
+	COM_CRAFTMETAL,
+	COM_DANCE,
+	COM_DEATH,
+	COM_DOWN_DEAD,
+	COM_DOWN_RUN,
+	COM_DOWN_START,
+	COM_DOWN_WAIT,
+	COM_DOWNDEAD,
+	COM_FISHING,
+	COM_INSTALL_TRAP,
+	COM_OPERATE,
+	COM_REST_END,
+	COM_REST_LOOP,
+	COM_REST_START,
+	COM_RESURRECT,
+	COM_RUN,
+	COM_SKILL04,
+	COM_SKILL04_END,
+	COM_WAIT,
+	MAX
+};
+
 // 분류 : 
 // 용도 : 
 // 설명 : 
@@ -23,7 +54,9 @@ public: // 기타액션
 	void GetHit(const GameEngineActor* _GetHitTarget);
 
 protected:
+
 private:
+	void InputKeyStateCheck(float _DeltaTime);
 
 private:
 	void Start() override;
@@ -47,11 +80,12 @@ public:
 protected:
 
 private:
-	GameEngineFBXMesh* Mesh_;
+	GameEngineFBXMesh* BaseMesh_;
 	GameEngineFBXRenderer* AnimRenderer_;
 
 private:
-	std::vector<std::string> AnimationNameList_;
+	std::vector<std::string> AnimNameList_;
+	int CurAnimationIndex_;
 
 #pragma region 이동관련
 private:
@@ -69,5 +103,6 @@ private:
 #pragma endregion
 
 private:
+	Yuki_State CurState_;					// 현재 캐릭터 상태
 };
 

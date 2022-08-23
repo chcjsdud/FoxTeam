@@ -21,17 +21,16 @@ void SJH_PlayLevel::LevelStart()
 	GetMainCameraActor()->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, -300.0f });
 
 #pragma region IMGUI Windows
-	// 렌더타겟 IMGUI Window
-	if (nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderTargetWindow"))
-	{
-		//GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
-		//Window->PushRenderTarget("메인 카메라 타겟", GetMainCamera()->GetCameraRenderTarget(), float4(128.f, 72.f) * 3);
-		//Window->PushRenderTarget("UI 카메라 타겟", GetUICamera()->GetCameraRenderTarget(), float4(128.f, 72.f) * 3);
-		//Window->PushRenderTarget("메인 카메라 디퍼드", GetMainCamera()->GetCameraDeferredGBufferTarget(), float4(128.f, 72.f) * 3);
-		//Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), float4(128.f, 72.f) * 3);
-		//Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredTarget(), float4(128.f, 72.f) * 3);
-	}
-
+	//// 렌더타겟 IMGUI Window
+	//if (nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderTargetWindow"))
+	//{
+	//	GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+	//	Window->PushRenderTarget("메인 카메라 타겟", GetMainCamera()->GetCameraRenderTarget(), float4(128.f, 72.f) * 3);
+	//	Window->PushRenderTarget("UI 카메라 타겟", GetUICamera()->GetCameraRenderTarget(), float4(128.f, 72.f) * 3);
+	//	Window->PushRenderTarget("메인 카메라 디퍼드", GetMainCamera()->GetCameraDeferredGBufferTarget(), float4(128.f, 72.f) * 3);
+	//	Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), float4(128.f, 72.f) * 3);
+	//	Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredTarget(), float4(128.f, 72.f) * 3);
+	//}
 #pragma endregion
 
 #pragma region 키등록
@@ -100,12 +99,17 @@ void SJH_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	FBXWindow->UserMeshSaveFolder.MoveChild("Resources");
 	FBXWindow->UserMeshSaveFolder.MoveChild("FBX");
 	FBXWindow->UserMeshSaveFolder.MoveChild("UserMesh");
+	FBXWindow->UserMeshSaveFolder.MoveChild("Character");
+	FBXWindow->UserMeshSaveFolder.MoveChild("Yuki");
 
 	// UserAnimationSaveFolder : 애니메이션 바이너리 파일이 세이브될 폴더
 	FBXWindow->UserAnimationSaveFolder.MoveParent("FoxTeam");
 	FBXWindow->UserAnimationSaveFolder.MoveChild("Resources");
 	FBXWindow->UserAnimationSaveFolder.MoveChild("FBX");
 	FBXWindow->UserAnimationSaveFolder.MoveChild("UserAni");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("Character");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("Yuki");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("Common");
 }
 
 void SJH_PlayLevel::CreateActorLevel()
@@ -130,18 +134,6 @@ void SJH_PlayLevel::CreateActorLevel()
 	Light1->GetLight()->SetDiffusePower(1.f);
 	Light1->GetLight()->SetAmbientPower(10.f);
 	Light1->GetLight()->SetSpacularLightPow(10.0f);
-
-	//LightActor* Light2 = CreateActor<LightActor>();
-	//Light2->GetLight()->SetDiffusePower(1.f);
-	//Light2->GetLight()->SetAmbientPower(10.f);
-	//Light2->GetLight()->SetSpacularLightPow(10.0f);
-	//Light2->GetTransform()->SetLocalRotationDegree(float4(0.0f, 90.0f, 0.0f));
-
-	//LightActor* Light3 = CreateActor<LightActor>();
-	//Light3->GetLight()->SetDiffusePower(1.f);
-	//Light3->GetLight()->SetAmbientPower(10.f);
-	//Light3->GetLight()->SetSpacularLightPow(10.0f);
-	//Light3->GetTransform()->SetLocalRotationDegree(float4(45.0f, 0.0f, 0.0f));
 
 #pragma endregion
 

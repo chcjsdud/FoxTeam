@@ -56,7 +56,7 @@ void SJH_Yuki::MoveStart(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTarge
 		MoveStart_ = true;
 
 		// 이동시작
-		AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[37]);
+		AnimRenderer_->ChangeFBXAnimation("Yuki_Common_run");
 	}
 }
 
@@ -80,6 +80,30 @@ void SJH_Yuki::GetHit(const GameEngineActor* _GetHitTarget)
 {
 }
 
+void SJH_Yuki::InputKeyStateCheck(float _DeltaTime)
+{
+	// 테스트키 체크
+	if (true == GameEngineInput::GetInst().Down("AnimationIndexUP"))
+	{
+		++CurAnimationIndex_;
+		if (CurAnimationIndex_ > static_cast<int>(AnimNameList_.size()) - 1)
+		{
+			CurAnimationIndex_ = 0;
+		}
+		AnimRenderer_->ChangeFBXAnimation(AnimNameList_[CurAnimationIndex_]);
+	}
+
+	if (true == GameEngineInput::GetInst().Down("AnimationIndexDOWN"))
+	{
+		--CurAnimationIndex_;
+		if (CurAnimationIndex_ < 0)
+		{
+			CurAnimationIndex_ = static_cast<int>(AnimNameList_.size()) - 1;
+		}
+		AnimRenderer_->ChangeFBXAnimation(AnimNameList_[CurAnimationIndex_]);
+	}
+}
+
 void SJH_Yuki::Start()
 {
 	GetLevel()->GetMainCameraActor()->GetTransform()->AttachTransform(GetTransform());
@@ -87,157 +111,121 @@ void SJH_Yuki::Start()
 	GetLevel()->GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 80.0f, 0.0f, 0.0f });
 
 #pragma region UserFiles Load
-	//// User FBX Files
-	//GameEngineDirectory MeshPath;
-	//MeshPath.MoveParent("FoxTeam");
-	//MeshPath.MoveChild("Resources");
-	//MeshPath.MoveChild("FBX");
-	//MeshPath.MoveChild("UserMesh");
+	// User FBX Files
+	GameEngineDirectory MeshPath;
+	MeshPath.MoveParent("FoxTeam");
+	MeshPath.MoveChild("Resources");
+	MeshPath.MoveChild("FBX");
+	MeshPath.MoveChild("UserMesh");
+	MeshPath.MoveChild("Character");
+	MeshPath.MoveChild("Yuki");
 
-	//GameEngineDirectory AnimationPath;
-	//AnimationPath.MoveParent("FoxTeam");
-	//AnimationPath.MoveChild("Resources");
-	//AnimationPath.MoveChild("FBX");
-	//AnimationPath.MoveChild("UserAni");
+	GameEngineDirectory AnimationPath;
+	AnimationPath.MoveParent("FoxTeam");
+	AnimationPath.MoveChild("Resources");
+	AnimationPath.MoveChild("FBX");
+	AnimationPath.MoveChild("UserAni");
+	AnimationPath.MoveChild("Character");
+	AnimationPath.MoveChild("Yuki");
+	AnimationPath.MoveChild("Common");
 
-	//Mesh_ = GameEngineFBXMeshManager::GetInst().LoadUser(MeshPath.PathToPlusFileName("Yuki_01_LOD1.UserMesh"));
-	//GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_01_LOD1.UserAnimation"));
-
-	//AnimRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	//AnimRenderer_->SetFBXMesh(Mesh_->GetName(), "TextureDeferredLightAni");
-	//AnimRenderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
-
-	//for (size_t i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
-	//{
-	//	AnimRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Yuki_01_LOD1.png");
-	//}
-
-	//// 애니메이션 이름 목록생성
-	//AnimationNameList_.clear();
-	//for (int i = 0; i < static_cast<int>(Animation->AnimationCount()); i++)
-	//{
-	//	auto Data = Animation->GetAnimationData(i);
-	//
-	//	std::string AnimationName = Data.AniName;
-	//	AnimationNameList_.push_back(AnimationName);
-	//}
-
-	//AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], Animation->GetName(), 0);
-	//AnimRenderer_->CreateFBXAnimation(AnimationNameList_[14], Animation->GetName(), 14);
-	//AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
-
-#pragma endregion
-
-#pragma region FBXFiles Load
-	// FBX Files 경로 지정
-	GameEngineDirectory Directory;
-	Directory.MoveParent("FoxTeam");
-	Directory.MoveChild("Resources");
-	Directory.MoveChild("FBX");
-	Directory.MoveChild("SJH");
-
-	// 메쉬로드
-	std::string MeshName = "Yuki_01_LOD1.fbx";
-
-	Mesh_ = GameEngineFBXMeshManager::GetInst().Load(Directory.PathToPlusFileName(MeshName));
-	Mesh_->CreateRenderingBuffer();
-
-	// 렌더러 생성
+	//================================================== Create Animation Renderer ==================================================//
 	AnimRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-	AnimRenderer_->SetFBXMesh(MeshName, "TextureDeferredLightAni");
-	AnimRenderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
+	AnimRenderer_->GetTransform()->SetLocalRotationDegree(float4(-90.0f, 0.0f, 0.0f, 0.0f));
 
-	// Yuki_01_LOD1.png
-	for (UINT i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
+	//===================================================== Mesh Load =====================================================//
+	BaseMesh_ = GameEngineFBXMeshManager::GetInst().LoadUser(MeshPath.PathToPlusFileName("Yuki_BaseMesh.UserMesh"));
+	AnimRenderer_->SetFBXMesh(BaseMesh_->GetName(), "TextureDeferredLightAni");
+
+	//==================================================== Animation Load ====================================================//
+	// 00. Common
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_arrive.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_boxopen.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_collect.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_collect_Stone.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_collect_Water.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_collect_Wood.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_craftfood.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_craftmetal.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_dance.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_death.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_down_dead.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_down_run.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_down_start.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_down_wait.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_downdead.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_fishing.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_install_trap.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_operate.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_rest_end.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_rest_loop.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_rest_start.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_resurrect.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_run.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_skill04.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_skill04_end.UserAnimation"));
+	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Yuki_Common_wait.UserAnimation"));
+
+	// 01. ...
+	// 02. ...
+
+	//========================================= Create Animation Frame =========================================//
+	for (size_t i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
 	{
 		AnimRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Yuki_01_LOD1.png");
 	}
 
-	// 애니메이션 로드
-	GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(Directory.PathToPlusFileName(MeshName));
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_arrive", "Yuki_Common_arrive.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_boxopen", "Yuki_Common_boxopen.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_collect", "Yuki_Common_collect.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_collect_Stone", "Yuki_Common_collect_Stone.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_collect_Water", "Yuki_Common_collect_Water.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_collect_Wood", "Yuki_Common_collect_Wood.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_craftfood", "Yuki_Common_craftfood.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_craftmetal", "Yuki_Common_craftmetal.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_dance", "Yuki_Common_dance.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_death", "Yuki_Common_death.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_down_dead", "Yuki_Common_down_dead.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_down_run", "Yuki_Common_down_run.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_down_start", "Yuki_Common_down_start.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_down_wait", "Yuki_Common_down_wait.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_downdead", "Yuki_Common_downdead.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_fishing", "Yuki_Common_fishing.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_install_trap", "Yuki_Common_install_trap.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_operate", "Yuki_Common_operate.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_rest_end", "Yuki_Common_rest_end.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_rest_loop", "Yuki_Common_rest_loop.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_rest_start", "Yuki_Common_rest_start.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_resurrect", "Yuki_Common_resurrect.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_run", "Yuki_Common_run.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_skill04", "Yuki_Common_skill04.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_skill04_end", "Yuki_Common_skill04_end.UserAnimation", 0);
+	AnimRenderer_->CreateFBXAnimation("Yuki_Common_wait", "Yuki_Common_wait.UserAnimation", 0);
+	AnimRenderer_->ChangeFBXAnimation("Yuki_Common_wait");
 
-	// 애니메이션 생성
-	AnimationNameList_.clear();
-	for (int i = 0; i < static_cast<int>(Animation->AnimationCount()); i++)
-	{
-		auto Data = Animation->GetAnimationData(i);
-
-		std::string AnimationName = Data.AniName;
-		AnimationNameList_.push_back(AnimationName);
-		//AnimRenderer_->CreateFBXAnimation(AnimationName, MeshName, i);
-	}
-
-#pragma region 기존애니메이션
-	//Renderer_->CreateFBXAnimation("Yuki_Common_wait", "Yuki_01_LOD1.fbx", 0);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_rest_start", "Yuki_01_LOD1.fbx", 1);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_rest_loop", "Yuki_01_LOD1.fbx", 2);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_operate", "Yuki_01_LOD1.fbx", 3);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_install_trap", "Yuki_01_LOD1.fbx", 4);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_fishing", "Yuki_01_LOD1.fbx", 5);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_craftfood", "Yuki_01_LOD1.fbx", 6);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_craftmetal", "Yuki_01_LOD1.fbx", 7);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_arrive", "Yuki_01_LOD1.fbx", 8);
-	//Renderer_->CreateFBXAnimation("Yuki_Empty_Weaponskill_start", "Yuki_01_LOD1.fbx", 9);
-	//Renderer_->CreateFBXAnimation("Yuki_Empty_Weaponskill_end", "Yuki_01_LOD1.fbx", 10);
-	//Renderer_->CreateFBXAnimation("Yuki_Empty_run", "Yuki_01_LOD1.fbx", 11);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_boxopen", "Yuki_01_LOD1.fbx", 12);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_collect", "Yuki_01_LOD1.fbx", 13);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_dance", "Yuki_01_LOD1.fbx", 14);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_death", "Yuki_01_LOD1.fbx", 15);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_rest_end", "Yuki_01_LOD1.fbx", 16);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_collect_Stone", "Yuki_01_LOD1.fbx", 17);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_collect_Water", "Yuki_01_LOD1.fbx", 18);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_collect_Wood", "Yuki_01_LOD1.fbx", 19);
-	//Renderer_->CreateFBXAnimation("Yuki_BareHands_skill04", "Yuki_01_LOD1.fbx", 20);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_skill02_upper_wait", "Yuki_01_LOD1.fbx", 21);
-	//Renderer_->CreateFBXAnimation("Yuki_BareHands_skill04_end", "Yuki_01_LOD1.fbx", 22);
-	//Renderer_->CreateFBXAnimation("Yuki_BareHands_skill03_move", "Yuki_01_LOD1.fbx", 23);
-	//Renderer_->CreateFBXAnimation("Yuki_BareHands_atk01", "Yuki_01_LOD1.fbx", 24);
-	//Renderer_->CreateFBXAnimation("Yuki_BareHands_atk02", "Yuki_01_LOD1.fbx", 25);
-	//Renderer_->CreateFBXAnimation("Yuki_BareHands_skill03_attack", "Yuki_01_LOD1.fbx", 26);
-	//Renderer_->CreateFBXAnimation("Yuki_BareHands_skill01", "Yuki_01_LOD1.fbx", 27);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_resurrect", "Yuki_01_LOD1.fbx", 28);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_down_start", "Yuki_01_LOD1.fbx", 29);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_down_run", "Yuki_01_LOD1.fbx", 30);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_down_wait", "Yuki_01_LOD1.fbx", 31);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_down_dead", "Yuki_01_LOD1.fbx", 32);
-	//Renderer_->CreateFBXAnimation("Yuki_Empty_DualSword_Weaponskill", "Yuki_01_LOD1.fbx", 33);
-	//Renderer_->CreateFBXAnimation("Yuki_Empty_Dual_weaponskill02", "Yuki_01_LOD1.fbx", 34);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_wait", "Yuki_01_LOD1.fbx", 35);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_wait", "Yuki_01_LOD1.fbx", 36);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_run", "Yuki_01_LOD1.fbx", 37);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_skill04_end", "Yuki_01_LOD1.fbx", 38);
-	//Renderer_->CreateFBXAnimation("Yuki_Common_skill04", "Yuki_01_LOD1.fbx", 39);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_skill03_move", "Yuki_01_LOD1.fbx", 40);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_skill01", "Yuki_01_LOD1.fbx", 41);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_Weaponskill_end", "Yuki_01_LOD1.fbx", 42);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_Weaponskill_start", "Yuki_01_LOD1.fbx", 43);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_skill03_attack", "Yuki_01_LOD1.fbx", 44);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_atk01", "Yuki_01_LOD1.fbx", 45);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_atk02", "Yuki_01_LOD1.fbx", 46);
-	//Renderer_->CreateFBXAnimation("Yuki_2Hand_run", "Yuki_01_LOD1.fbx", 47);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_skill02_upper_wait", "Yuki_01_LOD1.fbx", 48);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_skill03_move", "Yuki_01_LOD1.fbx", 49);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_skill01", "Yuki_01_LOD1.fbx", 50);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_skill03_attack", "Yuki_01_LOD1.fbx", 51);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_atk01", "Yuki_01_LOD1.fbx", 52);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_atk02", "Yuki_01_LOD1.fbx", 53);
-	//Renderer_->CreateFBXAnimation("Yuki_Empty_Dual_run", "Yuki_01_LOD1.fbx", 54);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_weaponskill", "Yuki_01_LOD1.fbx", 55);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_weaponskill02", "Yuki_01_LOD1.fbx", 56);
-	//Renderer_->CreateFBXAnimation("Yuki_Dual_run", "Yuki_01_LOD1.fbx", 57);
-
+	// 애니메이션 이름 목록 생성
+	AnimNameList_ = AnimRenderer_->GetAnimationNameList();
 #pragma endregion
 
-	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[0], MeshName, 0, true);
-	AnimRenderer_->CreateFBXAnimation(AnimationNameList_[37], MeshName, 37, true);
-	AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
+#pragma region 테스트키 생성
+	if (false == GameEngineInput::GetInst().IsKey("AnimationIndexUP"))
+	{
+		GameEngineInput::GetInst().CreateKey("AnimationIndexUP", VK_UP);
+	}
+
+	if (false == GameEngineInput::GetInst().IsKey("AnimationIndexDOWN"))
+	{
+		GameEngineInput::GetInst().CreateKey("AnimationIndexDOWN", VK_DOWN);
+	}
 
 #pragma endregion
 }
 
 void SJH_Yuki::Update(float _DeltaTime)
 {
+	// InputKey State Check
+	InputKeyStateCheck(_DeltaTime);
+
 	// 이동가능 Flag On & 이동경로가 존재할때 플레이어는 이동
 	if (true == MoveStart_)
 	{
@@ -278,21 +266,23 @@ void SJH_Yuki::Update(float _DeltaTime)
 				MovePath_.clear();
 
 				// 완전히 이동종료
-				AnimRenderer_->ChangeFBXAnimation(AnimationNameList_[0]);
+				AnimRenderer_->ChangeFBXAnimation("Yuki_Common_wait");
 			}
 		}
 	}
 }
 
 SJH_Yuki::SJH_Yuki()
-	: Mesh_(nullptr)
+	: BaseMesh_(nullptr)
 	, AnimRenderer_(nullptr)
+	, CurAnimationIndex_(0)
 	, CurNaviCell_(nullptr)
 	, TargetNaviCell_(nullptr)
 	, MoveStart_(false)
 	, MoveStartPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveEndPos_(float4(0.0f, 0.0f, 0.0f, 0.0f))
 	, MoveSpeed_(10.0f)
+	, CurState_(Yuki_State::MAX)
 {
 }
 

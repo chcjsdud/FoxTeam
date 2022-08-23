@@ -36,6 +36,7 @@ public:
 	void Write(GameEngineFile* _File) const
 	{
 		_File->Write(Name);
+		_File->Write(DifColor);
 		_File->Write(AmbColor); // ºû
 		_File->Write(SpcColor); // ºû
 		_File->Write(EmvColor); // ºû
@@ -54,6 +55,7 @@ public:
 	void Read(GameEngineFile* _File)
 	{
 		_File->Read(Name);
+		_File->Read(DifColor);
 		_File->Read(AmbColor); // ºû
 		_File->Read(SpcColor); // ºû
 		_File->Read(EmvColor); // ºû

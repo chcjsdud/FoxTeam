@@ -90,6 +90,18 @@ public:
 		return FBXMesh;
 	}
 
+	inline std::vector<std::string> GetAnimationNameList()
+	{
+		std::vector<std::string> ReturnNameList;
+
+		for (auto AnimName : Animations)
+		{
+			ReturnNameList.push_back(AnimName.first);
+		}
+
+		return ReturnNameList;
+	}
+
 protected:
 	void Start() override;
 
