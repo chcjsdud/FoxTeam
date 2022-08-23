@@ -131,12 +131,12 @@ void SJH_Wolf::Start()
 #pragma region 테스트키 생성
 	if (false == GameEngineInput::GetInst().IsKey("Wolf_AnimationIndexUP"))
 	{
-		GameEngineInput::GetInst().CreateKey("Wolf_AnimationIndexUP", VK_UP);
+		GameEngineInput::GetInst().CreateKey("Wolf_AnimationIndexUP", VK_RIGHT);
 	}
 
 	if (false == GameEngineInput::GetInst().IsKey("Wolf_AnimationIndexDOWN"))
 	{
-		GameEngineInput::GetInst().CreateKey("Wolf_AnimationIndexDOWN", VK_DOWN);
+		GameEngineInput::GetInst().CreateKey("Wolf_AnimationIndexDOWN", VK_LEFT);
 	}
 #pragma endregion
 }
