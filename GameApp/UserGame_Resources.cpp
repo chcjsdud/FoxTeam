@@ -109,6 +109,22 @@ void UserGame::ResourcesLoad()
 		}
 	}
 
+	{
+		GameEngineDirectory TextureDir;
+		TextureDir.MoveParent("FoxTeam");
+		TextureDir.MoveChild("Resources");
+		TextureDir.MoveChild("Texture");
+		TextureDir.MoveChild("SJH");
+
+		std::vector<GameEngineDirectory> AllDir = TextureDir.GetAllDirectoryRecursive();
+		LoadingFolder = static_cast<int>(AllDir.size());
+
+		for (size_t i = 0; i < AllDir.size(); i++)
+		{
+			GameEngineCore::ThreadQueue.JobPost(std::bind(TextureLoading, AllDir[i]));
+		}
+	}
+
 	AppShaderLoad();
 
 
