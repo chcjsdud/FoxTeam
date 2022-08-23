@@ -56,9 +56,9 @@ void UI_ItemBox::Start()
 
 	{
 		ItemBoxCollision = CreateTransformComponent<GameEngineCollision>();
-		ItemBoxCollision->GetTransform()->SetLocalPosition({0.0f, 0.0f, 0.0f});
-		ItemBoxCollision->GetTransform()->SetLocalScaling(float4{ 500.0f, 500.0f, 0.0f });
-		ItemBoxCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
+		ItemBoxCollision->GetTransform()->SetLocalPosition(ItemBox_BackgroundPos);
+		ItemBoxCollision->GetTransform()->SetLocalScaling(ItemBoxBackGround_Renderer->GetCurrentTexture()->GetTextureSize());
+		ItemBoxCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
 	}
 
 
@@ -82,28 +82,22 @@ void UI_ItemBox::Update(float _Time)
 		{
 			ItemBoxBackGround_Renderer->On();
 			BoxtypeFont_Renderer->On();
-			//UI 렌더러용 디버깅렌더러가 필요할수도
-			// 현재의 디버그 렌더러는 메인카메라의 위치를 받아서 하므로 제대로 출력이 안됨
-			//GetLevel()->PushDebugRenderUI(ItemBoxCollision->GetTransform(), CollisionType::Rect);
+			GetLevel()->PushDebugRenderUI(ItemBoxCollision->GetTransform(), CollisionType::AABBBox3D);
 		}
 	}
 
 	if (true == GameEngineInput::GetInst().Down("Esc"))
 	{
-		if (UI_On == true)
-		{
-			RenderOff();
-		}
-		else
-		{
-			RenderOn();
-		}
+		//if (UI_On == true)
+		//{
+		//	RenderOff();
+		//}
+		//else
+		//{
+		//	RenderOn();
+		//}
 	}
 
-	//if (true == ItemBoxCollision->Collision((int)CollisionGroup::MousePointer))
-	//{
-	//	
-	//}
 }
 
 void UI_ItemBox::RenderOff()
@@ -114,4 +108,16 @@ void UI_ItemBox::RenderOff()
 void UI_ItemBox::RenderOn()
 {
 	UI_On = true;
+}
+
+bool UI_ItemBox::MouseCollisionCheck()
+{
+	if (true == ItemBoxCollision->Collision((int)CollisionGroup::MousePointer))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

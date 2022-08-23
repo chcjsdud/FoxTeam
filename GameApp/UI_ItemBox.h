@@ -31,6 +31,8 @@ public:
 	
 	void RenderOn();
 
+	bool MouseCollisionCheck();
+
 protected:
 	GameEngineUIRenderer* ItemBoxBackGround_Renderer;
 	

@@ -149,6 +149,20 @@ void ItemBoxManager::Update(float _DeltaTime)
 		}
 	}
 
+	if (ItemBoxUI_ != nullptr)
+	{
+		if (false == ItemBoxUI_->MouseCollisionCheck())
+		{
+			if (GameEngineInput::GetInst().Down("LBUTTON"))
+			{
+				//이건호 : UI충돌박스 밖에서 클릭할시, ItemBoxUI가 꺼진다
+				ItemBoxUI_->Release();
+				ItemBoxUI_ = nullptr;
+			}
+		}
+
+	}
+
 	BoxSelectUpdate();
 }
 
