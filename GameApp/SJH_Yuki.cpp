@@ -62,23 +62,30 @@ void SJH_Yuki::MoveStart(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTarge
 	}
 }
 
-void SJH_Yuki::Detect(const GameEngineActor* _DetectTarget)
+void SJH_Yuki::Detect()
+{
+	// 감지된 타겟이 없음
+	if (nullptr == CurTarget_)
+	{
+		return;
+	}
+
+
+}
+
+void SJH_Yuki::Attack()
 {
 }
 
-void SJH_Yuki::Attack(const GameEngineActor* _AttackTarget)
+void SJH_Yuki::SkillAttack()
 {
 }
 
-void SJH_Yuki::SkillAttack(const GameEngineActor* _AttackTarget)
+void SJH_Yuki::Block()
 {
 }
 
-void SJH_Yuki::Block(const GameEngineActor* _BlockTarget)
-{
-}
-
-void SJH_Yuki::GetHit(const GameEngineActor* _GetHitTarget)
+void SJH_Yuki::GetHit()
 {
 }
 
