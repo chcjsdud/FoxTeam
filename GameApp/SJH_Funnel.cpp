@@ -55,12 +55,12 @@ void SJH_Funnel::CreatePortalVertexList(std::list<SJH_NaviCell*>& _MovePath)
 				float4 TargetVector = ShareVertex[VertexIndex].POSITION - FirstCellGravity;
 
 				float4 Cross = float4::Cross3D(TargetVector, FrontVector).NormalizeReturn3D();
-				float Dot = float4::Dot3D(Cross, float4(0.0f, 1.0f, 0.0f, 0.0f));
-				if (Dot >= 0.0f)
+				float Dot = float4::Dot3D(float4(0.0f, 1.0f, 0.0f, 0.0f), Cross);
+				if (Dot > 0.0f)
 				{
 					LeftPortal_.push_back(ShareVertex[VertexIndex].POSITION);
 				}
-				else
+				else if(Dot < 0.0f)
 				{
 					RightPortal_.push_back(ShareVertex[VertexIndex].POSITION);
 				}
@@ -92,6 +92,7 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 	// 최적경로 및 코너 정점좌표 탐색 시작
 	while(true)
 	{
+		// 모든 포탈 탐색완료시 경로 생성 완료
 		if (CurLPortalIndex >= static_cast<int>(LeftPortal_.size()) ||
 			CurLPortalIndex + 1 >= static_cast<int>(LeftPortal_.size()) ||
 			CurRPortalIndex >= static_cast<int>(RightPortal_.size()) ||
@@ -107,7 +108,7 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 		float4 StartToCurLPortal = (CheckCurLPortal - StartPoint).NormalizeReturn3D();
 		float4 StartToNextLPortal = (CheckNextLPortal - StartPoint).NormalizeReturn3D();
 		float4 LPortalCross = float4::Cross3D(StartToNextLPortal, StartToCurLPortal).NormalizeReturn3D();
-		float LPortalDot = float4::Dot3D(LPortalCross, float4(0.0f, 1.0f, 0.0f, 0.0f));
+		float LPortalDot = float4::Dot3D(float4(0.0f, 1.0f, 0.0f, 0.0f), LPortalCross);
 
 		//=========================================== 오른쪽 포탈 검사 정보 셋팅 ===========================================//
 		CheckCurRPortal = RightPortal_[CurRPortalIndex];
@@ -116,10 +117,28 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 		float4 StartToCurRPortal = (CheckCurRPortal - StartPoint).NormalizeReturn3D();
 		float4 StartToNextRPortal = (CheckNextRPortal - StartPoint).NormalizeReturn3D();
 		float4 RPortalCross = float4::Cross3D(StartToNextRPortal, StartToCurRPortal).NormalizeReturn3D();
-		float RPortalDot = float4::Dot3D(RPortalCross, float4(0.0f, 1.0f, 0.0f, 0.0f));
+		float RPortalDot = float4::Dot3D(float4(0.0f, 1.0f, 0.0f, 0.0f), RPortalCross);
 
-		// 포탈의 직선연결이 불가능한경우 해당 포탈의 중점을 시작위치로 셋팅하고 깔때기를 재설정 후 탐색 시작
-		if (LPortalDot > 0 && RPortalDot < 0)
+		//============================================ 왼쪽 포탈 코너 정보 셋팅 ============================================//
+		float4 LeftCornerCheck = float4::Cross3D(StartToNextRPortal, StartToCurLPortal).NormalizeReturn3D();
+		float LeftCornerDot = float4::Dot3D(float4(0.0f, 1.0f, 0.0f, 0.0f), LeftCornerCheck);
+
+		//=========================================== 오른쪽 포탈 코너 정보 셋팅 ===========================================//
+		float4 RightCornerCheck = float4::Cross3D(StartToNextLPortal, StartToCurRPortal).NormalizeReturn3D();
+		float RightCornerDot = float4::Dot3D(float4(0.0f, 1.0f, 0.0f, 0.0f), RightCornerCheck);
+
+		//================================================= 경로 생성 시작 ================================================//
+
+		// 탐색기준위치(StartPoint)가 달라지는 경우
+		// 1. 탐색왼쪽포탈이 기준왼쪽포탈보다 왼쪽이고, 탐색오른쪽포탈이 기준오른쪽포탈보다 오른쪽인 경우
+		// 2. 탐색왼쪽포탈이 기준왼쪽포탈보다 오른쪽이고, 탐색오른쪽포탈이 기준왼쪽포탈보다 왼쪽인 경우
+		// 3. 탐색오른쪽포탈이 기준오른쪽포탈보다 왼쪽이고, 탐색왼쪽포탈이 기준오른쪽포탈보다 오른쪽인 경우
+		// -> 3개의 경우의 수를 제외하고 CurLPortalIndex, CurRPortalIndex은 최대치까지 증가하면서 탐색
+
+		// 조건 1 : 더 이상의 직선이동 불가 판정
+		//         1) 탐색왼쪽포탈이 기준왼쪽포탈과 수평이거나 기준왼쪽포탈보다 왼쪽인 경우
+		//         2) 탐색오른쪽포탈이 기준오른쪽포탈과 수평이거나 기준오른쪽포탈보다 오른쪽인 경우
+		if (LPortalDot >= 0.0f && RPortalDot <= 0.0f)
 		{
 			// 두개의 포털 인덱스 중 더 작은 인덱스에 초점을 맞춘 중점을 시작위치로 셋팅
 			int CheckIndex = CurLPortalIndex < CurRPortalIndex ? CurLPortalIndex : CurRPortalIndex;
@@ -140,53 +159,49 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 			continue;
 		}
 
-		// < 다음 왼쪽포탈이 현재 왼쪽포탈의 오른쪽에 위치하므로 연결가능 포탈로 판정 >
-		// 조건 1 : 현재 왼쪽포탈보다 다음 왼쪽포탈이 오른쪽에 위치하고, 오른쪽 포탈의 왼쪽에 위치한다면 연결가능한 포탈
-		// 조건 2 : 현재 왼쪽포탈보다 다음 포탈이 왼쪽에 위치한다면 연결불가
-		if (LPortalDot <= 0)
+		// 조건 2 : 탐색왼쪽포탈이 기준왼쪽포탈보다 오른쪽에 위치
+		if (LPortalDot <= 0.0f)
 		{
-			// < 오른쪽에 위치하거나 수평일때 >
-			//
-			// 코너 판정
-			float4 RightCornerCheck = float4::Cross3D(StartToNextLPortal, StartToCurRPortal).NormalizeReturn3D();
-			float RightCornerDot = float4::Dot3D(RightCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
-			if (RightCornerDot <= 0 && LPortalDot <= 0)
+			// 기준오른쪽 포탈보다 다음 왼쪽포탈이 오른쪽에 위치하거나 수평하다면 오른쪽코너 판정
+			if (RightCornerDot <= 0.0f)
 			{
-				// 현재 오른쪽 포탈보다 다음 왼쪽포탈이 오른쪽에 위치하거나 수평하다면 현재 오른쪽 포탈이 경로로 지정
-				_ReturnPath.push_back(CheckCurRPortal);
 				StartPoint = CheckCurRPortal;
+				_ReturnPath.push_back(StartPoint);
 
 				++CurRPortalIndex;
 				CurLPortalIndex = CurRPortalIndex;
 				continue;
 			}
-			else
+
+			// 기준왼쪽포탈과 탐색왼쪽포탈이 수평인 경우를 제외하면 연결가능
+			if (LPortalDot != 0.0f)
 			{
 				++CurLPortalIndex;
+
+				//====================================== 오른쪽 처리를 위해 정보 갱신 ======================================//
+				CheckCurLPortal = LeftPortal_[CurLPortalIndex];
+				StartToCurLPortal = (CheckCurLPortal - StartPoint).NormalizeReturn3D();
+				LeftCornerCheck = float4::Cross3D(StartToNextRPortal, StartToCurLPortal).NormalizeReturn3D();
+				LeftCornerDot = float4::Dot3D(float4(0.0f, 1.0f, 0.0f, 0.0f), LeftCornerCheck);
 			}
 		}
 
-		// < 다음 오른쪽 포탈이 현재 오른쪽 포탈의 왼쪽에 위치하므로 연결가능 포탈로 판정 >
-		// 조건 1 : 현재 오른쪽포탈보다 다음 오른쪽포탈이 왼쪽에 위치하고, 왼쪽 포탈의 오른쪽에 위치한다면 연결가능한 포탈
-		// 조건 2 : 현재 오른쪽포탈보다 다음 오른쪽포탈이 오른쪽에 위치한다면 연결불가
-		if (RPortalDot >= 0)
+		// 조건 3 : 탐색오른쪽포탈이 기준오른쪽포탈보다 왼쪽에 위치
+		if (RPortalDot >= 0.0f)
 		{
-			// < 왼쪽에 위치하거나 수평일때 >
-			//
-			// 코너 판정
-			float4 LeftCornerCheck = float4::Cross3D(StartToNextRPortal, StartToCurLPortal).NormalizeReturn3D();
-			float LeftCornerDot = float4::Dot3D(LeftCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
-			if (LeftCornerDot >= 0 && RPortalDot >= 0)
+			// 기준왼쪽 포탈보다 다음 오른쪽포탈이 왼쪽에 위치하거나 수평하다면 왼쪽코너 판정
+			if (LeftCornerDot >= 0.0f)
 			{
-				// 현재 왼쪽 포탈보다 다음 오른쪽포탈이 왼쪽에 위치하거나 수평하다면 현재 왼쪽 포탈이 경로로 지정
-				_ReturnPath.push_back(CheckCurLPortal);
 				StartPoint = CheckCurLPortal;
+				_ReturnPath.push_back(StartPoint);
 
 				++CurLPortalIndex;
 				CurRPortalIndex = CurLPortalIndex;
 				continue;
 			}
-			else
+
+			// 기준오른쪽포탈과 탐색오른쪽포탈이 수평인 경우를 제외하면 연결가능
+			if (RPortalDot != 0.0f)
 			{
 				++CurRPortalIndex;
 			}

@@ -153,8 +153,7 @@ void SJH_FloorMap::CreateAllNaviCellInfo()
 		for (int MaterialNumber = 0; MaterialNumber < AllMeshInfo[MeshNumber].MaterialNum; ++MaterialNumber)
 		{
 			// 3개의 정점을 연결하는 인덱스목록이 존재 -> 면(삼각형) 1개를 이룸
-			//for (int FaceNumber = 0; FaceNumber < static_cast<int>(AllMeshInfo[MeshNumber].FaceNum); ++FaceNumber)
-			for (int FaceNumber = 0; FaceNumber < static_cast<int>(AllMeshMap[MeshNumber].Indexs[0][MaterialNumber].size()) / 3; ++FaceNumber)
+			for (int FaceNumber = 0; FaceNumber < AllMeshInfo[MeshNumber].FaceNum; ++FaceNumber)
 			{
 				std::vector<GameEngineVertex> VertexList;
 				std::vector<UINT> IndexList;
