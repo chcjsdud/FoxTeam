@@ -150,26 +150,19 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 			// 코너 판정
 			float4 RightCornerCheck = float4::Cross3D(StartToNextLPortal, StartToCurRPortal).NormalizeReturn3D();
 			float RightCornerDot = float4::Dot3D(RightCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
-			if (RightCornerDot <= 0)
+			if (RightCornerDot <= 0 && LPortalDot <= 0)
 			{
 				// 현재 오른쪽 포탈보다 다음 왼쪽포탈이 오른쪽에 위치하거나 수평하다면 현재 오른쪽 포탈이 경로로 지정
 				_ReturnPath.push_back(CheckCurRPortal);
 				StartPoint = CheckCurRPortal;
 
 				++CurRPortalIndex;
-				//CurLPortalIndex = CurRPortalIndex;
+				CurLPortalIndex = CurRPortalIndex;
 				continue;
 			}
 			else
 			{
 				++CurLPortalIndex;
-
-				//============================================ 왼쪽 포탈 검사 정보 셋팅 ============================================//
-				if (CurLPortalIndex < static_cast<int>(LeftPortal_.size()))
-				{
-					CheckCurLPortal = LeftPortal_[CurLPortalIndex];
-					StartToCurLPortal = (CheckCurLPortal - StartPoint).NormalizeReturn3D();
-				}
 			}
 		}
 
@@ -183,14 +176,14 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 			// 코너 판정
 			float4 LeftCornerCheck = float4::Cross3D(StartToNextRPortal, StartToCurLPortal).NormalizeReturn3D();
 			float LeftCornerDot = float4::Dot3D(LeftCornerCheck, float4(0.0f, 1.0f, 0.0f, 0.0f));
-			if (LeftCornerDot >= 0)
+			if (LeftCornerDot >= 0 && RPortalDot >= 0)
 			{
 				// 현재 왼쪽 포탈보다 다음 오른쪽포탈이 왼쪽에 위치하거나 수평하다면 현재 왼쪽 포탈이 경로로 지정
 				_ReturnPath.push_back(CheckCurLPortal);
 				StartPoint = CheckCurLPortal;
 
 				++CurLPortalIndex;
-				//CurRPortalIndex = CurLPortalIndex;
+				CurRPortalIndex = CurLPortalIndex;
 				continue;
 			}
 			else

@@ -64,7 +64,7 @@ bool SJH_FloorMap::MoveFacePath(const float4& _StartPos, const float4& _EndPos, 
 	// 경로 탐색 시작
 	// 1. A*로 최단거리 경로를 얻어낸 후
 	// 2. 해당 경로를 최적화작업(Funnel Algorithm)으로 최적의 경로를 반환
-	_MovePath = PathFinder_->SearchMovePath(_StartPos, _EndPos, _StartCell, _TargetCell, static_cast<int>(NavigationCellInfos_.size()) * 10);
+	_MovePath = PathFinder_->SearchMovePath(_StartPos, _EndPos, _StartCell, _TargetCell, static_cast<int>(NavigationCellInfos_.size()) * 100);
 	if (false == _MovePath.empty())
 	{
 		return true;
