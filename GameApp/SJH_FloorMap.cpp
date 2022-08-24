@@ -99,8 +99,8 @@ void SJH_FloorMap::Start()
 	for (UINT i = 0; i < NaviMeshRenderer_->GetRenderSetCount(); i++)
 	{
 		NaviMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Green.png");
-		//NaviMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
-		NaviMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
+		NaviMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
+		//NaviMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
 
 	// 네비게이션 셀정보 생성
@@ -153,6 +153,7 @@ void SJH_FloorMap::CreateAllNaviCellInfo()
 		for (int MaterialNumber = 0; MaterialNumber < AllMeshInfo[MeshNumber].MaterialNum; ++MaterialNumber)
 		{
 			// 3개의 정점을 연결하는 인덱스목록이 존재 -> 면(삼각형) 1개를 이룸
+			//for (int FaceNumber = 0; FaceNumber < static_cast<int>(AllMeshInfo[MeshNumber].FaceNum); ++FaceNumber)
 			for (int FaceNumber = 0; FaceNumber < static_cast<int>(AllMeshMap[MeshNumber].Indexs[0][MaterialNumber].size()) / 3; ++FaceNumber)
 			{
 				std::vector<GameEngineVertex> VertexList;

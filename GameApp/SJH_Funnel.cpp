@@ -118,7 +118,7 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 		float4 RPortalCross = float4::Cross3D(StartToNextRPortal, StartToCurRPortal).NormalizeReturn3D();
 		float RPortalDot = float4::Dot3D(RPortalCross, float4(0.0f, 1.0f, 0.0f, 0.0f));
 
-		// 포탈 연결이 모두 불가능한경우 해당 포탈의 중점을 시작위치로 셋팅하고 깔때기를 재설정 후 다시 탐색 시작
+		// 포탈의 직선연결이 불가능한경우 해당 포탈의 중점을 시작위치로 셋팅하고 깔때기를 재설정 후 탐색 시작
 		if (LPortalDot > 0 && RPortalDot < 0)
 		{
 			// 두개의 포털 인덱스 중 더 작은 인덱스에 초점을 맞춘 중점을 시작위치로 셋팅
@@ -157,22 +157,19 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 				StartPoint = CheckCurRPortal;
 
 				++CurRPortalIndex;
-				CurLPortalIndex = CurRPortalIndex;
+				//CurLPortalIndex = CurRPortalIndex;
 				continue;
 			}
 			else
 			{
 				++CurLPortalIndex;
 
-				// 오른쪽 포탈 검사를 위해 정보 갱신
-				if (CurLPortalIndex >= static_cast<int>(LeftPortal_.size()))
-				{
-					break;
-				}
-
 				//============================================ 왼쪽 포탈 검사 정보 셋팅 ============================================//
-				CheckCurLPortal = LeftPortal_[CurLPortalIndex];
-				StartToCurLPortal = (CheckCurLPortal - StartPoint).NormalizeReturn3D();
+				if (CurLPortalIndex < static_cast<int>(LeftPortal_.size()))
+				{
+					CheckCurLPortal = LeftPortal_[CurLPortalIndex];
+					StartToCurLPortal = (CheckCurLPortal - StartPoint).NormalizeReturn3D();
+				}
 			}
 		}
 
@@ -193,22 +190,12 @@ bool SJH_Funnel::OptimizationStart(std::list<float4>& _ReturnPath)
 				StartPoint = CheckCurLPortal;
 
 				++CurLPortalIndex;
-				CurRPortalIndex = CurLPortalIndex;
+				//CurRPortalIndex = CurLPortalIndex;
 				continue;
 			}
 			else
 			{
 				++CurRPortalIndex;
-
-				// 정보 갱신
-				if (CurRPortalIndex >= static_cast<int>(RightPortal_.size()))
-				{
-					break;
-				}
-
-				//============================================ 왼쪽 포탈 검사 정보 셋팅 ============================================//
-				CheckCurRPortal = RightPortal_[CurRPortalIndex];
-				StartToCurRPortal = (CheckCurRPortal - StartPoint).NormalizeReturn3D();
 			}
 		}
 	}

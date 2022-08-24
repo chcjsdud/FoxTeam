@@ -8,6 +8,7 @@ std::list<float4> SJH_PathFinder::SearchMovePath(const float4& _StartPos, const 
 	// 이동시작셀과 이동목표셀이 같다면 
 	if (_StartCell == _EndCell)
 	{
+		// 시작위치 -> 클릭지점 경로 생성후 리턴
 		ReturnPath.push_back(_StartPos);
 		ReturnPath.push_back(_EndPos);
 		return ReturnPath;

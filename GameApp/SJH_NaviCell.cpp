@@ -19,22 +19,23 @@ void SJH_NaviCell::SearchAdjacentTriangles(SJH_NaviCell* _CompareNaviCell)
 	// 2개의 정점을 공유하는 면을 인접한 면으로 판단
 	int SharedVerticesCount = 0;
 	int ThisVertexSize = static_cast<int>(VertexList_.size());
+	int CompareVertexSize = static_cast<int>(_CompareNaviCell->VertexList_.size());
 	for (int ThisVertex = 0; ThisVertex < ThisVertexSize; ++ThisVertex)
 	{
-		int CompareVertexSize = static_cast<int>(_CompareNaviCell->VertexList_.size());
 		for (int CompareVertex = 0; CompareVertex < CompareVertexSize; ++CompareVertex)
 		{
 			if (VertexList_[ThisVertex].POSITION == _CompareNaviCell->VertexList_[CompareVertex].POSITION)
 			{
 				++SharedVerticesCount;
+				break;
 			}
+		}
 
-			// 2개의 정점을 공유할때 인접한 면으로 판단
-			if (2 == SharedVerticesCount)
-			{
-				AdjacentTriangles_.push_back(_CompareNaviCell);
-				return;
-			}
+		// 2개의 정점을 공유할때 인접한 면으로 판단
+		if (2 == SharedVerticesCount)
+		{
+			AdjacentTriangles_.push_back(_CompareNaviCell);
+			break;
 		}
 	}
 }

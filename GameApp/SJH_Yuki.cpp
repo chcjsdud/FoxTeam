@@ -33,6 +33,9 @@ void SJH_Yuki::MoveStart(SJH_NaviCell* _TargetNaviCell, const float4& _MoveTarge
 		// 기존 이동경로를 삭제하고
 		MovePath_.clear();
 
+		// 대기애니메이션 실행
+		AnimRenderer_->ChangeFBXAnimation(AnimNameList_[static_cast<int>(Yuki_State::COM_WAIT)]);
+
 		// 플레이어의 현재위치좌표를 이용하여 현재 속한 삼각형(셀)을 알아내어 셋팅
 		SJH_NaviCell* CurCell = SJH_FloorMap::FloorMap->SearchCurrentPosToNaviCell(GetTransform()->GetWorldPosition());
 		if (nullptr != CurCell)
