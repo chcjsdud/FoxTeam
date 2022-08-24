@@ -1,7 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
-#include "PlayerController.h"
+#include "Controller.h"
 
 #include "Enums.h"
 #include "LH_Status.h"
@@ -24,11 +24,6 @@
 //
 // 
 
-
-
-
-
-
 // 플레이어 컨트롤러로 부터 키 조작에 의한 여러 값들을 전달받아 그대로 행동함
 // 플레이어로 옮겨야 할 부분이 많은데 일단 완성후 할것
 
@@ -43,12 +38,48 @@
 //
 
 
-class GameActorUpdatePaket // 임시 구현 상태
+//TODO : 엔진 변경점 :	1.FSM에서 현재 스테이트와 같은 스테이트를 변경하려 하면 리턴하는 기능추가, 체인지 에니메이션처럼 bool Force 추가
+//						2. fbx 렌더러가 현재 에니메이션 이름을 알게끔함
+
+#pragma region 패킷 
+
+class UnitPaket
 {
+protected:
+	UnitPaket() 
+		: UnitID_(0)
+	{
+	}
+	~UnitPaket()
+	{
+	}
+
+	unsigned int UnitID_;
+
+public:
+	unsigned int UnitPaket_GetUnitID()
+	{
+		return UnitID_;
+	}
+};
+
+
+class UnitUpdatePaket : public UnitPaket// 임시 구현 상태
+{
+	friend class Unit;
+protected:
+	UnitUpdatePaket()
+		: AniFrame_(0)
+		, AniFrameTime_(0.f)
+		, AniCurFrameTime(0.f)
+	{
+	}
+	~UnitUpdatePaket()
+	{
+	}
+
+public:
 	//각자 계산하고 최종적으로 반영되어야 할 결과값만 패킷으로 보내자
-
-	unsigned int ObjectID_;
-
 	float4 vWorldPosition_;
 	float4 vWorldRotation_;
 	float4 vWorldScaling_;
@@ -57,19 +88,43 @@ class GameActorUpdatePaket // 임시 구현 상태
 	float4 vLocalRotation_;
 	float4 vLocalScaling_;
 
-	Status Stat_;
-	Buff Buff_;
+	//Status_Buff Status_Buff_[static_cast<int>(BuffType::Max)]; // 버프나 스텟은 나중에
+	//Status Status_Final_; // 클라이언트는 계산하지 않고 계산된 최종 스탯만 받는다.
+
+	std::string AniName_;
+	//AnimationType AnimationType_;
+
+	//TODO: 서버에서 프레임을 제어하기로 했다면 클라이언트에서 스스로 프레임을 흘러가지 않게 해야함
 
 	int AniFrame_;
-	std::string AniName_;
-
-	int Size_;
-
-	const int GetPaketSize()
-	{
-		Size_ = sizeof(GameActorUpdatePaket);
-	}
+	float AniFrameTime_;
+	float AniCurFrameTime;
 };
+
+class UnitAttackPaket : public UnitPaket
+{
+	friend class Unit;
+protected:
+	UnitAttackPaket()
+	{
+
+	}
+	UnitAttackPaket(unsigned int _TargerUnitID, int _Damage)
+	{
+		TargerUnitID_ = _TargerUnitID;
+		Damage_ = _Damage;
+	}
+	~UnitAttackPaket()
+	{
+
+	}
+
+public:
+	unsigned int TargerUnitID_;
+	int Damage_;
+};
+
+#pragma endregion
 
 enum class Unit_Team
 {
@@ -97,11 +152,25 @@ public:
 public:
 	void Unit_AddBaseStat(Status _Status);
 	void Unit_SetBaseStat(Status _Status);
-	void Unit_AddBuff(std::string _Name, Status _Status, float _Time = -1.f, bool _IsSturn = false, std::function<void()> _BuffFunc = nullptr); //_Time(-1.f) == 영구지속
-	void Unit_RemoveBuff(std::string _Name);
-	void Unit_RemoveAllBuff(std::string _Name);
+	void Unit_AddBuff(BuffType _BuffType, Status _Status, float _Time = -1.f, bool _IsSturn = false, std::function<void()> _BuffFunc = nullptr); //_Time(-1.f) == 영구지속
+	void Unit_RemoveBuff(BuffType _BuffType);
+	void Unit_RemoveAllBuff();
+
+	//void Unit_AddBuff(std::string _Name, Status _Status, float _Time = -1.f, bool _IsSturn = false, std::function<void()> _BuffFunc = nullptr); //_Time(-1.f) == 영구지속
+	//void Unit_RemoveBuff(std::string _Name);
+	//void Unit_RemoveAllBuff();
 
 public:
+	const unsigned int Unit_GetUnitID()
+	{
+		return UnitID_;
+	}
+
+	UnitUpdatePaket* Unit_Get_UnitUpdatePaket()
+	{
+		return UnitUpdatePaket_;
+	}
+
 	const Unit_Team Unit_GetTeam()
 	{
 		return Unit_Team_;
@@ -112,7 +181,7 @@ public:
 		Unit_Team_ = _Unit_Team;
 	}
 
-	std::map < std::string, Buff*> Unit_GetPlayerBuffList()
+	std::map <BuffType, Status_Buff*> Unit_GetPlayerBuffList()
 	{
 		return Unit_BufferList_;
 	}
@@ -198,9 +267,14 @@ protected:
 	void Unit_Set_Collision_Init();
 
 #pragma endregion
+private:
+	static unsigned int* UnitStaticIDNumbers_;
+public:
+	unsigned int UnitID_; // 아직 초기화 빼고 관련 함수 없음
+	//서버만이 Actor를 생성할 경우에만 유효함,
 
 protected: // 기본정보
-
+	UnitUpdatePaket* UnitUpdatePaket_;
 	Unit_Team Unit_Team_; //컬리전으로 적의 타입을 알아낸 후, 적인지 아군인지 판별함
 
 	GameEngineFSM OrderState_;
@@ -214,7 +288,7 @@ protected: // 기본정보
 	//피격 히트박스
 	GameEngineCollision* UnitHitBoxCollision_;
 
-	PlayerController* PlayerController_; //TODO: 플레이어 헤더로 이동할것, 몬스터에게 명령을 하달하는 존재가 생겨나면 바로 옮겨도됨
+	Controller* Controller_; //TODO: 플레이어 헤더로 이동할것, 몬스터에게 명령을 하달하는 존재가 생겨나면 바로 옮겨도됨
 #pragma region 컨트롤러 에서 얻어오는 변수들
 
 	float4 Target_Pos_; // 마우스로 지정된 최종적으로 이동해야 할 위치
@@ -233,10 +307,14 @@ protected: // 기본정보
 
 #pragma region 스텟 변수
 
-	std::map <std::string, Buff*> Unit_BufferList_;	//버프 리스트, 	
+	//std::map <std::string, Status_Buff*> Unit_BufferList_;	//버프 리스트, 
+
+	std::map <BuffType, Status_Buff*> Unit_BufferList_;	//임시 구현상태, 
+
 	Status Unit_Status_Base_;		// 캐릭터 기본 스텟
 	Status Unit_Status_Add_;			// 캐릭터 추가 스텟 / 덧
 	Status Unit_Status_Mult_;		// 캐릭터 추가 스텟 / 곱	
+
 	Status Unit_Status_Final_;		// 캐릭터 최종 스텟
 
 	float Unit_AttackTurm_;	//공격 텀, 공격 속도
@@ -260,6 +338,9 @@ protected:
 	void Unit_TargetUpdate(float _DeltaTime);
 	virtual void Unit_StateUpdate(float _DeltaTime);
 	void Unit_UpdateBuff(float _DeltaTime);
+
+	void Unit_Send_Server_PaketUpdate();
+	void Unit_Receive_Server_PaketUpdate();
 #pragma endregion
 
 #pragma region 무브 함수
@@ -275,10 +356,8 @@ protected:
 #pragma endregion
 
 	void Unit_SetOrderEnd();
+	void Unit_SetSyncStatus();
 
-	//리턴값이 true면 추적을 종료한다.
-
-protected:
 	void Unit_SetChangeActionState(std::string _State)
 	{
 		if (ActionState_.GetCurrentState()->Name_ != _State)
@@ -294,8 +373,6 @@ protected:
 			OrderState_.ChangeState(_State);
 		}
 	}
-
-	void Unit_SetSyncStatus();
 
 	const float4 GetTargetDir(float4 TargetPos)
 	{
@@ -319,11 +396,6 @@ protected:
 			Target_Unit_->TargetingUnits_.push_back(this);
 		}
 	}
-
-	//void SetTargetID(unsigned int _Target_ID)
-	//{
-	//	Target_ID_ = _Target_ID;
-	//}
 
 protected:
 #pragma region 명령 State

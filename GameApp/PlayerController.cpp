@@ -1,4 +1,6 @@
 #include "PreCompile.h"
+#include "UserGame.h"
+
 #include "PlayerController.h"
 
 #include "GameMouse.h"
@@ -8,9 +10,10 @@
 
 #include "LH_Player.h"
 
-
 PlayerController::PlayerController()
-	: MainPlayer_(nullptr)
+	: PlayerControllerUpdatePaket_(nullptr)
+	//, MainPlayerID_(0)
+	, MainPlayer_(nullptr)
 	, Controller_ItemList{nullptr}
 	, GameMouse_(nullptr)
 	, Controller_Target_Unit_(nullptr)
@@ -37,27 +40,27 @@ PlayerController::PlayerController()
 	, Key_P_(false)
 	, Key_Y_(false)
 	, Key_Esc_(false)
-	, Key_1_(false)
-	, Key_2_(false)
-	, Key_3_(false)
-	, Key_4_(false)
-	, Key_5_(false)
-	, Key_6_(false)
-	, Key_7_(false)
-	, Key_8_(false)
-	, Key_9_(false)
-	, Key_0_(false)
+	, Key_Num_{false}
 {
 
 }
 
 PlayerController::~PlayerController() // default destructer 디폴트 소멸자
 {
-
+	if(PlayerControllerUpdatePaket_ != nullptr)
+	{
+		delete PlayerControllerUpdatePaket_;
+		PlayerControllerUpdatePaket_ = nullptr;
+	}
 }
 
 void PlayerController::Start()
 {
+	if (UserGame::IsServer_ == false)
+	{
+		PlayerControllerUpdatePaket_ = new PlayerControllerUpdatePaket;
+	}
+
 	//ServerState_.CreateState<PlayerController>("Connecting",this,&PlayerController::, &PlayerController::, &PlayerController::);
 	//ServerState_.CreateState<PlayerController>("Waiting room",this,&PlayerController::, &PlayerController::, &PlayerController::);
 	//ServerState_.CreateState<PlayerController>("Play",this,&PlayerController::, &PlayerController::, &PlayerController::);
@@ -69,14 +72,6 @@ void PlayerController::Start()
 	PlayerController_KeyState_Init();
 	CameraState_.CreateState<PlayerController>("EternalReturn", this, nullptr, &PlayerController::CameraUpdate_EternalReturn, nullptr);
 	CameraState_.ChangeState("EternalReturn");
-
-
-	//bool ServerOn = true;
-
-	//if (ServerOn == true)
-	//{
-	//	PlayerController_Init();
-	//}
 }
 
 void PlayerController::PlayerController_Init()
@@ -164,16 +159,16 @@ void PlayerController::PlayerController_KeyState_Update(float _DeltaTime)
 	Key_P_ = GameEngineInput::GetInst().Down("Key_P");
 	Key_Y_ = GameEngineInput::GetInst().Down("Key_Y");
 
-	Key_1_ = GameEngineInput::GetInst().Down("Key_1");
-	Key_2_ = GameEngineInput::GetInst().Down("Key_2");
-	Key_3_ = GameEngineInput::GetInst().Down("Key_3");
-	Key_4_ = GameEngineInput::GetInst().Down("Key_4");
-	Key_5_ = GameEngineInput::GetInst().Down("Key_5");
-	Key_6_ = GameEngineInput::GetInst().Down("Key_6");
-	Key_7_ = GameEngineInput::GetInst().Down("Key_7");
-	Key_8_ = GameEngineInput::GetInst().Down("Key_8");
-	Key_9_ = GameEngineInput::GetInst().Down("Key_9");
-	Key_0_ = GameEngineInput::GetInst().Down("Key_0");
+	Key_Num_[1] = GameEngineInput::GetInst().Down("Key_1");
+	Key_Num_[2] = GameEngineInput::GetInst().Down("Key_2");
+	Key_Num_[3] = GameEngineInput::GetInst().Down("Key_3");
+	Key_Num_[4] = GameEngineInput::GetInst().Down("Key_4");
+	Key_Num_[5] = GameEngineInput::GetInst().Down("Key_5");
+	Key_Num_[6] = GameEngineInput::GetInst().Down("Key_6");
+	Key_Num_[7] = GameEngineInput::GetInst().Down("Key_7");
+	Key_Num_[8] = GameEngineInput::GetInst().Down("Key_8");
+	Key_Num_[9] = GameEngineInput::GetInst().Down("Key_9");
+	Key_Num_[0] = GameEngineInput::GetInst().Down("Key_0");
 
 	Key_Q_ = GameEngineInput::GetInst().Down("Key_Q");
 	Key_W_ = GameEngineInput::GetInst().Down("Key_W");

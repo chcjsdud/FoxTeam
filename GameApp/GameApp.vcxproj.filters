@@ -224,6 +224,9 @@
     <ClCompile Include="SJH_Wolf.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\03.Monster</Filter>
     </ClCompile>
+    <ClCompile Include="Controller.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
+    </ClCompile>
     <ClCompile Include="PJW_NeviCell.cpp">
       <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
     </ClCompile>
@@ -659,6 +662,9 @@
     </ClInclude>
     <ClInclude Include="SJH_Wolf.h">
       <Filter>01.GameObject\99.SJH\01.Actor\03.Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
     </ClInclude>
     <ClInclude Include="PJW_NeviCell.h" />
     <ClInclude Include="ChattingPacket.h">

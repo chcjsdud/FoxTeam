@@ -1,6 +1,8 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+#include "Controller.h"
+
 #include "LH_Mouse.h"
 
 #include "ItemBase.h"
@@ -17,24 +19,9 @@
 
 
 		오로지 셀렉트된 유닛에 명령만 내림
-*/
-enum class Controller_Order
-{
-	None_Idle,
-	A_RB_Attack_Target,
-	A_Attack_Pos,
-	RB_Move,
-	S_Stop,
-	H_Hold,
-	X_Rest,
-	F_ReLoad,
 
-	Q_Skill,
-	W_Skill,
-	E_Skill,
-	R_Skill,
-	D_Weapon_Skill
-};
+		서버와 무관하게 독립적으로 개개인이 가지게 될것
+*/
 
 // 시작과 동시에 자신의 이름을 짓고 ip 서버에 접속하도록 하고,
 // 만약 중복된 이름이 존재하면 못들어가게함
@@ -42,7 +29,8 @@ enum class Controller_Order
 class Player;
 class Unit;
 class GameMouse;
-class PlayerController : public GameEngineActor
+//class PlayerController : public GameEngineActor
+class PlayerController : public Controller
 {
 	friend Player;
 	friend GameMouse;
@@ -63,66 +51,26 @@ public:
 		return PlayUserName_;
 	}
 
-	const Controller_Order PlayerController_GetOrder()
-	{
-		return Controller_Order_;
-	}
-
-	void PlayerController_SetController_Order(Controller_Order _Controller_Order)
-	{
-		Controller_Order_ = _Controller_Order;
-	}
-	Unit* PlayerController_GetTargetUnit()
-	{
-		return Controller_Target_Unit_;
-	}
-
-	const float4 PlayerController_GetTarget_Pos()
-	{
-		return Controller_Target_Pos_;
-	}
-
 	void PlayerController_SetMainPlayer(Player* _Player)
 	{
 		MainPlayer_ = _Player;
 	}
-
-	//unsigned int GetPlayerID_()
-	//{
-	//	return CurPlayerUnitID_;
-	//}
-
-	//const unsigned int PlayerController_GetTarget_ID()
-	//{
-	//	return Controller_Target_ID_;
-	//}
-
-	//void SetMainPlayerID_(unsigned int _PlayerID)
-	//{
-	//	CurPlayerUnitID_ = _PlayerID;
-	//}
-
 #pragma endregion
 	
 private:
 	// 컨트롤러가 서버로 모든 명령을 보내주면, 서버가 모든 명령을 받아 각기 캐릭터들에게 명령을 하달한 후, 
 	// 그 결과값만 클라이언트로 보내줌
 	// 클라이언트는 결과값만 반영하고 다시 명령을 서버로 보내줌
-
-#pragma region 컨트롤러가 넘겨줘야할 변수들, 컨트롤러는 결과적으로 이 3가지를 리턴하기 위해 존재함
-	float4 Controller_Target_Pos_; // 마우스로 타겟한 최종 지점
-	Unit* Controller_Target_Unit_; //타겟이 된 유닛
-	Controller_Order Controller_Order_;
-	//unsigned int Controller_Target_ID_;
-#pragma endregion
-
 #pragma region 플레이 유저 고유 정보
 	//GameEngineFSM ServerState_; // 서버 대기, 대기실, 플레이 등등 
 
 	std::string PlayUserName_; //유저 이름
 	GameEngineFSM CameraState_; // 카메라
 	LH_Mouse* GameMouse_; // 마우스 인풋
-	Player* MainPlayer_; // 메인 플레이어 캐릭터
+
+	Player* MainPlayer_; // 메인 플레이어 캐릭터 //각기 pc마다 따로 가지게 되는 포인터 값
+
+	//unsigned int MainPlayerID_; // 메인 플레이어 캐릭터 ID 서버 전체가 공유하는 ID값
 
 	ItemBase* Controller_ItemList[10];
 	// 아이템이 가졌ㅇ면 하는것
@@ -131,8 +79,6 @@ private:
 	// 3. 아이템 타입
 	// 번외
 	// 아이템 조합기능
-
-
 #pragma endregion
 
 #pragma region 조작 변수
@@ -170,16 +116,24 @@ private:
 	bool Key_Esc_;	// ESC
 
 	//아이템
-	bool Key_1_;
-	bool Key_2_;
-	bool Key_3_;
-	bool Key_4_;
-	bool Key_5_;
-	bool Key_6_;
-	bool Key_7_;
-	bool Key_8_;
-	bool Key_9_;
-	bool Key_0_;
+	bool Key_Num_[10];
+
+	class PlayerControllerUpdatePaket // 임시 구현 상태
+	{
+		friend PlayerController;
+
+		std::string PlayUserName_; //유저 이름
+
+		float4 Controller_Target_Pos_; // 마우스로 타겟한 최종 지점
+		//Unit* Controller_Target_Unit_; //타겟이 된 유닛
+		unsigned int Controller_Target_UnitID_; //타겟이 된 유닛 ID
+
+		Controller_Order Controller_Order_; //서버에 플레이어 캐릭터의 명령을 전달해주면 서버에서 처리해서 최종 결과값만 반영되게 될것
+
+		bool Key_Num_[10];
+	};
+
+	PlayerControllerUpdatePaket* PlayerControllerUpdatePaket_;
 
 #pragma endregion
 

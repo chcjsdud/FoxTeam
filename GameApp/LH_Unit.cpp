@@ -4,11 +4,15 @@
 #include "LH_Unit.h"
 #include "GameEngine/GameEngineCollision.h"
 
+unsigned int* Unit::UnitStaticIDNumbers_ = nullptr;
+
 Unit::Unit()
-	: UnitGroundCollision_(nullptr)
+	: UnitUpdatePaket_(nullptr)
+	, UnitGroundCollision_(nullptr)
+	, FBXRenderer_(nullptr)
 	, UnitSightCollision_(nullptr)
 	, UnitHitBoxCollision_(nullptr)
-	, PlayerController_(nullptr)
+	, Controller_(nullptr)
 	, Target_Unit_(nullptr)
 	, Unit_Team_(Unit_Team::None)
 	, Controller_Order_(Controller_Order::None_Idle)
@@ -20,6 +24,27 @@ Unit::Unit()
 	, IsSturn_(false)
 	, OrderUpdate_(false)
 {	
+	if (UserGame::IsServer_ == false)
+	{
+		UnitUpdatePaket_ = new UnitUpdatePaket;
+	}
+	else
+	{
+		if (UnitStaticIDNumbers_ == nullptr)
+		{
+			UnitStaticIDNumbers_ = new unsigned int;
+			*UnitStaticIDNumbers_ = 0;
+		}
+
+		++ * UnitStaticIDNumbers_; // 1번부터 부여하고, 0번은 죽은걸로 취급
+		UnitID_ = *UnitStaticIDNumbers_;
+
+		if (*UnitStaticIDNumbers_ == UINT32_MAX)
+		{
+			GameEngineDebug::MsgBoxError("ActorID 최댓값 초과");
+		}
+	}
+
 	ActionState_.CreateState<Unit>
 		("Action_Idle", this, &Unit::Action_Idle_Start, &Unit::Action_Idle_Update, &Unit::Action_Idle_End);
 
@@ -38,10 +63,7 @@ Unit::Unit()
 	ActionState_.CreateState<Unit>
 		("Action_Rest", this, &Unit::Action_Rest_Start, &Unit::Action_Rest_Update, &Unit::Action_Rest_End);
 
-
 	ActionState_.ChangeState("Action_Idle");
-
-
 
 	OrderState_.CreateState<Unit>
 		("Order_Idle", this, &Unit::Order_Idle_Start, &Unit::Order_Idle_Update, &Unit::Order_Idle_End);
@@ -91,6 +113,18 @@ Unit::~Unit()
 		}
 
 		TargetingUnits_.clear();
+	}
+
+	if (UnitStaticIDNumbers_ != nullptr)
+	{
+		delete UnitStaticIDNumbers_;
+		UnitStaticIDNumbers_ = nullptr;
+	}
+
+	if (UnitUpdatePaket_ != nullptr)
+	{
+		delete UnitUpdatePaket_;
+		UnitUpdatePaket_ = nullptr;
 	}
 }
 
@@ -226,13 +260,60 @@ void Unit::Unit_UpdateBuff(float _DeltaTime)
 	}
 }
 
+void Unit::Unit_Send_Server_PaketUpdate()
+{
+	UnitUpdatePaket _GameActorUpdatePaket;
+
+	_GameActorUpdatePaket.UnitID_ = UnitID_;
+	_GameActorUpdatePaket.vLocalPosition_ = GetTransform()->GetLocalPosition();
+	_GameActorUpdatePaket.vLocalRotation_ = GetTransform()->GetLocalRotation();
+	_GameActorUpdatePaket.vLocalScaling_ = GetTransform()->GetLocalScaling();
+	_GameActorUpdatePaket.vWorldPosition_ = GetTransform()->GetWorldPosition();
+	_GameActorUpdatePaket.vWorldRotation_ = GetTransform()->GetWorldRotation();
+	_GameActorUpdatePaket.vWorldScaling_ = GetTransform()->GetWorldScaling();
+
+	_GameActorUpdatePaket.AniName_ = FBXRenderer_->GetCurAnimationName();
+	_GameActorUpdatePaket.AniFrame_ = FBXRenderer_->GetCurAnimationCurFrame();
+	_GameActorUpdatePaket.AniCurFrameTime = FBXRenderer_->GetCurAnimationCurFrameTime();
+	_GameActorUpdatePaket.AniFrameTime_ = FBXRenderer_->GetCurAnimationFrameTime();
+}
+
+void Unit::Unit_Receive_Server_PaketUpdate()
+{
+	UnitUpdatePaket _GameActorUpdatePaket;
+
+	FBXRenderer_->ChangeFBXAnimation(_GameActorUpdatePaket.AniName_);
+
+	//GameActorUpdatePaket _GameActorUpdatePaket;
+
+	//GetTransform()->SetLocalPosition();
+	////GetTransform()->SetLocal();
+	//GetTransform()->SetLocalPosition();
+
+	//_GameActorUpdatePaket.vLocalPosition_ = GetTransform()->GetLocalPosition();
+	//_GameActorUpdatePaket.vLocalRotation_ = GetTransform()->GetLocalRotation();
+	//_GameActorUpdatePaket.vLocalScaling_ = GetTransform()->GetLocalScaling();
+	//_GameActorUpdatePaket.vWorldPosition_ = GetTransform()->GetWorldPosition();
+	//_GameActorUpdatePaket.vWorldRotation_ = GetTransform()->GetWorldRotation();
+	//_GameActorUpdatePaket.vWorldScaling_ = GetTransform()->GetWorldScaling();
+
+	//_GameActorUpdatePaket.AniName_ = FBXRenderer_->GetCurAnimationName();
+	//_GameActorUpdatePaket.AniFrame_ = FBXRenderer_->GetCurAnimationCurFrame();
+	//_GameActorUpdatePaket.AniCurFrameTime = FBXRenderer_->GetCurAnimationCurFrameTime();
+	//_GameActorUpdatePaket.AniFrameTime_ = FBXRenderer_->GetCurAnimationFrameTime();
+
+	//_GameActorUpdatePaket.Status_Final_ = Unit_Status_Final_;
+}
+
 void Unit::Unit_Controller_Update()
 {
-	Target_Pos_ = PlayerController_->PlayerController_GetTarget_Pos();
+	// 이거 없애버리고 필요할때만 얻어오게 하자
 
-	Unit_SetUnitTarget(PlayerController_->PlayerController_GetTargetUnit());
+	Target_Pos_ = Controller_->Controller_GetTarget_Pos();
+
+	Unit_SetUnitTarget(Controller_->Controller_GetTargetUnit());
 	//Target_ID_ = PlayController_->PlayerController_GetTarget_ID();
-	Controller_Order_ = PlayerController_->PlayerController_GetOrder();
+	Controller_Order_ = Controller_->Controller_GetOrder();
 }
 
 void Unit::Unit_StateUpdate(float _DeltaTime) // 오버로딩 가능하게 만들자
@@ -338,30 +419,30 @@ void Unit::Unit_SetBaseStat(Status _Status)
 	Unit_Status_Base_ = _Status;
 }
 
-void Unit::Unit_AddBuff(std::string _Name, Status _Status, float _Time, bool _IsSturn, std::function<void()> _BuffFunc)
+void Unit::Unit_AddBuff(BuffType _BuffType, Status _Status, float _Time, bool _IsSturn, std::function<void()> _BuffFunc)
 {
-	auto iter = Unit_BufferList_.find("_Name");
+	auto iter = Unit_BufferList_.find(_BuffType);
 
-	if (iter->first == _Name)
+	if (iter->first == _BuffType)
 	{
 		iter->second->Time_ = _Time;
 		//같은 버프가 들어왔을 경우, 지속시간만 갱신함
 		return; 
 	}
 
-	Buff* _Buff = new Buff;
+	Status_Buff* _Buff = new Status_Buff;
 
-	*_Buff = { _Name, _Time , _Status, _IsSturn , _BuffFunc };
+	*_Buff = { _BuffType, _Time , _Status, _IsSturn , _BuffFunc };
 
-	Unit_BufferList_.insert(std::make_pair(_Name, _Buff));
+	Unit_BufferList_.insert(std::make_pair(_BuffType, _Buff));
 }
 
-void Unit::Unit_RemoveBuff(std::string _Name)
+void Unit::Unit_RemoveBuff(BuffType _BuffType)
 {
-	Unit_BufferList_.erase(Unit_BufferList_.find(_Name));
+	Unit_BufferList_.erase(Unit_BufferList_.find(_BuffType));
 }
 
-void Unit::Unit_RemoveAllBuff(std::string _Name)
+void Unit::Unit_RemoveAllBuff()
 {
 	auto iter0 = Unit_BufferList_.begin();
 	auto iter1 = Unit_BufferList_.end();
@@ -541,7 +622,7 @@ bool Unit::ChasePosUpdate(float4 _Target_Pos, float _ChaseDist)
 
 void Unit::Unit_SetOrderEnd()
 {
-	PlayerController_->PlayerController_SetController_Order(Controller_Order::None_Idle);
+	Controller_->Controller_SetController_Order(Controller_Order::None_Idle);
 	OrderState_.ChangeState("Idle");
 	ActionState_.ChangeState("Idle");
 

@@ -43,7 +43,7 @@ public:
 
 	void Player_SetPlayController(PlayerController* _PlayerController)
 	{
-		PlayerController_ = _PlayerController;
+		Controller_ = _PlayerController;
 	}
 
 protected:

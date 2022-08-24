@@ -237,7 +237,7 @@ void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName
 	NewFBXAnimation->Mesh = FBXMesh;
 	NewFBXAnimation->Animation = Animation;
 	NewFBXAnimation->ParentRenderer = this;
-
+	NewFBXAnimation->AnimationName_ = _AnimationName;
 	NewFBXAnimation->Init(_AnimationIndex, _isLoop);
 
 

@@ -189,6 +189,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Character_ProtoType_State.cpp" />
+    <ClCompile Include="Controller.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ChattingPacket.cpp">
       <SubType>
       </SubType>
@@ -399,6 +403,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character_ProtoType.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Controller.h">
       <SubType>
       </SubType>
     </ClInclude>

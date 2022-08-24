@@ -24,6 +24,8 @@ public:
 	FbxExAniData* PixAniData;
 	GameEngineFBXRenderer* ParentRenderer;
 
+	std::string AnimationName_;
+
 	float CurFrameTime;
 	float FrameTime;
 	UINT CurFrame;
@@ -100,6 +102,23 @@ public:
 		}
 
 		return ReturnNameList;
+	}
+
+	const std::string GetCurAnimationName()
+	{
+		return CurAnimation->AnimationName_;
+	}
+	const int GetCurAnimationCurFrame()
+	{
+		return CurAnimation->CurFrame;
+	}
+	const float GetCurAnimationFrameTime()
+	{
+		return CurAnimation->CurFrameTime;
+	}
+	const float GetCurAnimationCurFrameTime()
+	{
+		return CurAnimation->FrameTime;
 	}
 
 protected:

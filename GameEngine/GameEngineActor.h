@@ -23,15 +23,6 @@ public:
 	bool IsDestroyed_;
 	float DeathTime_;
 
-#pragma region 이현 임시 코드
-private:
-	static unsigned int ActorStaticIDNumbers_;
-public:
-	unsigned int ActorID_;
-//서버만이 Actor를 생성할 경우에만 유효함,
-#pragma endregion 
-
-
 	void MoveNextOn()
 	{
 		NextLevelMove_ = true;

@@ -303,24 +303,24 @@ struct Status
 #pragma endregion 
 };
 
-struct Buff
+struct Status_Buff
 {
-	Buff()
+	Status_Buff()
 		: Time_(-1.f)
-		, Name_("")
+		, BuffType_(BuffType::None)
 		, BuffFunc_(nullptr)
 		, IsSturn_(false)
 	{}
 	// _Time -1 == 영구 지속
-	Buff(std::string _Name, float _Time, Status _Status, bool _IsSturn = false, std::function<void()> _BuffFunc = nullptr)
-		: Name_(_Name)
+	Status_Buff(BuffType _BuffType, float _Time, Status _Status, bool _IsSturn = false, std::function<void()> _BuffFunc = nullptr)
+		: BuffType_(_BuffType)
 		, Time_(_Time)
 		, Status_(_Status)
 		, BuffFunc_(_BuffFunc)
 		, IsSturn_(_IsSturn)
 	{}
 
-	std::string Name_;
+	BuffType BuffType_;
 	bool IsSturn_;
 	float Time_;
 	Status Status_;
@@ -340,12 +340,12 @@ enum class SkillTpye
 
 };
 
-struct SkillBase 
-{
-	SkillTpye SkillTpye_;
-	float Range_;
-	float Dist_;
-	Buff Buff_;
-	Status Status_;
-	std::function<void()> SkillFunc_;
-};
+//struct SkillBase 
+//{
+//	SkillTpye SkillTpye_;
+//	float Range_;
+//	float Dist_;
+//	Buff Buff_;
+//	Status Status_;
+//	std::function<void()> SkillFunc_;
+//};

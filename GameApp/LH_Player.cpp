@@ -37,7 +37,7 @@ void Player::Update(float _DeltaTime)
 
 void Player::ControllerOrderUpdate()
 {
-	Controller_Order_ = PlayerController_->PlayerController_GetOrder();
+	Controller_Order_ = Controller_->Controller_GetOrder();
 }
 
 void Player::StaminaRecoverUpdate(float _DeltaTime)

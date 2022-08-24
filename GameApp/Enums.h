@@ -62,3 +62,31 @@ enum class ItemType
 	Useable,
 	Misc
 };
+
+enum class BuffType
+{
+	None,
+	SomeBuff1,
+	SomeBuff2,
+	SomeBuff3,
+	SomeBuff4,
+	SomeBuff5,
+	SomeBuff6,
+	SomeBuff7,
+	SomeBuff8,
+	Max
+};
+
+//enum class AnimationType
+//{
+//	None,
+//	Idle,
+//	Attack,
+//	Walk,
+//	SKill1,
+//	SKill2,
+//	SKill3,
+//	SKill4,
+//	Reat,
+//	Death,
+//};
