@@ -25,6 +25,8 @@ public:
 	class UI_Status* StatusUI_;
 	class UI_ItemBox* ItemBoxUI_;
 
+	class YSJ_Mouse* Mouse_;
+
 protected:
 	LGH_PlayLevel(const LGH_PlayLevel& _other) = delete;
 	LGH_PlayLevel(LGH_PlayLevel&& _other) noexcept = delete;

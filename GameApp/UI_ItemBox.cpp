@@ -3,12 +3,16 @@
 #include "GameEngine/GameEngineUIRenderer.h"
 #include "GameEngine/GameEngineInput.h"
 #include "GameEngine/GameEngineCollision.h"
+#include "GameEngineBase/GameEngineDebug.h"
 
+#include "ItemBase.h"
 #include "LH_Player.h"
 
 
 UI_ItemBox::UI_ItemBox()
-	: Time(1.0f), UI_On(false)
+	: Time(1.0f), UI_On(false),
+	Slot0_Item(nullptr), Slot1_Item(nullptr), Slot2_Item(nullptr), Slot3_Item(nullptr),
+	Slot4_Item(nullptr), Slot5_Item(nullptr), Slot6_Item(nullptr), Slot7_Item(nullptr)
 {
 }
 
@@ -55,6 +59,7 @@ void UI_ItemBox::Start()
 	//Player_->PlayerSetStamina(100.f);
 
 	{
+		//마우스와의 충돌을 위해서 aabbbox3d로 충돌
 		ItemBoxCollision = CreateTransformComponent<GameEngineCollision>();
 		ItemBoxCollision->GetTransform()->SetLocalPosition(ItemBox_BackgroundPos);
 		ItemBoxCollision->GetTransform()->SetLocalScaling(ItemBoxBackGround_Renderer->GetCurrentTexture()->GetTextureSize());
@@ -88,14 +93,14 @@ void UI_ItemBox::Update(float _Time)
 
 	if (true == GameEngineInput::GetInst().Down("Esc"))
 	{
-		//if (UI_On == true)
-		//{
-		//	RenderOff();
-		//}
-		//else
-		//{
-		//	RenderOn();
-		//}
+		if (UI_On == true)
+		{
+			RenderOff();
+		}
+		else
+		{
+			RenderOn();
+		}
 	}
 
 }
@@ -121,3 +126,138 @@ bool UI_ItemBox::MouseCollisionCheck()
 		return false;
 	}
 }
+
+void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
+{
+	switch (_SlotNumber)
+	{
+	case 0:
+	{
+		//EmptySlotCheck();
+		if (Slot0_Item == nullptr)
+		{
+			Slot0_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+		break;
+	case 1:
+	{
+		if (Slot1_Item == nullptr)
+		{
+			Slot1_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+		break;
+	case 2:
+	{
+		if (Slot2_Item == nullptr)
+		{
+			Slot2_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+		break;
+	case 3:
+	{
+		if (Slot3_Item == nullptr)
+		{
+			Slot3_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+		break;
+	case 4:
+	{
+		if (Slot4_Item == nullptr)
+		{
+			Slot4_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+		break;
+	case 5:
+	{
+		if (Slot5_Item == nullptr)
+		{
+			Slot5_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+		break;
+	case 6:
+	{
+		if (Slot6_Item == nullptr)
+		{
+			Slot6_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+		break;
+	case 7:
+	{
+		if (Slot7_Item == nullptr)
+		{
+			Slot7_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+		break;
+	default:
+	{
+		GameEngineDebug::MsgBoxError("슬롯번호가 제대로 세팅되지 않았습니다");
+		return;
+	}
+		break;
+	}
+}
+
+void UI_ItemBox::EmptySlotCheck()
+{
+	if (true)
+	{
+
+	}
+}
+

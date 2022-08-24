@@ -17,6 +17,7 @@
 #include "UI_Equip.h"
 #include "UI_Status.h"
 #include "UI_ItemBox.h"
+#include "YSJ_Mouse.h"
 
 #include <GameEngine/GameEngineFBXWindow.h>
 #include <GameEngine/GameEngineFBXMesh.h>
@@ -71,6 +72,9 @@ void LGH_PlayLevel::LevelStart()
 		ItemBoxUI_ = CreateActor<UI_ItemBox>();
 	}
 
+	{
+		Mouse_ = CreateActor<YSJ_Mouse>();
+	}
 
 	{
 
@@ -142,6 +146,20 @@ void LGH_PlayLevel::LevelUpdate(float _DeltaTime)
 		//float4 CharPosition_ = player_->GetTransform()->GetWorldPosition();
 		//GetMainCameraActor()->GetTransform()->SetWorldPosition({ CharPosition_.x,  CharPosition_.y, -400.0f});
 	}
+
+
+	if (ItemBoxUI_ != nullptr)
+	{
+		if (false == ItemBoxUI_->MouseCollisionCheck())
+		{
+			if (GameEngineInput::GetInst().Down("LBUTTON"))
+			{
+				//이건호 : UI충돌박스 밖에서 클릭할시, ItemBoxUI가 꺼진다
+				ItemBoxUI_->Release();
+				ItemBoxUI_ = nullptr;
+			}
+		}
+	}
 }
 
 void LGH_PlayLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
@@ -156,6 +174,7 @@ void LGH_PlayLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		GameEngineInput::GetInst().CreateKey("FreeCameraOn", 'o');
 		GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
 		GameEngineInput::GetInst().CreateKey("Front", 'w');
+		GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 	}
 }
 

@@ -1,10 +1,13 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
+
 using namespace std;
 // 설명 :
 class GameEngineUIRenderer;
 class Player;
+class ItemBase;
+
 class UI_ItemBox : public GameEngineActor
 {
 public:
@@ -33,6 +36,8 @@ public:
 
 	bool MouseCollisionCheck();
 
+	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
+
 protected:
 	GameEngineUIRenderer* ItemBoxBackGround_Renderer;
 	
@@ -49,12 +54,23 @@ private:
 	void Start() override;
 	void Update(float _Time) override;
 
+	//자동으로 빈슬롯을 찾아서 아이템을 넣어주게 하는 함수, 만드는중
+	void EmptySlotCheck();
+
 	//이현
 private:
 	Player* Player_;
 
-#pragma region 아이템 출력용 렌더러 모음
+#pragma region 아이템 출력용 아이템베이스 모음
 
+	ItemBase* Slot0_Item;
+	ItemBase* Slot1_Item;
+	ItemBase* Slot2_Item;
+	ItemBase* Slot3_Item;
+	ItemBase* Slot4_Item;
+	ItemBase* Slot5_Item;
+	ItemBase* Slot6_Item;
+	ItemBase* Slot7_Item;
 //	GameEngineUIRenderer* DefenseValue_Renderer;
 //	GameEngineUIRenderer* AttackSpeedValue_Renderer;
 //	GameEngineUIRenderer* MoveSpeedValue_Renderer;
@@ -90,6 +106,7 @@ private:
 	2. UI가 받는건 단순 enum이나 index, bool
 	모든 데이터는 ItemBoxManager가 관리하고,
 	UI가 가진건 오직 enum/switch등을 이용한 단순처리과정
+	->현재는 아이템베이스 자체를 받는게 아니라, 정보들만 받게 해놨음
 
 	ex)
 	enum class item
