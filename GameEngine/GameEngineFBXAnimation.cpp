@@ -53,10 +53,16 @@ bool GameEngineFBXAnimation::CheckAnimation()
 
 		AnimationDatas[i].AniName = GameEngineString::UTF8ToAnsiReturn(AniNameArray[i]->Buffer());
 
+		FbxAnimStack* stack = Scene->GetSrcObject<FbxAnimStack>(i);
+		Scene->SetCurrentAnimationStack(stack);
+
 		FbxTakeInfo* TakeInfo = Scene->GetTakeInfo(AnimationDatas[i].AniName.c_str());
 
 		AnimationDatas[i].StartTime = TakeInfo->mLocalTimeSpan.GetStart();
 		AnimationDatas[i].EndTime = TakeInfo->mLocalTimeSpan.GetStop();
+
+		fbxsdk::FbxTime temp0 = TakeInfo->mReferenceTimeSpan.GetDuration();
+		fbxsdk::FbxTime temp1 = TakeInfo->mReferenceTimeSpan.GetSignedDuration();
 
 		// 애니메이션이 분으로 됐는지 초로 됐는지 나노세컨드로 됐는지 프레임 기반으로 저장됐는지 등등
 		AnimationDatas[i].TimeMode = Scene->GetGlobalSettings().GetTimeMode();

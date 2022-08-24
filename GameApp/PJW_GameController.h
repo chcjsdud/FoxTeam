@@ -4,11 +4,13 @@
 // 분류 : 
 // 용도 : 
 
+class PJW_Mouse;
 class PJW_Map;
 class PJW_Player;
 class PJW_Hyunwoo;
 class PJW_GameController : public GameEngineActor
 {
+	friend GameEngineWindow;
 	friend PJW_Hyunwoo;
 
 public:
@@ -26,7 +28,7 @@ public:
 	
 	
 	virtual void Update(float _DeltaTime) override;
-	void Check_Input(float _DeltaTime);
+	void Check_MousePicking(float _DeltaTime);
 
 
 private:
@@ -38,6 +40,8 @@ private:
 
 	PJW_Map* map_;
 	// 네브메시가 적용되는 맵
+
+	PJW_Mouse* mouse_;
 
 };
 

@@ -50,6 +50,7 @@ void UserGame::Initialize()
 	//LevelCreate<SettingItemLevel>("SettingItemLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
+	//LevelCreate<PJW_ServerTestLevel>("PJW_ServerTest");
 	
 	//LevelChange("RayTestLevel");
 	//LevelChange("SJH_Play");

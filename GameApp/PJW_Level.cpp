@@ -40,9 +40,13 @@ void PJW_Level::LevelUpdate(float _DeltaTime)
 		GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
 		float4 Size = { 128, 72 };
 		Window->PushRenderTarget("메인 카메라 타겟", GetMainCamera()->GetCameraRenderTarget(), Size * 3);
+
 		Window->PushRenderTarget("디퍼드 G버퍼", GetMainCamera()->GetCameraDeferredGBufferTarget(), Size * 3);
+		
 		Window->PushRenderTarget("디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size * 3);
-		Window->PushRenderTarget("디퍼드 G버터 + 라이트", GetMainCamera()->GetCameraDeferredTarget(), Size * 3);
+		
+		Window->PushRenderTarget("디퍼드 G버퍼 + 라이트", GetMainCamera()->GetCameraDeferredTarget(), Size * 3);
+
 		Check = true;
 	}
 
@@ -174,11 +178,9 @@ void PJW_Level::Init_Actors()
 {
 	// 바이너리 파일 추출을 완료했다면 하단 예시처럼 액터의 메시와 애니메이션을 생성해주면 됩니다.
 
-	player_ = CreateActor<PJW_Hyunwoo>();
 	//
 	//
 	gameController_ = CreateActor<PJW_GameController>();
-	mouse_ = CreateActor<PJW_Mouse>();
 	{
 		SKySphereActor* Actor = CreateActor<SKySphereActor>();
 	}
@@ -189,8 +191,8 @@ void PJW_Level::Init_Actors()
 		light_A->GetLight()->SetDiffusePower(1.0f);
 		light_A->GetLight()->SetSpacularLightPow(10.0f);
 		light_A->GetLight()->SetAmbientPower(10.0f);
-	}
 
+	}
 //	map_ = CreateActor<PJW_Map>();
 }
 

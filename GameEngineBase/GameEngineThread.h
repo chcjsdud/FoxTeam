@@ -32,7 +32,13 @@ public:
 
 	void Join()
 	{
-		Thread.join();
+		if (nullptr != ThreadFunction)
+		{
+			Sleep(1);
+			Thread.join();
+			ThreadFunction = nullptr;
+		}
+
 	}
 
 protected:

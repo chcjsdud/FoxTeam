@@ -55,6 +55,7 @@ void PJW_Hyunwoo::Start()
 
 		FBXRenderer_->SetFBXMesh(Mesh->GetName(), "TextureDeferredLightAni");
 
+
 		for (size_t i = 0; i < FBXRenderer_->GetRenderSetCount(); i++)
 		{
 			FBXRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Hyunwoo_01_LOD1.png");
@@ -68,7 +69,8 @@ void PJW_Hyunwoo::Start()
 		FBXRenderer_->CreateFBXAnimation("2", animationQ->GetName(), 1);
 		FBXRenderer_->CreateFBXAnimation("3", animationQ->GetName(), 2);
 		FBXRenderer_->CreateFBXAnimation("4", animationQ->GetName(), 3);
-
+		FBXRenderer_->CreateFBXAnimation("5", animationQ->GetName(), 4);
+		FBXRenderer_->CreateFBXAnimation("6", animationQ->GetName(), 5);
 		FBXRenderer_->ChangeFBXAnimation("1");
 	}
 }

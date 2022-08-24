@@ -21,6 +21,9 @@ GameEngineThread::GameEngineThread()
 
 GameEngineThread::~GameEngineThread() 
 {
-	Join();
+	if (nullptr != ThreadFunction)
+	{
+		Join();
+	}
 }
 

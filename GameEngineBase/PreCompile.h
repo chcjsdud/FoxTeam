@@ -2,7 +2,15 @@
 
 // 이안에 들어있고 중복이 되는 헤더는 다시 빌드하지 않는다.
 
+// #include <Windows.h>
+#include <WS2tcpip.h> // inet_pton 함수를 사용하기 위한 헤더
+#include <WinSock2.h>
+#include <stdint.h>
+#include <sstream>
 #include <Windows.h>
+
+#pragma comment (lib, "ws2_32")
+
 
 // data struct
 #include <vector>

@@ -271,6 +271,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="PJW_NeviCell.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="SettingItemLevel.cpp">
       <SubType>
@@ -471,6 +475,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PJW_NavMesh.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PJW_NeviCell.h">
       <SubType>
       </SubType>
     </ClInclude>

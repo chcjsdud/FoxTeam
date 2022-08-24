@@ -3,7 +3,9 @@
 
 #include "PJW_Hyunwoo.h"
 #include "PJW_Map.h"
+#include "PJW_Mouse.h"
 
+#include <GameEngine/GameEngineWindow.h>
 #include <GameEngine/GameEngineCollision.h>
 #include "PJW_Enum.h"
 
@@ -54,7 +56,9 @@ void PJW_GameController::Init_Player()
 	//curPlayer_ = playerList_[0];
 	//
 	//
-	map_ = GetLevel()->CreateActor<PJW_Map>();
+	curPlayer_ = GetLevel()->CreateActor<PJW_Hyunwoo>();
+	mouse_ = GetLevel()->CreateActor<PJW_Mouse>();
+	//map_ = GetLevel()->CreateActor<PJW_Map>();
 }
 
 void PJW_GameController::Init_Keys()
@@ -68,36 +72,25 @@ void PJW_GameController::Init_Keys()
 		GameEngineInput::GetInst().CreateKey("FreeCamera_Back", 'S');
 
 
-		GameEngineInput::GetInst().CreateKey("Q", 'Q');
-		GameEngineInput::GetInst().CreateKey("W", 'W');
-		GameEngineInput::GetInst().CreateKey("E", 'E');
-		GameEngineInput::GetInst().CreateKey("R", 'R');
+		GameEngineInput::GetInst().CreateKey("Q", 'Z');
+		GameEngineInput::GetInst().CreateKey("W", 'X');
+		GameEngineInput::GetInst().CreateKey("E", 'C');
+		GameEngineInput::GetInst().CreateKey("R", 'V');
+		GameEngineInput::GetInst().CreateKey("M1", VK_LBUTTON);
+
 	}
 }
 
 void PJW_GameController::Update(float _DeltaTime)
 {
-	Check_Input(_DeltaTime);
+	Check_MousePicking(_DeltaTime);
 }
 
-void PJW_GameController::Check_Input(float _DeltaTime)
+void PJW_GameController::Check_MousePicking(float _DeltaTime)
 {
-	//if (true == GameEngineInput::GetInst().Down("Test_Move"))
-	//{
-	//	curPlayer_->SetTarget(playerList_[1]);
-	//	curPlayer_->isAttacking_ = false;
-	//	curPlayer_->isMoving_ = true;
-	//	// 컨트롤러의 인풋을 인식해 현재 플레이어 캐릭터의 bool 변수값을 스위칭한다.
-	//	// 동작이 끝나 false 로 돌리는 것은 플레이어 캐릭터가 한다.
-	//
-	//
-	//
-	//}
-	//
-	//if (true == GameEngineInput::GetInst().Down("Skill_Q"))
-	//{
-	//	//curPlayer_->isMoving_ = false;
-	//	//curPlayer_->isAttacking_ = true;
-	//	
-	//}
+	float mouseX = GameEngineInput::GetInst().GetMousePos().x;
+	float mouseY = GameEngineInput::GetInst().GetMousePos().y;
+
+
+
 }
