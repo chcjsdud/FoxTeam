@@ -227,6 +227,12 @@
     <ClCompile Include="PJW_NeviCell.cpp">
       <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
     </ClCompile>
+    <ClCompile Include="ChattingPacket.cpp">
+      <Filter>02.GameServer\UserPacket</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerTestLevel.cpp">
+      <Filter>02.GameServer\ServerTempTest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -420,6 +426,15 @@
     </Filter>
     <Filter Include="01.GameObject\99.SJH\01.Actor\03.Monster">
       <UniqueIdentifier>{9237cd3c-80d1-4df0-be1b-c7fdc61fda0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameServer">
+      <UniqueIdentifier>{ec59804c-ce69-4aa8-8e47-3c267954bad4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameServer\UserPacket">
+      <UniqueIdentifier>{7eb45933-a75d-4834-ace2-5b878554f920}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameServer\ServerTempTest">
+      <UniqueIdentifier>{960b4ba1-5372-4860-847f-205985d0f620}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -646,5 +661,14 @@
       <Filter>01.GameObject\99.SJH\01.Actor\03.Monster</Filter>
     </ClInclude>
     <ClInclude Include="PJW_NeviCell.h" />
+    <ClInclude Include="ChattingPacket.h">
+      <Filter>02.GameServer\UserPacket</Filter>
+    </ClInclude>
+    <ClInclude Include="ePacketID.h">
+      <Filter>02.GameServer\UserPacket</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerTestLevel.h">
+      <Filter>02.GameServer\ServerTempTest</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

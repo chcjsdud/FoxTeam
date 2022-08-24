@@ -138,6 +138,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEnginePacketBase.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEnginePacketHandler.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEnginePixelShader.h">
       <SubType>
       </SubType>
@@ -188,11 +196,27 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineSerializer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineShader.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="GameEngineShaderResHelper.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineSocketClient.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineSocketInterface.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GameEngineSocketServer.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -391,6 +415,14 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEnginePacketBase.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEnginePacketHandler.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEnginePixelShader.cpp">
       <SubType>
       </SubType>
@@ -441,11 +473,23 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineSerializer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineShader.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="GameEngineShaderResHelper.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineSocketClient.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="GameEngineSocketServer.cpp">
       <SubType>
       </SubType>
     </ClCompile>

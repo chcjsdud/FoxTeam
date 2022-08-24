@@ -115,6 +115,15 @@
     <Filter Include="Lib\FBX\Release">
       <UniqueIdentifier>{8309ef28-a205-4fbd-827e-2babac33bc45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{ae9f7899-82a2-40db-92cb-bebf3811345b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\Socket">
+      <UniqueIdentifier>{704282cf-eb94-4b22-ba80-5650fab1f638}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server\PacketBase">
+      <UniqueIdentifier>{9d1ae88b-a471-4095-a365-b8336c41f92e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -371,6 +380,24 @@
     <ClInclude Include="DeferredMerge.h">
       <Filter>Object\PostProcess\EngineEffect</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineSocketClient.h">
+      <Filter>Server\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSocketInterface.h">
+      <Filter>Server\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSocketServer.h">
+      <Filter>Server\Socket</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEnginePacketBase.h">
+      <Filter>Server\PacketBase</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEnginePacketHandler.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineSerializer.h">
+      <Filter>Server</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -615,6 +642,21 @@
     </ClCompile>
     <ClCompile Include="DeferredMerge.cpp">
       <Filter>Object\PostProcess\EngineEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSocketClient.cpp">
+      <Filter>Server\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSocketServer.cpp">
+      <Filter>Server\Socket</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnginePacketBase.cpp">
+      <Filter>Server\PacketBase</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEnginePacketHandler.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineSerializer.cpp">
+      <Filter>Server</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
