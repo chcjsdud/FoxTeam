@@ -25,7 +25,7 @@ public:
 		Target_Unit_ID_ = _Target_Unit_ID;
 	}
 
-protected:
+//public:
 	unsigned int Unit_ID_;
 	unsigned int Target_Unit_ID_;
 	int ControlOrder_;

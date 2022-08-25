@@ -22,6 +22,8 @@
 #include <GameEngine/GameEngineImageRenderer.h>
 #include "UserGame.h"
 
+unsigned int* PlayLevel::UnitStaticIDNumbers_ = nullptr;
+
 PlayLevel::PlayLevel() 
 	: PlayerController_(nullptr)
 {
@@ -29,10 +31,21 @@ PlayLevel::PlayLevel()
 
 PlayLevel::~PlayLevel() 
 {
+	if (UnitStaticIDNumbers_ != nullptr)
+	{
+		delete UnitStaticIDNumbers_;
+		UnitStaticIDNumbers_ = nullptr;
+	}
 }
 
 void PlayLevel::LevelStart()
 {
+	if (UserGame::IsServer_ == true && UnitStaticIDNumbers_ == nullptr)
+	{
+		UnitStaticIDNumbers_ = new unsigned int;
+		*UnitStaticIDNumbers_ = 0;
+	}
+
 	// 레벨 진입전 리소스 로드
 	LoadState_.CreateState<PlayLevel>("Load",this,& PlayLevel::Load_Start,&PlayLevel::Load_Update,&PlayLevel::Load_End);
 	// 리소스 로드 완료 후 게임 시작
@@ -207,10 +220,10 @@ void PlayLevel::CreateActorLevel()
 	{
 	//	GameMouse* mouse = CreateActor<GameMouse>();
 	//
-		Player* Actor = CreateActor<Player_Yuki>("LH_Yuki");
+		//Player* Actor = CreateUnit<Player_Yuki>();
 
-		PlayerController_->PlayerController_SetMainPlayer(Actor);
-		Actor-> Player_SetPlayController(PlayerController_);
+		//PlayerController_->PlayerController_SetMainPlayer(Actor);
+		//Actor-> Player_SetPlayController(PlayerController_);
 
 	//	Actor->SetParentMouse(mouse); // 플레이어 캐릭터를 종속시킬 마우스 커서를 알려줍니다. 게임매니저 생성 시 삭제될 함수
 	//

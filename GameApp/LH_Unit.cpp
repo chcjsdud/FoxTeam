@@ -4,11 +4,8 @@
 #include "LH_Unit.h"
 #include "GameEngine/GameEngineCollision.h"
 
-unsigned int* Unit::UnitStaticIDNumbers_ = nullptr;
-
 Unit::Unit()
-	: Unit_Packet_(nullptr)
-	, UnitGroundCollision_(nullptr)
+	: UnitGroundCollision_(nullptr)
 	, FBXRenderer_(nullptr)
 	, UnitSightCollision_(nullptr)
 	, UnitHitBoxCollision_(nullptr)
@@ -24,27 +21,6 @@ Unit::Unit()
 	, IsSturn_(false)
 	, OrderUpdate_(false)
 {	
-	if (UserGame::IsServer_ == false)
-	{
-		Unit_Packet_ = new Unit_Packet;
-	}
-	else
-	{
-		if (UnitStaticIDNumbers_ == nullptr)
-		{
-			UnitStaticIDNumbers_ = new unsigned int;
-			*UnitStaticIDNumbers_ = 0;
-		}
-
-		++ * UnitStaticIDNumbers_; // 1번부터 부여하고, 0번은 죽은걸로 취급
-		UnitID_ = *UnitStaticIDNumbers_;
-
-		if (*UnitStaticIDNumbers_ == UINT32_MAX)
-		{
-			GameEngineDebug::MsgBoxError("ActorID 최댓값 초과");
-		}
-	}
-
 	ActionState_.CreateState<Unit>
 		("Action_Idle", this, &Unit::Action_Idle_Start, &Unit::Action_Idle_Update, &Unit::Action_Idle_End);
 
@@ -114,18 +90,6 @@ Unit::~Unit()
 
 		TargetingUnits_.clear();
 	}
-
-	if (UnitStaticIDNumbers_ != nullptr)
-	{
-		delete UnitStaticIDNumbers_;
-		UnitStaticIDNumbers_ = nullptr;
-	}
-
-	if (Unit_Packet_ != nullptr)
-	{
-		delete Unit_Packet_;
-		Unit_Packet_ = nullptr;
-	}
 }
 
 /*
@@ -146,38 +110,6 @@ void Unit::Start()
 
 void Unit::Unit_Set_State_Init()
 {
-	{
-		// 이 밑부분은 나중에 플레이어.h 로 이동하게 될 것이다.
-		ActionState_.CreateState<Unit>
-			("Action_Q", this, &Unit::Action_Q_Start, &Unit::Action_Q_Update, &Unit::Action_Q_End);
-		ActionState_.CreateState<Unit>
-			("Action_W", this, &Unit::Action_W_Start, &Unit::Action_W_Update, &Unit::Action_W_End);
-		ActionState_.CreateState<Unit>
-			("Action_E", this, &Unit::Action_E_Start, &Unit::Action_E_Update, &Unit::Action_E_End);
-		ActionState_.CreateState<Unit>
-			("Action_R", this, &Unit::Action_R_Start, &Unit::Action_R_Update, &Unit::Action_R_End);
-		ActionState_.CreateState<Unit>
-			("Action_D", this, &Unit::Action_D_Start, &Unit::Action_D_Update, &Unit::Action_D_End);	
-	}
-
-	{
-		// 이 밑부분은 나중에 플레이어.h 로 이동하게 될 것이다.
-		OrderState_.CreateState<Unit>
-			("Order_Q", this, &Unit::Order_Q_Start, &Unit::Order_Q_Update, &Unit::Order_Q_End);
-
-		OrderState_.CreateState<Unit>
-			("Order_W", this, &Unit::Order_W_Start, &Unit::Order_W_Update, &Unit::Order_W_End);
-
-		OrderState_.CreateState<Unit>
-			("Order_E", this, &Unit::Order_E_Start, &Unit::Order_E_Update, &Unit::Order_E_End);
-
-		OrderState_.CreateState<Unit>
-			("Order_R", this, &Unit::Order_R_Start, &Unit::Order_R_Update, &Unit::Order_R_Start);
-
-		OrderState_.CreateState<Unit>
-			("Order_D", this, &Unit::Order_D_Start, &Unit::Order_D_Update, &Unit::Order_D_Start);
-	}
-
 	{
 		Unit_Status_Base_.Stat_AttackPower_ = 0;
 		Unit_Status_Base_.Stat_Health_ = 0;
@@ -202,13 +134,16 @@ void Unit::Update(float _DeltaTime)
 {
 	if (UserGame::IsServer_ == false)
 	{
-		//return;
+		Unit_Set_Receive_PaketUpdate();
+	}
+	else
+	{
+		Unit_Set_Send_PaketUpdate();
 	}
 
 	// AI냐 플레이어냐 에따라 Order를 얻어오는 방법이 달라질것
 	Unit_TargetUpdate(_DeltaTime);
 	Unit_UpdateBuff(_DeltaTime);
-	Unit_Controller_Update();
 
 	Unit_StateUpdate(_DeltaTime);
 }
@@ -260,61 +195,16 @@ void Unit::Unit_UpdateBuff(float _DeltaTime)
 	}
 }
 
-void Unit::Unit_Send_Server_PaketUpdate()
-{
-	//UnitUpdatePaket _GameActorUpdatePaket;
-
-	//_GameActorUpdatePaket.UnitID_ = UnitID_;
-	//_GameActorUpdatePaket.vLocalPosition_ = GetTransform()->GetLocalPosition();
-	//_GameActorUpdatePaket.vLocalRotation_ = GetTransform()->GetLocalRotation();
-	//_GameActorUpdatePaket.vLocalScaling_ = GetTransform()->GetLocalScaling();
-	//_GameActorUpdatePaket.vWorldPosition_ = GetTransform()->GetWorldPosition();
-	//_GameActorUpdatePaket.vWorldRotation_ = GetTransform()->GetWorldRotation();
-	//_GameActorUpdatePaket.vWorldScaling_ = GetTransform()->GetWorldScaling();
-
-	//_GameActorUpdatePaket.AniName_ = FBXRenderer_->GetCurAnimationName();
-	//_GameActorUpdatePaket.AniFrame_ = FBXRenderer_->GetCurAnimationCurFrame();
-	//_GameActorUpdatePaket.AniCurFrameTime = FBXRenderer_->GetCurAnimationCurFrameTime();
-	//_GameActorUpdatePaket.AniFrameTime_ = FBXRenderer_->GetCurAnimationFrameTime();
-}
-
-void Unit::Unit_Receive_Server_PaketUpdate()
-{
-	//Unit_Packet _GameActorUpdatePaket;
-
-	//FBXRenderer_->ChangeFBXAnimation(_GameActorUpdatePaket.AniName_);
-
-	//GameActorUpdatePaket _GameActorUpdatePaket;
-
-	//GetTransform()->SetLocalPosition();
-	////GetTransform()->SetLocal();
-	//GetTransform()->SetLocalPosition();
-
-	//_GameActorUpdatePaket.vLocalPosition_ = GetTransform()->GetLocalPosition();
-	//_GameActorUpdatePaket.vLocalRotation_ = GetTransform()->GetLocalRotation();
-	//_GameActorUpdatePaket.vLocalScaling_ = GetTransform()->GetLocalScaling();
-	//_GameActorUpdatePaket.vWorldPosition_ = GetTransform()->GetWorldPosition();
-	//_GameActorUpdatePaket.vWorldRotation_ = GetTransform()->GetWorldRotation();
-	//_GameActorUpdatePaket.vWorldScaling_ = GetTransform()->GetWorldScaling();
-
-	//_GameActorUpdatePaket.AniName_ = FBXRenderer_->GetCurAnimationName();
-	//_GameActorUpdatePaket.AniFrame_ = FBXRenderer_->GetCurAnimationCurFrame();
-	//_GameActorUpdatePaket.AniCurFrameTime = FBXRenderer_->GetCurAnimationCurFrameTime();
-	//_GameActorUpdatePaket.AniFrameTime_ = FBXRenderer_->GetCurAnimationFrameTime();
-
-	//_GameActorUpdatePaket.Status_Final_ = Unit_Status_Final_;
-}
-
-void Unit::Unit_Controller_Update()
-{
-	// 이거 없애버리고 필요할때만 얻어오게 하자
-
-	Target_Pos_ = Controller_->Controller_GetTarget_Pos();
-
-	Unit_SetUnitTarget(Controller_->Controller_GetTargetUnit());
-	//Target_ID_ = PlayController_->PlayerController_GetTarget_ID();
-	Controller_Order_ = Controller_->Controller_GetOrder();
-}
+//void Unit::Unit_Controller_Update()
+//{
+//	// 이거 없애버리고 필요할때만 얻어오게 하자
+//
+//	Target_Pos_ = Controller_->Controller_GetTarget_Pos();
+//
+//	Unit_SetUnitTarget(Controller_->Controller_GetTargetUnit());
+//	//Target_ID_ = PlayController_->PlayerController_GetTarget_ID();
+//	Controller_Order_ = Controller_->Controller_GetOrder();
+//}
 
 void Unit::Unit_StateUpdate(float _DeltaTime) // 오버로딩 가능하게 만들자
 {
@@ -371,6 +261,26 @@ void Unit::Unit_StateUpdate(float _DeltaTime) // 오버로딩 가능하게 만들자
 		//ProcessState_.Update(_DeltaTime);
 		ActionState_.Update(_DeltaTime);
 	}
+}
+
+void Unit::Unit_Set_Receive_PaketUpdate()
+{
+	if (Unit_Packet_.Unit_ID_ != UnitID_)
+	{
+		GameEngineDebug::MsgBoxError("유닛ID가 일치 하지 않는 패킷을 받아왔습니다.");
+	}
+
+	Target_Pos_ = Unit_Packet_.Target_Pos_;
+	Target_Unit_ = dynamic_cast<PlayLevel*>(GetLevel())->GetUnitPtr(Unit_Packet_.Target_Unit_ID_);
+	Controller_Order_ = static_cast<Controller_Order>(Unit_Packet_.ControlOrder_);
+}
+
+void Unit::Unit_Set_Send_PaketUpdate()
+{
+	Unit_Packet_.Unit_ID_ = UnitID_; //내 ID
+	Unit_Packet_.Target_Pos_ = Target_Pos_; //마우스로 찍은 좌표
+	Unit_Packet_.Target_Unit_ID_ = Target_Unit_->Unit_GetUnitID(); // 타겟의 ID
+	Unit_Packet_.ControlOrder_ = static_cast<int>(Controller_Order_); // 명령 정보
 }
 
 #pragma endregion
@@ -619,6 +529,7 @@ bool Unit::ChasePosUpdate(float4 _Target_Pos, float _ChaseDist)
 	return false;
 }
 #pragma endregion
+
 
 void Unit::Unit_SetOrderEnd()
 {

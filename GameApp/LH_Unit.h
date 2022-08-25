@@ -8,6 +8,7 @@
 #include "LH_Status.h"
 
 #include "Unit_Packet.h"
+#include "LH_PlayLevel.h"
 
 //TODO: 체크 리스트 (이현)
 // 
@@ -37,11 +38,6 @@
 //
 
 
-//TODO : 엔진 변경점 :	1.FSM에서 현재 스테이트와 같은 스테이트를 변경하려 하면 리턴하는 기능추가, 체인지 에니메이션처럼 bool Force 추가
-//						2. fbx 렌더러가 현재 에니메이션 이름을 알게끔함
-
-
-
 enum class Unit_Team
 {
 	None,
@@ -54,6 +50,7 @@ enum class Unit_Team
 	Monster
 };
 
+class PlayLevel;
 class GameEngineCollision;
 class GameEngineFBXRenderer;
 class Unit : public GameEngineActor
@@ -84,7 +81,7 @@ public:
 
 	Unit_Packet* Unit_Get_UnitUpdatePaket()
 	{
-		return Unit_Packet_;
+		return &Unit_Packet_;
 	}
 
 	const Unit_Team Unit_GetTeam()
@@ -147,30 +144,11 @@ public:
 		Target_Unit_ = _Target;
 	}
 
-	//const unsigned int GetUnitID()
-	//{
-	//	return UnitID_;
-	//}
-	//void Unit_ChangeState(std::string _StateName)
-	//{
-	//	State_.ChangeState(_StateName);
-	//}
+	void Unit_SetUnitID(unsigned int _ID)
+	{
+		UnitID_ = _ID;
+	}
 
-	//std::string Unit_GetStateName()
-	//{
-	//	return State_.GetCurrentState()->Name_;
-	//}
-
-	//inline void Unit_SetCharacterType(CharacterType _Type)
-	//{
-	//	// 잘못된 타입 수신시 실패
-	//	if (_Type == CharacterType::NONE || _Type == CharacterType::MAX)
-	//	{
-	//		return;
-	//	}
-
-	//	CharacterType_ = _Type;
-	//}
 #pragma endregion
 
 protected:
@@ -183,16 +161,13 @@ protected:
 	void Unit_Set_Collision_Init();
 
 #pragma endregion
-private:
-	static unsigned int* UnitStaticIDNumbers_;
 public:
 	unsigned int UnitID_; // 아직 초기화 빼고 관련 함수 없음
+	Unit_Packet Unit_Packet_;
+
 	//서버만이 Actor를 생성할 경우에만 유효함,
 
 protected: // 기본정보
-
-	Unit_Packet* Unit_Packet_;
-
 	Unit_Team Unit_Team_; //컬리전으로 적의 타입을 알아낸 후, 적인지 아군인지 판별함
 
 	GameEngineFSM OrderState_;
@@ -252,13 +227,14 @@ protected: // 기본정보
 
 protected:
 #pragma region 업데이트
-	void Unit_Controller_Update();
 	void Unit_TargetUpdate(float _DeltaTime);
 	virtual void Unit_StateUpdate(float _DeltaTime);
 	void Unit_UpdateBuff(float _DeltaTime);
 
-	void Unit_Send_Server_PaketUpdate();
-	void Unit_Receive_Server_PaketUpdate();
+	//TODO: 구현 덜됨
+	void Unit_Set_Receive_PaketUpdate();
+	void Unit_Set_Send_PaketUpdate();
+
 #pragma endregion
 
 #pragma region 무브 함수
@@ -272,18 +248,6 @@ protected:
 	//리턴값이 true면 추적을 종료한다.
 	bool ChasePosUpdate(float4 _Target_Pos, float _ChaseDist);
 #pragma endregion
-
-	void Unit_Set_PacketInfo(Controller_Order _Controller_Order)
-	{
-		unsigned int TargetID = Target_Unit_->Unit_GetUnitID();
-
-		if(_Controller_Order == Controller_Order::A_RB_Attack_Target && TargetID ==0)
-		{
-			GameEngineDebug::MsgBoxError("_TargetID 를 설정하지 않았습니다. ");
-		}
-
-		Unit_Packet_->SetPaketInfo(UnitID_, static_cast<int>(_Controller_Order), Target_Pos_, TargetID);
-	}
 
 	void Unit_SetOrderEnd();
 	void Unit_SetSyncStatus();
@@ -361,28 +325,6 @@ protected:
 	virtual void Order_Reload_Update(float _DeltaTime);
 	virtual void Order_Reload_End();
 
-	//TODO: 이 밑부분은 나중에 플레이어.h 로 이동하게 될 것이다.
-
-	virtual void Order_Q_Start() = 0;
-	virtual void Order_Q_Update(float _DeltaTime) = 0;
-	virtual void Order_Q_End() = 0;
-
-	virtual void Order_W_Start() = 0;
-	virtual void Order_W_Update(float _DeltaTime) = 0;
-	virtual void Order_W_End() = 0;
-
-	virtual void Order_E_Start() = 0;
-	virtual void Order_E_Update(float _DeltaTime) = 0;
-	virtual void Order_E_End()=0;
-
-	virtual void Order_R_Start() = 0;
-	virtual void Order_R_Update(float _DeltaTime) = 0;
-	virtual void Order_R_End() = 0;
-
-	virtual void Order_D_Start() = 0;
-	virtual void Order_D_Update(float _DeltaTime) = 0;
-	virtual void Order_D_End() = 0;
-
 #pragma endregion
 
 #pragma region 동작 State
@@ -412,25 +354,6 @@ protected:
 
 	//TODO: 이 밑부분은 나중에 플레이어.h 로 이동하게 될 것이다.
 
-	virtual void Action_Q_Start() = 0;
-	virtual void Action_Q_Update(float _DeltaTime) = 0;
-	virtual void Action_Q_End() = 0;
-
-	virtual void Action_W_Start() = 0;
-	virtual void Action_W_Update(float _DeltaTime) = 0;
-	virtual void Action_W_End() = 0;
-
-	virtual void Action_E_Start() = 0;
-	virtual void Action_E_Update(float _DeltaTime) = 0;
-	virtual void Action_E_End() = 0;
-
-	virtual void Action_R_Start() = 0;
-	virtual void Action_R_Update(float _DeltaTime) = 0;
-	virtual void Action_R_End() = 0;
-
-	virtual void Action_D_Start() = 0;
-	virtual void Action_D_Update(float _DeltaTime) = 0;
-	virtual void Action_D_End() = 0;
 #pragma endregion
 
 protected:		// delete constructer

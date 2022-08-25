@@ -54,19 +54,48 @@ protected:
 	void ControllerOrderUpdate();
 
 protected:
-	// 캐릭터 State, 가상함수를 통해 캐릭터 클레스가 기본적으로 가지고 있어야 할 state를 지정
-	//virtual void Action_Idle_Start() = 0;
-	//virtual void Action_Idle_Update(float _DeltaTime) = 0;
-	//virtual void Action_Idle_End() = 0;
+#pragma region 명령 State
+	virtual void Order_Q_Start() = 0;
+	virtual void Order_Q_Update(float _DeltaTime) = 0;
+	virtual void Order_Q_End() = 0;
 
-	//virtual void Action_Walk_Start() = 0;
-	//virtual void Action_Walk_Update(float _DeltaTime) = 0;
-	//virtual void Action_Walk_End() = 0;
+	virtual void Order_W_Start() = 0;
+	virtual void Order_W_Update(float _DeltaTime) = 0;
+	virtual void Order_W_End() = 0;
 
-	//virtual void Action_Attack_Start() = 0;
-	//virtual void Action_Attack_Update(float _DeltaTime) = 0;
-	//virtual void Action_Attack_End() = 0;
+	virtual void Order_E_Start() = 0;
+	virtual void Order_E_Update(float _DeltaTime) = 0;
+	virtual void Order_E_End() = 0;
 
+	virtual void Order_R_Start() = 0;
+	virtual void Order_R_Update(float _DeltaTime) = 0;
+	virtual void Order_R_End() = 0;
+
+	virtual void Order_D_Start() = 0;
+	virtual void Order_D_Update(float _DeltaTime) = 0;
+	virtual void Order_D_End() = 0;
+#pragma endregion
+#pragma region 동작 State
+	virtual void Action_Q_Start() = 0;
+	virtual void Action_Q_Update(float _DeltaTime) = 0;
+	virtual void Action_Q_End() = 0;
+
+	virtual void Action_W_Start() = 0;
+	virtual void Action_W_Update(float _DeltaTime) = 0;
+	virtual void Action_W_End() = 0;
+
+	virtual void Action_E_Start() = 0;
+	virtual void Action_E_Update(float _DeltaTime) = 0;
+	virtual void Action_E_End() = 0;
+
+	virtual void Action_R_Start() = 0;
+	virtual void Action_R_Update(float _DeltaTime) = 0;
+	virtual void Action_R_End() = 0;
+
+	virtual void Action_D_Start() = 0;
+	virtual void Action_D_Update(float _DeltaTime) = 0;
+	virtual void Action_D_End() = 0;
+#pragma endregion
 protected:
 	//void RockOnUpdate(float _DeltaTime);
 	void StaminaRecoverUpdate(float _DeltaTime);
