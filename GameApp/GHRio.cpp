@@ -24,15 +24,15 @@ GHRio::~GHRio()
 
 void GHRio::Start()
 {
-	//float4 spawnPoint = { -6780.f, 0.0f, -780.f };
-	float4 spawnPoint = { 0.f, 0.0f, 0.f };
+	float4 spawnPoint = { -6780.f, 0.0f, -780.f };
+	//float4 spawnPoint = { 0.f, 0.0f, 0.f };
 	GetTransform()->SetLocalPosition(spawnPoint);
 	destination_ = spawnPoint;
 
-
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 
-	renderer_->SetFBXMesh("Rio_Wait.UserMesh", "TextureDeferredLightAni");
+	renderer_->SetFBXMesh("Rio_Run.fbx", "TextureDeferredLightAni");
+	//renderer_->SetFBXMesh("Rio_Wait.UserMesh", "TextureDeferredLightAni");
 
 	for (size_t i = 0; i < renderer_->GetRenderSetCount(); i++)
 	{
@@ -42,8 +42,11 @@ void GHRio::Start()
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	renderer_->CreateFBXAnimation("Run", "Rio_Run.UserAnimation", 0);
-	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("Run", "Rio_Run.fbx", 0);
+	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx", 0);
+
+	//renderer_->CreateFBXAnimation("Run", "Rio_Run.UserAnimation", 0);
+	//renderer_->CreateFBXAnimation("Wait", "Rio_Wait.UserAnimation", 0);
 
 	renderer_->ChangeFBXAnimation("Wait");
 

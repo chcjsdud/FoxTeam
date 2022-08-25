@@ -238,7 +238,7 @@ void SJH_Yuki::Start()
 	// 04. Empty
 	// 05. Lobby
 
-	for (size_t i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
+	for (int i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
 	{
 		AnimRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Yuki_01_LOD1.png");
 	}

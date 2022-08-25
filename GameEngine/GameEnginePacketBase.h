@@ -42,7 +42,10 @@ protected:
 	// 여기서 새로운 오브젝트를 반환 해 주세요.
 	virtual GameEnginePacketBase* getUserObject() = 0;
 
-	// 패킷이 할 행동을 정해주세요. bool 값은 서버에서 실행되는지에 대한 여부입니다.
+	// * 패킷이 할 행동을 정해주세요.
+	// * _bServer 매개변수는 값은 서버에서 실행되는지에 대한 여부입니다.
+	// * _network 매개변수의 실제 인스턴스가 GameEngineSocketServer 타입인지, GameEngineSocketClient 타입인지 알려면 _bServer 값을 체크하면 됩니다.
+	// * client와 server의 Send 함수가 각각 다르기 때문에 패킷을 재전송 하는 경우에 유용합니다.
 	virtual void execute(bool _bServer, GameEngineSocketInterface* _network) = 0;
 
 protected:

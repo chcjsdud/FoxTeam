@@ -99,10 +99,15 @@ void GHRayTestLevel::loadResource()
 		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Bg_NaviMesh_Cobalt.fbx"));
 		mesh->CreateRenderingBuffer();
 
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
+		mesh->CreateRenderingBuffer();
 
-		GameEngineFBXMeshManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserMesh"));
-		GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Run.UserAnimation"));
-		GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserAnimation"));
+		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
+		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Wait.fbx"));
+
+		//GameEngineFBXMeshManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserMesh"));
+		//GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Run.UserAnimation"));
+		//GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserAnimation"));
 	}
 
 	{

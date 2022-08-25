@@ -36,6 +36,7 @@ GameEnginePacketBase* ChattingPacket::getUserObject()
 void ChattingPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
 {
 	std::cout << text_ << std::endl;
+	GameEngineDebug::OutPutDebugString(text_);
 
 	if (_bServer)
 	{
@@ -43,12 +44,12 @@ void ChattingPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
 	}
 }
 
-void ChattingPacket::SetText(std::string& _text)
+void ChattingPacket::SetText(const std::string& _text)
 {
 	if (_text.size() > MAX_TEXT_SIZE)
 	{
 		return;
 	}
 
-	text_ = std::move(_text);
+	text_ = _text;
 }
