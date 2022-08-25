@@ -37,8 +37,8 @@ GHMap::~GHMap()
 void GHMap::Start()
 {
 	navMeshRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	navMeshRenderer_->SetFBXMesh("Bg_NaviMesh_Cobalt.fbx", "TextureDeferredLight");
-	//navMeshRenderer_->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
+	//navMeshRenderer_->SetFBXMesh("Bg_NaviMesh_Cobalt.fbx", "TextureDeferredLight");
+	navMeshRenderer_->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
 
 	size_t count = navMeshRenderer_->GetRenderSetCount();
 	for (size_t i = 0; i < count; i++)

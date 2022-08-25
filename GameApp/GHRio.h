@@ -21,8 +21,6 @@ public:
 	void Update(float _deltaTime) override;
 
 private:
-
-private:
 	void startIdle(float _deltaTime);
 	void updateIdle(float _deltaTime);
 
