@@ -31,7 +31,7 @@ void GameEngineSocketClient::Initialize()
 	}
 }
 
-void GameEngineSocketClient::Connect(const std::string& _ip)
+void GameEngineSocketClient::Connect(const std::string& _hostIP)
 {
 	if (socket_ != 0)
 	{

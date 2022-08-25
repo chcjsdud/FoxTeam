@@ -20,7 +20,7 @@ public:
 	// 소켓 초기화를 합니다.
 	void Initialize();
 	// 서버에 연결합니다.
-	void Connect(const std::string& _ip);
+	void Connect(const std::string& _hostIP);
 	// 서버와 연결을 끊습니다.
 	void Disconnect();
 	// 서버에 데이터를 전송합니다.
