@@ -7,7 +7,7 @@
 unsigned int* Unit::UnitStaticIDNumbers_ = nullptr;
 
 Unit::Unit()
-	: UnitUpdatePaket_(nullptr)
+	: Unit_Packet_(nullptr)
 	, UnitGroundCollision_(nullptr)
 	, FBXRenderer_(nullptr)
 	, UnitSightCollision_(nullptr)
@@ -26,7 +26,7 @@ Unit::Unit()
 {	
 	if (UserGame::IsServer_ == false)
 	{
-		UnitUpdatePaket_ = new UnitUpdatePaket;
+		Unit_Packet_ = new Unit_Packet;
 	}
 	else
 	{
@@ -121,10 +121,10 @@ Unit::~Unit()
 		UnitStaticIDNumbers_ = nullptr;
 	}
 
-	if (UnitUpdatePaket_ != nullptr)
+	if (Unit_Packet_ != nullptr)
 	{
-		delete UnitUpdatePaket_;
-		UnitUpdatePaket_ = nullptr;
+		delete Unit_Packet_;
+		Unit_Packet_ = nullptr;
 	}
 }
 
@@ -262,27 +262,27 @@ void Unit::Unit_UpdateBuff(float _DeltaTime)
 
 void Unit::Unit_Send_Server_PaketUpdate()
 {
-	UnitUpdatePaket _GameActorUpdatePaket;
+	//UnitUpdatePaket _GameActorUpdatePaket;
 
-	_GameActorUpdatePaket.UnitID_ = UnitID_;
-	_GameActorUpdatePaket.vLocalPosition_ = GetTransform()->GetLocalPosition();
-	_GameActorUpdatePaket.vLocalRotation_ = GetTransform()->GetLocalRotation();
-	_GameActorUpdatePaket.vLocalScaling_ = GetTransform()->GetLocalScaling();
-	_GameActorUpdatePaket.vWorldPosition_ = GetTransform()->GetWorldPosition();
-	_GameActorUpdatePaket.vWorldRotation_ = GetTransform()->GetWorldRotation();
-	_GameActorUpdatePaket.vWorldScaling_ = GetTransform()->GetWorldScaling();
+	//_GameActorUpdatePaket.UnitID_ = UnitID_;
+	//_GameActorUpdatePaket.vLocalPosition_ = GetTransform()->GetLocalPosition();
+	//_GameActorUpdatePaket.vLocalRotation_ = GetTransform()->GetLocalRotation();
+	//_GameActorUpdatePaket.vLocalScaling_ = GetTransform()->GetLocalScaling();
+	//_GameActorUpdatePaket.vWorldPosition_ = GetTransform()->GetWorldPosition();
+	//_GameActorUpdatePaket.vWorldRotation_ = GetTransform()->GetWorldRotation();
+	//_GameActorUpdatePaket.vWorldScaling_ = GetTransform()->GetWorldScaling();
 
-	_GameActorUpdatePaket.AniName_ = FBXRenderer_->GetCurAnimationName();
-	_GameActorUpdatePaket.AniFrame_ = FBXRenderer_->GetCurAnimationCurFrame();
-	_GameActorUpdatePaket.AniCurFrameTime = FBXRenderer_->GetCurAnimationCurFrameTime();
-	_GameActorUpdatePaket.AniFrameTime_ = FBXRenderer_->GetCurAnimationFrameTime();
+	//_GameActorUpdatePaket.AniName_ = FBXRenderer_->GetCurAnimationName();
+	//_GameActorUpdatePaket.AniFrame_ = FBXRenderer_->GetCurAnimationCurFrame();
+	//_GameActorUpdatePaket.AniCurFrameTime = FBXRenderer_->GetCurAnimationCurFrameTime();
+	//_GameActorUpdatePaket.AniFrameTime_ = FBXRenderer_->GetCurAnimationFrameTime();
 }
 
 void Unit::Unit_Receive_Server_PaketUpdate()
 {
-	UnitUpdatePaket _GameActorUpdatePaket;
+	//Unit_Packet _GameActorUpdatePaket;
 
-	FBXRenderer_->ChangeFBXAnimation(_GameActorUpdatePaket.AniName_);
+	//FBXRenderer_->ChangeFBXAnimation(_GameActorUpdatePaket.AniName_);
 
 	//GameActorUpdatePaket _GameActorUpdatePaket;
 

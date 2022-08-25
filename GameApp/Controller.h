@@ -22,7 +22,7 @@ enum class Controller_Order
 };
 
 class Unit;
-class Controller
+class Controller : public GameEngineActor
 {
 private:	// member Var
 
@@ -54,7 +54,7 @@ private:		//delete operator
 
 	virtual void Start() =0;
 	virtual void Update(float _DeltaTime)=0 ;
-private:	
+protected:
 
 #pragma region 컨트롤러가 넘겨줘야할 변수들, 컨트롤러는 결과적으로 이 3가지를 리턴하기 위해 존재함
 	float4 Controller_Target_Pos_; // 마우스로 타겟한 최종 지점

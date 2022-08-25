@@ -41,7 +41,7 @@ public:
 		//LockOnUI_->On();
 	}
 
-	void Player_SetPlayController(PlayerController* _PlayerController)
+	void Player_SetPlayController(Controller* _PlayerController)
 	{
 		Controller_ = _PlayerController;
 	}

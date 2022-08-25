@@ -1,10 +1,13 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+#include "Enums.h"
+
 #include "Controller.h"
 
-#include "Enums.h"
 #include "LH_Status.h"
+
+#include "Unit_Packet.h"
 
 //TODO: 체크 리스트 (이현)
 // 
@@ -19,10 +22,6 @@
 // 8. 스킬 구조체를 만들고 엑티브 패시브, 즉발, 타겟, 범위, 직선, 원형, 대미지, 사거리 등등 걍 다 넣어둘까?
 // 9. 정지, 홀드, 휴식 구현
 // 10. 
-//
-//
-//
-// 
 
 // 플레이어 컨트롤러로 부터 키 조작에 의한 여러 값들을 전달받아 그대로 행동함
 // 플레이어로 옮겨야 할 부분이 많은데 일단 완성후 할것
@@ -41,90 +40,7 @@
 //TODO : 엔진 변경점 :	1.FSM에서 현재 스테이트와 같은 스테이트를 변경하려 하면 리턴하는 기능추가, 체인지 에니메이션처럼 bool Force 추가
 //						2. fbx 렌더러가 현재 에니메이션 이름을 알게끔함
 
-#pragma region 패킷 
 
-class UnitPaket
-{
-protected:
-	UnitPaket() 
-		: UnitID_(0)
-	{
-	}
-	~UnitPaket()
-	{
-	}
-
-	unsigned int UnitID_;
-
-public:
-	unsigned int UnitPaket_GetUnitID()
-	{
-		return UnitID_;
-	}
-};
-
-
-class UnitUpdatePaket : public UnitPaket// 임시 구현 상태
-{
-	friend class Unit;
-protected:
-	UnitUpdatePaket()
-		: AniFrame_(0)
-		, AniFrameTime_(0.f)
-		, AniCurFrameTime(0.f)
-	{
-	}
-	~UnitUpdatePaket()
-	{
-	}
-
-public:
-	//각자 계산하고 최종적으로 반영되어야 할 결과값만 패킷으로 보내자
-	float4 vWorldPosition_;
-	float4 vWorldRotation_;
-	float4 vWorldScaling_;
-
-	float4 vLocalPosition_;
-	float4 vLocalRotation_;
-	float4 vLocalScaling_;
-
-	//Status_Buff Status_Buff_[static_cast<int>(BuffType::Max)]; // 버프나 스텟은 나중에
-	//Status Status_Final_; // 클라이언트는 계산하지 않고 계산된 최종 스탯만 받는다.
-
-	std::string AniName_;
-	//AnimationType AnimationType_;
-
-	//TODO: 서버에서 프레임을 제어하기로 했다면 클라이언트에서 스스로 프레임을 흘러가지 않게 해야함
-
-	int AniFrame_;
-	float AniFrameTime_;
-	float AniCurFrameTime;
-};
-
-class UnitAttackPaket : public UnitPaket
-{
-	friend class Unit;
-protected:
-	UnitAttackPaket()
-	{
-
-	}
-	UnitAttackPaket(unsigned int _TargerUnitID, int _Damage)
-	{
-		TargerUnitID_ = _TargerUnitID;
-		Damage_ = _Damage;
-	}
-	~UnitAttackPaket()
-	{
-
-	}
-
-public:
-	unsigned int TargerUnitID_;
-	int Damage_;
-};
-
-#pragma endregion
 
 enum class Unit_Team
 {
@@ -166,9 +82,9 @@ public:
 		return UnitID_;
 	}
 
-	UnitUpdatePaket* Unit_Get_UnitUpdatePaket()
+	Unit_Packet* Unit_Get_UnitUpdatePaket()
 	{
-		return UnitUpdatePaket_;
+		return Unit_Packet_;
 	}
 
 	const Unit_Team Unit_GetTeam()
@@ -274,7 +190,9 @@ public:
 	//서버만이 Actor를 생성할 경우에만 유효함,
 
 protected: // 기본정보
-	UnitUpdatePaket* UnitUpdatePaket_;
+
+	Unit_Packet* Unit_Packet_;
+
 	Unit_Team Unit_Team_; //컬리전으로 적의 타입을 알아낸 후, 적인지 아군인지 판별함
 
 	GameEngineFSM OrderState_;
@@ -354,6 +272,18 @@ protected:
 	//리턴값이 true면 추적을 종료한다.
 	bool ChasePosUpdate(float4 _Target_Pos, float _ChaseDist);
 #pragma endregion
+
+	void Unit_Set_PacketInfo(Controller_Order _Controller_Order)
+	{
+		unsigned int TargetID = Target_Unit_->Unit_GetUnitID();
+
+		if(_Controller_Order == Controller_Order::A_RB_Attack_Target && TargetID ==0)
+		{
+			GameEngineDebug::MsgBoxError("_TargetID 를 설정하지 않았습니다. ");
+		}
+
+		Unit_Packet_->SetPaketInfo(UnitID_, static_cast<int>(_Controller_Order), Target_Pos_, TargetID);
+	}
 
 	void Unit_SetOrderEnd();
 	void Unit_SetSyncStatus();

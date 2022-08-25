@@ -1,7 +1,9 @@
 #include "PreCompile.h"
 #include "Controller.h"
 
-Controller::Controller() // default constructer 디폴트 생성자
+Controller::Controller() 
+	: Controller_Target_Unit_(nullptr)
+	, Controller_Order_(Controller_Order::None_Idle)
 {
 
 }

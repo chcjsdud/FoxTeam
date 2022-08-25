@@ -236,6 +236,9 @@
     <ClCompile Include="ServerTestLevel.cpp">
       <Filter>02.GameServer\ServerTempTest</Filter>
     </ClCompile>
+    <ClCompile Include="Unit_Packet.cpp">
+      <Filter>01.GameObject\99.LH\PlayLevel\LH_Unit_Paket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -438,6 +441,9 @@
     </Filter>
     <Filter Include="02.GameServer\ServerTempTest">
       <UniqueIdentifier>{960b4ba1-5372-4860-847f-205985d0f620}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.LH\PlayLevel\LH_Unit_Paket">
+      <UniqueIdentifier>{e0bad995-0527-42f9-9fd6-33c090c98ed4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -675,6 +681,9 @@
     </ClInclude>
     <ClInclude Include="ServerTestLevel.h">
       <Filter>02.GameServer\ServerTempTest</Filter>
+    </ClInclude>
+    <ClInclude Include="Unit_Packet.h">
+      <Filter>01.GameObject\99.LH\PlayLevel\LH_Unit_Paket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
