@@ -94,7 +94,7 @@ void SJH_Wolf::Start()
 	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Wolf_01_appearwait.UserAnimation"));
 	GameEngineFBXAnimationManager::GetInst().LoadUser(AnimationPath.PathToPlusFileName("Wolf_01_appear.UserAnimation"));
 
-	for (size_t i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
+	for (int i = 0; i < AnimRenderer_->GetRenderSetCount(); i++)
 	{
 		AnimRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Wolf_01.png");
 	}
