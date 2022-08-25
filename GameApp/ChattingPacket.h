@@ -12,7 +12,7 @@ public:
 	ChattingPacket& operator=(const ChattingPacket&& _other) = delete;
 
 public:
-	void SetText(std::string& _text);
+	void SetText(const std::string& _text);
 	std::string GetText() { return text_; }
 
 protected:

@@ -7,10 +7,8 @@
 #include "ChattingPacket.h"
 
 
-GameEngineSocketServer* ServerTestLevel::server_ = nullptr;
-
 ServerTestLevel::ServerTestLevel() // default constructer 디폴트 생성자
-	: client_(nullptr), bIsServer_(false)
+	: bIsServer_(false)
 {
 
 }
@@ -20,52 +18,49 @@ ServerTestLevel::~ServerTestLevel() // default destructer 디폴트 소멸자
 
 }
 
-ServerTestLevel::ServerTestLevel(ServerTestLevel&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
-{
-
-}
-
 void ServerTestLevel::LevelStart()
 {
-
 }
 
 void ServerTestLevel::LevelUpdate(float _DeltaTime)
 {
-	if (nullptr != server_ && true == GameEngineInput::GetInst().Down("CloseServer"))
+	if (bIsServer_ == true && GameEngineInput::GetInst().Down("CloseServer"))
 	{
-		server_->CloseServer();
+		server_.CloseServer();
+		return;
 	}
 
-	if (nullptr == server_ && nullptr == client_ && true == GameEngineInput::GetInst().Down("CreateServer"))
+	if (!server_.IsOpened() && !client_.IsConnected() && GameEngineInput::GetInst().Down("CreateServer"))
 	{
-		GameEngineSocketServer s;
-		s.Initialize();
-		s.OpenServer();
-		s.AddPacketHandler(ePacketID::Chat, new ChattingPacket);
-
-		server_ = &s;
 		bIsServer_ = true;
+		server_.Initialize();
+		server_.OpenServer();
+		server_.AddPacketHandler(ePacketID::Chat, new ChattingPacket);
+		return;
 	}
 
-	if (nullptr == server_ && nullptr == client_ && false == bIsServer_ && true == GameEngineInput::GetInst().Down("JoinServer"))
+	if (!bIsServer_ && GameEngineInput::GetInst().Down("JoinServer"))
 	{
-		GameEngineSocketClient c;
-		c.Initialize();
-		c.Connect("127.0.0.1");
-		c.AddPacketHandler(ePacketID::Chat, new ChattingPacket);
-		
-		client_ = &c;
+		client_.Initialize();
+		client_.Connect("127.0.0.1");
+		client_.AddPacketHandler(ePacketID::Chat, new ChattingPacket);
+		return;
 	}
 
-
-	if (nullptr != server_)
+	if (!bIsServer_ && client_.IsConnected() && GameEngineInput::GetInst().Down("SendChat"))
 	{
-	//	server_->ProcessPacket();
+		ChattingPacket packet;
+		packet.SetText("테스트 패킷 전송");
+		client_.Send(&packet);
 	}
-	else if (nullptr != client_)
+
+	if (server_.IsOpened())
 	{
-	//	client_->ProcessPacket();
+		server_.ProcessPacket();
+	}
+	else if (client_.IsConnected())
+	{
+		client_.ProcessPacket();
 	}
 }
 
