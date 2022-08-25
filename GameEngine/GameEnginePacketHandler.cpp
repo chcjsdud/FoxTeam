@@ -1,6 +1,6 @@
 #include "PreCompile.h"
 #include "GameEnginePacketHandler.h"
-
+#include <mutex>
 #include <iostream>
 
 //#include "ChattingPacket.h"
@@ -68,7 +68,6 @@ void GameEnginePacketHandler::ProcessPacket(GameEngineSocketInterface* _network)
 {
 	// 패킷 처리중에 패킷을 추가하면 안 되므로 잠근다.
 	std::lock_guard<std::mutex> lg(locker_);
-
 	while (!packetQueue_.empty())
 	{
 		GameEnginePacketBase* packet = packetQueue_.front();

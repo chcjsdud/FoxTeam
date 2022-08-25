@@ -32,7 +32,6 @@ private:
 	std::queue<GameEnginePacketBase*> packetQueue_;
 	std::unordered_map<int, GameEnginePacketBase*> parents_;
 	std::mutex locker_;
-
 	bool bServer_;
 };
 

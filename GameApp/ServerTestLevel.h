@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineLevel.h>
+#include <GameEngine/GameEngineFSM.h>
 // 분류 : 
 // 용도 : 
 // 설명 : 
@@ -21,16 +22,13 @@ public:
 	virtual void LevelUpdate(float _DeltaTime) override;
 	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
-
-
 protected:
 
 
 private:
 	// *** 서버 소켓과 클라이언트 소켓 둘 중 하나만 생성해서 사용해야 합니다.
-	GameEngineSocketServer* server_;
+	static GameEngineSocketServer* server_;
 	GameEngineSocketClient* client_;
 	bool bIsServer_;
-
 };
 

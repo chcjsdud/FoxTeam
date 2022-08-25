@@ -17,7 +17,7 @@
 #include <GameApp/GHRayTestLevel.h>
 #include "YSJ_PlayLevel.h"
 #include "SettingItemLevel.h"
-
+#include "ServerTestLevel.h"
 std::atomic<int> UserGame::LoadingFolder = 0;
 bool UserGame::IsServer_ = false;
 
@@ -50,7 +50,7 @@ void UserGame::Initialize()
 	//LevelCreate<SettingItemLevel>("SettingItemLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
-	//LevelCreate<PJW_ServerTestLevel>("PJW_ServerTest");
+	//LevelCreate<ServerTestLevel>("PJW_ServerTest");
 	
 	//LevelChange("RayTestLevel");
 	//LevelChange("SJH_Play");
@@ -58,7 +58,7 @@ void UserGame::Initialize()
 	LevelChange("SJH_Play");
 	//LevelChange("PJW_Play");
 	//LevelChange("YSJ_Play");
-
+	//LevelChange("PJW_ServerTest");
 	return;
 }
 

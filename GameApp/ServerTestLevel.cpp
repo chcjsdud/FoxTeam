@@ -7,8 +7,10 @@
 #include "ChattingPacket.h"
 
 
+GameEngineSocketServer* ServerTestLevel::server_ = nullptr;
+
 ServerTestLevel::ServerTestLevel() // default constructer 디폴트 생성자
-	: server_(nullptr),client_(nullptr), bIsServer_(false)
+	: client_(nullptr), bIsServer_(false)
 {
 
 }
@@ -30,35 +32,46 @@ void ServerTestLevel::LevelStart()
 
 void ServerTestLevel::LevelUpdate(float _DeltaTime)
 {
-	if (true == bIsServer_)
-	{
-		server_->ProcessPacket();
-	}
-
-
-	if (true == GameEngineInput::GetInst().Down("CloseServer"))
+	if (nullptr != server_ && true == GameEngineInput::GetInst().Down("CloseServer"))
 	{
 		server_->CloseServer();
 	}
 
-	if (true == GameEngineInput::GetInst().Down("CreateServer"))
+	if (nullptr == server_ && nullptr == client_ && true == GameEngineInput::GetInst().Down("CreateServer"))
 	{
 		GameEngineSocketServer s;
 		s.Initialize();
 		s.OpenServer();
 		s.AddPacketHandler(ePacketID::Chat, new ChattingPacket);
 
+		server_ = &s;
 		bIsServer_ = true;
 	}
 
-	if (false == bIsServer_ && true == GameEngineInput::GetInst().Down("JoinServer"))
+	if (nullptr == server_ && nullptr == client_ && false == bIsServer_ && true == GameEngineInput::GetInst().Down("JoinServer"))
 	{
+		GameEngineSocketClient c;
+		c.Initialize();
+		c.Connect("127.0.0.1");
+		c.AddPacketHandler(ePacketID::Chat, new ChattingPacket);
+		
+		client_ = &c;
+	}
 
+
+	if (nullptr != server_)
+	{
+	//	server_->ProcessPacket();
+	}
+	else if (nullptr != client_)
+	{
+	//	client_->ProcessPacket();
 	}
 }
 
 void ServerTestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
+
 
 }
 
