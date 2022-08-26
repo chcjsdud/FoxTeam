@@ -149,6 +149,8 @@ void ItemBoxManager::Update(float _DeltaTime)
 		}
 	}
 
+	/*
+	이건호 : UI기능 테스트 중이라 임시로 UI끄는 기능을 꺼놨습니다
 	if (ItemBoxUI_ != nullptr)
 	{
 		if (false == ItemBoxUI_->MouseCollisionCheck())
@@ -160,8 +162,8 @@ void ItemBoxManager::Update(float _DeltaTime)
 				ItemBoxUI_ = nullptr;
 			}
 		}
-
 	}
+	*/
 
 	BoxSelectUpdate();
 }

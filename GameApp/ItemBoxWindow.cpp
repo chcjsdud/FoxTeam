@@ -34,6 +34,9 @@ void ItemBoxWindow::OnGUI()
 
 	SelectBox_ = ItemBoxManager_->GetSelectBox();
 
+	//이건호 : UI를 매니져와 윈도우가 같이 공유하게 세팅
+	BoxUI_ = ItemBoxManager_->GetItemBoxUI();
+
 	if (nullptr != SelectBox_)
 	{
 		const char* Arr = SelectBox_->Area.c_str();
@@ -91,6 +94,9 @@ void ItemBoxWindow::PushItem()
 		if (index == ListSelectItem)
 		{
 			SelectBox_->ItemList.push_back((*iter)->Copy());
+
+			//이건호 : UI에 아이템정보를 0번 슬롯에 넣도록 세팅
+			BoxUI_->PushItem(*iter, 0);
 			break;
 		}
 

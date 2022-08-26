@@ -57,6 +57,9 @@ private:
 	//자동으로 빈슬롯을 찾아서 아이템을 넣어주게 하는 함수, 만드는중
 	void EmptySlotCheck();
 
+	//아이템 슬롯을 체크해서 비어있지 않으면 이미지를 출력해주는 함수
+	void CheckItemSlot();
+
 	//이현
 private:
 	Player* Player_;
@@ -71,6 +74,8 @@ private:
 	ItemBase* Slot5_Item;
 	ItemBase* Slot6_Item;
 	ItemBase* Slot7_Item;
+
+	list<ItemBase*> SlotList_;
 //	GameEngineUIRenderer* DefenseValue_Renderer;
 //	GameEngineUIRenderer* AttackSpeedValue_Renderer;
 //	GameEngineUIRenderer* MoveSpeedValue_Renderer;

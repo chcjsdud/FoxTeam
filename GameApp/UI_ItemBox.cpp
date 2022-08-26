@@ -18,14 +18,14 @@ UI_ItemBox::UI_ItemBox()
 
 UI_ItemBox::~UI_ItemBox()
 {
-	//for (auto& UIRenderer : UIRendererMap)
-	//{
-	//	if (true)
-	//	{
-	//		delete UIRenderer.second;
-	//		UIRenderer.second = nullptr;
-	//	}
-	//}
+	for (auto& ItemSlot : SlotList_)
+	{
+		if (true)
+		{
+			delete ItemSlot;
+			ItemSlot = nullptr;
+		}
+	}
 }
 
 void UI_ItemBox::Start()
@@ -66,6 +66,23 @@ void UI_ItemBox::Start()
 		ItemBoxCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
 	}
 
+	//for (int i = 0; i < 8; i++)
+	//{
+	//	ItemBase* Item = new ItemBase();
+	//	Item->SetName("Slot_" + to_string(i));
+	//	SlotList_.push_back(Item);
+	//}
+
+	SlotList_.push_back(Slot0_Item);
+	SlotList_.push_back(Slot1_Item);
+	SlotList_.push_back(Slot2_Item);
+	SlotList_.push_back(Slot3_Item);
+	SlotList_.push_back(Slot4_Item);
+	SlotList_.push_back(Slot5_Item);
+	SlotList_.push_back(Slot6_Item);
+	SlotList_.push_back(Slot7_Item);
+	
+
 
 }
 
@@ -102,6 +119,8 @@ void UI_ItemBox::Update(float _Time)
 			RenderOn();
 		}
 	}
+
+	CheckItemSlot();
 
 }
 
@@ -261,3 +280,11 @@ void UI_ItemBox::EmptySlotCheck()
 	}
 }
 
+void UI_ItemBox::CheckItemSlot()
+{
+	if (Slot0_Item != nullptr)
+	{
+		int a = 0;
+	}
+
+}
