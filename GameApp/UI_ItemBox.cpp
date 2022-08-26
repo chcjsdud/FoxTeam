@@ -18,14 +18,14 @@ UI_ItemBox::UI_ItemBox()
 
 UI_ItemBox::~UI_ItemBox()
 {
-	//for (auto& UIRenderer : UIRendererMap)
-	//{
-	//	if (true)
-	//	{
-	//		delete UIRenderer.second;
-	//		UIRenderer.second = nullptr;
-	//	}
-	//}
+	for (auto& ItemSlot : SlotList_)
+	{
+		if (true)
+		{
+			delete ItemSlot;
+			ItemSlot = nullptr;
+		}
+	}
 }
 
 void UI_ItemBox::Start()
@@ -66,6 +66,23 @@ void UI_ItemBox::Start()
 		ItemBoxCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
 	}
 
+	//for (int i = 0; i < 8; i++)
+	//{
+	//	ItemBase* Item = new ItemBase();
+	//	Item->SetName("Slot_" + to_string(i));
+	//	SlotList_.push_back(Item);
+	//}
+
+	SlotList_.push_back(Slot0_Item);
+	SlotList_.push_back(Slot1_Item);
+	SlotList_.push_back(Slot2_Item);
+	SlotList_.push_back(Slot3_Item);
+	SlotList_.push_back(Slot4_Item);
+	SlotList_.push_back(Slot5_Item);
+	SlotList_.push_back(Slot6_Item);
+	SlotList_.push_back(Slot7_Item);
+	
+
 
 }
 
@@ -103,6 +120,8 @@ void UI_ItemBox::Update(float _Time)
 		}
 	}
 
+	CheckItemSlot();
+
 }
 
 void UI_ItemBox::RenderOff()
@@ -133,17 +152,8 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 	{
 	case 0:
 	{
-		//EmptySlotCheck();
-		if (Slot0_Item == nullptr)
-		{
-			Slot0_Item = _OriginItemBase->Copy();
-			return;
-		}
-		else
-		{
-			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
-			return;
-		}
+		EmptySlotReturn(_OriginItemBase);
+		return;
 	}
 		break;
 	case 1:
@@ -253,11 +263,67 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 	}
 }
 
-void UI_ItemBox::EmptySlotCheck()
+void UI_ItemBox::EmptySlotReturn(ItemBase* _TargetSlot)
 {
-	if (true)
-	{
 
+	if (Slot0_Item == nullptr)
+	{
+		Slot0_Item = _TargetSlot->Copy();
+		return;
 	}
+
+	if (Slot1_Item == nullptr)
+	{
+		Slot1_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot2_Item == nullptr)
+	{
+		Slot2_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot3_Item == nullptr)
+	{
+		Slot3_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot4_Item == nullptr)
+	{
+		Slot4_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot5_Item == nullptr)
+	{
+		Slot5_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot6_Item == nullptr)
+	{
+		Slot6_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot7_Item == nullptr)
+	{
+		Slot7_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	GameEngineDebug::MsgBox("아이템 박스에 빈 슬롯이 없습니다");
+	return;
+
 }
 
+void UI_ItemBox::CheckItemSlot()
+{
+	if (Slot0_Item != nullptr)
+	{
+		int a = 0;
+	}
+
+}
