@@ -107,7 +107,7 @@ void ChattingInput::Update(float _DeltaTime)
 	}
 
 	// 입력중인 채팅 문자열을 채팅 이력으로 보내기(채팅입력완료)
-	if (true == ChattingInputOK_ && true == GameEngineInput::GetInst().Down("Chatting_End"))
+	if (true == ChattingInputOK_ && true == GameEngineInput::GetInst().Down("Chatting_Enter"))
 	{
 		// 문자열이 있을때만 이력에 남길수있다.
 		if (!InputText_.empty())

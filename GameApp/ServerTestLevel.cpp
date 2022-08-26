@@ -20,7 +20,7 @@ ServerTestLevel::ServerTestLevel() // default constructer 디폴트 생성자
 
 ServerTestLevel::~ServerTestLevel() // default destructer 디폴트 소멸자
 {
-	KeyboardClass::GetInst().Destroy();
+
 }
 
 void ServerTestLevel::LevelStart()

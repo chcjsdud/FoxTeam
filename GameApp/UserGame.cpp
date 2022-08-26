@@ -18,6 +18,7 @@
 #include "YSJ_PlayLevel.h"
 #include "SettingItemLevel.h"
 #include "ServerTestLevel.h"
+#include "KeyboardClass.h"	
 std::atomic<int> UserGame::LoadingFolder = 0;
 bool UserGame::IsServer_ = false;
 
@@ -28,7 +29,7 @@ UserGame::UserGame() // default constructer 디폴트 생성자
 
 UserGame::~UserGame() // default destructer 디폴트 소멸자
 {
-
+	KeyboardClass::GetInst().Destroy();
 }
 
 UserGame::UserGame(UserGame&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
