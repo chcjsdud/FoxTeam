@@ -5,7 +5,8 @@
 #include <GameEngine/GameEngineSocketServer.h>
 #include <GameEngine/GameEngineSocketClient.h>
 
-class GameEngineUIRenderer;
+class ChattingInput;
+class ChattingHistory;
 class ServerTestLevel : public GameEngineLevel
 {
 public:
@@ -30,6 +31,7 @@ private:
 	GameEngineSocketClient client_;
 	bool bIsServer_;
 
-	GameEngineUIRenderer* chatRenderer_;
+	ChattingInput* chattingInput_;
+	ChattingHistory* chattingHistory_;
 };
 

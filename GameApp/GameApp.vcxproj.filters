@@ -239,6 +239,18 @@
     <ClCompile Include="Unit_Packet.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\LH_Unit_Paket</Filter>
     </ClCompile>
+    <ClCompile Include="KeyboardClass.cpp">
+      <Filter>02.GameServer\ServerTempTest\Chat</Filter>
+    </ClCompile>
+    <ClCompile Include="KeyboardEvent.cpp">
+      <Filter>02.GameServer\ServerTempTest\Chat</Filter>
+    </ClCompile>
+    <ClCompile Include="ChattingInput.cpp">
+      <Filter>02.GameServer\ServerTempTest\Chat</Filter>
+    </ClCompile>
+    <ClCompile Include="ChattingHistory.cpp">
+      <Filter>02.GameServer\ServerTempTest\Chat</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -444,6 +456,9 @@
     </Filter>
     <Filter Include="01.GameObject\99.LH\PlayLevel\LH_Unit_Paket">
       <UniqueIdentifier>{e0bad995-0527-42f9-9fd6-33c090c98ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameServer\ServerTempTest\Chat">
+      <UniqueIdentifier>{ca2a399b-8418-4a26-90b4-d76d4113447c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -684,6 +699,18 @@
     </ClInclude>
     <ClInclude Include="Unit_Packet.h">
       <Filter>01.GameObject\99.LH\PlayLevel\LH_Unit_Paket</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardClass.h">
+      <Filter>02.GameServer\ServerTempTest\Chat</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardEvent.h">
+      <Filter>02.GameServer\ServerTempTest\Chat</Filter>
+    </ClInclude>
+    <ClInclude Include="ChattingInput.h">
+      <Filter>02.GameServer\ServerTempTest\Chat</Filter>
+    </ClInclude>
+    <ClInclude Include="ChattingHistory.h">
+      <Filter>02.GameServer\ServerTempTest\Chat</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

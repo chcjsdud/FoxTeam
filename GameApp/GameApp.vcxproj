@@ -189,6 +189,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Character_ProtoType_State.cpp" />
+    <ClCompile Include="ChattingHistory.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ChattingInput.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Controller.cpp">
       <SubType>
       </SubType>
@@ -239,6 +247,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ItemBoxWindow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="KeyboardClass.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="KeyboardEvent.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -410,6 +426,14 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ChattingHistory.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ChattingInput.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Controller.h">
       <SubType>
       </SubType>
@@ -461,6 +485,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ItemBoxWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="KeyboardClass.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="KeyboardEvent.h">
       <SubType>
       </SubType>
     </ClInclude>
