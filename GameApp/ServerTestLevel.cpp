@@ -9,7 +9,7 @@
 #include <GameEngine/GameEngineUIRenderer.h>
 #include <GameEngine/GameEngineSocketServer.h>
 #include <GameEngine/GameEngineSocketClient.h>
-
+#include "KeyboardClass.h"
 #include "ChattingPacket.h"
 
 ServerTestLevel::ServerTestLevel() // default constructer 디폴트 생성자
@@ -20,7 +20,7 @@ ServerTestLevel::ServerTestLevel() // default constructer 디폴트 생성자
 
 ServerTestLevel::~ServerTestLevel() // default destructer 디폴트 소멸자
 {
-
+	KeyboardClass::GetInst().Destroy();
 }
 
 void ServerTestLevel::LevelStart()
@@ -96,6 +96,6 @@ void ServerTestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	}
 
 	
-	chattingInput_ = CreateActor<ChattingInput>();
-	chattingHistory_ = CreateActor<ChattingHistory>();
+	//chattingInput_ = CreateActor<ChattingInput>();
+	//chattingHistory_ = CreateActor<ChattingHistory>();
 }

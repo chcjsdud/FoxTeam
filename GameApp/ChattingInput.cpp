@@ -17,7 +17,7 @@ ChattingInput::ChattingInput() :
 	ChattingInputOK_(false),
 	curcaretpos_(0),
 	prevcaretpos_(0),
-	chattingInputBoxSpriteRender_(nullptr)
+	chattingRenderer_(nullptr)
 {
 
 }
@@ -35,7 +35,7 @@ ChattingInput::ChattingInput(ChattingInput&& _other) noexcept :
 	ChattingInputOK_(_other.ChattingInputOK_),
 	curcaretpos_(_other.curcaretpos_),
 	prevcaretpos_(_other.prevcaretpos_),
-	chattingInputBoxSpriteRender_(_other.chattingInputBoxSpriteRender_)
+	chattingRenderer_(_other.chattingRenderer_     )
 {
 
 }

@@ -19,7 +19,7 @@ private:	// member Var
 	int prevcaretpos_;
 
 private:
-	GameEngineUIRenderer* chattingInputBoxSpriteRender_;
+	GameEngineUIRenderer* chattingRenderer_;
 
 public:
 	ChattingInput(); // default constructer 디폴트 생성자

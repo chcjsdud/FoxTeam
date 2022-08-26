@@ -25,6 +25,7 @@ KeyboardClass::~KeyboardClass()
 	{
 		charBuffer.pop();
 	}
+
 }
 
 bool KeyboardClass::KeyIsPressed(const unsigned char keycode)
