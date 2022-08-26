@@ -54,7 +54,7 @@ private:
 	void Start() override;
 	void Update(float _Time) override;
 
-	//자동으로 빈슬롯을 찾아서 아이템을 넣어주게 하는 함수, 만드는중
+	//자동으로 빈슬롯을 찾아서 ItemBase를 세팅해주는 함수
 	void EmptySlotReturn(ItemBase* _TargetSlot);
 
 	//아이템 슬롯을 체크해서 비어있지 않으면 이미지를 출력해주는 함수
@@ -75,11 +75,8 @@ private:
 	ItemBase* Slot6_Item;
 	ItemBase* Slot7_Item;
 
-	list<ItemBase*> SlotList_;
-//	GameEngineUIRenderer* DefenseValue_Renderer;
-//	GameEngineUIRenderer* AttackSpeedValue_Renderer;
-//	GameEngineUIRenderer* MoveSpeedValue_Renderer;
-//	GameEngineUIRenderer* CriticalValue_Renderer;
+	//너무 양이 많아진다고 느껴지면 자료구조 사용하자
+	//list<ItemBase*> SlotList_;
 
 #pragma endregion 
 
@@ -106,24 +103,14 @@ private:
 	이경우는 SendItemData_Slot1(아이템정보)
 	이런식의 함수로 데이터를 보내주면
 	UI에서 데이터를 받아서 데이터내 멤버변수들을 이용해서 아이템 박스에 출력
-
+	->현재는 ItemBase 포인터를 받고 있는 중이다
 
 	2. UI가 받는건 단순 enum이나 index, bool
 	모든 데이터는 ItemBoxManager가 관리하고,
 	UI가 가진건 오직 enum/switch등을 이용한 단순처리과정
-	->현재는 아이템베이스 자체를 받는게 아니라, 정보들만 받게 해놨음
+	
 
-	ex)
-	enum class item
-	{
-		bottle,
-		needle
-	}
 
-	PushItem_Slot1(item::bottle)
-	이런식으로 넣어주면
-	enum을 받아서 UI에서 렌더링을 해준다
-	이런방식
 
 
 	들어갈 기능
@@ -141,7 +128,13 @@ private:
 	이건 이제 UI끼리 서로 알게 하느냐 아니면 ItemBoxManager가 관리하느냐의 여부
 	
 	*마우스와의 충돌여부를 확인할수 있는 충돌체 만들기
+	1. 뒷배경과 마우스의 충돌여부
+	-> 배경과 마우스가 충돌하지 않은 상태에서 좌측클릭하면 아이템박스가 꺼지게했다
 
+	2. 단독 아이템들의 충돌
+	-> 마우스와 아이템이 충돌중일때, 클릭시 인벤토리로 옮겨지게 만들예정
+	-> 드래그가능케 하는건 후순위
+	
 
 	
 	*/

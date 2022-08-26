@@ -18,14 +18,14 @@ UI_ItemBox::UI_ItemBox()
 
 UI_ItemBox::~UI_ItemBox()
 {
-	for (auto& ItemSlot : SlotList_)
-	{
-		if (true)
-		{
-			delete ItemSlot;
-			ItemSlot = nullptr;
-		}
-	}
+	//for (auto& ItemSlot : SlotList_)
+	//{
+	//	if (true)
+	//	{
+	//		delete ItemSlot;
+	//		ItemSlot = nullptr;
+	//	}
+	//}
 }
 
 void UI_ItemBox::Start()
@@ -73,14 +73,14 @@ void UI_ItemBox::Start()
 	//	SlotList_.push_back(Item);
 	//}
 
-	SlotList_.push_back(Slot0_Item);
-	SlotList_.push_back(Slot1_Item);
-	SlotList_.push_back(Slot2_Item);
-	SlotList_.push_back(Slot3_Item);
-	SlotList_.push_back(Slot4_Item);
-	SlotList_.push_back(Slot5_Item);
-	SlotList_.push_back(Slot6_Item);
-	SlotList_.push_back(Slot7_Item);
+	//SlotList_.push_back(Slot0_Item);
+	//SlotList_.push_back(Slot1_Item);
+	//SlotList_.push_back(Slot2_Item);
+	//SlotList_.push_back(Slot3_Item);
+	//SlotList_.push_back(Slot4_Item);
+	//SlotList_.push_back(Slot5_Item);
+	//SlotList_.push_back(Slot6_Item);
+	//SlotList_.push_back(Slot7_Item);
 	
 
 
@@ -269,6 +269,7 @@ void UI_ItemBox::EmptySlotReturn(ItemBase* _TargetSlot)
 	if (Slot0_Item == nullptr)
 	{
 		Slot0_Item = _TargetSlot->Copy();
+	//	Slot0_Item->SetImage();
 		return;
 	}
 
@@ -323,7 +324,46 @@ void UI_ItemBox::CheckItemSlot()
 {
 	if (Slot0_Item != nullptr)
 	{
-		int a = 0;
+		Slot0_Item->GetTransform()->AttachTransform(ItemBoxBackGround_Renderer->GetTransform());
+	}
+	else
+	{
+		//슬롯에게 붙은 Collision 삭제 예정
+	}
+
+	if (Slot1_Item != nullptr)
+	{
+		Slot1_Item->GetTransform()->AttachTransform(ItemBoxBackGround_Renderer->GetTransform());
+	}
+
+	if (Slot2_Item != nullptr)
+	{
+		Slot2_Item->GetTransform()->AttachTransform(ItemBoxBackGround_Renderer->GetTransform());
+	}
+
+	if (Slot3_Item != nullptr)
+	{
+		Slot3_Item->GetTransform()->AttachTransform(ItemBoxBackGround_Renderer->GetTransform());
+	}
+
+	if (Slot4_Item != nullptr)
+	{
+		Slot4_Item->GetTransform()->AttachTransform(ItemBoxBackGround_Renderer->GetTransform());
+	}
+
+	if (Slot5_Item != nullptr)
+	{
+		Slot5_Item->GetTransform()->AttachTransform(ItemBoxBackGround_Renderer->GetTransform());
+	}
+
+	if (Slot6_Item != nullptr)
+	{
+		Slot6_Item->GetTransform()->AttachTransform(ItemBoxBackGround_Renderer->GetTransform());
+	}
+
+	if (Slot7_Item != nullptr)
+	{
+		Slot7_Item->GetTransform()->AttachTransform(ItemBoxBackGround_Renderer->GetTransform());
 	}
 
 }
