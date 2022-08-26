@@ -51,7 +51,7 @@ void GameEngineSocketClient::Connect(const std::string& _hostIP)
 	address.sin_port = htons(30001);
 	address.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
 
-	if (SOCKET_ERROR == inet_pton(AF_INET, _ip.c_str(), &address.sin_addr)) // 로컬 호스트
+	if (SOCKET_ERROR == inet_pton(AF_INET, _hostIP.c_str(), &address.sin_addr)) // 로컬 호스트
 	{
 		GameEngineDebug::MsgBoxError("주소 초기화에 실패했습니다.");
 		return;

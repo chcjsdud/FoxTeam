@@ -1,6 +1,8 @@
 #include "PreCompile.h"
 #include "ServerTestLevel.h"
 #include "ePacketID.h"
+
+#include <GameEngine/GameEngineUIRenderer.h>
 #include <GameEngine/GameEngineSocketServer.h>
 #include <GameEngine/GameEngineSocketClient.h>
 
@@ -8,7 +10,7 @@
 
 
 ServerTestLevel::ServerTestLevel() // default constructer 디폴트 생성자
-	: bIsServer_(false)
+	: bIsServer_(false), chatRenderer_(nullptr)
 {
 
 }
@@ -55,6 +57,7 @@ void ServerTestLevel::LevelUpdate(float _DeltaTime)
 
 	if (!bIsServer_ && client_.IsConnected() && GameEngineInput::GetInst().Down("SendChat"))
 	{
+		chatRenderer_->TextSetting("굴림", "테스트 패킷 전송", 1, float4::WHITE);
 		ChattingPacket packet;
 		packet.SetText("테스트 패킷 전송");
 		client_.Send(&packet);
@@ -70,6 +73,14 @@ void ServerTestLevel::LevelUpdate(float _DeltaTime)
 	{
 		client_.ProcessPacket();
 	}
+
+
+	{
+
+
+	}
+
+
 }
 
 void ServerTestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
@@ -87,7 +98,8 @@ void ServerTestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 		GameEngineInput::GetInst().CreateKey("SendChat", '3');
 		GameEngineInput::GetInst().CreateKey("CloseServer", '4');
-
-
 	}
+
+
+
 }
