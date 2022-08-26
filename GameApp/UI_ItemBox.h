@@ -55,7 +55,7 @@ private:
 	void Update(float _Time) override;
 
 	//자동으로 빈슬롯을 찾아서 아이템을 넣어주게 하는 함수, 만드는중
-	void EmptySlotCheck();
+	void EmptySlotReturn(ItemBase* _TargetSlot);
 
 	//아이템 슬롯을 체크해서 비어있지 않으면 이미지를 출력해주는 함수
 	void CheckItemSlot();
