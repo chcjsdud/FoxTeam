@@ -95,7 +95,7 @@ void ServerTestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		GameEngineInput::GetInst().CreateKey("CloseServer", '4');
 	}
 
-	
-	//chattingInput_ = CreateActor<ChattingInput>();
-	//chattingHistory_ = CreateActor<ChattingHistory>();
+	GameEngineFontManager::GetInst().Load("±¼¸²");
+	chattingInput_ = CreateActor<ChattingInput>();
+	chattingHistory_ = CreateActor<ChattingHistory>();
 }

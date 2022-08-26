@@ -2,7 +2,7 @@
 #include "ChattingInput.h"
 #include "eCollisionGroup.h"
 #include "ChattingHistory.h"
-
+#include <GameEngine/GameEngineUIRenderer.h>
 #include "KeyboardClass.h"
 
 
@@ -53,6 +53,8 @@ void ChattingInput::Start()
 	{
 		GameEngineInput::GetInst().CreateKey("Chatting_Del", VK_BACK);
 	}
+
+	chattingRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 }
 
 void ChattingInput::Update(float _DeltaTime)
@@ -70,8 +72,8 @@ void ChattingInput::Update(float _DeltaTime)
 			caretshow_ = true;
 			CreateCaret(GameEngineWindow::GetInst().GetWindowHWND(), NULL, 2, 14);
 			ShowCaret(GameEngineWindow::GetInst().GetWindowHWND());
-			SetCaretBlinkTime(10);
-			SetCaretPos(20, 660);
+			SetCaretBlinkTime(100);
+			SetCaretPos(0, 0);
 		}
 	}
 	else if (false == ChattingInputOK_) 
@@ -98,6 +100,8 @@ void ChattingInput::Update(float _DeltaTime)
 			unsigned char ReadChar = KeyboardClass::GetInst().ReadChar();
 			SetStr += ReadChar;
 
+			chattingRenderer_->TextSetting("±¼¸²", InputText_, 30, float4::WHITE);
+			
 			AddText(SetStr);
 		}
 	}
@@ -140,7 +144,8 @@ void ChattingInput::Update(float _DeltaTime)
 	// Chatting
 	if (!InputText_.empty())
 	{
-		TextOut(GameEngineWindow::GetInst().GetWindowDC(), 20, 660, InputText_.c_str(), lstrlen(InputText_.c_str()));
+		TextOut(GameEngineWindow::GetInst().GetWindowDC(), 0, 0, InputText_.c_str(), lstrlen(InputText_.c_str()));
+
 
 		if (true == caretshow_)
 		{
