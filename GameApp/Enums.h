@@ -17,7 +17,7 @@ enum class CollisionGroup
 
 	//이현 추가
 	Unit,
-
+	MouseRay,
 
 	MAX = 999
 

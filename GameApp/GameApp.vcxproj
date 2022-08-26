@@ -263,10 +263,6 @@
     <ClCompile Include="LGH_PlayLevel.cpp" />
     <ClCompile Include="LH_Mouse.cpp" />
     <ClCompile Include="LH_Unit.cpp" />
-    <ClCompile Include="GameMouse.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="LH_Inventory.cpp">
       <SubType>
       </SubType>
@@ -500,10 +496,6 @@
     <ClInclude Include="LH_Unit.h" />
     <ClInclude Include="CustomVertex.h" />
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="GameMouse.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="LH_Inventory.h">
       <SubType>
       </SubType>

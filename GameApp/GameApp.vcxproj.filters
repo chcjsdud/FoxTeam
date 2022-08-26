@@ -41,9 +41,6 @@
     <ClCompile Include="Item.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base</Filter>
     </ClCompile>
-    <ClCompile Include="GameMouse.cpp">
-      <Filter>01.GameObject\02.GlobalActor</Filter>
-    </ClCompile>
     <ClCompile Include="GHRayTestLevel.cpp">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
     </ClCompile>
@@ -173,9 +170,6 @@
     <ClCompile Include="SettingItemLevel.cpp">
       <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
     </ClCompile>
-    <ClCompile Include="GHMousePointer.cpp">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="GHRayTestBox.cpp">
       <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
     </ClCompile>
@@ -259,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="EndingLevel.cpp">
       <Filter>01.GameObject\03.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="GHMousePointer.cpp">
+      <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -507,9 +504,6 @@
     <ClInclude Include="Item.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base</Filter>
     </ClInclude>
-    <ClInclude Include="GameMouse.h">
-      <Filter>01.GameObject\02.GlobalActor</Filter>
-    </ClInclude>
     <ClInclude Include="GHRayTestLevel.h">
       <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
     </ClInclude>
@@ -639,9 +633,6 @@
     <ClInclude Include="SettingItemLevel.h">
       <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
     </ClInclude>
-    <ClInclude Include="GHMousePointer.h">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="GHRayTestBox.h">
       <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
     </ClInclude>
@@ -728,6 +719,9 @@
     </ClInclude>
     <ClInclude Include="ResultLevel.h">
       <Filter>01.GameObject\03.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="GHMousePointer.h">
+      <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

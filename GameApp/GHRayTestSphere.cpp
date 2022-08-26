@@ -33,7 +33,7 @@ void GHRayTestSphere::Start()
 
 void GHRayTestSphere::Update(float _deltaTime)
 {
-	if (collision_->Collision(eCollisionGroup::MouseRay))
+	if (collision_->Collision(CollisionGroup::MouseRay))
 	{
 		renderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4(0.0f, 1.0f, 0.0f, 1.0f));
 	}

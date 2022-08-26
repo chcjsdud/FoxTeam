@@ -19,7 +19,7 @@ void GHMousePointer::Start()
 {
 	rayCollision_ = CreateTransformComponent<GameEngineCollision>();
 	rayCollision_->SetCollisionType(CollisionType::Ray);
-	rayCollision_->SetCollisionGroup(eCollisionGroup::MouseRay);
+	rayCollision_->SetCollisionGroup(CollisionGroup::MouseRay);
 }
 
 void GHMousePointer::Update(float _deltaTime)

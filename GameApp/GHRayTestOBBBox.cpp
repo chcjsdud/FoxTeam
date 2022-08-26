@@ -35,7 +35,7 @@ void GHRayTestOBBBox::Update(float _deltaTime)
 {
 	renderer_->GetTransform()->AddLocalDeltaTimeRotation({ 30.0f, 90.f, 60.0f });
 
-	if (collision_->Collision(eCollisionGroup::MouseRay))
+	if (collision_->Collision(CollisionGroup::MouseRay))
 	{
 		renderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4(0.0f, 1.0f, 0.0f, 1.0f));
 	}

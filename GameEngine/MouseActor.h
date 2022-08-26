@@ -33,6 +33,7 @@ protected:
 
 protected:
 	GameEngineUIRenderer* UIRenderer;
+	
 
 };
 
