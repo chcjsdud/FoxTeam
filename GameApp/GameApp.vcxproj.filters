@@ -134,9 +134,6 @@
     <ClCompile Include="YSJ_Mouse.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="PJW_NavMesh.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
-    </ClCompile>
     <ClCompile Include="SJH_PathFinder.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder</Filter>
     </ClCompile>
@@ -227,9 +224,6 @@
     <ClCompile Include="Controller.cpp">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
     </ClCompile>
-    <ClCompile Include="PJW_NeviCell.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
-    </ClCompile>
     <ClCompile Include="ChattingPacket.cpp">
       <Filter>02.GameServer\UserPacket</Filter>
     </ClCompile>
@@ -250,6 +244,21 @@
     </ClCompile>
     <ClCompile Include="ChattingHistory.cpp">
       <Filter>02.GameServer\ServerTempTest\Chat</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyLevel.cpp">
+      <Filter>01.GameObject\03.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="LumiaLevel.cpp">
+      <Filter>01.GameObject\03.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultLevel.cpp">
+      <Filter>01.GameObject\03.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>01.GameObject\03.Level</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingLevel.cpp">
+      <Filter>01.GameObject\03.Level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -402,9 +411,6 @@
     </Filter>
     <Filter Include="01.GameObject\99.YSJ\02Actor\Mouse\Component">
       <UniqueIdentifier>{94f6da51-dc73-4c9a-a830-084f83fd418f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\98.PJW\PJW_NavMesh">
-      <UniqueIdentifier>{acc9dade-c0a9-40f1-834f-aa60efa9d758}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\99.조규현\RayTestLevel\NavMesh">
       <UniqueIdentifier>{334917f0-e7bf-42b0-9856-9d921017c925}</UniqueIdentifier>
@@ -594,9 +600,6 @@
     <ClInclude Include="eCollisionGroup.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
-    <ClInclude Include="PJW_NavMesh.h">
-      <Filter>01.GameObject\98.PJW\PJW_NavMesh</Filter>
-    </ClInclude>
     <ClInclude Include="SJH_PathFinder.h">
       <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder</Filter>
     </ClInclude>
@@ -687,7 +690,6 @@
     <ClInclude Include="Controller.h">
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
     </ClInclude>
-    <ClInclude Include="PJW_NeviCell.h" />
     <ClInclude Include="ChattingPacket.h">
       <Filter>02.GameServer\UserPacket</Filter>
     </ClInclude>
@@ -711,6 +713,21 @@
     </ClInclude>
     <ClInclude Include="ChattingHistory.h">
       <Filter>02.GameServer\ServerTempTest\Chat</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>01.GameObject\03.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingLevel.h">
+      <Filter>01.GameObject\03.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyLevel.h">
+      <Filter>01.GameObject\03.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="LumiaLevel.h">
+      <Filter>01.GameObject\03.Level</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultLevel.h">
+      <Filter>01.GameObject\03.Level</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
