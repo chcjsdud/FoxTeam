@@ -3,8 +3,6 @@
 #include "GameEnginePacketHandler.h"
 #include "GameEnginePacketBase.h"
 
-#include <GameApp/PlayersInfo.h>
-
 GameEngineSocketServer::GameEngineSocketServer() // default constructer 디폴트 생성자
 	: serverSocket_(0)
 	, acceptThread_(nullptr)

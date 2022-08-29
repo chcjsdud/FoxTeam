@@ -3,7 +3,6 @@
 
 #include <functional>
 
-#include <GameApp/PlayersInfo.h>
 #include "GameEnginePacketHandler.h"
 
 GameEngineSocketClient::GameEngineSocketClient()
