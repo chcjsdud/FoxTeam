@@ -69,9 +69,12 @@ void GameEngineFSM::Update(float _Time)
 
 void GameEngineFSM::ChangeState(const std::string& _Name, bool _bForceChange)
 {
-	if (GetCurrentState()->Name_ == _Name && _bForceChange == false)
+	if (nullptr != GetCurrentState())
 	{
-		return;
+		if (GetCurrentState()->Name_ == _Name && _bForceChange == false)
+		{
+			return;
+		}
 	}
 
 	std::map<std::string, State*>::iterator FindIter = AllState_.find(_Name);

@@ -3,6 +3,8 @@
 #include "GameEnginePacketHandler.h"
 #include "GameEnginePacketBase.h"
 
+#include <GameApp/PlayersInfo.h>
+
 GameEngineSocketServer::GameEngineSocketServer() // default constructer 디폴트 생성자
 	: serverSocket_(0)
 	, acceptThread_(nullptr)
@@ -72,6 +74,7 @@ void GameEngineSocketServer::OpenServer()
 	}
 
 	GameEngineDebug::OutPutDebugString("서버 오픈이 성공적으로 완료되었습니다.");
+
 
 	bOpen_ = true;
 	packetHandler_ = new GameEnginePacketHandler(true);
@@ -172,9 +175,11 @@ void GameEngineSocketServer::acceptFunction()
 		}
 		
 		GameEngineDebug::OutPutDebugString("새로운 클라이언트가 접속했습니다.\n");
+		// 새로운 클라이언트의 접속을 확인한 순간부터
+		// 클라이언트의 최소 정보인 순번까지는 게임앱에서 알고 있어야 한다...
+		//
 
 		locker_.lock();
-
 		clientSocketList_.push_back(socketNewUser);
 
 		std::thread newReceiveThread(std::bind(&GameEngineSocketServer::receiveFunction, this, socketNewUser));

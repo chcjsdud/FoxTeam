@@ -32,6 +32,12 @@ public:
 	template<typename T>
 	void AddPacketHandler(T _packetID, GameEnginePacketBase* _packetObject);
 
+	// 0829 ╧за╬©Ь
+	int GetClientSocketSize()
+	{
+		return clientSocketList_.size();
+	}
+
 public:
 	bool IsOpened() { return bOpen_; }
 
@@ -43,7 +49,7 @@ private:
 
 private:
 	enum { PACKET_SIZE = 1024 };
-	std::vector<SOCKET> clientSocketList_;
+	std::vector<SOCKET> clientSocketList_; 
 	std::map<SOCKET, std::thread> clientReceiveThreadList_;
 
 	bool bOpen_;

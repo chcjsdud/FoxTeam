@@ -18,6 +18,7 @@
 #include "YSJ_PlayLevel.h"
 #include "SettingItemLevel.h"
 #include "ServerTestLevel.h"
+#include "LobbyLevel.h"
 #include "KeyboardClass.h"	
 std::atomic<int> UserGame::LoadingFolder = 0;
 bool UserGame::IsServer_ = false;
@@ -51,7 +52,7 @@ void UserGame::Initialize()
 	//LevelCreate<SettingItemLevel>("SettingItemLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
-	LevelCreate<ServerTestLevel>("PJW_ServerTest");
+	LevelCreate<LobbyLevel>("PJW_ServerTest");
 	
 	//LevelChange("RayTestLevel");
 	//LevelChange("SJH_Play");

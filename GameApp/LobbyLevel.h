@@ -5,6 +5,8 @@
 #include <GameEngine/GameEngineSocketServer.h>
 #include <GameEngine/GameEngineSocketClient.h>
 
+#include "LobbyPlayerInfo.h"
+
 class LobbyLevel : public GameEngineLevel
 {
 public:
@@ -29,13 +31,21 @@ public:
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
 protected:
-
+	void StartIdle();
+	void UpdateIdle(float _DeltaTime);
+	void EndIdle();
+	void StartSelect();
+	void UpdateSelect(float _DeltaTime);
+	void EndSelect();
+	void StartJoin();
+	void UpdateJoin(float _DeltaTime);
+	void EndJoin();
 
 private:
-	GameEngineFSM* state_;
-
-	GameEngineSocketServer serverSocket_;
-	GameEngineSocketClient clientSocket_;
-
+	GameEngineFSM state_;
+public:
+	std::vector<LobbyPlayerInfo> playerList_;
+	static GameEngineSocketServer serverSocket_;
+	static GameEngineSocketClient clientSocket_;
 };
 
