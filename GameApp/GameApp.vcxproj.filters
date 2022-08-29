@@ -42,7 +42,7 @@
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base</Filter>
     </ClCompile>
     <ClCompile Include="GHRayTestLevel.cpp">
-      <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel</Filter>
     </ClCompile>
     <ClCompile Include="PJW_Hyunwoo.cpp">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
@@ -153,7 +153,7 @@
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClCompile>
     <ClCompile Include="GHNavMesh.cpp">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\NavMesh</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\NavMesh</Filter>
     </ClCompile>
     <ClCompile Include="ItemBoxManager.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
@@ -171,22 +171,22 @@
       <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
     </ClCompile>
     <ClCompile Include="GHRayTestBox.cpp">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="GHRayTestOBBBox.cpp">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="GHRayTestSphere.cpp">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="GHRio.cpp">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="GHNode.cpp">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\NavMesh\AStar</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\NavMesh\AStar</Filter>
     </ClCompile>
     <ClCompile Include="GHMap.cpp">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="ItemBase.cpp">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
@@ -242,9 +242,6 @@
     <ClCompile Include="LobbyLevel.cpp">
       <Filter>01.GameObject\03.Level</Filter>
     </ClCompile>
-    <ClCompile Include="LumiaLevel.cpp">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClCompile>
     <ClCompile Include="ResultLevel.cpp">
       <Filter>01.GameObject\03.Level</Filter>
     </ClCompile>
@@ -256,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="GHMousePointer.cpp">
       <Filter>01.GameObject\02.GlobalActor</Filter>
+    </ClCompile>
+    <ClCompile Include="LumiaLevel.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -349,12 +349,6 @@
     <Filter Include="01.GameObject\98.PJW\PJW_Shader">
       <UniqueIdentifier>{3049977c-cd71-4489-bd81-b9e0c4b94a9f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.조규현">
-      <UniqueIdentifier>{469ee93c-6366-4982-8330-ab0dbe60b641}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.조규현\RayTestLevel">
-      <UniqueIdentifier>{dc0f5689-7e98-4d72-a161-e40254618465}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\98.PJW\PJW_Controller">
       <UniqueIdentifier>{1b0c7000-16dc-4204-981c-1654f6914312}</UniqueIdentifier>
     </Filter>
@@ -409,9 +403,6 @@
     <Filter Include="01.GameObject\99.YSJ\02Actor\Mouse\Component">
       <UniqueIdentifier>{94f6da51-dc73-4c9a-a830-084f83fd418f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.조규현\RayTestLevel\NavMesh">
-      <UniqueIdentifier>{334917f0-e7bf-42b0-9856-9d921017c925}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\99.LGH\UI">
       <UniqueIdentifier>{cc38f788-6dae-4ceb-a1a8-e3f2b5009f80}</UniqueIdentifier>
     </Filter>
@@ -426,12 +417,6 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\SettingItemLevel">
       <UniqueIdentifier>{1a76d953-e652-4ef7-a945-097cf5d62d1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.조규현\RayTestLevel\Actor">
-      <UniqueIdentifier>{e1cce04c-4094-49a6-ac6d-e9d77e1032ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.조규현\RayTestLevel\NavMesh\AStar">
-      <UniqueIdentifier>{3fe54756-747e-4b1c-9b8b-27e681430b7a}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\99.YSJ\02Actor\ItemBox\Item">
       <UniqueIdentifier>{d3852990-4947-495d-8087-5498048dc846}</UniqueIdentifier>
@@ -462,6 +447,21 @@
     </Filter>
     <Filter Include="02.GameServer\ServerTempTest\Chat">
       <UniqueIdentifier>{ca2a399b-8418-4a26-90b4-d76d4113447c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel">
+      <UniqueIdentifier>{19f35235-a09b-466f-87df-ae6814653a3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\RayTestLevel">
+      <UniqueIdentifier>{dc0f5689-7e98-4d72-a161-e40254618465}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\RayTestLevel\NavMesh">
+      <UniqueIdentifier>{334917f0-e7bf-42b0-9856-9d921017c925}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\RayTestLevel\NavMesh\AStar">
+      <UniqueIdentifier>{3fe54756-747e-4b1c-9b8b-27e681430b7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor">
+      <UniqueIdentifier>{e1cce04c-4094-49a6-ac6d-e9d77e1032ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -505,7 +505,7 @@
       <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base</Filter>
     </ClInclude>
     <ClInclude Include="GHRayTestLevel.h">
-      <Filter>01.GameObject\99.조규현\RayTestLevel</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel</Filter>
     </ClInclude>
     <ClInclude Include="SJH_PlayLevel.h">
       <Filter>01.GameObject\99.SJH\02.Level</Filter>
@@ -598,7 +598,7 @@
       <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder</Filter>
     </ClInclude>
     <ClInclude Include="GHNavMesh.h">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\NavMesh</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\NavMesh</Filter>
     </ClInclude>
     <ClInclude Include="PJW_Mouse.h">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
@@ -634,22 +634,22 @@
       <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
     </ClInclude>
     <ClInclude Include="GHRayTestBox.h">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="GHRayTestOBBBox.h">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="GHRayTestSphere.h">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="GHRio.h">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="GHNode.h">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\NavMesh\AStar</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\NavMesh\AStar</Filter>
     </ClInclude>
     <ClInclude Include="GHMap.h">
-      <Filter>01.GameObject\99.조규현\RayTestLevel\Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="ItemBase.h">
       <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
@@ -714,14 +714,14 @@
     <ClInclude Include="LobbyLevel.h">
       <Filter>01.GameObject\03.Level</Filter>
     </ClInclude>
-    <ClInclude Include="LumiaLevel.h">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClInclude>
     <ClInclude Include="ResultLevel.h">
       <Filter>01.GameObject\03.Level</Filter>
     </ClInclude>
     <ClInclude Include="GHMousePointer.h">
       <Filter>01.GameObject\02.GlobalActor</Filter>
+    </ClInclude>
+    <ClInclude Include="LumiaLevel.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
