@@ -346,7 +346,12 @@ void GameEngineLevel::ClearAll()
 			}
 
 		}
+
+		Actors.clear();
 	}
+
+	ActorList_.clear();
+	CollisionList_.clear();
 }
 
 void GameEngineLevel::SetLevelActorMoveProcess()

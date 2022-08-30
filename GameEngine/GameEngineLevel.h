@@ -99,6 +99,9 @@ private:
 
 	void ChangeCollisionGroup(int _Group, GameEngineCollision* _Collision);
 
+protected:
+	CameraActor* MainCameraActor_;
+	CameraActor* UICameraActor_;
 private:
 	std::map<int, std::list<GameEngineActor*>> ActorList_;
 	std::vector<NextLevelActor> NextLevelActorsData_;
@@ -109,8 +112,7 @@ private:
 	std::list<TimeEvent*> AllEvent_;
 	std::list<TimeEvent*> AddEvent_;
 
-	CameraActor* MainCameraActor_;
-	CameraActor* UICameraActor_;
+
 }; // GameEngineLevel
 
 
