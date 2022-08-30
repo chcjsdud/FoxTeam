@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "GHRio.h"
 #include "GHRayTestLevel.h"
-#include "GHMousePointer.h"
+#include "MousePointer.h"
 #include "GHMap.h"
 #include "GHNavMesh.h"
 
@@ -24,8 +24,8 @@ GHRio::~GHRio()
 
 void GHRio::Start()
 {
-	float4 spawnPoint = { -6780.f, 0.0f, -780.f };
-	//float4 spawnPoint = { 0.f, 0.0f, 0.f };
+	//float4 spawnPoint = { -6780.f, 0.0f, -780.f };
+	float4 spawnPoint = { 0.f, 0.0f, 0.f };
 	GetTransform()->SetLocalPosition(spawnPoint);
 	destination_ = spawnPoint;
 
@@ -73,7 +73,7 @@ void GHRio::Update(float _deltaTime)
 	static float pathFindTime = 0.f;
 	float4 worldPosition = GetTransform()->GetWorldPosition();
 	GHRayTestLevel* level = dynamic_cast<GHRayTestLevel*>(GetLevel());
-	GHMousePointer* mouse = nullptr;
+	MousePointer* mouse = nullptr;
 	if (nullptr != level)
 	{
 		mouse = level->GetMousePointer();

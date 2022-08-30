@@ -223,7 +223,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GHMousePointer.cpp">
+    <ClCompile Include="MousePointer.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -466,7 +466,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GHMousePointer.h">
+    <ClInclude Include="MousePointer.h">
       <SubType>
       </SubType>
     </ClInclude>

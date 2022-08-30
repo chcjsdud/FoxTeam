@@ -1,39 +1,39 @@
 #include "PreCompile.h"
-#include "GHMousePointer.h"
+#include "MousePointer.h"
 
 #include <GameEngine/GameEngineCollision.h>
 
-GHMousePointer::GHMousePointer()
+MousePointer::MousePointer()
 	: rayCollision_(nullptr)
 	, rayDirection_(0.0f, 0.0f, 1.0f, 1.0f)
 {
 
 }
 
-GHMousePointer::~GHMousePointer()
+MousePointer::~MousePointer()
 {
 
 }
 
-void GHMousePointer::Start()
+void MousePointer::Start()
 {
 	rayCollision_ = CreateTransformComponent<GameEngineCollision>();
 	rayCollision_->SetCollisionType(CollisionType::Ray);
-	rayCollision_->SetCollisionGroup(CollisionGroup::MouseRay);
+	rayCollision_->SetCollisionGroup(eCollisionGroup::MouseRay);
 }
 
-void GHMousePointer::Update(float _deltaTime)
+void MousePointer::Update(float _deltaTime)
 {
 	updateMouseRay();
 	rayCollision_->SetRayData(rayOrigin_, rayDirection_);
 }
 
-float4 GHMousePointer::GetIntersectionYAxisPlane(float _height, float _rayLength)
+float4 MousePointer::GetIntersectionYAxisPlane(float _height, float _rayLength)
 {
 	return DirectX::XMPlaneIntersectLine({ 0.0f, 1.0f, 0.0f, -_height }, rayOrigin_.DirectVector, (rayOrigin_ + rayDirection_ * _rayLength).DirectVector);;
 }
 
-void GHMousePointer::updateMouseRay()
+void MousePointer::updateMouseRay()
 {
 	// 뷰포트 개수를 가져옵니다. 뷰포트는 하나만 사용했고, 하나만 가져올 것이기 때문에 1 로 초기화합니다.
 	UINT numViewport = 1;

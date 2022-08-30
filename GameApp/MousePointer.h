@@ -3,17 +3,17 @@
 #include <GameEngine/GameEngineActor.h>
 
 class GameEngineCollision;
-class GHMousePointer : public GameEngineActor
+class MousePointer : public GameEngineActor
 {
 public:
-	GHMousePointer(); 
-	~GHMousePointer();
+	MousePointer(); 
+	~MousePointer();
 	
-	GHMousePointer(const GHMousePointer& _other) = delete; 
-	GHMousePointer(GHMousePointer&& _other) = delete; 
+	MousePointer(const MousePointer& _other) = delete; 
+	MousePointer(MousePointer&& _other) = delete; 
 
-	GHMousePointer& operator=(const GHMousePointer& _other) = delete;
-	GHMousePointer& operator=(const GHMousePointer&& _other) = delete;
+	MousePointer& operator=(const MousePointer& _other) = delete;
+	MousePointer& operator=(const MousePointer&& _other) = delete;
 
 public:
 	void Start() override;
