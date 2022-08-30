@@ -75,10 +75,10 @@
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_LumiaMap.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_PlayLevel.cpp">
-      <Filter>01.GameObject\99.YSJ\01Level</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\01Level</Filter>
     </ClCompile>
     <ClCompile Include="SJH_TestActor.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\00.TestActor</Filter>
@@ -105,13 +105,13 @@
       <Filter>01.GameObject\99.LGH</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_Player.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_Char_State.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_Char.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClCompile>
     <ClCompile Include="SJH_Yuki.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\02.Player</Filter>
@@ -126,10 +126,10 @@
       <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_Ray.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\Mouse\Component</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse\Component</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_Mouse.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\Mouse</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="SJH_PathFinder.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder</Filter>
@@ -156,16 +156,16 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\NavMesh</Filter>
     </ClCompile>
     <ClCompile Include="ItemBoxManager.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClCompile>
     <ClCompile Include="NaviActor.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
     </ClCompile>
     <ClCompile Include="NaviMesh.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
     </ClCompile>
     <ClCompile Include="ItemBoxWindow.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\ImGui</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="SettingItemLevel.cpp">
       <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
@@ -189,10 +189,10 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="ItemBase.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
     <ClCompile Include="EquipmentItem.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
     <ClCompile Include="UI_ItemBox.cpp">
       <Filter>01.GameObject\99.LGH\UI</Filter>
@@ -201,16 +201,16 @@
       <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\01.Funnel</Filter>
     </ClCompile>
     <ClCompile Include="MiscItem.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
     <ClCompile Include="UseableItem.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
     <ClCompile Include="ItemBox.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClCompile>
     <ClCompile Include="CreateItemDB.cpp">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClCompile>
     <ClCompile Include="SJH_Wolf.cpp">
       <Filter>01.GameObject\99.SJH\01.Actor\03.Monster</Filter>
@@ -340,9 +340,6 @@
     <Filter Include="01.GameObject\99.LGH">
       <UniqueIdentifier>{4f3d6c5b-a18f-427d-8610-d21ce2cf92eb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.YSJ">
-      <UniqueIdentifier>{46f26566-5222-4e2a-bfa8-6a456c2f4039}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\98.PJW">
       <UniqueIdentifier>{4ff96786-5801-497d-b9cc-8c4a615dc496}</UniqueIdentifier>
     </Filter>
@@ -366,12 +363,6 @@
     </Filter>
     <Filter Include="01.GameObject\98.PJW\PJW_Controller">
       <UniqueIdentifier>{1b0c7000-16dc-4204-981c-1654f6914312}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.YSJ\01Level">
-      <UniqueIdentifier>{f72b3698-ac0b-4473-8786-54e870345ef0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.YSJ\02Actor">
-      <UniqueIdentifier>{0c6fe4b4-e0f8-427a-a301-5b0e91de0897}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\99.SJH\01.Actor\00.TestActor">
       <UniqueIdentifier>{f365f1f5-c668-49ad-92dc-2fdaa2d8ad1f}</UniqueIdentifier>
@@ -412,29 +403,11 @@
     <Filter Include="01.GameObject\99.SJH\01.Actor\02.Player">
       <UniqueIdentifier>{88dd0ad6-4776-4dc2-accf-d582c66c26bf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.YSJ\02Actor\Mouse">
-      <UniqueIdentifier>{fb0f78e1-88e0-459c-b1f6-255290736a84}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.YSJ\02Actor\Mouse\Component">
-      <UniqueIdentifier>{94f6da51-dc73-4c9a-a830-084f83fd418f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\99.LGH\UI">
       <UniqueIdentifier>{cc38f788-6dae-4ceb-a1a8-e3f2b5009f80}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.YSJ\02Actor\ItemBox">
-      <UniqueIdentifier>{9d59b63a-92d1-40aa-98c2-e7108f6f4c56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.YSJ\02Actor\NaviMesh">
-      <UniqueIdentifier>{f2e313e9-535c-4ab4-a91a-9c5db971f7f1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.YSJ\02Actor\ItemBox\ImGui">
-      <UniqueIdentifier>{e248f191-76c6-41b3-9a24-4dd6c0ce8063}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\03.Level\SettingItemLevel">
       <UniqueIdentifier>{1a76d953-e652-4ef7-a945-097cf5d62d1e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.YSJ\02Actor\ItemBox\Item">
-      <UniqueIdentifier>{d3852990-4947-495d-8087-5498048dc846}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\99.SJH\01.Actor\04.NaviCell">
       <UniqueIdentifier>{e2601656-afd5-4123-9cfd-62db29b76bb5}</UniqueIdentifier>
@@ -478,11 +451,32 @@
     <Filter Include="01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor">
       <UniqueIdentifier>{e1cce04c-4094-49a6-ac6d-e9d77e1032ad}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LobbyLevel">
-      <UniqueIdentifier>{d9bd5c09-4079-4aed-bcf8-d4c030ad955b}</UniqueIdentifier>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ">
+      <UniqueIdentifier>{46f26566-5222-4e2a-bfa8-6a456c2f4039}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LobbyLevel\Actor">
-      <UniqueIdentifier>{394d78b9-95c1-4a7f-b7c4-86e509092f70}</UniqueIdentifier>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ\01Level">
+      <UniqueIdentifier>{f72b3698-ac0b-4473-8786-54e870345ef0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor">
+      <UniqueIdentifier>{0c6fe4b4-e0f8-427a-a301-5b0e91de0897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse">
+      <UniqueIdentifier>{fb0f78e1-88e0-459c-b1f6-255290736a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse\Component">
+      <UniqueIdentifier>{94f6da51-dc73-4c9a-a830-084f83fd418f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox">
+      <UniqueIdentifier>{9d59b63a-92d1-40aa-98c2-e7108f6f4c56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\ImGui">
+      <UniqueIdentifier>{e248f191-76c6-41b3-9a24-4dd6c0ce8063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item">
+      <UniqueIdentifier>{d3852990-4947-495d-8087-5498048dc846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh">
+      <UniqueIdentifier>{f2e313e9-535c-4ab4-a91a-9c5db971f7f1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -562,10 +556,10 @@
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_LumiaMap.h">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_PlayLevel.h">
-      <Filter>01.GameObject\99.YSJ\01Level</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\01Level</Filter>
     </ClInclude>
     <ClInclude Include="SJH_TestActor.h">
       <Filter>01.GameObject\99.SJH\01.Actor\00.TestActor</Filter>
@@ -589,10 +583,10 @@
       <Filter>01.GameObject\99.LGH</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_Player.h">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_Char.h">
-      <Filter>01.GameObject\99.YSJ\02Actor</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClInclude>
     <ClInclude Include="SJH_Yuki.h">
       <Filter>01.GameObject\99.SJH\01.Actor\02.Player</Filter>
@@ -607,10 +601,10 @@
       <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_Ray.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\Mouse\Component</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse\Component</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_Mouse.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\Mouse</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="eCollisionGroup.h">
       <Filter>01.GameObject\00.Constant</Filter>
@@ -640,16 +634,16 @@
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClInclude>
     <ClInclude Include="ItemBoxManager.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClInclude>
     <ClInclude Include="NaviActor.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
     </ClInclude>
     <ClInclude Include="NaviMesh.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\NaviMesh</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
     </ClInclude>
     <ClInclude Include="ItemBoxWindow.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\ImGui</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="SettingItemLevel.h">
       <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
@@ -673,10 +667,10 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="ItemBase.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClInclude>
     <ClInclude Include="EquipmentItem.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClInclude>
     <ClInclude Include="UI_ItemBox.h">
       <Filter>01.GameObject\99.LGH\UI</Filter>
@@ -688,13 +682,13 @@
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
     <ClInclude Include="MiscItem.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClInclude>
     <ClInclude Include="UseableItem.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox\Item</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClInclude>
     <ClInclude Include="ItemBox.h">
-      <Filter>01.GameObject\99.YSJ\02Actor\ItemBox</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClInclude>
     <ClInclude Include="SJH_Wolf.h">
       <Filter>01.GameObject\99.SJH\01.Actor\03.Monster</Filter>
