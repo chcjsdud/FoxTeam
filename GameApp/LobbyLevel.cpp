@@ -122,21 +122,6 @@ void LobbyLevel::EndIdle()
 
 	// 서버는 이를 받아들여 순번을 배정한다.
 
-	if (true == serverSocket_.IsOpened())
-	{
-		GameJoinPacket packet;
-	//	packet.SetAllPlayerList(playerList_);
-		serverSocket_.Send(&packet);
-	}
-	if (true == clientSocket_.IsConnected())
-	{
-		// 이미 서버는 이 부분 이전부터 클라가 들어온 걸 재고 있었다.
-		clientSocket_.ProcessPacket();
-		
-
-
-
-	}
 
 
 }
@@ -157,13 +142,15 @@ void LobbyLevel::StartSelect()
 
 
 	}
+
+	if (true == serverSocket_.IsOpened())
+	{
+		playerList_ = serverSocket_.serverPlayerList_;
+	}
 }
 
 void LobbyLevel::UpdateSelect(float _DeltaTime)
 {
-	// Send 의 시점을 잘 선택해봐야 한다...
-	// 디버깅 :: 캐릭터를 선택한다
-
 	if (serverSocket_.IsOpened())
 	{
 		serverSocket_.ProcessPacket();
@@ -173,8 +160,20 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		// 순번 부여와 동시에 계속 순번/캐릭터 선택/시작지점 선택 을 받아서 변경해주어야 하나?? 아니다.
 		// 클라에서 변동 패킷을 요청하면, 그것만 받아서 브로드캐스팅 해 주어도 된다!!!
 		// 일단 들어오는 순간 클라이언트는 "내가 들어왔소" 하고 변동 패킷을 요청할 것.
-		
 
+
+		if (playerList_.size() != serverSocket_.serverPlayerList_.size())
+		{
+			// 서버 참석 인원수에 변동이 있을 때 보내지는 패킷입니다.
+			// 멤버로 가진 인원 리스트와 서버 소켓 수를 비교해서
+			GameJoinPacket packet;
+			packet.SetAllPlayerList(serverSocket_.serverPlayerList_);
+			packet.SetPlayerNumber(serverSocket_.GetClientSocketSize() + 1);
+			serverSocket_.Send(&packet);
+		}
+
+		playerList_ = serverSocket_.serverPlayerList_;
+		
 		if (true == GameEngineInput::Down("3"))
 		{
 			CharSelectPacket packet;
@@ -192,7 +191,14 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 	else if(clientSocket_.IsConnected())
 	{
 		clientSocket_.ProcessPacket();
-	
+		playerList_ = clientSocket_.serverPlayerList_;
+		
+
+		if (clientSocket_.playerNumber_ == 2)
+		{
+			int a = 0;
+		
+		}
 		if (true == GameEngineInput::Down("3"))
 		{
 			//GameJoinPacket packet;
@@ -201,6 +207,8 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			//clientSocket_.Send(&packet);
 			GameEngineDebug::OutPutDebugString("클라이언트 유저가 캐릭터를 선택했습니다.");
 			state_.ChangeState("Join");
+
+
 		}
 
 	}

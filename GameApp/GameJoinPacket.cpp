@@ -20,21 +20,23 @@ void GameJoinPacket::SetPlayerNumber(int _playerNumber)
     playerNumber_ = _playerNumber;
 }
 
-//void GameJoinPacket::SetAllPlayerList(std::vector<LobbyPlayerInfo> _vector)
-//{
-//   // allPlayerList_ = _vector;
-//}
+void GameJoinPacket::SetAllPlayerList(std::vector<std::string> _vector)
+{
+   allPlayerList_ = _vector;
+}
 
 
 
 void GameJoinPacket::userSerialize()
 {
     serializer_ << playerNumber_;
+    serializer_.WriteVector(allPlayerList_);
 }
 
 void GameJoinPacket::userDeserialize()
 {
     serializer_ >> playerNumber_;
+    serializer_.ReadVector(allPlayerList_);
 }
 
 void GameJoinPacket::initPacketID()
@@ -53,6 +55,8 @@ void GameJoinPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
 
     // join 패킷을 서버에게서 받으면 그 순번을 저장해줘서 배출해주어야 한다.
 
+    _network->serverPlayerList_ = allPlayerList_;
+    _network->playerNumber_ = static_cast<int>(allPlayerList_.size());
 
 
     if (_bServer)

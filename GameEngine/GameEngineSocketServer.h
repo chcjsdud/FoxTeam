@@ -53,8 +53,7 @@ private:
 private:
 	enum { PACKET_SIZE = 1024 };
 
-	// 0830 ╧за╬©Ь
-	std::vector<std::string> serverPlayerList_;
+
 
 	std::vector<SOCKET> clientSocketList_; 
 	std::map<SOCKET, std::thread> clientReceiveThreadList_;

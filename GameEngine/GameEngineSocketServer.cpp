@@ -75,6 +75,7 @@ void GameEngineSocketServer::OpenServer()
 
 	// 0830 박종원
 	serverPlayerList_.push_back("1");
+	playerNumber_ = 1;
 
 	bOpen_ = true;
 	packetHandler_ = new GameEnginePacketHandler(true);
@@ -185,6 +186,7 @@ void GameEngineSocketServer::acceptFunction()
 		// 0830 박종원
 		serverPlayerList_.push_back(std::to_string(clientSocketList_.size() + 1));
 
+
 		std::thread newReceiveThread(std::bind(&GameEngineSocketServer::receiveFunction, this, socketNewUser));
 		clientReceiveThreadList_.insert(std::pair<SOCKET, std::thread>(socketNewUser, std::move(newReceiveThread)));
 
@@ -236,6 +238,10 @@ void GameEngineSocketServer::receiveFunction(SOCKET _clientSocket)
 				clientReceiveThreadList_.erase(_clientSocket);
 
 			}
+
+			// 0830 박종원
+			serverPlayerList_.pop_back();
+
 
 			locker_.unlock();
 			return;

@@ -44,7 +44,7 @@ protected:
 private:
 	GameEngineFSM state_;
 public:
-	std::vector<LobbyPlayerInfo> playerList_;
+	std::vector<std::string> playerList_;
 	static GameEngineSocketServer serverSocket_;
 	static GameEngineSocketClient clientSocket_;
 };
