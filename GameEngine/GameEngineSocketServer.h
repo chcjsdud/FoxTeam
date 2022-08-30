@@ -40,6 +40,9 @@ public:
 
 public:
 	bool IsOpened() { return bOpen_; }
+	//0830 박종원
+	size_t GetServerPlayerListSize() { return serverPlayerList_.size(); }
+	std::vector<std::string> GetServerPlayerList() { return serverPlayerList_; }
 
 private:
 	// 클라이언트의 연결을 받기 위한 함수. 스레드로 처리됩니다.
@@ -49,6 +52,10 @@ private:
 
 private:
 	enum { PACKET_SIZE = 1024 };
+
+	// 0830 박종원
+	std::vector<std::string> serverPlayerList_;
+
 	std::vector<SOCKET> clientSocketList_; 
 	std::map<SOCKET, std::thread> clientReceiveThreadList_;
 

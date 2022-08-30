@@ -1,10 +1,7 @@
 #include "PreCompile.h"
 #include "GameJoinPacket.h"
-//#include "PlayersInfo.h"
 #include "ePacketID.h"
-
-
-// 보류
+#include "LobbyLevel.h"
 
 // 사실상 GameEngineServer 에서 서버 개설 / 클라이언트 Accept 할 때 번호를 매기는 게 맞다고 생각한다.
 
@@ -22,6 +19,11 @@ void GameJoinPacket::SetPlayerNumber(int _playerNumber)
 {
     playerNumber_ = _playerNumber;
 }
+
+//void GameJoinPacket::SetAllPlayerList(std::vector<LobbyPlayerInfo> _vector)
+//{
+//   // allPlayerList_ = _vector;
+//}
 
 
 
@@ -48,6 +50,8 @@ GameEnginePacketBase* GameJoinPacket::getUserObject()
 void GameJoinPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
 {
     // 해당 패킷이 해 줘야 할 일을 만들어야 한다.
+
+    // join 패킷을 서버에게서 받으면 그 순번을 저장해줘서 배출해주어야 한다.
 
 
 

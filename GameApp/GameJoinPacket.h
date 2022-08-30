@@ -17,12 +17,17 @@ public:
 
 public:
 	void SetPlayerNumber(int _playerNumber);
+	//void SetAllPlayerList(std::vector<LobbyPlayerInfo> _vector);
 
 	int GetPlayerNumber()
 	{
 		return playerNumber_;
 	}
 
+	//std::vector<LobbyPlayerInfo> GetAllPlayerList()
+	//{
+	////	return allPlayerList_;
+	//}
 
 protected:
 	virtual void userSerialize() override;
@@ -32,7 +37,7 @@ protected:
 	virtual void execute(bool _bServer, GameEngineSocketInterface* _network) override;
 
 private:
+	//std::vector<LobbyPlayerInfo> allPlayerList_;
 	int playerNumber_;
-
 };
 

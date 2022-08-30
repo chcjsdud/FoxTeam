@@ -1,11 +1,9 @@
 #include "Precompile.h"
 #include "LobbyLevel.h"
 #include "ePacketID.h"
-
 #include "CharSelectPacket.h"
 #include "GameJoinPacket.h"
 #include "LobbyPlayerInfo.h"
-
 
 GameEngineSocketServer LobbyLevel::serverSocket_;
 GameEngineSocketClient LobbyLevel::clientSocket_;
@@ -87,11 +85,18 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_.AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.");
 		state_.ChangeState("Select");
-
-		//GameJoinPacket packet;
-		//packet.SetPlayerNumber(1);
-		//serverSocket_.ProcessPacket();
-
+		
+		// 이 시점에 GameEngineSocketServer 에 p1 값이 플레이어 리스트에 들어감
+		// 이걸 받아내 내 프로그램 내 리스트에 입력하고(사실상의 ID임) 
+		// 점차적으로 플레이어 리스트에 들어오는 클라이언트의 P2, P3... 값을 역시 내 리스트에 입력하고
+		// 패킷으로 브로드캐스팅 해 다른 클라이언트들도 자기들의 리스트에 입력하게 해야 전체 등록이 된다.
+		//LobbyPlayerInfo info;
+		//info.SetPlayerNumber(static_cast<int>(serverSocket_.GetServerPlayerListSize()));
+		//info.SetCharacter(1);
+		//info.SetStartPoint(1);
+		//
+		//playerList_.emplace_back(info);
+		
 		return;
 	}
 
@@ -107,14 +112,6 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		GameEngineDebug::OutPutDebugString("클라이언트로서 방에 참여합니다.");
 		state_.ChangeState("Select");
 
-		
-		GameJoinPacket packet;
-		//packet.SetPlayerNumber(clientSocket_.)
-		//clientSocket_.Send(&packet);
-		//LobbyPlayerInfo hostPlayerInfo;
-		//hostPlayerInfo.SetPlayerNumber(1);
-		//playerList_.push_back(hostPlayerInfo);
-
 		return;
 	}
 }
@@ -125,13 +122,41 @@ void LobbyLevel::EndIdle()
 
 	// 서버는 이를 받아들여 순번을 배정한다.
 
+	if (true == serverSocket_.IsOpened())
+	{
+		GameJoinPacket packet;
+	//	packet.SetAllPlayerList(playerList_);
+		serverSocket_.Send(&packet);
+	}
+	if (true == clientSocket_.IsConnected())
+	{
+		// 이미 서버는 이 부분 이전부터 클라가 들어온 걸 재고 있었다.
+		clientSocket_.ProcessPacket();
+		
+
+
+
+	}
+
+
 }
 
 void LobbyLevel::StartSelect()
-
-
 {
+	if (true == clientSocket_.IsConnected())
+	{
+		// 내가 클라이언트로서 게임 방에 입장했으면
+		// 패킷을 보내 순번을 요청할 것.
 
+		// 근데 시벌 그 순번을 클라이언트가 어캐 아냐고...
+		// 클라이언트가 아닌 서버가 알고 있을 거임 최초에는
+		// 그걸 먼저 배분해야 함.
+
+		// 1. 들어온 순서대로 정렬시켜서 순번을 가져오는 것 까진 가능
+		// 2. 
+
+
+	}
 }
 
 void LobbyLevel::UpdateSelect(float _DeltaTime)
@@ -145,7 +170,10 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		// 클라이언트가 들어오기 전 서버가 먼저 개설되어야 하니,
 		// 호스트는 누구보다 이 시점으로 빠르게 들어올 것임.
 		// 이 시점부터 계속 클라이언트가 들어오는 것을 체크하고 순번을 부여하여야 한다.
-		// 근데 어떻게?
+		// 순번 부여와 동시에 계속 순번/캐릭터 선택/시작지점 선택 을 받아서 변경해주어야 하나?? 아니다.
+		// 클라에서 변동 패킷을 요청하면, 그것만 받아서 브로드캐스팅 해 주어도 된다!!!
+		// 일단 들어오는 순간 클라이언트는 "내가 들어왔소" 하고 변동 패킷을 요청할 것.
+		
 
 		if (true == GameEngineInput::Down("3"))
 		{
