@@ -7,6 +7,7 @@
 
 #include "LobbyPlayerInfo.h"
 
+class GameEngineImageRenderer;
 class LobbyLevel : public GameEngineLevel
 {
 public:
@@ -47,5 +48,9 @@ public:
 	std::vector<std::string> playerList_;
 	static GameEngineSocketServer serverSocket_;
 	static GameEngineSocketClient clientSocket_;
+
+
+private:
+
 };
 

@@ -51,26 +51,12 @@ GameEnginePacketBase* GameJoinPacket::getUserObject()
 
 void GameJoinPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
 {
-    // 해당 패킷이 해 줘야 할 일을 만들어야 한다.
-
-    // join 패킷을 서버에게서 받으면 그 순번을 저장해줘서 배출해주어야 한다.
-
     _network->serverPlayerList_ = allPlayerList_;
     _network->playerNumber_ = static_cast<int>(allPlayerList_.size());
 
 
     if (_bServer)
     {
-        // 서버가 이미 클라 번호까지 Accept 시 다 가지고 있다...
-        // 다만 이걸 어캐 알려줘야 하나?
-        // 니가 사용할 인덱스는 몇이야
-       // LobbyPlayerInfo info;
-       // info.SetStartPoint(serverSocket_.GetClientSocketSize() + 1);
-       // playerList_.emplace_back();
-        // 이게 만약 서버에서 받아 준 processpacket() 이면 무엇을 해 주어야 하나?
-        // gamejoinpacket 이니... 클라이언트 입장 시 순번을 알려 주고
-        // 다른 클라이언트들에게 브로드캐스팅도 해 줘야지..
-
         _network->Send(this);
     }
 }
