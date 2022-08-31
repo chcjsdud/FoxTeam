@@ -3,6 +3,9 @@
 #include <GameEngine/GameEngineLevel.h>
 
 #include <GameApp/MousePointer.h>
+#include <GameApp/YSJ_LumiaMap.h>
+#include <GameApp/ItemBoxManager.h>
+#include <GameApp/GHRio.h>
 
 class LumiaLevel : public GameEngineLevel
 {
@@ -20,9 +23,26 @@ public:
 	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
-private:
-	MousePointer* mouse_;
-	
+public:
+	MousePointer* GetMousePointer() { return mouse_; }
+	GHMap* GetMap() { return map_; }
 
+private:
+	void loadResource();
+	void releaseResource();
+	void createActor();
+	void adjustCamera();
+
+	void initRenderWindow();
+	void releaseRenderWindow();
+
+private:
+	GHRio* player_;
+
+	MousePointer* mouse_;
+	GHMap* map_;
+	YSJ_LumiaMap* lumiaMap;
+
+	ItemBoxManager* ItemBox_;
 };
 

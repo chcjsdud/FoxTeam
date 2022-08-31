@@ -7,6 +7,7 @@
 
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
+#include <GameApp/LumiaLevel.h>
 
 
 GHRio::GHRio()
@@ -53,18 +54,20 @@ void GHRio::Start()
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
 	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
 
-	currentMap_ = GetLevelConvert<GHRayTestLevel>()->GetMap();
+	currentMap_ = GetLevelConvert<LumiaLevel>()->GetMap();
 
 	if (nullptr == currentMap_)
 	{
-		GameEngineDebug::MsgBoxError("레벨에 맵이 배치되지 않았습니다.");
+		GameEngineDebug::MsgBox("레벨에 맵이 배치되지 않았습니다.");
 	}
-
-	currentNavMesh_ = currentMap_->GetCurrentNavMesh(GetTransform()->GetWorldPosition());
+	else
+	{
+		currentNavMesh_ = currentMap_->GetCurrentNavMesh(GetTransform()->GetWorldPosition());
+	}
 
 	if (nullptr == currentNavMesh_)
 	{
-		GameEngineDebug::MsgBoxError("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
+		GameEngineDebug::MsgBox("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
 	}
 }
 
@@ -72,7 +75,7 @@ void GHRio::Update(float _deltaTime)
 {
 	static float pathFindTime = 0.f;
 	float4 worldPosition = GetTransform()->GetWorldPosition();
-	GHRayTestLevel* level = dynamic_cast<GHRayTestLevel*>(GetLevel());
+	LumiaLevel* level = dynamic_cast<LumiaLevel*>(GetLevel());
 	MousePointer* mouse = nullptr;
 	if (nullptr != level)
 	{
@@ -87,18 +90,18 @@ void GHRio::Update(float _deltaTime)
 		}
 	}
 
-	if (GameEngineInput::GetInst().Up("LButton"))
-	{
-		destination_ = worldPosition;
-		GHMap* map = level->GetMap();
-		if (nullptr != map && nullptr != mouse)
-		{
-			GameEngineTime::GetInst().TimeCheck();
-			destinations_ = map->FindPath(worldPosition, mouse->GetIntersectionYAxisPlane(0.0f, 1000.f));
-			GameEngineTime::GetInst().TimeCheck();
-			pathFindTime = GameEngineTime::GetInst().GetDeltaTime();
-		}
-	}
+	//if (GameEngineInput::GetInst().Up("LButton"))
+	//{
+	//	destination_ = worldPosition;
+	//	GHMap* map = level->GetMap();
+	//	if (nullptr != map && nullptr != mouse)
+	//	{
+	//		GameEngineTime::GetInst().TimeCheck();
+	//		destinations_ = map->FindPath(worldPosition, mouse->GetIntersectionYAxisPlane(0.0f, 1000.f));
+	//		GameEngineTime::GetInst().TimeCheck();
+	//		pathFindTime = GameEngineTime::GetInst().GetDeltaTime();
+	//	}
+	//}
 
 	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
 	if (nullptr != controlWindow)
@@ -126,13 +129,13 @@ void GHRio::Update(float _deltaTime)
 		float4 moveSpeed = direction_ * SPEED * _deltaTime;
 		float4 nextMovePosition = worldPosition + moveSpeed;
 
-		if (true == currentMap_->IsIntersectionMesh(*currentNavMesh_, nextMovePosition))
+		if (true)// == currentMap_->IsIntersectionMesh(*currentNavMesh_, nextMovePosition))
 		{
 			GetTransform()->SetWorldPosition(nextMovePosition);
 		}
 		else
 		{
-			GHNavMesh* adjacentMesh = currentMap_->FindAdjacentMeshIntersect(*currentNavMesh_, nextMovePosition);
+			GHNavMesh* adjacentMesh = nullptr;//currentMap_->FindAdjacentMeshIntersect(*currentNavMesh_, nextMovePosition);
 
 			if (nullptr == adjacentMesh)
 			{
