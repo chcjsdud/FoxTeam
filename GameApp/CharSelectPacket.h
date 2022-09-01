@@ -17,6 +17,7 @@ public:
 public:
 	void SetCharacter(int _character);
 	void SetStartPoint(int _startPoint);
+	void SetIsReady(bool _isReady);
 
 	int GetCharacter()
 	{
@@ -26,6 +27,11 @@ public:
 	int GetStartPoint()
 	{
 		return startPoint_;
+	}
+
+	bool GetIsReady()
+	{
+		return isReady_;
 	}
 
 protected:
@@ -41,6 +47,7 @@ private:
 	// 2. 어떤 지점을 시작 지점으로 선택했나?
 	int character_;
 	int startPoint_;
+	bool isReady_;
 	// 정수로 해놨지만 이후 enum 이든 합의된 값으로 바꿀 것.
 };
 

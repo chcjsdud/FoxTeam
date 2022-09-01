@@ -1,9 +1,11 @@
 #include "Precompile.h"
 #include "LobbyLevel.h"
 #include "ePacketID.h"
+#include "PlayerNumberPacket.h"
 #include "CharSelectPacket.h"
 #include "GameJoinPacket.h"
 #include "LobbyPlayerInfo.h"
+#include "Enums.h"
 
 GameEngineSocketServer LobbyLevel::serverSocket_;
 GameEngineSocketClient LobbyLevel::clientSocket_;
@@ -81,6 +83,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	{
 		serverSocket_.Initialize();
 		serverSocket_.OpenServer();
+		serverSocket_.AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		serverSocket_.AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		serverSocket_.AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.");
@@ -94,6 +97,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	{
 		clientSocket_.Initialize();
 		clientSocket_.Connect("127.0.0.1");
+		clientSocket_.AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		clientSocket_.AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		clientSocket_.AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 
@@ -119,6 +123,7 @@ void LobbyLevel::StartSelect()
 
 	if (true == serverSocket_.IsOpened())
 	{
+	
 		playerList_ = serverSocket_.serverPlayerList_;
 	}
 }
@@ -143,8 +148,14 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			// 멤버로 가진 인원 리스트와 서버 소켓 수를 비교해서
 			GameJoinPacket packet;
 			packet.SetAllPlayerList(serverSocket_.serverPlayerList_);
-			packet.SetPlayerNumber(serverSocket_.GetClientSocketSize() + 1);
 			serverSocket_.Send(&packet);
+
+			if (true)
+			{
+				PlayerNumberPacket packet1;
+				packet1.SetPlayerNumber(serverSocket_.GetClientSocketSize() + 1);
+				serverSocket_.Send(&packet1, serverSocket_.GetClientSocketSize());
+			}
 		}
 
 		playerList_ = serverSocket_.serverPlayerList_;
@@ -152,7 +163,11 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		if (true == GameEngineInput::Down("3"))
 		{
 			CharSelectPacket packet;
-
+			packet.SetCharacter(static_cast<int>(JobType::HYUNWOO));
+			packet.SetStartPoint(static_cast<int>(Location::SCHOOL));
+			packet.SetIsReady(true);
+			serverSocket_.Send(&packet);
+			serverSocket_.serverPlayerList_[0] = true;
 			GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다.");
 			state_.ChangeState("Join");
 		}
@@ -163,25 +178,29 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 
 
 	}
-	else if(clientSocket_.IsConnected())	// 클라이언트일 시
+	else if (clientSocket_.IsConnected())	// 클라이언트일 시
 	{
 		clientSocket_.ProcessPacket();
 		playerList_ = clientSocket_.serverPlayerList_;
 		
 
-		if (clientSocket_.playerNumber_ == 2)
+		if (clientSocket_.playerNumber_ == 3)
 		{
 			// 중단점을 걸어서 
 			// 만약 클라이언트가 들어왔을 시 서버 인터페이스의 정보가 갱신되는지를 확인하는 스코프
 			int a = 0;
 		}
+
 		if (true == GameEngineInput::Down("3"))
 		{
-
+			CharSelectPacket packet;
+			packet.SetCharacter(static_cast<int>(JobType::JACKIE));
+			packet.SetStartPoint(static_cast<int>(Location::UPTOWN));
+			packet.SetIsReady(true);
+			clientSocket_.Send(&packet);
+			clientSocket_.serverPlayerList_[clientSocket_.playerNumber_] = true;
 			GameEngineDebug::OutPutDebugString("클라이언트 유저가 캐릭터를 선택했습니다.");
 			state_.ChangeState("Join");
-
-
 		}
 
 	}
@@ -197,32 +216,18 @@ void LobbyLevel::StartJoin()
 
 void LobbyLevel::UpdateJoin(float _DeltaTime)
 {
-	// 디버깅 :: 게임을 시작하고 패킷을 입력해 서버에 보낸다
-	if (serverSocket_.IsOpened())
-	{
-		if (true == GameEngineInput::Down("4"))
-		{
-			//GameJoinPacket packet;
-			//packet.SetCharacter(1);
-			//packet.SetStartPoint(2);
-			GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다.");
-		}
+	// 다른 상대의 준비를 기다리거나, 취소 버튼을 눌러 다시 캐릭터 선택으로 돌아가는 단계입니다.
+	// 최종 결제권을 가진 호스트가 전체 레디 상황을 확인하고 게임을 시작합니다.
 
-		serverSocket_.ProcessPacket();
-	}
-	else if (clientSocket_.IsConnected())
+	if (true == serverSocket_.IsOpened())
 	{
-		if (true == GameEngineInput::Down("4"))
-		{
-			//GameJoinPacket packet;
-			//packet.SetCharacter(3);
-			//packet.SetStartPoint(4);
-			//clientSocket_.Send(&packet);
-			GameEngineDebug::OutPutDebugString("클라이언트 유저가 캐릭터를 선택했습니다.");
-		}
 
-		clientSocket_.ProcessPacket();
 	}
+	else if (true == clientSocket_.IsConnected())
+	{
+
+	}
+
 }
 
 void LobbyLevel::EndJoin()

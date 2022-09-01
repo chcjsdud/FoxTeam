@@ -74,7 +74,7 @@ void GameEngineSocketServer::OpenServer()
 	GameEngineDebug::OutPutDebugString("서버 오픈이 성공적으로 완료되었습니다.");
 
 	// 0830 박종원
-	serverPlayerList_.push_back("1");
+	serverPlayerList_.push_back(false);
 	playerNumber_ = 1;
 
 	bOpen_ = true;
@@ -152,6 +152,27 @@ void GameEngineSocketServer::Send(GameEnginePacketBase* _packet)
 	locker_.unlock();
 }
 
+void GameEngineSocketServer::Send(GameEnginePacketBase* _packet, int _index)
+{
+	if (clientSocketList_.size() < _index)
+	{
+		GameEngineDebug::MsgBoxError("서버에서 Send 를 했는데 잘못된 클라이언트 인덱스가 들어갔습니다.");
+	}
+
+	if (_packet->GetSerializer().GetOffSet() == 0)
+	{
+		_packet->Serialize();
+	}
+
+	char sendData[PACKET_SIZE] = { 0, };
+
+	memcpy(sendData, _packet->GetSerializer().GetDataPtr(), _packet->GetSerializer().GetOffSet());
+
+	locker_.lock();
+	send(clientSocketList_[_index-1], sendData, PACKET_SIZE, 0);
+	locker_.unlock();
+}
+
 void GameEngineSocketServer::AddPacketHandler(int _packetID, GameEnginePacketBase* _packetObject)
 {
 	if (packetHandler_ != nullptr)
@@ -184,7 +205,8 @@ void GameEngineSocketServer::acceptFunction()
 		clientSocketList_.push_back(socketNewUser);
 
 		// 0830 박종원
-		serverPlayerList_.push_back(std::to_string(clientSocketList_.size() + 1));
+		serverPlayerList_.push_back(false);
+		//(std::to_string(clientSocketList_.size() + 1));
 
 
 		std::thread newReceiveThread(std::bind(&GameEngineSocketServer::receiveFunction, this, socketNewUser));

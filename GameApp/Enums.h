@@ -48,8 +48,36 @@ enum class JobType // 직업타입
 	FIORA,		// 피오라
 	ZAHIR,		// 자히르
 	NADINE,		// 나딘
-				// ....
+	HYUNWOO,
+	JACKIE,
+	RIO,
+	AYA,
+	// ....
 				MAX
+};
+
+
+enum class Location
+{
+	NONE = -1,
+	DOCK,			// 항구
+	POND,			// 연못
+	BEACH,			// 모래사장
+	UPTOWN,			// 고급 주택가
+	ALLEY,			// 골목길
+	HOTEL,			// 호텔
+	AVENUE,			// 번화가
+	HOSPITAL,		// 병원
+	TEMPLE,			// 절
+	ARCHERY_RANGE,	// 양궁장
+	CEMETERY,		// 묘지
+	FOREST,			// 숲
+	FACTORY,		// 공장
+	CHAPEL,			// 성당
+	SCHOOL,			// 학교
+	RESERCH_CENTRE,	// 연구소
+	ESCAPE_DOCK,	// 오래된 선창
+	MAX
 };
 
 #pragma endregion

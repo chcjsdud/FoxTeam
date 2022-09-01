@@ -66,6 +66,7 @@ void GameEngineSocketClient::Connect(const std::string& _hostIP)
 
 	// 연결이 됐다면? 전송 스레드, 대기 스레드
 	GameEngineDebug::OutPutDebugString("서버에 연결되었습니다.\n");
+
 	bConneted_ = true;
 	packetHandler_ = new GameEnginePacketHandler(false);
 	if (receiveThread_ == nullptr)

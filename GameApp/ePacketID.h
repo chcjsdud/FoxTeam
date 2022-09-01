@@ -7,8 +7,9 @@ enum class ePacketID
 	UnitPakket = 2,
 
 	// LobbyLevel
-	GameJoinPacket = 3,
-	CharSelectPacket = 4,
+	PlayerNumberPacket = 3,
+	GameJoinPacket = 4,
+	CharSelectPacket = 5,
 	//
 	
 	MAX = 999

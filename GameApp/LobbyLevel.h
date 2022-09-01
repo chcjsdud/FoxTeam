@@ -44,10 +44,13 @@ protected:
 
 private:
 	GameEngineFSM state_;
+
 public:
-	std::vector<std::string> playerList_;
+	std::vector<bool> playerList_;
+	
 	static GameEngineSocketServer serverSocket_;
 	static GameEngineSocketClient clientSocket_;
+
 
 
 private:

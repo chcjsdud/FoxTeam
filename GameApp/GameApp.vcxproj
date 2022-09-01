@@ -304,6 +304,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="PlayerNumberPacket.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ResultLevel.cpp" />
     <ClCompile Include="ServerTestLevel.cpp">
       <SubType>
@@ -550,6 +554,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="PlayerController.h" />
+    <ClInclude Include="PlayerNumberPacket.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ResultLevel.h" />
     <ClInclude Include="ServerTestLevel.h">
       <SubType>

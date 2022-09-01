@@ -66,6 +66,10 @@ void GameEngineSerializer::operator<<(const float4& _Value)
 	Write(&_Value, sizeof(float4));
 }
 
+void GameEngineSerializer::operator<<(const bool _Value)
+{
+	Write(&_Value, sizeof(bool));
+}
 
 //void GameEngineSerializer::operator>>(ePacketID& _value)
 //{
@@ -103,6 +107,11 @@ void GameEngineSerializer::operator>>(float4& _Value)
 void GameEngineSerializer::operator>>(uint64_t& _Value)
 {
 	Read(&_Value, sizeof(uint64_t));
+}
+
+void GameEngineSerializer::operator>>(bool _Value)
+{
+	Read(&_Value, sizeof(bool));
 }
 
 GameEngineSerializer::GameEngineSerializer()

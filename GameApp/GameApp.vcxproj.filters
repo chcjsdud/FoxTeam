@@ -273,6 +273,9 @@
     <ClCompile Include="LobbyBackground.cpp">
       <Filter>01.GameObject\99.LGH</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerNumberPacket.cpp">
+      <Filter>02.GameServer\UserPacket</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -754,6 +757,9 @@
     <ClInclude Include="LobbyPlayerInfo.h" />
     <ClInclude Include="LobbyBackground.h">
       <Filter>01.GameObject\99.LGH</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerNumberPacket.h">
+      <Filter>02.GameServer\UserPacket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

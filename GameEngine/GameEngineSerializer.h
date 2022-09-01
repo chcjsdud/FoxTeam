@@ -30,6 +30,7 @@ public:
 	void operator<<(const uint64_t& _Value);
 	void operator<<(const float _Value);
 	void operator<<(const float4& _Value);
+	void operator<<(const bool _Value);
 
 	template<typename T>
 	void WriteEnum(const T _Value);
@@ -59,6 +60,14 @@ public:
 		}
 	}
 
+	void WriteVector(std::vector<bool>& _Value)
+	{
+		operator<<(static_cast<bool>(_Value.size()));
+		for (size_t i = 0; i < _Value.size(); i++)
+		{
+			operator<<(_Value[i]);
+		}
+	}
 
 	//void operator>>(ePacketID& _value);
 	void operator>>(std::string& _Value);
@@ -67,6 +76,7 @@ public:
 	void operator>>(uint64_t& _Value);
 	void operator>>(float& _Value);
 	void operator>>(float4& _Value);
+	void operator>>(bool _Value);
 
 	template<typename T>
 	void ReadEnum(T& _Value)
@@ -92,7 +102,7 @@ public:
 		}
 	}
 
-	void ReadVector(std::vector<std::string>& _Value)
+	void ReadVector(std::vector<bool> _Value)
 	{
 		int Size;
 		operator>>(Size);
@@ -146,3 +156,4 @@ inline void GameEngineSerializer::WriteVector(std::vector<T>& _Value)
 		// Write(reinterpret_cast<const void*>(&_Value[i]), static_cast<unsigned int>(sizeof(T)));
 	}
 }
+
