@@ -223,6 +223,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LobbyBackground.cpp" />
     <ClCompile Include="MousePointer.cpp">
       <SubType>
       </SubType>
@@ -466,6 +467,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LobbyBackground.h" />
     <ClInclude Include="MousePointer.h">
       <SubType>
       </SubType>
