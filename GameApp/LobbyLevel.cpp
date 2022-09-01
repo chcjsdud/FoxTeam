@@ -4,8 +4,9 @@
 #include "PlayerNumberPacket.h"
 #include "CharSelectPacket.h"
 #include "GameJoinPacket.h"
-#include "LobbyPlayerInfo.h"
 #include "Enums.h"
+
+#include "TempLobbyRenderer.h"
 
 GameEngineSocketServer LobbyLevel::serverSocket_;
 GameEngineSocketClient LobbyLevel::clientSocket_;
@@ -65,7 +66,20 @@ void LobbyLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	if (tempLobbyRenderers_.size() == 0)
+	{
+		for (size_t i = 0; i < 6; i++)
+		{
+			TempLobbyRenderer* renderer_ = CreateActor<TempLobbyRenderer>();
+			renderer_->SetPos({ (-500.f + 200.f*i), -280.f, 0.f});
+			renderer_->SetScale({ 122.f, 155.f });
+			renderer_->SetRender(false);
+			tempLobbyRenderers_.emplace_back(renderer_);
+		}
 
+
+
+	}
 }
 
 
@@ -87,6 +101,8 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_.AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		serverSocket_.AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.");
+
+
 		state_.ChangeState("Select");
 		return;
 	}
@@ -184,6 +200,14 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		playerList_ = clientSocket_.serverPlayerList_;
 		
 
+
+
+
+
+
+
+
+
 		if (clientSocket_.playerNumber_ == 3)
 		{
 			// 중단점을 걸어서 
@@ -191,18 +215,23 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			int a = 0;
 		}
 
-		if (true == GameEngineInput::Down("3"))
-		{
-			CharSelectPacket packet;
-			packet.SetCharacter(static_cast<int>(JobType::JACKIE));
-			packet.SetStartPoint(static_cast<int>(Location::UPTOWN));
-			packet.SetIsReady(true);
-			clientSocket_.Send(&packet);
-			clientSocket_.serverPlayerList_[clientSocket_.playerNumber_] = true;
-			GameEngineDebug::OutPutDebugString("클라이언트 유저가 캐릭터를 선택했습니다.");
-			state_.ChangeState("Join");
-		}
+		//if (true == GameEngineInput::Down("3"))
+		//{
+		//	CharSelectPacket packet;
+		//	packet.SetCharacter(static_cast<int>(JobType::JACKIE));
+		//	packet.SetStartPoint(static_cast<int>(Location::UPTOWN));
+		//	packet.SetIsReady(true);
+		//	clientSocket_.Send(&packet);
+		//	clientSocket_.serverPlayerList_[clientSocket_.playerNumber_] = true;
+		//	GameEngineDebug::OutPutDebugString("클라이언트 유저가 캐릭터를 선택했습니다.");
+		//	state_.ChangeState("Join");
+		//}
 
+	}
+
+	for (int i = 0; i < playerList_.size(); i++)
+	{
+		tempLobbyRenderers_[i]->SetRender(true);
 	}
 }
 

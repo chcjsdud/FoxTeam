@@ -281,10 +281,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="LobbyLevel.cpp" />
-    <ClCompile Include="LobbyPlayerInfo.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="LumiaLevel.cpp" />
     <ClCompile Include="MiscItem.cpp" />
     <ClCompile Include="NaviActor.cpp">
@@ -321,6 +317,10 @@
     <ClCompile Include="SJH_NaviCell.cpp" />
     <ClCompile Include="SJH_PathFinder.cpp" />
     <ClCompile Include="SJH_Wolf.cpp" />
+    <ClCompile Include="TempLobbyRenderer.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="TitleLevel.cpp" />
     <ClCompile Include="UI_CharPicture.cpp" />
     <ClCompile Include="UI_Equip.cpp" />
@@ -531,10 +531,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LobbyLevel.h" />
-    <ClInclude Include="LobbyPlayerInfo.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="LumiaLevel.h" />
     <ClInclude Include="MiscItem.h" />
     <ClInclude Include="NaviActor.h">
@@ -571,6 +567,10 @@
     <ClInclude Include="SJH_NaviCell.h" />
     <ClInclude Include="SJH_PathFinder.h" />
     <ClInclude Include="SJH_Wolf.h" />
+    <ClInclude Include="TempLobbyRenderer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="TitleLevel.h" />
     <ClInclude Include="UI_CharPicture.h" />
     <ClInclude Include="UI_Equip.h" />

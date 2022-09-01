@@ -5,8 +5,8 @@
 #include <GameEngine/GameEngineSocketServer.h>
 #include <GameEngine/GameEngineSocketClient.h>
 
-#include "LobbyPlayerInfo.h"
 
+class TempLobbyRenderer;
 class GameEngineImageRenderer;
 class LobbyLevel : public GameEngineLevel
 {
@@ -54,6 +54,6 @@ public:
 
 
 private:
-
+	std::vector<TempLobbyRenderer*> tempLobbyRenderers_;
 };
 

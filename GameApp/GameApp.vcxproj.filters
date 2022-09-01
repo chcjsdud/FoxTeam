@@ -269,12 +269,14 @@
     <ClCompile Include="LumiaLevel.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClCompile>
-    <ClCompile Include="LobbyPlayerInfo.cpp" />
     <ClCompile Include="LobbyBackground.cpp">
       <Filter>01.GameObject\99.LGH</Filter>
     </ClCompile>
     <ClCompile Include="PlayerNumberPacket.cpp">
       <Filter>02.GameServer\UserPacket</Filter>
+    </ClCompile>
+    <ClCompile Include="TempLobbyRenderer.cpp">
+      <Filter>02.GameServer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -754,12 +756,14 @@
     <ClInclude Include="LumiaLevel.h">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClInclude>
-    <ClInclude Include="LobbyPlayerInfo.h" />
     <ClInclude Include="LobbyBackground.h">
       <Filter>01.GameObject\99.LGH</Filter>
     </ClInclude>
     <ClInclude Include="PlayerNumberPacket.h">
       <Filter>02.GameServer\UserPacket</Filter>
+    </ClInclude>
+    <ClInclude Include="TempLobbyRenderer.h">
+      <Filter>02.GameServer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
