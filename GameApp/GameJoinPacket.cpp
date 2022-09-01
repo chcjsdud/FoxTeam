@@ -14,7 +14,7 @@ GameJoinPacket::~GameJoinPacket() // default destructer 디폴트 소멸자
 
 }
 
-void GameJoinPacket::SetAllPlayerList(std::vector<bool> _vector)
+void GameJoinPacket::SetAllPlayerList(std::vector<int> _vector)
 {
    allPlayerList_ = _vector;
 }

@@ -15,10 +15,10 @@ public:
 	GameJoinPacket& operator=(const GameJoinPacket&& _other) = delete;
 
 public:
-	void SetAllPlayerList(std::vector<bool> _vector);
+	void SetAllPlayerList(std::vector<int> _vector);
 
 
-	std::vector<bool> GetAllPlayerList()
+	std::vector<int> GetAllPlayerList()
 	{
 		return allPlayerList_;
 	}
@@ -31,6 +31,6 @@ protected:
 	virtual void execute(bool _bServer, GameEngineSocketInterface* _network) override;
 
 private:
-	std::vector<bool> allPlayerList_;
+	std::vector<int> allPlayerList_;
 };
 

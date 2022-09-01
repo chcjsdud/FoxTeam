@@ -46,7 +46,7 @@ private:
 	GameEngineFSM state_;
 
 public:
-	std::vector<bool> playerList_;
+	std::vector<int> playerList_;
 	
 	static GameEngineSocketServer serverSocket_;
 	static GameEngineSocketClient clientSocket_;
