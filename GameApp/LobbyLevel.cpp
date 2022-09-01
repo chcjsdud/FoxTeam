@@ -85,18 +85,6 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_.AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.");
 		state_.ChangeState("Select");
-		
-		// 이 시점에 GameEngineSocketServer 에 p1 값이 플레이어 리스트에 들어감
-		// 이걸 받아내 내 프로그램 내 리스트에 입력하고(사실상의 ID임) 
-		// 점차적으로 플레이어 리스트에 들어오는 클라이언트의 P2, P3... 값을 역시 내 리스트에 입력하고
-		// 패킷으로 브로드캐스팅 해 다른 클라이언트들도 자기들의 리스트에 입력하게 해야 전체 등록이 된다.
-		//LobbyPlayerInfo info;
-		//info.SetPlayerNumber(static_cast<int>(serverSocket_.GetServerPlayerListSize()));
-		//info.SetCharacter(1);
-		//info.SetStartPoint(1);
-		//
-		//playerList_.emplace_back(info);
-		
 		return;
 	}
 
@@ -118,10 +106,6 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 
 void LobbyLevel::EndIdle()
 {
-	// 클라이언트는 입장하자마자 로그인 순번 패킷을 만들어 서버에 보낸다.
-
-	// 서버는 이를 받아들여 순번을 배정한다.
-
 
 
 }
@@ -130,16 +114,6 @@ void LobbyLevel::StartSelect()
 {
 	if (true == clientSocket_.IsConnected())
 	{
-		// 내가 클라이언트로서 게임 방에 입장했으면
-		// 패킷을 보내 순번을 요청할 것.
-
-		// 근데 시벌 그 순번을 클라이언트가 어캐 아냐고...
-		// 클라이언트가 아닌 서버가 알고 있을 거임 최초에는
-		// 그걸 먼저 배분해야 함.
-
-		// 1. 들어온 순서대로 정렬시켜서 순번을 가져오는 것 까진 가능
-		// 2. 
-
 
 	}
 
@@ -151,6 +125,7 @@ void LobbyLevel::StartSelect()
 
 void LobbyLevel::UpdateSelect(float _DeltaTime)
 {
+	// 호스트 서버일 시
 	if (serverSocket_.IsOpened())
 	{
 		serverSocket_.ProcessPacket();
@@ -188,7 +163,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 
 
 	}
-	else if(clientSocket_.IsConnected())
+	else if(clientSocket_.IsConnected())	// 클라이언트일 시
 	{
 		clientSocket_.ProcessPacket();
 		playerList_ = clientSocket_.serverPlayerList_;
@@ -196,15 +171,13 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 
 		if (clientSocket_.playerNumber_ == 2)
 		{
+			// 중단점을 걸어서 
+			// 만약 클라이언트가 들어왔을 시 서버 인터페이스의 정보가 갱신되는지를 확인하는 스코프
 			int a = 0;
-		
 		}
 		if (true == GameEngineInput::Down("3"))
 		{
-			//GameJoinPacket packet;
-			//packet.SetCharacter(3);
-			//packet.SetStartPoint(4);
-			//clientSocket_.Send(&packet);
+
 			GameEngineDebug::OutPutDebugString("클라이언트 유저가 캐릭터를 선택했습니다.");
 			state_.ChangeState("Join");
 
