@@ -14,6 +14,12 @@ LobbyBackground::~LobbyBackground()
 
 void LobbyBackground::Start()
 {
+	{
+		BackGroundRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		BackGroundRenderer->SetImage("LobbyLevel_BG.png", "PointSmp");
+	//	BackGroundRenderer->GetTransform()->SetLocalPosition(CharUI_Pos);
+		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
+	}
 }
 
 void LobbyBackground::Update(float _DeltaTime)

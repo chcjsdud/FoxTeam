@@ -6,6 +6,7 @@
 #include "GameJoinPacket.h"
 #include "Enums.h"
 
+#include "LobbyBackground.h"
 #include "TempLobbyRenderer.h"
 
 GameEngineSocketServer LobbyLevel::serverSocket_;
@@ -23,6 +24,12 @@ LobbyLevel::~LobbyLevel()
 
 void LobbyLevel::LevelStart()
 {
+	{
+		GetMainCamera()->SetProjectionMode(ProjectionMode::Orthographic);
+		//GetMainCameraActor()->GetCamera()->SetFov(60.f);
+		GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -400.0f));
+	}
+
 	{
 		state_.CreateState<LobbyLevel>("Idle", this, &LobbyLevel::StartIdle, &LobbyLevel::UpdateIdle, &LobbyLevel::EndIdle);
 		// Idle : 아무 입력이 없는 대기실의 첫 상태입니다.
@@ -80,6 +87,13 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 
 	}
+
+
+//	{
+//		LobbyBackground* BackgroundRenderer = CreateActor<LobbyBackground>();
+//	}
+
+
 }
 
 
