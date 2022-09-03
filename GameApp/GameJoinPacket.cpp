@@ -53,7 +53,9 @@ void GameJoinPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
     info.startPoint_ = -1;
     info.isReady_ = false;
     _network->serverPlayerList_.push_back(info);
+
     // 브로드캐스팅 받는 기존 클라이언트들에게는 신규 클라의 구좌
+    
     // 신규 클라이언트에게는 서버의 구좌로 인식된다.
 
     if (_bServer)

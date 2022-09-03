@@ -47,6 +47,10 @@ private:
 
 public:
 	std::vector<PlayerInfo> playerList_;
+	// 기존 플레이어 수
+	// 만약 서버 소켓에 새로운 클라이언트가 들어와서 ServerPlayerList 의 size 가 늘어났다면
+	// 이 PlayerList 와 크기 차이를 조건문으로 비교해 "서버에 새 클라가 들어왔으니, 그 들어온 클라이언트에게 패킷을 보내라"
+	// 라는 코드로 들어오게 한다
 	
 	static GameEngineSocketServer serverSocket_;
 	static GameEngineSocketClient clientSocket_;

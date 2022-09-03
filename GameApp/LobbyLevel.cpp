@@ -126,7 +126,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	if (true == GameEngineInput::Down("2"))
 	{
 		clientSocket_.Initialize();
-		clientSocket_.Connect("127.0.0.1");
+		clientSocket_.Connect("121.129.74.58");
 		clientSocket_.AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		clientSocket_.AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		clientSocket_.AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
@@ -183,7 +183,9 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			{
 				PlayerNumberPacket packet1;
 				packet1.SetPlayerNumber(serverSocket_.GetClientSocketSize() + 1);
-				packet1.SetOtherPlayers(serverSocket_.serverPlayerList_);
+				packet1.SetOtherPlayers(playerList_);
+				// *** 
+				
 				serverSocket_.Send(&packet1, serverSocket_.GetClientSocketSize());
 			}
 		}
