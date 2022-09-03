@@ -7,15 +7,15 @@
 #include <queue>
 
 class GameEngineFBXRenderer;
-class GHMap : public GameEngineActor
+class LumiaMap : public GameEngineActor
 {
 public:
-	GHMap();
-	~GHMap();
-	GHMap(const GHMap& _other) = delete;
-	GHMap(GHMap&& _other) = delete;
-	GHMap& operator=(const GHMap& _other) = delete;
-	GHMap& operator=(const GHMap&& _other) = delete;
+	LumiaMap();
+	~LumiaMap();
+	LumiaMap(const LumiaMap& _other) = delete;
+	LumiaMap(LumiaMap&& _other) = delete;
+	LumiaMap& operator=(const LumiaMap& _other) = delete;
+	LumiaMap& operator=(const LumiaMap&& _other) = delete;
 
 public:
 	virtual void Start() override;
@@ -37,11 +37,10 @@ private:
 	void updateAStarNodeVertexInfo();
 
 private:
-	// For Ground Check
-	GameEngineFBXRenderer* navMeshRenderer_;
+	// Ground Check
 	std::vector<GHNavMesh> navMeshes_;
 
-	// For A*
+	// A*
 	std::vector<std::vector<GHNode>> allNodes_;
 	std::vector<GameEngineVertex> tileVertices_;
 	std::vector<UINT> tileIndices_;
@@ -54,5 +53,9 @@ private:
 	float gridStartZ_;
 	int gridZCount_;
 	int gridXCount_;
+
+	// Rendering Object
+	GameEngineFBXRenderer* navMeshRenderer_;
+	GameEngineFBXRenderer* downTownRenderer_;
 };
 

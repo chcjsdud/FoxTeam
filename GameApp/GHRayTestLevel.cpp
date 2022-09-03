@@ -7,7 +7,7 @@
 #include <GameApp/GHRio.h>
 #include <GameEngine/LightActor.h>
 #include <GameEngine/SKySphereActor.h>
-#include <GameApp/GHMap.h>
+#include <GameApp/LumiaMap.h>
 #include <GameApp/GHRayTestBox.h>
 #include <GameApp/MousePointer.h>
 #include <GameApp/GHRayTestOBBBox.h>
@@ -138,7 +138,7 @@ void GHRayTestLevel::releaseResource()
 
 void GHRayTestLevel::createActor()
 {
-	map_ = CreateActor<GHMap>();
+	map_ = CreateActor<LumiaMap>();
 	mouse_ = CreateActor<MousePointer>();
 	player_ = CreateActor<GHRio>();
 

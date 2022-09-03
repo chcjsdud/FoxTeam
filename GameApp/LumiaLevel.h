@@ -7,6 +7,7 @@
 #include <GameApp/ItemBoxManager.h>
 #include <GameApp/GHRio.h>
 
+class LumiaMap;
 class LumiaLevel : public GameEngineLevel
 {
 public:
@@ -25,7 +26,7 @@ public:
 
 public:
 	MousePointer* GetMousePointer() { return mouse_; }
-	GHMap* GetMap() { return map_; }
+	LumiaMap* GetMap() { return map_; }
 
 private:
 	void loadResource();
@@ -40,8 +41,7 @@ private:
 	GHRio* player_;
 
 	MousePointer* mouse_;
-	GHMap* map_;
-	YSJ_LumiaMap* lumiaMap;
+	LumiaMap* map_;
 
 	ItemBoxManager* ItemBox_;
 };

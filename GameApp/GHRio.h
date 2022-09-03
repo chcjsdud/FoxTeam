@@ -4,7 +4,7 @@
 #include <GameEngine/GameEngineFSM.h>
 
 class GameEngineFBXRenderer;
-class GHMap;
+class LumiaMap;
 class GHNavMesh;
 class GHRio : public GameEngineActor
 {
@@ -37,7 +37,7 @@ private:
 	float4 destination_;
 	float4 direction_;
 
-	GHMap* currentMap_;
+	LumiaMap* currentMap_;
 	GHNavMesh* currentNavMesh_;
 
 	std::vector<float4> destinations_;

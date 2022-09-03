@@ -2,7 +2,7 @@
 #include "GHRio.h"
 #include "GHRayTestLevel.h"
 #include "MousePointer.h"
-#include "GHMap.h"
+#include "LumiaMap.h"
 #include "GHNavMesh.h"
 
 #include <GameEngine/GameEngineFBXRenderer.h>
@@ -26,7 +26,8 @@ GHRio::~GHRio()
 void GHRio::Start()
 {
 	//float4 spawnPoint = { -6780.f, 0.0f, -780.f };
-	float4 spawnPoint = { 0.f, 0.0f, 0.f };
+	float4 spawnPoint = { -2500.f, 0.0f, 10000.f };
+	//float4 spawnPoint = { 0.f, 0.0f, 0.f };
 	GetTransform()->SetLocalPosition(spawnPoint);
 	destination_ = spawnPoint;
 
@@ -58,7 +59,7 @@ void GHRio::Start()
 
 	if (nullptr == currentMap_)
 	{
-		GameEngineDebug::MsgBox("레벨에 맵이 배치되지 않았습니다.");
+		//GameEngineDebug::MsgBox("레벨에 맵이 배치되지 않았습니다.");
 	}
 	else
 	{
@@ -67,7 +68,7 @@ void GHRio::Start()
 
 	if (nullptr == currentNavMesh_)
 	{
-		GameEngineDebug::MsgBox("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
+		//GameEngineDebug::MsgBox("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
 	}
 }
 
@@ -93,7 +94,7 @@ void GHRio::Update(float _deltaTime)
 	//if (GameEngineInput::GetInst().Up("LButton"))
 	//{
 	//	destination_ = worldPosition;
-	//	GHMap* map = level->GetMap();
+	//	LumiaMap* map = level->GetMap();
 	//	if (nullptr != map && nullptr != mouse)
 	//	{
 	//		GameEngineTime::GetInst().TimeCheck();

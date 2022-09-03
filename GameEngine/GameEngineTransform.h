@@ -153,6 +153,7 @@ public:
 	float4 GetWorldDownVector() { return -TransformData_.WorldWorld_.vy.NormalizeReturn3D(); }
 	float4 GetLocalDownVector() { return -TransformData_.LocalWorld_.vy.NormalizeReturn3D(); }
 
+	void SetLocalScaling(float _value);
 	void SetLocalScaling(const float4& _Value);
 	void SetWorldScaling(const float4& _Value);
 

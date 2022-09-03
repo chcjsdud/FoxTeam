@@ -1,5 +1,5 @@
 #include "PreCompile.h"
-#include "GHMap.h"
+#include "LumiaMap.h"
 
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include <GameEngine/EngineVertex.h>
@@ -7,8 +7,9 @@
 #include <numeric>
 
 
-GHMap::GHMap()
+LumiaMap::LumiaMap()
 	: navMeshRenderer_(nullptr)
+	, downTownRenderer_(nullptr)
 	, tileVertexBuffer_(nullptr)
 	, tileIndexBuffer_(nullptr)
 	, intervalX_(0.0f)
@@ -21,7 +22,7 @@ GHMap::GHMap()
 
 }
 
-GHMap::~GHMap()
+LumiaMap::~LumiaMap()
 {
 	if (nullptr != tileVertexBuffer_)
 	{
@@ -34,11 +35,13 @@ GHMap::~GHMap()
 	}
 }
 
-void GHMap::Start()
+void LumiaMap::Start()
 {
 	navMeshRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	navMeshRenderer_->SetFBXMesh("Bg_NaviMesh_Cobalt.fbx", "TextureDeferredLight");
+	navMeshRenderer_->SetFBXMesh("DowntownNavMesh.fbx", "TextureDeferredLight");
 	//navMeshRenderer_->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
+
+
 
 	size_t count = navMeshRenderer_->GetRenderSetCount();
 	for (size_t i = 0; i < count; i++)
@@ -46,10 +49,14 @@ void GHMap::Start()
 		navMeshRenderer_->GetRenderSet(static_cast<unsigned int>(i)).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
 
-	navMeshRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
+	navMeshRenderer_->GetTransform()->SetLocalScaling(1.0f);
 	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -50.f });
 
 	//navMeshRenderer_->Off();
+
+	downTownRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	downTownRenderer_->SetFBXMesh("Downtown.fbx", "TextureDeferredLight");
+	downTownRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 
 	// 모든 메쉬를 네비메쉬로
 
@@ -92,34 +99,34 @@ void GHMap::Start()
 
 	// 네비메쉬 인접성 검사
 
-	size_t navMeshCount = navMeshes_.size();
-	for (GHNavMesh& currentMesh : navMeshes_)
-	{
-		for (size_t meshIndex = 0; meshIndex < navMeshCount; meshIndex++)
-		{
-			if (meshIndex == currentMesh.Index)
-			{
-				continue;
-			}
+	//size_t navMeshCount = navMeshes_.size();
+	//for (GHNavMesh& currentMesh : navMeshes_)
+	//{
+	//	for (size_t meshIndex = 0; meshIndex < navMeshCount; meshIndex++)
+	//	{
+	//		if (meshIndex == currentMesh.Index)
+	//		{
+	//			continue;
+	//		}
 
-			if (true == checkNavMeshAdjacency(currentMesh, navMeshes_[meshIndex]))
-			{
-				currentMesh.AdjacentMeshIndices.push_back(static_cast<int>(meshIndex));
-			}
-		}
-	}
+	//		if (true == checkNavMeshAdjacency(currentMesh, navMeshes_[meshIndex]))
+	//		{
+	//			currentMesh.AdjacentMeshIndices.push_back(static_cast<int>(meshIndex));
+	//		}
+	//	}
+	//}
 
 	makeAStarNode(200.f, 200.f);
 	checkASterNodeObstacle();
 	updateAStarNodeVertexInfo();
 }
 
-void GHMap::Update(float _deltaTime)
+void LumiaMap::Update(float _deltaTime)
 {
 
 }
 
-GHNavMesh* GHMap::GetCurrentNavMesh(const float4& _position)
+GHNavMesh* LumiaMap::GetCurrentNavMesh(const float4& _position)
 {
 	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
 	float distance = 0.f;
@@ -135,7 +142,7 @@ GHNavMesh* GHMap::GetCurrentNavMesh(const float4& _position)
 	return nullptr;
 }
 
-bool GHMap::IsIntersectionMesh(const GHNavMesh& _mesh, const float4& _position)
+bool LumiaMap::IsIntersectionMesh(const GHNavMesh& _mesh, const float4& _position)
 {
 	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
 	float distance = 0;
@@ -144,7 +151,7 @@ bool GHMap::IsIntersectionMesh(const GHNavMesh& _mesh, const float4& _position)
 		distance);
 }
 
-GHNavMesh* GHMap::FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position)
+GHNavMesh* LumiaMap::FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position)
 {
 	// 전체 탐색
 	for (GHNavMesh& n : navMeshes_)
@@ -169,7 +176,7 @@ GHNavMesh* GHMap::FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const
 	return nullptr;
 }
 
-std::vector<float4> GHMap::FindPath(const float4& _startPosition, const float4& _endPosition)
+std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float4& _endPosition)
 {
 	std::vector<float4> result;
 
@@ -322,7 +329,7 @@ std::vector<float4> GHMap::FindPath(const float4& _startPosition, const float4& 
 	return result;
 }
 
-bool GHMap::checkNavMeshAdjacency(const GHNavMesh& _left, const GHNavMesh& _right)
+bool LumiaMap::checkNavMeshAdjacency(const GHNavMesh& _left, const GHNavMesh& _right)
 {
 	for (size_t i = 0; i < 3; ++i)
 	{
@@ -338,7 +345,7 @@ bool GHMap::checkNavMeshAdjacency(const GHNavMesh& _left, const GHNavMesh& _righ
 	return false;
 }
 
-void GHMap::makeAStarNode(float _intervalX, float _intervalZ)
+void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 {
 	intervalX_ = _intervalX;
 	intervalZ_ = _intervalZ;
@@ -460,7 +467,7 @@ void GHMap::makeAStarNode(float _intervalX, float _intervalZ)
 	//Renderer->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 }
 
-void GHMap::checkASterNodeObstacle()
+void LumiaMap::checkASterNodeObstacle()
 {
 	GameEngineTime::GetInst().TimeCheck();
 
@@ -492,7 +499,7 @@ void GHMap::checkASterNodeObstacle()
 	GameEngineTime::GetInst().GetDeltaTime();
 }
 
-void GHMap::updateAStarNodeVertexInfo()
+void LumiaMap::updateAStarNodeVertexInfo()
 {
 	ID3D11DeviceContext* dc = GameEngineDevice::GetContext();
 

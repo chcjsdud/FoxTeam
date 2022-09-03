@@ -3,7 +3,7 @@
 #include <GameEngine\GameEngineLevel.h>
 
 class MousePointer;
-class GHMap;
+class LumiaMap;
 class GHRayTestLevel : public GameEngineLevel
 {
 public:
@@ -25,7 +25,7 @@ public:
 
 public:
 	MousePointer* GetMousePointer() { return mouse_; }
-	GHMap* GetMap() { return map_; }
+	LumiaMap* GetMap() { return map_; }
 
 private:
 	void loadResource();
@@ -39,7 +39,7 @@ private:
 
 private:
 	MousePointer* mouse_;
-	GHMap* map_;
+	LumiaMap* map_;
 	GameEngineActor* player_;
 };
 
