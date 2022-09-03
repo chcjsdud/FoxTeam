@@ -276,6 +276,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="PostBlur.h" />
     <ClInclude Include="PostFade.h">
       <SubType>

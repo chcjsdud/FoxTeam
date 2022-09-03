@@ -177,36 +177,33 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			// 서버 참석 인원수에 변동이 있을 때 보내지는 패킷입니다.
 			// 멤버로 가진 인원 리스트와 서버 소켓 수를 비교해서
 			GameJoinPacket packet;
-			packet.SetAllPlayerList(serverSocket_.serverPlayerList_);
 			serverSocket_.Send(&packet);
 
-			if (true)
+			if (playerList_.size() < serverSocket_.serverPlayerList_.size())
 			{
 				PlayerNumberPacket packet1;
 				packet1.SetPlayerNumber(serverSocket_.GetClientSocketSize() + 1);
+				packet1.SetOtherPlayers(serverSocket_.serverPlayerList_);
 				serverSocket_.Send(&packet1, serverSocket_.GetClientSocketSize());
 			}
 		}
 
 		playerList_ = serverSocket_.serverPlayerList_;
 		
-		if (true == GameEngineInput::Down("3"))
+		if (true == GameEngineInput::Down("1"))
 		{
 			CharSelectPacket packet;
+			packet.SetTargetPlayer(1);
 			packet.SetCharacter(static_cast<int>(JobType::HYUNWOO));
 			packet.SetStartPoint(static_cast<int>(Location::SCHOOL));
 			packet.SetIsReady(true);
+
 			serverSocket_.Send(&packet);
-			serverSocket_.serverPlayerList_[0] = true;
+			//serverSocket_.serverPlayerList_[0].isReady_ = true;
 			GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다.");
 			state_.ChangeState("Join");
+			return;
 		}
-
-		// 여기서 패킷이 들어온 값들을 체크해서 비주얼을 바꿔 주는 무언가가 필요할까?
-		// 서버일 때 : 비주얼을 바꿔 주고 바뀐 값을 다른 클라이언트에게 브로드캐스팅 해 준다.
-		// ex) (내 비주얼을 바꾸고) 2번 3번 클라이언트야 신입 4번이 들어왔다.
-
-
 	}
 	else if (clientSocket_.IsConnected())	// 클라이언트일 시
 	{
@@ -214,32 +211,25 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		playerList_ = clientSocket_.serverPlayerList_;
 		
 
-
-
-
-
-
-
-
-
-		if (clientSocket_.playerNumber_ == 3)
+		if (clientSocket_.myPlayerNumber_ == 2)
 		{
 			// 중단점을 걸어서 
 			// 만약 클라이언트가 들어왔을 시 서버 인터페이스의 정보가 갱신되는지를 확인하는 스코프
 			int a = 0;
 		}
 
-		//if (true == GameEngineInput::Down("3"))
-		//{
-		//	CharSelectPacket packet;
-		//	packet.SetCharacter(static_cast<int>(JobType::JACKIE));
-		//	packet.SetStartPoint(static_cast<int>(Location::UPTOWN));
-		//	packet.SetIsReady(true);
-		//	clientSocket_.Send(&packet);
-		//	clientSocket_.serverPlayerList_[clientSocket_.playerNumber_] = true;
-		//	GameEngineDebug::OutPutDebugString("클라이언트 유저가 캐릭터를 선택했습니다.");
-		//	state_.ChangeState("Join");
-		//}
+		if (true == GameEngineInput::Down("5"))
+		{
+			CharSelectPacket packet;
+			packet.SetTargetPlayer(clientSocket_.myPlayerNumber_);
+			packet.SetCharacter(static_cast<int>(JobType::JACKIE));
+			packet.SetStartPoint(static_cast<int>(Location::UPTOWN));
+			packet.SetIsReady(true);
+			clientSocket_.Send(&packet);
+			
+			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(clientSocket_.myPlayerNumber_) + " 이(가) 캐릭터를 선택했습니다.");
+			state_.ChangeState("Join");
+		}
 
 	}
 
@@ -264,7 +254,21 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 
 	if (true == serverSocket_.IsOpened())
 	{
+		int count = 0;
 
+		for (int i = 0; i < serverSocket_.serverPlayerList_.size(); i++)
+		{
+			if (true == serverSocket_.serverPlayerList_[i].isReady_)
+			{
+				count++;
+			}
+
+		}
+
+		if (count == serverSocket_.serverPlayerList_.size())
+		{
+			GameEngineDebug::MsgBoxError("모두 준비 완료, 게임을 시작합니다.");
+		}
 	}
 	else if (true == clientSocket_.IsConnected())
 	{

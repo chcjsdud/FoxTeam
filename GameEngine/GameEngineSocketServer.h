@@ -42,7 +42,7 @@ public:
 	bool IsOpened() { return bOpen_; }
 	//0830 박종원
 	size_t GetServerPlayerListSize() { return serverPlayerList_.size(); }
-	std::vector<int> GetServerPlayerList() { return serverPlayerList_; }
+	std::vector<PlayerInfo> GetServerPlayerList() { return serverPlayerList_; }
 
 private:
 	// 클라이언트의 연결을 받기 위한 함수. 스레드로 처리됩니다.

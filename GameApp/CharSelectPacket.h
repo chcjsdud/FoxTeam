@@ -15,6 +15,7 @@ public:
 	CharSelectPacket& operator=(const CharSelectPacket&& _other) = delete;
 
 public:
+	void SetTargetPlayer(int _index);
 	void SetCharacter(int _character);
 	void SetStartPoint(int _startPoint);
 	void SetIsReady(bool _isReady);
@@ -45,6 +46,7 @@ private:
 	// 무엇이 원소로 있어야 하나?
 	// 1. 어떤 캐릭터를 선택했나?
 	// 2. 어떤 지점을 시작 지점으로 선택했나?
+	int targetIndex_;
 	int character_;
 	int startPoint_;
 	bool isReady_;

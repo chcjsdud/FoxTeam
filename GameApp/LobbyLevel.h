@@ -4,7 +4,7 @@
 
 #include <GameEngine/GameEngineSocketServer.h>
 #include <GameEngine/GameEngineSocketClient.h>
-
+#include <GameEngine/PlayerInfo.h>
 
 class TempLobbyRenderer;
 class GameEngineImageRenderer;
@@ -46,7 +46,7 @@ private:
 	GameEngineFSM state_;
 
 public:
-	std::vector<int> playerList_;
+	std::vector<PlayerInfo> playerList_;
 	
 	static GameEngineSocketServer serverSocket_;
 	static GameEngineSocketClient clientSocket_;

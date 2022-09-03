@@ -16,7 +16,7 @@ public:
 
 public:
 	void SetPlayerNumber(int _playerNumber);
-
+	void SetOtherPlayers(std::vector<PlayerInfo> _others);
 	int GetPlayerNumber()
 	{
 		return playerNumber_;
@@ -31,5 +31,10 @@ protected:
 
 private:
 	int playerNumber_;
+	int othersSize_;
+	std::vector<int> otherCharacter_;
+	std::vector<int> otherStartPoint_;
+	std::vector<int> otherIsReady_;
+
 };
 

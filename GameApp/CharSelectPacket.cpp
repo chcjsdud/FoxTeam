@@ -44,9 +44,9 @@ GameEnginePacketBase* CharSelectPacket::getUserObject()
 
 void CharSelectPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
 {
-    _network->character_ = character_;
-    _network->startPoint_ = startPoint_;
-    _network->serverPlayerList_[_network->playerNumber_] = isReady_;
+    _network->serverPlayerList_[targetIndex_].character_ = character_;
+    _network->serverPlayerList_[targetIndex_].startPoint_ = startPoint_;
+    _network->serverPlayerList_[targetIndex_].isReady_ = isReady_;
     // 값만 INT 로 반환하고,
     // 이는 클래스에서 ENUM 값으로 캐릭터와 시작 지역을 해석합니다.
  
@@ -56,6 +56,11 @@ void CharSelectPacket::execute(bool _bServer, GameEngineSocketInterface* _networ
 
         _network->Send(this);
     }
+}
+
+void CharSelectPacket::SetTargetPlayer(int _index)
+{
+    targetIndex_ = _index;
 }
 
 void CharSelectPacket::SetCharacter(int _character)
