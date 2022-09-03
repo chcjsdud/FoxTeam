@@ -219,7 +219,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GHMap.cpp">
+    <ClCompile Include="LumiaMap.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -467,7 +467,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GHMap.h">
+    <ClInclude Include="LumiaMap.h">
       <SubType>
       </SubType>
     </ClInclude>

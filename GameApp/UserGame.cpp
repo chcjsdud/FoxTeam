@@ -20,20 +20,21 @@
 #include "ServerTestLevel.h"
 #include "LobbyLevel.h"
 #include "KeyboardClass.h"	
+#include <GameApp/LumiaLevel.h>
 std::atomic<int> UserGame::LoadingFolder = 0;
 bool UserGame::IsServer_ = false;
 
-UserGame::UserGame() // default constructer 디폴트 생성자
+UserGame::UserGame()
 {
 
 }
 
-UserGame::~UserGame() // default destructer 디폴트 소멸자
+UserGame::~UserGame()
 {
 	KeyboardClass::GetInst().Destroy();
 }
 
-UserGame::UserGame(UserGame&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
+UserGame::UserGame(UserGame&& _other) noexcept
 {
 
 }
@@ -41,8 +42,8 @@ UserGame::UserGame(UserGame&& _other) noexcept  // default RValue Copy construct
 
 void UserGame::Initialize()
 {
-	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
-	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
+	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
+	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
 
 	//LevelCreate<PlayLevel>("Play");
@@ -51,16 +52,19 @@ void UserGame::Initialize()
 	//LevelCreate<YSJ_PlayLevel>("YSJ_Play");
 	//LevelCreate<SettingItemLevel>("SettingItemLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
-	//LevelCreate<GHRayTestLevel>("RayTestLevel");
+	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
 	LevelCreate<LobbyLevel>("PJW_ServerTest");
 	
+	LevelCreate<LumiaLevel>("LumiaLevel");
+
+	LevelChange("LumiaLevel");
 	//LevelChange("RayTestLevel");
 	//LevelChange("SJH_Play");
 	//LevelChange("Play");
 	//LevelChange("SJH_Play");
 	//LevelChange("PJW_Play");
 	//LevelChange("YSJ_Play");
-	LevelChange("PJW_ServerTest");
+	//LevelChange("PJW_ServerTest");
 	return;
 }
 

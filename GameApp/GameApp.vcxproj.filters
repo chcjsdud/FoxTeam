@@ -185,9 +185,6 @@
     <ClCompile Include="GHNode.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\NavMesh\AStar</Filter>
     </ClCompile>
-    <ClCompile Include="GHMap.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="ItemBase.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
@@ -277,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="TempLobbyRenderer.cpp">
       <Filter>02.GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="LumiaMap.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -669,9 +669,6 @@
     <ClInclude Include="GHNode.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\NavMesh\AStar</Filter>
     </ClInclude>
-    <ClInclude Include="GHMap.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\RayTestLevel\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="ItemBase.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClInclude>
@@ -764,6 +761,9 @@
     </ClInclude>
     <ClInclude Include="TempLobbyRenderer.h">
       <Filter>02.GameServer</Filter>
+    </ClInclude>
+    <ClInclude Include="LumiaMap.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

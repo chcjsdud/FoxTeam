@@ -123,6 +123,23 @@ void GameEngineTransform::CalculationWorldPosition()
 	TransformData_.vWorldPosition_ = CalLocalPos;
 }
 
+void GameEngineTransform::SetLocalScaling(float _value)
+{
+	if (nullptr == Parent_)
+	{
+		TransformData_.vLocalScaling_ = float4(_value, _value, _value);
+		TransformData_.vWorldScaling_ = TransformData_.vLocalScaling_;
+		AllChildCalculationScaling();
+		TransformUpdate();
+		return;
+	}
+
+	TransformData_.vLocalScaling_ = float4(_value, _value, _value);
+	CalculationWorldScaling();
+	AllChildCalculationScaling();
+	TransformUpdate();
+}
+
 void GameEngineTransform::SetLocalScaling(const float4& _Value)
 {
 	if (nullptr == Parent_)

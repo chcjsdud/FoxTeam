@@ -1,17 +1,20 @@
 #include "Precompile.h"
-#include "LumiaLevel.h"
 #include <GameEngine/GameEngineRenderWindow.h>
 #include <GameEngine/SKySphereActor.h>
 #include <GameEngine/LightActor.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
 
 
+#include "LumiaLevel.h"
+#include "LumiaMap.h"
+
+
 
 LumiaLevel::LumiaLevel()
 	: mouse_(nullptr)
-	, lumiaMap(nullptr)
 	, ItemBox_(nullptr)
 	, player_(nullptr)
+	, map_(nullptr)
 {
 }
 
@@ -83,59 +86,57 @@ void LumiaLevel::loadResource()
 		GameEngineDirectory tempDir;
 
 		tempDir.MoveParent("FoxTeam");
-		tempDir.MoveChild("Resources");
-		tempDir.MoveChild("FBX");
-		tempDir.MoveChild("YSJ");
+		tempDir / "Resources" / "FBX" / "Map";
 
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx"));
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
+		Mesh->CreateRenderingBuffer();
+		Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("DowntownNavMesh.fbx"));
 		Mesh->CreateRenderingBuffer();
 
-		Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("NaviCol.fbx"));
-		Mesh->CreateRenderingBuffer();
 	}
 
-	{
-		GameEngineDirectory tempDir;
-		tempDir.MoveParent("FoxTeam");
-		tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
+	//{
+	//	GameEngineDirectory tempDir;
+	//	tempDir.MoveParent("FoxTeam");
+	//	tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
 
-		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+	//	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
 
-		for (size_t i = 0; i < vecFile.size(); i++)
-		{
-			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
-			{
-				GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
-			}
-		}
-	}
+	//	for (size_t i = 0; i < vecFile.size(); i++)
+	//	{
+	//		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+	//		{
+	//			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
+	//		}
+	//	}
+	//}
 
-	{
-		GameEngineDirectory tempDir;
-		tempDir.MoveParent("FoxTeam");
-		tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox";
+	//{
+	//	GameEngineDirectory tempDir;
+	//	tempDir.MoveParent("FoxTeam");
+	//	tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox";
 
-		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
-		vecFile = tempDir.GetAllFile(".UserMesh");
+	//	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+	//	vecFile = tempDir.GetAllFile(".UserMesh");
 
-		for (size_t i = 0; i < vecFile.size(); i++)
-		{
-			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
-			{
-				GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
-			}
-		}
-	}
+	//	for (size_t i = 0; i < vecFile.size(); i++)
+	//	{
+	//		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+	//		{
+	//			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
+	//		}
+	//	}
+	//}
 
-	{
-		GameEngineDirectory tempDir;
-		tempDir.MoveParent("FoxTeam");
-		tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox" / "ItemBoxInfo";
+	//{
+	//	GameEngineDirectory tempDir;
+	//	tempDir.MoveParent("FoxTeam");
+	//	tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox" / "ItemBoxInfo";
 
-		//ItemBox_ = CreateActor<ItemBoxManager>();
+	//	//ItemBox_ = CreateActor<ItemBoxManager>();
 
-		//ItemBox_->UserAllLoad(tempDir);
-	}
+	//	//ItemBox_->UserAllLoad(tempDir);
+	//}
 
 	{
 		GameEngineDirectory dir;
@@ -145,11 +146,7 @@ void LumiaLevel::loadResource()
 
 		std::string meshName = "Rio_Run.fbx";
 
-
-		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Bg_NaviMesh_Cobalt.fbx"));
-		mesh->CreateRenderingBuffer();
-
-		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
+		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
 		mesh->CreateRenderingBuffer();
 
 		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
@@ -163,35 +160,35 @@ void LumiaLevel::loadResource()
 
 void LumiaLevel::releaseResource()
 {
-	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh.fbx");
-	GameEngineFBXMeshManager::GetInst().Delete("NaviCol.fbx");
+	GameEngineFBXMeshManager::GetInst().Delete("DowntownNavMesh.fbx");
+	GameEngineFBXMeshManager::GetInst().Delete("Downtown.fbx");
 
-	{
-		GameEngineDirectory tempDir;
-		tempDir.MoveParent("FoxTeam");
-		tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
+	//{
+	//	GameEngineDirectory tempDir;
+	//	tempDir.MoveParent("FoxTeam");
+	//	tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
 
-		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+	//	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
 
-		for (size_t i = 0; i < vecFile.size(); i++)
-		{
-			GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
-		}
-	}
+	//	for (size_t i = 0; i < vecFile.size(); i++)
+	//	{
+	//		GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
+	//	}
+	//}
 
-	{
-		GameEngineDirectory tempDir;
-		tempDir.MoveParent("FoxTeam");
-		tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox";
+	//{
+	//	GameEngineDirectory tempDir;
+	//	tempDir.MoveParent("FoxTeam");
+	//	tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox";
 
-		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
-		vecFile = tempDir.GetAllFile(".UserMesh");
+	//	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+	//	vecFile = tempDir.GetAllFile(".UserMesh");
 
-		for (size_t i = 0; i < vecFile.size(); i++)
-		{
-			GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
-		}
-	}
+	//	for (size_t i = 0; i < vecFile.size(); i++)
+	//	{
+	//		GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
+	//	}
+	//}
 
 	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh_Cobalt.fbx");
 	GameEngineFBXMeshManager::GetInst().Delete("Rio_Run.fbx");
@@ -200,14 +197,13 @@ void LumiaLevel::releaseResource()
 	GameEngineFBXAnimationManager::GetInst().Delete("Rio_Wait.fbx");
 
 	mouse_ = nullptr;
-	lumiaMap = nullptr;
 	ItemBox_ = nullptr;
 }
 
 void LumiaLevel::createActor()
 {
 	mouse_ = CreateActor<MousePointer>();
-	lumiaMap = CreateActor<YSJ_LumiaMap>();
+	map_ = CreateActor<LumiaMap>();
 
 	player_ = CreateActor<GHRio>();
 
@@ -217,21 +213,10 @@ void LumiaLevel::createActor()
 	{
 		LightActor* Actor;
 
-
 		Actor = CreateActor<LightActor>();
 		Actor->GetLight()->SetDiffusePower(1.f);
 		Actor->GetLight()->SetAmbientPower(10.f);
 		Actor->GetLight()->SetSpacularLightPow(10.f);
-
-		//Actor = CreateActor<LightActor>();
-		//Actor->GetLight()->SetDiffusePower(0.3f);
-		//Actor->GetLight()->SetSpacularLightPow(50.0f);
-		////Actor->GetTransform()->SetLocalRotationDegree({ 45.0f, 0.0f, 0.0f });
-
-		//Actor = CreateActor<LightActor>();
-		//Actor->GetLight()->SetDiffusePower(0.3f);
-		//Actor->GetLight()->SetSpacularLightPow(50.0f);
-		////Actor->GetTransform()->SetLocalRotationDegree({ 0.0f, 90.0f, 0.0f });
 	}
 }
 
@@ -247,12 +232,13 @@ void LumiaLevel::initRenderWindow()
 	if (nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow"))
 	{
 		GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+		Window->ClaerRenderTarget();
 		float4 Size = { 128, 72 };
-		Window->PushRenderTarget("메인 카메라 타겟", GetMainCamera()->GetCameraRenderTarget(), Size * 3);
-		Window->PushRenderTarget("UI 카메라 타겟", GetUICamera()->GetCameraRenderTarget(), Size * 3);
-		Window->PushRenderTarget("메인 카메라 G-Buffer", GetMainCamera()->GetCameraDeferredGBufferTarget(), Size * 3);
-		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size * 3);
-		Window->PushRenderTarget("메인 카메라 디퍼드 타겟", GetMainCamera()->GetCameraDeferredTarget(), Size * 3);
+		Window->PushRenderTarget("메인 카메라 타겟", GetMainCamera()->GetCameraRenderTarget(), Size);
+		Window->PushRenderTarget("UI 카메라 타겟", GetUICamera()->GetCameraRenderTarget(), Size);
+		Window->PushRenderTarget("메인 카메라 G-Buffer", GetMainCamera()->GetCameraDeferredGBufferTarget(), Size);
+		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size);
+		Window->PushRenderTarget("메인 카메라 디퍼드 타겟", GetMainCamera()->GetCameraDeferredTarget(), Size);
 	}
 }
 

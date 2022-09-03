@@ -167,9 +167,9 @@ void GameEngineShader::ResCheck()
 					Smp_Decs.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
 				}
 
-				Smp_Decs.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
-				Smp_Decs.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
-				Smp_Decs.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+				Smp_Decs.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+				Smp_Decs.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+				Smp_Decs.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 
 				Smp_Decs.MipLODBias = 0.0f;
 				Smp_Decs.MaxAnisotropy = 1;
