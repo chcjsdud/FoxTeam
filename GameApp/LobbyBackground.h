@@ -15,7 +15,14 @@ public:
 	LobbyBackground& operator=(LobbyBackground&& _Other) noexcept = delete;
 
 public:
+
+#pragma region ·»´õ·¯ ¸ðÀ½
+
 	GameEngineImageRenderer* BackGroundRenderer;
+	GameEngineImageRenderer* Deco_CircleRenderer;
+	GameEngineImageRenderer* Deco_GlowingRenderer;
+
+#pragma endregion
 
 protected:
 	virtual void Start();
