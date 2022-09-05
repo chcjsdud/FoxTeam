@@ -114,6 +114,22 @@ void GameEngineSocketClient::Send(GameEnginePacketBase* _packet)
 	send(socket_, data, PACKET_SIZE, 0);
 }
 
+void GameEngineSocketClient::Send(SOCKET _receiver, GameEnginePacketBase* _packet)
+{
+	if (0 == _receiver)
+	{
+		GameEngineDebug::OutPutDebugString("전송받을 소켓이 비어있습니다.\n");
+		return;
+	}
+
+	_packet->Serialize();
+	char data[PACKET_SIZE];
+	ZeroMemory(data, PACKET_SIZE);
+	memcpy(data, _packet->GetSerializer().GetDataPtr(), _packet->GetSerializer().GetOffSet());
+	send(_receiver, data, PACKET_SIZE, 0);
+}
+
+
 void GameEngineSocketClient::ProcessPacket()
 {
 	if (nullptr != packetHandler_)

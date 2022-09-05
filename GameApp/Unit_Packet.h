@@ -15,7 +15,7 @@ public:
 	virtual void userSerialize() override;
 	virtual void userDeserialize() override;
 	virtual GameEnginePacketBase* getUserObject() override;
-	virtual void execute(bool _bServer, GameEngineSocketInterface* _network) override;
+	virtual void execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer) override;
 
 	void SetPaketInfo(unsigned int _Unit_ID, int _Order, float4 _TargetPos, unsigned int _Target_Unit_ID)
 	{

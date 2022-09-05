@@ -6,6 +6,8 @@ class GameEngineSocketInterface
 {
 public:
 	virtual void Send(GameEnginePacketBase* _packet) = 0;
+	virtual void Send(SOCKET _receiver, GameEnginePacketBase* _packet) = 0;
+
 
 	std::vector<PlayerInfo> serverPlayerList_;
 	int myPlayerNumber_;		// 접속자 순번

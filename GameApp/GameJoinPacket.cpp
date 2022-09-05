@@ -46,7 +46,7 @@ GameEnginePacketBase* GameJoinPacket::getUserObject()
     return new GameJoinPacket;
 }
 
-void GameJoinPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
+void GameJoinPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
     PlayerInfo info;
     info.character_ = -1;

@@ -186,6 +186,26 @@ void GameEngineSocketServer::AddPacketHandler(int _packetID, GameEnginePacketBas
 	}
 }
 
+void GameEngineSocketServer::Send(SOCKET _receiver, GameEnginePacketBase* _packet)
+{
+	if (0 == _receiver)
+	{
+		GameEngineDebug::OutPutDebugString("전송받을 소켓이 비어있습니다.\n");
+		return;
+	}
+
+	if (_packet->GetSerializer().GetOffSet() == 0)
+	{
+		_packet->Serialize();
+	}
+
+	char sendData[PACKET_SIZE] = { 0, };
+
+	memcpy(sendData, _packet->GetSerializer().GetDataPtr(), _packet->GetSerializer().GetOffSet());
+
+	send(_receiver, sendData, PACKET_SIZE, 0);
+}
+
 void GameEngineSocketServer::acceptFunction()
 {
 	// 새로운 클라이언트가 들어왔을 때 Accept 를 해 주는 단계입니다.

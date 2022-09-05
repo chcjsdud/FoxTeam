@@ -42,7 +42,7 @@ GameEnginePacketBase* CharSelectPacket::getUserObject()
     return new CharSelectPacket;
 }
 
-void CharSelectPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
+void CharSelectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
     _network->serverPlayerList_[targetIndex_].character_ = character_;
     _network->serverPlayerList_[targetIndex_].startPoint_ = startPoint_;

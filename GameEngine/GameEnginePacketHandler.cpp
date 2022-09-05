@@ -29,7 +29,7 @@ GameEnginePacketHandler::~GameEnginePacketHandler()
 	parents_.clear();
 }
 
-void GameEnginePacketHandler::AnalyzePacketAndPush(char* _data, int _size)
+void GameEnginePacketHandler::AnalyzePacketAndPush(char* _data, int _size, SOCKET _sender)
 {
 	GameEnginePacketBase* analyzedPacket = nullptr;
 
@@ -53,6 +53,10 @@ void GameEnginePacketHandler::AnalyzePacketAndPush(char* _data, int _size)
 	{
 		analyzedPacket->GetSerializer().SetDataPtr(_data, _size);
 		analyzedPacket->SetPacketID(packetID);
+		if (_sender != 0)
+		{
+			analyzedPacket->setSocketSender(_sender);
+		}
 		PushPacket(analyzedPacket);
 	}
 }
@@ -75,7 +79,7 @@ void GameEnginePacketHandler::ProcessPacket(GameEngineSocketInterface* _network)
 
 		packet->Deserialize();
 
-		packet->execute(bServer_, _network);
+		packet->execute(packet->socketSender_, _network, bServer_);
 
 		delete packet;
 	}

@@ -33,7 +33,7 @@ GameEnginePacketBase* ChattingPacket::getUserObject()
 	return new ChattingPacket;
 }
 
-void ChattingPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
+void ChattingPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
 	std::cout << text_ << std::endl;
 	GameEngineDebug::OutPutDebugString(text_);

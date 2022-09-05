@@ -61,7 +61,7 @@ GameEnginePacketBase* PlayerNumberPacket::getUserObject()
     return new PlayerNumberPacket;
 }
 
-void PlayerNumberPacket::execute(bool _bServer, GameEngineSocketInterface* _network)
+void PlayerNumberPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
     // 서버에서 받아온 남들의 정보
     for (int i = 0; i < othersSize_; i++)

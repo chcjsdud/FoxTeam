@@ -27,7 +27,7 @@ protected:
 	virtual void userDeserialize() override;
 	virtual void initPacketID() override;
 	virtual GameEnginePacketBase* getUserObject() override;
-	virtual void execute(bool _bServer, GameEngineSocketInterface* _network) override;
+	virtual void execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer) override;
 
 private:
 	int playerNumber_;
