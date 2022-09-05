@@ -20,16 +20,16 @@ CharSelectPacket::CharSelectPacket(CharSelectPacket&& _other) noexcept  // defau
 
 void CharSelectPacket::userSerialize()
 {
+    serializer_ << targetIndex_;
     serializer_ << character_;
     serializer_ << startPoint_;
-    serializer_ << isReady_;
 }
 
 void CharSelectPacket::userDeserialize()
 {
+    serializer_ >> targetIndex_;
     serializer_ >> character_;
     serializer_ >> startPoint_;
-    serializer_ >> isReady_;
 }
 
 void CharSelectPacket::initPacketID()
@@ -44,12 +44,11 @@ GameEnginePacketBase* CharSelectPacket::getUserObject()
 
 void CharSelectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
-    _network->serverPlayerList_[targetIndex_].character_ = character_;
-    _network->serverPlayerList_[targetIndex_].startPoint_ = startPoint_;
-    _network->serverPlayerList_[targetIndex_].isReady_ = isReady_;
+
     // 값만 INT 로 반환하고,
     // 이는 클래스에서 ENUM 값으로 캐릭터와 시작 지역을 해석합니다.
- 
+    _network->serverPlayerList_[targetIndex_-1].character_ = character_;
+    _network->serverPlayerList_[targetIndex_-1].startPoint_ = startPoint_;
 
     if (_bServer)
     {
@@ -58,7 +57,7 @@ void CharSelectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
     }
 }
 
-void CharSelectPacket::SetTargetPlayer(int _index)
+void CharSelectPacket::SetTargetIndex(int _index)
 {
     targetIndex_ = _index;
 }
@@ -71,9 +70,4 @@ void CharSelectPacket::SetCharacter(int _character)
 void CharSelectPacket::SetStartPoint(int _startPoint)
 {
     startPoint_ = _startPoint;
-}
-
-void CharSelectPacket::SetIsReady(bool _isReady)
-{
-    isReady_ = _isReady;
 }

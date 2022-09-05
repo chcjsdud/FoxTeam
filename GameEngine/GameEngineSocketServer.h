@@ -27,7 +27,7 @@ public:
 	void Send(GameEnginePacketBase* _packet) override;		// 연결된 클라이언트들에게 패킷을 전송합니다.
 	void Send(GameEnginePacketBase* _packet, int _index);		// 특정 클라이언트에게만 패킷을 전송합니다.
 	// 특정 소켓에 데이터를 전송합니다. (패킷을 보낸 클라이언트 중 하나일 겁니다.)
-	void Send(SOCKET _receiver, GameEnginePacketBase* _packet) override;
+	void Send(SOCKET& _receiver, GameEnginePacketBase* _packet) override;
 
 	// 인식해야 할 패킷의 유형(액터 업데이트, 채팅 등) 을 인식시키는 함수입니다.
 	void AddPacketHandler(int _packetID, GameEnginePacketBase* _packetObject);
@@ -45,6 +45,7 @@ public:
 	//0830 박종원
 	size_t GetServerPlayerListSize() { return serverPlayerList_.size(); }
 	std::vector<PlayerInfo> GetServerPlayerList() { return serverPlayerList_; }
+	std::vector<SOCKET> GetSocketList() { return clientSocketList_; }
 
 private:
 	// 클라이언트의 연결을 받기 위한 함수. 스레드로 처리됩니다.
@@ -54,8 +55,6 @@ private:
 
 private:
 	enum { PACKET_SIZE = 1024 };
-
-
 
 	std::vector<SOCKET> clientSocketList_; 
 	std::map<SOCKET, std::thread> clientReceiveThreadList_;

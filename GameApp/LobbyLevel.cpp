@@ -14,6 +14,7 @@ GameEngineSocketServer LobbyLevel::serverSocket_;
 GameEngineSocketClient LobbyLevel::clientSocket_;
 
 LobbyLevel::LobbyLevel()
+	: playerCount_(0), myCharacterSelection_(-1), myStartPointSelection_(-1), myIsReady_(false)
 {
 
 }
@@ -130,7 +131,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	if (true == GameEngineInput::Down("2"))
 	{
 		clientSocket_.Initialize();
-		clientSocket_.Connect("121.129.74.58");
+		clientSocket_.Connect("127.0.0.1");
 		clientSocket_.AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		clientSocket_.AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		clientSocket_.AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
@@ -158,7 +159,7 @@ void LobbyLevel::StartSelect()
 	if (true == serverSocket_.IsOpened())
 	{
 	
-		playerList_ = serverSocket_.serverPlayerList_;
+		playerCount_ = serverSocket_.serverPlayerList_.size();
 	}
 }
 
@@ -176,72 +177,154 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		// 일단 들어오는 순간 클라이언트는 "내가 들어왔소" 하고 변동 패킷을 요청할 것.
 
 
-		if (playerList_.size() != serverSocket_.serverPlayerList_.size())
+		if (playerCount_ != serverSocket_.serverPlayerList_.size())
 		{
 			// 서버 참석 인원수에 변동이 있을 때 보내지는 패킷입니다.
 			// 멤버로 가진 인원 리스트와 서버 소켓 수를 비교해서
 			GameJoinPacket packet;
+			packet.SetOtherPlayers(serverSocket_.GetServerPlayerList());
 			serverSocket_.Send(&packet);
 
-			if (playerList_.size() < serverSocket_.serverPlayerList_.size())
+
+			if (playerCount_ < serverSocket_.serverPlayerList_.size())
 			{
 				PlayerNumberPacket packet1;
 				packet1.SetPlayerNumber(serverSocket_.GetClientSocketSize() + 1);
-				packet1.SetOtherPlayers(playerList_);
-				// *** 
-				
-				serverSocket_.Send(&packet1, serverSocket_.GetClientSocketSize());
+				packet1.SetOtherPlayers(serverSocket_.GetServerPlayerList());
+				serverSocket_.Send(serverSocket_.GetSocketList()[serverSocket_.GetClientSocketSize()-1], &packet1);
 			}
+
+			playerCount_ = static_cast<int>(serverSocket_.serverPlayerList_.size());
 		}
 
-		playerList_ = serverSocket_.serverPlayerList_;
+	
 		
-		if (true == GameEngineInput::Down("1"))
-		{
-			CharSelectPacket packet;
-			packet.SetTargetPlayer(1);
-			packet.SetCharacter(static_cast<int>(JobType::HYUNWOO));
-			packet.SetStartPoint(static_cast<int>(Location::SCHOOL));
-			packet.SetIsReady(true);
+		//if (true == GameEngineInput::Down("4"))
+		//{
+		//	CharSelectPacket packet;
+		//	packet.SetTargetIndex(1);
+		//	packet.SetCharacter(static_cast<int>(JobType::HYUNWOO));
+		//	packet.SetStartPoint(static_cast<int>(Location::SCHOOL));
+		//
+		//	serverSocket_.Send(&packet);
+		//	//serverSocket_.serverPlayerList_[0].isReady_ = true;
+		//	GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다.");
+		//	state_.ChangeState("Join");
+		//	return;
+		//}
 
-			serverSocket_.Send(&packet);
-			//serverSocket_.serverPlayerList_[0].isReady_ = true;
-			GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다.");
-			state_.ChangeState("Join");
-			return;
+
+		// 유저들의 달라진 캐릭터 선택을 인지해 렌더링을 바꿔 준다.
+		for (int i = 0; i < serverSocket_.serverPlayerList_.size(); i++)
+		{
+
+			tempLobbyRenderers_[i]->SetRender(true);
+			switch (static_cast<JobType>(serverSocket_.serverPlayerList_[i].character_))
+			{
+			case JobType::NONE:
+				break;
+			case JobType::YUKI:
+				break;
+			case JobType::FIORA:
+				break;
+			case JobType::ZAHIR:
+				break;
+			case JobType::NADINE:
+				break;
+			case JobType::HYUNWOO:
+				tempLobbyRenderers_[i]->SetImage("tempLobbyHyunwoo.png");
+				break;
+			case JobType::JACKIE:
+				tempLobbyRenderers_[i]->SetImage("tempLobbyJackie.png");
+				break;
+			case JobType::RIO:
+				tempLobbyRenderers_[i]->SetImage("tempLobbyRio.png");
+				break;
+			case JobType::AYA:
+				tempLobbyRenderers_[i]->SetImage("tempLobbyAya.png");
+				break;
+			case JobType::MAX:
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	else if (clientSocket_.IsConnected())	// 클라이언트일 시
 	{
 		clientSocket_.ProcessPacket();
-		playerList_ = clientSocket_.serverPlayerList_;
+		playerCount_ = static_cast<int>(clientSocket_.serverPlayerList_.size());
 		
 
-		if (clientSocket_.myPlayerNumber_ == 2)
+		if (clientSocket_.myPlayerNumber_ == 3)
 		{
 			// 중단점을 걸어서 
 			// 만약 클라이언트가 들어왔을 시 서버 인터페이스의 정보가 갱신되는지를 확인하는 스코프
 			int a = 0;
 		}
+		if (clientSocket_.serverPlayerList_.size() == 3)
+		{
+			int a = 0;
+		}
 
-		if (true == GameEngineInput::Down("5"))
+		// 커서로 캐릭터 초상화를 선택했을 때의 디버깅입니다.
+		if (true == GameEngineInput::Down("4"))
 		{
 			CharSelectPacket packet;
-			packet.SetTargetPlayer(clientSocket_.myPlayerNumber_);
-			packet.SetCharacter(static_cast<int>(JobType::JACKIE));
-			packet.SetStartPoint(static_cast<int>(Location::UPTOWN));
-			packet.SetIsReady(true);
+			packet.SetTargetIndex(clientSocket_.myPlayerNumber_); // 나의 플레이어 번호를 알려준다
+			packet.SetCharacter(static_cast<int>(JobType::JACKIE)); // 나의 캐릭터 선택을 알려준다
+			packet.SetStartPoint(static_cast<int>(Location::UPTOWN)); // 나의 스타팅 포인트 지역을 알려준다
 			clientSocket_.Send(&packet);
 			
 			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(clientSocket_.myPlayerNumber_) + " 이(가) 캐릭터를 선택했습니다.");
-			state_.ChangeState("Join");
+		}
+		if (true == GameEngineInput::Down("5"))
+		{
+			CharSelectPacket packet;
+			packet.SetTargetIndex(clientSocket_.myPlayerNumber_); // 나의 플레이어 번호를 알려준다
+			packet.SetCharacter(static_cast<int>(JobType::HYUNWOO)); // 나의 캐릭터 선택을 알려준다
+			packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
+			clientSocket_.Send(&packet);
+
+			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(clientSocket_.myPlayerNumber_) + " 이(가) 캐릭터를 선택했습니다.");
 		}
 
 	}
 
-	for (int i = 0; i < playerList_.size(); i++)
+
+	// 유저들의 달라진 캐릭터 선택을 인지해 렌더링을 바꿔 준다.
+	for (int i = 0; i < clientSocket_.serverPlayerList_.size(); i++)
 	{
 		tempLobbyRenderers_[i]->SetRender(true);
+		switch (static_cast<JobType>(clientSocket_.serverPlayerList_[i].character_))
+		{
+		case JobType::NONE:
+			break;
+		case JobType::YUKI:
+			break;
+		case JobType::FIORA:
+			break;
+		case JobType::ZAHIR:
+			break;
+		case JobType::NADINE:
+			break;
+		case JobType::HYUNWOO:
+			tempLobbyRenderers_[i]->SetImage("tempLobbyHyunwoo.png");
+			break;
+		case JobType::JACKIE:
+			tempLobbyRenderers_[i]->SetImage("tempLobbyJackie.png");
+			break;
+		case JobType::RIO:
+			tempLobbyRenderers_[i]->SetImage("tempLobbyRio.png");
+			break;
+		case JobType::AYA:
+			tempLobbyRenderers_[i]->SetImage("tempLobbyAya.png");
+			break;
+		case JobType::MAX:
+			break;
+		default:
+			break;
+		}
 	}
 }
 

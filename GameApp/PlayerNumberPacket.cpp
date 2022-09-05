@@ -38,8 +38,6 @@ void PlayerNumberPacket::userSerialize()
     serializer_.WriteVector(otherCharacter_);
     serializer_.WriteVector(otherStartPoint_);
     serializer_.WriteVector(otherIsReady_);
-
-
 }
 
 void PlayerNumberPacket::userDeserialize()
@@ -74,12 +72,6 @@ void PlayerNumberPacket::execute(SOCKET _sender, GameEngineSocketInterface* _net
         _network->serverPlayerList_.push_back(info);
     }
 
-    // 다 불러오면 마지막에 내 클라이언트의 구좌를 넣기
-    //PlayerInfo info;
-    //info.character_ = -1;
-    //info.startPoint_ = -1;
-    //info.isReady_ = false;
-    //_network->serverPlayerList_.push_back(info);
     _network->myPlayerNumber_ = playerNumber_;
 
     if (_bServer)

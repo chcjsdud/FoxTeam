@@ -157,6 +157,9 @@ void GameEngineSocketServer::Send(GameEnginePacketBase* _packet)
 	locker_.unlock();
 }
 
+// 구 버전 Send()
+// 인덱스 값을 전달받아 특정 소켓에게만 전달하는 오버로딩 함수
+// (하단의 소켓 값을 직접 받는 Send() 로 대체 예정
 void GameEngineSocketServer::Send(GameEnginePacketBase* _packet, int _index)
 {
 	if (clientSocketList_.size() < _index)
@@ -186,7 +189,7 @@ void GameEngineSocketServer::AddPacketHandler(int _packetID, GameEnginePacketBas
 	}
 }
 
-void GameEngineSocketServer::Send(SOCKET _receiver, GameEnginePacketBase* _packet)
+void GameEngineSocketServer::Send(SOCKET& _receiver, GameEnginePacketBase* _packet)
 {
 	if (0 == _receiver)
 	{

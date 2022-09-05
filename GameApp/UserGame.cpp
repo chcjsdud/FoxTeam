@@ -53,18 +53,18 @@ void UserGame::Initialize()
 	//LevelCreate<SettingItemLevel>("SettingItemLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
 	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
-	LevelCreate<LobbyLevel>("PJW_ServerTest");
+	LevelCreate<LobbyLevel>("LobbyLevel");
 	
-	LevelCreate<LumiaLevel>("LumiaLevel");
+	//LevelCreate<LumiaLevel>("LumiaLevel");
 
-	LevelChange("LumiaLevel");
+	//LevelChange("LumiaLevel");
 	//LevelChange("RayTestLevel");
 	//LevelChange("SJH_Play");
 	//LevelChange("Play");
 	//LevelChange("SJH_Play");
 	//LevelChange("PJW_Play");
 	//LevelChange("YSJ_Play");
-	//LevelChange("PJW_ServerTest");
+	LevelChange("LobbyLevel");
 	return;
 }
 

@@ -3,7 +3,6 @@
 #include "ePacketID.h"
 #include "LobbyLevel.h"
 
-
 // 사실상 GameEngineServer 에서 서버 개설 / 클라이언트 Accept 할 때 번호를 매기는 게 맞다고 생각한다.
 
 GameJoinPacket::GameJoinPacket() // default constructer 디폴트 생성자
@@ -15,25 +14,32 @@ GameJoinPacket::~GameJoinPacket() // default destructer 디폴트 소멸자
 
 }
 
-void GameJoinPacket::SetAllPlayerList(std::vector<int> _vector)
+void GameJoinPacket::SetOtherPlayers(std::vector<PlayerInfo> _others)
 {
-   allPlayerList_ = _vector;
-}
+    othersSize_ = _others.size();
 
-void GameJoinPacket::SetAllPlayerCount(int _size)
-{
-    allPlayerCount_ = _size;
+    for (size_t i = 0; i < _others.size(); i++)
+    {
+        otherCharacter_.push_back(_others[i].character_);
+        otherStartPoint_.push_back(_others[i].startPoint_);
+        otherIsReady_.push_back(_others[i].isReady_);
+    }
 }
-
 
 void GameJoinPacket::userSerialize()
 {
-    serializer_.WriteVector(allPlayerList_);
+    serializer_ << othersSize_;
+    serializer_.WriteVector(otherCharacter_);
+    serializer_.WriteVector(otherStartPoint_);
+    serializer_.WriteVector(otherIsReady_);
 }
 
 void GameJoinPacket::userDeserialize()
 {
-    serializer_.ReadVector(allPlayerList_);
+    serializer_ >> othersSize_;
+    serializer_.ReadVector(otherCharacter_);
+    serializer_.ReadVector(otherStartPoint_);
+    serializer_.ReadVector(otherIsReady_);
 }
 
 void GameJoinPacket::initPacketID()
@@ -48,12 +54,23 @@ GameEnginePacketBase* GameJoinPacket::getUserObject()
 
 void GameJoinPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
-    PlayerInfo info;
-    info.character_ = -1;
-    info.startPoint_ = -1;
-    info.isReady_ = false;
-    _network->serverPlayerList_.push_back(info);
 
+
+        if (_network->myPlayerNumber_ == 0)
+        {
+            return;
+        }
+
+       // PlayerInfo info;
+       // info.character_ = otherCharacter_[i];
+       // info.startPoint_ = otherStartPoint_[i];
+       // info.isReady_ = otherIsReady_[i];
+           PlayerInfo info;
+           info.character_ = -1;
+           info.startPoint_ = -1;
+           info.isReady_ = false;
+   //
+        _network->serverPlayerList_.push_back(info);
     // 브로드캐스팅 받는 기존 클라이언트들에게는 신규 클라의 구좌
     
     // 신규 클라이언트에게는 서버의 구좌로 인식된다.
