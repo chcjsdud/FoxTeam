@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Appmain.cpp" />
     <ClCompile Include="PreCompile.cpp">
       <Filter>00.GameApp\00.Precom</Filter>
     </ClCompile>
@@ -236,35 +235,20 @@
     <ClCompile Include="ChattingHistory.cpp">
       <Filter>02.GameServer\ServerTempTest\Chat</Filter>
     </ClCompile>
-    <ClCompile Include="LobbyLevel.cpp">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClCompile>
     <ClCompile Include="LumiaLevel.cpp">
       <Filter>01.GameObject\03.Level</Filter>
     </ClCompile>
     <ClCompile Include="MousePointer.cpp">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClCompile>
-    <ClCompile Include="GameJoinPacket.cpp">
-      <Filter>02.GameServer\UserPacket</Filter>
-    </ClCompile>
     <ClCompile Include="LobbyLevel.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
-    </ClCompile>
-    <ClCompile Include="CharSelectPacket.cpp">
-      <Filter>02.GameServer\UserPacket</Filter>
     </ClCompile>
     <ClCompile Include="LumiaLevel.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClCompile>
     <ClCompile Include="LobbyBackground.cpp">
       <Filter>01.GameObject\99.LGH</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerNumberPacket.cpp">
-      <Filter>02.GameServer\UserPacket</Filter>
-    </ClCompile>
-    <ClCompile Include="TempLobbyRenderer.cpp">
-      <Filter>02.GameServer</Filter>
     </ClCompile>
     <ClCompile Include="LumiaMap.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
@@ -280,6 +264,24 @@
     </ClCompile>
     <ClCompile Include="EndingLevel.cpp">
       <Filter>01.GameObject\03.Level\EndingLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyLevel.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="Appmain.cpp">
+      <Filter>00.GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="TempLobbyRenderer.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="CharSelectPacket.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerNumberPacket.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="GameJoinPacket.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -433,9 +435,6 @@
     <Filter Include="02.GameServer">
       <UniqueIdentifier>{ec59804c-ce69-4aa8-8e47-3c267954bad4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameServer\UserPacket">
-      <UniqueIdentifier>{7eb45933-a75d-4834-ace2-5b878554f920}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameServer\ServerTempTest">
       <UniqueIdentifier>{960b4ba1-5372-4860-847f-205985d0f620}</UniqueIdentifier>
     </Filter>
@@ -495,6 +494,15 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\ResultLevel">
       <UniqueIdentifier>{321d0616-5aee-47bd-b7a2-beb61fb99d69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LobbyLevel">
+      <UniqueIdentifier>{97963e10-a8e1-4463-b375-61dadcec8113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LobbyLevel\Packet">
+      <UniqueIdentifier>{066b3202-ccb9-4468-bec0-025f8d829ffa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.GameServer\UserPacket">
+      <UniqueIdentifier>{7eb45933-a75d-4834-ace2-5b878554f920}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -714,9 +722,6 @@
     <ClInclude Include="ChattingPacket.h">
       <Filter>02.GameServer\UserPacket</Filter>
     </ClInclude>
-    <ClInclude Include="ePacketID.h">
-      <Filter>02.GameServer\UserPacket</Filter>
-    </ClInclude>
     <ClInclude Include="ServerTestLevel.h">
       <Filter>02.GameServer\ServerTempTest</Filter>
     </ClInclude>
@@ -735,35 +740,20 @@
     <ClInclude Include="ChattingHistory.h">
       <Filter>02.GameServer\ServerTempTest\Chat</Filter>
     </ClInclude>
-    <ClInclude Include="LobbyLevel.h">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClInclude>
     <ClInclude Include="LumiaLevel.h">
       <Filter>01.GameObject\03.Level</Filter>
     </ClInclude>
     <ClInclude Include="MousePointer.h">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClInclude>
-    <ClInclude Include="GameJoinPacket.h">
-      <Filter>02.GameServer\UserPacket</Filter>
-    </ClInclude>
     <ClInclude Include="LobbyLevel.h">
       <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="CharSelectPacket.h">
-      <Filter>02.GameServer\UserPacket</Filter>
     </ClInclude>
     <ClInclude Include="LumiaLevel.h">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClInclude>
     <ClInclude Include="LobbyBackground.h">
       <Filter>01.GameObject\99.LGH</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerNumberPacket.h">
-      <Filter>02.GameServer\UserPacket</Filter>
-    </ClInclude>
-    <ClInclude Include="TempLobbyRenderer.h">
-      <Filter>02.GameServer</Filter>
     </ClInclude>
     <ClInclude Include="LumiaMap.h">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
@@ -779,6 +769,24 @@
     </ClInclude>
     <ClInclude Include="EndingLevel.h">
       <Filter>01.GameObject\03.Level\EndingLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyLevel.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="TempLobbyRenderer.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="ePacketID.h">
+      <Filter>01.GameObject\00.Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="CharSelectPacket.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerNumberPacket.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="GameJoinPacket.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
