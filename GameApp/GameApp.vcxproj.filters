@@ -242,15 +242,6 @@
     <ClCompile Include="LumiaLevel.cpp">
       <Filter>01.GameObject\03.Level</Filter>
     </ClCompile>
-    <ClCompile Include="ResultLevel.cpp">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleLevel.cpp">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClCompile>
-    <ClCompile Include="EndingLevel.cpp">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClCompile>
     <ClCompile Include="MousePointer.cpp">
       <Filter>01.GameObject\02.GlobalActor</Filter>
     </ClCompile>
@@ -280,6 +271,15 @@
     </ClCompile>
     <ClCompile Include="UI_TestMouse.cpp">
       <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultLevel.cpp">
+      <Filter>01.GameObject\03.Level\ResultLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleLevel.cpp">
+      <Filter>01.GameObject\03.Level\TitleLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="EndingLevel.cpp">
+      <Filter>01.GameObject\03.Level\EndingLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -486,6 +486,15 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh">
       <UniqueIdentifier>{f2e313e9-535c-4ab4-a91a-9c5db971f7f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\EndingLevel">
+      <UniqueIdentifier>{e27bf43a-d54c-4e79-af41-e0df728cf7c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\TitleLevel">
+      <UniqueIdentifier>{a56589c2-b60a-46ae-a6a5-ace05495ffee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\ResultLevel">
+      <UniqueIdentifier>{321d0616-5aee-47bd-b7a2-beb61fb99d69}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -726,19 +735,10 @@
     <ClInclude Include="ChattingHistory.h">
       <Filter>02.GameServer\ServerTempTest\Chat</Filter>
     </ClInclude>
-    <ClInclude Include="TitleLevel.h">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClInclude>
-    <ClInclude Include="EndingLevel.h">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClInclude>
     <ClInclude Include="LobbyLevel.h">
       <Filter>01.GameObject\03.Level</Filter>
     </ClInclude>
     <ClInclude Include="LumiaLevel.h">
-      <Filter>01.GameObject\03.Level</Filter>
-    </ClInclude>
-    <ClInclude Include="ResultLevel.h">
       <Filter>01.GameObject\03.Level</Filter>
     </ClInclude>
     <ClInclude Include="MousePointer.h">
@@ -770,6 +770,15 @@
     </ClInclude>
     <ClInclude Include="UI_TestMouse.h">
       <Filter>01.GameObject\99.LGH\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultLevel.h">
+      <Filter>01.GameObject\03.Level\ResultLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleLevel.h">
+      <Filter>01.GameObject\03.Level\TitleLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="EndingLevel.h">
+      <Filter>01.GameObject\03.Level\EndingLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
