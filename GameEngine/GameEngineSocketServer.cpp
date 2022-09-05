@@ -189,7 +189,7 @@ void GameEngineSocketServer::AddPacketHandler(int _packetID, GameEnginePacketBas
 	}
 }
 
-void GameEngineSocketServer::Send(SOCKET& _receiver, GameEnginePacketBase* _packet)
+void GameEngineSocketServer::Send(SOCKET _receiver, GameEnginePacketBase* _packet)
 {
 	if (0 == _receiver)
 	{

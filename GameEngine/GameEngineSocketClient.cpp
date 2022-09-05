@@ -114,7 +114,7 @@ void GameEngineSocketClient::Send(GameEnginePacketBase* _packet)
 	send(socket_, data, PACKET_SIZE, 0);
 }
 
-void GameEngineSocketClient::Send(SOCKET& _receiver, GameEnginePacketBase* _packet)
+void GameEngineSocketClient::Send(SOCKET _receiver, GameEnginePacketBase* _packet)
 {
 	if (0 == _receiver)
 	{
