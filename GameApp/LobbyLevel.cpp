@@ -8,6 +8,7 @@
 
 #include "LobbyBackground.h"
 #include "TempLobbyRenderer.h"
+#include "UI_TestMouse.h"
 
 GameEngineSocketServer LobbyLevel::serverSocket_;
 GameEngineSocketClient LobbyLevel::clientSocket_;
@@ -89,10 +90,13 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	}
 
 
-//	{
-//		LobbyBackground* BackgroundRenderer = CreateActor<LobbyBackground>();
-//	}
+	{
+		LobbyBackground* BackgroundRenderer = CreateActor<LobbyBackground>();
+	}
 
+	{
+		UI_TestMouse* Mouse = CreateActor<UI_TestMouse>();
+	}
 
 }
 

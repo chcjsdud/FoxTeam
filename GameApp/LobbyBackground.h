@@ -21,8 +21,12 @@ public:
 	GameEngineImageRenderer* BackGroundRenderer;
 	GameEngineImageRenderer* Deco_CircleRenderer;
 	GameEngineImageRenderer* Deco_GlowingRenderer;
+	GameEngineImageRenderer* ButtonOneRenderer;
+	GameEngineImageRenderer* ButtonTwoRenderer;
 
 #pragma endregion
+
+	GameEngineCollision* ButtonOneCollision;
 
 protected:
 	virtual void Start();
