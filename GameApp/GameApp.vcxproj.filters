@@ -247,9 +247,6 @@
     <ClCompile Include="LumiaLevel.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClCompile>
-    <ClCompile Include="LobbyBackground.cpp">
-      <Filter>01.GameObject\99.LGH</Filter>
-    </ClCompile>
     <ClCompile Include="LumiaMap.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClCompile>
@@ -282,6 +279,12 @@
     </ClCompile>
     <ClCompile Include="GameJoinPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyBackground.cpp">
+      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby_ButtonOne.cpp">
+      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -503,6 +506,9 @@
     </Filter>
     <Filter Include="02.GameServer\UserPacket">
       <UniqueIdentifier>{7eb45933-a75d-4834-ace2-5b878554f920}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\99.LGH\UI\LobbyLevel">
+      <UniqueIdentifier>{aa7ec2ad-93ed-4336-a1e6-2031be88d614}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -752,9 +758,6 @@
     <ClInclude Include="LumiaLevel.h">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClInclude>
-    <ClInclude Include="LobbyBackground.h">
-      <Filter>01.GameObject\99.LGH</Filter>
-    </ClInclude>
     <ClInclude Include="LumiaMap.h">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClInclude>
@@ -787,6 +790,12 @@
     </ClInclude>
     <ClInclude Include="GameJoinPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyBackground.h">
+      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby_ButtonOne.h">
+      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

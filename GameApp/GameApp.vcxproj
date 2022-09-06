@@ -219,6 +219,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Lobby_ButtonOne.cpp" />
     <ClCompile Include="LumiaMap.cpp">
       <SubType>
       </SubType>
@@ -471,6 +472,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Lobby_ButtonOne.h" />
     <ClInclude Include="LumiaMap.h">
       <SubType>
       </SubType>

@@ -37,19 +37,6 @@ void LobbyBackground::Start()
 
 
 	{
-		ButtonOneRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
-		ButtonOneRenderer->SetImage("Lobby_BasicButton.png", "PointSmp");
-		ButtonOneRenderer->GetTransform()->SetLocalPosition({ 420.0f, 330.0f, -102.0f });
-		ButtonOneRenderer->GetTransform()->SetLocalScaling(ButtonOneRenderer->GetCurrentTexture()->GetTextureSize());
-
-		ButtonOneCollision = CreateTransformComponent<GameEngineCollision>();
-		ButtonOneCollision->GetTransform()->SetLocalPosition({ 420.0f, 330.0f, -102.0f });
-		ButtonOneCollision->GetTransform()->SetLocalScaling(ButtonOneRenderer->GetCurrentTexture()->GetTextureSize());
-		ButtonOneCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
-	}
-
-
-	{
 		ButtonTwoRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
 		ButtonTwoRenderer->SetImage("Lobby_BasicButton.png", "PointSmp");
 		//이미지 크기는 126, 두 이미지의 거리는 8
@@ -61,10 +48,4 @@ void LobbyBackground::Start()
 
 void LobbyBackground::Update(float _DeltaTime)
 {
-	if (ButtonOneCollision->Collision(static_cast<int>(CollisionGroup::MousePointer)))
-	{
-		int a = 0;
-	}
-
-	GetLevel()->PushDebugRender(ButtonOneCollision->GetTransform(), CollisionType::Rect);
 }
