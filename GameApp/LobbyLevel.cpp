@@ -71,7 +71,8 @@ void LobbyLevel::LevelUpdate(float _DeltaTime)
 {
 	state_.Update(_DeltaTime);
 
-
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	int a = 0;
 }
 
 void LobbyLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
@@ -154,6 +155,12 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		clientSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
 
 		GameEngineDebug::OutPutDebugString("클라이언트로서 방에 참여합니다.");
+		GameJoinPacket2 packet;
+		packet.SetPlayerInfo({ -1, -1, -1, 0 });
+		packet.SetListSize(PlayerInfoManager::GetInstance()->GetPlayerList().size());
+
+		clientSocket_->Send(&packet);
+
 		state_.ChangeState("Select");
 
 		return;
