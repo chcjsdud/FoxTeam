@@ -130,6 +130,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		serverSocket_->AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		serverSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
+		serverSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
 		serverSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 		serverSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.");

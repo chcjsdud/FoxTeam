@@ -31,7 +31,7 @@ void SetPlayerNumberPacket::userDeserialize()
 
 GameEnginePacketBase* SetPlayerNumberPacket::getUserObject()
 {
-    return nullptr;
+    return new SetPlayerNumberPacket;
 }
 
 void SetPlayerNumberPacket::execute(SOCKET _socketSender, GameEngineSocketInterface* _network, bool _bServer)

@@ -82,6 +82,7 @@ void GameJoinPacket2::execute(SOCKET _sender, GameEngineSocketInterface* _networ
 
         // 새로운 클라이언트 정보를 서버와 클라이언트들에게 추가한다.
         pm->AddNewPlayer(info_);
+        serializer_.OffsetReset();
         _network->Send(this);
 
         // 접속한 클라이언트 본인에게는 플레이어리스트의 인덱스를 부여한다.
