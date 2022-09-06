@@ -6,7 +6,8 @@
 /// </summary>
 struct PlayerInfo
 {
+	int playerNumber_;
 	int character_;
 	int startPoint_;
-	bool isReady_;
+	int isReady_;
 };

@@ -16,7 +16,7 @@ public:
 
 public:
 	void SetPlayerNumber(int _playerNumber);
-	void SetOtherPlayers(std::vector<PlayerInfo> _others);
+	//void SetOtherPlayers(std::vector<PlayerInfo> _others);
 	int GetPlayerNumber()
 	{
 		return playerNumber_;

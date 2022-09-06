@@ -1,6 +1,9 @@
 #include "PreCompile.h"
 #include "ReadyPacket.h"
 #include "ePacketID.h"
+
+#include "PlayerInfoManager.h"
+
 ReadyPacket::ReadyPacket() // default constructer 디폴트 생성자
 {
 
@@ -51,7 +54,7 @@ void ReadyPacket::SetReadyStatus(int _isReady)
 
 void ReadyPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
-    _network->serverPlayerList_[targetIndex_-1].isReady_ = static_cast<bool>(isReady_);
+    PlayerInfoManager::GetInstance()->GetPlayerList()[targetIndex_].isReady_ = static_cast<bool>(isReady_);
 
     if (_bServer)
     {

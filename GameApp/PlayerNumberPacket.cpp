@@ -18,17 +18,17 @@ void PlayerNumberPacket::SetPlayerNumber(int _playerNumber)
     playerNumber_ = _playerNumber;
 }
 
-void PlayerNumberPacket::SetOtherPlayers(std::vector<PlayerInfo> _others)
-{
-    othersSize_ = _others.size();
-
-    for (size_t i = 0; i < _others.size(); i++)
-    {
-        otherCharacter_.push_back(_others[i].character_);
-        otherStartPoint_.push_back(_others[i].startPoint_);
-        otherIsReady_.push_back(_others[i].isReady_);
-    }
-}
+//void PlayerNumberPacket::SetOtherPlayers(std::vector<PlayerInfo> _others)
+//{
+//    othersSize_ = _others.size();
+//
+//    for (size_t i = 0; i < _others.size(); i++)
+//    {
+//        otherCharacter_.push_back(_others[i].character_);
+//        otherStartPoint_.push_back(_others[i].startPoint_);
+//        otherIsReady_.push_back(_others[i].isReady_);
+//    }
+//}
 
 
 void PlayerNumberPacket::userSerialize()
@@ -61,22 +61,22 @@ GameEnginePacketBase* PlayerNumberPacket::getUserObject()
 
 void PlayerNumberPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
-    // 서버에서 받아온 남들의 정보
-    for (int i = 0; i < othersSize_; i++)
-    {
-        PlayerInfo info;
-        info.character_ = otherCharacter_[i];
-        info.startPoint_ = otherStartPoint_[i];
-        info.isReady_ = otherIsReady_[i];
-        
-        _network->serverPlayerList_.push_back(info);
-    }
+    //// 서버에서 받아온 남들의 정보
+    //for (int i = 0; i < othersSize_; i++)
+    //{
+    //    PlayerInfo info;
+    //    info.character_ = otherCharacter_[i];
+    //    info.startPoint_ = otherStartPoint_[i];
+    //    info.isReady_ = otherIsReady_[i];
+    //    
+    //    _network->serverPlayerList_.push_back(info);
+    //}
 
-    _network->myPlayerNumber_ = playerNumber_;
+    //_network->myPlayerNumber_ = playerNumber_;
 
-    if (_bServer)
-    {
-        _network->Send(this);
-    }
+    //if (_bServer)
+    //{
+    //    _network->Send(this);
+    //}
 }
 

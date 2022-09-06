@@ -2,6 +2,8 @@
 #include "CharSelectPacket.h"
 
 #include "ePacketID.h"
+
+#include "PlayerInfoManager.h"
 CharSelectPacket::CharSelectPacket() // default constructer 디폴트 생성자
 {
 
@@ -20,54 +22,54 @@ CharSelectPacket::CharSelectPacket(CharSelectPacket&& _other) noexcept  // defau
 
 void CharSelectPacket::userSerialize()
 {
-    serializer_ << targetIndex_;
-    serializer_ << character_;
-    serializer_ << startPoint_;
+	serializer_ << targetIndex_;
+	serializer_ << character_;
+	serializer_ << startPoint_;
 }
 
 void CharSelectPacket::userDeserialize()
 {
-    serializer_ >> targetIndex_;
-    serializer_ >> character_;
-    serializer_ >> startPoint_;
+	serializer_ >> targetIndex_;
+	serializer_ >> character_;
+	serializer_ >> startPoint_;
 }
 
 void CharSelectPacket::initPacketID()
 {
-    SetPacketID(ePacketID::CharSelectPacket);
+	SetPacketID(ePacketID::CharSelectPacket);
 }
 
 GameEnginePacketBase* CharSelectPacket::getUserObject()
 {
-    return new CharSelectPacket;
+	return new CharSelectPacket;
 }
 
 void CharSelectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
 
-    // 값만 INT 로 반환하고,
-    // 이는 클래스에서 ENUM 값으로 캐릭터와 시작 지역을 해석합니다.
-    _network->serverPlayerList_[targetIndex_-1].character_ = character_;
-    _network->serverPlayerList_[targetIndex_-1].startPoint_ = startPoint_;
+	// 값만 INT 로 반환하고,
+	// 이는 클래스에서 ENUM 값으로 캐릭터와 시작 지역을 해석합니다.
+	PlayerInfoManager::GetInstance()->GetPlayerList()[targetIndex_].character_ = character_;
+	PlayerInfoManager::GetInstance()->GetPlayerList()[targetIndex_].startPoint_ = startPoint_;
 
-    if (_bServer)
-    {
+	if (_bServer)
+	{
 
-        _network->Send(this);
-    }
+		_network->Send(this);
+	}
 }
 
 void CharSelectPacket::SetTargetIndex(int _index)
 {
-    targetIndex_ = _index;
+	targetIndex_ = _index;
 }
 
 void CharSelectPacket::SetCharacter(int _character)
 {
-    character_ = _character;
+	character_ = _character;
 }
 
 void CharSelectPacket::SetStartPoint(int _startPoint)
 {
-    startPoint_ = _startPoint;
+	startPoint_ = _startPoint;
 }

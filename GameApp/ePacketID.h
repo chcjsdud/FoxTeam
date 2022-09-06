@@ -2,16 +2,18 @@
 
 enum class ePacketID
 {
-	None = 0,
-	Chat = 1,
-	UnitPakket = 2,
+	None = -1,
+	Chat,
+	UnitPakket,
 
 	// LobbyLevel
-	PlayerNumberPacket = 3,
-	GameJoinPacket = 4,
-	CharSelectPacket = 5,
-	ReadyPacket = 6,
-	//
+	PlayerNumberPacket,
+	GameJoinPacket,
+	GameJoinPacket2,
+	SetPlayerNumberPacket,
+	CharSelectPacket,
+	ReadyPacket,
 	
-	MAX = 999
+
+	MAX
 };

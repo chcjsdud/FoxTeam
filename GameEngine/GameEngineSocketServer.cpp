@@ -74,13 +74,13 @@ void GameEngineSocketServer::OpenServer()
 	GameEngineDebug::OutPutDebugString("서버 오픈이 성공적으로 완료되었습니다.");
 
 	// 0830 박종원
-	PlayerInfo info;
-	info.character_ = -1;
-	info.startPoint_ = -1;
-	info.isReady_ = false;
+	//PlayerInfo info;
+	//info.character_ = -1;
+	//info.startPoint_ = -1;
+	//info.isReady_ = false;
 
-	serverPlayerList_.push_back(info);
-	myPlayerNumber_ = 1;
+	//serverPlayerList_.push_back(info);
+	//myPlayerNumber_ = 1;
 
 	bOpen_ = true;
 	packetHandler_ = new GameEnginePacketHandler(true);
@@ -232,14 +232,14 @@ void GameEngineSocketServer::acceptFunction()
 		locker_.lock();
 		clientSocketList_.push_back(socketNewUser);
 
-		// 0830 박종원
-		PlayerInfo info;
-		info.character_ = -1;
-		info.startPoint_ = -1;
-		info.isReady_ = false;
-		
-		serverPlayerList_.push_back(info);
-		//(std::to_string(clientSocketList_.size() + 1));
+		//// 0830 박종원
+		//PlayerInfo info;
+		//info.character_ = -1;
+		//info.startPoint_ = -1;
+		//info.isReady_ = false;
+		//
+		//serverPlayerList_.push_back(info);
+		////(std::to_string(clientSocketList_.size() + 1));
 
 
 		std::thread newReceiveThread(std::bind(&GameEngineSocketServer::receiveFunction, this, socketNewUser));
@@ -295,7 +295,7 @@ void GameEngineSocketServer::receiveFunction(SOCKET _clientSocket)
 			}
 
 			// 0830 박종원
-			serverPlayerList_.pop_back();
+			//serverPlayerList_.pop_back();
 
 
 			locker_.unlock();

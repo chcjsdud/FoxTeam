@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEnginePacketBase.h>
 
+#include "PlayerInfo.h"
 
 // 새로 접속한 클라이언트가 생기면 1회 전체에 브로드캐스팅됩니다.
 // 
@@ -11,21 +12,20 @@
 
 // 
 
-#include "PlayerInfo.h"
-
-class GameJoinPacket : public GameEnginePacketBase
+class GameJoinPacket2 : public GameEnginePacketBase
 {
 public:
-	GameJoinPacket();
-	~GameJoinPacket();
-	GameJoinPacket(const GameJoinPacket& _other) = delete;
-	GameJoinPacket(GameJoinPacket&& _other) noexcept;
-	GameJoinPacket& operator=(const GameJoinPacket& _other) = delete;
-	GameJoinPacket& operator=(const GameJoinPacket&& _other) = delete;
+	GameJoinPacket2();
+	~GameJoinPacket2();
+	GameJoinPacket2(const GameJoinPacket2& _other) = delete;
+	GameJoinPacket2(GameJoinPacket2&& _other) noexcept = delete;
+	GameJoinPacket2& operator=(const GameJoinPacket2& _other) = delete;
+	GameJoinPacket2& operator=(const GameJoinPacket2&& _other) = delete;
 
 
 public:
-	void SetOtherPlayers(std::vector<PlayerInfo> _others);
+	void SetPlayerInfo(PlayerInfo _info);
+	void SetListSize(int _size) { listSize_ = _size; }
 
 protected:
 	virtual void userSerialize() override;
@@ -36,9 +36,7 @@ protected:
 
 
 private:
-	int othersSize_;
-	std::vector<int> otherCharacter_;
-	std::vector<int> otherStartPoint_;
-	std::vector<int> otherIsReady_;
+	PlayerInfo info_;
+	int listSize_;
 };
 

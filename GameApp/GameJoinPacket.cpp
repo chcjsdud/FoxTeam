@@ -3,6 +3,7 @@
 #include "ePacketID.h"
 #include "LobbyLevel.h"
 
+#include "PlayerInfo.h"
 // 사실상 GameEngineServer 에서 서버 개설 / 클라이언트 Accept 할 때 번호를 매기는 게 맞다고 생각한다.
 
 GameJoinPacket::GameJoinPacket() // default constructer 디폴트 생성자
@@ -54,23 +55,23 @@ GameEnginePacketBase* GameJoinPacket::getUserObject()
 
 void GameJoinPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
-    if (_network->myPlayerNumber_ == 0)
-    {
-        // 아직 플레이어 넘버가 정해지지 않은 신규 클라이언트는 이 패킷 대상에서 제외됩니다.
-        return;
-    }
+    //if (PlayerInfoManager::GetInstance()->GetMyNumber() == 0)
+    //{
+    //    // 아직 플레이어 넘버가 정해지지 않은 신규 클라이언트는 이 패킷 대상에서 제외됩니다.
+    //    return;
+    //}
 
-    PlayerInfo info;
-    info.character_ = -1;
-    info.startPoint_ = -1;
-    info.isReady_ = false;
-    _network->serverPlayerList_.push_back(info);
-    // 브로드캐스팅 받는 기존 클라이언트들에게는 신규 클라의 구좌를 만들어줍니다.
+    //PlayerInfo info;
+    //info.character_ = -1;
+    //info.startPoint_ = -1;
+    //info.isReady_ = false;
+    //_network->serverPlayerList_.push_back(info);
+    //// 브로드캐스팅 받는 기존 클라이언트들에게는 신규 클라의 구좌를 만들어줍니다.
 
-    if (_bServer)
-    {
+    //if (_bServer)
+    //{
 
-        _network->Send(this);
-    }
+    //    _network->Send(this);
+    //}
 }
 
