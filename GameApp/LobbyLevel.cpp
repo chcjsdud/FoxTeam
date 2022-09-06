@@ -4,6 +4,7 @@
 #include "PlayerNumberPacket.h"
 #include "CharSelectPacket.h"
 #include "GameJoinPacket.h"
+#include "ReadyPacket.h"
 #include "Enums.h"
 
 #include "LobbyBackground.h"
@@ -56,6 +57,7 @@ void LobbyLevel::LevelStart()
 		GameEngineInput::GetInst().CreateKey("3", '3');
 		GameEngineInput::GetInst().CreateKey("4", '4');
 		GameEngineInput::GetInst().CreateKey("5", '5');
+		GameEngineInput::GetInst().CreateKey("Ready", VK_RETURN);
 	}
 
 }
@@ -121,6 +123,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_.AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		serverSocket_.AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		serverSocket_.AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
+		serverSocket_.AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.");
 
 
@@ -137,6 +140,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		clientSocket_.AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		clientSocket_.AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		clientSocket_.AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
+		clientSocket_.AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
 
 		GameEngineDebug::OutPutDebugString("클라이언트로서 방에 참여합니다.");
 		state_.ChangeState("Select");
@@ -199,21 +203,6 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			playerCount_ = static_cast<int>(serverSocket_.serverPlayerList_.size());
 		}
 
-	
-		
-		//if (true == GameEngineInput::Down("4"))
-		//{
-		//	CharSelectPacket packet;
-		//	packet.SetTargetIndex(1);
-		//	packet.SetCharacter(static_cast<int>(JobType::HYUNWOO));
-		//	packet.SetStartPoint(static_cast<int>(Location::SCHOOL));
-		//
-		//	serverSocket_.Send(&packet);
-		//	//serverSocket_.serverPlayerList_[0].isReady_ = true;
-		//	GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다.");
-		//	state_.ChangeState("Join");
-		//	return;
-		//}
 
 
 		// 유저들의 달라진 캐릭터 선택을 인지해 렌더링을 바꿔 준다.
@@ -289,6 +278,24 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			clientSocket_.Send(&packet);
 
 			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(clientSocket_.myPlayerNumber_) + " 이(가) 캐릭터를 선택했습니다.");
+		}
+
+
+		if (true == GameEngineInput::Down("Ready"))
+		{
+			if (-1 == clientSocket_.serverPlayerList_[clientSocket_.myPlayerNumber_-1].character_)
+			{
+				GameEngineDebug::OutPutDebugString("캐릭터를 선택해주세요!!");
+				return;
+			}
+
+			clientSocket_.serverPlayerList_[clientSocket_.myPlayerNumber_ - 1].isReady_ = true;
+
+			ReadyPacket packet;
+			packet.SetTargetIndex(clientSocket_.myPlayerNumber_);
+			packet.SetReadyStatus(true);
+			clientSocket_.Send(&packet);
+			state_.ChangeState("Join");
 		}
 
 	}

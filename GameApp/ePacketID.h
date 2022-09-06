@@ -10,6 +10,7 @@ enum class ePacketID
 	PlayerNumberPacket = 3,
 	GameJoinPacket = 4,
 	CharSelectPacket = 5,
+	ReadyPacket = 6,
 	//
 	
 	MAX = 999

@@ -21,6 +21,10 @@ public:
 	GameJoinPacket& operator=(const GameJoinPacket& _other) = delete;
 	GameJoinPacket& operator=(const GameJoinPacket&& _other) = delete;
 
+
+public:
+	void SetOtherPlayers(std::vector<PlayerInfo> _others);
+
 protected:
 	virtual void userSerialize() override;
 	virtual void userDeserialize() override;
@@ -28,8 +32,6 @@ protected:
 	virtual GameEnginePacketBase* getUserObject() override;
 	virtual void execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer) override;
 
-public:
-	void SetOtherPlayers(std::vector<PlayerInfo> _others);
 
 private:
 	int othersSize_;

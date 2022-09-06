@@ -54,29 +54,22 @@ GameEnginePacketBase* GameJoinPacket::getUserObject()
 
 void GameJoinPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
+    if (_network->myPlayerNumber_ == 0)
+    {
+        // 아직 플레이어 넘버가 정해지지 않은 신규 클라이언트는 이 패킷 대상에서 제외됩니다.
+        return;
+    }
 
-
-        if (_network->myPlayerNumber_ == 0)
-        {
-            return;
-        }
-
-       // PlayerInfo info;
-       // info.character_ = otherCharacter_[i];
-       // info.startPoint_ = otherStartPoint_[i];
-       // info.isReady_ = otherIsReady_[i];
-           PlayerInfo info;
-           info.character_ = -1;
-           info.startPoint_ = -1;
-           info.isReady_ = false;
-   //
-        _network->serverPlayerList_.push_back(info);
-    // 브로드캐스팅 받는 기존 클라이언트들에게는 신규 클라의 구좌
-    
-    // 신규 클라이언트에게는 서버의 구좌로 인식된다.
+    PlayerInfo info;
+    info.character_ = -1;
+    info.startPoint_ = -1;
+    info.isReady_ = false;
+    _network->serverPlayerList_.push_back(info);
+    // 브로드캐스팅 받는 기존 클라이언트들에게는 신규 클라의 구좌를 만들어줍니다.
 
     if (_bServer)
     {
+
         _network->Send(this);
     }
 }

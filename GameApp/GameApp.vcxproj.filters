@@ -286,6 +286,9 @@
     <ClCompile Include="Lobby_ButtonOne.cpp">
       <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClCompile>
+    <ClCompile Include="ReadyPacket.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -796,6 +799,9 @@
     </ClInclude>
     <ClInclude Include="Lobby_ButtonOne.h">
       <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadyPacket.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
