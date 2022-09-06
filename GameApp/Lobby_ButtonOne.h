@@ -10,6 +10,8 @@ public:
 	Lobby_ButtonOne();
 	~Lobby_ButtonOne();
 
+	bool MouseCollisionCheck();
+
 public:
 	GameEngineImageRenderer* ButtonOneRenderer;
 	GameEngineCollision* ButtonOneCollision;

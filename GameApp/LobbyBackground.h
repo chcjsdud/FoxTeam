@@ -21,7 +21,7 @@ public:
 	GameEngineImageRenderer* BackGroundRenderer;
 	GameEngineImageRenderer* Deco_CircleRenderer;
 	GameEngineImageRenderer* Deco_GlowingRenderer;
-	GameEngineImageRenderer* ButtonTwoRenderer;
+	GameEngineImageRenderer* Deco_CharSelectBgRenderer;
 
 #pragma endregion
 

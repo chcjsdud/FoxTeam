@@ -10,6 +10,7 @@
 
 #include "LobbyBackground.h"
 #include "Lobby_ButtonOne.h"
+#include "Lobby_ButtonTwo.h"
 #include "TempLobbyRenderer.h"
 #include "UI_TestMouse.h"
 
@@ -101,6 +102,7 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	{
 		LobbyBackground* BackgroundRenderer = CreateActor<LobbyBackground>();
 		Lobby_ButtonOne* ButtonOne = CreateActor<Lobby_ButtonOne>();
+		Lobby_ButtonTwo* ButtonTwo = CreateActor<Lobby_ButtonTwo>();
 	}
 
 	{

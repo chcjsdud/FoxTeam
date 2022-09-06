@@ -35,14 +35,13 @@ void LobbyBackground::Start()
 		Deco_CircleRenderer->GetTransform()->SetLocalScaling(Deco_CircleRenderer->GetCurrentTexture()->GetTextureSize());
 	}
 
-
 	{
-		ButtonTwoRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
-		ButtonTwoRenderer->SetImage("Lobby_BasicButton.png", "PointSmp");
-		//이미지 크기는 126, 두 이미지의 거리는 8
-		ButtonTwoRenderer->GetTransform()->SetLocalPosition({ 554.0f,330.0f, -102.0f });
-		ButtonTwoRenderer->GetTransform()->SetLocalScaling(ButtonTwoRenderer->GetCurrentTexture()->GetTextureSize());
+		Deco_CharSelectBgRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		Deco_CharSelectBgRenderer->SetImage("Lobby_CharSelectBG.png", "PointSmp");
+		Deco_CharSelectBgRenderer->GetTransform()->SetLocalPosition({ -475.0f, -30.0f, -102.0f });
+		Deco_CharSelectBgRenderer->GetTransform()->SetLocalScaling(Deco_CharSelectBgRenderer->GetCurrentTexture()->GetTextureSize());
 	}
+
 
 }
 

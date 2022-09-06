@@ -12,11 +12,16 @@ Lobby_ButtonOne::~Lobby_ButtonOne()
 {
 }
 
+bool Lobby_ButtonOne::MouseCollisionCheck()
+{
+	return ButtonOneCollision->Collision(static_cast<int>(CollisionGroup::MousePointer));
+}
+
 void Lobby_ButtonOne::Start()
 {
 	{
 		ButtonOneRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
-		ButtonOneRenderer->SetImage("Lobby_BasicButton.png", "PointSmp");
+		ButtonOneRenderer->SetImage("Lobby_BasicButtonOne.png", "PointSmp");
 		ButtonOneRenderer->GetTransform()->SetLocalPosition({ 420.0f, 330.0f, -102.0f });
 		ButtonOneRenderer->GetTransform()->SetLocalScaling(ButtonOneRenderer->GetCurrentTexture()->GetTextureSize());
 
@@ -30,10 +35,5 @@ void Lobby_ButtonOne::Start()
 
 void Lobby_ButtonOne::Update(float _DeltaTime)
 {
-	if (ButtonOneCollision->Collision(static_cast<int>(CollisionGroup::MousePointer)))
-	{
-		int a = 0;
-	}
-
 	GetLevel()->PushDebugRender(ButtonOneCollision->GetTransform(), CollisionType::Rect);
 }
