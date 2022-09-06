@@ -259,7 +259,7 @@ void GameEngineSocketServer::receiveFunction(SOCKET _clientSocket)
 
 		if (0 < result)
 		{
-			packetHandler_->AnalyzePacketAndPush(packet, result);
+			packetHandler_->AnalyzePacketAndPush(packet, result, _clientSocket);
 		}
 		else if (SOCKET_ERROR == result)
 		{

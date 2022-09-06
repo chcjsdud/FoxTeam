@@ -156,7 +156,7 @@ void GameEngineSocketClient::receiveFunction(SOCKET _clientSocket)
 		int result = recv(_clientSocket, packet, sizeof(packet), 0);
 		if (0 < result)
 		{
-			packetHandler_->AnalyzePacketAndPush(packet, result);
+			packetHandler_->AnalyzePacketAndPush(packet, result, _clientSocket);
 		}
 
 		if (SOCKET_ERROR == result)
