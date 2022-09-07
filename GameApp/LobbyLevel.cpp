@@ -124,9 +124,12 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	GameServer* serverSocket_ = GameServer::GetInstance();
 	GameClient* clientSocket_ = GameClient::GetInstance();
 
-	// 디버깅 :: 호스트로서 방을 개설한다
+	// 서버가 쓰이는 업데이트는
+	// 기본적으로 현 프로세스가 [호스트일 때 / 클라이언트일 때] 를 모두 상정하고, if 문으로 구분해서 코드를 짜셔야 합니다.
+	// 
 	if (true == GameEngineInput::Down("1"))
 	{
+		//  프로세스를 호스트로 지정 (= 방을 만들겠다)
 		serverSocket_->Initialize();
 		serverSocket_->OpenServer();
 		serverSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
@@ -138,18 +141,21 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.");
 
 		PlayerInfoManager::GetInstance()->AddNewPlayer({ 0, -1, -1, 0 });
+		// AddNewPlayer() 의 파라미터는 곧 PlayerInfo 의 생성자 파라미터로,
+		// 순서대로 {플레이어 번호, 캐릭터, 시작 지역, 준비 상태} 의 이니셜라이즈 값입니다.
+	
 		PlayerInfoManager::GetInstance()->SetPlayerNumber(0);
+		// 해당 플레이어 번호는 현 프로세스의 멤버 변수로도 따로 저장합니다.
 
 		state_.ChangeState("Select");
 		return;
 	}
 
-
-	// 디버깅 :: 클라이언트로서 방에 입장한다.
+	// 프로세스를 클라이언트로 지정 (= 방에 참여하겠다)
 	if (true == GameEngineInput::Down("2"))
 	{
 		clientSocket_->Initialize();
-		clientSocket_->Connect("121.129.74.58");
+		clientSocket_->Connect("10.0.4.126");
 		clientSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
@@ -158,6 +164,9 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		clientSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
 
 		GameEngineDebug::OutPutDebugString("클라이언트로서 방에 참여합니다.");
+		
+		// 바로 플레이어 정보를 저장하는 호스트와는 달리, 클라이언트는 따로 요청 패킷을 보냅니다.
+		// 패킷을 보내면 알맞은 플레이어 순번을 지정해 호스트가 다시 지정된 순번을 브로드캐스팅 해 줍니다.
 		GameJoinPacket2 packet;
 		packet.SetPlayerInfo({ -1, -1, -1, 0 });
 		packet.SetListSize(PlayerInfoManager::GetInstance()->GetPlayerList().size());
@@ -201,70 +210,53 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 	if (serverSocket_->IsOpened())
 	{
 		serverSocket_->ProcessPacket();
-		// 클라이언트가 들어오기 전 서버가 먼저 개설되어야 하니,
-		// 호스트는 누구보다 이 시점으로 빠르게 들어올 것임.
-		// 이 시점부터 계속 클라이언트가 들어오는 것을 체크하고 순번을 부여하여야 한다.
-		// 순번 부여와 동시에 계속 순번/캐릭터 선택/시작지점 선택 을 받아서 변경해주어야 하나?? 아니다.
-		// 클라에서 변동 패킷을 요청하면, 그것만 받아서 브로드캐스팅 해 주어도 된다!!!
-		// 일단 들어오는 순간 클라이언트는 "내가 들어왔소" 하고 변동 패킷을 요청할 것.
 
-
-		//if (playerCount_ != PlayerInfoManager::GetInstance()->GetPlayerList().size())
-		//{
-		//	// 서버 참석 인원수에 변동이 있을 때 보내지는 패킷입니다.
-		//	// 멤버로 가진 인원 리스트와 서버 소켓 수를 비교해서
-		//	GameJoinPacket packet;
-		//	packet.SetOtherPlayers(PlayerInfoManager::GetInstance()->GetPlayerList());
-		//	serverSocket_->Send(&packet);
-
-
-		//	if (playerCount_ < PlayerInfoManager::GetInstance()->GetPlayerList().size())
-		//	{
-		//		PlayerNumberPacket packet1;
-		//		packet1.SetPlayerNumber(serverSocket->GetClientSocketSize() + 1);
-		//		packet1.SetOtherPlayers(serverSocket->GetServerPlayerList());
-		//		serverSocket->Send(serverSocket->GetSocketList()[serverSocket->GetClientSocketSize() - 1], &packet1);
-		//	}
-
-		//	playerCount_ = static_cast<int>(serverSocket_.serverPlayerList_.size());
-		//}
-
-
-
-		// 유저들의 달라진 캐릭터 선택을 인지해 렌더링을 바꿔 준다.
-		for (int i = 0; i < pm->GetPlayerList().size(); i++)
+		// 커서로 캐릭터 초상화를 선택했을 때의 디버깅입니다.
+		if (true == GameEngineInput::Down("4"))
 		{
+			CharSelectPacket packet;
+			packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
+			packet.SetCharacter(static_cast<int>(JobType::JACKIE)); // 나의 캐릭터 선택을 알려준다
+			packet.SetStartPoint(static_cast<int>(Location::UPTOWN)); // 나의 스타팅 포인트 지역을 알려준다
+			serverSocket_->Send(&packet);
 
-			tempLobbyRenderers_[i]->SetRender(true);
-			switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
+			pm->GetPlayerList()[pm->GetMyNumber()].character_ = static_cast<int>(JobType::JACKIE);
+			pm->GetPlayerList()[pm->GetMyNumber()].startPoint_ = static_cast<int>(Location::UPTOWN);
+
+			GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다\n");
+		}
+		if (true == GameEngineInput::Down("5"))
+		{
+			CharSelectPacket packet;
+			packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
+			packet.SetCharacter(static_cast<int>(JobType::HYUNWOO)); // 나의 캐릭터 선택을 알려준다
+			packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
+			serverSocket_->Send(&packet);
+
+			pm->GetPlayerList()[pm->GetMyNumber()].character_ = static_cast<int>(JobType::HYUNWOO);
+			pm->GetPlayerList()[pm->GetMyNumber()].startPoint_ = static_cast<int>(Location::DOCK);
+
+			GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다.\n");
+		}
+
+
+		if (true == GameEngineInput::Down("Ready"))
+		{
+			if (-1 == pm->GetPlayerList()[pm->GetMyNumber()].character_)
 			{
-			case JobType::NONE:
-				break;
-			case JobType::YUKI:
-				break;
-			case JobType::FIORA:
-				break;
-			case JobType::ZAHIR:
-				break;
-			case JobType::NADINE:
-				break;
-			case JobType::HYUNWOO:
-				tempLobbyRenderers_[i]->SetImage("tempLobbyHyunwoo.png");
-				break;
-			case JobType::JACKIE:
-				tempLobbyRenderers_[i]->SetImage("tempLobbyJackie.png");
-				break;
-			case JobType::RIO:
-				tempLobbyRenderers_[i]->SetImage("tempLobbyRio.png");
-				break;
-			case JobType::AYA:
-				tempLobbyRenderers_[i]->SetImage("tempLobbyAya.png");
-				break;
-			case JobType::MAX:
-				break;
-			default:
-				break;
+				GameEngineDebug::OutPutDebugString("캐릭터를 선택해주세요!!\n");
+				return;
 			}
+
+			pm->GetPlayerList()[pm->GetMyNumber()].isReady_ = true;
+
+			ReadyPacket packet;
+			packet.SetTargetIndex(pm->GetMyNumber());
+			packet.SetReadyStatus(1);
+			serverSocket_->Send(&packet);
+
+			pm->GetPlayerList()[pm->GetMyNumber()].isReady_ = 1;
+			state_.ChangeState("Join");
 		}
 	}
 	else if (clientSocket_->IsConnected())	// 클라이언트일 시
@@ -281,7 +273,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			packet.SetStartPoint(static_cast<int>(Location::UPTOWN)); // 나의 스타팅 포인트 지역을 알려준다
 			clientSocket_->Send(&packet);
 
-			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(pm->GetMyNumber()) + " 이(가) 캐릭터를 선택했습니다.");
+			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(pm->GetMyNumber()) + " 이(가) 캐릭터를 선택했습니다.\n");
 		}
 		if (true == GameEngineInput::Down("5"))
 		{
@@ -291,7 +283,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
 			clientSocket_->Send(&packet);
 
-			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(pm->GetMyNumber()) + " 이(가) 캐릭터를 선택했습니다.");
+			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(pm->GetMyNumber()) + " 이(가) 캐릭터를 선택했습니다.\n");
 		}
 
 
@@ -299,7 +291,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		{
 			if (-1 == pm->GetPlayerList()[pm->GetMyNumber()].character_)
 			{
-				GameEngineDebug::OutPutDebugString("캐릭터를 선택해주세요!!");
+				GameEngineDebug::OutPutDebugString("캐릭터를 선택해주세요!!\n");
 				return;
 			}
 
