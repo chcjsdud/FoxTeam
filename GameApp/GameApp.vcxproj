@@ -230,6 +230,10 @@
     </ClCompile>
     <ClCompile Include="Lobby_ButtonOne.cpp" />
     <ClCompile Include="Lobby_ButtonTwo.cpp" />
+    <ClCompile Include="Lobby_PortraitBg.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="LumiaMap.cpp">
       <SubType>
       </SubType>
@@ -505,6 +509,10 @@
     </ClInclude>
     <ClInclude Include="Lobby_ButtonOne.h" />
     <ClInclude Include="Lobby_ButtonTwo.h" />
+    <ClInclude Include="Lobby_PortraitBg.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="LumiaMap.h">
       <SubType>
       </SubType>

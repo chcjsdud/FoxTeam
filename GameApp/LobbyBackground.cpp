@@ -38,7 +38,7 @@ void LobbyBackground::Start()
 	{
 		Deco_CharSelectBgRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
 		Deco_CharSelectBgRenderer->SetImage("Lobby_CharSelectBG.png", "PointSmp");
-		Deco_CharSelectBgRenderer->GetTransform()->SetLocalPosition({ -475.0f, -30.0f, -102.0f });
+		Deco_CharSelectBgRenderer->GetTransform()->SetLocalPosition({ -475.0f, 50.0f, -101.0f });
 		Deco_CharSelectBgRenderer->GetTransform()->SetLocalScaling(Deco_CharSelectBgRenderer->GetCurrentTexture()->GetTextureSize());
 	}
 
