@@ -59,6 +59,13 @@ private:
 	int myStartPointSelection_;
 	bool myIsReady_;
 
+	//이건호 : 로비내 UI용 멤버변수
+private:
+	class LobbyBackground* BackgroundRenderer;
+	class Lobby_ButtonOne* ButtonLeft;
+	class Lobby_ButtonTwo* ButtonRight;
+	class Lobby_PortraitBg* PortraitBg;
+
 private:
 	std::vector<TempLobbyRenderer*> tempLobbyRenderers_;
 };

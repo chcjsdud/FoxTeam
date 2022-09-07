@@ -102,10 +102,10 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 
 	{
-		LobbyBackground* BackgroundRenderer = CreateActor<LobbyBackground>();
-		Lobby_ButtonOne* ButtonOne = CreateActor<Lobby_ButtonOne>();
-		Lobby_ButtonTwo* ButtonTwo = CreateActor<Lobby_ButtonTwo>();
-		Lobby_PortraitBg* PortraitBg = CreateActor<Lobby_PortraitBg>();
+		BackgroundRenderer = CreateActor<LobbyBackground>();
+		ButtonLeft = CreateActor<Lobby_ButtonOne>();
+		ButtonRight = CreateActor<Lobby_ButtonTwo>();
+		PortraitBg = CreateActor<Lobby_PortraitBg>();
 	}
 
 	{
@@ -180,6 +180,25 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 
 		return;
 	}
+
+
+	//이건호 : 버튼과 마우스 충돌체크 방법
+	//Lobby_ButtonOne/Lobby_ButtonTwo의 함수
+	//bool MouseCollisionCheck()가 마우스의 콜리전과 버튼의 콜리전 여부를 체크해서 bool값을 리턴합니다
+
+	/*
+	if (true == ButtonLeft->MouseCollisionCheck())
+	{
+		//여기 들어오면 왼쪽버튼과 마우스가 충돌한상태
+		int a = 0;
+	}
+
+	if (true == ButtonRight->MouseCollisionCheck())
+	{
+		//여기 들어오면 오른쪽버튼과 마우스가 충돌한상태
+	}
+
+	*/
 }
 
 void LobbyLevel::EndIdle()
