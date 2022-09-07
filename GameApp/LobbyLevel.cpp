@@ -63,6 +63,7 @@ void LobbyLevel::LevelStart()
 		GameEngineInput::GetInst().CreateKey("4", '4');
 		GameEngineInput::GetInst().CreateKey("5", '5');
 		GameEngineInput::GetInst().CreateKey("Ready", VK_RETURN);
+		GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 	}
 
 }

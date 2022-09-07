@@ -43,5 +43,21 @@ void Lobby_PortraitBg::Start()
 
 void Lobby_PortraitBg::Update(float _DeltaTime)
 {
-	GetLevel()->PushDebugRender(MouseCollision->GetTransform(), CollisionType::Rect);
+	//GetLevel()->PushDebugRender(MouseCollision->GetTransform(), CollisionType::Rect);
+
+
+	if (MouseCollision->Collision(CollisionGroup::MousePointer))
+	{
+		if (GameEngineInput::GetInst().Down("LBUTTON"))
+		{
+			SelectImageRenderer->On();
+		}
+	}
+	else
+	{
+		if (GameEngineInput::GetInst().Down("LBUTTON"))
+		{
+			SelectImageRenderer->Off();
+		}
+	}
 }
