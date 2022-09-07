@@ -105,7 +105,19 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		BackgroundRenderer = CreateActor<LobbyBackground>();
 		ButtonLeft = CreateActor<Lobby_ButtonOne>();
 		ButtonRight = CreateActor<Lobby_ButtonTwo>();
-		PortraitBg = CreateActor<Lobby_PortraitBg>();
+	}
+
+	{
+		for (int x = 0; x < (int)JobType::MAX; x++)
+		{
+			Lobby_PortraitBg* Portrait = CreateActor<Lobby_PortraitBg>();
+			float4 BasicPosition = { -580.0f, 200.0f, -102.0f };
+			
+			int Vertical = (x/4);
+			int Horizonal = x - (Vertical * 4);
+			Portrait->GetTransform()->SetLocalPosition(BasicPosition + float4{ float(Horizonal) * 72.0f, (float(Vertical) * -115.0f), 0.0f});
+			Portrait->SetChar((JobType)x);
+		}
 	}
 
 	{

@@ -10,9 +10,12 @@ public:
 	Lobby_PortraitBg();
 	~Lobby_PortraitBg();
 
+	void SetChar(JobType _Character);
+
 public:
 	GameEngineImageRenderer* BasicImageRenderer;
 	GameEngineImageRenderer* SelectImageRenderer;
+	GameEngineImageRenderer* CharPortraitRenderer;
 	GameEngineCollision* MouseCollision;
 
 protected:
@@ -24,5 +27,8 @@ private:
 	Lobby_PortraitBg(Lobby_PortraitBg&& _Other) noexcept = delete;
 	Lobby_PortraitBg& operator=(const Lobby_PortraitBg& _Other) = delete;
 	Lobby_PortraitBg& operator=(Lobby_PortraitBg&& _Other) noexcept = delete;
+
+private:
+	JobType Char;
 };
 

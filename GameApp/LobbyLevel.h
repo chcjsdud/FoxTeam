@@ -6,6 +6,7 @@
 
 class TempLobbyRenderer;
 class GameEngineImageRenderer;
+class Lobby_PortraitBg;
 class LobbyLevel : public GameEngineLevel
 {
 public:
@@ -64,7 +65,7 @@ private:
 	class LobbyBackground* BackgroundRenderer;
 	class Lobby_ButtonOne* ButtonLeft;
 	class Lobby_ButtonTwo* ButtonRight;
-	class Lobby_PortraitBg* PortraitBg;
+	std::vector<Lobby_PortraitBg*> PortraitBg;
 
 private:
 	std::vector<TempLobbyRenderer*> tempLobbyRenderers_;

@@ -5,6 +5,7 @@
 #include "GameEngineBase/GameEngineDebug.h"
 
 Lobby_PortraitBg::Lobby_PortraitBg()
+	: Char(JobType::JACKIE)
 {
 }
 
@@ -15,30 +16,43 @@ Lobby_PortraitBg::~Lobby_PortraitBg()
 void Lobby_PortraitBg::Start()
 {
 
-	float4 Position = { -580.0f, 200.0f, -102.0f };
-
 	{
 		BasicImageRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
 		BasicImageRenderer->SetImage("Lobby_PortraitBG_Basic.png", "PointSmp");
-		BasicImageRenderer->GetTransform()->SetLocalPosition(Position);
+		BasicImageRenderer->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 		BasicImageRenderer->GetTransform()->SetLocalScaling(BasicImageRenderer->GetCurrentTexture()->GetTextureSize());
+	}
+
+	{
+		CharPortraitRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Aya.png", "PointSmp");
+		CharPortraitRenderer->GetTransform()->SetLocalPosition((GetTransform()->GetLocalPosition() + float4{ 0.0f, 9.0f, -1.0f }));
+		CharPortraitRenderer->GetTransform()->SetLocalScaling(CharPortraitRenderer->GetCurrentTexture()->GetTextureSize());
+		CharPortraitRenderer->On();
 	}
 
 	{
 		SelectImageRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
 		SelectImageRenderer->SetImage("Lobby_PortraitBG_Select.png", "PointSmp");
-		SelectImageRenderer->GetTransform()->SetLocalPosition((Position + float4{0.0f, 0.0f, -1.0f}));
+		SelectImageRenderer->GetTransform()->SetLocalPosition((GetTransform()->GetLocalPosition() + float4{0.0f, 0.0f, -2.0f}));
 		SelectImageRenderer->GetTransform()->SetLocalScaling(SelectImageRenderer->GetCurrentTexture()->GetTextureSize());
 		SelectImageRenderer->Off();
 	}
 
+
 	{
 		MouseCollision = CreateTransformComponent<GameEngineCollision>();
-		MouseCollision->GetTransform()->SetLocalPosition(Position);
+		MouseCollision->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 		MouseCollision->GetTransform()->SetLocalScaling(BasicImageRenderer->GetCurrentTexture()->GetTextureSize());
 		MouseCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
 	}
 
+}
+
+void Lobby_PortraitBg::SetChar(JobType _Character)
+{
+	Char = _Character;
+	return;
 }
 
 void Lobby_PortraitBg::Update(float _DeltaTime)
@@ -59,5 +73,40 @@ void Lobby_PortraitBg::Update(float _DeltaTime)
 		{
 			SelectImageRenderer->Off();
 		}
+	}
+
+	switch (Char)
+	{
+	case JobType::NONE:
+		break;
+	case JobType::YUKI:
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Yuki.png", "PointSmp");
+		break;
+	case JobType::FIORA:
+		CharPortraitRenderer->Off();
+		break;
+	case JobType::ZAHIR:
+		CharPortraitRenderer->Off();
+		break;
+	case JobType::NADINE:
+		CharPortraitRenderer->Off();
+		break;
+	case JobType::HYUNWOO:
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Hyunwoo.png", "PointSmp");
+		break;
+	case JobType::JACKIE:
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Jackie.png", "PointSmp");
+		break;
+	case JobType::RIO:
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Rio.png", "PointSmp");
+		break;
+	case JobType::AYA:
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Aya.png", "PointSmp");
+		break;
+	case JobType::MAX:
+		CharPortraitRenderer->Off();
+		break;
+	default:
+		break;
 	}
 }
