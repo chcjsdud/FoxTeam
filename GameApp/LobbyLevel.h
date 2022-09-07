@@ -7,6 +7,7 @@
 class TempLobbyRenderer;
 class GameEngineImageRenderer;
 class Lobby_PortraitBg;
+class LobbyUIController;
 class LobbyLevel : public GameEngineLevel
 {
 public:
@@ -34,12 +35,16 @@ protected:
 	void StartIdle();
 	void UpdateIdle(float _DeltaTime);
 	void EndIdle();
+
 	void StartSelect();
 	void UpdateSelect(float _DeltaTime);
 	void EndSelect();
+
 	void StartJoin();
 	void UpdateJoin(float _DeltaTime);
 	void EndJoin();
+
+	void Check_PortraitCollision();
 
 private:
 	GameEngineFSM state_;
@@ -66,6 +71,8 @@ private:
 	class Lobby_ButtonOne* ButtonLeft;
 	class Lobby_ButtonTwo* ButtonRight;
 	std::vector<Lobby_PortraitBg*> PortraitBg;
+
+	LobbyUIController* UIController_;
 
 private:
 	std::vector<TempLobbyRenderer*> tempLobbyRenderers_;

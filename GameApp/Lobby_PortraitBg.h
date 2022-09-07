@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineImageRenderer.h>
+#include "Enums.h"
 
 using namespace std;
 
@@ -11,6 +12,26 @@ public:
 	~Lobby_PortraitBg();
 
 	void SetChar(JobType _Character);
+	JobType GetChar()
+	{
+		return Char;
+	}
+
+	void SelectOn();
+	void SelectOff();
+
+	GameEngineCollision* GetCollision()
+	{
+		return MouseCollision;
+	}
+
+	bool isSelected()
+	{
+		return SelectImageRenderer->IsUpdate();
+	}
+
+
+
 
 public:
 	GameEngineImageRenderer* BasicImageRenderer;

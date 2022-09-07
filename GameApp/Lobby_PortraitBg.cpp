@@ -5,7 +5,7 @@
 #include "GameEngineBase/GameEngineDebug.h"
 
 Lobby_PortraitBg::Lobby_PortraitBg()
-	: Char(JobType::JACKIE)
+	: Char(JobType::MAX)
 {
 }
 
@@ -52,30 +52,8 @@ void Lobby_PortraitBg::Start()
 void Lobby_PortraitBg::SetChar(JobType _Character)
 {
 	Char = _Character;
-	return;
-}
 
-void Lobby_PortraitBg::Update(float _DeltaTime)
-{
-	//GetLevel()->PushDebugRender(MouseCollision->GetTransform(), CollisionType::Rect);
-
-
-	if (MouseCollision->Collision(CollisionGroup::MousePointer))
-	{
-		if (GameEngineInput::GetInst().Down("LBUTTON"))
-		{
-			SelectImageRenderer->On();
-		}
-	}
-	else
-	{
-		if (GameEngineInput::GetInst().Down("LBUTTON"))
-		{
-			SelectImageRenderer->Off();
-		}
-	}
-
-	switch (Char)
+	switch (static_cast<JobType>(Char))
 	{
 	case JobType::NONE:
 		break;
@@ -109,4 +87,34 @@ void Lobby_PortraitBg::Update(float _DeltaTime)
 	default:
 		break;
 	}
+
+	return;
+}
+
+void Lobby_PortraitBg::SelectOn()
+{
+	SelectImageRenderer->On();
+}
+
+void Lobby_PortraitBg::SelectOff()
+{
+	SelectImageRenderer->Off();
+}
+
+void Lobby_PortraitBg::Update(float _DeltaTime)
+{
+	//if (MouseCollision->Collision(CollisionGroup::MousePointer))
+	//{
+	//	if (GameEngineInput::GetInst().Down("LBUTTON"))
+	//	{
+	//		SelectImageRenderer->On();
+	//	}
+	//}
+	//else
+	//{
+	//	if (GameEngineInput::GetInst().Down("LBUTTON"))
+	//	{
+	//		SelectImageRenderer->Off();
+	//	}
+	//}
 }

@@ -313,6 +313,12 @@
     <ClCompile Include="LoadingLumiaPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
+    <ClCompile Include="LumiaLoadingManager.cpp">
+      <Filter>02.GameServer</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyUIController.cpp">
+      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -853,6 +859,12 @@
     </ClInclude>
     <ClInclude Include="LoadingLumiaPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="LumiaLoadingManager.h">
+      <Filter>02.GameServer</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyUIController.h">
+      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

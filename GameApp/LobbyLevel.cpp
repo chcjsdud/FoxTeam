@@ -15,10 +15,14 @@
 #include "TempLobbyRenderer.h"
 #include "UI_TestMouse.h"
 
+#include <GameEngine/GameEngineCollision.h>
+
 #include "GameServer.h"
 #include "GameClient.h"
 #include "PlayerInfoManager.h"
 #include "SetPlayerNumberPacket.h"
+
+#include "LobbyUIController.h"
 
 LobbyLevel::LobbyLevel()
 	: playerCount_(0), myCharacterSelection_(-1), myStartPointSelection_(-1), myIsReady_(false)
@@ -62,6 +66,7 @@ void LobbyLevel::LevelStart()
 		GameEngineInput::GetInst().CreateKey("3", '3');
 		GameEngineInput::GetInst().CreateKey("4", '4');
 		GameEngineInput::GetInst().CreateKey("5", '5');
+		GameEngineInput::GetInst().CreateKey("6", '6');
 		GameEngineInput::GetInst().CreateKey("Ready", VK_RETURN);
 		GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 	}
@@ -95,29 +100,32 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 			renderer_->SetRender(false);
 			tempLobbyRenderers_.emplace_back(renderer_);
 		}
-
-
-
 	}
 
 
-	{
-		BackgroundRenderer = CreateActor<LobbyBackground>();
-		ButtonLeft = CreateActor<Lobby_ButtonOne>();
-		ButtonRight = CreateActor<Lobby_ButtonTwo>();
-	}
+	//{
+	//	BackgroundRenderer = CreateActor<LobbyBackground>();
+	//	ButtonLeft = CreateActor<Lobby_ButtonOne>();
+	//	ButtonRight = CreateActor<Lobby_ButtonTwo>();
+	//}
+
+	//{
+	//	for (int x = 0; x < (int)JobType::MAX; x++)
+	//	{
+	//		Lobby_PortraitBg* Portrait = CreateActor<Lobby_PortraitBg>();
+	//		float4 BasicPosition = { -580.0f, 200.0f, -102.0f };
+	//		
+	//		int Vertical = (x/4);
+	//		int Horizonal = x - (Vertical * 4);
+	//		Portrait->GetTransform()->SetLocalPosition(BasicPosition + float4{ float(Horizonal) * 72.0f, (float(Vertical) * -115.0f), 0.0f});
+	//		Portrait->SetChar(static_cast<JobType>(x));
+	//
+	//		PortraitBg.emplace_back(Portrait);
+	//	}
+	//}
 
 	{
-		for (int x = 0; x < (int)JobType::MAX; x++)
-		{
-			Lobby_PortraitBg* Portrait = CreateActor<Lobby_PortraitBg>();
-			float4 BasicPosition = { -580.0f, 200.0f, -102.0f };
-			
-			int Vertical = (x/4);
-			int Horizonal = x - (Vertical * 4);
-			Portrait->GetTransform()->SetLocalPosition(BasicPosition + float4{ float(Horizonal) * 72.0f, (float(Vertical) * -115.0f), 0.0f});
-			Portrait->SetChar((JobType)x);
-		}
+		UIController_ = CreateActor<LobbyUIController>();
 	}
 
 	{
@@ -192,25 +200,6 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 
 		return;
 	}
-
-
-	//이건호 : 버튼과 마우스 충돌체크 방법
-	//Lobby_ButtonOne/Lobby_ButtonTwo의 함수
-	//bool MouseCollisionCheck()가 마우스의 콜리전과 버튼의 콜리전 여부를 체크해서 bool값을 리턴합니다
-
-	/*
-	if (true == ButtonLeft->MouseCollisionCheck())
-	{
-		//여기 들어오면 왼쪽버튼과 마우스가 충돌한상태
-		int a = 0;
-	}
-
-	if (true == ButtonRight->MouseCollisionCheck())
-	{
-		//여기 들어오면 오른쪽버튼과 마우스가 충돌한상태
-	}
-
-	*/
 }
 
 void LobbyLevel::EndIdle()
@@ -245,34 +234,40 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 	{
 		serverSocket_->ProcessPacket();
 
-		// 커서로 캐릭터 초상화를 선택했을 때의 디버깅입니다.
-		if (true == GameEngineInput::Down("4"))
+		// 캐릭터 선택시 패킷 보내는 코드블록
+		for (int x = 0; x < (int)JobType::MAX; x++)
 		{
-			CharSelectPacket packet;
-			packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
-			packet.SetCharacter(static_cast<int>(JobType::JACKIE)); // 나의 캐릭터 선택을 알려준다
-			packet.SetStartPoint(static_cast<int>(Location::UPTOWN)); // 나의 스타팅 포인트 지역을 알려준다
-			serverSocket_->Send(&packet);
+			//PortraitBg[x]->GetCollision()->Collision(CollisionGroup::MousePointer)
+			
+			if (UIController_->GetPortraitVector(x)->GetCollision()->Collision(CollisionGroup::MousePointer))
+			{
+				if (GameEngineInput::GetInst().Down("LBUTTON"))
+				{
+					UIController_->GetPortraitVector(x)->SelectOn();
+					CharSelectPacket packet;
+					packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
+					packet.SetCharacter(static_cast<int>(UIController_->GetPortraitVector(x)->GetChar())); // 나의 캐릭터 선택을 알려준다
+					packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
+					serverSocket_->Send(&packet);
 
-			pm->GetPlayerList()[pm->GetMyNumber()].character_ = static_cast<int>(JobType::JACKIE);
-			pm->GetPlayerList()[pm->GetMyNumber()].startPoint_ = static_cast<int>(Location::UPTOWN);
+					pm->GetPlayerList()[pm->GetMyNumber()].character_ = static_cast<int>(UIController_->GetPortraitVector(x)->GetChar());
+					pm->GetPlayerList()[pm->GetMyNumber()].startPoint_ = static_cast<int>(Location::UPTOWN);
 
-			GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다\n");
+					for (int o = 0; o < (int)JobType::MAX; o++)
+					{
+						if (o == x)
+						{
+							continue;
+						}
+						else
+						{
+							UIController_->GetPortraitVector(o)->SelectOff();
+						}
+
+					}
+				}
+			}
 		}
-		if (true == GameEngineInput::Down("5"))
-		{
-			CharSelectPacket packet;
-			packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
-			packet.SetCharacter(static_cast<int>(JobType::HYUNWOO)); // 나의 캐릭터 선택을 알려준다
-			packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
-			serverSocket_->Send(&packet);
-
-			pm->GetPlayerList()[pm->GetMyNumber()].character_ = static_cast<int>(JobType::HYUNWOO);
-			pm->GetPlayerList()[pm->GetMyNumber()].startPoint_ = static_cast<int>(Location::DOCK);
-
-			GameEngineDebug::OutPutDebugString("호스트 유저가 캐릭터를 선택했습니다.\n");
-		}
-
 
 		if (true == GameEngineInput::Down("Ready"))
 		{
@@ -298,27 +293,38 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		clientSocket_->ProcessPacket();
 		playerCount_ = static_cast<int>(pm->GetPlayerList().size());
 
-		// 커서로 캐릭터 초상화를 선택했을 때의 디버깅입니다.
-		if (true == GameEngineInput::Down("4"))
+		// 캐릭터 선택시 패킷 보내는 코드블록
+		for (int x = 0; x < (int)JobType::MAX; x++)
 		{
-			CharSelectPacket packet;
-			packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
-			packet.SetCharacter(static_cast<int>(JobType::JACKIE)); // 나의 캐릭터 선택을 알려준다
-			packet.SetStartPoint(static_cast<int>(Location::UPTOWN)); // 나의 스타팅 포인트 지역을 알려준다
-			clientSocket_->Send(&packet);
+			if (UIController_->GetPortraitVector(x)->GetCollision()->Collision(CollisionGroup::MousePointer))
+			{
+				if (GameEngineInput::GetInst().Down("LBUTTON"))
+				{
+					UIController_->GetPortraitVector(x)->SelectOn();
+					CharSelectPacket packet;
+					packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
+					packet.SetCharacter(static_cast<int>(UIController_->GetPortraitVector(x)->GetChar())); // 나의 캐릭터 선택을 알려준다
+					packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
+					clientSocket_->Send(&packet);
 
-			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(pm->GetMyNumber()) + " 이(가) 캐릭터를 선택했습니다.\n");
-		}
-		if (true == GameEngineInput::Down("5"))
-		{
-			CharSelectPacket packet;
-			packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
-			packet.SetCharacter(static_cast<int>(JobType::HYUNWOO)); // 나의 캐릭터 선택을 알려준다
-			packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
-			clientSocket_->Send(&packet);
+					for (int o = 0; o < (int)JobType::MAX; o++)
+					{
+						if (o == x)
+						{
+							continue;
+						}
+						else
+						{
+							UIController_->GetPortraitVector(o)->SelectOff();
+						}
 
-			GameEngineDebug::OutPutDebugString("클라이언트 유저 " + std::to_string(pm->GetMyNumber()) + " 이(가) 캐릭터를 선택했습니다.\n");
+					}
+				}
+			}
 		}
+
+		
+
 
 
 		if (true == GameEngineInput::Down("Ready"))
@@ -460,4 +466,12 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 
 void LobbyLevel::EndJoin()
 {
+}
+
+void LobbyLevel::Check_PortraitCollision()
+{
+
+
+
+
 }

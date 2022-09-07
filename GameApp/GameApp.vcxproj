@@ -232,9 +232,17 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LobbyUIController.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Lobby_ButtonOne.cpp" />
     <ClCompile Include="Lobby_ButtonTwo.cpp" />
     <ClCompile Include="Lobby_PortraitBg.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="LumiaLoadingManager.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -515,9 +523,17 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LobbyUIController.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Lobby_ButtonOne.h" />
     <ClInclude Include="Lobby_ButtonTwo.h" />
     <ClInclude Include="Lobby_PortraitBg.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="LumiaLoadingManager.h">
       <SubType>
       </SubType>
     </ClInclude>
