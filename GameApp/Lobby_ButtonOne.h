@@ -13,6 +13,9 @@ public:
 	bool MouseCollisionCheck();
 
 public:
+
+
+
 	GameEngineImageRenderer* ButtonOneRenderer;
 	GameEngineCollision* ButtonOneCollision;
 

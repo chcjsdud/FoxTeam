@@ -150,7 +150,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	// 서버가 쓰이는 업데이트는
 	// 기본적으로 현 프로세스가 [호스트일 때 / 클라이언트일 때] 를 모두 상정하고, if 문으로 구분해서 코드를 짜셔야 합니다.
 	// 
-	if (true == GameEngineInput::Down("1"))
+	if (true == UIController_->GetHostButton()->MouseCollisionCheck() && true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
 		//  프로세스를 호스트로 지정 (= 방을 만들겠다)
 		serverSocket_->Initialize();
@@ -175,7 +175,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	}
 
 	// 프로세스를 클라이언트로 지정 (= 방에 참여하겠다)
-	if (true == GameEngineInput::Down("2"))
+	if (true == UIController_->GetClientButton()->MouseCollisionCheck() && true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
 		clientSocket_->Initialize();
 		clientSocket_->Connect("127.0.0.1");

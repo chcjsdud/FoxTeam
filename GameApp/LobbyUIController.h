@@ -23,7 +23,8 @@ public:
 public:
 	void InitUI();
 	Lobby_PortraitBg* GetPortraitVector(int _index);
-
+	Lobby_ButtonOne* GetHostButton() { return hostButtonUI_; }
+	Lobby_ButtonTwo* GetClientButton() { return clientButtonUI_; }
 
 protected:
 	virtual void Start();

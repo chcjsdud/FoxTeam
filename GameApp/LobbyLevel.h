@@ -67,10 +67,10 @@ private:
 
 	//이건호 : 로비내 UI용 멤버변수
 private:
-	class LobbyBackground* BackgroundRenderer;
-	class Lobby_ButtonOne* ButtonLeft;
-	class Lobby_ButtonTwo* ButtonRight;
-	std::vector<Lobby_PortraitBg*> PortraitBg;
+	//class LobbyBackground* BackgroundRenderer;
+	//class Lobby_ButtonOne* ButtonLeft;
+	//class Lobby_ButtonTwo* ButtonRight;
+	//std::vector<Lobby_PortraitBg*> PortraitBg;
 
 	LobbyUIController* UIController_;
 
