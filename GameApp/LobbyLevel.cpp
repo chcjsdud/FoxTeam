@@ -135,7 +135,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_->Initialize();
 		serverSocket_->OpenServer();
 		serverSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
-		serverSocket_->AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
+		//serverSocket_->AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		serverSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
 		serverSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
 		serverSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
@@ -157,9 +157,9 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	if (true == GameEngineInput::Down("2"))
 	{
 		clientSocket_->Initialize();
-		clientSocket_->Connect("10.0.4.126");
+		clientSocket_->Connect("127.0.0.1");
 		clientSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
-		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
+		//clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
 		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
 		clientSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
 		clientSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
@@ -364,6 +364,7 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 
 	if (true == serverSocket_->IsOpened())
 	{
+		serverSocket_->ProcessPacket();
 		int count = 0;
 
 		for (int i = 0; i < pm->GetPlayerList().size(); i++)
@@ -372,19 +373,57 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 			{
 				count++;
 			}
-
 		}
 
 		if (count == pm->GetPlayerList().size())
 		{
+			// 모두 캐릭터 선택을 마치면, 호스트 프로세스가 최종적으로 이 위치로 들어오게 됩니다.
+			
+			// 각 프로세스마다 맵과 몬스터 ,아이템을 배치하는 과정을 여기에서 명령해야 할 듯...
+
+
 			GameEngineDebug::MsgBoxError("모두 준비 완료, 게임을 시작합니다.");
 		}
 	}
 	else if (true == clientSocket_->IsConnected())
 	{
-
+		clientSocket_->ProcessPacket();
 	}
 
+	// 유저들의 달라진 캐릭터 선택을 인지해 렌더링을 바꿔 준다.
+	for (int i = 0; i < pm->GetPlayerList().size(); i++)
+	{
+		tempLobbyRenderers_[i]->SetRender(true);
+		switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
+		{
+		case JobType::NONE:
+			break;
+		case JobType::YUKI:
+			break;
+		case JobType::FIORA:
+			break;
+		case JobType::ZAHIR:
+			break;
+		case JobType::NADINE:
+			break;
+		case JobType::HYUNWOO:
+			tempLobbyRenderers_[i]->SetImage("tempLobbyHyunwoo.png");
+			break;
+		case JobType::JACKIE:
+			tempLobbyRenderers_[i]->SetImage("tempLobbyJackie.png");
+			break;
+		case JobType::RIO:
+			tempLobbyRenderers_[i]->SetImage("tempLobbyRio.png");
+			break;
+		case JobType::AYA:
+			tempLobbyRenderers_[i]->SetImage("tempLobbyAya.png");
+			break;
+		case JobType::MAX:
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void LobbyLevel::EndJoin()

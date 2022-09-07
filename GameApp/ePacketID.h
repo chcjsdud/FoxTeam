@@ -13,6 +13,7 @@ enum class ePacketID
 	SetPlayerNumberPacket,
 	CharSelectPacket,
 	ReadyPacket,
+	LoadingLumiaPacket,
 	
 
 	MAX

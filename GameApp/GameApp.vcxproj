@@ -228,6 +228,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LoadingLumiaPacket.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Lobby_ButtonOne.cpp" />
     <ClCompile Include="Lobby_ButtonTwo.cpp" />
     <ClCompile Include="Lobby_PortraitBg.cpp">
@@ -504,6 +508,10 @@
     </ClInclude>
     <ClInclude Include="GameJoinPacket2.h" />
     <ClInclude Include="GameServer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="LoadingLumiaPacket.h">
       <SubType>
       </SubType>
     </ClInclude>
