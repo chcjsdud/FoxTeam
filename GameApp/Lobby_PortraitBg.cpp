@@ -3,6 +3,7 @@
 #include "GameEngine/GameEngineInput.h"
 #include "GameEngine/GameEngineCollision.h"
 #include "GameEngineBase/GameEngineDebug.h"
+#include "LobbyUIController.h"
 
 Lobby_PortraitBg::Lobby_PortraitBg()
 	: Char(JobType::MAX)
@@ -94,6 +95,7 @@ void Lobby_PortraitBg::SetChar(JobType _Character)
 void Lobby_PortraitBg::SelectOn()
 {
 	SelectImageRenderer->On();
+	LobbyUIController::SelectedChar = Char;
 }
 
 void Lobby_PortraitBg::SelectOff()

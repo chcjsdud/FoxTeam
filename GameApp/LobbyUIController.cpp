@@ -5,7 +5,10 @@
 #include "Lobby_ButtonOne.h"
 #include "Lobby_ButtonTwo.h"
 #include "Lobby_PortraitBg.h"
+#include "Lobby_CharFull.h"
 #include "LobbyLevel.h"
+
+JobType LobbyUIController::SelectedChar = JobType::MAX;
 
 LobbyUIController::LobbyUIController() // default constructer 디폴트 생성자
 {
@@ -28,6 +31,7 @@ void LobbyUIController::InitUI()
 		backGroundUI_ = GetLevel()->CreateActor<LobbyBackground>();
 		hostButtonUI_ = GetLevel()->CreateActor<Lobby_ButtonOne>();
 		clientButtonUI_ = GetLevel()->CreateActor<Lobby_ButtonTwo>();
+		charFullUI_= GetLevel()->CreateActor<Lobby_CharFull>();
 
 	}
 
@@ -45,8 +49,6 @@ void LobbyUIController::InitUI()
 			PortraitBg.emplace_back(Portrait);
 		}
 	}
-
-	SelectedChar = JobType::MAX;
 }
 
 Lobby_PortraitBg* LobbyUIController::GetPortraitVector(int _index)

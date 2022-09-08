@@ -9,9 +9,8 @@ class Lobby_CharFull : public GameEngineActor
 public:
 	Lobby_CharFull();
 	~Lobby_CharFull();
-
-public:
-	GameEngineImageRenderer* CharFull_Renderer;
+	
+	void SetChar(JobType _Character);
 
 protected:
 	virtual void Start();
@@ -22,5 +21,8 @@ private:
 	Lobby_CharFull(Lobby_CharFull&& _Other) noexcept = delete;
 	Lobby_CharFull& operator=(const Lobby_CharFull& _Other) = delete;
 	Lobby_CharFull& operator=(Lobby_CharFull&& _Other) noexcept = delete;
+
+private:
+	GameEngineImageRenderer* CharFull_Renderer;
 };
 

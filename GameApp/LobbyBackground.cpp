@@ -17,7 +17,7 @@ void LobbyBackground::Start()
 	{
 		BackGroundRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
 		BackGroundRenderer->SetImage("LobbyLevel_BG.png", "PointSmp");
-		BackGroundRenderer->GetTransform()->SetLocalPosition({0.0f,0.0f, -100.0f});
+		BackGroundRenderer->GetTransform()->SetLocalPosition({0.0f,0.0f, -50.0f});
 		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
 	}
 

@@ -10,6 +10,7 @@ class Lobby_ButtonOne;
 class Lobby_ButtonTwo;
 class Lobby_PortraitBg;
 class LobbyBackground;
+class Lobby_CharFull;
 class LobbyUIController : public GameEngineActor
 {
 public:
@@ -26,6 +27,10 @@ public:
 	Lobby_ButtonOne* GetHostButton() { return hostButtonUI_; }
 	Lobby_ButtonTwo* GetClientButton() { return clientButtonUI_; }
 
+public:
+	//내가 고른 캐릭터가 뭔지 가지고 있을 static 변수
+	static JobType SelectedChar;
+
 protected:
 	virtual void Start();
 	virtual void Update(float _DeltaTime);
@@ -34,8 +39,9 @@ private:
 	LobbyBackground* backGroundUI_;
 	Lobby_ButtonOne* hostButtonUI_;
 	Lobby_ButtonTwo* clientButtonUI_;
+	Lobby_CharFull* charFullUI_;
 	std::vector<Lobby_PortraitBg*> PortraitBg;
 
-	JobType SelectedChar;
+
 };
 
