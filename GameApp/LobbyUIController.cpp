@@ -44,13 +44,13 @@ void LobbyUIController::InitUI()
 
 			PortraitBg.emplace_back(Portrait);
 		}
-		int a = 0;
 	}
+
+	SelectedChar = JobType::MAX;
 }
 
 Lobby_PortraitBg* LobbyUIController::GetPortraitVector(int _index)
 {
-
 	return PortraitBg[_index];
 }
 

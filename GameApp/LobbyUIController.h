@@ -1,7 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 // 분류 : 
-// 용도 : 
+// 용도 : 로비레벨에 들어갈 UI액터를 모아두는 곳
 // 설명 : 
 
 
@@ -35,5 +35,7 @@ private:
 	Lobby_ButtonOne* hostButtonUI_;
 	Lobby_ButtonTwo* clientButtonUI_;
 	std::vector<Lobby_PortraitBg*> PortraitBg;
+
+	JobType SelectedChar;
 };
 

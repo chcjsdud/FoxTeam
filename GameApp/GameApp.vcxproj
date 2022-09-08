@@ -238,6 +238,10 @@
     </ClCompile>
     <ClCompile Include="Lobby_ButtonOne.cpp" />
     <ClCompile Include="Lobby_ButtonTwo.cpp" />
+    <ClCompile Include="Lobby_CharFull.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Lobby_PortraitBg.cpp">
       <SubType>
       </SubType>
@@ -529,6 +533,10 @@
     </ClInclude>
     <ClInclude Include="Lobby_ButtonOne.h" />
     <ClInclude Include="Lobby_ButtonTwo.h" />
+    <ClInclude Include="Lobby_CharFull.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Lobby_PortraitBg.h">
       <SubType>
       </SubType>

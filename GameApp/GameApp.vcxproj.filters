@@ -319,6 +319,9 @@
     <ClCompile Include="LobbyUIController.cpp">
       <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClCompile>
+    <ClCompile Include="Lobby_CharFull.cpp">
+      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -864,6 +867,9 @@
       <Filter>02.GameServer</Filter>
     </ClInclude>
     <ClInclude Include="LobbyUIController.h">
+      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby_CharFull.h">
       <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClInclude>
   </ItemGroup>
