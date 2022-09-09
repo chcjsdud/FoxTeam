@@ -263,14 +263,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GHRayTestOBBBox.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="GHRayTestSphere.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="GHRio.cpp">
       <SubType>
       </SubType>
@@ -398,14 +390,6 @@
     </ClCompile>
     <ClCompile Include="LH_Yuki_State.cpp" />
     <ClCompile Include="LH_LockOnUI.cpp" />
-    <ClCompile Include="GHRayTestBox.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="GHRayTestLevel.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="SJH_FloorMap.cpp" />
     <ClCompile Include="SJH_Mouse.cpp" />
     <ClCompile Include="SJH_PlayLevel.cpp">
@@ -558,14 +542,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GHRayTestOBBBox.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="GHRayTestSphere.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="GHRio.h">
       <SubType>
       </SubType>
@@ -697,14 +673,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LH_LockOnUI.h" />
-    <ClInclude Include="GHRayTestBox.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="GHRayTestLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="SJH_FloorMap.h" />
     <ClInclude Include="SJH_Mouse.h" />
     <ClInclude Include="SJH_PlayLevel.h">

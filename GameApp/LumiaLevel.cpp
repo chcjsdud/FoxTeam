@@ -95,49 +95,6 @@ void LumiaLevel::loadResource()
 
 	}
 
-	//{
-	//	GameEngineDirectory tempDir;
-	//	tempDir.MoveParent("FoxTeam");
-	//	tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
-
-	//	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
-
-	//	for (size_t i = 0; i < vecFile.size(); i++)
-	//	{
-	//		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
-	//		{
-	//			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
-	//		}
-	//	}
-	//}
-
-	//{
-	//	GameEngineDirectory tempDir;
-	//	tempDir.MoveParent("FoxTeam");
-	//	tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox";
-
-	//	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
-	//	vecFile = tempDir.GetAllFile(".UserMesh");
-
-	//	for (size_t i = 0; i < vecFile.size(); i++)
-	//	{
-	//		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
-	//		{
-	//			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
-	//		}
-	//	}
-	//}
-
-	//{
-	//	GameEngineDirectory tempDir;
-	//	tempDir.MoveParent("FoxTeam");
-	//	tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox" / "ItemBoxInfo";
-
-	//	//ItemBox_ = CreateActor<ItemBoxManager>();
-
-	//	//ItemBox_->UserAllLoad(tempDir);
-	//}
-
 	{
 		GameEngineDirectory dir;
 
@@ -151,44 +108,14 @@ void LumiaLevel::loadResource()
 
 		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
 		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Wait.fbx"));
-
-		//GameEngineFBXMeshManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserMesh"));
-		//GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Run.UserAnimation"));
-		//GameEngineFBXAnimationManager::GetInst().LoadUser(dir.PathToPlusFileName("Rio_Wait.UserAnimation"));
 	}
 }
 
 void LumiaLevel::releaseResource()
 {
+	// loadResource에서 로드한 리소스 삭제
 	GameEngineFBXMeshManager::GetInst().Delete("DowntownNavMesh.fbx");
 	GameEngineFBXMeshManager::GetInst().Delete("Downtown.fbx");
-
-	//{
-	//	GameEngineDirectory tempDir;
-	//	tempDir.MoveParent("FoxTeam");
-	//	tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
-
-	//	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
-
-	//	for (size_t i = 0; i < vecFile.size(); i++)
-	//	{
-	//		GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
-	//	}
-	//}
-
-	//{
-	//	GameEngineDirectory tempDir;
-	//	tempDir.MoveParent("FoxTeam");
-	//	tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox";
-
-	//	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
-	//	vecFile = tempDir.GetAllFile(".UserMesh");
-
-	//	for (size_t i = 0; i < vecFile.size(); i++)
-	//	{
-	//		GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
-	//	}
-	//}
 
 	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh_Cobalt.fbx");
 	GameEngineFBXMeshManager::GetInst().Delete("Rio_Run.fbx");
