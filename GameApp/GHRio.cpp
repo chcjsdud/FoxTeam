@@ -1,6 +1,5 @@
 #include "PreCompile.h"
 #include "GHRio.h"
-#include "GHRayTestLevel.h"
 #include "MousePointer.h"
 #include "LumiaMap.h"
 #include "GHNavMesh.h"
