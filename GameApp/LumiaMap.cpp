@@ -38,7 +38,7 @@ LumiaMap::~LumiaMap()
 void LumiaMap::Start()
 {
 	navMeshRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	navMeshRenderer_->SetFBXMesh("DowntownNavMesh.fbx", "TextureDeferredLight");
+	//navMeshRenderer_->SetFBXMesh("DowntownNavMesh.fbx", "TextureDeferredLight");
 	//navMeshRenderer_->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
 
 
@@ -142,10 +142,13 @@ GHNavMesh* LumiaMap::GetCurrentNavMesh(const float4& _position)
 	return nullptr;
 }
 
-bool LumiaMap::IsIntersectionMesh(const GHNavMesh& _mesh, const float4& _position)
+bool LumiaMap::IsMeshIntersected(const GHNavMesh& _mesh, const float4& _position)
 {
+	const float HEIGHT_MAXIMUM = 1000.f;
 	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
 	float distance = 0;
+	float4 position = _position;
+	position.y += HEIGHT_MAXIMUM;
 	return DirectX::TriangleTests::Intersects(_position.DirectVector, float4::DOWN.DirectVector,
 		(_mesh.Vertices[0] * matWorld).DirectVector, (_mesh.Vertices[1] * matWorld).DirectVector, (_mesh.Vertices[2] * matWorld).DirectVector,
 		distance);
@@ -156,7 +159,7 @@ GHNavMesh* LumiaMap::FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, co
 	// ÀüÃ¼ Å½»ö
 	for (GHNavMesh& n : navMeshes_)
 	{
-		if (IsIntersectionMesh(n, _position))
+		if (IsMeshIntersected(n, _position))
 		{
 			return &n;
 		}

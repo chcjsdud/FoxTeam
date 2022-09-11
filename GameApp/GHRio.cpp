@@ -24,51 +24,23 @@ GHRio::~GHRio()
 
 void GHRio::Start()
 {
-	//float4 spawnPoint = { -6780.f, 0.0f, -780.f };
-	float4 spawnPoint = { -2500.f, 0.0f, 10000.f };
-	//float4 spawnPoint = { 0.f, 0.0f, 0.f };
-	GetTransform()->SetLocalPosition(spawnPoint);
-	destination_ = spawnPoint;
-
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-
 	renderer_->SetFBXMesh("Rio_Run.fbx", "TextureDeferredLightAni");
-	//renderer_->SetFBXMesh("Rio_Wait.UserMesh", "TextureDeferredLightAni");
 
-	for (size_t i = 0; i < renderer_->GetRenderSetCount(); i++)
-	{
-		renderer_->GetRenderSet(static_cast<unsigned int>(i)).ShaderHelper->SettingTexture("DiffuseTex", "Rio_000_LOD1.png");
-	}
+	//for (size_t i = 0; i < renderer_->GetRenderSetCount(); i++)
+	//{
+	//	renderer_->GetRenderSet(static_cast<unsigned int>(i)).ShaderHelper->SettingTexture("DiffuseTex", "Rio_000_LOD1.png");
+	//}
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	renderer_->CreateFBXAnimation("Run", "Rio_Run.fbx", 0);
 	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx", 0);
-
-	//renderer_->CreateFBXAnimation("Run", "Rio_Run.UserAnimation", 0);
-	//renderer_->CreateFBXAnimation("Wait", "Rio_Wait.UserAnimation", 0);
-
 	renderer_->ChangeFBXAnimation("Wait");
 
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
 	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
-
-	currentMap_ = GetLevelConvert<LumiaLevel>()->GetMap();
-
-	if (nullptr == currentMap_)
-	{
-		//GameEngineDebug::MsgBox("레벨에 맵이 배치되지 않았습니다.");
-	}
-	else
-	{
-		currentNavMesh_ = currentMap_->GetCurrentNavMesh(GetTransform()->GetWorldPosition());
-	}
-
-	if (nullptr == currentNavMesh_)
-	{
-		//GameEngineDebug::MsgBox("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
-	}
 }
 
 void GHRio::Update(float _deltaTime)
@@ -129,7 +101,7 @@ void GHRio::Update(float _deltaTime)
 		float4 moveSpeed = direction_ * SPEED * _deltaTime;
 		float4 nextMovePosition = worldPosition + moveSpeed;
 
-		if (true)// == currentMap_->IsIntersectionMesh(*currentNavMesh_, nextMovePosition))
+		if (true == currentMap_->IsMeshIntersected(*currentNavMesh_, nextMovePosition))
 		{
 			GetTransform()->SetWorldPosition(nextMovePosition);
 		}
@@ -161,6 +133,31 @@ void GHRio::Update(float _deltaTime)
 		{
 			renderer_->ChangeFBXAnimation("Wait");
 		}
+	}
+}
+
+void GHRio::SetSpawnPoint(const float4& _position)
+{
+	//float4 spawnPoint = { -6780.f, 0.0f, -780.f };
+	float4 spawnPoint = { -2500.f, 0.0f, 10000.f };
+	//float4 spawnPoint = { 0.f, 0.0f, 0.f };
+	GetTransform()->SetLocalPosition(spawnPoint);
+	destination_ = spawnPoint;
+
+	currentMap_ = GetLevelConvert<LumiaLevel>()->GetMap();
+
+	if (nullptr == currentMap_)
+	{
+		GameEngineDebug::MsgBox("레벨에 맵이 배치되지 않았습니다.");
+	}
+	else
+	{
+		currentNavMesh_ = currentMap_->GetCurrentNavMesh(GetTransform()->GetWorldPosition());
+	}
+
+	if (nullptr == currentNavMesh_)
+	{
+		GameEngineDebug::MsgBox("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
 	}
 }
 

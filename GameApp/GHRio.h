@@ -20,6 +20,10 @@ public:
 	void Start() override;
 	void Update(float _deltaTime) override;
 
+public:
+	void SetSpawnPoint(const float4& _position);
+
+
 private:
 	void startIdle(float _deltaTime);
 	void updateIdle(float _deltaTime);

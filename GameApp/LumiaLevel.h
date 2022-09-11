@@ -25,16 +25,21 @@ public:
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
 public:
+	void GenerateCharactor();
+
+public:
 	MousePointer* GetMousePointer() { return mouse_; }
 	LumiaMap* GetMap() { return map_; }
 
 private:
+	// On level change start event
 	void loadResource();
-	void releaseResource();
+	void initRenderWindow();
 	void createActor();
 	void adjustCamera();
 
-	void initRenderWindow();
+	// On level change end event
+	void releaseResource();
 	void releaseRenderWindow();
 
 private:

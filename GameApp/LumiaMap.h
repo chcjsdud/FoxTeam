@@ -22,9 +22,10 @@ public:
 	virtual void Update(float _deltaTime) override;
 
 public:
+	/// 현재 위치의 네비메쉬 정보를 가져옵니다.
 	GHNavMesh* GetCurrentNavMesh(const float4& _position);
 
-	bool IsIntersectionMesh(const GHNavMesh& _mesh, const float4& _position);
+	bool IsMeshIntersected(const GHNavMesh& _mesh, const float4& _position);
 	GHNavMesh* FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position);
 
 	std::vector<float4> FindPath(const float4& _startPosition, const float4& _endPosition);

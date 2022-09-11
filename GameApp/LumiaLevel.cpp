@@ -4,7 +4,7 @@
 #include <GameEngine/LightActor.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
 
-
+#include "PlayerInfoManager.h"
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
 
@@ -80,6 +80,31 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	adjustCamera();
 }
 
+void LumiaLevel::GenerateCharactor()
+{
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
+	for (size_t i = 0; i < 2; i++)
+	{
+		PlayerInfo newPlayer;
+		newPlayer.playerNumber_ = i;
+		newPlayer.startPoint_ = 0;
+		newPlayer.character_ = 0;
+		newPlayer.isReady_ = true;
+		pm->AddNewPlayer(newPlayer);
+	}
+
+	pm->SetPlayerNumber(0);
+
+	for (size_t i = 0; i < pm->GetPlayerList().size(); i++)
+	{
+		CreateActor<GHRio>();
+	}
+
+
+
+}
+
 void LumiaLevel::loadResource()
 {
 	{
@@ -131,8 +156,6 @@ void LumiaLevel::createActor()
 {
 	mouse_ = CreateActor<MousePointer>();
 	map_ = CreateActor<LumiaMap>();
-
-	player_ = CreateActor<GHRio>();
 
 	SKySphereActor* Actor = CreateActor<SKySphereActor>();
 
