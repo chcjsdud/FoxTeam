@@ -38,10 +38,8 @@ LumiaMap::~LumiaMap()
 void LumiaMap::Start()
 {
 	navMeshRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	//navMeshRenderer_->SetFBXMesh("DowntownNavMesh.fbx", "TextureDeferredLight");
+	navMeshRenderer_->SetFBXMesh("DowntownNavMesh.fbx", "TextureDeferredLight");
 	//navMeshRenderer_->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
-
-
 
 	size_t count = navMeshRenderer_->GetRenderSetCount();
 	for (size_t i = 0; i < count; i++)
@@ -49,14 +47,14 @@ void LumiaMap::Start()
 		navMeshRenderer_->GetRenderSet(static_cast<unsigned int>(i)).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
 
-	navMeshRenderer_->GetTransform()->SetLocalScaling(1.0f);
-	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -50.f });
+	navMeshRenderer_->GetTransform()->SetLocalScaling(100.0f);
+	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f });
 
 	//navMeshRenderer_->Off();
 
-	downTownRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	downTownRenderer_->SetFBXMesh("Downtown.fbx", "TextureDeferredLight");
-	downTownRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
+	//downTownRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	//downTownRenderer_->SetFBXMesh("Downtown.fbx", "TextureDeferredLight");
+	//downTownRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 
 	// 모든 메쉬를 네비메쉬로
 
@@ -126,13 +124,15 @@ void LumiaMap::Update(float _deltaTime)
 
 }
 
-GHNavMesh* LumiaMap::GetCurrentNavMesh(const float4& _position)
+GHNavMesh* LumiaMap::GetNavMesh(const float4& _position)
 {
 	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
 	float distance = 0.f;
+	float4 position = _position;
+	position.y += HEIGHT_MAXIMUM;
 	for (GHNavMesh& nav : navMeshes_)
 	{
-		if (DirectX::TriangleTests::Intersects(_position.DirectVector, float4::DOWN.DirectVector,
+		if (DirectX::TriangleTests::Intersects(position.DirectVector, float4::DOWN.DirectVector,
 			(nav.Vertices[0] * matWorld).DirectVector, (nav.Vertices[1] * matWorld).DirectVector, (nav.Vertices[2] * matWorld).DirectVector,
 			distance))
 		{
@@ -142,24 +142,23 @@ GHNavMesh* LumiaMap::GetCurrentNavMesh(const float4& _position)
 	return nullptr;
 }
 
-bool LumiaMap::IsMeshIntersected(const GHNavMesh& _mesh, const float4& _position)
+bool LumiaMap::IsMeshIntersected(const GHNavMesh& _mesh, const float4& _position, float& _inDistance)
 {
-	const float HEIGHT_MAXIMUM = 1000.f;
 	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
-	float distance = 0;
 	float4 position = _position;
 	position.y += HEIGHT_MAXIMUM;
-	return DirectX::TriangleTests::Intersects(_position.DirectVector, float4::DOWN.DirectVector,
+	return DirectX::TriangleTests::Intersects(position.DirectVector, float4::DOWN.DirectVector,
 		(_mesh.Vertices[0] * matWorld).DirectVector, (_mesh.Vertices[1] * matWorld).DirectVector, (_mesh.Vertices[2] * matWorld).DirectVector,
-		distance);
+		_inDistance);
 }
 
 GHNavMesh* LumiaMap::FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position)
 {
+	float temp;
 	// 전체 탐색
 	for (GHNavMesh& n : navMeshes_)
 	{
-		if (IsMeshIntersected(n, _position))
+		if (IsMeshIntersected(n, _position, temp))
 		{
 			return &n;
 		}
@@ -479,7 +478,7 @@ void LumiaMap::checkASterNodeObstacle()
 	{
 		for (GHNode& n : v)
 		{
-			if (nullptr == GetCurrentNavMesh(n.GetPosition()))
+			if (nullptr == GetNavMesh(n.GetPosition()))
 			{
 				n.SetObstacle(true);
 				tileVertices_[n.GetIndex()].COLOR = float4::RED;

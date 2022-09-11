@@ -9,6 +9,9 @@ class GHNavMesh;
 class GHRio : public GameEngineActor
 {
 public:
+	bool TempFlag = false;
+
+public:
 	GHRio();
 	~GHRio();
 	GHRio(const GHRio& _other) = delete;
@@ -22,7 +25,6 @@ public:
 
 public:
 	void SetSpawnPoint(const float4& _position);
-
 
 private:
 	void startIdle(float _deltaTime);

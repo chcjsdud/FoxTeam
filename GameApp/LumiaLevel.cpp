@@ -78,6 +78,7 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	initRenderWindow();
 	createActor();
 	adjustCamera();
+	GenerateCharactor();
 }
 
 void LumiaLevel::GenerateCharactor()
@@ -98,11 +99,15 @@ void LumiaLevel::GenerateCharactor()
 
 	for (size_t i = 0; i < pm->GetPlayerList().size(); i++)
 	{
-		CreateActor<GHRio>();
+		GHRio* newCharacter = CreateActor<GHRio>();
+		newCharacter->SetSpawnPoint({ -2500.f, 0.0f, 10000.f });
+
+		if (i == 0)
+		{
+			newCharacter->TempFlag = true;
+			player_ = newCharacter;
+		}
 	}
-
-
-
 }
 
 void LumiaLevel::loadResource()
@@ -113,9 +118,9 @@ void LumiaLevel::loadResource()
 		tempDir.MoveParent("FoxTeam");
 		tempDir / "Resources" / "FBX" / "Map";
 
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
-		Mesh->CreateRenderingBuffer();
-		Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("DowntownNavMesh.fbx"));
+		//GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
+		//Mesh->CreateRenderingBuffer();
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("DowntownNavMesh.fbx"));
 		Mesh->CreateRenderingBuffer();
 
 	}
