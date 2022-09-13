@@ -101,8 +101,8 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		for (size_t i = 0; i < 6; i++)
 		{
 			TempLobbyRenderer* renderer_ = CreateActor<TempLobbyRenderer>();
-			renderer_->SetPos({ (-500.f + 200.f * i), -280.f, 0.f });
-			renderer_->SetScale({ 122.f, 155.f });
+			renderer_->SetPos({ (-500.f + 200.f * i), -320.f, 0.f });
+			renderer_->SetScale({ 60.f, 75.f });
 			renderer_->SetRender(false);
 			tempLobbyRenderers_.emplace_back(renderer_);
 		}
