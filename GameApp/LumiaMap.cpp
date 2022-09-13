@@ -44,7 +44,7 @@ void LumiaMap::Start()
 	size_t count = navMeshRenderer_->GetRenderSetCount();
 	for (size_t i = 0; i < count; i++)
 	{
-		navMeshRenderer_->GetRenderSet(static_cast<unsigned int>(i)).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
+		navMeshRenderer_->GetRenderSet(static_cast<unsigned int>(i)).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
 	}
 
 	navMeshRenderer_->GetTransform()->SetLocalScaling(100.0f);
@@ -142,14 +142,17 @@ GHNavMesh* LumiaMap::GetNavMesh(const float4& _position)
 	return nullptr;
 }
 
-bool LumiaMap::IsMeshIntersected(const GHNavMesh& _mesh, const float4& _position, float& _inDistance)
+bool LumiaMap::IsMeshIntersected(const GHNavMesh& _mesh, const float4& _position, float& _inHeight)
 {
 	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
 	float4 position = _position;
-	position.y += HEIGHT_MAXIMUM;
-	return DirectX::TriangleTests::Intersects(position.DirectVector, float4::DOWN.DirectVector,
+	position.y = HEIGHT_MAXIMUM;
+
+	bool bResult = DirectX::TriangleTests::Intersects(position.DirectVector, float4::DOWN.DirectVector,
 		(_mesh.Vertices[0] * matWorld).DirectVector, (_mesh.Vertices[1] * matWorld).DirectVector, (_mesh.Vertices[2] * matWorld).DirectVector,
-		_inDistance);
+		_inHeight);
+	_inHeight = HEIGHT_MAXIMUM - _inHeight;
+	return bResult;
 }
 
 GHNavMesh* LumiaMap::FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position)

@@ -63,12 +63,28 @@ void GHRio::Update(float _deltaTime)
 	{
 		if (nullptr != mouse)
 		{
-			float4 clickPosition = mouse->GetIntersectionYAxisPlane(0.0f, 1000.f);
-			LumiaMap* map = level->GetMap();
-			if (nullptr != map)
-			{
-				
-			}
+			destination_ = mouse->GetIntersectionYAxisPlane(0.0f, 1000.f);
+			//float4 clickPosition = mouse->GetIntersectionYAxisPlane(0.0f, 1000.f);
+			//LumiaMap* map = level->GetMap();
+			//if (nullptr != map)
+			//{
+			//	float height = 0.f;
+			//	
+			//	GHNavMesh* clickedMesh = map->GetNavMesh(clickPosition);
+
+			//	if (nullptr != clickedMesh)
+			//	{
+			//		map->IsMeshIntersected(*clickedMesh, clickPosition, height);
+			//		destination_.x = clickPosition.x;
+			//		destination_.y = height;
+			//		destination_.z = clickPosition.z;
+			//	}
+			//	else
+			//	{
+			//		destination_ = clickPosition;
+			//	}
+
+			//}
 		}
 	}
 
@@ -95,7 +111,7 @@ void GHRio::Update(float _deltaTime)
 		controlWindow->AddText("Path find time elapsed : " + std::to_string(pathFindTime) + " sec");
 	}
 
-
+	worldPosition.y = destination_.y;
 	if ((destination_ - worldPosition).Len3D() > 10.f)
 	{
 		renderer_->ChangeFBXAnimation("Run");
@@ -149,6 +165,12 @@ void GHRio::Update(float _deltaTime)
 			renderer_->ChangeFBXAnimation("Wait");
 		}
 	}
+
+	float4 position = GetTransform()->GetWorldPosition();
+	float height = 0;
+	currentMap_->IsMeshIntersected(*currentNavMesh_, position, height);
+	position.y = height;
+	GetTransform()->SetWorldPosition(position);
 }
 
 void GHRio::SetSpawnPoint(const float4& _position)

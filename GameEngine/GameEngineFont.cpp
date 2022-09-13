@@ -34,7 +34,7 @@ void GameEngineFont::Load(const std::string& _Path)
 
 	if (S_OK != FontFactory_->CreateFontWrapper(GameEngineDevice::GetDevice(), wText.c_str(), &FontWrapper_))
 	{
-		GameEngineDebug::MsgBoxError("폰트 캐칭에 실패했습니다 랩핑이 되지 않았습니다.");
+		//GameEngineDebug::MsgBoxError("폰트 캐칭에 실패했습니다 랩핑이 되지 않았습니다.");
 		return;
 	}
 }
