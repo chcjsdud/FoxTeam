@@ -32,7 +32,7 @@ void LobbyToLumiaPacket::userDeserialize()
 
 void LobbyToLumiaPacket::initPacketID()
 {
-    SetPacketID(ePacketID::PlayerNumberPacket);
+    SetPacketID(ePacketID::LobbyToLumiaPacket);
 }
 
 GameEnginePacketBase* LobbyToLumiaPacket::getUserObject()
