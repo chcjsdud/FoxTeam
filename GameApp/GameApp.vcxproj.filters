@@ -310,6 +310,12 @@
     <ClCompile Include="GHRio.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="TitleIDInput.cpp">
+      <Filter>01.GameObject\03.Level\TitleLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyToLumiaPacket.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -844,6 +850,12 @@
     </ClInclude>
     <ClInclude Include="GHRio.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleIDInput.h">
+      <Filter>01.GameObject\03.Level\TitleLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyToLumiaPacket.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

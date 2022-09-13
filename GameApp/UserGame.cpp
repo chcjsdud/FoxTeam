@@ -20,6 +20,7 @@
 #include "LobbyLevel.h"
 #include "KeyboardClass.h"	
 #include <GameApp/LumiaLevel.h>
+#include "TitleLevel.h"
 std::atomic<int> UserGame::LoadingFolder = 0;
 bool UserGame::IsServer_ = false;
 
@@ -52,8 +53,8 @@ void UserGame::Initialize()
 	//LevelCreate<SettingItemLevel>("SettingItemLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
 	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
-	//LevelCreate<LobbyLevel>("LobbyLevel");
-	
+	LevelCreate<LobbyLevel>("LobbyLevel");
+	//LevelCreate<TitleLevel>("TitleLevel");
 	LevelCreate<LumiaLevel>("LumiaLevel");
 
 	LevelChange("LumiaLevel");
@@ -63,7 +64,8 @@ void UserGame::Initialize()
 	//LevelChange("SJH_Play");
 	//LevelChange("PJW_Play");
 	//LevelChange("YSJ_Play");
-	//LevelChange("LobbyLevel");
+	LevelChange("LobbyLevel");
+	//LevelChange("TitleLevel");
 	return;
 }
 

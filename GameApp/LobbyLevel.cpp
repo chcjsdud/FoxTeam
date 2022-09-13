@@ -21,8 +21,11 @@
 #include "GameClient.h"
 #include "PlayerInfoManager.h"
 #include "SetPlayerNumberPacket.h"
+#include "LobbyToLumiaPacket.h"
 
 #include "LobbyUIController.h"
+
+#include "UserGame.h"
 
 LobbyLevel::LobbyLevel()
 	: playerCount_(0), myCharacterSelection_(-1), myStartPointSelection_(-1), myIsReady_(false)
@@ -69,6 +72,9 @@ void LobbyLevel::LevelStart()
 		GameEngineInput::GetInst().CreateKey("6", '6');
 		GameEngineInput::GetInst().CreateKey("Ready", VK_RETURN);
 		GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
+
+		
+		GameEngineInput::GetInst().CreateKey("PassLevel", 'P');
 	}
 
 }
@@ -342,6 +348,9 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			packet.SetReadyStatus(true);
 			clientSocket_->Send(&packet);
 			state_.ChangeState("Join");
+
+
+
 		}
 
 	}
@@ -395,38 +404,58 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 {
 	// 다른 상대의 준비를 기다리거나, 취소 버튼을 눌러 다시 캐릭터 선택으로 돌아가는 단계입니다.
 	// 최종 결제권을 가진 호스트가 전체 레디 상황을 확인하고 게임을 시작합니다.
-
 	GameServer* serverSocket_ = GameServer::GetInstance();
 	GameClient* clientSocket_ = GameClient::GetInstance();
-	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-	if (true == serverSocket_->IsOpened())
-	{
-		serverSocket_->ProcessPacket();
-		int count = 0;
-
-		for (int i = 0; i < pm->GetPlayerList().size(); i++)
+		if (true == serverSocket_->IsOpened())
 		{
-			if (true == pm->GetPlayerList()[i].isReady_)
+			serverSocket_->ProcessPacket();
+
+			if (true == GameEngineInput::GetInst().Down("PassLevel"))
 			{
-				count++;
+				LobbyToLumiaPacket packet;
+				serverSocket_->Send(&packet);
+
+				UserGame::LevelChange("LumiaLevel");
+
 			}
-		}
 
-		if (count == pm->GetPlayerList().size())
+		}
+		else
 		{
-			// 모두 캐릭터 선택을 마치면, 호스트 프로세스가 최종적으로 이 위치로 들어오게 됩니다.
-			
-			// 각 프로세스마다 맵과 몬스터 ,아이템을 배치하는 과정을 여기에서 명령해야 할 듯...
-
-
-			GameEngineDebug::MsgBoxError("모두 준비 완료, 게임을 시작합니다.");
+			clientSocket_->ProcessPacket();
 		}
-	}
-	else if (true == clientSocket_->IsConnected())
-	{
-		clientSocket_->ProcessPacket();
-	}
+
+
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	//
+	//if (true == serverSocket_->IsOpened())
+	//{
+
+	//	int count = 0;
+	//
+	//	for (int i = 0; i < pm->GetPlayerList().size(); i++)
+	//	{
+	//		if (true == pm->GetPlayerList()[i].isReady_)
+	//		{
+	//			count++;
+	//		}
+	//	}
+	//
+	//	if (count == pm->GetPlayerList().size())
+	//	{
+	//		// 모두 캐릭터 선택을 마치면, 호스트 프로세스가 최종적으로 이 위치로 들어오게 됩니다.
+	//		
+	//		// 각 프로세스마다 맵과 몬스터 ,아이템을 배치하는 과정을 여기에서 명령해야 할 듯...
+	//
+	//
+	//		GameEngineDebug::MsgBoxError("모두 준비 완료, 게임을 시작합니다.");
+	//	}
+	//}
+	//else if (true == clientSocket_->IsConnected())
+	//{
+	//	clientSocket_->ProcessPacket();
+	//}
 
 	// 유저들의 달라진 캐릭터 선택을 인지해 렌더링을 바꿔 준다.
 	for (int i = 0; i < pm->GetPlayerList().size(); i++)
@@ -466,6 +495,8 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 
 void LobbyLevel::EndJoin()
 {
+
+
 }
 
 void LobbyLevel::Check_PortraitCollision()
