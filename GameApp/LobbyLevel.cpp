@@ -162,7 +162,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_->Initialize();
 		serverSocket_->OpenServer();
 		serverSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
-		//serverSocket_->AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
+		serverSocket_->AddPacketHandler(ePacketID::LobbyToLumiaPacket, new LobbyToLumiaPacket);
 		serverSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
 		serverSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
 		serverSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
@@ -184,9 +184,9 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	if (true == UIController_->GetClientButton()->MouseCollisionCheck() && true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
 		clientSocket_->Initialize();
-		clientSocket_->Connect("127.0.0.1");
+		clientSocket_->Connect("192.168.43.220");
 		clientSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
-		//clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket, new GameJoinPacket);
+		clientSocket_->AddPacketHandler(ePacketID::LobbyToLumiaPacket, new LobbyToLumiaPacket);
 		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
 		clientSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
 		clientSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
