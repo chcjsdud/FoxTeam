@@ -481,11 +481,22 @@ void LumiaMap::checkASterNodeObstacle()
 	{
 		for (GHNode& n : v)
 		{
-			if (nullptr == GetNavMesh(n.GetPosition()))
+			GHNavMesh* currentMesh = GetNavMesh(n.GetPosition());
+			if (nullptr == currentMesh)
 			{
 				n.SetObstacle(true);
 				tileVertices_[n.GetIndex()].COLOR = float4::RED;
+				continue;
 			}
+
+
+			float height = 0.0f;
+			if (true == IsMeshIntersected(*currentMesh, n.GetPosition(), height))
+			{
+				tileVertices_[n.GetIndex()].POSITION.y = height;
+			}
+
+
 		}
 	}
 
