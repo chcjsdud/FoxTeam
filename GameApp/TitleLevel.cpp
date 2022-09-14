@@ -11,7 +11,7 @@
 #include "UserGame.h"
 
 TitleLevel::TitleLevel()
-	:isTyped_(false), fadeWaitTime_(3.0f), mandatoryFadeTime_(0.0f), fadeTime_(1.5f)
+	:isTyped_(false), fadeWaitTime_(2.0f), mandatoryFadeTime_(0.0f), fadeTime_(1.5f)
 {
 }
 
@@ -83,7 +83,7 @@ void TitleLevel::UpdateBooting(float _DeltaTime)
 
 	if (DEFAULT_PROLOGUE_FADETIME <= mandatoryFadeTime_)
 	{
-		fadeWaitTime_ = 3.0f;
+		fadeWaitTime_ = 2.0f;
 		fadeTime_ = 1.5f;
 		mandatoryFadeTime_ = 0.0f;
 
