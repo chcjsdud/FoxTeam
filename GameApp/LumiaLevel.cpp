@@ -153,6 +153,7 @@ void LumiaLevel::releaseResource()
 	GameEngineFBXMeshManager::GetInst().Delete("Downtown.fbx");
 
 	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh_Cobalt.fbx");
+	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh.fbx");
 	GameEngineFBXMeshManager::GetInst().Delete("Rio_Run.fbx");
 
 	GameEngineFBXAnimationManager::GetInst().Delete("Rio_Run.fbx");

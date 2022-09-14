@@ -145,27 +145,6 @@ void GHRio::Update(float _deltaTime)
 		{
 			destination_ = worldPosition;
 		}
-
-		/*if (true == currentMap_->IsMeshIntersected(*currentNavMesh_, nextMovePosition, temp))
-		{
-			GetTransform()->SetWorldPosition(nextMovePosition);
-		}
-		else
-		{
-			GHNavMesh* adjacentMesh = currentMap_->FindAdjacentMeshIntersect(*currentNavMesh_, nextMovePosition);
-
-			if (nullptr == adjacentMesh)
-			{
-				destination_ = worldPosition;
-			}
-			else
-			{
-				currentNavMesh_ = adjacentMesh;
-				GetTransform()->SetWorldPosition(nextMovePosition);
-			}
-		}*/
-
-		//GetTransform()->SetWorldPosition(nextMovePosition);
 	}
 	else
 	{
