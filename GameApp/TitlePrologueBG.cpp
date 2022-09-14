@@ -32,7 +32,7 @@ void TitlePrologueBG::SetAlpha(float _Alpha)
 void TitlePrologueBG::Start()
 {
 	renderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
-	renderer_->SetImage("prologeTitle.png", "PointSmp");
+	renderer_->SetImage("FoxteamBig.png", "PointSmp");
 	renderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -20.0f });
 	renderer_->GetTransform()->SetLocalScaling(renderer_->GetCurrentTexture()->GetTextureSize());
 }
