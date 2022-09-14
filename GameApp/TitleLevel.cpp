@@ -11,7 +11,7 @@
 #include "UserGame.h"
 
 TitleLevel::TitleLevel()
-	:isTyped_(false), fadeWaitTime_(2.0f), mandatoryFadeTime_(0.0f), fadeTime_(1.5f)
+	:isTyped_(false), fadeWaitTime_(2.0f), mandatoryFadeTime_(0.0f), fadeTime_(1.5f), levelChangeTime_(0.0f)
 {
 }
 
@@ -142,9 +142,22 @@ void TitleLevel::StartSelect()
 
 void TitleLevel::UpdateSelect(float _DeltaTime)
 {
+	levelChangeTime_ += GameEngineTime::GetInst().GetDeltaTime();
+
 	if (true == GameEngineInput::GetInst().Up("LBUTTON"))
 	{
 		UIController_->GetStartButton()->SetImageByIndex(1);
+	}
+
+
+	std::string temp = PlayerInfoManager::GetInstance()->GetNickname();
+
+
+	if (1.0f <= levelChangeTime_)
+	{
+		levelChangeTime_ = 0.0f;
+		UserGame::LevelChange("LobbyLevel");
+		return;
 	}
 }
 

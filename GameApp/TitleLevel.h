@@ -36,7 +36,7 @@ protected:
 
 
 private:
-	const float DEFAULT_PROLOGUE_FADETIME = 6.0f;
+	const float DEFAULT_PROLOGUE_FADETIME = 3.5f;
 
 	GameEngineFSM state_;
 	TitleIDInput* idInput_;
@@ -44,6 +44,10 @@ private:
 	float fadeWaitTime_;
 	float fadeTime_;
 	float mandatoryFadeTime_;
+	float levelChangeTime_;
+	
 	bool isTyped_;
+
+
 };
 
