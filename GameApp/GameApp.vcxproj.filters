@@ -154,12 +154,6 @@
     <ClCompile Include="ItemBoxManager.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClCompile>
-    <ClCompile Include="NaviActor.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="NaviMesh.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
-    </ClCompile>
     <ClCompile Include="ItemBoxWindow.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\ImGui</Filter>
     </ClCompile>
@@ -331,11 +325,17 @@
     <ClCompile Include="TitleStartButton.cpp">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
     </ClCompile>
-    <ClCompile Include="NaviNode.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
-    </ClCompile>
     <ClCompile Include="TitleFoxLogo.cpp">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviNode.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviActor.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NaviMesh.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -716,12 +716,6 @@
     <ClInclude Include="ItemBoxManager.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClInclude>
-    <ClInclude Include="NaviActor.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="NaviMesh.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
-    </ClInclude>
     <ClInclude Include="ItemBoxWindow.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\ImGui</Filter>
     </ClInclude>
@@ -898,6 +892,15 @@
     </ClInclude>
     <ClInclude Include="TitleFoxLogo.h">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviActor.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviMesh.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviNode.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
