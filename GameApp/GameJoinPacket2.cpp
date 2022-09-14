@@ -30,6 +30,7 @@ void GameJoinPacket2::userSerialize()
     serializer_ << info_.isReady_;
     serializer_ << info_.playerNumber_;
     serializer_ << info_.startPoint_;
+    serializer_ << info_.playerNickname_;
     serializer_ << listSize_;
 }
 
@@ -39,6 +40,7 @@ void GameJoinPacket2::userDeserialize()
     serializer_ >> info_.isReady_;
     serializer_ >> info_.playerNumber_;
     serializer_ >> info_.startPoint_;
+    serializer_ >> info_.playerNickname_;
     serializer_ >> listSize_;
 }
 
@@ -79,6 +81,7 @@ void GameJoinPacket2::execute(SOCKET _sender, GameEngineSocketInterface* _networ
         info_.character_ = -1;
         info_.startPoint_ = -1;
         info_.isReady_ = 0;
+        
 
         // 새로운 클라이언트 정보를 서버와 클라이언트들에게 추가한다.
         pm->AddNewPlayer(info_);

@@ -56,12 +56,10 @@ void TitleIDInput::Start()
 	}
 
 	inputRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	inputRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-	
-
+	inputRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -30.0f, 0.0f });
 	inputWindowRenderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
-	inputWindowRenderer_->SetImage("Btn_Start_Basic.png", "PointSmp");
-	inputWindowRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -102.0f });
+	inputWindowRenderer_->SetImage("NicknameSlot.png", "PointSmp");
+	inputWindowRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -40.0f, -10.0f });
 	inputWindowRenderer_->GetTransform()->SetLocalScaling(inputWindowRenderer_->GetCurrentTexture()->GetTextureSize());
 
 	inputCollision_ = CreateTransformComponent<GameEngineCollision>();
@@ -72,40 +70,61 @@ void TitleIDInput::Start()
 
 void TitleIDInput::Update(float _DeltaTime)
 {
-	if (true == GameEngineInput::GetInst().Down("Chatting_Enter"))
-	{
-		ChattingInputOK_ = !ChattingInputOK_; // 채팅 활성화 / 비활성화 토글
-	}
+	//if (true == GameEngineInput::GetInst().Down("Chatting_Enter"))
+	//{
+	//	ChattingInputOK_ = !ChattingInputOK_; // 채팅 활성화 / 비활성화 토글
+	//}
 
-	if (true == ChattingInputOK_)
-	{
-		// 캐럿 생성
-		if (false == caretshow_)
-		{
-			caretshow_ = true;
-			CreateCaret(GameEngineWindow::GetInst().GetWindowHWND(), NULL, 20, 140);
-			ShowCaret(GameEngineWindow::GetInst().GetWindowHWND());
-			SetCaretBlinkTime(10);
-			SetCaretPos(0, 0);
-		}
-	}
-	else if (false == ChattingInputOK_)
-	{
-		if (true == caretshow_)
-		{
-			caretshow_ = false;
-
-			// 캐럿 반납
-			SetCaretBlinkTime(500);
-			HideCaret(GameEngineWindow::GetInst().GetWindowHWND());
-			DestroyCaret();
-		}
-	}
+	//if (true == ChattingInputOK_)
+	//{
+	//	// 캐럿 생성
+	//	if (false == caretshow_)
+	//	{
+	//		caretshow_ = true;
+	//		CreateCaret(GameEngineWindow::GetInst().GetWindowHWND(), NULL, 20, 140);
+	//		ShowCaret(GameEngineWindow::GetInst().GetWindowHWND());
+	//		SetCaretBlinkTime(10);
+	//		SetCaretPos(0, 0);
+	//	}
+	//}
+	//else if (false == ChattingInputOK_)
+	//{
+	//	if (true == caretshow_)
+	//	{
+	//		caretshow_ = false;
+	//
+	//		// 캐럿 반납
+	//		SetCaretBlinkTime(500);
+	//		HideCaret(GameEngineWindow::GetInst().GetWindowHWND());
+	//		DestroyCaret();
+	//	}
+	//}
 
 	//////
 
+	if (false == caretshow_)
+	{
+		caretshow_ = true;
+		CreateCaret(GameEngineWindow::GetInst().GetWindowHWND(), NULL, 2, 14);
+		ShowCaret(GameEngineWindow::GetInst().GetWindowHWND());
+		SetCaretBlinkTime(10);
+		SetCaretPos(0, 0);
+	}
+	
+	//else if (false == ChattingInputOK_)
+	//{
+	//	if (true == caretshow_)
+	//	{
+	//		caretshow_ = false;
+	//
+	//		// 캐럿 반납
+	//		SetCaretBlinkTime(500);
+	//		HideCaret(GameEngineWindow::GetInst().GetWindowHWND());
+	//		DestroyCaret();
+
+
 	// 키보드 키입력 체크 및 문자열 편집
-	if (true == ChattingInputOK_)
+	//if (true == ChattingInputOK_)
 	{
 		while (!KeyboardClass::GetInst().CharBufferIsEmpty())
 		{
@@ -116,29 +135,29 @@ void TitleIDInput::Update(float _DeltaTime)
 			inputRenderer_->TextSetting("굴림", InputText_, 30, float4::WHITE);
 		}
 	}
-	else // 현재 입력상태가 아닌와중에도 키보드 입력이 있다면 charbuffer를 클리어한다.
-	{
-		KeyboardClass::GetInst().DeleteCharBuffer();
-	}
+	//else // 현재 입력상태가 아닌와중에도 키보드 입력이 있다면 charbuffer를 클리어한다.
+	//{
+	//	KeyboardClass::GetInst().DeleteCharBuffer();
+	//}
 
 	// 입력중인 채팅 문자열을 채팅 이력으로 보내기(채팅입력완료)
-	if (true == ChattingInputOK_ && true == GameEngineInput::GetInst().Down("Chatting_Enter"))
-	{
-		// 문자열이 있을때만 이력에 남길수있다.
-		if (!InputText_.empty())
-		{
-			// 현재 입력된 문자열을 ChattingHistory로 넘겨준다.
-			ChattingHistory::ChattingHistoryAdd(InputText_);
-
-			InputText_.clear();
-
-			// 캐럿위치 초기화
-			SetCaretPos(20, 660);
-		}
-	}
+	//if (/*true == ChattingInputOK_ && */true == GameEngineInput::GetInst().Down("Chatting_Enter"))
+	//{
+	//	// 문자열이 있을때만 이력에 남길수있다.
+	//	if (!InputText_.empty())
+	//	{
+	//		// 현재 입력된 문자열을 ChattingHistory로 넘겨준다.
+	//		ChattingHistory::ChattingHistoryAdd(InputText_);
+	//
+	//		InputText_.clear();
+	//
+	//		// 캐럿위치 초기화
+	//		SetCaretPos(20, 660);
+	//	}
+	//}
 
 	// 입력중인 채팅 문자열 마지막부터 삭제
-	if (true == ChattingInputOK_ && true == GameEngineInput::GetInst().Down("Chatting_Del"))
+	if (/*true == ChattingInputOK_ && */true == GameEngineInput::GetInst().Down("Chatting_Del"))
 	{
 		// 채팅 입력창 활성화 시에만 아래 처리가능
 		if (!InputText_.empty())
@@ -166,8 +185,6 @@ void TitleIDInput::Update(float _DeltaTime)
 			SetCaretPos(20 + CurTextSize.cx, 660);
 		}
 	}
-
-//	GetLevel()->PushDebugRender(inputCollision_->GetTransform(), CollisionType::Rect);
 }
 
 void TitleIDInput::AddText(const std::string& _Text)
@@ -175,7 +192,7 @@ void TitleIDInput::AddText(const std::string& _Text)
 	// 채팅 최대글자수 넘어가면 입력불가
 	std::string CurText = InputText_;
 	CurText += _Text;
-	if (116 <= lstrlen(CurText.c_str()))
+	if (16 <= lstrlen(CurText.c_str()))
 	{
 		// 입력불가
 		return;

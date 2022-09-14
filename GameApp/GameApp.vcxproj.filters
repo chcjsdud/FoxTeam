@@ -319,6 +319,18 @@
     <ClCompile Include="Lobby_StartButton.cpp">
       <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClCompile>
+    <ClCompile Include="TitleUIController.cpp">
+      <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TitlePrologueBG.cpp">
+      <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleBG.cpp">
+      <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleStartButton.cpp">
+      <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
+    </ClCompile>
     <ClCompile Include="NaviNode.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
     </ClCompile>
@@ -542,6 +554,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor">
       <UniqueIdentifier>{e1cce04c-4094-49a6-ac6d-e9d77e1032ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\TitleLevel\UI">
+      <UniqueIdentifier>{859b87d4-611c-461e-9a0d-8fd944a92dcf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -865,9 +880,6 @@
     </ClInclude>
     <ClInclude Include="Lobby_StartButton.h">
       <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="NaviNode.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

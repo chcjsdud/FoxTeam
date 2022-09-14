@@ -41,6 +41,7 @@ protected:
 
 public:
 	void AddText(const std::string& _Text);
+	const std::string GetInput() { return InputText_; }
 
 };
 

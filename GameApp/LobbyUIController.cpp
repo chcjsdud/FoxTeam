@@ -7,6 +7,7 @@
 #include "Lobby_PortraitBg.h"
 #include "Lobby_CharFull.h"
 #include "LobbyLevel.h"
+#include "Lobby_StartButton.h"
 
 JobType LobbyUIController::SelectedChar = JobType::MAX;
 bool LobbyUIController::CharSelectOn = false;
@@ -34,17 +35,18 @@ void LobbyUIController::InitUI()
 		hostButtonUI_ = GetLevel()->CreateActor<Lobby_ButtonOne>();
 		clientButtonUI_ = GetLevel()->CreateActor<Lobby_ButtonTwo>();
 		charFullUI_= GetLevel()->CreateActor<Lobby_CharFull>();
-
+		startButtonUI_ = GetLevel()->CreateActor<Lobby_StartButton>();
 	}
 
 	{
 		for (int x = 0; x < (int)JobType::MAX; x++)
 		{
 			Lobby_PortraitBg* Portrait = GetLevel()->CreateActor<Lobby_PortraitBg>();
-			float4 BasicPosition = { -580.0f, 200.0f, -102.0f };
 
+			float4 BasicPosition = { -580.0f, 200.0f, -102.0f };
 			int Vertical = (x / 4);
 			int Horizonal = x - (Vertical * 4);
+
 			Portrait->GetTransform()->SetLocalPosition(BasicPosition + float4{ float(Horizonal) * 72.0f, (float(Vertical) * -115.0f), 0.0f });
 			Portrait->SetChar(static_cast<JobType>(x));
 

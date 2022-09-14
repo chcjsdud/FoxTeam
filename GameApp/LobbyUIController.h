@@ -11,6 +11,7 @@ class Lobby_ButtonTwo;
 class Lobby_PortraitBg;
 class LobbyBackground;
 class Lobby_CharFull;
+class Lobby_StartButton;
 class LobbyUIController : public GameEngineActor
 {
 public:
@@ -30,6 +31,8 @@ public:
 public:
 	//내가 고른 캐릭터가 뭔지 가지고 있을 static 변수
 	static JobType SelectedChar;
+
+	//내가 캐릭터를 고르고 캐릭터 선택 버튼까지 눌러서 확정햇느냐 안했느냐의 여부
 	static bool CharSelectOn;
 
 protected:
@@ -41,6 +44,7 @@ private:
 	Lobby_ButtonOne* hostButtonUI_;
 	Lobby_ButtonTwo* clientButtonUI_;
 	Lobby_CharFull* charFullUI_;
+	Lobby_StartButton* startButtonUI_;
 	std::vector<Lobby_PortraitBg*> PortraitBg;
 
 

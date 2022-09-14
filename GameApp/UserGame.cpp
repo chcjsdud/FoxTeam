@@ -54,18 +54,18 @@ void UserGame::Initialize()
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
 	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
 	LevelCreate<LobbyLevel>("LobbyLevel");
-	//LevelCreate<TitleLevel>("TitleLevel");
+	LevelCreate<TitleLevel>("TitleLevel");
 	LevelCreate<LumiaLevel>("LumiaLevel");
 
-	LevelChange("LumiaLevel");
+	//LevelChange("LumiaLevel");
 	//LevelChange("RayTestLevel");
 	//LevelChange("SJH_Play");
 	//LevelChange("Play");
 	//LevelChange("SJH_Play");
 	//LevelChange("PJW_Play");
 	//LevelChange("YSJ_Play");
-	LevelChange("LobbyLevel");
-	//LevelChange("TitleLevel");
+	//LevelChange("LobbyLevel");
+	LevelChange("TitleLevel");
 	return;
 }
 
