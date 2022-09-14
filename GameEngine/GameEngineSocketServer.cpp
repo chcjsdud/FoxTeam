@@ -71,7 +71,7 @@ void GameEngineSocketServer::OpenServer()
 		return;
 	}
 
-	GameEngineDebug::OutPutDebugString("서버 오픈이 성공적으로 완료되었습니다.");
+	GameEngineDebug::OutPutDebugString("서버 오픈이 성공적으로 완료되었습니다.\n");
 
 	// 0830 박종원
 	//PlayerInfo info;

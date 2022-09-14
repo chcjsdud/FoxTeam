@@ -27,6 +27,7 @@ public:
 	Lobby_PortraitBg* GetPortraitVector(int _index);
 	Lobby_ButtonOne* GetHostButton() { return hostButtonUI_; }
 	Lobby_ButtonTwo* GetClientButton() { return clientButtonUI_; }
+	Lobby_StartButton* GetStartButton() { return startButtonUI_; }
 
 public:
 	//내가 고른 캐릭터가 뭔지 가지고 있을 static 변수

@@ -6,16 +6,12 @@
 #include "TitlePrologueBG.h"
 #include "TitleFoxLogo.h"
 TitleUIController::TitleUIController() // default constructer 디폴트 생성자
+	: idInput_(nullptr), titlePrologueBG_(nullptr), titleBG_(nullptr), startButton_(nullptr), logo_(nullptr)
 {
 
 }
 
 TitleUIController::~TitleUIController() // default destructer 디폴트 소멸자
-{
-
-}
-
-TitleUIController::TitleUIController(TitleUIController&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
 {
 
 }

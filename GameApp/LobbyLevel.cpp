@@ -14,6 +14,7 @@
 #include "Lobby_PortraitBg.h"
 #include "TempLobbyRenderer.h"
 #include "UI_TestMouse.h"
+#include "Lobby_StartButton.h"
 
 #include <GameEngine/GameEngineCollision.h>
 
@@ -167,7 +168,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
 		serverSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 		serverSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
-		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.");
+		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.\n");
 
 		std::string nicknameTemp = PlayerInfoManager::GetInstance()->GetNickname();
 		PlayerInfoManager::GetInstance()->AddNewPlayer({ 0, -1, -1, 0, nicknameTemp});
@@ -194,7 +195,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		clientSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 		clientSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
 
-		GameEngineDebug::OutPutDebugString("클라이언트로서 방에 참여합니다.");
+		GameEngineDebug::OutPutDebugString("클라이언트로서 방에 참여합니다.\n");
 		
 		// 바로 플레이어 정보를 저장하는 호스트와는 달리, 클라이언트는 따로 요청 패킷을 보냅니다.
 		// 패킷을 보내면 알맞은 플레이어 순번을 지정해 호스트가 다시 지정된 순번을 브로드캐스팅 해 줍니다.
@@ -280,7 +281,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			}
 		}
 
-		if (true == GameEngineInput::Down("Ready"))
+		if (true == UIController_->GetStartButton()->MouseCollisionCheck())
 		{
 			if (-1 == pm->GetPlayerList()[pm->GetMyNumber()].character_)
 			{
@@ -294,7 +295,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			packet.SetTargetIndex(pm->GetMyNumber());
 			packet.SetReadyStatus(1);
 			serverSocket_->Send(&packet);
-
+			GameEngineDebug::OutPutDebugString("호스트가 레디를 박았습니다.\n");
 			pm->GetPlayerList()[pm->GetMyNumber()].isReady_ = 1;
 			state_.ChangeState("Join");
 		}
@@ -334,11 +335,8 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			}
 		}
 
-		
 
-
-
-		if (true == GameEngineInput::Down("Ready"))
+		if (true == UIController_->GetStartButton()->MouseCollisionCheck())
 		{
 			if (-1 == pm->GetPlayerList()[pm->GetMyNumber()].character_)
 			{
@@ -353,9 +351,6 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			packet.SetReadyStatus(true);
 			clientSocket_->Send(&packet);
 			state_.ChangeState("Join");
-
-
-
 		}
 
 	}

@@ -12,7 +12,6 @@
 #include "LH_PlayLevel.h"
 
 #include "SJH_PlayLevel.h"
-#include "PJW_Level.h"
 #include "LGH_PlayLevel.h"
 #include "YSJ_PlayLevel.h"
 #include "SettingItemLevel.h"
@@ -47,7 +46,6 @@ void UserGame::Initialize()
 
 
 	//LevelCreate<PlayLevel>("Play");
-	//LevelCreate<PJW_Level>("PJW_Play"); // 220728 PJW Test 레벨
 	//LevelCreate<SJH_PlayLevel>("SJH_Play");	// 220727 SJH : TEST용 레벨
 	//LevelCreate<YSJ_PlayLevel>("YSJ_Play");
 	//LevelCreate<SettingItemLevel>("SettingItemLevel");
@@ -62,7 +60,6 @@ void UserGame::Initialize()
 	//LevelChange("SJH_Play");
 	//LevelChange("Play");
 	//LevelChange("SJH_Play");
-	//LevelChange("PJW_Play");
 	//LevelChange("YSJ_Play");
 	//LevelChange("LobbyLevel");
 	LevelChange("TitleLevel");
