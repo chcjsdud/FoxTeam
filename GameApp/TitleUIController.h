@@ -7,6 +7,7 @@
 class TitleIDInput;
 class TitlePrologueBG;
 class TitleBG;
+class TitleFoxLogo;
 class TitleStartButton;
 class TitleUIController : public GameEngineActor
 {
@@ -34,5 +35,6 @@ private:
 	TitleBG* titleBG_;
 	TitleIDInput* idInput_;
 	TitleStartButton* startButton_;
+	TitleFoxLogo* logo_;
 };
 
