@@ -8,7 +8,7 @@
 #include <GameApp/GHRio.h>
 
 class LumiaMap;
-class NaviMesh;
+class NavMesh;
 class LumiaLevel : public GameEngineLevel
 {
 public:

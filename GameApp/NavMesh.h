@@ -1,12 +1,11 @@
 #pragma once
-
 #include <GameEngine/GameEngineComponent.h>
 
 class NavFaceData
 {
 	friend class NavFace;
 	friend class NavMesh;
-	friend class NaviActor;
+	friend class NavActor;
 	friend class LumiaMap;
 public:
 	NavFaceData()

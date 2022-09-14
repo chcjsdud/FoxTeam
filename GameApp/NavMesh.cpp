@@ -1,7 +1,7 @@
 #include "PreCompile.h"
-#include "NaviMesh.h"
+#include "NavMesh.h"
 
-NaviMesh::NaviMesh()
+NavMesh::NavMesh()
 	: NaviRenderer(nullptr)
 	, NewVertex(nullptr)
 	, NewIndex(nullptr)
@@ -17,13 +17,13 @@ NaviMesh::NaviMesh()
 	NaviMeshFolder.MoveChild("Map");
 }
 
-NaviMesh::~NaviMesh()
+NavMesh::~NavMesh()
 {
 	delete NewVertex;
 	delete NewIndex;
 }
 
-void NaviMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex, 
+void NavMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex, 
 	const std::vector<UINT>& _Index)
 {
 	Navis.resize(_Index.size() / 3);
@@ -42,7 +42,7 @@ void NaviMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex,
 	// Link 정보 세팅
 	for (UINT i = 0; i < Navis.size(); i++)
 	{
-		Navi& Navi = Navis[i];
+		NavFace& Navi = Navis[i];
 
 		for (UINT j = 0; j < Navis.size(); j++)
 		{
@@ -68,7 +68,7 @@ void NaviMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex,
 	NaviRenderer = Renderer;*/
 }
 
-void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, 
+void NavMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, 
 	const std::string& _FileName /*= "Default"*/)
 {
 	std::vector<FbxMeshSet>& AllMesh = _FBXRenderer->GetMesh()->GetAllMeshMap();
@@ -98,7 +98,7 @@ void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer,
 	NaviRenderer = _FBXRenderer;
 }
 
-Navi* NaviMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir)
+NavFace* NavMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir)
 {
 	if (nullptr == NaviRenderer)
 	{
@@ -132,7 +132,7 @@ Navi* NaviMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir
 	return nullptr;
 }
 
-bool NaviMesh::CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance)
+bool NavMesh::CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance)
 {
 	bool Check = false;
 
@@ -167,7 +167,7 @@ bool NaviMesh::CheckIntersects(const float4& _Position, const float4& _Direction
 	return false;
 }
 
-float4 NaviMesh::CalculateCameraDir()
+float4 NavMesh::CalculateCameraDir()
 {
 	float4 MousePos = GameEngineInput::GetInst().GetMousePos();
 
@@ -202,7 +202,7 @@ float4 NaviMesh::CalculateCameraDir()
 	return Dir.NormalizeReturn3D();
 }
 
-float4 NaviMesh::GetMousePos()
+float4 NavMesh::GetMousePos()
 {
 	float4 Dir = CalculateCameraDir();
 
@@ -219,7 +219,7 @@ float4 NaviMesh::GetMousePos()
 	return float4::ZERO;
 }
 
-bool NaviMesh::IsMouseIntersects()
+bool NavMesh::IsMouseIntersects()
 {
 	float4 Dir = CalculateCameraDir();
 	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
@@ -228,7 +228,7 @@ bool NaviMesh::IsMouseIntersects()
 	return CheckIntersects(CameraPos, Dir, Dist);
 }
 
-void NaviMesh::SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh)
+void NavMesh::SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh)
 {
 	int Index = 0;
 
@@ -236,7 +236,7 @@ void NaviMesh::SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh)
 	{
 		for (size_t j = 0; j < _AllMesh[i].Indexs[0][0].size() / 3; j++)
 		{
-			Navi& Navi = Navis.emplace_back();
+			NavFace& Navi = Navis.emplace_back();
 
 			if (1 != _AllMesh[i].GameEngineIndexBuffers[0].size())
 			{
@@ -256,7 +256,7 @@ void NaviMesh::SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh)
 	// Link 정보 세팅
 	for (UINT i = 0; i < Navis.size(); i++)
 	{
-		Navi& Navi = Navis[i];
+		NavFace& Navi = Navis[i];
 
 		for (UINT j = 0; j < Navis.size(); j++)
 		{
@@ -273,7 +273,7 @@ void NaviMesh::SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh)
 	}
 }
 
-void NaviMesh::UserLoad(const std::string& _Path)
+void NavMesh::UserLoad(const std::string& _Path)
 {
 	GameEngineFile NewFile = GameEngineFile(_Path, "rb");
 
@@ -311,7 +311,7 @@ void NaviMesh::UserLoad(const std::string& _Path)
 	}
 }
 
-void NaviMesh::UserSave(const std::string& _Path)
+void NavMesh::UserSave(const std::string& _Path)
 {
 	GameEngineFile NewFile = GameEngineFile(_Path, "wb");
 
@@ -333,7 +333,7 @@ void NaviMesh::UserSave(const std::string& _Path)
 	}
 }
 
-bool NaviMesh::LinkCheck(const Navi& _Left, const Navi& _Right)
+bool NavMesh::LinkCheck(const NavFace& _Left, const NavFace& _Right)
 {
 	for (size_t i = 0; i < 3; i++)
 	{
@@ -349,7 +349,7 @@ bool NaviMesh::LinkCheck(const Navi& _Left, const Navi& _Right)
 	return false;
 }
 
-float Navi::YCheck(GameEngineTransform* _Transform)
+float NavFace::YCheck(GameEngineTransform* _Transform)
 {
 	float Dist = 0.0f;
 
@@ -361,7 +361,7 @@ float Navi::YCheck(GameEngineTransform* _Transform)
 	return Dist - 100.0f;
 }
 
-bool Navi::OutCheck(GameEngineTransform* _Transform, float& _Dist)
+bool NavFace::OutCheck(GameEngineTransform* _Transform, float& _Dist)
 {
 	float4 RayPos = _Transform->GetWorldPosition() + float4(0.0f, 100.0f, 0.0f);
 
@@ -391,11 +391,11 @@ bool Navi::OutCheck(GameEngineTransform* _Transform, float& _Dist)
 	return false;
 }
 
-Navi* Navi::MoveCheck(GameEngineTransform* _Transform)
+NavFace* NavFace::MoveCheck(GameEngineTransform* _Transform)
 {
 	for (size_t i = 0; i < Info.Link.size(); i++)
 	{
-		Navi* Navi = &AllNavi->at(Info.Link[i]);
+		NavFace* Navi = &AllNavi->at(Info.Link[i]);
 
 		if (false == Navi->OutCheck(_Transform))
 		{
@@ -406,11 +406,11 @@ Navi* Navi::MoveCheck(GameEngineTransform* _Transform)
 	return nullptr;
 }
 
-void NaviMesh::Start()
+void NavMesh::Start()
 {
 
 }
-void NaviMesh::Update(float _DeltaTime)
+void NavMesh::Update(float _DeltaTime)
 {
 	
 }

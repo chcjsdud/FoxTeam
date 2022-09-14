@@ -1,31 +1,31 @@
 #include "PreCompile.h"
-#include "NaviActor.h"
+#include "NavActor.h"
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
 
-NaviActor::NaviActor()
+NavActor::NavActor()
 	: CurrentNavi_(nullptr)
 	, NaviMesh_(nullptr)
 {
 
 }
 
-NaviActor::~NaviActor()
+NavActor::~NavActor()
 {
 
 }
 
-void NaviActor::SetNaviMesh(NaviMesh* _NaviMesh)
+void NavActor::SetNaviMesh(NavMesh* _NaviMesh)
 {
 	NaviMesh_ = _NaviMesh;
 	CurrentNavi_ = NaviMesh_->CurrentCheck(GetTransform(), float4::DOWN);
 }
 
-void NaviActor::Start()
+void NavActor::Start()
 {
 }
 
-void NaviActor::Update(float _DeltaTime)
+void NavActor::Update(float _DeltaTime)
 {
 	if (nullptr != CurrentNavi_)
 	{

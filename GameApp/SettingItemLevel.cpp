@@ -10,7 +10,7 @@
 #include "YSJ_LumiaMap.h"
 #include "YSJ_Player.h"
 #include "YSJ_Mouse.h"
-#include "NaviMesh.h"
+#include "NavMesh.h"
 #include "ItemBoxManager.h"
 #include <GameEngine/GameEngineCollision.h>
 

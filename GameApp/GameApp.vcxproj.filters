@@ -148,9 +148,6 @@
     <ClCompile Include="UI_Status.cpp">
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClCompile>
-    <ClCompile Include="GHNavMesh.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
-    </ClCompile>
     <ClCompile Include="ItemBoxManager.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClCompile>
@@ -159,9 +156,6 @@
     </ClCompile>
     <ClCompile Include="SettingItemLevel.cpp">
       <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
-    </ClCompile>
-    <ClCompile Include="GHNode.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh\AStar</Filter>
     </ClCompile>
     <ClCompile Include="ItemBase.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
@@ -328,13 +322,13 @@
     <ClCompile Include="TitleFoxLogo.cpp">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
     </ClCompile>
-    <ClCompile Include="NaviNode.cpp">
+    <ClCompile Include="AStarNode.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClCompile>
-    <ClCompile Include="NaviActor.cpp">
+    <ClCompile Include="NavActor.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClCompile>
-    <ClCompile Include="NaviMesh.cpp">
+    <ClCompile Include="NavMesh.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClCompile>
   </ItemGroup>
@@ -552,9 +546,6 @@
     <Filter Include="01.GameObject\03.Level\LumiaLevel\NavMesh">
       <UniqueIdentifier>{334917f0-e7bf-42b0-9856-9d921017c925}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LumiaLevel\NavMesh\AStar">
-      <UniqueIdentifier>{3fe54756-747e-4b1c-9b8b-27e681430b7a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor">
       <UniqueIdentifier>{e1cce04c-4094-49a6-ac6d-e9d77e1032ad}</UniqueIdentifier>
     </Filter>
@@ -692,9 +683,6 @@
     <ClInclude Include="SJH_PathFinder.h">
       <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder</Filter>
     </ClInclude>
-    <ClInclude Include="GHNavMesh.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
-    </ClInclude>
     <ClInclude Include="PJW_Mouse.h">
       <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClInclude>
@@ -721,9 +709,6 @@
     </ClInclude>
     <ClInclude Include="SettingItemLevel.h">
       <Filter>01.GameObject\03.Level\SettingItemLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="GHNode.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh\AStar</Filter>
     </ClInclude>
     <ClInclude Include="ItemBase.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
@@ -893,13 +878,13 @@
     <ClInclude Include="TitleFoxLogo.h">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
     </ClInclude>
-    <ClInclude Include="NaviActor.h">
+    <ClInclude Include="NavActor.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClInclude>
-    <ClInclude Include="NaviMesh.h">
+    <ClInclude Include="NavMesh.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClInclude>
-    <ClInclude Include="NaviNode.h">
+    <ClInclude Include="AStarNode.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClInclude>
   </ItemGroup>

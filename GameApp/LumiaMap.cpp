@@ -5,7 +5,7 @@
 #include <GameEngine/EngineVertex.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <numeric>
-#include "NaviMesh.h"
+#include "NavMesh.h"
 
 LumiaMap::LumiaMap()
 	: navMeshRenderer_(nullptr)
@@ -52,7 +52,7 @@ void LumiaMap::Start()
 	navMeshRenderer_->GetTransform()->SetLocalScaling(100.0f);
 	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f });
 
-	navMesh_ = CreateComponent<NaviMesh>();
+	navMesh_ = CreateComponent<NavMesh>();
 
 	// 모든 메쉬를 네비메쉬로
 	navMesh_->CreateNaviMesh(navMeshRenderer_);
@@ -65,63 +65,6 @@ void LumiaMap::Start()
 void LumiaMap::Update(float _deltaTime)
 {
 
-}
-
-GHNavMesh* LumiaMap::GetNavMesh(const float4& _position)
-{
-	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
-	float distance = 0.f;
-	float4 position = _position;
-	position.y += HEIGHT_MAXIMUM;
-	for (GHNavMesh& nav : navMeshes_)
-	{
-		if (DirectX::TriangleTests::Intersects(position.DirectVector, float4::DOWN.DirectVector,
-			nav.Vertices[0].DirectVector, nav.Vertices[1].DirectVector, nav.Vertices[2].DirectVector,
-			distance))
-		{
-			return &nav;
-		}
-	}
-	return nullptr;
-}
-
-bool LumiaMap::IsMeshIntersected(const GHNavMesh& _mesh, const float4& _position, float& _inHeight)
-{
-	float4x4 matWorld = navMeshRenderer_->GetTransform()->GetTransformData().WorldWorld_;
-	float4 position = _position;
-	position.y = HEIGHT_MAXIMUM;
-
-	bool bResult = DirectX::TriangleTests::Intersects(position.DirectVector, float4::DOWN.DirectVector,
-		(_mesh.Vertices[0] * matWorld).DirectVector, (_mesh.Vertices[1] * matWorld).DirectVector, (_mesh.Vertices[2] * matWorld).DirectVector,
-		_inHeight);
-	_inHeight = HEIGHT_MAXIMUM - _inHeight;
-	return bResult;
-}
-
-GHNavMesh* LumiaMap::FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position)
-{
-	float temp;
-	// 전체 탐색
-	for (GHNavMesh& n : navMeshes_)
-	{
-		if (IsMeshIntersected(n, _position, temp))
-		{
-			return &n;
-		}
-	}
-
-	//size_t adjacentMeshCount = _currentMesh.AdjacentMeshIndices.size();
-	//for (size_t i = 0; i < adjacentMeshCount; i++)
-	//{
-	//	int index = _currentMesh.AdjacentMeshIndices[i];
-
-	//	if (true == IsIntersectionMesh(navMeshes_[index], _position))
-	//	{
-	//		return &navMeshes_[index];
-	//	}
-	//}
-
-	return nullptr;
 }
 
 std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float4& _endPosition)
@@ -149,7 +92,7 @@ std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float
 
 	// 람다로 비교 함수를 작성. F값을 먼저 비교하고, F값이 같으면 H값을 비교한다.
 	// 코스트가 가장 낮은 녀석은 벡터의 뒤로 보낼 생각이다. pop_back 을 하기 위해.
-	auto cmp = [&](NaviNode* _left, NaviNode* _right)
+	auto cmp = [&](AStarNode* _left, AStarNode* _right)
 	{
 		float leftFCost = _left->GetFCost();
 		float rightFCost = _right->GetFCost();
@@ -166,16 +109,16 @@ std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float
 		return false;
 	};
 
-	std::vector<NaviNode*> open;
-	std::vector<NaviNode*> close;
-	NaviNode* endNode = &allNodes_[endIndexZ][endIndexX];
+	std::vector<AStarNode*> open;
+	std::vector<AStarNode*> close;
+	AStarNode* endNode = &allNodes_[endIndexZ][endIndexX];
 
 	open.push_back(&allNodes_[startIndexZ][startIndexX]);
 
 	while (true)
 	{
 		std::sort(open.begin(), open.end(), cmp);
-		NaviNode* current = open.back();
+		AStarNode* current = open.back();
 		open.pop_back();
 		close.push_back(current);
 
@@ -199,7 +142,7 @@ std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float
 				return true;
 			}
 
-			NaviNode* neighbour = &allNodes_[_zIndex][_xIndex];
+			AStarNode* neighbour = &allNodes_[_zIndex][_xIndex];
 
 			// 이웃 노드가 장애물 이라면
 			if (neighbour->IsObstacle())
@@ -277,22 +220,6 @@ std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float
 	return result;
 }
 
-bool LumiaMap::checkNavMeshAdjacency(const GHNavMesh& _left, const GHNavMesh& _right)
-{
-	for (size_t i = 0; i < 3; ++i)
-	{
-		for (size_t j = 0; j < 3; ++j)
-		{
-			if (_left.Vertices[i] == _right.Vertices[j])
-			{
-				return true;
-			}
-		}
-	}
-
-	return false;
-}
-
 void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 {
 	intervalX_ = _intervalX;
@@ -303,7 +230,7 @@ void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 	float endZ = -FLT_MAX;
 
 	// 네비게이션 메시를 돌면서 최소값, 최대값 X, Z 를 구한다.
-	for (Navi n : navMesh_->GetAllNavi())
+	for (NavFace n : navMesh_->GetAllNavi())
 	{
 		for (float4& f : n.GetInfo().Vertex)
 		{
@@ -344,7 +271,7 @@ void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 	// 노드를 넣을 만큼의 배열 공간을 확보합니다.
 	allNodes_.reserve(nodeCountZ);
 
-	for (std::vector<NaviNode>& v : allNodes_)
+	for (std::vector<AStarNode>& v : allNodes_)
 	{
 		v.reserve(nodeCountX);
 	}
@@ -353,13 +280,13 @@ void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 	int index = 0;
 	for (int z = 0; z < nodeCountZ; z++)
 	{
-		allNodes_.push_back(std::vector<NaviNode>());
+		allNodes_.push_back(std::vector<AStarNode>());
 		for (int x = 0; x < nodeCountX; x++)
 		{
 			float posX = gridStartX_ + x * intervalX_;
 			float posZ = gridStartZ_ + z * intervalZ_;
 
-			NaviNode newNode(index++, z, x, float4(posX, 0.0f, posZ));
+			AStarNode newNode(index++, z, x, float4(posX, 0.0f, posZ));
 
 			allNodes_[z].push_back(newNode);
 		}
@@ -421,9 +348,9 @@ void LumiaMap::checkASterNodeObstacle()
 
 	float temp = 0.0f;
 
-	for (std::vector<NaviNode>& v : allNodes_)
+	for (std::vector<AStarNode>& v : allNodes_)
 	{
-		for (NaviNode& n : v)
+		for (AStarNode& n : v)
 		{
 			float4 CheckNode = n.GetPosition();
 

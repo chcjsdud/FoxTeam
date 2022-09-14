@@ -2,7 +2,6 @@
 #include "GHRio.h"
 #include "MousePointer.h"
 #include "LumiaMap.h"
-#include "GHNavMesh.h"
 
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
@@ -45,7 +44,7 @@ void GHRio::Start()
 
 void GHRio::Update(float _deltaTime)
 {
-	NaviActor::Update(_deltaTime);
+	NavActor::Update(_deltaTime);
 
 	if (!TempFlag)
 	{

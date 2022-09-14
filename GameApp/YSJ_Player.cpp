@@ -19,7 +19,7 @@ YSJ_Player::~YSJ_Player()
 
 void YSJ_Player::Start()
 {
-	NaviActor::Start();
+	NavActor::Start();
 	// GetTransform()->SetWorldPosition({200.0f, 0.0f});
 
 	{
@@ -43,7 +43,7 @@ void YSJ_Player::Start()
 
 void YSJ_Player::Update(float _DeltaTime)
 {
-	NaviActor::Update(_DeltaTime);
+	NavActor::Update(_DeltaTime);
 
 	GetLevel()->GetMainCamera()->PushDebugRender(PlayerCollision->GetTransform(), CollisionType::AABBBox3D);
 

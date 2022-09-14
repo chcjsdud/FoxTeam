@@ -3,7 +3,7 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include "YSJ_Player.h"
 #include "YSJ_Mouse.h"
-#include "NaviMesh.h"
+#include "NavMesh.h"
 #include "ItemBoxManager.h"
 
 YSJ_LumiaMap* YSJ_LumiaMap::MainMap = nullptr;

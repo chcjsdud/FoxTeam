@@ -264,10 +264,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GHNode.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="GHRio.cpp">
       <SubType>
       </SubType>
@@ -311,23 +307,19 @@
     <ClCompile Include="LobbyLevel.cpp" />
     <ClCompile Include="LumiaLevel.cpp" />
     <ClCompile Include="MiscItem.cpp" />
-    <ClCompile Include="NaviActor.cpp">
+    <ClCompile Include="NavActor.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="NaviMesh.cpp">
+    <ClCompile Include="NavMesh.cpp">
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="NaviNode.cpp">
+    <ClCompile Include="AStarNode.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="PJW_Mouse.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="GHNavMesh.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -576,10 +568,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GHNode.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="GHRio.h">
       <SubType>
       </SubType>
@@ -625,19 +613,15 @@
     <ClInclude Include="LobbyLevel.h" />
     <ClInclude Include="LumiaLevel.h" />
     <ClInclude Include="MiscItem.h" />
-    <ClInclude Include="NaviActor.h">
+    <ClInclude Include="NavActor.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="NaviMesh.h">
+    <ClInclude Include="NavMesh.h">
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GHNavMesh.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="NaviNode.h">
+    <ClInclude Include="AStarNode.h">
       <SubType>
       </SubType>
     </ClInclude>

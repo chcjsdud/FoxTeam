@@ -1,14 +1,12 @@
 #pragma once
 
 #include <GameEngine/GameEngineActor.h>
-#include "GHNavMesh.h"
-#include "GHNode.h"
-#include "NaviNode.h"
+#include "AStarNode.h"
 
 #include <queue>
 
 class GameEngineFBXRenderer;
-class NaviMesh;
+class NavMesh;
 class LumiaMap : public GameEngineActor
 {
 public:
@@ -24,22 +22,14 @@ public:
 	virtual void Update(float _deltaTime) override;
 
 public:
-	/// 현재 위치의 네비메쉬 정보를 가져옵니다.
-	GHNavMesh* GetNavMesh(const float4& _position);
-
-	bool IsMeshIntersected(const GHNavMesh& _mesh, const float4& _position, float& _inHeight);
-	GHNavMesh* FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position);
-
 	std::vector<float4> FindPath(const float4& _startPosition, const float4& _endPosition);
 
-	NaviMesh* GetNavMesh()
+	NavMesh* GetNavMesh()
 	{
 		return navMesh_;
 	}
 
 private:
-	bool checkNavMeshAdjacency(const GHNavMesh& _left, const GHNavMesh& _right);
-
 	void makeAStarNode(float _intervalX, float _intervalZ);
 	void checkASterNodeObstacle();
 	void updateAStarNodeVertexInfo();
@@ -47,14 +37,9 @@ private:
 public:
 	const float HEIGHT_MAXIMUM = 1000.f;
 
-
 private:
-	// Ground Check
-	std::vector<GHNavMesh> navMeshes_;
-
 	// A*
-	//std::vector<std::vector<GHNode>> allNodes_;
-	std::vector<std::vector<NaviNode>> allNodes_;
+	std::vector<std::vector<AStarNode>> allNodes_;
 	std::vector<GameEngineVertex> tileVertices_;
 	std::vector<UINT> tileIndices_;
 	GameEngineVertexBuffer* tileVertexBuffer_;
@@ -69,7 +54,7 @@ private:
 
 	// Rendering Object
 	GameEngineFBXRenderer* navMeshRenderer_;
-	NaviMesh* navMesh_;
+	NavMesh* navMesh_;
 	GameEngineFBXRenderer* downTownRenderer_;
 };
 

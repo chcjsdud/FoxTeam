@@ -1,7 +1,7 @@
 #include "PreCompile.h"
-#include "GHNode.h"
+#include "AStarNode.h"
 
-GHNode::GHNode(int _index1D, int _zIndex, int _xIndex, const float4& _position)
+AStarNode::AStarNode(int _index1D, int _zIndex, int _xIndex, const float4& _position)
 	: position_(_position)
 	, bObstacle_(false)
 	, index_(_index1D)
@@ -15,12 +15,12 @@ GHNode::GHNode(int _index1D, int _zIndex, int _xIndex, const float4& _position)
 
 }
 
-GHNode::~GHNode()
+AStarNode::~AStarNode()
 {
 
 }
 
-GHNode::GHNode(const GHNode& _other)
+AStarNode::AStarNode(const AStarNode& _other)
 	: position_(_other.position_)
 	, bObstacle_(_other.bObstacle_)
 	, index_(_other.index_)
@@ -33,7 +33,7 @@ GHNode::GHNode(const GHNode& _other)
 {
 }
 
-GHNode::GHNode(GHNode&& _other) noexcept
+AStarNode::AStarNode(AStarNode&& _other) noexcept
 	: position_(_other.position_)
 	, bObstacle_(_other.bObstacle_)
 	, index_(_other.index_)
@@ -46,7 +46,7 @@ GHNode::GHNode(GHNode&& _other) noexcept
 {
 }
 
-GHNode& GHNode::operator=(const GHNode&& _other) noexcept
+AStarNode& AStarNode::operator=(const AStarNode&& _other) noexcept
 {
 	this->index_ = _other.index_;
 	this->zIndex_ = _other.zIndex_;
@@ -60,7 +60,7 @@ GHNode& GHNode::operator=(const GHNode&& _other) noexcept
 	return *this;
 }
 
-void GHNode::SetParent(GHNode* _parent)
+void AStarNode::SetParent(AStarNode* _parent)
 {
 	if (this == _parent)
 	{
@@ -70,24 +70,24 @@ void GHNode::SetParent(GHNode* _parent)
 	parent_ = _parent;
 }
 
-float GHNode::GetEvaluatedGCostToOhterNode(const GHNode& _other)
+float AStarNode::GetEvaluatedGCostToOhterNode(const AStarNode& _other)
 {
 	return gCost_ + (_other.position_ - position_).Len3D();
 }
 
-void GHNode::EvaluateCost(const GHNode& _other, const GHNode& _endNode)
+void AStarNode::EvaluateCost(const AStarNode& _other, const AStarNode& _endNode)
 {
 	gCost_ = (position_ - _other.position_).Len3D() + (parent_ != nullptr ? parent_->GetGCost() : 0);
 	hCost_ = (_endNode.position_ - position_).Len3D();
 	fCost_ = gCost_ + hCost_;
 }
 
-std::vector<float4> GHNode::GetPath()
+std::vector<float4> AStarNode::GetPath()
 {
 	std::vector<float4> ret;
 	ret.push_back(position_);
-	GHNode* oldParent = this;
-	GHNode* parent = parent_;
+	AStarNode* oldParent = this;
+	AStarNode* parent = parent_;
 
 	oldParent->parent_ = nullptr;
 
