@@ -143,11 +143,13 @@ bool NaviMesh::CheckIntersects(const float4& _Position, const float4& _Direction
 
 	float4 Dir = _Direction.NormalizeReturn3D();
 
+	float4x4 matWorld = NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+
 	for (size_t i = 0; i < Navis.size(); i++)
 	{
-		float4 V0 = Navis[i].Info.Vertex[0] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
-		float4 V1 = Navis[i].Info.Vertex[1] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
-		float4 V2 = Navis[i].Info.Vertex[2] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+		float4 V0 = Navis[i].Info.Vertex[0] * matWorld;
+		float4 V1 = Navis[i].Info.Vertex[1] * matWorld;
+		float4 V2 = Navis[i].Info.Vertex[2] * matWorld;
 
 		Check = DirectX::TriangleTests::Intersects(_Position.DirectVector,
 			Dir.DirectVector,

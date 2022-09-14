@@ -6,6 +6,7 @@ class NaviInfo
 	friend class Navi;
 	friend class NaviMesh;
 	friend class NaviActor;
+	friend class LumiaMap;
 public:
 	NaviInfo()
 		: Index(0)
@@ -48,6 +49,11 @@ public:
 	}
 
 	Navi* MoveCheck(GameEngineTransform* _Transform);
+
+	NaviInfo GetInfo()
+	{
+		return Info;
+	}
 
 private:
 	bool OutCheck(GameEngineTransform* _Transform, float& _Dist);
@@ -95,6 +101,11 @@ public:
 	float4 GetMousePos();
 
 	bool IsMouseIntersects();
+
+	std::vector<Navi> GetAllNavi()
+	{
+		return Navis;
+	}
 
 protected:
 	void Start() override;

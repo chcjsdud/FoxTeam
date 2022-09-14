@@ -7,9 +7,6 @@
 #include <numeric>
 #include "NaviMesh.h"
 
-
-LumiaMap* LumiaMap::MainMap = nullptr;
-
 LumiaMap::LumiaMap()
 	: navMeshRenderer_(nullptr)
 	, downTownRenderer_(nullptr)
@@ -23,7 +20,7 @@ LumiaMap::LumiaMap()
 	, navMesh_(nullptr)
 	, gridXCount_(0)
 {
-	MainMap = this;
+
 }
 
 LumiaMap::~LumiaMap()
@@ -48,7 +45,8 @@ void LumiaMap::Start()
 	for (UINT i = 0; i < navMeshRenderer_->GetRenderSetCount(); i++)
 	{
 		navMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
-		navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
+		//navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
+		navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
 	}
 
 	navMeshRenderer_->GetTransform()->SetLocalScaling(100.0f);
@@ -57,62 +55,7 @@ void LumiaMap::Start()
 	navMesh_ = CreateComponent<NaviMesh>();
 
 	// 모든 메쉬를 네비메쉬로
-
-	GameEngineFBXMesh* fbxMesh = navMeshRenderer_->GetMesh();
-
-	std::vector<FbxMeshSet>& allMeshSet = fbxMesh->GetAllMeshMap();
-	std::vector<FbxExMeshInfo>& allMeshInfo = fbxMesh->GetMeshInfos();
-	size_t meshSetCount = allMeshSet.size();
-
-	size_t triangleCount = 0;
-	for (FbxExMeshInfo& info : allMeshInfo)
-	{
-		triangleCount += info.FaceNum;
-	}
-
-	navMeshes_.reserve(triangleCount);
-
-	size_t navMeshCounter = 0;
-	for (size_t i = 0; i < meshSetCount; ++i)
-	{
-		FbxMeshSet* mesh = &allMeshSet[i];
-		FbxExMeshInfo* meshInfo = &allMeshInfo[i];
-
-		int numTriangle = meshInfo->FaceNum;
-		for (int j = 0; j < numTriangle; ++j)
-		{
-
-			GHNavMesh newNavMesh;
-			newNavMesh.Vertices[0] = mesh->Vertexs[mesh->Indexs[0][0][j * 3 + 0]].POSITION;
-			newNavMesh.Vertices[1] = mesh->Vertexs[mesh->Indexs[0][0][j * 3 + 1]].POSITION;
-			newNavMesh.Vertices[2] = mesh->Vertexs[mesh->Indexs[0][0][j * 3 + 2]].POSITION;
-
-			newNavMesh.Index = static_cast<int>(navMeshCounter);
-
-			navMeshes_.push_back(newNavMesh);
-
-			++navMeshCounter;
-		}
-	}
-
-	// 네비메쉬 인접성 검사
-
-	//size_t navMeshCount = navMeshes_.size();
-	//for (GHNavMesh& currentMesh : navMeshes_)
-	//{
-	//	for (size_t meshIndex = 0; meshIndex < navMeshCount; meshIndex++)
-	//	{
-	//		if (meshIndex == currentMesh.Index)
-	//		{
-	//			continue;
-	//		}
-
-	//		if (true == checkNavMeshAdjacency(currentMesh, navMeshes_[meshIndex]))
-	//		{
-	//			currentMesh.AdjacentMeshIndices.push_back(static_cast<int>(meshIndex));
-	//		}
-	//	}
-	//}
+	navMesh_->CreateNaviMesh(navMeshRenderer_);
 
 	makeAStarNode(200.f, 200.f);
 	checkASterNodeObstacle();
@@ -133,7 +76,7 @@ GHNavMesh* LumiaMap::GetNavMesh(const float4& _position)
 	for (GHNavMesh& nav : navMeshes_)
 	{
 		if (DirectX::TriangleTests::Intersects(position.DirectVector, float4::DOWN.DirectVector,
-			(nav.Vertices[0] * matWorld).DirectVector, (nav.Vertices[1] * matWorld).DirectVector, (nav.Vertices[2] * matWorld).DirectVector,
+			nav.Vertices[0].DirectVector, nav.Vertices[1].DirectVector, nav.Vertices[2].DirectVector,
 			distance))
 		{
 			return &nav;
@@ -206,7 +149,7 @@ std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float
 
 	// 람다로 비교 함수를 작성. F값을 먼저 비교하고, F값이 같으면 H값을 비교한다.
 	// 코스트가 가장 낮은 녀석은 벡터의 뒤로 보낼 생각이다. pop_back 을 하기 위해.
-	auto cmp = [&](GHNode* _left, GHNode* _right)
+	auto cmp = [&](NaviNode* _left, NaviNode* _right)
 	{
 		float leftFCost = _left->GetFCost();
 		float rightFCost = _right->GetFCost();
@@ -223,16 +166,16 @@ std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float
 		return false;
 	};
 
-	std::vector<GHNode*> open;
-	std::vector<GHNode*> close;
-	GHNode* endNode = &allNodes_[endIndexZ][endIndexX];
+	std::vector<NaviNode*> open;
+	std::vector<NaviNode*> close;
+	NaviNode* endNode = &allNodes_[endIndexZ][endIndexX];
 
 	open.push_back(&allNodes_[startIndexZ][startIndexX]);
 
 	while (true)
 	{
 		std::sort(open.begin(), open.end(), cmp);
-		GHNode* current = open.back();
+		NaviNode* current = open.back();
 		open.pop_back();
 		close.push_back(current);
 
@@ -256,7 +199,7 @@ std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float
 				return true;
 			}
 
-			GHNode* neighbour = &allNodes_[_zIndex][_xIndex];
+			NaviNode* neighbour = &allNodes_[_zIndex][_xIndex];
 
 			// 이웃 노드가 장애물 이라면
 			if (neighbour->IsObstacle())
@@ -360,9 +303,9 @@ void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 	float endZ = -FLT_MAX;
 
 	// 네비게이션 메시를 돌면서 최소값, 최대값 X, Z 를 구한다.
-	for (GHNavMesh& n : navMeshes_)
+	for (Navi n : navMesh_->GetAllNavi())
 	{
-		for (float4& f : n.Vertices)
+		for (float4& f : n.GetInfo().Vertex)
 		{
 			if (f.x < gridStartX_)
 			{
@@ -401,7 +344,7 @@ void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 	// 노드를 넣을 만큼의 배열 공간을 확보합니다.
 	allNodes_.reserve(nodeCountZ);
 
-	for (std::vector<GHNode>& v : allNodes_)
+	for (std::vector<NaviNode>& v : allNodes_)
 	{
 		v.reserve(nodeCountX);
 	}
@@ -410,13 +353,13 @@ void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 	int index = 0;
 	for (int z = 0; z < nodeCountZ; z++)
 	{
-		allNodes_.push_back(std::vector<GHNode>());
+		allNodes_.push_back(std::vector<NaviNode>());
 		for (int x = 0; x < nodeCountX; x++)
 		{
 			float posX = gridStartX_ + x * intervalX_;
 			float posZ = gridStartZ_ + z * intervalZ_;
 
-			GHNode newNode(index++, z, x, float4(posX, 0.0f, posZ));
+			NaviNode newNode(index++, z, x, float4(posX, 0.0f, posZ));
 
 			allNodes_[z].push_back(newNode);
 		}
@@ -476,25 +419,28 @@ void LumiaMap::checkASterNodeObstacle()
 {
 	GameEngineTime::GetInst().TimeCheck();
 
+	float temp = 0.0f;
 
-	for (std::vector<GHNode>& v : allNodes_)
+	for (std::vector<NaviNode>& v : allNodes_)
 	{
-		for (GHNode& n : v)
+		for (NaviNode& n : v)
 		{
-			GHNavMesh* currentMesh = GetNavMesh(n.GetPosition());
-			if (nullptr == currentMesh)
+			float4 CheckNode = n.GetPosition();
+
+			CheckNode.y = HEIGHT_MAXIMUM;
+
+			if (false == navMesh_->CheckIntersects(CheckNode, float4::DOWN, temp))
 			{
 				n.SetObstacle(true);
 				tileVertices_[n.GetIndex()].COLOR = float4::RED;
 				continue;
 			}
 
-
-			float height = 0.0f;
-			if (true == IsMeshIntersected(*currentMesh, n.GetPosition(), height))
-			{
-				tileVertices_[n.GetIndex()].POSITION.y = height;
-			}
+			//float height = 0.0f;
+			//if (true == IsMeshIntersected(*currentMesh, n.GetPosition(), height))
+			//{
+			//	tileVertices_[n.GetIndex()].POSITION.y = height;
+			//}
 
 
 		}

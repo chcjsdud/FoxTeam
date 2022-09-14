@@ -3,6 +3,7 @@
 #include <GameEngine/GameEngineActor.h>
 #include "GHNavMesh.h"
 #include "GHNode.h"
+#include "NaviNode.h"
 
 #include <queue>
 
@@ -10,8 +11,6 @@ class GameEngineFBXRenderer;
 class NaviMesh;
 class LumiaMap : public GameEngineActor
 {
-public:
-	static LumiaMap* MainMap;
 public:
 	LumiaMap();
 	~LumiaMap();
@@ -45,7 +44,7 @@ private:
 	void checkASterNodeObstacle();
 	void updateAStarNodeVertexInfo();
 
-private:
+public:
 	const float HEIGHT_MAXIMUM = 1000.f;
 
 
@@ -54,7 +53,8 @@ private:
 	std::vector<GHNavMesh> navMeshes_;
 
 	// A*
-	std::vector<std::vector<GHNode>> allNodes_;
+	//std::vector<std::vector<GHNode>> allNodes_;
+	std::vector<std::vector<NaviNode>> allNodes_;
 	std::vector<GameEngineVertex> tileVertices_;
 	std::vector<UINT> tileIndices_;
 	GameEngineVertexBuffer* tileVertexBuffer_;

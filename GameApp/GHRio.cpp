@@ -45,6 +45,8 @@ void GHRio::Start()
 
 void GHRio::Update(float _deltaTime)
 {
+	NaviActor::Update(_deltaTime);
+
 	if (!TempFlag)
 	{
 		return;
@@ -132,7 +134,19 @@ void GHRio::Update(float _deltaTime)
 		float4 nextMovePosition = worldPosition + moveSpeed;
 
 		float temp;
-		if (true == currentMap_->IsMeshIntersected(*currentNavMesh_, nextMovePosition, temp))
+
+		nextMovePosition.y = currentMap_->HEIGHT_MAXIMUM;
+
+		if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition, float4::DOWN, temp))
+		{
+			GetTransform()->SetWorldPosition(nextMovePosition);
+		}
+		else
+		{
+			destination_ = worldPosition;
+		}
+
+		/*if (true == currentMap_->IsMeshIntersected(*currentNavMesh_, nextMovePosition, temp))
 		{
 			GetTransform()->SetWorldPosition(nextMovePosition);
 		}
@@ -149,7 +163,7 @@ void GHRio::Update(float _deltaTime)
 				currentNavMesh_ = adjacentMesh;
 				GetTransform()->SetWorldPosition(nextMovePosition);
 			}
-		}
+		}*/
 
 		//GetTransform()->SetWorldPosition(nextMovePosition);
 	}
@@ -168,9 +182,15 @@ void GHRio::Update(float _deltaTime)
 
 	float4 position = GetTransform()->GetWorldPosition();
 	float height = 0;
-	currentMap_->IsMeshIntersected(*currentNavMesh_, position, height);
+	// currentMap_->IsMeshIntersected(*currentNavMesh_, position, height);
 	position.y = height;
 	GetTransform()->SetWorldPosition(position);
+
+	if (nullptr != GetCurrentNavi())
+	{
+		float Dist = GetCurrentNavi()->YCheck(GetTransform());
+		GetTransform()->SetWorldMove({ 0.0f, -Dist, 0.0f });
+	}
 }
 
 void GHRio::SetSpawnPoint(const float4& _position)
@@ -187,15 +207,18 @@ void GHRio::SetSpawnPoint(const float4& _position)
 	{
 		GameEngineDebug::MsgBox("레벨에 맵이 배치되지 않았습니다.");
 	}
-	else
-	{
-		currentNavMesh_ = currentMap_->GetNavMesh(GetTransform()->GetWorldPosition());
-	}
 
-	if (nullptr == currentNavMesh_)
-	{
-		GameEngineDebug::MsgBox("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
-	}
+	// 부모인 NaviActor가 항상 자신의 위치노드를 업데이트함
+
+	//else
+	//{
+	//	currentNavMesh_ = currentMap_->GetNavMesh(GetTransform()->GetWorldPosition());
+	//}
+
+	//if (nullptr == currentNavMesh_)
+	//{
+	//	GameEngineDebug::MsgBox("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
+	//}
 }
 
 void GHRio::startIdle(float _deltaTime)

@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "NaviActor.h"
+#include "LumiaLevel.h"
 #include "LumiaMap.h"
 
 NaviActor::NaviActor()
@@ -35,9 +36,9 @@ void NaviActor::Update(float _DeltaTime)
 	}
 	else
 	{
-		if (nullptr != LumiaMap::MainMap)
+		if (nullptr != GetLevelConvert<LumiaLevel>()->GetMap())
 		{
-			SetCurrentNavi(LumiaMap::MainMap->GetNavMesh()->CurrentCheck(GetTransform(), float4::DOWN));
+			SetCurrentNavi(GetLevelConvert<LumiaLevel>()->GetMap()->GetNavMesh()->CurrentCheck(GetTransform(), float4::DOWN));
 		}
 	}
 }
