@@ -159,11 +159,11 @@ void GHRio::Update(float _deltaTime)
 		}
 	}
 
-	float4 position = GetTransform()->GetWorldPosition();
-	float height = 0;
-	// currentMap_->IsMeshIntersected(*currentNavMesh_, position, height);
-	position.y = height;
-	GetTransform()->SetWorldPosition(position);
+	//float4 position = GetTransform()->GetWorldPosition();
+	//float height = 0;
+	//currentMap_->IsMeshIntersected(*currentNavMesh_, position, height);
+	//position.y = height;
+	//GetTransform()->SetWorldPosition(position);
 
 	if (nullptr != GetCurrentNavi())
 	{
