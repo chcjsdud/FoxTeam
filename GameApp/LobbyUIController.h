@@ -30,6 +30,7 @@ public:
 public:
 	//내가 고른 캐릭터가 뭔지 가지고 있을 static 변수
 	static JobType SelectedChar;
+	static bool CharSelectOn;
 
 protected:
 	virtual void Start();

@@ -232,6 +232,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Lobby_StartButton.cpp" />
     <ClCompile Include="LobbyToLumiaPacket.cpp">
       <SubType>
       </SubType>
@@ -519,6 +520,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Lobby_StartButton.h" />
     <ClInclude Include="LobbyToLumiaPacket.h">
       <SubType>
       </SubType>

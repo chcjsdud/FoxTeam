@@ -9,6 +9,8 @@
 #include "LobbyLevel.h"
 
 JobType LobbyUIController::SelectedChar = JobType::MAX;
+bool LobbyUIController::CharSelectOn = false;
+
 
 LobbyUIController::LobbyUIController() // default constructer 디폴트 생성자
 {
