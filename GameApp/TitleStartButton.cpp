@@ -56,6 +56,5 @@ void TitleStartButton::Start()
 
 void TitleStartButton::Update(float _DeltaTime)
 {
-	GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::Rect);
 }
 
