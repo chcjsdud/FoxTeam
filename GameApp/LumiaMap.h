@@ -7,8 +7,11 @@
 #include <queue>
 
 class GameEngineFBXRenderer;
+class NaviMesh;
 class LumiaMap : public GameEngineActor
 {
+public:
+	static LumiaMap* MainMap;
 public:
 	LumiaMap();
 	~LumiaMap();
@@ -29,6 +32,11 @@ public:
 	GHNavMesh* FindAdjacentMeshIntersect(const GHNavMesh& _currentMesh, const float4& _position);
 
 	std::vector<float4> FindPath(const float4& _startPosition, const float4& _endPosition);
+
+	NaviMesh* GetNavMesh()
+	{
+		return navMesh_;
+	}
 
 private:
 	bool checkNavMeshAdjacency(const GHNavMesh& _left, const GHNavMesh& _right);
@@ -61,6 +69,7 @@ private:
 
 	// Rendering Object
 	GameEngineFBXRenderer* navMeshRenderer_;
+	NaviMesh* navMesh_;
 	GameEngineFBXRenderer* downTownRenderer_;
 };
 

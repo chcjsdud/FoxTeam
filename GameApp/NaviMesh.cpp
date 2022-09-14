@@ -61,11 +61,11 @@ void NaviMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex,
 	NewVertex->Create(_Vertex, D3D11_USAGE::D3D11_USAGE_DEFAULT);
 	NewIndex->Create(_Index, D3D11_USAGE::D3D11_USAGE_DEFAULT);
 
-	GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
+	/*GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
 	Renderer->SetRenderingPipeLine("Color");
 	Renderer->SetMesh(NewVertex, NewIndex);
 	Renderer->ShaderHelper.SettingConstantBufferLink("ResultColor", Color);
-	NaviRenderer = Renderer;
+	NaviRenderer = Renderer;*/
 }
 
 void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, 
@@ -100,6 +100,11 @@ void NaviMesh::CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer,
 
 Navi* NaviMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir)
 {
+	if (nullptr == NaviRenderer)
+	{
+		GameEngineDebug::MsgBoxError("NaviRenderer가 지정되지 않았습니다.");
+	}
+
 	float4 RayPos = _Transform->GetWorldPosition() + float4(0.0f, 100.0f, 0.0f);
 	float Dist = 0.0f;
 
@@ -130,6 +135,11 @@ Navi* NaviMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir
 bool NaviMesh::CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance)
 {
 	bool Check = false;
+
+	if (nullptr == NaviRenderer)
+	{
+		GameEngineDebug::MsgBoxError("NaviRenderer가 지정되지 않았습니다.");
+	}
 
 	float4 Dir = _Direction.NormalizeReturn3D();
 
@@ -355,6 +365,11 @@ bool Navi::OutCheck(GameEngineTransform* _Transform, float& _Dist)
 
 	bool Check = false;
 
+	if (nullptr == Parent->GetNaviRenderer())
+	{
+		GameEngineDebug::MsgBoxError("NaviRenderer가 지정되지 않았습니다.");
+	}
+
 	float4 V0 = Info.Vertex[0] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
 	float4 V1 = Info.Vertex[1] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
 	float4 V2 = Info.Vertex[2] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
@@ -389,3 +404,11 @@ Navi* Navi::MoveCheck(GameEngineTransform* _Transform)
 	return nullptr;
 }
 
+void NaviMesh::Start()
+{
+
+}
+void NaviMesh::Update(float _DeltaTime)
+{
+	
+}

@@ -143,7 +143,7 @@ void SettingItemLevel::CreateActorLevel()
 
 	YSJ_Mouse* Mouse = CreateActor<YSJ_Mouse>();
 
-	NaviMesh* Navi = CreateActor<NaviMesh>();
+	//NaviMesh* Navi = CreateActor<NaviMesh>();
 
-	Navi->CreateNaviMesh(LumiaMap->GetFBXNaviRenderer());
+	//Navi->CreateNaviMesh(LumiaMap->GetFBXNaviRenderer());
 }

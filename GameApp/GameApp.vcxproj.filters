@@ -319,6 +319,9 @@
     <ClCompile Include="Lobby_StartButton.cpp">
       <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClCompile>
+    <ClCompile Include="NaviNode.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -862,6 +865,9 @@
     </ClInclude>
     <ClInclude Include="Lobby_StartButton.h">
       <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="NaviNode.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\NaviMesh</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

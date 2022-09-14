@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "NaviActor.h"
+#include "LumiaMap.h"
 
 NaviActor::NaviActor()
 	: CurrentNavi_(nullptr)
@@ -30,6 +31,13 @@ void NaviActor::Update(float _DeltaTime)
 		if (true == CurrentNavi_->OutCheck(GetTransform()))
 		{
 			CurrentNavi_ = CurrentNavi_->MoveCheck(GetTransform());
+		}
+	}
+	else
+	{
+		if (nullptr != LumiaMap::MainMap)
+		{
+			SetCurrentNavi(LumiaMap::MainMap->GetNavMesh()->CurrentCheck(GetTransform(), float4::DOWN));
 		}
 	}
 }

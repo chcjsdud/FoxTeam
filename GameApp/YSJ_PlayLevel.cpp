@@ -192,7 +192,7 @@ void YSJ_PlayLevel::CreateActorLevel()
 	YSJ_Mouse* Mouse = CreateActor<YSJ_Mouse>();
 	//Mouse->SetPickingRenderer(LumiaMap->GetFBXNaviRenderer());
 
-	NaviMesh_ = CreateActor<NaviMesh>();
+	//NaviMesh_ = CreateActor<NaviMesh>();
 
 	std::vector<GameEngineVertex> Vertex = std::vector<GameEngineVertex>(3 * 6);
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <GameEngine/GameEngineActor.h>
+#include <GameEngine/GameEngineComponent.h>
 
 class NaviInfo
 {
@@ -57,7 +57,7 @@ private:
 	NaviMesh* Parent;
 };
 
-class NaviMesh : public GameEngineActor
+class NaviMesh : public GameEngineComponent
 {
 public:
 	NaviMesh();
@@ -80,6 +80,11 @@ public:
 		Color = _Color;
 	}
 
+	void SetNaviRenderer(GameEngineRendererBase* _Renderer)
+	{
+		NaviRenderer = _Renderer;
+	}
+
 	GameEngineRendererBase* GetNaviRenderer()
 	{
 		return NaviRenderer;
@@ -92,6 +97,8 @@ public:
 	bool IsMouseIntersects();
 
 protected:
+	void Start() override;
+	void Update(float _DeltaTime) override;
 
 private:
 	void SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh);

@@ -9,7 +9,6 @@
 #include "LumiaMap.h"
 
 
-
 LumiaLevel::LumiaLevel()
 	: mouse_(nullptr)
 	, ItemBox_(nullptr)
@@ -122,6 +121,12 @@ void LumiaLevel::loadResource()
 		//Mesh->CreateRenderingBuffer();
 		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("DowntownNavMesh.fbx"));
 		Mesh->CreateRenderingBuffer();
+
+		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx")))
+		{
+			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx"));
+			Mesh->CreateRenderingBuffer();
+		}
 
 	}
 

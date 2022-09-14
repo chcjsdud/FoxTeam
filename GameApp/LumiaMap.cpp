@@ -5,7 +5,10 @@
 #include <GameEngine/EngineVertex.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <numeric>
+#include "NaviMesh.h"
 
+
+LumiaMap* LumiaMap::MainMap = nullptr;
 
 LumiaMap::LumiaMap()
 	: navMeshRenderer_(nullptr)
@@ -17,9 +20,10 @@ LumiaMap::LumiaMap()
 	, gridStartX_(0.0f)
 	, gridStartZ_(0.0f)
 	, gridZCount_(0)
+	, navMesh_(nullptr)
 	, gridXCount_(0)
 {
-
+	MainMap = this;
 }
 
 LumiaMap::~LumiaMap()
@@ -38,23 +42,19 @@ LumiaMap::~LumiaMap()
 void LumiaMap::Start()
 {
 	navMeshRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	navMeshRenderer_->SetFBXMesh("DowntownNavMesh.fbx", "TextureDeferredLight");
-	//navMeshRenderer_->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
+	//navMeshRenderer_->SetFBXMesh("DowntownNavMesh.fbx", "TextureDeferredLight");
+	navMeshRenderer_->SetFBXMesh("Bg_NaviMesh.fbx", "TextureDeferredLight");
 
-	size_t count = navMeshRenderer_->GetRenderSetCount();
-	for (size_t i = 0; i < count; i++)
+	for (UINT i = 0; i < navMeshRenderer_->GetRenderSetCount(); i++)
 	{
-		navMeshRenderer_->GetRenderSet(static_cast<unsigned int>(i)).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
+		navMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+		navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 	}
 
 	navMeshRenderer_->GetTransform()->SetLocalScaling(100.0f);
 	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f });
 
-	//navMeshRenderer_->Off();
-
-	//downTownRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	//downTownRenderer_->SetFBXMesh("Downtown.fbx", "TextureDeferredLight");
-	//downTownRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
+	navMesh_ = CreateComponent<NaviMesh>();
 
 	// 모든 메쉬를 네비메쉬로
 
