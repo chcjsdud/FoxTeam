@@ -74,7 +74,7 @@ DeferredOutPut TextureDeferredLight_PS(VertexOut _In)
 
     Out.ViewDif = (DiffuseTex.Sample(Smp, _In.Texcoord.xy));
     
-    if(0.0f == Out.ViewDif.w)
+    if(0.0f >= Out.ViewDif.w)
     {
         Out.ViewDif.w = 1.0f;
     }
