@@ -361,11 +361,27 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="TitleBG.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="TitleIDInput.cpp">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="TitleLevel.cpp" />
+    <ClCompile Include="TitlePrologueBG.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TitleStartButton.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TitleUIController.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UI_CharPicture.cpp" />
     <ClCompile Include="UI_Equip.cpp" />
     <ClCompile Include="UI_Inventory.cpp" />
@@ -652,11 +668,27 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="TitleBG.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="TitleIDInput.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="TitleLevel.h" />
+    <ClInclude Include="TitlePrologueBG.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TitleStartButton.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TitleUIController.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UI_CharPicture.h" />
     <ClInclude Include="UI_Equip.h" />
     <ClInclude Include="UI_Inventory.h" />

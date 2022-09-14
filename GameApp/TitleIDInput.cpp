@@ -56,12 +56,10 @@ void TitleIDInput::Start()
 	}
 
 	inputRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	inputRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-	
-
+	inputRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -30.0f, 0.0f });
 	inputWindowRenderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
-	inputWindowRenderer_->SetImage("Btn_Start_Basic.png", "PointSmp");
-	inputWindowRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -102.0f });
+	inputWindowRenderer_->SetImage("NicknameSlot.png", "PointSmp");
+	inputWindowRenderer_->GetTransform()->SetLocalPosition({ 0.0f, -40.0f, -10.0f });
 	inputWindowRenderer_->GetTransform()->SetLocalScaling(inputWindowRenderer_->GetCurrentTexture()->GetTextureSize());
 
 	inputCollision_ = CreateTransformComponent<GameEngineCollision>();

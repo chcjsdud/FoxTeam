@@ -2,7 +2,7 @@
 #include <GameEngine/GameEngineLevel.h>
 #include <GameEngine/GameEngineFSM.h>
 
-
+class TitleUIController;
 class GameEngineImageRenderer;
 class TitleIDInput;
 class TitleLevel : public GameEngineLevel
@@ -22,9 +22,28 @@ public:
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
 protected:
+	void StartBooting();
+	void UpdateBooting(float _DeltaTime);
+	void EndBooting();
+
+	void StartIdle();
+	void UpdateIdle(float _DeltaTime);
+	void EndIdle();
+
+	void StartSelect();
+	void UpdateSelect(float _DeltaTime);
+	void EndSelect();
+
 
 private:
+	const float DEFAULT_PROLOGUE_FADETIME = 6.0f;
+
 	GameEngineFSM state_;
 	TitleIDInput* idInput_;
+	TitleUIController* UIController_;
+	float fadeWaitTime_;
+	float fadeTime_;
+	float mandatoryFadeTime_;
+	bool isTyped_;
 };
 

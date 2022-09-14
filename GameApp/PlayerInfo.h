@@ -10,4 +10,7 @@ struct PlayerInfo
 	int character_;
 	int startPoint_;
 	int isReady_;
+
+
+	std::string playerNickname_;
 };
