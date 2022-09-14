@@ -358,12 +358,12 @@ float NavFace::YCheck(GameEngineTransform* _Transform)
 		return -1.0f;
 	}
 
-	return Dist - 100.0f;
+	return Dist - MAX_HEIGHT;
 }
 
 bool NavFace::OutCheck(GameEngineTransform* _Transform, float& _Dist)
 {
-	float4 RayPos = _Transform->GetWorldPosition() + float4(0.0f, 100.0f, 0.0f);
+	float4 RayPos = _Transform->GetWorldPosition() + float4(0.0f, MAX_HEIGHT, 0.0f);
 
 	bool Check = false;
 

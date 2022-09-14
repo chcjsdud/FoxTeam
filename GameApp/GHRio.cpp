@@ -44,8 +44,6 @@ void GHRio::Start()
 
 void GHRio::Update(float _deltaTime)
 {
-	NavActor::Update(_deltaTime);
-
 	if (!TempFlag)
 	{
 		return;
@@ -163,6 +161,8 @@ void GHRio::Update(float _deltaTime)
 	//currentMap_->IsMeshIntersected(*currentNavMesh_, position, height);
 	//position.y = height;
 	//GetTransform()->SetWorldPosition(position);
+
+	NavActor::Update(_deltaTime);
 
 	if (nullptr != GetCurrentNavi())
 	{

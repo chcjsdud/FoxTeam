@@ -56,6 +56,9 @@ public:
 	}
 
 private:
+	const float MAX_HEIGHT = 1000.f;
+
+private:
 	bool OutCheck(GameEngineTransform* _Transform, float& _Dist);
 
 	NavFaceData Info;
