@@ -3,6 +3,7 @@
 #include "GameEngine/GameEngineInput.h"
 #include "GameEngine/GameEngineCollision.h"
 #include "GameEngineBase/GameEngineDebug.h"
+#include "LobbyUIController.h"
 
 Lobby_StartButton::Lobby_StartButton()
 {
@@ -19,21 +20,39 @@ bool Lobby_StartButton::MouseCollisionCheck()
 
 void Lobby_StartButton::Start()
 {
-	{
-		ButtonRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
-		ButtonRenderer->SetImage("Lobby_BasicButtonOne.png", "PointSmp");
-		ButtonRenderer->GetTransform()->SetLocalPosition({ 420.0f, 330.0f, -102.0f });
-		ButtonRenderer->GetTransform()->SetLocalScaling(ButtonRenderer->GetCurrentTexture()->GetTextureSize());
+	float4 ButtonPos = { -475.0f, -240.0f, -102.0f };
 
-		ButtonCollision = CreateTransformComponent<GameEngineCollision>();
-		ButtonCollision->GetTransform()->SetLocalPosition({ 420.0f, 330.0f, -102.0f });
-		ButtonCollision->GetTransform()->SetLocalScaling(ButtonRenderer->GetCurrentTexture()->GetTextureSize());
-		ButtonCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
-	}
+	ButtonRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+	ButtonRenderer->SetImage("Lobby_SelectButton_Before.png", "PointSmp");
+	ButtonRenderer->GetTransform()->SetLocalPosition(ButtonPos);
+	ButtonRenderer->GetTransform()->SetLocalScaling(ButtonRenderer->GetCurrentTexture()->GetTextureSize());
 
+	ButtonCollision = CreateTransformComponent<GameEngineCollision>();
+	ButtonCollision->GetTransform()->SetLocalPosition(ButtonPos);
+	ButtonCollision->GetTransform()->SetLocalScaling(ButtonRenderer->GetCurrentTexture()->GetTextureSize());
+	ButtonCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
 }
 
 void Lobby_StartButton::Update(float _DeltaTime)
 {
-	GetLevel()->PushDebugRender(ButtonRenderer->GetTransform(), CollisionType::Rect);
+	//GetLevel()->PushDebugRender(ButtonRenderer->GetTransform(), CollisionType::Rect);
+
+	if (true == MouseCollisionCheck())
+	{
+		if (true == GameEngineInput::GetInst().Down("LBUTTON"))
+		{
+			if (LobbyUIController::CharSelectOn == false)
+			{
+				ButtonRenderer->SetImage("Lobby_SelectButton_After.png", "PointSmp");
+				LobbyUIController::CharSelectOn = true;
+			}
+			else if (LobbyUIController::CharSelectOn = true)
+			{
+				ButtonRenderer->SetImage("Lobby_SelectButton_Before.png", "PointSmp");
+				LobbyUIController::CharSelectOn = false;
+			}
+			
+		}
+	}
+
 }
