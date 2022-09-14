@@ -164,3 +164,16 @@ void TitleLevel::UpdateSelect(float _DeltaTime)
 void TitleLevel::EndSelect()
 {
 }
+
+void TitleLevel::loadResource()
+{
+}
+
+void TitleLevel::initRenderWindow()
+{
+}
+
+void TitleLevel::releaseResource()
+{
+	
+}

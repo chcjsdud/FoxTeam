@@ -34,6 +34,13 @@ protected:
 	void UpdateSelect(float _DeltaTime);
 	void EndSelect();
 
+private:
+	// On level change start event
+	void loadResource();
+	void initRenderWindow();
+
+	// On level change end event
+	void releaseResource();
 
 private:
 	const float DEFAULT_PROLOGUE_FADETIME = 3.5f;

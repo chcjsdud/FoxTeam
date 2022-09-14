@@ -57,18 +57,19 @@ void Lobby_PortraitBg::SetChar(JobType _Character)
 	switch (static_cast<JobType>(Char))
 	{
 	case JobType::NONE:
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Anon.png", "PointSmp");
 		break;
 	case JobType::YUKI:
 		CharPortraitRenderer->SetImage("Lobby_Portrait_Yuki.png", "PointSmp");
 		break;
 	case JobType::FIORA:
-		CharPortraitRenderer->Off();
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Anon.png", "PointSmp");
 		break;
 	case JobType::ZAHIR:
-		CharPortraitRenderer->Off();
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Anon.png", "PointSmp");
 		break;
 	case JobType::NADINE:
-		CharPortraitRenderer->Off();
+		CharPortraitRenderer->SetImage("Lobby_Portrait_Nadine.png", "PointSmp");
 		break;
 	case JobType::HYUNWOO:
 		CharPortraitRenderer->SetImage("Lobby_Portrait_Hyunwoo.png", "PointSmp");

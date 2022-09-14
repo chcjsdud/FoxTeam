@@ -363,26 +363,31 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
 		{
 		case JobType::NONE:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
 			break;
 		case JobType::YUKI:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Yuki.png");
 			break;
 		case JobType::FIORA:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
 			break;
 		case JobType::ZAHIR:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
 			break;
 		case JobType::NADINE:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Nadine.png");
 			break;
 		case JobType::HYUNWOO:
-			tempLobbyRenderers_[i]->SetImage("tempLobbyHyunwoo.png");
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Hyunwoo.png");
 			break;
 		case JobType::JACKIE:
-			tempLobbyRenderers_[i]->SetImage("tempLobbyJackie.png");
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Jackie.png");
 			break;
 		case JobType::RIO:
-			tempLobbyRenderers_[i]->SetImage("tempLobbyRio.png");
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Rio.png");
 			break;
 		case JobType::AYA:
-			tempLobbyRenderers_[i]->SetImage("tempLobbyAya.png");
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Aya.png");
 			break;
 		case JobType::MAX:
 			break;
@@ -464,26 +469,31 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 		switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
 		{
 		case JobType::NONE:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
 			break;
 		case JobType::YUKI:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Yuki.png");
 			break;
 		case JobType::FIORA:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
 			break;
 		case JobType::ZAHIR:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
 			break;
 		case JobType::NADINE:
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Nadine.png");
 			break;
 		case JobType::HYUNWOO:
-			tempLobbyRenderers_[i]->SetImage("tempLobbyHyunwoo.png");
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Hyunwoo.png");
 			break;
 		case JobType::JACKIE:
-			tempLobbyRenderers_[i]->SetImage("tempLobbyJackie.png");
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Jackie.png");
 			break;
 		case JobType::RIO:
-			tempLobbyRenderers_[i]->SetImage("tempLobbyRio.png");
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Rio.png");
 			break;
 		case JobType::AYA:
-			tempLobbyRenderers_[i]->SetImage("tempLobbyAya.png");
+			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Aya.png");
 			break;
 		case JobType::MAX:
 			break;
