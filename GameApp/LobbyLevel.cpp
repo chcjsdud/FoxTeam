@@ -169,7 +169,9 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.");
 
-		PlayerInfoManager::GetInstance()->AddNewPlayer({ 0, -1, -1, 0 });
+		std::string nicknameTemp = PlayerInfoManager::GetInstance()->GetNickname();
+		PlayerInfoManager::GetInstance()->AddNewPlayer({ 0, -1, -1, 0, nicknameTemp});
+		
 		// AddNewPlayer() 의 파라미터는 곧 PlayerInfo 의 생성자 파라미터로,
 		// 순서대로 {플레이어 번호, 캐릭터, 시작 지역, 준비 상태} 의 이니셜라이즈 값입니다.
 	
@@ -184,7 +186,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	if (true == UIController_->GetClientButton()->MouseCollisionCheck() && true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
 		clientSocket_->Initialize();
-		clientSocket_->Connect("192.168.43.220");
+		clientSocket_->Connect("127.0.0.1");
 		clientSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		clientSocket_->AddPacketHandler(ePacketID::LobbyToLumiaPacket, new LobbyToLumiaPacket);
 		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
@@ -197,7 +199,10 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		// 바로 플레이어 정보를 저장하는 호스트와는 달리, 클라이언트는 따로 요청 패킷을 보냅니다.
 		// 패킷을 보내면 알맞은 플레이어 순번을 지정해 호스트가 다시 지정된 순번을 브로드캐스팅 해 줍니다.
 		GameJoinPacket2 packet;
-		packet.SetPlayerInfo({ -1, -1, -1, 0 });
+
+		std::string nicknameTemp = PlayerInfoManager::GetInstance()->GetNickname();
+		packet.SetPlayerInfo({ -1, -1, -1, 0, nicknameTemp });
+		
 		packet.SetListSize(PlayerInfoManager::GetInstance()->GetPlayerList().size());
 
 		clientSocket_->Send(&packet);

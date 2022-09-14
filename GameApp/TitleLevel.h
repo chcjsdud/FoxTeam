@@ -39,7 +39,7 @@ private:
 	const float DEFAULT_PROLOGUE_FADETIME = 3.5f;
 
 	GameEngineFSM state_;
-	TitleIDInput* idInput_;
+
 	TitleUIController* UIController_;
 	float fadeWaitTime_;
 	float fadeTime_;
