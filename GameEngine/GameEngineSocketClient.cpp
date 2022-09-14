@@ -162,6 +162,7 @@ void GameEngineSocketClient::receiveFunction(SOCKET _clientSocket)
 		if (SOCKET_ERROR == result)
 		{
 			GameEngineDebug::OutPutDebugString("연결이 종료되었습니다.\n");
+			GameEngineDebug::MsgBoxError("호스트와의 연결이 끊어졌습니다. 게임을 종료합니다.");
 			return;
 		}
 
