@@ -11,7 +11,7 @@ public:
 	~Lobby_StartButton();
 
 	bool MouseCollisionCheck();
-
+	void CharSelectSwitch();
 public:
 	GameEngineImageRenderer* ButtonRenderer;
 	GameEngineCollision* ButtonCollision;

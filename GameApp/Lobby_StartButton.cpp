@@ -18,6 +18,20 @@ bool Lobby_StartButton::MouseCollisionCheck()
 	return ButtonCollision->Collision(static_cast<int>(CollisionGroup::MousePointer));
 }
 
+void Lobby_StartButton::CharSelectSwitch()
+{
+	if (LobbyUIController::CharSelectOn == false)
+	{
+		ButtonRenderer->SetImage("Lobby_SelectButton_After.png", "PointSmp");
+		LobbyUIController::CharSelectOn = true;
+	}
+	else if (LobbyUIController::CharSelectOn = true)
+	{
+		ButtonRenderer->SetImage("Lobby_SelectButton_Before.png", "PointSmp");
+		LobbyUIController::CharSelectOn = false;
+	}
+}
+
 void Lobby_StartButton::Start()
 {
 	float4 ButtonPos = { -475.0f, -240.0f, -102.0f };
@@ -41,17 +55,7 @@ void Lobby_StartButton::Update(float _DeltaTime)
 	{
 		if (true == GameEngineInput::GetInst().Down("LBUTTON"))
 		{
-			if (LobbyUIController::CharSelectOn == false)
-			{
-				ButtonRenderer->SetImage("Lobby_SelectButton_After.png", "PointSmp");
-				LobbyUIController::CharSelectOn = true;
-			}
-			else if (LobbyUIController::CharSelectOn = true)
-			{
-				ButtonRenderer->SetImage("Lobby_SelectButton_Before.png", "PointSmp");
-				LobbyUIController::CharSelectOn = false;
-			}
-			
+			CharSelectSwitch();
 		}
 	}
 

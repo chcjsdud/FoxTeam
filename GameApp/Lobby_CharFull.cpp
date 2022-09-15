@@ -31,57 +31,52 @@ void Lobby_CharFull::Start()
 
 void Lobby_CharFull::Update(float _DeltaTime)
 {
-	if (LobbyUIController::CharSelectOn == true)
+	switch (LobbyUIController::SelectedChar)
 	{
-		switch (LobbyUIController::SelectedChar)
-		{
-		case JobType::NONE:
-			CharFull_Renderer->Off();
-			break;
-		case JobType::YUKI:
-			CharFull_Renderer->On();
-			CharFull_Renderer->SetImage("Lobby_CharFull_Yuki.png", "PointSmp");
-			CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
-			break;
-		case JobType::FIORA:
-			CharFull_Renderer->Off();
-			break;
-		case JobType::ZAHIR:
-			CharFull_Renderer->Off();
-			break;
-		case JobType::NADINE:
-			CharFull_Renderer->Off();
-			break;
-		case JobType::HYUNWOO:
-			CharFull_Renderer->On();
-			CharFull_Renderer->SetImage("Lobby_CharFull_Hyunwoo.png", "PointSmp");
-			CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
-			break;
-		case JobType::JACKIE:
-			CharFull_Renderer->On();
-			CharFull_Renderer->SetImage("Lobby_CharFull_Jackie.png", "PointSmp");
-			CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
-			break;
-		case JobType::RIO:
-			CharFull_Renderer->On();
-			CharFull_Renderer->SetImage("Lobby_CharFull_Rio.png", "PointSmp");
-			CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
-			break;
-		case JobType::AYA:
-			CharFull_Renderer->On();
-			CharFull_Renderer->SetImage("Lobby_CharFull_Aya.png", "PointSmp");
-			CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
-			break;
-		case JobType::MAX:
-			CharFull_Renderer->Off();
-			break;
-		default:
-			break;
-		}
-		return;
-	}
-	else
-	{
+	case JobType::NONE:
 		CharFull_Renderer->Off();
+		break;
+	case JobType::YUKI:
+		CharFull_Renderer->On();
+		CharFull_Renderer->SetImage("Lobby_CharFull_Yuki.png", "PointSmp");
+		CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
+		break;
+	case JobType::FIORA:
+		CharFull_Renderer->Off();
+		break;
+	case JobType::ZAHIR:
+		CharFull_Renderer->Off();
+		break;
+	case JobType::NADINE:
+		CharFull_Renderer->Off();
+		break;
+	case JobType::HYUNWOO:
+		CharFull_Renderer->On();
+		CharFull_Renderer->SetImage("Lobby_CharFull_Hyunwoo.png", "PointSmp");
+		CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
+		break;
+	case JobType::JACKIE:
+		CharFull_Renderer->On();
+		CharFull_Renderer->SetImage("Lobby_CharFull_Jackie.png", "PointSmp");
+		CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
+		break;
+	case JobType::RIO:
+		CharFull_Renderer->On();
+		CharFull_Renderer->SetImage("Lobby_CharFull_Rio.png", "PointSmp");
+		CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
+		break;
+	case JobType::AYA:
+		CharFull_Renderer->On();
+		CharFull_Renderer->SetImage("Lobby_CharFull_Aya.png", "PointSmp");
+		CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
+		break;
+	case JobType::MAX:
+		CharFull_Renderer->Off();
+		break;
+	default:
+		break;
 	}
+	return;
+	
+
 }
