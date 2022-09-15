@@ -159,7 +159,7 @@ public:
 	// 0도 {1, 0} 일때의 벡터를 회전시키는 공식인겁니다.
 	static float4 DirZRadian(float _Radian);
 
-	static float Calc_Len3D(const float4 a, const float4 b);
+	static float Calc_Len3D(const float4& a, const float4& b);
 
 public:
 	// unnamed union을 선언하면 
