@@ -18,8 +18,8 @@ public:
 	LumiaMap& operator=(const LumiaMap&& _other) = delete;
 
 public:
-	virtual void Start() override;
-	virtual void Update(float _deltaTime) override;
+	void Start() override;
+	void Update(float _deltaTime) override;
 
 public:
 	std::vector<float4> FindPath(const float4& _startPosition, const float4& _endPosition);
@@ -56,5 +56,6 @@ private:
 	GameEngineFBXRenderer* navMeshRenderer_;
 	NavMesh* navMesh_;
 	GameEngineFBXRenderer* downTownRenderer_;
+	std::vector<GameEngineFBXRenderer*> mapRenderers;
 };
 

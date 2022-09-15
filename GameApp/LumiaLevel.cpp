@@ -105,6 +105,7 @@ void LumiaLevel::GenerateCharactor()
 		{
 			newCharacter->TempFlag = true;
 			player_ = newCharacter;
+			pm->SetMainCharacter(player_);
 		}
 	}
 }
@@ -128,6 +129,18 @@ void LumiaLevel::loadResource()
 			Mesh->CreateRenderingBuffer();
 		}
 
+		tempDir.MoveParent("FBX");
+		tempDir / "UserMesh" / "Map";
+
+		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+
+		for (size_t i = 0; i < vecFile.size(); i++)
+		{
+			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+			{
+				GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
+			}
+		}
 	}
 
 	{

@@ -10,6 +10,9 @@ public:
 	GameEngineRenderingPipeLine* PipeLine_;
 	int Index;
 	std::vector<float4x4> BoneData;
+
+	float4 LocalPos;
+	bool isRender = true;
 };
 
 class FbxExAniData;
@@ -78,6 +81,11 @@ public:
 	RenderSet& GetRenderSet(unsigned int _Index)
 	{
 		return RenderSets[_Index];
+	}
+	
+	std::vector<RenderSet>& GetAllRenderSet()
+	{
+		return RenderSets;
 	}
 
 

@@ -159,6 +159,8 @@ public:
 	// 0도 {1, 0} 일때의 벡터를 회전시키는 공식인겁니다.
 	static float4 DirZRadian(float _Radian);
 
+	static float Calc_Len3D(const float4 a, const float4 b);
+
 public:
 	// unnamed union을 선언하면 
 	// 내부의 메모리를 구조를 union 방식으로 구성해준다.

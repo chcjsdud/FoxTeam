@@ -2,6 +2,7 @@
 #include "PlayerInfoManager.h"
 
 PlayerInfoManager::PlayerInfoManager()
+	: myCharacter_(nullptr)
 {
 }
 

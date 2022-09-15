@@ -45,6 +45,11 @@ void GameEngineFBXRenderer::Render(float _DeltaTime, bool _IsDeferred)
 {
 	for (size_t i = 0; i < RenderSets.size(); i++)
 	{
+		if (false == RenderSets[i].isRender)
+		{
+			continue;
+		}
+
 		if (true == _IsDeferred
 			&& true == RenderSets[i].PipeLine_->IsDeferred())
 		{
@@ -92,6 +97,15 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 			GameEngineIndexBuffer* IndexBuffer = IndexBufferVector[IndexBufferIndex];
 
 			RenderSet& RenderSetData = RenderSets.emplace_back();
+
+			float4 AllVtxPos = float4::ZERO;
+
+			for (size_t i = 0; i < StartMesh.Vertexs.size(); i++)
+			{
+				AllVtxPos += StartMesh.Vertexs[i].POSITION;
+			}
+
+			RenderSetData.LocalPos = AllVtxPos / static_cast<float>(StartMesh.Vertexs.size());
 
 			RenderSetData.Index = _MeshIndex;
 

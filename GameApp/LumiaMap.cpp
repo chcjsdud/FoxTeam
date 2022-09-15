@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <numeric>
 #include "NavMesh.h"
+#include "PlayerInfoManager.h"
 
 LumiaMap::LumiaMap()
 	: navMeshRenderer_(nullptr)
@@ -45,8 +46,8 @@ void LumiaMap::Start()
 	for (UINT i = 0; i < navMeshRenderer_->GetRenderSetCount(); i++)
 	{
 		navMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
-		//navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
-		navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
+		navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
+		//navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
 	}
 
 	navMeshRenderer_->GetTransform()->SetLocalScaling(100.0f);
@@ -60,11 +61,49 @@ void LumiaMap::Start()
 	makeAStarNode(200.f, 200.f);
 	checkASterNodeObstacle();
 	updateAStarNodeVertexInfo();
+
+	GameEngineDirectory tempDir;
+
+	tempDir.MoveParent("FoxTeam");
+	tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
+
+	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+
+	mapRenderers.resize(vecFile.size());
+
+	for (size_t i = 0; i < mapRenderers.size(); i++)
+	{
+		mapRenderers[i] = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+		mapRenderers[i]->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
+		mapRenderers[i]->GetTransform()->SetLocalScaling(100.0f);
+	}
 }
 
 void LumiaMap::Update(float _deltaTime)
 {
+	if (nullptr != PlayerInfoManager::GetInstance()->GetMainCharacter())
+	{
+		float4 PlayerPos = PlayerInfoManager::GetInstance()->
+			GetMainCharacter()->GetTransform()->GetWorldPosition();
 
+		for (size_t i = 0; i < mapRenderers.size(); i++)
+		{
+			std::vector<RenderSet>& RenderSets = mapRenderers[i]->GetAllRenderSet();
+
+			for (size_t j = 0; j < RenderSets.size(); j++)
+			{
+				float Length = float4::Calc_Len3D(PlayerPos, RenderSets[j].LocalPos * mapRenderers[i]->GetTransform()->GetTransformData().WorldWorld_);
+				if (Length >= 3000.0f)
+				{
+					RenderSets[j].isRender = false;
+				}
+				else
+				{
+					RenderSets[j].isRender = true;
+				}
+			}
+		}
+	}
 }
 
 std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float4& _endPosition)
