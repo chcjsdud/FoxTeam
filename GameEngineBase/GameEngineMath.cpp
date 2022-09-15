@@ -24,7 +24,7 @@ const float GameEngineMath::UnitVectorToDegree(float x, float y)
 	return result;
 }
 
-float float4::Calc_Len3D(const float4 a, const float4 b)
+float float4::Calc_Len3D(const float4& a, const float4& b)
 {
 	return sqrt(((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y)) + ((a.z - b.z) * (a.z - b.z)));
 }
