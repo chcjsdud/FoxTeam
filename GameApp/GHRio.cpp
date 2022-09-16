@@ -131,9 +131,7 @@ void GHRio::Update(float _deltaTime)
 		float4 nextMovePosition = worldPosition + moveSpeed;
 
 		float temp;
-
-		nextMovePosition.y = currentMap_->HEIGHT_MAXIMUM;
-
+		nextMovePosition.y = FT::MAX_HEIGHT;
 		if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition, float4::DOWN, temp))
 		{
 			GetTransform()->SetWorldPosition(nextMovePosition);

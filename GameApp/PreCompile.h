@@ -2,6 +2,8 @@
 
 #include <GameEngine/PreCompile.h>
 
+#include <numeric>
+
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineBase/GameEngineFile.h>
 
@@ -16,3 +18,4 @@
 #include "Macro.h"
 #include "eCollisionGroup.h"
 #include "Enums.h"
+

@@ -4,9 +4,11 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include <GameEngine/EngineVertex.h>
 #include <GameEngine/GameEngineCollision.h>
-#include <numeric>
+#include <GameEngine/GameEngineCore.h>
+
 #include "NavMesh.h"
 #include "PlayerInfoManager.h"
+
 
 LumiaMap::LumiaMap()
 	: navMeshRenderer_(nullptr)
@@ -383,48 +385,43 @@ void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 
 void LumiaMap::checkASterNodeObstacle()
 {
-	GameEngineTime::GetInst().TimeCheck();
-
-	float temp = 0.0f;
+	GameEngineTime timer;
+	timer.TimeCheckReset();
+	timer.TimeCheck();
 
 	for (std::vector<AStarNode>& v : allNodes_)
 	{
-		for (AStarNode& n : v)
-		{
-			float4 CheckNode = n.GetPosition();
 
-			CheckNode.y = HEIGHT_MAXIMUM;
-
-			if (false == navMesh_->CheckIntersects(CheckNode, float4::DOWN, temp))
+		GameEngineCore::ThreadQueue.JobPost(
+			[&]()
 			{
-				n.SetObstacle(true);
-				tileVertices_[n.GetIndex()].COLOR = float4::RED;
-				continue;
-			}
-
-			//float height = 0.0f;
-			//if (true == IsMeshIntersected(*currentMesh, n.GetPosition(), height))
-			//{
-			//	tileVertices_[n.GetIndex()].POSITION.y = height;
-			//}
-
-
-		}
+				for (AStarNode& n : v)
+				{
+					float height = 0.0f;
+					NavFace* face = navMesh_->GetNavFaceFromPositionXZ(n.GetPosition(), float4::DOWN, height);
+					if (nullptr == face)
+					{
+						n.SetObstacle(true);
+						tileVertices_[n.GetIndex()].COLOR = float4::RED;
+					}
+					else
+					{
+						tileVertices_[n.GetIndex()].POSITION.y = height;
+					}
+				}
+			});
 	}
 
-	//int vertexSize = tileVertices_.size();
+	Sleep(50);
 
-	//for (int i = 0; i < vertexSize; i++)
-	//{
-	//	if (nullptr == GetCurrentNavMesh(tileVertices_[i].POSITION))
-	//	{
-	//		tileVertices_[i].COLOR = float4::RED;
-	//	}
-	//}
+	while (0 < GameEngineCore::ThreadQueue.GetWorkingCount())
+	{
+		Sleep(100);
+	}
 
-
-	GameEngineTime::GetInst().TimeCheck();
-	GameEngineTime::GetInst().GetDeltaTime();
+	timer.TimeCheck();
+	float elapsedTime = timer.GetDeltaTime();
+	GameEngineDebug::OutPutDebugString("checkAStarNodeObstacle time elapsed : " + std::to_string(elapsedTime) + "\n");
 }
 
 void LumiaMap::updateAStarNodeVertexInfo()

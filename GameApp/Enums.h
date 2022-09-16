@@ -1,5 +1,11 @@
 #pragma once
 
+// Fox Team
+namespace FT
+{
+	const float MAX_HEIGHT = 1000.f;
+};
+
 enum class CollisionGroup
 {
 	None = 0,

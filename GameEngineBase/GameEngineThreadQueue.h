@@ -48,7 +48,7 @@ public:
 		Destroy();
 	}
 
-
+	int GetWorkingCount() const { return workingCount_; }
 
 	void JobPost(std::function<void()> _Job)
 	{
@@ -74,15 +74,8 @@ public:
 		Threads_.clear();
 	}
 
-
-
-
-
-
-protected:
-
-
-
+private:
+	static std::atomic<int> workingCount_;
 private:
 	GameEngineIocp Iocp;
 
@@ -112,9 +105,11 @@ private:
 			}
 			case -2:
 			{
+				workingCount_++;
 				Job* PostJob = reinterpret_cast<Job*>(lpCompletionKey);
 				PostJob->JobFunction();
 				delete PostJob;
+				workingCount_--;
 				break;
 			}
 			default:

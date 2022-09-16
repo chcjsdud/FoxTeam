@@ -56,9 +56,6 @@ public:
 	}
 
 private:
-	const float MAX_HEIGHT = 1000.f;
-
-private:
 	bool OutCheck(GameEngineTransform* _Transform, float& _Dist);
 
 	NavFaceData Info;
@@ -83,6 +80,7 @@ public:
 	void CreateNaviMesh(GameEngineFBXRenderer* _FBXRenderer, const std::string& _FileName = "Default");
 
 	NavFace* CurrentCheck(GameEngineTransform* _Transform, const float4& _Dir);
+	NavFace* GetNavFaceFromPositionXZ(const float4& _position, const float4& _direction, float& _height);
 
 	void SetColor(float4 _Color)
 	{

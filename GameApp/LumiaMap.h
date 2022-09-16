@@ -34,9 +34,6 @@ private:
 	void checkASterNodeObstacle();
 	void updateAStarNodeVertexInfo();
 
-public:
-	const float HEIGHT_MAXIMUM = 1000.f;
-
 private:
 	// A*
 	std::vector<std::vector<AStarNode>> allNodes_;

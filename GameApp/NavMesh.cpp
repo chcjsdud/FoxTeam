@@ -132,6 +132,50 @@ NavFace* NavMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _D
 	return nullptr;
 }
 
+NavFace* NavMesh::GetNavFaceFromPositionXZ(const float4& _position, const float4& _direction, float& _height)
+{
+	if (nullptr == NaviRenderer)
+	{
+		GameEngineDebug::MsgBoxError("NaviRenderer가 지정되지 않았습니다.");
+	}
+
+	float4 rayPosition = _position;
+	rayPosition.y = FT::MAX_HEIGHT;
+	float height = 0.0f;
+
+	bool result = false;
+	for (auto& face : Navis)
+	{
+		float4x4 matWorld = NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+
+		float4 V0 = face.Info.Vertex[0] * matWorld;
+
+		if (2000.f < float4::Calc_Len3D(V0, _position))
+		{
+			continue;
+		}
+
+		float4 V1 = face.Info.Vertex[1] * matWorld;
+		float4 V2 = face.Info.Vertex[2] * matWorld;
+
+		result = DirectX::TriangleTests::Intersects(rayPosition.DirectVector,
+			_direction.DirectVector,
+			V0.DirectVector,
+			V1.DirectVector,
+			V2.DirectVector,
+			_height);
+
+		_height = FT::MAX_HEIGHT - _height;
+
+		if (result)
+		{
+			return &face;
+		}
+	}
+
+	return nullptr;
+}
+
 bool NavMesh::CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance)
 {
 	bool Check = false;
@@ -358,12 +402,12 @@ float NavFace::YCheck(GameEngineTransform* _Transform)
 		return -1.0f;
 	}
 
-	return Dist - MAX_HEIGHT;
+	return Dist - FT::MAX_HEIGHT;
 }
 
 bool NavFace::OutCheck(GameEngineTransform* _Transform, float& _Dist)
 {
-	float4 RayPos = _Transform->GetWorldPosition() + float4(0.0f, MAX_HEIGHT, 0.0f);
+	float4 RayPos = _Transform->GetWorldPosition() + float4(0.0f, FT::MAX_HEIGHT, 0.0f);
 
 	bool Check = false;
 
