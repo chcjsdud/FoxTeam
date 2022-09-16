@@ -50,56 +50,79 @@ void GHRio::Update(float _deltaTime)
 	}
 
 	static float pathFindTime = 0.f;
+
 	float4 worldPosition = GetTransform()->GetWorldPosition();
 	LumiaLevel* level = dynamic_cast<LumiaLevel*>(GetLevel());
 	MousePointer* mouse = nullptr;
+	LumiaMap* map = nullptr;
+
 	if (nullptr != level)
 	{
 		mouse = level->GetMousePointer();
+		map = level->GetMap();
 	}
 
+	float height = 0.f;
+	NavFace* clickedFace = nullptr;
 	if (GameEngineInput::GetInst().Press("RButton"))
 	{
-		if (nullptr != mouse)
+		if (nullptr != map)
 		{
-			destination_ = mouse->GetIntersectionYAxisPlane(0.0f, 1000.f);
-			//float4 clickPosition = mouse->GetIntersectionYAxisPlane(0.0f, 1000.f);
-			//LumiaMap* map = level->GetMap();
-			//if (nullptr != map)
-			//{
-			//	float height = 0.f;
-			//	
-			//	GHNavMesh* clickedMesh = map->GetNavMesh(clickPosition);
+			bool result = map->GetNavMesh()->GetIntersectionMeshFromMouseRay(destination_);
 
-			//	if (nullptr != clickedMesh)
-			//	{
-			//		map->IsMeshIntersected(*clickedMesh, clickPosition, height);
-			//		destination_.x = clickPosition.x;
-			//		destination_.y = height;
-			//		destination_.z = clickPosition.z;
-			//	}
-			//	else
-			//	{
-			//		destination_ = clickPosition;
-			//	}
-
-			//}
+			if (!result)
+			{
+				if (mouse != nullptr)
+				{
+					destination_ = mouse->GetIntersectionYAxisPlane(worldPosition.y, 2000.f);
+				}
+			}
 		}
 	}
 
 	if (GameEngineInput::GetInst().Up("RButton"))
 	{
-		if ((destination_ - worldPosition).Len3D() > 300.f)
+		bool result = false;
+		LumiaMap* map = level->GetMap();
+		if (nullptr != map)
+		{
+			result = map->GetNavMesh()->GetIntersectionMeshFromMouseRay(destination_);
+
+			if (!result)
+			{
+				if (mouse != nullptr)
+				{
+					destination_ = mouse->GetIntersectionYAxisPlane(worldPosition.y, 2000.f);
+					//clickedFace = map->GetNavMesh()->GetNavFaceFromPositionXZ(destination_, float4::DOWN, height);
+
+					//if (nullptr != clickedFace)
+					//{
+					//	destination_.y = height;
+					//}
+				}
+			}
+		}
+
+		destinations_.clear();
+		if ((destination_ - worldPosition).Len3D() > 400.f)
 		{
 			LumiaMap* map = level->GetMap();
 			if (nullptr != map && nullptr != mouse)
 			{
 				GameEngineTime::GetInst().TimeCheck();
-				destinations_ = map->FindPath(worldPosition, mouse->GetIntersectionYAxisPlane(0.0f, 1000.f));
-				GameEngineTime::GetInst().TimeCheck();
-				pathFindTime = GameEngineTime::GetInst().GetDeltaTime();
-				
-				destination_ = worldPosition;
+
+				if (result)
+				{
+					destinations_ = map->FindPath(worldPosition, destination_);
+					if (destinations_.size() > 0)
+					{
+						destinations_[0] = destination_;
+					}
+					GameEngineTime::GetInst().TimeCheck();
+					pathFindTime = GameEngineTime::GetInst().GetDeltaTime();
+
+					destination_ = worldPosition;
+				}
 			}
 		}
 	}

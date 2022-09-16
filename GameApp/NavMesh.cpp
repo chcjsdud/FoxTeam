@@ -263,6 +263,23 @@ float4 NavMesh::GetMousePos()
 	return float4::ZERO;
 }
 
+bool NavMesh::GetIntersectionMeshFromMouseRay(float4& _out)
+{
+	float4 Dir = CalculateCameraDir();
+
+	float4 CameraPos = GetLevel()->GetMainCamera()->GetTransform()->GetWorldPosition();
+
+	float Dist = 0.0f;
+
+	if (true == CheckIntersects(CameraPos, Dir, Dist))
+	{
+		_out = CameraPos + (Dir * Dist);
+		return true;
+	}
+
+	return false;
+}
+
 bool NavMesh::IsMouseIntersects()
 {
 	float4 Dir = CalculateCameraDir();

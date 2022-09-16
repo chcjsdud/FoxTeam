@@ -100,7 +100,7 @@ std::vector<float4> AStarNode::GetPath()
 	}
 
 	// 자연스러운 움직임을 위한 첫 포인트 제거
-	if (!ret.empty())
+	if (1 < ret.size())
 	{
 		ret.pop_back();
 	}

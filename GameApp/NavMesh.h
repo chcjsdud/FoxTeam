@@ -101,6 +101,8 @@ public:
 
 	float4 GetMousePos();
 
+	bool GetIntersectionMeshFromMouseRay(float4& _out);
+
 	bool IsMouseIntersects();
 
 	std::vector<NavFace> GetAllNavi()
