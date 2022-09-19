@@ -4,6 +4,7 @@
 // Ό³Έν : 
 class ItemBoxWindow;
 class ItemBoxManager;
+class MousePointer;
 class SettingItemLevel : public GameEngineLevel
 {
 public:
@@ -13,6 +14,8 @@ public:
 	SettingItemLevel(SettingItemLevel&& _other) noexcept = delete;
 	SettingItemLevel& operator=(const SettingItemLevel& _other) = delete;
 	SettingItemLevel& operator=(const SettingItemLevel&& _other) = delete;
+
+	MousePointer* GetMousePointer() { return mouse_; }
 
 protected:
 	void LevelStart() override;
@@ -25,5 +28,6 @@ private:
 
 	ItemBoxManager* ItemBox_;
 	ItemBoxWindow* Window_;
+	MousePointer* mouse_;
 };
 

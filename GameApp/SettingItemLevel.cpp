@@ -9,7 +9,7 @@
 #include <GameEngine/SKySphereActor.h>
 #include "YSJ_LumiaMap.h"
 #include "YSJ_Player.h"
-#include "YSJ_Mouse.h"
+#include "MousePointer.h"
 #include "NavMesh.h"
 #include "ItemBoxManager.h"
 #include <GameEngine/GameEngineCollision.h>
@@ -118,7 +118,6 @@ void SettingItemLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	tempDir.MoveChild("ItemBoxInfo");
 
 	ItemBox_ = CreateActor<ItemBoxManager>();
-
 	ItemBox_->UserAllLoad(tempDir);
 
 	if (nullptr != Window_)
@@ -137,11 +136,11 @@ void SettingItemLevel::CreateActorLevel()
 	SKySphereActor* SkyActor = CreateActor<SKySphereActor>();
 
 	YSJ_LumiaMap* LumiaMap = CreateActor<YSJ_LumiaMap>();
-	LumiaMap->GetTransform()->SetWorldScaling({ 3.0f, 3.0f, 3.0f });
+	LumiaMap->GetTransform()->SetWorldScaling({ 100.0f, 100.0f, 100.0f });
 
 	ItemBox_->GetTransform()->AttachTransform(LumiaMap->GetTransform());
 
-	YSJ_Mouse* Mouse = CreateActor<YSJ_Mouse>();
+	mouse_ = CreateActor<MousePointer>();
 
 	//NaviMesh* Navi = CreateActor<NaviMesh>();
 

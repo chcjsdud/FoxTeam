@@ -10,6 +10,7 @@
 #include "ItemBox.h"
 #include <GameApp/UI_ItemBox.h>
 #include "LumiaLevel.h"
+#include "SettingItemLevel.h"
 
 ItemBoxManager::ItemBoxManager()
 	: SelectBox(nullptr)
@@ -44,10 +45,11 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 
 	for (size_t i = 0; i < AllMesh.size(); i++)
 	{
-		//if (std::string::npos == MeshInfos[i].Name.find("ItemBox"))
-		//{
-		//	continue;
-		//}
+		if (std::string::npos == MeshInfos[i].Name.find("ItemBox") &&
+			std::string::npos == MeshInfos[i].Name.find("OBJ"))
+		{
+			continue;
+		}
 
 		ItemBox* Item = GetLevel()->CreateActor<ItemBox>();
 
@@ -82,6 +84,7 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 void ItemBoxManager::BoxSelectUpdate()
 {
 	GameEngineCollision* Col = GetLevelConvert<LumiaLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
+	//GameEngineCollision* Col = GetLevelConvert<SettingItemLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
 
 	if (nullptr != Col)
 	{
@@ -117,6 +120,7 @@ void ItemBoxManager::DebugRender()
 	{
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
+			ItemBox.second[i]->Col->GetTransform()->SetLocalScaling(float4::ONE);
 			if (SelectBox == ItemBox.second[i])
 			{
 				GetLevel()->PushDebugRender(ItemBox.second[i]->Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
@@ -154,7 +158,7 @@ void ItemBoxManager::Start()
 void ItemBoxManager::Update(float _DeltaTime)
 {
 	
-	//DebugRender();
+	DebugRender();
 
 	/*
 	이건호 : UI기능 테스트 중이라 임시로 UI끄는 기능을 꺼놨습니다
