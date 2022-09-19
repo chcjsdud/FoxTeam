@@ -9,9 +9,6 @@
 #include <GameEngine\GameEngineRenderWindow.h>
 
 #include "MeshLoadLevel.h"
-#include "LH_PlayLevel.h"
-
-#include "SJH_PlayLevel.h"
 #include "LGH_PlayLevel.h"
 #include "YSJ_PlayLevel.h"
 #include "SettingItemLevel.h"

@@ -3,8 +3,6 @@
 #include "GameEngine/GameEngineUIRenderer.h"
 #include "GameEngine/GameEngineInput.h"
 
-#include "LH_Player.h"
-
 UI_Inventory::UI_Inventory()
 	: Time(1.0f), UIOn(false)
 {

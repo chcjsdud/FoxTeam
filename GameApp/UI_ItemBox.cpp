@@ -6,7 +6,6 @@
 #include "GameEngineBase/GameEngineDebug.h"
 
 #include "ItemBase.h"
-#include "LH_Player.h"
 
 
 UI_ItemBox::UI_ItemBox()

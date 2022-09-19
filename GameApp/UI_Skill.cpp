@@ -3,8 +3,6 @@
 #include "GameEngine/GameEngineUIRenderer.h"
 #include "GameEngine/GameEngineInput.h"
 
-#include "LH_Player.h"
-
 UI_Skill::UI_Skill()
 	: Time(1.0f), UIOn(false)
 {
