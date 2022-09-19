@@ -99,7 +99,7 @@ void LumiaLevel::GenerateCharactor()
 	for (size_t i = 0; i < pm->GetPlayerList().size(); i++)
 	{
 		GHRio* newCharacter = CreateActor<GHRio>();
-		newCharacter->SetSpawnPoint({ -2500.f, 0.0f, 10000.f });
+		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 
 		if (i == 0)
 		{

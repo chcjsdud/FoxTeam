@@ -101,7 +101,7 @@ public:
 
 	float4 GetMousePos();
 
-	bool GetIntersectionMeshFromMouseRay(float4& _out);
+	bool GetIntersectionPointFromMouseRay(float4& _out);
 
 	bool IsMouseIntersects();
 

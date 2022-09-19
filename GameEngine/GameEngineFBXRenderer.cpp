@@ -247,7 +247,7 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 }
 
 
-void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex, bool _isLoop)
+void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex, bool _isLoop, float _frameTime)
 {   // 0805 애니메이션 루프여부 추가
 	if (nullptr == FBXMesh)
 	{
@@ -275,7 +275,7 @@ void GameEngineFBXRenderer::CreateFBXAnimation(const std::string& _AnimationName
 	NewFBXAnimation->Animation = Animation;
 	NewFBXAnimation->ParentRenderer = this;
 	NewFBXAnimation->AnimationName_ = _AnimationName;
-	NewFBXAnimation->Init(_AnimationIndex, _isLoop);
+	NewFBXAnimation->Init(_AnimationIndex, _isLoop, _frameTime);
 
 
 	Animations.insert(std::make_pair(_AnimationName, NewFBXAnimation));
@@ -302,7 +302,7 @@ void GameEngineFBXRenderer::ChangeFBXAnimation(const std::string& _AnimationName
 }
 
 
-void FBXAnimation::Init(int _Index, bool _isLoop)
+void FBXAnimation::Init(int _Index, bool _isLoop, float _frameTime)
 {
 	Animation->CalFbxExBoneFrameTransMatrix(Mesh, _Index);
 	PixAniData = &Animation->AnimationDatas[_Index];
@@ -315,7 +315,7 @@ void FBXAnimation::Init(int _Index, bool _isLoop)
 	
 	
 	
-	FrameTime = 0.02f;
+	FrameTime = _frameTime;
 
 	// 0805 박종원 : 애니메이션 만들 시 루프/어웨이크를 결정짓는 bool 값입니다.
 	isLoop_ = _isLoop;

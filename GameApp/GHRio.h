@@ -7,7 +7,7 @@
 class GameEngineFBXRenderer;
 class LumiaMap;
 class GHNavMesh;
-class GHRio : public NavActor
+class GHRio : public GameEngineActor
 {
 public:
 	bool TempFlag = false;
@@ -25,7 +25,15 @@ public:
 	void Update(float _deltaTime) override;
 
 public:
-	void SetSpawnPoint(const float4& _position);
+	void InitSpawnPoint(const float4& _position);
+
+	void SetCurrentNavFace(NavFace* _navFace) { currentNavFace_ = _navFace; }
+	void SetNaviMesh(NavMesh* _NaviMesh);
+
+	NavFace* GetCurrentNavFace() { return currentNavFace_; }
+
+private:
+	void updateCurrentNavFace();
 
 private:
 	void startIdle(float _deltaTime);
@@ -45,7 +53,8 @@ private:
 	float4 direction_;
 
 	LumiaMap* currentMap_;
-	GHNavMesh* currentNavMesh_;
+	NavFace* currentNavFace_;
+	NavMesh* currentNavMesh_;
 
 	std::vector<float4> destinations_;
 };

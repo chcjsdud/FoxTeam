@@ -11,6 +11,7 @@
 GHRio::GHRio()
 	: renderer_(nullptr)
 	, currentMap_(nullptr)
+	, currentNavFace_(nullptr)
 	, currentNavMesh_(nullptr)
 {
 
@@ -68,7 +69,7 @@ void GHRio::Update(float _deltaTime)
 	{
 		if (nullptr != map)
 		{
-			bool result = map->GetNavMesh()->GetIntersectionMeshFromMouseRay(destination_);
+			bool result = map->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
 
 			if (!result)
 			{
@@ -86,7 +87,7 @@ void GHRio::Update(float _deltaTime)
 		LumiaMap* map = level->GetMap();
 		if (nullptr != map)
 		{
-			result = map->GetNavMesh()->GetIntersectionMeshFromMouseRay(destination_);
+			result = map->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
 
 			if (!result)
 			{
@@ -177,22 +178,16 @@ void GHRio::Update(float _deltaTime)
 		}
 	}
 
-	//float4 position = GetTransform()->GetWorldPosition();
-	//float height = 0;
-	//currentMap_->IsMeshIntersected(*currentNavMesh_, position, height);
-	//position.y = height;
-	//GetTransform()->SetWorldPosition(position);
+	updateCurrentNavFace();
 
-	NavActor::Update(_deltaTime);
-
-	if (nullptr != GetCurrentNavi())
+	if (nullptr != currentNavFace_)
 	{
-		float Dist = GetCurrentNavi()->YCheck(GetTransform());
+		float Dist = currentNavFace_->YCheck(GetTransform());
 		GetTransform()->SetWorldMove({ 0.0f, -Dist, 0.0f });
 	}
 }
 
-void GHRio::SetSpawnPoint(const float4& _position)
+void GHRio::InitSpawnPoint(const float4& _position)
 {
 	//float4 spawnPoint = { -6780.f, 0.0f, -780.f };
 	//float4 spawnPoint = { -2500.f, 0.0f, 10000.f };
@@ -218,6 +213,30 @@ void GHRio::SetSpawnPoint(const float4& _position)
 	//{
 	//	GameEngineDebug::MsgBox("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
 	//}
+}
+
+void GHRio::SetNaviMesh(NavMesh* _NaviMesh)
+{
+	currentNavMesh_ = _NaviMesh;
+	currentNavFace_ = currentNavMesh_->CurrentCheck(GetTransform(), float4::DOWN);
+}
+
+void GHRio::updateCurrentNavFace()
+{
+	if (nullptr != currentNavFace_)
+	{
+		if (true == currentNavFace_->OutCheck(GetTransform()))
+		{
+			currentNavFace_ = currentNavFace_->MoveCheck(GetTransform());
+		}
+	}
+	else
+	{
+		if (nullptr != GetLevelConvert<LumiaLevel>()->GetMap())
+		{
+			SetCurrentNavFace(GetLevelConvert<LumiaLevel>()->GetMap()->GetNavMesh()->CurrentCheck(GetTransform(), float4::DOWN));
+		}
+	}
 }
 
 void GHRio::startIdle(float _deltaTime)
