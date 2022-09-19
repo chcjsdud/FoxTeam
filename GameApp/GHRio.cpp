@@ -9,10 +9,9 @@
 
 
 GHRio::GHRio()
-	: renderer_(nullptr)
+	: NavActor()
+	, renderer_(nullptr)
 	, currentMap_(nullptr)
-	, currentNavFace_(nullptr)
-	, currentNavMesh_(nullptr)
 {
 
 }
@@ -24,6 +23,8 @@ GHRio::~GHRio()
 
 void GHRio::Start()
 {
+	NavActor::Start();
+
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	renderer_->SetFBXMesh("Rio_Run.fbx", "TextureDeferredLightAni");
 
@@ -41,6 +42,7 @@ void GHRio::Start()
 
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
 	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
+
 }
 
 void GHRio::Update(float _deltaTime)
@@ -155,8 +157,7 @@ void GHRio::Update(float _deltaTime)
 		float4 nextMovePosition = worldPosition + moveSpeed;
 
 		float temp;
-		nextMovePosition.y = FT::MAX_HEIGHT;
-		if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition, float4::DOWN, temp))
+		if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{0.0f, FT::MAX_HEIGHT, 0.0f}, float4::DOWN, temp))
 		{
 			GetTransform()->SetWorldPosition(nextMovePosition);
 		}
@@ -185,6 +186,9 @@ void GHRio::Update(float _deltaTime)
 		float Dist = currentNavFace_->YCheck(GetTransform());
 		GetTransform()->SetWorldMove({ 0.0f, -Dist, 0.0f });
 	}
+
+	NavActor::Update(_deltaTime);
+
 }
 
 void GHRio::InitSpawnPoint(const float4& _position)
@@ -219,24 +223,6 @@ void GHRio::SetNaviMesh(NavMesh* _NaviMesh)
 {
 	currentNavMesh_ = _NaviMesh;
 	currentNavFace_ = currentNavMesh_->CurrentCheck(GetTransform(), float4::DOWN);
-}
-
-void GHRio::updateCurrentNavFace()
-{
-	if (nullptr != currentNavFace_)
-	{
-		if (true == currentNavFace_->OutCheck(GetTransform()))
-		{
-			currentNavFace_ = currentNavFace_->MoveCheck(GetTransform());
-		}
-	}
-	else
-	{
-		if (nullptr != GetLevelConvert<LumiaLevel>()->GetMap())
-		{
-			SetCurrentNavFace(GetLevelConvert<LumiaLevel>()->GetMap()->GetNavMesh()->CurrentCheck(GetTransform(), float4::DOWN));
-		}
-	}
 }
 
 void GHRio::startIdle(float _deltaTime)

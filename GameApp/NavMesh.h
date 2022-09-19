@@ -41,7 +41,7 @@ public:
 	// _Transform 에서 NaviMesh 사이의 거리를 반환한다.
 	float YCheck(GameEngineTransform* _Transform);
 
-	// NaviActor가 가지고있는 CurrentNavi_ 바깥으로 나갔는지 여부를 체크한다.
+	// NaviActor가 가지고있는 currentNavFace_ 바깥으로 나갔는지 여부를 체크한다.
 	bool OutCheck(GameEngineTransform* _Transform)
 	{
 		float Dist = 0.0f;

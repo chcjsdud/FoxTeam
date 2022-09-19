@@ -25,7 +25,7 @@ private:
 	void CreateActorLevel();
 
 private:
-	NavMesh* NaviMesh_;
+	NavMesh* currentNavMesh_;
 	YSJ_Player* Player_;
 	ItemBoxManager* ItemBox_;
 };

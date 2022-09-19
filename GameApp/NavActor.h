@@ -17,12 +17,12 @@ public:
 
 	NavFace* GetCurrentNavi()
 	{
-		return CurrentNavi_;
+		return currentNavFace_;
 	}
 
 	void SetCurrentNavi(NavFace* _Navi)
 	{
-		CurrentNavi_ = _Navi;
+		currentNavFace_ = _Navi;
 	}
 
 protected:
@@ -30,7 +30,15 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-	NavFace* CurrentNavi_;
-	NavMesh* NaviMesh_;
+	void OpenItemBox();
+	void GetItem();
+	void CloseItemBox();
+
+
+protected:
+	GameEngineCollision* Collision_;
+
+	NavFace* currentNavFace_;
+	NavMesh* currentNavMesh_;
 };
 

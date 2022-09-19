@@ -15,7 +15,7 @@
 #include <GameEngine/GameEngineCollision.h>
 
 YSJ_PlayLevel::YSJ_PlayLevel()
-	: NaviMesh_(nullptr)
+	: currentNavMesh_(nullptr)
 	, Player_(nullptr)
 	, ItemBox_(nullptr)
 {
@@ -68,13 +68,13 @@ void YSJ_PlayLevel::LevelUpdate(float _DeltaTime)
 	{
 		if (nullptr == Player_->GetCurrentNavi() && true == isLoaded)
 		{
-			Player_->SetCurrentNavi(NaviMesh_->CurrentCheck(Player_->GetTransform(), float4::DOWN));
+			Player_->SetCurrentNavi(currentNavMesh_->CurrentCheck(Player_->GetTransform(), float4::DOWN));
 		}
 
 		if (true == GameEngineInput::GetInst().Down("LBUTTON") &&
-			true == NaviMesh_->IsMouseIntersects())
+			true == currentNavMesh_->IsMouseIntersects())
 		{
-			Player_->GetTransform()->SetWorldPosition(NaviMesh_->GetMousePos());
+			Player_->GetTransform()->SetWorldPosition(currentNavMesh_->GetMousePos());
 		}
 	}
 }
@@ -192,7 +192,7 @@ void YSJ_PlayLevel::CreateActorLevel()
 	YSJ_Mouse* Mouse = CreateActor<YSJ_Mouse>();
 	//Mouse->SetPickingRenderer(LumiaMap->GetFBXNaviRenderer());
 
-	//NaviMesh_ = CreateActor<NaviMesh>();
+	//currentNavMesh_ = CreateActor<NaviMesh>();
 
 	std::vector<GameEngineVertex> Vertex = std::vector<GameEngineVertex>(3 * 6);
 
@@ -229,8 +229,8 @@ void YSJ_PlayLevel::CreateActorLevel()
 		Index.push_back(i * 3 + 0);
 	}
 
-	//NaviMesh_->CreateNaviMesh(Vertex, Index);
-	//NaviMesh_->SetColor(float4::GREEN);
-	NaviMesh_->CreateNaviMesh(LumiaMap->GetFBXNaviRenderer());
-	Player_->SetNaviMesh(NaviMesh_);
+	//currentNavMesh_->CreateNaviMesh(Vertex, Index);
+	//currentNavMesh_->SetColor(float4::GREEN);
+	currentNavMesh_->CreateNaviMesh(LumiaMap->GetFBXNaviRenderer());
+	Player_->SetNaviMesh(currentNavMesh_);
 }

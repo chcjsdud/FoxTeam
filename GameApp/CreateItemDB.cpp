@@ -10,9 +10,9 @@
 void ItemBoxWindow::CreateAllItemList()
 {
 	EquipmentItem* Item = reinterpret_cast<EquipmentItem*>(
-		CreateItem("°¡À§", ItemType::Equipment, "ItemIcon_101101.png"));
-	CreateItem("º¼Ææ", ItemType::Useable, "ItemIcon_101102.png");
-	CreateItem("Ä®", ItemType::Misc, "ItemIcon_101104.png");
+		CreateItem("Scissors", ItemType::Equipment, "ItemIcon_101101.png"));
+	CreateItem("Pen", ItemType::Useable, "ItemIcon_101102.png");
+	CreateItem("Knite", ItemType::Misc, "ItemIcon_101104.png");
 }
 
 ItemBase* ItemBoxWindow::CreateItem(const std::string _Name, ItemType _Type,

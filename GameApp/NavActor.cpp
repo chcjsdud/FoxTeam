@@ -2,12 +2,13 @@
 #include "NavActor.h"
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
+#include <GameEngine/GameEngineCollision.h>
 
 NavActor::NavActor()
-	: CurrentNavi_(nullptr)
-	, NaviMesh_(nullptr)
+	: Collision_(nullptr)
+	, currentNavFace_(nullptr)
+	, currentNavMesh_(nullptr)
 {
-
 }
 
 NavActor::~NavActor()
@@ -17,21 +18,30 @@ NavActor::~NavActor()
 
 void NavActor::SetNaviMesh(NavMesh* _NaviMesh)
 {
-	NaviMesh_ = _NaviMesh;
-	CurrentNavi_ = NaviMesh_->CurrentCheck(GetTransform(), float4::DOWN);
+	currentNavMesh_ = _NaviMesh;
+	currentNavFace_ = currentNavMesh_->CurrentCheck(GetTransform(), float4::DOWN);
 }
 
 void NavActor::Start()
 {
+	Collision_ = CreateTransformComponent<GameEngineCollision>();
+	Collision_->GetTransform()->SetLocalScaling(100.0f);
+	Collision_->SetCollisionGroup(CollisionGroup::Player);
 }
 
 void NavActor::Update(float _DeltaTime)
 {
-	if (nullptr != CurrentNavi_)
+	if (nullptr != Collision_ &&
+		Collision_->IsUpdate())
 	{
-		if (true == CurrentNavi_->OutCheck(GetTransform()))
+		GetLevel()->PushDebugRender(Collision_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
+	}
+
+	if (nullptr != currentNavFace_)
+	{
+		if (true == currentNavFace_->OutCheck(GetTransform()))
 		{
-			CurrentNavi_ = CurrentNavi_->MoveCheck(GetTransform());
+			currentNavFace_ = currentNavFace_->MoveCheck(GetTransform());
 		}
 	}
 	else
@@ -41,5 +51,27 @@ void NavActor::Update(float _DeltaTime)
 			SetCurrentNavi(GetLevelConvert<LumiaLevel>()->GetMap()->GetNavMesh()->CurrentCheck(GetTransform(), float4::DOWN));
 		}
 	}
+}
+
+void NavActor::OpenItemBox()
+{
+	// Player가 조건이 만족하는 경우 박스를 연다.
+	// 조건 : Player와 SelectBox가 서로 충돌상태임
+
+}
+
+void NavActor::GetItem()
+{
+	// 박스가 열려있는 상태에서
+	// 열려있는 UI의 아이템을 클릭하는 경우
+	// 그 아이템을 가지고온다.
+}
+
+void NavActor::CloseItemBox()
+{
+	// Player가 다른 곳을 클릭하는 경우
+	// UI가 닫힌다.
+	// SelectBox도 nullptr로 초기화
+	// 초기화하지 않으면 SelectBox 근처에 다가가면 UI가 계속 열리게 됨
 }
 
