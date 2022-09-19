@@ -43,6 +43,7 @@ protected:
 private:
 	void CreateItemBoxInfo(const std::string& _Name);
 	void BoxSelectUpdate();
+	void DebugRender();
 
 private:
 	std::string ItemBoxInfoPath;

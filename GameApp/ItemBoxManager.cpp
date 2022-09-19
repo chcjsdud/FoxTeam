@@ -95,18 +95,35 @@ void ItemBoxManager::BoxSelectUpdate()
 				{
 					if (Col == ItemBox.second[i]->Col)
 					{
-						if (ItemBoxUI_ != nullptr)
-						{
-							//이건호: 아이템박스가 켜져있는 상태에서 다시 박스를 클릭하면 원래 켜져 있던 박스는 없어지도록 했습니다
-							ItemBoxUI_->Release();
-							ItemBoxUI_ = nullptr;
-						}
-						ItemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
-						ItemBoxUI_->RenderOn();
+						//if (ItemBoxUI_ != nullptr)
+						//{
+						//	//이건호: 아이템박스가 켜져있는 상태에서 다시 박스를 클릭하면 원래 켜져 있던 박스는 없어지도록 했습니다
+						//	ItemBoxUI_->Release();
+						//	ItemBoxUI_ = nullptr;
+						//}
+						//ItemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
+						//ItemBoxUI_->RenderOn();
 						SelectBox = ItemBox.second[i];
 					} 
 				}
 			}
+		}
+	}
+}
+
+void ItemBoxManager::DebugRender()
+{
+	for (const auto& ItemBox : ItemBoxs)
+	{
+		for (size_t i = 0; i < ItemBox.second.size(); i++)
+		{
+			if (SelectBox == ItemBox.second[i])
+			{
+				GetLevel()->PushDebugRender(ItemBox.second[i]->Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+				continue;
+			}
+
+			GetLevel()->PushDebugRender(ItemBox.second[i]->Col->GetTransform(), CollisionType::AABBBox3D);
 		}
 	}
 }
@@ -136,19 +153,8 @@ void ItemBoxManager::Start()
 
 void ItemBoxManager::Update(float _DeltaTime)
 {
-	for (const auto& ItemBox : ItemBoxs)
-	{
-		for (size_t i = 0; i < ItemBox.second.size(); i++)
-		{
-			if (SelectBox == ItemBox.second[i])
-			{
-				GetLevel()->PushDebugRender(ItemBox.second[i]->Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
-				continue;
-			}
-
-			GetLevel()->PushDebugRender(ItemBox.second[i]->Col->GetTransform(), CollisionType::AABBBox3D);
-		}
-	}
+	
+	//DebugRender();
 
 	/*
 	이건호 : UI기능 테스트 중이라 임시로 UI끄는 기능을 꺼놨습니다

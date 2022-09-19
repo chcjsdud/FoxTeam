@@ -80,6 +80,22 @@ void LumiaMap::Start()
 		mapRenderers[i]->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
 		mapRenderers[i]->GetTransform()->SetLocalScaling(100.0f);
 	}
+
+	tempDir.MoveParent("UserMesh");
+	tempDir.MoveChild("ItemBox");
+
+	vecFile = tempDir.GetAllFile(".UserMesh");
+
+	for (size_t i = 0; i < vecFile.size(); i++)
+	{
+		GameEngineFBXRenderer* FBX = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
+		FBX->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
+		FBX->GetTransform()->SetLocalScaling(100.0f);
+
+		mapRenderers.push_back(FBX);
+	}
+
+	int a = 0;
 }
 
 void LumiaMap::Update(float _deltaTime)
@@ -89,16 +105,12 @@ void LumiaMap::Update(float _deltaTime)
 		float4 PlayerPos = PlayerInfoManager::GetInstance()->
 			GetMainCharacter()->GetTransform()->GetWorldPosition();
 
-		std::list<float> tmplist;
-
 		for (size_t i = 0; i < mapRenderers.size(); i++)
 		{
 			std::vector<RenderSet>& RenderSets = mapRenderers[i]->GetAllRenderSet();
 
 			for (size_t j = 0; j < RenderSets.size(); j++)
 			{
-				tmplist.push_back(RenderSets[j].Radius);
-
 				//float Length = float4::Calc_Len3D(PlayerPos, RenderSets[j].LocalPos * mapRenderers[i]->GetTransform()->GetTransformData().WorldWorld_);
 				float4 RenderSetPos = RenderSets[j].LocalPos * mapRenderers[i]->GetTransform()->GetTransformData().WorldWorld_;
 
@@ -138,8 +150,6 @@ void LumiaMap::Update(float _deltaTime)
 				}
 			}
 		}
-		
-		tmplist;
 
 		int a = 0;
 	}

@@ -147,7 +147,7 @@ void LumiaLevel::loadResource()
 			}
 		}
 
-		/*tempDir.MoveParent("UserMesh");
+		tempDir.MoveParent("UserMesh");
 		tempDir.MoveChild("ItemBox");
 
 		vecFile = tempDir.GetAllFile(".UserMesh");
@@ -158,7 +158,7 @@ void LumiaLevel::loadResource()
 			{
 				GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
 			}
-		}*/
+		}
 	}
 
 	{
@@ -199,7 +199,7 @@ void LumiaLevel::createActor()
 	mouse_ = CreateActor<MousePointer>();
 	map_ = CreateActor<LumiaMap>();
 
-	/*{
+	{
 		GameEngineDirectory tempDir;
 
 		tempDir.MoveParent("FoxTeam");
@@ -208,7 +208,7 @@ void LumiaLevel::createActor()
 		itemBox_ = CreateActor<ItemBoxManager>();
 		itemBox_->UserAllLoad(tempDir);
 		itemBox_->GetTransform()->SetLocalScaling(100.0f);
-	}*/
+	}
 
 	SKySphereActor* Actor = CreateActor<SKySphereActor>();
 
