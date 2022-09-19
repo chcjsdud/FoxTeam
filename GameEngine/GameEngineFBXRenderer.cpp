@@ -160,9 +160,12 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 					{
 						GameEngineTextureManager::GetInst().Load(MatData->DifTexturePath);
 						Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
+					}
+
+					if (Tex != nullptr)
+					{
 						RenderSetData.ShaderHelper->SettingTexture("DiffuseTex", Tex);
 					}
-				
 				}
 			}
 
