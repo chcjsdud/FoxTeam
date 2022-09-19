@@ -86,30 +86,37 @@ void ItemBoxManager::BoxSelectUpdate()
 	GameEngineCollision* Col = GetLevelConvert<LumiaLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
 	//GameEngineCollision* Col = GetLevelConvert<SettingItemLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
 
-	if (nullptr != Col)
+	if (nullptr == Col)
 	{
-		GetLevel()->PushDebugRender(Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+		SelectBox = nullptr;
+		return;
+	}
 
-		if (GameEngineInput::GetInst().Down("LBUTTON"))
+	GetLevel()->PushDebugRender(Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+
+	if (false == GameEngineInput::GetInst().Down("LBUTTON"))
+	{
+		return;
+	}
+
+	for (const auto& ItemBox : ItemBoxs)
+	{
+		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
-			for (const auto& ItemBox : ItemBoxs)
+			if (Col != ItemBox.second[i]->Col)
 			{
-				for (size_t i = 0; i < ItemBox.second.size(); i++)
-				{
-					if (Col == ItemBox.second[i]->Col)
-					{
-						//if (ItemBoxUI_ != nullptr)
-						//{
-						//	//이건호: 아이템박스가 켜져있는 상태에서 다시 박스를 클릭하면 원래 켜져 있던 박스는 없어지도록 했습니다
-						//	ItemBoxUI_->Release();
-						//	ItemBoxUI_ = nullptr;
-						//}
-						//ItemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
-						//ItemBoxUI_->RenderOn();
-						SelectBox = ItemBox.second[i];
-					} 
-				}
+				continue;
 			}
+			
+			//if (ItemBoxUI_ != nullptr)
+			//{
+			//	//이건호: 아이템박스가 켜져있는 상태에서 다시 박스를 클릭하면 원래 켜져 있던 박스는 없어지도록 했습니다
+			//	ItemBoxUI_->Release();
+			//	ItemBoxUI_ = nullptr;
+			//}
+			//ItemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
+			//ItemBoxUI_->RenderOn();
+			SelectBox = ItemBox.second[i];
 		}
 	}
 }

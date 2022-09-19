@@ -179,8 +179,6 @@ void GHRio::Update(float _deltaTime)
 		}
 	}
 
-	updateCurrentNavFace();
-
 	if (nullptr != currentNavFace_)
 	{
 		float Dist = currentNavFace_->YCheck(GetTransform());
@@ -217,12 +215,6 @@ void GHRio::InitSpawnPoint(const float4& _position)
 	//{
 	//	GameEngineDebug::MsgBox("초기 캐릭터 위치가 네비게이션 메쉬 위에 있지 않습니다.");
 	//}
-}
-
-void GHRio::SetNaviMesh(NavMesh* _NaviMesh)
-{
-	currentNavMesh_ = _NaviMesh;
-	currentNavFace_ = currentNavMesh_->CurrentCheck(GetTransform(), float4::DOWN);
 }
 
 void GHRio::startIdle(float _deltaTime)

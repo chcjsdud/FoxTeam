@@ -30,13 +30,16 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	void CheckCurrentNav();
+
 	void OpenItemBox();
 	void GetItem();
 	void CloseItemBox();
 
+	void CheckItemBox();
 
 protected:
-	GameEngineCollision* Collision_;
+	GameEngineCollision* collision_;
 
 	NavFace* currentNavFace_;
 	NavMesh* currentNavMesh_;

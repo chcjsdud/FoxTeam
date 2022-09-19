@@ -31,7 +31,7 @@ public:
 public:
 	MousePointer* GetMousePointer() { return mouse_; }
 	LumiaMap* GetMap() { return map_; }
-
+	ItemBoxManager* GetItemBoxManager() { return itemBox_; }
 private:
 	// On level change start event
 	void loadResource();

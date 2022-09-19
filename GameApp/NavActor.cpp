@@ -3,9 +3,10 @@
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
 #include <GameEngine/GameEngineCollision.h>
+#include "ItemBox.h"
 
 NavActor::NavActor()
-	: Collision_(nullptr)
+	: collision_(nullptr)
 	, currentNavFace_(nullptr)
 	, currentNavMesh_(nullptr)
 {
@@ -24,19 +25,27 @@ void NavActor::SetNaviMesh(NavMesh* _NaviMesh)
 
 void NavActor::Start()
 {
-	Collision_ = CreateTransformComponent<GameEngineCollision>();
-	Collision_->GetTransform()->SetLocalScaling(100.0f);
-	Collision_->SetCollisionGroup(CollisionGroup::Player);
+	collision_ = CreateTransformComponent<GameEngineCollision>();
+	collision_->GetTransform()->SetLocalScaling(100.0f);
+	collision_->SetCollisionGroup(CollisionGroup::Player);
+	collision_->SetCollisionType(CollisionType::AABBBox3D);
 }
 
 void NavActor::Update(float _DeltaTime)
 {
-	if (nullptr != Collision_ &&
-		Collision_->IsUpdate())
+	if (nullptr != collision_ &&
+		collision_->IsUpdate())
 	{
-		GetLevel()->PushDebugRender(Collision_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
+		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
 	}
 
+	CheckCurrentNav();
+
+	CheckItemBox();
+}
+
+void NavActor::CheckCurrentNav()
+{
 	if (nullptr != currentNavFace_)
 	{
 		if (true == currentNavFace_->OutCheck(GetTransform()))
@@ -56,8 +65,7 @@ void NavActor::Update(float _DeltaTime)
 void NavActor::OpenItemBox()
 {
 	// Player가 조건이 만족하는 경우 박스를 연다.
-	// 조건 : Player와 SelectBox가 서로 충돌상태임
-
+	// ItemBox UI 를 열음
 }
 
 void NavActor::GetItem()
@@ -73,5 +81,30 @@ void NavActor::CloseItemBox()
 	// UI가 닫힌다.
 	// SelectBox도 nullptr로 초기화
 	// 초기화하지 않으면 SelectBox 근처에 다가가면 UI가 계속 열리게 됨
+}
+
+void NavActor::CheckItemBox()
+{
+	// Player와 SelectBox가 서로 충돌상태인지를 체크
+
+	GameEngineCollision* OtherCol = collision_->CollisionPtr(static_cast<int>(CollisionGroup::ItemBox));
+
+	if (nullptr != OtherCol)
+	{
+		ItemBox* Box = GetLevelConvert<LumiaLevel>()->GetItemBoxManager()->GetSelectBox();
+
+		if (nullptr == Box)
+		{
+			return;
+		}
+
+		if (OtherCol != Box->GetCollision())
+		{
+			return;
+		}
+
+		// 현재 박스를 누른 후에 커서를 SelectBox 바깥으로 옮기면 박스가 열리지 않음
+		OpenItemBox();
+	}
 }
 

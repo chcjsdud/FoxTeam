@@ -30,6 +30,8 @@ public:
 	ItemBox& operator=(const ItemBox& _other) = delete;
 	ItemBox& operator=(const ItemBox&& _other) = delete;
 
+	GameEngineCollision* GetCollision() { return Col; }
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
