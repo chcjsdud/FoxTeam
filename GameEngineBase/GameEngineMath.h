@@ -160,6 +160,7 @@ public:
 	static float4 DirZRadian(float _Radian);
 
 	static float Calc_Len3D(const float4& a, const float4& b);
+	static float Calc_Len2D(float _x1, float _y1, float x2, float _y2);
 
 public:
 	// unnamed union을 선언하면 

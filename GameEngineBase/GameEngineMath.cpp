@@ -29,6 +29,11 @@ float float4::Calc_Len3D(const float4& a, const float4& b)
 	return sqrt(((a.x - b.x) * (a.x - b.x)) + ((a.y - b.y) * (a.y - b.y)) + ((a.z - b.z) * (a.z - b.z)));
 }
 
+float float4::Calc_Len2D(float _x1, float _y1, float x2, float _y2)
+{
+	return sqrt(((_x1 - x2) * (_x1 - x2)) + ((_y1 - _y2) * (_y1 - _y2)));
+}
+
 const float4 float4::ZERO = { 0.0f, 0.0f, 0.0f, 1.0f };
 const float4 float4::ONE = { 1.0f, 1.0f, 1.0f, 1.0f };
 const float4 float4::LEFT = {-1.0f, 0.0f};

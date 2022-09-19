@@ -54,6 +54,7 @@ void LumiaMap::Start()
 
 	navMeshRenderer_->GetTransform()->SetLocalScaling(100.0f);
 	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f });
+	navMeshRenderer_->Off();
 
 	navMesh_ = CreateComponent<NavMesh>();
 
@@ -88,14 +89,46 @@ void LumiaMap::Update(float _deltaTime)
 		float4 PlayerPos = PlayerInfoManager::GetInstance()->
 			GetMainCharacter()->GetTransform()->GetWorldPosition();
 
+		std::list<float> tmplist;
+
 		for (size_t i = 0; i < mapRenderers.size(); i++)
 		{
 			std::vector<RenderSet>& RenderSets = mapRenderers[i]->GetAllRenderSet();
 
 			for (size_t j = 0; j < RenderSets.size(); j++)
 			{
-				float Length = float4::Calc_Len3D(PlayerPos, RenderSets[j].LocalPos * mapRenderers[i]->GetTransform()->GetTransformData().WorldWorld_);
-				if (Length >= 3000.0f)
+				tmplist.push_back(RenderSets[j].Radius);
+
+				//float Length = float4::Calc_Len3D(PlayerPos, RenderSets[j].LocalPos * mapRenderers[i]->GetTransform()->GetTransformData().WorldWorld_);
+				float4 RenderSetPos = RenderSets[j].LocalPos * mapRenderers[i]->GetTransform()->GetTransformData().WorldWorld_;
+
+				float Length = float4::Calc_Len2D(PlayerPos.x, PlayerPos.z, 
+					RenderSetPos.x, RenderSetPos.z);
+
+				float Ratio = 1.0f;
+
+				if (50.0f < RenderSets[j].Radius)
+				{
+					Ratio = 2.0f;
+				}
+
+				if (75.0f < RenderSets[j].Radius)
+				{
+					Ratio = 4.0f;
+				}
+
+				if (100.0f < RenderSets[j].Radius)
+				{
+					Ratio = 8.0f;
+				}
+
+				if (150.0f < RenderSets[j].Radius)
+				{
+					RenderSets[j].isRender = true;
+					continue;
+				}
+
+				if (Length >= RENDER_RANGE * Ratio)
 				{
 					RenderSets[j].isRender = false;
 				}
@@ -105,6 +138,10 @@ void LumiaMap::Update(float _deltaTime)
 				}
 			}
 		}
+		
+		tmplist;
+
+		int a = 0;
 	}
 }
 

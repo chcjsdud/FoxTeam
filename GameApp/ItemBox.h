@@ -16,7 +16,6 @@ public:
 };
 
 // Ό³Έν : 
-class YSJ_Ray;
 class ItemBase;
 class GameEngineCollision;
 class ItemBox : public GameEngineActor

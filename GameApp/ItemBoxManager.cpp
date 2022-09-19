@@ -1,7 +1,7 @@
 #include "PreCompile.h"
 #include "ItemBoxManager.h"
 #include <GameEngine/GameEngineCollision.h>
-#include "YSJ_Mouse.h"
+#include "MousePointer.h"
 #include "Enums.h"
 #include "ItemBase.h"
 #include "EquipmentItem.h"
@@ -9,6 +9,7 @@
 #include "MiscItem.h"
 #include "ItemBox.h"
 #include <GameApp/UI_ItemBox.h>
+#include "LumiaLevel.h"
 
 ItemBoxManager::ItemBoxManager()
 	: SelectBox(nullptr)
@@ -80,7 +81,7 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 
 void ItemBoxManager::BoxSelectUpdate()
 {
-	GameEngineCollision* Col = YSJ_Mouse::MainMouse->GetPickCollision(GameEngineInput::GetInst().GetMousePos(), static_cast<int>(CollisionGroup::ItemBox));
+	GameEngineCollision* Col = GetLevelConvert<LumiaLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
 
 	if (nullptr != Col)
 	{

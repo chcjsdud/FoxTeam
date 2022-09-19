@@ -99,13 +99,32 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 			RenderSet& RenderSetData = RenderSets.emplace_back();
 
 			float4 AllVtxPos = float4::ZERO;
+			float MaxValue = 0.0f;
 
 			for (size_t i = 0; i < StartMesh.Vertexs.size(); i++)
 			{
-				AllVtxPos += StartMesh.Vertexs[i].POSITION;
+				float4 Vtx = StartMesh.Vertexs[i].POSITION;
+
+				AllVtxPos += Vtx;
+				
+				if (MaxValue < abs(Vtx.x))
+				{
+					MaxValue = abs(Vtx.x);
+				}
+
+				if (MaxValue < abs(Vtx.y))
+				{
+					MaxValue = abs(Vtx.y);
+				}
+
+				if (MaxValue < abs(Vtx.z))
+				{
+					MaxValue = abs(Vtx.z);
+				}
 			}
 
 			RenderSetData.LocalPos = AllVtxPos / static_cast<float>(StartMesh.Vertexs.size());
+			RenderSetData.Radius = MaxValue;
 
 			RenderSetData.Index = _MeshIndex;
 

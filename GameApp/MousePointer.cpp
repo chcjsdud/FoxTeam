@@ -33,6 +33,28 @@ float4 MousePointer::GetIntersectionYAxisPlane(float _height, float _rayLength)
 	return DirectX::XMPlaneIntersectLine({ 0.0f, 1.0f, 0.0f, -_height }, rayOrigin_.DirectVector, (rayOrigin_ + rayDirection_ * _rayLength).DirectVector);;
 }
 
+GameEngineCollision* MousePointer::GetPickCollision(int _Order)
+{
+	// 현재 레벨의 모든 충돌체 목록 Get
+	std::map<int, std::list<GameEngineCollision*>> AllList = GetLevel()->GetAllCollision();
+
+	// 해당 광선과 교차하는 충돌체 탐색
+	std::list<GameEngineCollision*>::iterator StartIter = AllList[_Order].begin();
+	std::list<GameEngineCollision*>::iterator EndIter = AllList[_Order].end();
+
+	for (; StartIter != EndIter; ++StartIter)
+	{
+		// 광선의 시작지점에서부터 선택된 충돌체와 교차하는 지점까지의 거리
+		float Dist = 0.0f;
+		if (true == (*StartIter)->BoundingToRayCollision((*StartIter)->GetCollisionType(), rayOrigin_, rayDirection_, Dist))
+		{
+			return (*StartIter);
+		}
+	}
+
+	return nullptr;
+}
+
 void MousePointer::updateMouseRay()
 {
 	// 뷰포트 개수를 가져옵니다. 뷰포트는 하나만 사용했고, 하나만 가져올 것이기 때문에 1 로 초기화합니다.

@@ -64,7 +64,7 @@ void GHRio::Update(float _deltaTime)
 
 	float height = 0.f;
 	NavFace* clickedFace = nullptr;
-	if (GameEngineInput::GetInst().Press("RButton"))
+	if (GameEngineInput::GetInst().Press("LButton"))
 	{
 		if (nullptr != map)
 		{
@@ -80,7 +80,7 @@ void GHRio::Update(float _deltaTime)
 		}
 	}
 
-	if (GameEngineInput::GetInst().Up("RButton"))
+	if (GameEngineInput::GetInst().Up("LButton"))
 	{
 		bool result = false;
 		LumiaMap* map = level->GetMap();

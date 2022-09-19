@@ -12,6 +12,7 @@ public:
 	std::vector<float4x4> BoneData;
 
 	float4 LocalPos;
+	float Radius;
 	bool isRender = true;
 };
 

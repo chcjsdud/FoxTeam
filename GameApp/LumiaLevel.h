@@ -49,6 +49,6 @@ private:
 	MousePointer* mouse_;
 	LumiaMap* map_;
 
-	ItemBoxManager* ItemBox_;
+	ItemBoxManager* itemBox_;
 };
 

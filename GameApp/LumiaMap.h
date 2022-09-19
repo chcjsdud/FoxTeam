@@ -34,6 +34,10 @@ private:
 	void checkASterNodeObstacle();
 	void updateAStarNodeVertexInfo();
 
+public:
+	// 플레이어 거리 기준
+	const float RENDER_RANGE = 1000.f;
+
 private:
 	// A*
 	std::vector<std::vector<AStarNode>> allNodes_;

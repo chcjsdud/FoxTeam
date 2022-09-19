@@ -11,7 +11,7 @@
 
 LumiaLevel::LumiaLevel()
 	: mouse_(nullptr)
-	, ItemBox_(nullptr)
+	, itemBox_(nullptr)
 	, player_(nullptr)
 	, map_(nullptr)
 {
@@ -146,6 +146,19 @@ void LumiaLevel::loadResource()
 				GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
 			}
 		}
+
+		/*tempDir.MoveParent("UserMesh");
+		tempDir.MoveChild("ItemBox");
+
+		vecFile = tempDir.GetAllFile(".UserMesh");
+
+		for (size_t i = 0; i < vecFile.size(); i++)
+		{
+			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+			{
+				GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
+			}
+		}*/
 	}
 
 	{
@@ -178,13 +191,24 @@ void LumiaLevel::releaseResource()
 	GameEngineFBXAnimationManager::GetInst().Delete("Rio_Wait.fbx");
 
 	mouse_ = nullptr;
-	ItemBox_ = nullptr;
+	itemBox_ = nullptr;
 }
 
 void LumiaLevel::createActor()
 {
 	mouse_ = CreateActor<MousePointer>();
 	map_ = CreateActor<LumiaMap>();
+
+	/*{
+		GameEngineDirectory tempDir;
+
+		tempDir.MoveParent("FoxTeam");
+		tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox" / "ItemBoxInfo";
+
+		itemBox_ = CreateActor<ItemBoxManager>();
+		itemBox_->UserAllLoad(tempDir);
+		itemBox_->GetTransform()->SetLocalScaling(100.0f);
+	}*/
 
 	SKySphereActor* Actor = CreateActor<SKySphereActor>();
 
