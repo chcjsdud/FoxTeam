@@ -43,10 +43,13 @@ void GHRio::Start()
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
 	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
 
+	mainState_.CreateStateTemplate<GHRio>("Normal", this, &GHRio::startNormal, &GHRio::updateNormal, nullptr);
 }
 
 void GHRio::Update(float _deltaTime)
 {
+	//mainState_.Update(_deltaTime);
+
 	if (!TempFlag)
 	{
 		return;
@@ -134,6 +137,9 @@ void GHRio::Update(float _deltaTime)
 	if (nullptr != controlWindow)
 	{
 		controlWindow->AddText("Path find time elapsed : " + std::to_string(pathFindTime) + " sec");
+
+		controlWindow->AddText("hi");
+		controlWindow->AddText("nice to meet you");
 	}
 
 	worldPosition.y = destination_.y;
@@ -217,7 +223,15 @@ void GHRio::InitSpawnPoint(const float4& _position)
 	//}
 }
 
-void GHRio::startIdle(float _deltaTime)
+void GHRio::startNormal()
+{
+}
+
+void GHRio::updateNormal(float _deltaTime)
+{
+}
+
+void GHRio::startIdle()
 {
 }
 

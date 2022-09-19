@@ -72,7 +72,7 @@ private:
 
 public:
 	template <typename T>
-	void CreateState(
+	void CreateStateTemplate(
 		const std::string& _Name,
 		T* objptr,
 		void (T::*_Start)(),

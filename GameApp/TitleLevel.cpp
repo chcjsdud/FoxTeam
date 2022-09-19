@@ -28,9 +28,9 @@ void TitleLevel::LevelStart()
 
 	{
 
-		state_.CreateState<TitleLevel>("Booting", this, &TitleLevel::StartBooting, &TitleLevel::UpdateBooting, &TitleLevel::EndBooting);
-		state_.CreateState<TitleLevel>("Idle", this, &TitleLevel::StartIdle, &TitleLevel::UpdateIdle, &TitleLevel::EndIdle);
-		state_.CreateState<TitleLevel>("Select", this, &TitleLevel::StartSelect, &TitleLevel::UpdateSelect, &TitleLevel::EndSelect);
+		state_.CreateStateTemplate<TitleLevel>("Booting", this, &TitleLevel::StartBooting, &TitleLevel::UpdateBooting, &TitleLevel::EndBooting);
+		state_.CreateStateTemplate<TitleLevel>("Idle", this, &TitleLevel::StartIdle, &TitleLevel::UpdateIdle, &TitleLevel::EndIdle);
+		state_.CreateStateTemplate<TitleLevel>("Select", this, &TitleLevel::StartSelect, &TitleLevel::UpdateSelect, &TitleLevel::EndSelect);
 
 		state_.ChangeState("Booting");
 	}

@@ -184,11 +184,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
-    <ClCompile Include="Character_ProtoType.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Character_ProtoType_State.cpp" />
     <ClCompile Include="CharSelectPacket.cpp">
       <SubType>
       </SubType>
@@ -198,10 +193,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ChattingInput.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Controller.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -298,16 +289,6 @@
     </ClCompile>
     <ClCompile Include="LGH_Aya.cpp" />
     <ClCompile Include="LGH_PlayLevel.cpp" />
-    <ClCompile Include="LH_Mouse.cpp" />
-    <ClCompile Include="LH_Unit.cpp" />
-    <ClCompile Include="LH_Inventory.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="LobbyLevel.cpp" />
     <ClCompile Include="LumiaLevel.cpp" />
     <ClCompile Include="MiscItem.cpp" />
@@ -323,11 +304,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="PJW_Mouse.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="PlayerInfoManager.cpp">
       <SubType>
       </SubType>
@@ -353,10 +329,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="SJH_Funnel.cpp" />
-    <ClCompile Include="SJH_NaviCell.cpp" />
-    <ClCompile Include="SJH_PathFinder.cpp" />
-    <ClCompile Include="SJH_Wolf.cpp" />
     <ClCompile Include="TempLobbyRenderer.cpp">
       <SubType>
       </SubType>
@@ -389,50 +361,6 @@
     <ClCompile Include="UI_CharPicture.cpp" />
     <ClCompile Include="UI_Equip.cpp" />
     <ClCompile Include="UI_Inventory.cpp" />
-    <ClCompile Include="LH_Map.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="PJW_GameController.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="PJW_Hyunwoo.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="PJW_Level.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="PJW_Map.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="PJW_Player.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="LH_Player.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="LH_Yuki_State.cpp" />
-    <ClCompile Include="LH_LockOnUI.cpp" />
-    <ClCompile Include="SJH_FloorMap.cpp" />
-    <ClCompile Include="SJH_Mouse.cpp" />
-    <ClCompile Include="SJH_PlayLevel.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="LH_TestMonster.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="LH_TestMonsterState.cpp" />
-    <ClCompile Include="SJH_Ray.cpp" />
-    <ClCompile Include="SJH_TestActor.cpp" />
-    <ClCompile Include="SJH_Yuki.cpp" />
     <ClCompile Include="UI_ItemBox.cpp" />
     <ClCompile Include="UI_Status.cpp" />
     <ClCompile Include="TestPlayer.cpp">
@@ -440,10 +368,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="MeshLoadLevel.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
-    <ClCompile Include="LH_PlayLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -465,10 +389,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="Unit_Packet.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="UseableItem.cpp" />
     <ClCompile Include="UserGame.cpp">
       <SubType>
@@ -479,10 +399,6 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="UserGame_Resources_Shader.cpp" />
-    <ClCompile Include="LH_Yuki.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="YSJ_Char.cpp" />
     <ClCompile Include="YSJ_Char_State.cpp" />
     <ClCompile Include="YSJ_LumiaMap.cpp" />
@@ -492,10 +408,6 @@
     <ClCompile Include="YSJ_Ray.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Character_ProtoType.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="CharSelectPacket.h">
       <SubType>
       </SubType>
@@ -505,10 +417,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ChattingInput.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -606,18 +514,8 @@
     </ClInclude>
     <ClInclude Include="LGH_Aya.h" />
     <ClInclude Include="LGH_PlayLevel.h" />
-    <ClInclude Include="LH_Mouse.h" />
-    <ClInclude Include="LH_Unit.h" />
     <ClInclude Include="CustomVertex.h" />
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="LH_Inventory.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="LobbyLevel.h" />
     <ClInclude Include="LumiaLevel.h" />
     <ClInclude Include="MiscItem.h" />
@@ -633,11 +531,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="PJW_Mouse.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="PlayerController.h" />
     <ClInclude Include="PlayerInfo.h" />
     <ClInclude Include="PlayerInfoManager.h">
       <SubType>
@@ -664,10 +557,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="SJH_Funnel.h" />
-    <ClInclude Include="SJH_NaviCell.h" />
-    <ClInclude Include="SJH_PathFinder.h" />
-    <ClInclude Include="SJH_Wolf.h" />
     <ClInclude Include="TempLobbyRenderer.h">
       <SubType>
       </SubType>
@@ -701,50 +590,6 @@
     <ClInclude Include="UI_Equip.h" />
     <ClInclude Include="UI_Inventory.h" />
     <ClInclude Include="Macro.h" />
-    <ClInclude Include="LH_Map.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="PJW_Enum.h" />
-    <ClInclude Include="PJW_GameController.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="PJW_Hyunwoo.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="PJW_Level.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="PJW_Map.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="PJW_Player.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="LH_Player.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="LH_LockOnUI.h" />
-    <ClInclude Include="SJH_FloorMap.h" />
-    <ClInclude Include="SJH_Mouse.h" />
-    <ClInclude Include="SJH_PlayLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="LH_Status.h" />
-    <ClInclude Include="LH_TestMonster.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="SJH_Ray.h" />
-    <ClInclude Include="SJH_TestActor.h" />
-    <ClInclude Include="SJH_Yuki.h" />
     <ClInclude Include="UI_ItemBox.h" />
     <ClInclude Include="UI_Status.h" />
     <ClInclude Include="TestPlayer.h">
@@ -752,10 +597,6 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="MeshLoadLevel.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
-    <ClInclude Include="LH_PlayLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -768,20 +609,12 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="Unit_Packet.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="UseableItem.h" />
     <ClInclude Include="UserGame.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="UserGame_Resources_Shader.h" />
-    <ClInclude Include="LH_Yuki.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="YSJ_Char.h" />
     <ClInclude Include="YSJ_LumiaMap.h" />
     <ClInclude Include="YSJ_Mouse.h" />

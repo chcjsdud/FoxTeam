@@ -16,86 +16,17 @@
     <ClCompile Include="UserGame_Resources.cpp">
       <Filter>00.GameApp\01.Core</Filter>
     </ClCompile>
-    <ClCompile Include="LH_PlayLevel.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel</Filter>
-    </ClCompile>
     <ClCompile Include="TestPlayer.cpp">
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="LH_Map.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Map</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_TestMonster.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_TestMonsterState.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_LockOnUI.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_Inventory.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="PJW_Hyunwoo.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="PJW_Level.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_Level</Filter>
-    </ClCompile>
-    <ClCompile Include="PJW_Map.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="SJH_PlayLevel.cpp">
-      <Filter>01.GameObject\99.SJH\02.Level</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_Player.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="SJH_FloorMap.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="SJH_Mouse.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="PJW_GameController.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_Controller</Filter>
-    </ClCompile>
     <ClCompile Include="LGH_PlayLevel.cpp">
       <Filter>01.GameObject\99.LGH</Filter>
-    </ClCompile>
-    <ClCompile Include="PJW_Player.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_LumiaMap.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_PlayLevel.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\01Level</Filter>
-    </ClCompile>
-    <ClCompile Include="SJH_TestActor.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\00.TestActor</Filter>
-    </ClCompile>
-    <ClCompile Include="SJH_Ray.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\01.Ray</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_Unit.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_Yuki.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_Yuki_State.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
-    </ClCompile>
-    <ClCompile Include="Character_ProtoType.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
-    </ClCompile>
-    <ClCompile Include="Character_ProtoType_State.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
     </ClCompile>
     <ClCompile Include="LGH_Aya.cpp">
       <Filter>01.GameObject\99.LGH</Filter>
@@ -109,29 +40,11 @@
     <ClCompile Include="YSJ_Char.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClCompile>
-    <ClCompile Include="SJH_Yuki.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\02.Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerController.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
-    </ClCompile>
-    <ClCompile Include="LH_Mouse.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object</Filter>
-    </ClCompile>
-    <ClCompile Include="SJH_NaviCell.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell</Filter>
-    </ClCompile>
     <ClCompile Include="YSJ_Ray.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse\Component</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_Mouse.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse</Filter>
-    </ClCompile>
-    <ClCompile Include="SJH_PathFinder.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder</Filter>
-    </ClCompile>
-    <ClCompile Include="PJW_Mouse.cpp">
-      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClCompile>
     <ClCompile Include="UI_CharPicture.cpp">
       <Filter>01.GameObject\99.LGH\UI</Filter>
@@ -166,9 +79,6 @@
     <ClCompile Include="UI_ItemBox.cpp">
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClCompile>
-    <ClCompile Include="SJH_Funnel.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\01.Funnel</Filter>
-    </ClCompile>
     <ClCompile Include="MiscItem.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
     </ClCompile>
@@ -181,20 +91,11 @@
     <ClCompile Include="CreateItemDB.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClCompile>
-    <ClCompile Include="SJH_Wolf.cpp">
-      <Filter>01.GameObject\99.SJH\01.Actor\03.Monster</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
-    </ClCompile>
     <ClCompile Include="ChattingPacket.cpp">
       <Filter>02.GameServer\UserPacket</Filter>
     </ClCompile>
     <ClCompile Include="ServerTestLevel.cpp">
       <Filter>02.GameServer\ServerTempTest</Filter>
-    </ClCompile>
-    <ClCompile Include="Unit_Packet.cpp">
-      <Filter>01.GameObject\99.LH\PlayLevel\LH_Unit_Paket</Filter>
     </ClCompile>
     <ClCompile Include="KeyboardClass.cpp">
       <Filter>02.GameServer\ServerTempTest\Chat</Filter>
@@ -366,104 +267,14 @@
     <Filter Include="01.GameObject\03.Level">
       <UniqueIdentifier>{e6998438-49d5-445a-83ae-2e78e52a45df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.SJH">
-      <UniqueIdentifier>{b0b62aa8-b6fc-4c12-be65-36613e3f3df0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor">
-      <UniqueIdentifier>{e36967ae-78a3-4b45-b023-9dcaf7532b4d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\03.Level\MeshLoadLevel">
       <UniqueIdentifier>{e7fc81f9-dff4-4828-83dd-89047b857231}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\03.Level\MeshLoadLevel\Actor">
       <UniqueIdentifier>{6dfae342-c1d4-4e78-af66-4069ade280e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.LH">
-      <UniqueIdentifier>{64ecfc7a-56dd-4bff-9f28-997b31423cf2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel">
-      <UniqueIdentifier>{05b751c2-561b-4ec7-9f56-dd77d1993f1c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor">
-      <UniqueIdentifier>{76756eed-32e9-42f3-8ce1-5f9577bf4b80}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\00. UI">
-      <UniqueIdentifier>{0afffbf6-ed4b-4ee0-bca8-15b10b58d266}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object">
-      <UniqueIdentifier>{e15878bb-1b17-4cf2-9c8a-ea54718be9da}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Map">
-      <UniqueIdentifier>{6b09dc04-e094-4d8f-a861-b450d419d49f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Manager">
-      <UniqueIdentifier>{043d8cd8-a08b-4bb7-a9ea-5796ac32ddca}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\99.LGH">
       <UniqueIdentifier>{4f3d6c5b-a18f-427d-8610-d21ce2cf92eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\98.PJW">
-      <UniqueIdentifier>{4ff96786-5801-497d-b9cc-8c4a615dc496}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\98.PJW\PJW_Level">
-      <UniqueIdentifier>{7e051d1d-84aa-470e-8e52-6fa2cb588bdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\98.PJW\PJW_Actor">
-      <UniqueIdentifier>{df7e7229-3e32-47a4-94e4-5e3482065f32}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\02.Level">
-      <UniqueIdentifier>{b66488e9-fcb7-4625-9255-3efb2275161c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\99.Controller">
-      <UniqueIdentifier>{a5a64047-9e10-4fa3-a9f1-703511e40bc8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\98.PJW\PJW_Enum">
-      <UniqueIdentifier>{e52092a1-9f14-4b36-a5e8-7dd0dac57653}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\98.PJW\PJW_Shader">
-      <UniqueIdentifier>{3049977c-cd71-4489-bd81-b9e0c4b94a9f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\98.PJW\PJW_Controller">
-      <UniqueIdentifier>{1b0c7000-16dc-4204-981c-1654f6914312}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\00.TestActor">
-      <UniqueIdentifier>{f365f1f5-c668-49ad-92dc-2fdaa2d8ad1f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\01.Ray">
-      <UniqueIdentifier>{d5c516f0-c910-4ec7-ba22-897b4c08b5f5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit">
-      <UniqueIdentifier>{054b4baf-c695-4d64-bbe8-d0f329ed8945}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player">
-      <UniqueIdentifier>{37fb317c-3483-4425-9f93-cdd21cb09e47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster">
-      <UniqueIdentifier>{b6c78f36-c0f2-41d8-a1ef-e232a327be95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character">
-      <UniqueIdentifier>{89a9f3e3-524f-433a-84e2-abf98f278c11}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item">
-      <UniqueIdentifier>{91bc37d1-4716-4b4b-9c9d-2caab4625de8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base">
-      <UniqueIdentifier>{244cfc02-090c-4558-82bc-041667c3cb41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki">
-      <UniqueIdentifier>{e3551c73-9ec4-43e2-9ca7-4604bb44ced2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\02. Control">
-      <UniqueIdentifier>{8e1949a2-2e51-4a52-b909-94b3e4cc269a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto">
-      <UniqueIdentifier>{b0f00fb8-1231-42f6-bf8e-4cae645e1754}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\98.PJW\PJW_Mouse">
-      <UniqueIdentifier>{9b3c5cbd-9465-477f-a8a3-07a4f123ed7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\02.Player">
-      <UniqueIdentifier>{88dd0ad6-4776-4dc2-accf-d582c66c26bf}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\99.LGH\UI">
       <UniqueIdentifier>{cc38f788-6dae-4ceb-a1a8-e3f2b5009f80}</UniqueIdentifier>
@@ -471,26 +282,11 @@
     <Filter Include="01.GameObject\03.Level\SettingItemLevel">
       <UniqueIdentifier>{1a76d953-e652-4ef7-a945-097cf5d62d1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\04.NaviCell">
-      <UniqueIdentifier>{e2601656-afd5-4123-9cfd-62db29b76bb5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder">
-      <UniqueIdentifier>{7a2868fa-2556-4890-b00e-0e75065ccc37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\04.NaviCell\01.Funnel">
-      <UniqueIdentifier>{9269cfad-5c5a-46f7-80d8-a000c1eeb1c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.SJH\01.Actor\03.Monster">
-      <UniqueIdentifier>{9237cd3c-80d1-4df0-be1b-c7fdc61fda0a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameServer">
       <UniqueIdentifier>{ec59804c-ce69-4aa8-8e47-3c267954bad4}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameServer\ServerTempTest">
       <UniqueIdentifier>{960b4ba1-5372-4860-847f-205985d0f620}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LH\PlayLevel\LH_Unit_Paket">
-      <UniqueIdentifier>{e0bad995-0527-42f9-9fd6-33c090c98ed4}</UniqueIdentifier>
     </Filter>
     <Filter Include="02.GameServer\ServerTempTest\Chat">
       <UniqueIdentifier>{ca2a399b-8418-4a26-90b4-d76d4113447c}</UniqueIdentifier>
@@ -572,86 +368,20 @@
     <ClInclude Include="UserGame.h">
       <Filter>00.GameApp\01.Core</Filter>
     </ClInclude>
-    <ClInclude Include="LH_PlayLevel.h">
-      <Filter>01.GameObject\99.LH\PlayLevel</Filter>
-    </ClInclude>
     <ClInclude Include="TestPlayer.h">
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="Macro.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
-    <ClInclude Include="LH_Map.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Map</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_TestMonster.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_LockOnUI.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_Inventory.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\00. UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\01. Item\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="SJH_PlayLevel.h">
-      <Filter>01.GameObject\99.SJH\02.Level</Filter>
-    </ClInclude>
-    <ClInclude Include="PJW_Hyunwoo.h">
-      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="PJW_Level.h">
-      <Filter>01.GameObject\98.PJW\PJW_Level</Filter>
-    </ClInclude>
-    <ClInclude Include="PJW_Map.h">
-      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="PJW_Enum.h">
-      <Filter>01.GameObject\98.PJW\PJW_Enum</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_Player.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="SJH_FloorMap.h">
-      <Filter>01.GameObject\99.SJH\01.Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="SJH_Mouse.h">
-      <Filter>01.GameObject\99.SJH\01.Actor</Filter>
-    </ClInclude>
-    <ClInclude Include="PJW_GameController.h">
-      <Filter>01.GameObject\98.PJW\PJW_Controller</Filter>
-    </ClInclude>
     <ClInclude Include="LGH_PlayLevel.h">
       <Filter>01.GameObject\99.LGH</Filter>
-    </ClInclude>
-    <ClInclude Include="PJW_Player.h">
-      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_LumiaMap.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_PlayLevel.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\01Level</Filter>
-    </ClInclude>
-    <ClInclude Include="SJH_TestActor.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\00.TestActor</Filter>
-    </ClInclude>
-    <ClInclude Include="SJH_Ray.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\01.Ray</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_Unit.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_Status.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_Yuki.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\Yuki</Filter>
-    </ClInclude>
-    <ClInclude Include="Character_ProtoType.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object\00. Unit\Player\Character\00. Proto</Filter>
     </ClInclude>
     <ClInclude Include="LGH_Aya.h">
       <Filter>01.GameObject\99.LGH</Filter>
@@ -662,18 +392,6 @@
     <ClInclude Include="YSJ_Char.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClInclude>
-    <ClInclude Include="SJH_Yuki.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\02.Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerController.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
-    </ClInclude>
-    <ClInclude Include="LH_Mouse.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\01. Object</Filter>
-    </ClInclude>
-    <ClInclude Include="SJH_NaviCell.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell</Filter>
-    </ClInclude>
     <ClInclude Include="YSJ_Ray.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse\Component</Filter>
     </ClInclude>
@@ -682,12 +400,6 @@
     </ClInclude>
     <ClInclude Include="eCollisionGroup.h">
       <Filter>01.GameObject\00.Constant</Filter>
-    </ClInclude>
-    <ClInclude Include="SJH_PathFinder.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\00.PathFinder</Filter>
-    </ClInclude>
-    <ClInclude Include="PJW_Mouse.h">
-      <Filter>01.GameObject\98.PJW\PJW_Actor</Filter>
     </ClInclude>
     <ClInclude Include="UI_CharPicture.h">
       <Filter>01.GameObject\99.LGH\UI</Filter>
@@ -722,9 +434,6 @@
     <ClInclude Include="UI_ItemBox.h">
       <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClInclude>
-    <ClInclude Include="SJH_Funnel.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\04.NaviCell\01.Funnel</Filter>
-    </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
@@ -737,20 +446,11 @@
     <ClInclude Include="ItemBox.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClInclude>
-    <ClInclude Include="SJH_Wolf.h">
-      <Filter>01.GameObject\99.SJH\01.Actor\03.Monster</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\Actor\02. Control</Filter>
-    </ClInclude>
     <ClInclude Include="ChattingPacket.h">
       <Filter>02.GameServer\UserPacket</Filter>
     </ClInclude>
     <ClInclude Include="ServerTestLevel.h">
       <Filter>02.GameServer\ServerTempTest</Filter>
-    </ClInclude>
-    <ClInclude Include="Unit_Packet.h">
-      <Filter>01.GameObject\99.LH\PlayLevel\LH_Unit_Paket</Filter>
     </ClInclude>
     <ClInclude Include="KeyboardClass.h">
       <Filter>02.GameServer\ServerTempTest\Chat</Filter>

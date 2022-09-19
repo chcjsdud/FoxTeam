@@ -29,7 +29,13 @@ public:
 
 
 private:
-	void startIdle(float _deltaTime);
+#pragma region MainState
+	void startNormal();
+	void updateNormal(float _deltaTime);
+#pragma endregion
+
+
+	void startIdle();
 	void updateIdle(float _deltaTime);
 
 	void startRun(float _deltaTime);
@@ -40,7 +46,9 @@ private:
 
 private:
 	GameEngineFBXRenderer* renderer_;
-	GameEngineFSM state_;
+	GameEngineFSM mainState_;
+	GameEngineFSM normalState_;
+	GameEngineFSM callbackState_;;
 
 	float4 destination_;
 	float4 direction_;

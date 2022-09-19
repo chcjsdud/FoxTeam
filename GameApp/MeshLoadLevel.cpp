@@ -1,8 +1,6 @@
 #include "PreCompile.h"
 #include "MeshLoadLevel.h"
-#include "LH_Player.h"
 #include "UI_Skill.h"
-#include "LH_Map.h"
 #include <GameEngine/PostFade.h>
 #include <GameEngine/PostBlur.h>
 #include <GameEngine/SmallPostBlur.h>
@@ -197,10 +195,6 @@ void MeshLoadLevel::CreateActorLevel()
 
 	{
 		TestPlayer* Actor = CreateActor<TestPlayer>();
-	}
-
-	{
-		Map* Actor = CreateActor<Map>();
 	}
 
 	{
