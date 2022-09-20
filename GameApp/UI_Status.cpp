@@ -49,13 +49,13 @@ void UI_Status::Start()
 		//to_string= 숫자를 string으로
 		int a = 0;
 		AttackValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		AttackValue_Renderer->TextSetting("굴림", to_string(a), 1, float4::WHITE);
+	//	AttackValue_Renderer->TextSetting("굴림", to_string(a), 1, float4::WHITE);
 		AttackValue_Renderer->GetTransform()->SetLocalPosition({-200.0f,-200.0f,-1.0f});
 	}
 
 	{
 		DefenseValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		DefenseValue_Renderer->TextSetting("KBIZ한마음고딕 M", "시험", 1, float4::WHITE);
+		//DefenseValue_Renderer->TextSetting("KBIZ한마음고딕 M", "시험", 1, float4::WHITE);
 		DefenseValue_Renderer->GetTransform()->SetLocalPosition({ 100.0f, 100.0f, 0.0f, 0.0f });
 	}
 

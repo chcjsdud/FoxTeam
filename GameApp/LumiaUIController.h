@@ -5,6 +5,12 @@
 // Ό³Έν : 
 
 
+class UI_CharPicture;
+class UI_Equip;
+class UI_Inventory;
+class UI_ItemBox;
+class UI_Skill;
+class UI_Status;
 
 
 class LumiaUIController : public GameEngineActor
@@ -29,6 +35,11 @@ protected:
 	virtual void Update(float _DeltaTime);
 
 private:
+	UI_CharPicture* charPicture_UI;
+	UI_Equip* equip_UI;
+	UI_Inventory* inventory_UI;
+	UI_Skill* skill_UI;
+	UI_Status* status_UI;
 
 };
 
