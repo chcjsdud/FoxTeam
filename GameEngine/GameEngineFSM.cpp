@@ -45,6 +45,27 @@ void GameEngineFSM::Update(float _Time)
 	Current_->Update_(_Time);
 }
 
+void GameEngineFSM::operator<<(const std::string& _stateName)
+{
+	if (nullptr != Current_)
+	{
+		if (Current_->Name_ == _stateName)
+		{
+			return;
+		}
+	}
+
+	std::map<std::string, State*>::iterator FindIter = AllState_.find(_stateName);
+
+	if (AllState_.end() == FindIter)
+	{
+		GameEngineDebug::MsgBoxError("존재하지 않는 스테이트로 체인지하려고 했습니다..");
+		return;
+	}
+
+	Next_ = FindIter->second;
+}
+
 void GameEngineFSM::CreateState(
 	const std::string& _Name,
 	std::function<void(float)> _Update,
@@ -69,9 +90,9 @@ void GameEngineFSM::CreateState(
 
 void GameEngineFSM::ChangeState(const std::string& _Name, bool _bForceChange)
 {
-	if (nullptr != GetCurrentState())
+	if (nullptr != Current_)
 	{
-		if (GetCurrentState()->Name_ == _Name && _bForceChange == false)
+		if (Current_->Name_ == _Name && _bForceChange == false)
 		{
 			return;
 		}
