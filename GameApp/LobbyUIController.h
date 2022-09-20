@@ -12,6 +12,7 @@ class Lobby_PortraitBg;
 class LobbyBackground;
 class Lobby_CharFull;
 class Lobby_StartButton;
+class Lobby_Map;
 class LobbyUIController : public GameEngineActor
 {
 public:
@@ -46,6 +47,7 @@ private:
 	Lobby_ButtonTwo* clientButtonUI_;
 	Lobby_CharFull* charFullUI_;
 	Lobby_StartButton* startButtonUI_;
+	Lobby_Map* mapUI_;
 	std::vector<Lobby_PortraitBg*> PortraitBg;
 
 

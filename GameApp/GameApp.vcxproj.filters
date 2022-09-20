@@ -19,17 +19,11 @@
     <ClCompile Include="TestPlayer.cpp">
       <Filter>01.GameObject\03.Level\MeshLoadLevel\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="LGH_PlayLevel.cpp">
-      <Filter>01.GameObject\99.LGH</Filter>
-    </ClCompile>
     <ClCompile Include="YSJ_LumiaMap.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_PlayLevel.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\01Level</Filter>
-    </ClCompile>
-    <ClCompile Include="LGH_Aya.cpp">
-      <Filter>01.GameObject\99.LGH</Filter>
     </ClCompile>
     <ClCompile Include="YSJ_Player.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
@@ -46,21 +40,6 @@
     <ClCompile Include="YSJ_Mouse.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="UI_CharPicture.cpp">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_Equip.cpp">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_Inventory.cpp">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_Skill.cpp">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_Status.cpp">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClCompile>
     <ClCompile Include="ItemBoxManager.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClCompile>
@@ -75,9 +54,6 @@
     </ClCompile>
     <ClCompile Include="EquipmentItem.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_ItemBox.cpp">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClCompile>
     <ClCompile Include="MiscItem.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
@@ -124,9 +100,6 @@
     <ClCompile Include="LumiaMap.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClCompile>
-    <ClCompile Include="UI_TestMouse.cpp">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClCompile>
     <ClCompile Include="ResultLevel.cpp">
       <Filter>01.GameObject\03.Level\ResultLevel</Filter>
     </ClCompile>
@@ -154,12 +127,6 @@
     <ClCompile Include="GameJoinPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="LobbyBackground.cpp">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClCompile>
-    <ClCompile Include="Lobby_ButtonOne.cpp">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClCompile>
     <ClCompile Include="ReadyPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
@@ -178,23 +145,11 @@
     <ClCompile Include="SetPlayerNumberPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="Lobby_ButtonTwo.cpp">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClCompile>
-    <ClCompile Include="Lobby_PortraitBg.cpp">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClCompile>
     <ClCompile Include="LoadingLumiaPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="LumiaLoadingManager.cpp">
       <Filter>02.GameServer</Filter>
-    </ClCompile>
-    <ClCompile Include="LobbyUIController.cpp">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClCompile>
-    <ClCompile Include="Lobby_CharFull.cpp">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClCompile>
     <ClCompile Include="GHRio.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
@@ -204,9 +159,6 @@
     </ClCompile>
     <ClCompile Include="LobbyToLumiaPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="Lobby_StartButton.cpp">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClCompile>
     <ClCompile Include="TitleUIController.cpp">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
@@ -232,8 +184,50 @@
     <ClCompile Include="NavMesh.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClCompile>
+    <ClCompile Include="Lobby_ButtonOne.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby_ButtonTwo.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby_CharFull.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClCompile>
     <ClCompile Include="Lobby_Map.cpp">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby_PortraitBg.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Lobby_StartButton.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyBackground.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="LobbyUIController.cpp">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_CharPicture.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Equip.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Inventory.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_ItemBox.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Skill.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_Status.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI_TestMouse.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,12 +266,6 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\MeshLoadLevel\Actor">
       <UniqueIdentifier>{6dfae342-c1d4-4e78-af66-4069ade280e4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LGH">
-      <UniqueIdentifier>{4f3d6c5b-a18f-427d-8610-d21ce2cf92eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\99.LGH\UI">
-      <UniqueIdentifier>{cc38f788-6dae-4ceb-a1a8-e3f2b5009f80}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\03.Level\SettingItemLevel">
       <UniqueIdentifier>{1a76d953-e652-4ef7-a945-097cf5d62d1e}</UniqueIdentifier>
@@ -339,9 +327,6 @@
     <Filter Include="02.GameServer\UserPacket">
       <UniqueIdentifier>{7eb45933-a75d-4834-ace2-5b878554f920}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\99.LGH\UI\LobbyLevel">
-      <UniqueIdentifier>{aa7ec2ad-93ed-4336-a1e6-2031be88d614}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\NavMesh">
       <UniqueIdentifier>{334917f0-e7bf-42b0-9856-9d921017c925}</UniqueIdentifier>
     </Filter>
@@ -350,6 +335,12 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\TitleLevel\UI">
       <UniqueIdentifier>{859b87d4-611c-461e-9a0d-8fd944a92dcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LobbyLevel\UI">
+      <UniqueIdentifier>{14b5c0b5-bfb6-48ba-8869-0f7f3dd66096}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\UI">
+      <UniqueIdentifier>{7e136e69-cfc6-4c6b-9e7a-54327f7aa09f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -374,17 +365,11 @@
     <ClInclude Include="Macro.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
-    <ClInclude Include="LGH_PlayLevel.h">
-      <Filter>01.GameObject\99.LGH</Filter>
-    </ClInclude>
     <ClInclude Include="YSJ_LumiaMap.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_PlayLevel.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\01Level</Filter>
-    </ClInclude>
-    <ClInclude Include="LGH_Aya.h">
-      <Filter>01.GameObject\99.LGH</Filter>
     </ClInclude>
     <ClInclude Include="YSJ_Player.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor</Filter>
@@ -401,21 +386,6 @@
     <ClInclude Include="eCollisionGroup.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
-    <ClInclude Include="UI_CharPicture.h">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Equip.h">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Inventory.h">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Skill.h">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Status.h">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClInclude>
     <ClInclude Include="ItemBoxManager.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox</Filter>
     </ClInclude>
@@ -430,9 +400,6 @@
     </ClInclude>
     <ClInclude Include="EquipmentItem.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\99.YSJ\02Actor\ItemBox\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_ItemBox.h">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>01.GameObject\00.Constant</Filter>
@@ -479,9 +446,6 @@
     <ClInclude Include="LumiaMap.h">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClInclude>
-    <ClInclude Include="UI_TestMouse.h">
-      <Filter>01.GameObject\99.LGH\UI</Filter>
-    </ClInclude>
     <ClInclude Include="ResultLevel.h">
       <Filter>01.GameObject\03.Level\ResultLevel</Filter>
     </ClInclude>
@@ -509,12 +473,6 @@
     <ClInclude Include="GameJoinPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="LobbyBackground.h">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="Lobby_ButtonOne.h">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClInclude>
     <ClInclude Include="ReadyPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
@@ -536,23 +494,11 @@
     <ClInclude Include="SetPlayerNumberPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Lobby_ButtonTwo.h">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="Lobby_PortraitBg.h">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClInclude>
     <ClInclude Include="LoadingLumiaPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="LumiaLoadingManager.h">
       <Filter>02.GameServer</Filter>
-    </ClInclude>
-    <ClInclude Include="LobbyUIController.h">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
-    </ClInclude>
-    <ClInclude Include="Lobby_CharFull.h">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClInclude>
     <ClInclude Include="GHRio.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
@@ -562,9 +508,6 @@
     </ClInclude>
     <ClInclude Include="LobbyToLumiaPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="Lobby_StartButton.h">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
     </ClInclude>
     <ClInclude Include="TitleUIController.h">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
@@ -590,8 +533,50 @@
     <ClInclude Include="AStarNode.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClInclude>
+    <ClInclude Include="Lobby_ButtonOne.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby_ButtonTwo.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby_CharFull.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClInclude>
     <ClInclude Include="Lobby_Map.h">
-      <Filter>01.GameObject\99.LGH\UI\LobbyLevel</Filter>
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby_PortraitBg.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby_StartButton.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyBackground.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="LobbyUIController.h">
+      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_CharPicture.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Equip.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Inventory.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_ItemBox.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Skill.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Status.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_TestMouse.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

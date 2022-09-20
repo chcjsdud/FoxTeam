@@ -287,8 +287,6 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="LGH_Aya.cpp" />
-    <ClCompile Include="LGH_PlayLevel.cpp" />
     <ClCompile Include="LobbyLevel.cpp" />
     <ClCompile Include="LumiaLevel.cpp" />
     <ClCompile Include="MiscItem.cpp" />
@@ -512,8 +510,6 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="LGH_Aya.h" />
-    <ClInclude Include="LGH_PlayLevel.h" />
     <ClInclude Include="CustomVertex.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="LobbyLevel.h" />

@@ -1,13 +1,14 @@
 #include "PreCompile.h"
 #include "LobbyUIController.h"
+#include "LobbyLevel.h"
 
 #include "LobbyBackground.h"
 #include "Lobby_ButtonOne.h"
 #include "Lobby_ButtonTwo.h"
 #include "Lobby_PortraitBg.h"
 #include "Lobby_CharFull.h"
-#include "LobbyLevel.h"
 #include "Lobby_StartButton.h"
+#include "Lobby_Map.h"
 
 JobType LobbyUIController::SelectedChar = JobType::MAX;
 bool LobbyUIController::CharSelectOn = false;
@@ -36,6 +37,7 @@ void LobbyUIController::InitUI()
 		clientButtonUI_ = GetLevel()->CreateActor<Lobby_ButtonTwo>();
 		charFullUI_= GetLevel()->CreateActor<Lobby_CharFull>();
 		startButtonUI_ = GetLevel()->CreateActor<Lobby_StartButton>();
+		mapUI_ = GetLevel()->CreateActor<Lobby_Map>();
 	}
 
 	{
