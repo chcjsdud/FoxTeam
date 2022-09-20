@@ -7,8 +7,6 @@
 #include <GameEngine/LightActor.h>
 #include "UserGame.h"
 #include <GameEngine/SKySphereActor.h>
-#include "YSJ_LumiaMap.h"
-#include "YSJ_Player.h"
 #include "MousePointer.h"
 #include "NavMesh.h"
 #include "ItemBoxManager.h"
@@ -134,11 +132,6 @@ void SettingItemLevel::CreateActorLevel()
 	Light->GetLight()->SetAmbientPower(10.f);
 	Light->GetLight()->SetSpacularLightPow(10.f);
 	SKySphereActor* SkyActor = CreateActor<SKySphereActor>();
-
-	YSJ_LumiaMap* LumiaMap = CreateActor<YSJ_LumiaMap>();
-	LumiaMap->GetTransform()->SetWorldScaling({ 100.0f, 100.0f, 100.0f });
-
-	ItemBox_->GetTransform()->AttachTransform(LumiaMap->GetTransform());
 
 	mouse_ = CreateActor<MousePointer>();
 

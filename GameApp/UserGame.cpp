@@ -9,7 +9,6 @@
 #include <GameEngine\GameEngineRenderWindow.h>
 
 #include "MeshLoadLevel.h"
-#include "YSJ_PlayLevel.h"
 #include "SettingItemLevel.h"
 #include "ServerTestLevel.h"
 #include "LobbyLevel.h"
@@ -43,7 +42,6 @@ void UserGame::Initialize()
 
 	//LevelCreate<PlayLevel>("Play");
 	//LevelCreate<SJH_PlayLevel>("SJH_Play");	// 220727 SJH : TEST¿ë ·¹º§
-	//LevelCreate<YSJ_PlayLevel>("YSJ_Play");
 	//LevelCreate<SettingItemLevel>("SettingItemLevel");
 	//LevelCreate<GHRayTestLevel>("RayTestLevel");
 	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
@@ -56,7 +54,6 @@ void UserGame::Initialize()
 	//LevelChange("SJH_Play");
 	//LevelChange("Play");
 	//LevelChange("SJH_Play");
-	//LevelChange("YSJ_Play");
 	//LevelChange("LobbyLevel");
 	LevelChange("TitleLevel");
 	return;

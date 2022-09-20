@@ -3,7 +3,6 @@
 #include <GameEngine/GameEngineLevel.h>
 
 #include <GameApp/MousePointer.h>
-#include <GameApp/YSJ_LumiaMap.h>
 #include <GameApp/ItemBoxManager.h>
 #include <GameApp/GHRio.h>
 
