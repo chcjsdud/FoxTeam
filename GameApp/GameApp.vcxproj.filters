@@ -342,6 +342,9 @@
     <Filter Include="01.GameObject\03.Level\LumiaLevel\UI">
       <UniqueIdentifier>{7e136e69-cfc6-4c6b-9e7a-54327f7aa09f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monster">
+      <UniqueIdentifier>{4be7792c-6408-4c7a-a48b-671971ab9849}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
