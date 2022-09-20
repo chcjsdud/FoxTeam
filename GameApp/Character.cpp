@@ -27,7 +27,7 @@ void Character::SetNaviMesh(NavMesh* _NaviMesh)
 void Character::Start()
 {
 	collision_ = CreateTransformComponent<GameEngineCollision>();
-	collision_->GetTransform()->SetLocalScaling(100.0f);
+	collision_->GetTransform()->SetLocalScaling(150.0f);
 	collision_->SetCollisionGroup(CollisionGroup::Player);
 	collision_->SetCollisionType(CollisionType::AABBBox3D);
 

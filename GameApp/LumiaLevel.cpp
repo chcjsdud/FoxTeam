@@ -137,10 +137,10 @@ void LumiaLevel::loadResource()
 		tempDir.MoveParent("FoxTeam");
 		tempDir / "Resources" / "FBX" / "Map";
 
-		{
-			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
-			Mesh->CreateRenderingBuffer();
-		}
+		//{
+		//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
+		//	Mesh->CreateRenderingBuffer();
+		//}
 
 		{
 			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("DowntownNavMesh.fbx"));

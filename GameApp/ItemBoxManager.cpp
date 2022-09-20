@@ -56,18 +56,46 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 		vecItemBox.push_back(Item);
 
 		float4 AllAddVtxPos = float4::ZERO;
+		float4 MaxVtxValue = float4::ZERO;
+
+		std::list<float4> tmpvtx;
 
 		for (const auto& Vertex : AllMesh[i].Vertexs)
 		{
 			AllAddVtxPos += Vertex.POSITION;
+
+			tmpvtx.push_back(Vertex.POSITION);
+
+			if (abs(Vertex.POSITION.x) > abs(MaxVtxValue.x))
+			{
+				MaxVtxValue.x = Vertex.POSITION.x;
+			}
+
+			if (abs(Vertex.POSITION.y) > abs(MaxVtxValue.y))
+			{
+				MaxVtxValue.y = Vertex.POSITION.y;
+			}
+
+			if (abs(Vertex.POSITION.z) > abs(MaxVtxValue.z))
+			{
+				MaxVtxValue.z = Vertex.POSITION.z;
+			}
 		}
+
+		tmpvtx;
 
 		AllAddVtxPos = AllAddVtxPos / static_cast<float>(AllMesh[i].Vertexs.size());
 
 		Item->info.BoxType = MeshInfos[i].Name;
 		Item->info.Index = ItemBoxIndex++;
 		Item->info.Pos = AllAddVtxPos;
-		Item->info.Scale = { 2.0f, 2.0f, 2.0f };
+
+		float4 fScale = float4::ZERO;
+		fScale.x = abs(MaxVtxValue.x - AllAddVtxPos.x);
+		fScale.y = abs(MaxVtxValue.y);
+		fScale.z = abs(MaxVtxValue.z - AllAddVtxPos.z);
+
+		Item->info.Scale = fScale;
 
 		Item->col = CreateTransformComponent<GameEngineCollision>(1);
 		Item->col->GetTransform()->SetLocalPosition(Item->info.Pos);
@@ -119,7 +147,6 @@ void ItemBoxManager::DebugRender()
 	{
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
-			ItemBox.second[i]->col->GetTransform()->SetLocalScaling(float4::ONE);
 			if (SelectBox == ItemBox.second[i])
 			{
 				GetLevel()->PushDebugRender(ItemBox.second[i]->col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
@@ -181,6 +208,7 @@ void ItemBoxManager::Start()
 		CreateItemBoxInfo(vecFile[i].FileName());
 	}
 
+	GameEngineDebug::MsgBoxError("UserSave ¿Ï·á!");
 #endif
 	int a = 0;
 }
