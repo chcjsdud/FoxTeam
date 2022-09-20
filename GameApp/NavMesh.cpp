@@ -30,11 +30,11 @@ void NavMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex,
 
 	for (UINT i = 0; i < Navis.size(); i++)
 	{
-		Navis[i].Info.Vertex[0] = _Vertex[_Index[i * 3 + 0]].POSITION;
-		Navis[i].Info.Vertex[1] = _Vertex[_Index[i * 3 + 1]].POSITION;
-		Navis[i].Info.Vertex[2] = _Vertex[_Index[i * 3 + 2]].POSITION;
+		Navis[i].info.Vertex[0] = _Vertex[_Index[i * 3 + 0]].POSITION;
+		Navis[i].info.Vertex[1] = _Vertex[_Index[i * 3 + 1]].POSITION;
+		Navis[i].info.Vertex[2] = _Vertex[_Index[i * 3 + 2]].POSITION;
 
-		Navis[i].Info.Index = i;
+		Navis[i].info.Index = i;
 		Navis[i].AllNavi = &Navis;
 		Navis[i].Parent = this;
 	}
@@ -53,7 +53,7 @@ void NavMesh::CreateNaviMesh(const std::vector<GameEngineVertex>& _Vertex,
 
 			if (LinkCheck(Navi, Navis[j]))
 			{
-				Navi.Info.Link.push_back(j);
+				Navi.info.Link.push_back(j);
 			}
 		}
 	}
@@ -112,9 +112,9 @@ NavFace* NavMesh::CurrentCheck(GameEngineTransform* _Transform, const float4& _D
 
 	for (auto& Navi : Navis)
 	{
-		float4 V0 = Navi.Info.Vertex[0] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
-		float4 V1 = Navi.Info.Vertex[1] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
-		float4 V2 = Navi.Info.Vertex[2] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+		float4 V0 = Navi.info.Vertex[0] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+		float4 V1 = Navi.info.Vertex[1] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
+		float4 V2 = Navi.info.Vertex[2] * NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
 
 		Check = DirectX::TriangleTests::Intersects(RayPos.DirectVector,
 			_Dir.DirectVector,
@@ -148,15 +148,15 @@ NavFace* NavMesh::GetNavFaceFromPositionXZ(const float4& _position, const float4
 	{
 		float4x4 matWorld = NaviRenderer->GetTransform()->GetTransformData().WorldWorld_;
 
-		float4 V0 = face.Info.Vertex[0] * matWorld;
+		float4 V0 = face.info.Vertex[0] * matWorld;
 
 		if (2000.f < float4::Calc_Len3D(V0, _position))
 		{
 			continue;
 		}
 
-		float4 V1 = face.Info.Vertex[1] * matWorld;
-		float4 V2 = face.Info.Vertex[2] * matWorld;
+		float4 V1 = face.info.Vertex[1] * matWorld;
+		float4 V2 = face.info.Vertex[2] * matWorld;
 
 		result = DirectX::TriangleTests::Intersects(rayPosition.DirectVector,
 			_direction.DirectVector,
@@ -191,9 +191,9 @@ bool NavMesh::CheckIntersects(const float4& _Position, const float4& _Direction,
 
 	for (size_t i = 0; i < Navis.size(); i++)
 	{
-		float4 V0 = Navis[i].Info.Vertex[0] * matWorld;
-		float4 V1 = Navis[i].Info.Vertex[1] * matWorld;
-		float4 V2 = Navis[i].Info.Vertex[2] * matWorld;
+		float4 V0 = Navis[i].info.Vertex[0] * matWorld;
+		float4 V1 = Navis[i].info.Vertex[1] * matWorld;
+		float4 V2 = Navis[i].info.Vertex[2] * matWorld;
 
 		Check = DirectX::TriangleTests::Intersects(_Position.DirectVector,
 			Dir.DirectVector,
@@ -304,11 +304,11 @@ void NavMesh::SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh)
 				GameEngineDebug::MsgBoxError("서브셋이 존재합니다.");
 			}
 
-			Navi.Info.Vertex[0] = _AllMesh[i].Vertexs[_AllMesh[i].Indexs[0][0][j * 3 + 0]].POSITION;
-			Navi.Info.Vertex[1] = _AllMesh[i].Vertexs[_AllMesh[i].Indexs[0][0][j * 3 + 1]].POSITION;
-			Navi.Info.Vertex[2] = _AllMesh[i].Vertexs[_AllMesh[i].Indexs[0][0][j * 3 + 2]].POSITION;
+			Navi.info.Vertex[0] = _AllMesh[i].Vertexs[_AllMesh[i].Indexs[0][0][j * 3 + 0]].POSITION;
+			Navi.info.Vertex[1] = _AllMesh[i].Vertexs[_AllMesh[i].Indexs[0][0][j * 3 + 1]].POSITION;
+			Navi.info.Vertex[2] = _AllMesh[i].Vertexs[_AllMesh[i].Indexs[0][0][j * 3 + 2]].POSITION;
 
-			Navi.Info.Index = Index++;
+			Navi.info.Index = Index++;
 			Navi.AllNavi = &Navis;
 			Navi.Parent = this;
 		}
@@ -328,7 +328,7 @@ void NavMesh::SaveNavisData(const std::vector<FbxMeshSet>& _AllMesh)
 
 			if (LinkCheck(Navi, Navis[j]))
 			{
-				Navi.Info.Link.push_back(j);
+				Navi.info.Link.push_back(j);
 			}
 		}
 	}
@@ -351,20 +351,20 @@ void NavMesh::UserLoad(const std::string& _Path)
 
 	for (auto& Data : Navis)
 	{
-		NewFile.Read(Data.Info.Vertex[0]);
-		NewFile.Read(Data.Info.Vertex[1]);
-		NewFile.Read(Data.Info.Vertex[2]);
-		NewFile.Read(Data.Info.Index);
+		NewFile.Read(Data.info.Vertex[0]);
+		NewFile.Read(Data.info.Vertex[1]);
+		NewFile.Read(Data.info.Vertex[2]);
+		NewFile.Read(Data.info.Index);
 
 		int LinkSize = 0;
 
 		NewFile.Read(LinkSize);
 
-		Data.Info.Link.resize(LinkSize);
+		Data.info.Link.resize(LinkSize);
 
-		for (size_t i = 0; i < Data.Info.Link.size(); i++)
+		for (size_t i = 0; i < Data.info.Link.size(); i++)
 		{
-			NewFile.Read(Data.Info.Link[i]);
+			NewFile.Read(Data.info.Link[i]);
 		}
 
 		Data.AllNavi = &Navis;
@@ -380,16 +380,16 @@ void NavMesh::UserSave(const std::string& _Path)
 
 	for (auto& Data : Navis)
 	{
-		NewFile.Write(Data.Info.Vertex[0]);
-		NewFile.Write(Data.Info.Vertex[1]);
-		NewFile.Write(Data.Info.Vertex[2]);
-		NewFile.Write(Data.Info.Index);
+		NewFile.Write(Data.info.Vertex[0]);
+		NewFile.Write(Data.info.Vertex[1]);
+		NewFile.Write(Data.info.Vertex[2]);
+		NewFile.Write(Data.info.Index);
 
-		NewFile.Write(static_cast<int>(Data.Info.Link.size()));
+		NewFile.Write(static_cast<int>(Data.info.Link.size()));
 
-		for (size_t i = 0; i < Data.Info.Link.size(); i++)
+		for (size_t i = 0; i < Data.info.Link.size(); i++)
 		{
-			NewFile.Write(Data.Info.Link[i]);
+			NewFile.Write(Data.info.Link[i]);
 		}
 	}
 }
@@ -400,7 +400,7 @@ bool NavMesh::LinkCheck(const NavFace& _Left, const NavFace& _Right)
 	{
 		for (size_t j = 0; j < 3; j++)
 		{
-			if (_Left.Info.Vertex[i] == _Right.Info.Vertex[j])
+			if (_Left.info.Vertex[i] == _Right.info.Vertex[j])
 			{
 				return true;
 			}
@@ -433,9 +433,9 @@ bool NavFace::OutCheck(GameEngineTransform* _Transform, float& _Dist)
 		GameEngineDebug::MsgBoxError("NaviRenderer가 지정되지 않았습니다.");
 	}
 
-	float4 V0 = Info.Vertex[0] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
-	float4 V1 = Info.Vertex[1] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
-	float4 V2 = Info.Vertex[2] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
+	float4 V0 = info.Vertex[0] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
+	float4 V1 = info.Vertex[1] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
+	float4 V2 = info.Vertex[2] * Parent->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
 
 	Check = DirectX::TriangleTests::Intersects(RayPos.DirectVector,
 		float4::DOWN.DirectVector,
@@ -454,9 +454,9 @@ bool NavFace::OutCheck(GameEngineTransform* _Transform, float& _Dist)
 
 NavFace* NavFace::MoveCheck(GameEngineTransform* _Transform)
 {
-	for (size_t i = 0; i < Info.Link.size(); i++)
+	for (size_t i = 0; i < info.Link.size(); i++)
 	{
-		NavFace* Navi = &AllNavi->at(Info.Link[i]);
+		NavFace* Navi = &AllNavi->at(info.Link[i]);
 
 		if (false == Navi->OutCheck(_Transform))
 		{

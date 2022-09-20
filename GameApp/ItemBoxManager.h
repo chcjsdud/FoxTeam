@@ -4,6 +4,7 @@
 //#define USERSAVE
 
 // Ό³Έν : 
+class ItemBase;
 class ItemBox;
 class UI_ItemBox;
 class GameEngineFBXRenderer;
@@ -34,6 +35,10 @@ public:
 	{
 		return ItemBoxUI_;
 	}
+
+	void OpenItemBox();
+	void CloseItemBox();
+	ItemBase* GetItemFromItemBox(int _index);
 
 
 protected:

@@ -52,13 +52,13 @@ public:
 
 	NavFaceData GetInfo()
 	{
-		return Info;
+		return info;
 	}
 
 private:
 	bool OutCheck(GameEngineTransform* _Transform, float& _Dist);
 
-	NavFaceData Info;
+	NavFaceData info;
 	std::vector<NavFace>* AllNavi;
 	NavMesh* Parent;
 };

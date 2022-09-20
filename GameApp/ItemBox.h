@@ -30,17 +30,18 @@ public:
 	ItemBox& operator=(const ItemBox& _other) = delete;
 	ItemBox& operator=(const ItemBox&& _other) = delete;
 
-	GameEngineCollision* GetCollision() { return Col; }
+	GameEngineCollision* GetCollision() { return col; }
+	ItemBase* GetItem(int _index);
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
-	ItemBoxInfo Info;
-	GameEngineCollision* Col;
-	std::string Area;
+	ItemBoxInfo info;
+	GameEngineCollision* col;
+	std::string area;
 
-	std::list<ItemBase*> ItemList;
+	std::list<ItemBase*> itemList;
 };
 

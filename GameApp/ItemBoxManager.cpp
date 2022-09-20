@@ -64,16 +64,16 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 
 		AllAddVtxPos = AllAddVtxPos / static_cast<float>(AllMesh[i].Vertexs.size());
 
-		Item->Info.BoxType = MeshInfos[i].Name;
-		Item->Info.Index = ItemBoxIndex++;
-		Item->Info.Pos = AllAddVtxPos;
-		Item->Info.Scale = { 2.0f, 2.0f, 2.0f };
+		Item->info.BoxType = MeshInfos[i].Name;
+		Item->info.Index = ItemBoxIndex++;
+		Item->info.Pos = AllAddVtxPos;
+		Item->info.Scale = { 2.0f, 2.0f, 2.0f };
 
-		Item->Col = CreateTransformComponent<GameEngineCollision>(1);
-		Item->Col->GetTransform()->SetLocalPosition(Item->Info.Pos);
-		Item->Col->GetTransform()->SetLocalScaling(Item->Info.Scale);
+		Item->col = CreateTransformComponent<GameEngineCollision>(1);
+		Item->col->GetTransform()->SetLocalPosition(Item->info.Pos);
+		Item->col->GetTransform()->SetLocalScaling(Item->info.Scale);
 
-		Item->Area = AreaName;
+		Item->area = AreaName;
 	}	
 
 	ItemBoxs.insert(std::pair(AreaName, vecItemBox));
@@ -83,16 +83,16 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 
 void ItemBoxManager::BoxSelectUpdate()
 {
-	GameEngineCollision* Col = GetLevelConvert<LumiaLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
-	//GameEngineCollision* Col = GetLevelConvert<SettingItemLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
+	GameEngineCollision* col = GetLevelConvert<LumiaLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
+	//GameEngineCollision* col = GetLevelConvert<SettingItemLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
 
-	if (nullptr == Col)
+	if (nullptr == col)
 	{
 		SelectBox = nullptr;
 		return;
 	}
 
-	GetLevel()->PushDebugRender(Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+	GetLevel()->PushDebugRender(col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
 
 	if (false == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
@@ -103,19 +103,11 @@ void ItemBoxManager::BoxSelectUpdate()
 	{
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
-			if (Col != ItemBox.second[i]->Col)
+			if (col != ItemBox.second[i]->col)
 			{
 				continue;
 			}
-			
-			//if (ItemBoxUI_ != nullptr)
-			//{
-			//	//이건호: 아이템박스가 켜져있는 상태에서 다시 박스를 클릭하면 원래 켜져 있던 박스는 없어지도록 했습니다
-			//	ItemBoxUI_->Release();
-			//	ItemBoxUI_ = nullptr;
-			//}
-			//ItemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
-			//ItemBoxUI_->RenderOn();
+
 			SelectBox = ItemBox.second[i];
 		}
 	}
@@ -127,16 +119,47 @@ void ItemBoxManager::DebugRender()
 	{
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
-			ItemBox.second[i]->Col->GetTransform()->SetLocalScaling(float4::ONE);
+			ItemBox.second[i]->col->GetTransform()->SetLocalScaling(float4::ONE);
 			if (SelectBox == ItemBox.second[i])
 			{
-				GetLevel()->PushDebugRender(ItemBox.second[i]->Col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+				GetLevel()->PushDebugRender(ItemBox.second[i]->col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
 				continue;
 			}
 
-			GetLevel()->PushDebugRender(ItemBox.second[i]->Col->GetTransform(), CollisionType::AABBBox3D);
+			GetLevel()->PushDebugRender(ItemBox.second[i]->col->GetTransform(), CollisionType::AABBBox3D);
 		}
 	}
+}
+
+void ItemBoxManager::OpenItemBox()
+{
+	if (ItemBoxUI_ != nullptr)
+	{
+		//이건호: 아이템박스가 켜져있는 상태에서 다시 박스를 클릭하면 원래 켜져 있던 박스는 없어지도록 했습니다
+		ItemBoxUI_->Release();
+		ItemBoxUI_ = nullptr;
+	}
+	ItemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
+	ItemBoxUI_->RenderOn();
+}
+
+void ItemBoxManager::CloseItemBox()
+{
+	if (ItemBoxUI_ != nullptr)
+	{
+		ItemBoxUI_->Release();
+		ItemBoxUI_ = nullptr;
+	}
+}
+
+ItemBase* ItemBoxManager::GetItemFromItemBox(int _index)
+{
+	if (nullptr == SelectBox)
+	{
+		return nullptr;
+	}
+
+	return SelectBox->GetItem(_index);
 }
 
 void ItemBoxManager::Start()
@@ -164,24 +187,7 @@ void ItemBoxManager::Start()
 
 void ItemBoxManager::Update(float _DeltaTime)
 {
-	
-	DebugRender();
-
-	/*
-	이건호 : UI기능 테스트 중이라 임시로 UI끄는 기능을 꺼놨습니다
-	if (ItemBoxUI_ != nullptr)
-	{
-		if (false == ItemBoxUI_->MouseCollisionCheck())
-		{
-			if (GameEngineInput::GetInst().Down("LBUTTON"))
-			{
-				//이건호 : UI충돌박스 밖에서 클릭할시, ItemBoxUI가 꺼진다
-				ItemBoxUI_->Release();
-				ItemBoxUI_ = nullptr;
-			}
-		}
-	}
-	*/
+	DebugRender();	
 
 	BoxSelectUpdate();
 }
@@ -206,11 +212,11 @@ void ItemBoxManager::UserSave(const std::string& _Path)
 
 	for (size_t i = 0; i < (*iter).second.size(); i++)
 	{
-		NewFile.Write((*iter).second[i]->Info.BoxType);
-		NewFile.Write((*iter).second[i]->Info.Index);
-		NewFile.Write((*iter).second[i]->Info.Pos);
-		NewFile.Write((*iter).second[i]->Info.Scale);
-		NewFile.Write((*iter).second[i]->Area);
+		NewFile.Write((*iter).second[i]->info.BoxType);
+		NewFile.Write((*iter).second[i]->info.Index);
+		NewFile.Write((*iter).second[i]->info.Pos);
+		NewFile.Write((*iter).second[i]->info.Scale);
+		NewFile.Write((*iter).second[i]->area);
 	}
 }
 
@@ -249,16 +255,16 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 	{
 		Data = GetLevel()->CreateActor<ItemBox>();
 
-		NewFile.Read(Data->Info.BoxType);
-		NewFile.Read(Data->Info.Index);
-		NewFile.Read(Data->Info.Pos);
-		NewFile.Read(Data->Info.Scale);
-		NewFile.Read(Data->Area);
+		NewFile.Read(Data->info.BoxType);
+		NewFile.Read(Data->info.Index);
+		NewFile.Read(Data->info.Pos);
+		NewFile.Read(Data->info.Scale);
+		NewFile.Read(Data->area);
 
-		Data->Col = CreateTransformComponent<GameEngineCollision>(static_cast<int>(CollisionGroup::ItemBox));
-		Data->Col->GetTransform()->SetLocalPosition(Data->Info.Pos);
-		Data->Col->GetTransform()->SetLocalScaling(Data->Info.Scale);
-		Data->Col->SetCollisionType(CollisionType::AABBBox3D);
+		Data->col = CreateTransformComponent<GameEngineCollision>(static_cast<int>(CollisionGroup::ItemBox));
+		Data->col->GetTransform()->SetLocalPosition(Data->info.Pos);
+		Data->col->GetTransform()->SetLocalScaling(Data->info.Scale);
+		Data->col->SetCollisionType(CollisionType::AABBBox3D);
 	}
 }
 
@@ -288,9 +294,9 @@ void ItemBoxManager::UserSave_ItemListInfo()
 		NewFile.Write(static_cast<int>(ItemBox.second.size()));
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
-			NewFile.Write(static_cast<int>(ItemBox.second[i]->ItemList.size()));
+			NewFile.Write(static_cast<int>(ItemBox.second[i]->itemList.size()));
 
-			for (const auto& Item : ItemBox.second[i]->ItemList)
+			for (const auto& Item : ItemBox.second[i]->itemList)
 			{
 				NewFile.Write(Item->GetName());
 				NewFile.Write(static_cast<int>(Item->Type));
@@ -370,7 +376,7 @@ void ItemBoxManager::UserLoad_ItemListInfo()
 					Item->SetImage(ImageName);
 				}
 
-				ItemBoxs.find(KeyName)->second[j]->ItemList.push_back(Item);
+				ItemBoxs.find(KeyName)->second[j]->itemList.push_back(Item);
 			}
 		}
 	}

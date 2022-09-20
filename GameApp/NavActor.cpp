@@ -9,6 +9,7 @@ NavActor::NavActor()
 	: collision_(nullptr)
 	, currentNavFace_(nullptr)
 	, currentNavMesh_(nullptr)
+	, manager_(nullptr)
 {
 }
 
@@ -29,6 +30,8 @@ void NavActor::Start()
 	collision_->GetTransform()->SetLocalScaling(100.0f);
 	collision_->SetCollisionGroup(CollisionGroup::Player);
 	collision_->SetCollisionType(CollisionType::AABBBox3D);
+
+	manager_ = GetLevelConvert<LumiaLevel>()->GetItemBoxManager();
 }
 
 void NavActor::Update(float _DeltaTime)
@@ -62,25 +65,11 @@ void NavActor::CheckCurrentNav()
 	}
 }
 
-void NavActor::OpenItemBox()
-{
-	// Player가 조건이 만족하는 경우 박스를 연다.
-	// ItemBox UI 를 열음
-}
-
 void NavActor::GetItem()
 {
 	// 박스가 열려있는 상태에서
 	// 열려있는 UI의 아이템을 클릭하는 경우
 	// 그 아이템을 가지고온다.
-}
-
-void NavActor::CloseItemBox()
-{
-	// Player가 다른 곳을 클릭하는 경우
-	// UI가 닫힌다.
-	// SelectBox도 nullptr로 초기화
-	// 초기화하지 않으면 SelectBox 근처에 다가가면 UI가 계속 열리게 됨
 }
 
 void NavActor::CheckItemBox()
@@ -104,7 +93,19 @@ void NavActor::CheckItemBox()
 		}
 
 		// 현재 박스를 누른 후에 커서를 SelectBox 바깥으로 옮기면 박스가 열리지 않음
-		OpenItemBox();
+		// Player가 조건이 만족하는 경우 박스를 연다.
+		// ItemBox UI 를 열음
+		manager_->OpenItemBox();
+		return;
 	}
+
+	manager_->CloseItemBox();
+
+
+	// CloseItemBox
+	// Player가 아이템박스로부터 멀어진 경우
+	// UI가 닫힌다.
+	// SelectBox도 nullptr로 초기화
+	// 초기화하지 않으면 SelectBox 근처에 다가가면 UI가 계속 열리게 됨
 }
 

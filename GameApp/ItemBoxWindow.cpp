@@ -39,17 +39,17 @@ void ItemBoxWindow::OnGUI()
 
 	if (nullptr != SelectBox_)
 	{
-		const char* Arr = SelectBox_->Area.c_str();
+		const char* Arr = SelectBox_->area.c_str();
 		ImGui::Text(Arr);
 		ImGui::SameLine();
-		ImGui::Text(std::to_string(SelectBox_->Info.Index).c_str());
+		ImGui::Text(std::to_string(SelectBox_->info.Index).c_str());
 
-		Arr = SelectBox_->Info.BoxType.c_str();
+		Arr = SelectBox_->info.BoxType.c_str();
 		ImGui::Text(Arr);
 
 		std::vector<const char*> ItemListName;
 
-		for (auto& Item : SelectBox_->ItemList)
+		for (auto& Item : SelectBox_->itemList)
 		{
 			ItemListName.push_back(GameEngineString::AnsiToUTF8Return(Item->GetName()).c_str());
 		}
@@ -93,7 +93,7 @@ void ItemBoxWindow::PushItem()
 	{
 		if (index == ListSelectItem)
 		{
-			SelectBox_->ItemList.push_back((*iter)->Copy());
+			SelectBox_->itemList.push_back((*iter)->Copy());
 
 			//이건호 : UI에 아이템정보를 0번 슬롯에 넣도록 세팅
 			BoxUI_->PushItem(*iter, 0);
@@ -108,14 +108,14 @@ void ItemBoxWindow::DeleteItem()
 {
 	int index = 0;
 
-	std::list<ItemBase*>::iterator iter = SelectBox_->ItemList.begin();
+	std::list<ItemBase*>::iterator iter = SelectBox_->itemList.begin();
 
-	for (; iter != SelectBox_->ItemList.end(); iter++)
+	for (; iter != SelectBox_->itemList.end(); iter++)
 	{
 		if (index == ListSelectItemBox)
 		{
 			(*iter)->Death();
-			SelectBox_->ItemList.erase(iter);
+			SelectBox_->itemList.erase(iter);
 			ListSelectItemBox = -1;
 			break;
 		}

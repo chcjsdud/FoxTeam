@@ -30,6 +30,7 @@ void LumiaLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("E", 'E');
 	GameEngineInput::GetInst().CreateKey("O", 'O');
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
+	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
 }
 
 void LumiaLevel::LevelUpdate(float _DeltaTime)
@@ -83,17 +84,20 @@ void LumiaLevel::GenerateCharactor()
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-	//for (size_t i = 0; i < 2; i++)
-	//{
-	//	PlayerInfo newPlayer;
-	//	newPlayer.playerNumber_ = i;
-	//	newPlayer.startPoint_ = 0;
-	//	newPlayer.character_ = 0;
-	//	newPlayer.isReady_ = true;
-	//	pm->AddNewPlayer(newPlayer);
-	//}
+	/*for (size_t i = 0; i < 1; i++)
+	{
+		GHRio* newCharacter = CreateActor<GHRio>();
+		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+		PlayerInfo newPlayer;
+		newPlayer.playerNumber_ = i;
+		newPlayer.startPoint_ = 0;
+		newPlayer.character_ = 0;
+		newPlayer.isReady_ = true;
+		pm->AddNewPlayer(newPlayer);
+		characterActorList_.push_back(newCharacter);
+	}
 
-	//pm->SetPlayerNumber(0);
+	pm->SetPlayerNumber(0);*/
 
 	for (size_t i = 0; i < pm->GetPlayerList().size(); i++)
 	{

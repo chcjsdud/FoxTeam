@@ -3,6 +3,7 @@
 #include "NavMesh.h"
 
 // Ό³Έν : 
+class ItemBoxManager;
 class NavActor : public GameEngineActor
 {
 public:
@@ -32,9 +33,7 @@ protected:
 private:
 	void CheckCurrentNav();
 
-	void OpenItemBox();
 	void GetItem();
-	void CloseItemBox();
 
 	void CheckItemBox();
 
@@ -43,5 +42,7 @@ protected:
 
 	NavFace* currentNavFace_;
 	NavMesh* currentNavMesh_;
+
+	ItemBoxManager* manager_;
 };
 
