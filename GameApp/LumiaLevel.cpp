@@ -123,6 +123,7 @@ void LumiaLevel::GenerateCharactor()
 		newPlayer.isReady_ = true;
 		pm->AddNewPlayer(newPlayer);
 		characterActorList_.push_back(newCharacter);
+		PlayerInfoManager::GetInstance()->SetMainCharacter(newCharacter);
 	}
 
 	pm->SetPlayerNumber(0);

@@ -36,7 +36,7 @@ private:
 
 public:
 	// 플레이어 거리 기준
-	const float RENDER_RANGE = 1000.f;
+	const float RENDER_RANGE = 1200.f;
 
 private:
 	// A*

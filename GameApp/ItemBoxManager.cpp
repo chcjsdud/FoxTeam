@@ -58,13 +58,9 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 		float4 AllAddVtxPos = float4::ZERO;
 		float4 MaxVtxValue = float4::ZERO;
 
-		std::list<float4> tmpvtx;
-
 		for (const auto& Vertex : AllMesh[i].Vertexs)
 		{
 			AllAddVtxPos += Vertex.POSITION;
-
-			tmpvtx.push_back(Vertex.POSITION);
 
 			if (abs(Vertex.POSITION.x) > abs(MaxVtxValue.x))
 			{
@@ -81,8 +77,6 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 				MaxVtxValue.z = Vertex.POSITION.z;
 			}
 		}
-
-		tmpvtx;
 
 		AllAddVtxPos = AllAddVtxPos / static_cast<float>(AllMesh[i].Vertexs.size());
 

@@ -99,7 +99,7 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 			RenderSet& RenderSetData = RenderSets.emplace_back();
 
 			float4 AllVtxPos = float4::ZERO;
-			float MaxValue = 0.0f;
+			float4 MaxVtxValue = float4::ZERO;
 
 			for (size_t i = 0; i < StartMesh.Vertexs.size(); i++)
 			{
@@ -107,25 +107,27 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 
 				AllVtxPos += Vtx;
 				
-				if (MaxValue < abs(Vtx.x))
+				if (abs(Vtx.x) > abs(MaxVtxValue.x))
 				{
-					MaxValue = abs(Vtx.x);
+					MaxVtxValue.x = Vtx.x;
 				}
 
-				if (MaxValue < abs(Vtx.y))
+				if (abs(Vtx.y) > abs(MaxVtxValue.y))
 				{
-					MaxValue = abs(Vtx.y);
+					MaxVtxValue.y = Vtx.y;
 				}
 
-				if (MaxValue < abs(Vtx.z))
+				if (abs(Vtx.z) > abs(MaxVtxValue.z))
 				{
-					MaxValue = abs(Vtx.z);
+					MaxVtxValue.z = Vtx.z;
 				}
 			}
 
 			RenderSetData.LocalPos = AllVtxPos / static_cast<float>(StartMesh.Vertexs.size());
-			RenderSetData.Radius = MaxValue;
 
+			float4 fScale = MaxVtxValue - RenderSetData.LocalPos;
+
+			RenderSetData.Radius = max(max(abs(fScale.x), abs(fScale.y)), abs(fScale.z));
 			RenderSetData.Index = _MeshIndex;
 
 			RenderSetData.PipeLine_ = Pipe->Clone();

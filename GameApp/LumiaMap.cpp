@@ -105,6 +105,8 @@ void LumiaMap::Update(float _deltaTime)
 		float4 PlayerPos = PlayerInfoManager::GetInstance()->
 			GetMainCharacter()->GetTransform()->GetWorldPosition();
 
+		std::list<float> tmp;
+
 		for (size_t i = 0; i < mapRenderers.size(); i++)
 		{
 			std::vector<RenderSet>& RenderSets = mapRenderers[i]->GetAllRenderSet();
@@ -117,40 +119,33 @@ void LumiaMap::Update(float _deltaTime)
 				float Length = float4::Calc_Len2D(PlayerPos.x, PlayerPos.z, 
 					RenderSetPos.x, RenderSetPos.z);
 
-				float Ratio = 1.0f;
-
-				if (50.0f < RenderSets[j].Radius)
+				tmp.push_back(RenderSets[j].Radius);
+				
+				if (RenderSets[j].Radius > 1.0f)
 				{
-					Ratio = 2.0f;
-				}
-
-				if (75.0f < RenderSets[j].Radius)
-				{
-					Ratio = 4.0f;
-				}
-
-				if (100.0f < RenderSets[j].Radius)
-				{
-					Ratio = 8.0f;
-				}
-
-				if (150.0f < RenderSets[j].Radius)
-				{
-					RenderSets[j].isRender = true;
-					continue;
-				}
-
-				if (Length >= RENDER_RANGE * Ratio)
-				{
-					RenderSets[j].isRender = false;
+					if (Length >= RENDER_RANGE * RenderSets[j].Radius)
+					{
+						RenderSets[j].isRender = false;
+					}
+					else
+					{
+						RenderSets[j].isRender = true;
+					}
 				}
 				else
 				{
-					RenderSets[j].isRender = true;
+					if (Length >= RENDER_RANGE)
+					{
+						RenderSets[j].isRender = false;
+					}
+					else
+					{
+						RenderSets[j].isRender = true;
+					}
 				}
 			}
 		}
-
+		tmp;
 		int a = 0;
 	}
 }
