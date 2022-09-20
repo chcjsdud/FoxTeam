@@ -47,7 +47,7 @@ public:
 	GameEngineFSM& operator=(const GameEngineFSM& _Other) = delete;
 	GameEngineFSM& operator=(GameEngineFSM&& _Other) noexcept = delete;
 
-	void CreateState(const std::string& _Name, std::function<void()> _Update, std::function<void()> _Start = nullptr, std::function<void()> _EndStart = nullptr, std::function<void()> _Init = nullptr);
+	void CreateState(const std::string& _Name, std::function<void(float)> _Update, std::function<void()> _Start = nullptr, std::function<void()> _EndStart = nullptr, std::function<void()> _Init = nullptr);
 	void ChangeState(const std::string& _Name, bool _bForceChange = false);
 
 	inline bool IsCurrentState(const std::string& _Name) const

@@ -47,7 +47,7 @@ void GameEngineFSM::Update(float _Time)
 
 void GameEngineFSM::CreateState(
 	const std::string& _Name,
-	std::function<void()> _Update,
+	std::function<void(float)> _Update,
 	std::function<void()> _Start /*= nullptr*/,
 	std::function<void()> _EndStart /*= nullptr*/,
 	std::function<void()> _Init /*= nullptr*/
