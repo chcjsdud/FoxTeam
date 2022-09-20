@@ -87,20 +87,82 @@ void LumiaLevel::GenerateCharactor()
 #ifdef SERVER
 	for (size_t i = 0; i < pm->GetPlayerList().size(); i++)
 	{
+		switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
+		{
+		case JobType::NONE:
+			GameEngineDebug::MsgBoxError("캐릭터 선택을 하지 않고 게임을 시작한 유저가 있습니다.\n" + std::to_string(pm->GetPlayerList()[i].playerNumber_) + " 번 플레이어");
+			break;
+		case JobType::YUKI:
+		{
+			Rio* newCharacter = CreateActor<Rio>();
+			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+			characterActorList_.emplace_back(newCharacter);
+			break;
+		}
+		case JobType::FIORA:
+		{
+			Rio* newCharacter = CreateActor<Rio>();
+			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+			characterActorList_.emplace_back(newCharacter);
+			break;
+		}
+		case JobType::ZAHIR:
+		{
+			Rio* newCharacter = CreateActor<Rio>();
+			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+			characterActorList_.emplace_back(newCharacter);
+			break;
+		}
+		case JobType::NADINE:
+		{
+			Rio* newCharacter = CreateActor<Rio>();
+			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+			characterActorList_.emplace_back(newCharacter);
+			break;
+		}
+		case JobType::HYUNWOO:
+		{
+			Rio* newCharacter = CreateActor<Rio>();
+			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+			characterActorList_.emplace_back(newCharacter);
+			break;
+		}
+		case JobType::JACKIE:
+		{
+			Rio* newCharacter = CreateActor<Rio>();
+			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+			characterActorList_.emplace_back(newCharacter);
+			break;
+		}
+		case JobType::RIO:
+		{
+			Rio* newCharacter = CreateActor<Rio>();
+			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+			characterActorList_.emplace_back(newCharacter);
+			break;
+		}
+		case JobType::AYA:
+		{
+			Rio* newCharacter = CreateActor<Rio>();
+			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+			characterActorList_.emplace_back(newCharacter);
+			break;
+		}
+		case JobType::MAX:
+			GameEngineDebug::MsgBoxError("캐릭터 선택을 하지 않고 게임을 시작한 유저가 있습니다.\n" + std::to_string(pm->GetPlayerList()[i].playerNumber_) + " 번 플레이어");
+			break;
+		default:
+			GameEngineDebug::MsgBoxError("캐릭터 선택을 하지 않고 게임을 시작한 유저가 있습니다.\n" + std::to_string(pm->GetPlayerList()[i].playerNumber_) + " 번 플레이어");
+			break;
+		}
 
-
-
-		Rio* newCharacter = CreateActor<Rio>();
-		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-		characterActorList_.emplace_back(newCharacter);
 		// 캐릭터 액터를 만들어 주고(무슨 캐릭터를 고를 것인지에 대한 코드가 여기로 리팩토링 될 것)
 
 		if (i == pm->GetMyNumber())
 		{
-			newCharacter->TempFlag = false;
+			characterActorList_[i]->TempFlag = false;
 			// TempFlag 는 액터 안의 업데이트 중 컨트롤 부분을 쓰거나 건너뛸 수 있게 만든 임시 플래그값입니다.
 			// 액터의 입력부가 게임 컨트롤러 클래스로 분화되면 지워질 예정입니다.
-
 			// player_ = newCharacter;
 			// pm->SetMainCharacter(player_);
 			// 어차피 내 캐릭터 인덱스 가지고 있고...
@@ -108,7 +170,7 @@ void LumiaLevel::GenerateCharactor()
 		}
 		else
 		{
-			newCharacter->TempFlag = true;
+			characterActorList_[i]->TempFlag = true;
 		}
 	}
 #else
