@@ -25,8 +25,9 @@ void Lobby_Map::Start()
 	{
 		selectAreaRenderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
 		selectAreaRenderer_->SetImage("Map_Alley_Pin.png", "PointSmp");
-		selectAreaRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -102.0f });
+		selectAreaRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -104.0f });
 		selectAreaRenderer_->GetTransform()->SetLocalScaling(selectAreaRenderer_->GetCurrentTexture()->GetTextureSize());
+		selectAreaRenderer_->Off();
 	}
 
 
@@ -34,7 +35,7 @@ void Lobby_Map::Start()
 		areaChoiceMapRenderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
 		areaChoiceMapRenderer_->SetImage("Map_Resize_Color.png", "PointSmp");
 		//항상 뒤에 가려서 안보이게함
-		areaChoiceMapRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -103.0f });
+		areaChoiceMapRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f,0.0f });
 		areaChoiceMapRenderer_->GetTransform()->SetLocalScaling(areaChoiceMapRenderer_->GetCurrentTexture()->GetTextureSize());
 		//areaChoiceMapRenderer_->Off();
 	}
@@ -51,10 +52,91 @@ void Lobby_Map::Update(float _DeltaTime)
 {
 	if (textureCollision_->Collision(CollisionGroup::MousePointer))
 	{
-		float4 Pos = GameEngineInput::GetInst().GetMouse3DPos();
-		GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
 		//마우스콜리전과 맵콜리전이 충돌중일때만 겟컬러를한다
-		
+		GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
+
+		//맵콜리전이 충돌중일때 
+		if (GameEngineInput::GetInst().Down("LBUTTON"))
+		{
+			switch (SelectedLocation)
+			{
+			case Location::NONE:
+				selectAreaRenderer_->Off();
+				break;
+			case Location::DOCK:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Harbor_Pin.png", "PointSmp");
+				break;
+			case Location::POND:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Pond_Pin.png", "PointSmp");
+				break;
+			case Location::BEACH:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_SandyBeach_Pin.png", "PointSmp");
+				break;
+			case Location::UPTOWN:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_UpTown_Pin.png", "PointSmp");
+				break;
+			case Location::ALLEY:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Alley_Pin.png", "PointSmp");
+				break;
+			case Location::HOTEL:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Hotel_Pin.png", "PointSmp");
+				break;
+			case Location::AVENUE:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_DownTown_Pin.png", "PointSmp");
+				break;
+			case Location::HOSPITAL:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Hospital_Pin.png", "PointSmp");
+				break;
+			case Location::TEMPLE:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Temple_Pin.png", "PointSmp");
+				break;
+			case Location::ARCHERY_RANGE:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Archery_Pin.png", "PointSmp");
+				break;
+			case Location::CEMETERY:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Cemetery_Pin.png", "PointSmp");
+				break;
+			case Location::FOREST:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Forest_Pin.png", "PointSmp");
+				break;
+			case Location::FACTORY:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Factory_Pin.png", "PointSmp");
+				break;
+			case Location::CHAPEL:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Church_Pin.png", "PointSmp");
+				break;
+			case Location::SCHOOL:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_School_Pin.png", "PointSmp");
+				break;
+			case Location::RESERCH_CENTRE:
+				selectAreaRenderer_->On();
+				selectAreaRenderer_->SetImage("Map_Laboratory_Pin.png", "PointSmp");
+				break;
+			case Location::ESCAPE_DOCK:
+				selectAreaRenderer_->Off();
+				break;
+			case Location::MAX:
+				selectAreaRenderer_->Off();
+				break;
+			default:
+				break;
+			}
+		}
 	}
 }
 
@@ -78,12 +160,133 @@ Location Lobby_Map::GetSelectLocation(float4 _Position)
 
 	//Red값 = z
 	//현재문제->이미지 크기조정중 생긴 흰 테두리가 방해가됨
-	if (Color.z > 0.9f)
+	//테두리 삭제 + 값을 테두리의 색상값보다 높임
+
+	if (Color.z < 0.1f && Color.y < 0.1f && Color.z < 0.1f)
 	{
-		int a = 0;
+		//0, 0, 0 일경우
+		SelectedLocation = Location::NONE;
+		return SelectedLocation;
 	}
 
-	
+	if (Color.z > 0.95f)
+	{
+		//255, *, * 인경우
+
+		if (Color.y < 0.1f && Color.x < 0.1f)
+		{
+			//255, 0, 0
+			SelectedLocation = Location::ALLEY;
+		}
+
+		if (Color.y > 0.95f && Color.x < 0.1f)
+		{
+			//255, 255, 0
+			SelectedLocation = Location::ARCHERY_RANGE;
+		}
+
+		if (Color.y < 0.1f && Color.x > 0.95f)
+		{
+			//255, 0, 255
+			SelectedLocation = Location::FACTORY;
+		}
+
+		if (Color.y > 0.95f && Color.x > 0.95f)
+		{
+			//255, 255, 255
+			SelectedLocation = Location::CEMETERY;
+		}
+
+		if (Color.y < 0.6f && Color.y > 0.4f && Color.x < 0.1f)
+		{
+			//255, 128, 0
+			SelectedLocation = Location::RESERCH_CENTRE;
+		}
+
+		if (Color.y < 0.6f && Color.y > 0.4f && Color.x > 0.95f)
+		{
+			//255, 128, 255
+			SelectedLocation = Location::POND;
+		}
+
+		if (Color.y < 0.1f && Color.x < 0.6f && Color.x > 0.4f)
+		{
+			//255, 0, 128
+			SelectedLocation = Location::TEMPLE;
+		}
+
+		if (Color.y > 0.95f && Color.x < 0.6f && Color.x > 0.4f)
+		{
+			//255, 255, 128
+			SelectedLocation = Location::UPTOWN;
+		}
+	}
+	else if (Color.z > 0.4f && Color.z < 0.6f)
+	{
+		// 128, *, *
+
+		if (Color.y < 0.1f && Color.x < 0.1f)
+		{
+			//128, 0, 0
+			SelectedLocation = Location::FOREST;
+		}
+
+		if (Color.y > 0.95f && Color.x < 0.1f)
+		{
+			//128, 255, 0
+			SelectedLocation = Location::DOCK;
+		}
+
+		if (Color.y > 0.95f && Color.x > 0.95f)
+		{
+			//128, 255, 255
+			SelectedLocation = Location::HOSPITAL;
+		}
+	}
+	else if (Color.z < 0.05f)
+	{
+		//0, *, *
+
+		if (Color.y > 0.95f && Color.x < 0.1f)
+		{
+			//0, 255, 0
+			//교회
+			SelectedLocation = Location::CHAPEL;
+		}
+
+		if (Color.y > 0.95f && Color.x > 0.95f)
+		{
+			//0, 255, 255
+			//다운타운
+			SelectedLocation = Location::AVENUE;
+		}
+
+		if (Color.y < 0.05f && Color.x > 0.95f)
+		{
+			//0, 0, 255
+			SelectedLocation = Location::SCHOOL;
+		}
+
+
+		if (Color.y < 0.6f && Color.y > 0.4f && Color.x < 0.1f)
+		{
+			//0, 128, 0
+			SelectedLocation = Location::HOTEL;
+		}
+
+		if (Color.y < 0.6f && Color.y > 0.4f && Color.x > 0.95f)
+		{
+			//0, 128, 255
+			SelectedLocation = Location::BEACH;
+		}
+
+		if (Color.y < 0.6f && Color.y > 0.4f && Color.x < 0.6f && Color.x > 0.4f)
+		{
+			//0, 128, 128
+			SelectedLocation = Location::SCHOOL;
+		}
+	}
+
 
 	return SelectedLocation;
 }
