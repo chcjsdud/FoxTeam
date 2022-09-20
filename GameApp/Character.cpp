@@ -1,8 +1,11 @@
 #include "PreCompile.h"
+
+#include <GameEngine/GameEngineCollision.h>
+
 #include "Character.h"
 #include "LumiaLevel.h"
+#include "MousePointer.h"
 #include "LumiaMap.h"
-#include <GameEngine/GameEngineCollision.h>
 #include "ItemBox.h"
 
 Character::Character()
@@ -10,6 +13,8 @@ Character::Character()
 	, currentNavFace_(nullptr)
 	, currentNavMesh_(nullptr)
 	, manager_(nullptr)
+	, currentMap_(nullptr)
+	, mouse_(nullptr)
 {
 }
 
@@ -32,6 +37,26 @@ void Character::Start()
 	collision_->SetCollisionType(CollisionType::AABBBox3D);
 
 	manager_ = GetLevelConvert<LumiaLevel>()->GetItemBoxManager();
+
+
+	LumiaLevel* level = dynamic_cast<LumiaLevel*>(level_);
+	if (nullptr == level)
+	{
+		GameEngineDebug::MsgBoxError("level 변환에 실패했습니다. class GameEngineLevel to " + std::string(typeid(LumiaLevel).name()));
+	}
+
+	currentMap_ = level->GetMap();
+	mouse_ = level->GetMousePointer();
+
+	if (nullptr == currentMap_)
+	{
+		GameEngineDebug::MsgBoxError("level에 Map 정보가 없습니다.");
+	}
+
+	if (nullptr == mouse_)
+	{
+		GameEngineDebug::MsgBoxError("level에 MousePointer 정보가 없습니다.");
+	}
 }
 
 void Character::Update(float _DeltaTime)

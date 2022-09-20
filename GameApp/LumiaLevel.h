@@ -6,7 +6,7 @@
 #include <GameApp/ItemBoxManager.h>
 #include <GameApp/GHRio.h>
 
-#define SERVER
+//#define SERVER
 
 class LumiaMap;
 class NavMesh;

@@ -5,7 +5,7 @@
 #include "GameEngineTransformComponent.h"
 
 GameEngineActor::GameEngineActor() 
-	: Level_(nullptr)
+	: level_(nullptr)
 	, DeathTime_(-1.0f)
 	, IsDestroyed_(nullptr)
 	, NextLevelMove_(nullptr)
@@ -79,7 +79,7 @@ void GameEngineActor::ComponentRelease()
 
 void GameEngineActor::SetLevel(GameEngineLevel* _Level) 
 {
-	Level_ = _Level;
+	level_ = _Level;
 }
 
 void GameEngineActor::UpdateComponent(float _DeltaTime)

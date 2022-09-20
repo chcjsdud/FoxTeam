@@ -30,13 +30,13 @@ public:
 
 	GameEngineLevel* GetLevel()
 	{
-		return Level_;
+		return level_;
 	}
 
 	template<typename LevelType>
 	LevelType* GetLevelConvert()
 	{
-		return dynamic_cast<LevelType*>(Level_);
+		return dynamic_cast<LevelType*>(level_);
 	}
 
 	void Release(float _Time = 0.0f)
@@ -72,22 +72,19 @@ protected:
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) {}
 
 
-	// 트랜스폼을 변화시킨다는걸 기본적으로 생각할겁니다.
-
 ////////////////////////
 
 public:
 	GameEngineTransform* GetTransform()
 	{
-		return &Transform_;
+		return &transform_;
 	}
 
+protected:
+	GameEngineTransform transform_;
+	GameEngineLevel* level_;
 
 private:
-	GameEngineTransform Transform_;
-	GameEngineLevel* Level_;
-
-	// Status
 	std::list<GameEngineComponent*> ComponentList_;
 
 	std::list<GameEngineTransformComponent*> TransformComponentList_;

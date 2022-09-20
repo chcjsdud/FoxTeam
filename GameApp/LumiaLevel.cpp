@@ -174,7 +174,7 @@ void LumiaLevel::GenerateCharactor()
 		}
 	}
 #else
-	for (size_t i = 0; i < 1; i++)
+	for (size_t i = 0; i < 2; i++)
 	{
 		Rio* newCharacter = CreateActor<Rio>();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
@@ -185,7 +185,12 @@ void LumiaLevel::GenerateCharactor()
 		newPlayer.isReady_ = true;
 		pm->AddNewPlayer(newPlayer);
 		characterActorList_.push_back(newCharacter);
-		PlayerInfoManager::GetInstance()->SetMainCharacter(newCharacter);
+
+		if (i == 0)
+		{
+			characterActorList_[0]->TempFlag = true;
+			pm->SetMainCharacter(characterActorList_[0]);
+		}
 	}
 
 	pm->SetPlayerNumber(0);
@@ -262,8 +267,6 @@ void LumiaLevel::loadResource()
 void LumiaLevel::releaseResource()
 {
 	// loadResource에서 로드한 리소스 삭제
-	GameEngineFBXMeshManager::GetInst().Delete("DowntownNavMesh.fbx");
-	GameEngineFBXMeshManager::GetInst().Delete("Downtown.fbx");
 
 	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh_Cobalt.fbx");
 	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh.fbx");

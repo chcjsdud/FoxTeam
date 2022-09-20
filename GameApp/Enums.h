@@ -4,6 +4,7 @@
 namespace FT
 {
 	const float MAX_HEIGHT = 1000.f;
+	const float MOUSE_PRESS_DELAY = 0.1f;
 };
 
 enum class CollisionGroup

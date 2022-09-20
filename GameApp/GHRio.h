@@ -26,30 +26,35 @@ public:
 public:
 	void InitSpawnPoint(const float4& _position);
 
+	void Move(const float4& _position);
+	void MoveWithPathFind(const float4& _position);
 
 private:
+	// 처음 생성됐을 때 해야할 것을 함수로 분리 했음
 	void initRendererAnimation();
 	void initInput();
 	void initState();
 
-
 #pragma region MainState
-	void startNormal();
-	void updateNormal(float _deltaTime);
+	void startNormalState();
+	void updateNormalState(float _deltaTime);
 
-	void startCrowdControl();
-	void updateCrowdControl(float _deltaTime);
-	void endCrowdControl();
+	void startCrowdControlState();
+	void updateCrowdControlState(float _deltaTime);
+	void endCrowdControlState();
+
 #pragma endregion
 
+	// 일반적인 상태
 #pragma region NormalState
-	void startIdle();
-	void updateIdle(float _deltaTime);
+	void startWait();
+	void updateWait(float _deltaTime);
 
 	void startRun();
 	void updateRun(float _deltaTime);
 #pragma endregion
 
+	// CC, 상태이상등을 받는 상태
 #pragma region CrowdControlState
 	void startStun();
 	void updateStun(float _deltaTime);
@@ -62,14 +67,14 @@ private:
 private:
 	GameEngineFBXRenderer* renderer_;
 
-	GameEngineFSM mainState_;
+	GameEngineFSM state_;
 	GameEngineFSM normalState_;
 	GameEngineFSM crowdControlState_;
 
 	float4 destination_;
 	float4 direction_;
 
-	LumiaMap* currentMap_;
-
 	std::vector<float4> destinations_;
+
+	float mousePressDelay_;
 };

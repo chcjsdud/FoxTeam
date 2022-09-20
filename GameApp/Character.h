@@ -2,8 +2,11 @@
 #include <GameEngine/GameEngineActor.h>
 #include "NavMesh.h"
 
+
 // Ό³Έν : 
 class ItemBoxManager;
+class MousePointer;
+class LumiaMap;
 class Character : public GameEngineActor
 {
 public:
@@ -44,5 +47,8 @@ protected:
 	NavMesh* currentNavMesh_;
 
 	ItemBoxManager* manager_;
+
+	LumiaMap* currentMap_;
+	MousePointer* mouse_;
 };
 
