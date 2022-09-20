@@ -1,13 +1,13 @@
 #pragma once
 
 #include <GameEngine/GameEngineActor.h>
-#include "NavActor.h"
+#include "Character.h"
 #include <GameEngine/GameEngineFSM.h>
 
 class GameEngineFBXRenderer;
 class LumiaMap;
 class GHNavMesh;
-class GHRio : public NavActor
+class GHRio : public Character
 {
 public:
 	bool TempFlag = false;

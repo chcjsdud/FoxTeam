@@ -9,7 +9,7 @@
 
 
 GHRio::GHRio()
-	: NavActor()
+	: Character()
 	, renderer_(nullptr)
 	, currentMap_(nullptr)
 {
@@ -23,7 +23,7 @@ GHRio::~GHRio()
 
 void GHRio::Start()
 {
-	NavActor::Start();
+	Character::Start();
 
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	renderer_->SetFBXMesh("Rio_Run.fbx", "TextureDeferredLightAni");
@@ -188,7 +188,7 @@ void GHRio::Update(float _deltaTime)
 			GetTransform()->SetWorldMove({ 0.0f, -Dist, 0.0f });
 		}
 
-		NavActor::Update(_deltaTime);
+		Character::Update(_deltaTime);
 	}
 }
 

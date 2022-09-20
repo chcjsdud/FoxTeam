@@ -1,11 +1,11 @@
 #include "PreCompile.h"
-#include "NavActor.h"
+#include "Character.h"
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
 #include <GameEngine/GameEngineCollision.h>
 #include "ItemBox.h"
 
-NavActor::NavActor()
+Character::Character()
 	: collision_(nullptr)
 	, currentNavFace_(nullptr)
 	, currentNavMesh_(nullptr)
@@ -13,18 +13,18 @@ NavActor::NavActor()
 {
 }
 
-NavActor::~NavActor()
+Character::~Character()
 {
 
 }
 
-void NavActor::SetNaviMesh(NavMesh* _NaviMesh)
+void Character::SetNaviMesh(NavMesh* _NaviMesh)
 {
 	currentNavMesh_ = _NaviMesh;
 	currentNavFace_ = currentNavMesh_->CurrentCheck(GetTransform(), float4::DOWN);
 }
 
-void NavActor::Start()
+void Character::Start()
 {
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(100.0f);
@@ -34,7 +34,7 @@ void NavActor::Start()
 	manager_ = GetLevelConvert<LumiaLevel>()->GetItemBoxManager();
 }
 
-void NavActor::Update(float _DeltaTime)
+void Character::Update(float _DeltaTime)
 {
 	if (nullptr != collision_ &&
 		collision_->IsUpdate())
@@ -47,7 +47,7 @@ void NavActor::Update(float _DeltaTime)
 	CheckItemBox();
 }
 
-void NavActor::CheckCurrentNav()
+void Character::CheckCurrentNav()
 {
 	if (nullptr != currentNavFace_)
 	{
@@ -65,14 +65,14 @@ void NavActor::CheckCurrentNav()
 	}
 }
 
-void NavActor::GetItem()
+void Character::GetItem()
 {
 	// 박스가 열려있는 상태에서
 	// 열려있는 UI의 아이템을 클릭하는 경우
 	// 그 아이템을 가지고온다.
 }
 
-void NavActor::CheckItemBox()
+void Character::CheckItemBox()
 {
 	// Player와 SelectBox가 서로 충돌상태인지를 체크
 

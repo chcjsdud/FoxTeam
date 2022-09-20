@@ -4,15 +4,15 @@
 
 // Ό³Έν : 
 class ItemBoxManager;
-class NavActor : public GameEngineActor
+class Character : public GameEngineActor
 {
 public:
-	NavActor();
-	~NavActor();
-	NavActor(const NavActor& _other) = delete; 
-	NavActor(NavActor&& _other) noexcept = delete;
-	NavActor& operator=(const NavActor& _other) = delete;
-	NavActor& operator=(const NavActor&& _other) = delete;
+	Character();
+	~Character();
+	Character(const Character& _other) = delete; 
+	Character(Character&& _other) noexcept = delete;
+	Character& operator=(const Character& _other) = delete;
+	Character& operator=(const Character&& _other) = delete;
 
 	void SetNaviMesh(NavMesh* _NaviMesh);
 

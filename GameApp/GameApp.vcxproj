@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
+    <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharSelectPacket.cpp">
       <SubType>
       </SubType>
@@ -291,10 +292,6 @@
     <ClCompile Include="LobbyLevel.cpp" />
     <ClCompile Include="LumiaLevel.cpp" />
     <ClCompile Include="MiscItem.cpp" />
-    <ClCompile Include="NavActor.cpp">
-      <SubType>
-      </SubType>
-    </ClCompile>
     <ClCompile Include="NavMesh.cpp">
       <SubType>
       </SubType>
@@ -400,6 +397,7 @@
     <ClCompile Include="UserGame_Resources_Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Character.h" />
     <ClInclude Include="CharSelectPacket.h">
       <SubType>
       </SubType>
@@ -510,10 +508,6 @@
     <ClInclude Include="LobbyLevel.h" />
     <ClInclude Include="LumiaLevel.h" />
     <ClInclude Include="MiscItem.h" />
-    <ClInclude Include="NavActor.h">
-      <SubType>
-      </SubType>
-    </ClInclude>
     <ClInclude Include="NavMesh.h">
       <SubType>
       </SubType>

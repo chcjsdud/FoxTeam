@@ -157,9 +157,6 @@
     <ClCompile Include="AStarNode.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClCompile>
-    <ClCompile Include="NavActor.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
-    </ClCompile>
     <ClCompile Include="NavMesh.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClCompile>
@@ -210,6 +207,9 @@
     </ClCompile>
     <ClCompile Include="LumiaUIController.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -473,9 +473,6 @@
     <ClInclude Include="TitleFoxLogo.h">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
     </ClInclude>
-    <ClInclude Include="NavActor.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
-    </ClInclude>
     <ClInclude Include="NavMesh.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClInclude>
@@ -529,6 +526,9 @@
     </ClInclude>
     <ClInclude Include="LumiaUIController.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

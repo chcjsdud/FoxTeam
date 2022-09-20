@@ -6,6 +6,8 @@
 #include <GameApp/ItemBoxManager.h>
 #include <GameApp/GHRio.h>
 
+#define SERVER
+
 class LumiaMap;
 class NavMesh;
 class LumiaLevel : public GameEngineLevel
