@@ -12,7 +12,6 @@
 LumiaLevel::LumiaLevel()
 	: mouse_(nullptr)
 	, itemBox_(nullptr)
-	, player_(nullptr)
 	, map_(nullptr)
 {
 }
@@ -42,7 +41,7 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 
 	if (!GetMainCameraActor()->IsFreeCameraMode())
 	{
-		GetMainCameraActor()->GetTransform()->SetWorldPosition(player_->GetTransform()->GetWorldPosition() + float4(-200.0f, 800.f, -200.f));
+		GetMainCameraActor()->GetTransform()->SetWorldPosition(characterActorList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetTransform()->GetLocalPosition() + float4(-200.0f, 800.f, -200.f));
 		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 70.0f, 45.0f, 0.0f });
 	}
 
@@ -84,28 +83,35 @@ void LumiaLevel::GenerateCharactor()
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-	for (size_t i = 0; i < 2; i++)
-	{
-		PlayerInfo newPlayer;
-		newPlayer.playerNumber_ = i;
-		newPlayer.startPoint_ = 0;
-		newPlayer.character_ = 0;
-		newPlayer.isReady_ = true;
-		pm->AddNewPlayer(newPlayer);
-	}
+	//for (size_t i = 0; i < 2; i++)
+	//{
+	//	PlayerInfo newPlayer;
+	//	newPlayer.playerNumber_ = i;
+	//	newPlayer.startPoint_ = 0;
+	//	newPlayer.character_ = 0;
+	//	newPlayer.isReady_ = true;
+	//	pm->AddNewPlayer(newPlayer);
+	//}
 
-	pm->SetPlayerNumber(0);
+	//pm->SetPlayerNumber(0);
 
 	for (size_t i = 0; i < pm->GetPlayerList().size(); i++)
 	{
 		GHRio* newCharacter = CreateActor<GHRio>();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+		characterActorList_.emplace_back(newCharacter);
+		// 캐릭터 액터를 만들어 주고(무슨 캐릭터를 고를 것인지에 대한 코드가 여기로 리팩토링 될 것)
 
-		if (i == 0)
+		if (i == pm->GetMyNumber())
 		{
 			newCharacter->TempFlag = true;
-			player_ = newCharacter;
-			pm->SetMainCharacter(player_);
+			// TempFlag 는 액터 안의 업데이트 중 컨트롤 부분을 쓰거나 건너뛸 수 있게 만든 임시 플래그값입니다.
+			// 액터의 입력부가 게임 컨트롤러 클래스로 분화되면 지워질 예정입니다.
+
+			// player_ = newCharacter;
+			// pm->SetMainCharacter(player_);
+			// 어차피 내 캐릭터 인덱스 가지고 있고...
+			// characterActorList[내 인덱스] 면 내 캐릭터 액터 찾아간다...
 		}
 	}
 }

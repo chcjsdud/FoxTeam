@@ -281,7 +281,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			}
 		}
 
-		if (true == UIController_->GetStartButton()->MouseCollisionCheck())
+		if (true == UIController_->GetStartButton()->MouseCollisionCheck() && GameEngineInput::GetInst().Down("LBUTTON"))
 		{
 			if (-1 == pm->GetPlayerList()[pm->GetMyNumber()].character_)
 			{
@@ -336,7 +336,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		}
 
 
-		if (true == UIController_->GetStartButton()->MouseCollisionCheck())
+		if (true == UIController_->GetStartButton()->MouseCollisionCheck() && GameEngineInput::GetInst().Down("LBUTTON"))
 		{
 			if (-1 == pm->GetPlayerList()[pm->GetMyNumber()].character_)
 			{

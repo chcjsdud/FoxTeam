@@ -52,86 +52,83 @@ void GHRio::Update(float _deltaTime)
 
 	if (!TempFlag)
 	{
-		return;
-	}
+		static float pathFindTime = 0.f;
 
-	static float pathFindTime = 0.f;
+		float4 worldPosition = GetTransform()->GetWorldPosition();
+		LumiaLevel* level = dynamic_cast<LumiaLevel*>(GetLevel());
+		MousePointer* mouse = nullptr;
+		LumiaMap* map = nullptr;
 
-	float4 worldPosition = GetTransform()->GetWorldPosition();
-	LumiaLevel* level = dynamic_cast<LumiaLevel*>(GetLevel());
-	MousePointer* mouse = nullptr;
-	LumiaMap* map = nullptr;
-
-	if (nullptr != level)
-	{
-		mouse = level->GetMousePointer();
-		map = level->GetMap();
-	}
-
-	float height = 0.f;
-	NavFace* clickedFace = nullptr;
-	if (GameEngineInput::GetInst().Press("LButton"))
-	{
-		if (nullptr != map)
+		if (nullptr != level)
 		{
-			bool result = map->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
-
-			if (!result)
-			{
-				if (mouse != nullptr)
-				{
-					destination_ = mouse->GetIntersectionYAxisPlane(worldPosition.y, 2000.f);
-				}
-			}
-		}
-	}
-
-	if (GameEngineInput::GetInst().Up("LButton"))
-	{
-		bool result = false;
-		LumiaMap* map = level->GetMap();
-		if (nullptr != map)
-		{
-			result = map->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
-
-			if (!result)
-			{
-				if (mouse != nullptr)
-				{
-					destination_ = mouse->GetIntersectionYAxisPlane(worldPosition.y, 2000.f);
-					//clickedFace = map->GetNavMesh()->GetNavFaceFromPositionXZ(destination_, float4::DOWN, height);
-
-					//if (nullptr != clickedFace)
-					//{
-					//	destination_.y = height;
-					//}
-				}
-			}
+			mouse = level->GetMousePointer();
+			map = level->GetMap();
 		}
 
-		destinations_.clear();
-		if ((destination_ - worldPosition).Len3D() > 400.f)
+		float height = 0.f;
+		NavFace* clickedFace = nullptr;
+		if (GameEngineInput::GetInst().Press("LButton"))
 		{
-			LumiaMap* map = level->GetMap();
-			if (nullptr != map && nullptr != mouse)
+			if (nullptr != map)
 			{
-				GameEngineTime::GetInst().TimeCheck();
+				bool result = map->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
 
-				if (result)
+				if (!result)
 				{
-					destinations_ = map->FindPath(worldPosition, destination_);
-					if (destinations_.size() > 0)
+					if (mouse != nullptr)
 					{
-						destinations_[0] = destination_;
+						destination_ = mouse->GetIntersectionYAxisPlane(worldPosition.y, 2000.f);
 					}
-					GameEngineTime::GetInst().TimeCheck();
-					pathFindTime = GameEngineTime::GetInst().GetDeltaTime();
-
-					destination_ = worldPosition;
 				}
 			}
 		}
-	}
+
+		if (GameEngineInput::GetInst().Up("LButton"))
+		{
+			bool result = false;
+			LumiaMap* map = level->GetMap();
+			if (nullptr != map)
+			{
+				result = map->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
+
+				if (!result)
+				{
+					if (mouse != nullptr)
+					{
+						destination_ = mouse->GetIntersectionYAxisPlane(worldPosition.y, 2000.f);
+						//clickedFace = map->GetNavMesh()->GetNavFaceFromPositionXZ(destination_, float4::DOWN, height);
+
+						//if (nullptr != clickedFace)
+						//{
+						//	destination_.y = height;
+						//}
+					}
+				}
+			}
+
+			destinations_.clear();
+			if ((destination_ - worldPosition).Len3D() > 400.f)
+			{
+				LumiaMap* map = level->GetMap();
+				if (nullptr != map && nullptr != mouse)
+				{
+					GameEngineTime::GetInst().TimeCheck();
+
+					if (result)
+					{
+						destinations_ = map->FindPath(worldPosition, destination_);
+						if (destinations_.size() > 0)
+						{
+							destinations_[0] = destination_;
+						}
+						GameEngineTime::GetInst().TimeCheck();
+						pathFindTime = GameEngineTime::GetInst().GetDeltaTime();
+
+						destination_ = worldPosition;
+					}
+				}
+			}
+		}
 
 	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
 	if (nullptr != controlWindow)
@@ -142,25 +139,25 @@ void GHRio::Update(float _deltaTime)
 		controlWindow->AddText("nice to meet you");
 	}
 
-	worldPosition.y = destination_.y;
-	if ((destination_ - worldPosition).Len3D() > 10.f)
-	{
-		renderer_->ChangeFBXAnimation("Run");
+		worldPosition.y = destination_.y;
+		if ((destination_ - worldPosition).Len3D() > 10.f)
+		{
+			renderer_->ChangeFBXAnimation("Run");
 
 
-		direction_ = destination_ - worldPosition;
-		direction_.Normalize3D();
+			direction_ = destination_ - worldPosition;
+			direction_.Normalize3D();
 
-		float4 cross = float4::Cross3D(direction_, { 0.0f, 0.0f, 1.0f });
-		cross.Normalize3D();
+			float4 cross = float4::Cross3D(direction_, { 0.0f, 0.0f, 1.0f });
+			cross.Normalize3D();
 
-		float angle = float4::DegreeDot3DToACosAngle(direction_, { 0.0f, 0.0f, 1.0f });
+			float angle = float4::DegreeDot3DToACosAngle(direction_, { 0.0f, 0.0f, 1.0f });
 
-		GetTransform()->SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
+			GetTransform()->SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
 
 
-		float4 moveSpeed = direction_ * SPEED * _deltaTime;
-		float4 nextMovePosition = worldPosition + moveSpeed;
+			float4 moveSpeed = direction_ * SPEED * _deltaTime;
+			float4 nextMovePosition = worldPosition + moveSpeed;
 
 		float temp;
 		if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{0.0f, FT::MAX_HEIGHT, 0.0f}, float4::DOWN, temp))
