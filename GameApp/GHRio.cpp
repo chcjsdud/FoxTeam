@@ -130,14 +130,14 @@ void GHRio::Update(float _deltaTime)
 			}
 		}
 
-	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
-	if (nullptr != controlWindow)
-	{
-		controlWindow->AddText("Path find time elapsed : " + std::to_string(pathFindTime) + " sec");
+		GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+		if (nullptr != controlWindow)
+		{
+			controlWindow->AddText("Path find time elapsed : " + std::to_string(pathFindTime) + " sec");
 
-		controlWindow->AddText("hi");
-		controlWindow->AddText("nice to meet you");
-	}
+			controlWindow->AddText("hi");
+			controlWindow->AddText("nice to meet you");
+		}
 
 		worldPosition.y = destination_.y;
 		if ((destination_ - worldPosition).Len3D() > 10.f)
@@ -159,37 +159,37 @@ void GHRio::Update(float _deltaTime)
 			float4 moveSpeed = direction_ * SPEED * _deltaTime;
 			float4 nextMovePosition = worldPosition + moveSpeed;
 
-		float temp;
-		if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{0.0f, FT::MAX_HEIGHT, 0.0f}, float4::DOWN, temp))
-		{
-			GetTransform()->SetWorldPosition(nextMovePosition);
+			float temp;
+			if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+			{
+				GetTransform()->SetWorldPosition(nextMovePosition);
+			}
+			else
+			{
+				destination_ = worldPosition;
+			}
 		}
 		else
 		{
-			destination_ = worldPosition;
+			if (!destinations_.empty())
+			{
+				destination_ = destinations_.back();
+				destinations_.pop_back();
+			}
+			else
+			{
+				renderer_->ChangeFBXAnimation("Wait");
+			}
 		}
-	}
-	else
-	{
-		if (!destinations_.empty())
+
+		if (nullptr != currentNavFace_)
 		{
-			destination_ = destinations_.back();
-			destinations_.pop_back();
+			float Dist = currentNavFace_->YCheck(GetTransform());
+			GetTransform()->SetWorldMove({ 0.0f, -Dist, 0.0f });
 		}
-		else
-		{
-			renderer_->ChangeFBXAnimation("Wait");
-		}
+
+		NavActor::Update(_deltaTime);
 	}
-
-	if (nullptr != currentNavFace_)
-	{
-		float Dist = currentNavFace_->YCheck(GetTransform());
-		GetTransform()->SetWorldMove({ 0.0f, -Dist, 0.0f });
-	}
-
-	NavActor::Update(_deltaTime);
-
 }
 
 void GHRio::InitSpawnPoint(const float4& _position)
