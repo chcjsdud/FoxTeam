@@ -8,7 +8,7 @@
 #include <GameApp/LumiaLevel.h>
 
 
-GHRio::GHRio()
+Rio::Rio()
 	: Character()
 	, renderer_(nullptr)
 	, currentMap_(nullptr)
@@ -16,37 +16,21 @@ GHRio::GHRio()
 
 }
 
-GHRio::~GHRio()
+Rio::~Rio()
 {
 
 }
 
-void GHRio::Start()
+void Rio::Start()
 {
 	Character::Start();
 
-	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	renderer_->SetFBXMesh("Rio_Run.fbx", "TextureDeferredLightAni");
-
-	//for (size_t i = 0; i < renderer_->GetRenderSetCount(); i++)
-	//{
-	//	renderer_->GetRenderSet(static_cast<unsigned int>(i)).ShaderHelper->SettingTexture("DiffuseTex", "Rio_000_LOD1.png");
-	//}
-
-	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
-	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
-
-	renderer_->CreateFBXAnimation("Run", "Rio_Run.fbx", 0);
-	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx", 0);
-	renderer_->ChangeFBXAnimation("Wait");
-
-	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
-	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
-
-	mainState_.CreateStateTemplate<GHRio>("Normal", this, &GHRio::startNormal, &GHRio::updateNormal, nullptr);
+	initRendererAnimation();
+	initInput();
+	initState();
 }
 
-void GHRio::Update(float _deltaTime)
+void Rio::Update(float _deltaTime)
 {
 	//mainState_.Update(_deltaTime);
 
@@ -192,7 +176,7 @@ void GHRio::Update(float _deltaTime)
 	}
 }
 
-void GHRio::InitSpawnPoint(const float4& _position)
+void Rio::InitSpawnPoint(const float4& _position)
 {
 	//float4 spawnPoint = { -6780.f, 0.0f, -780.f };
 	//float4 spawnPoint = { -2500.f, 0.0f, 10000.f };
@@ -220,26 +204,74 @@ void GHRio::InitSpawnPoint(const float4& _position)
 	//}
 }
 
-void GHRio::startNormal()
+
+
+void Rio::initRendererAnimation()
+{
+	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_->SetFBXMesh("Rio_Run.fbx", "TextureDeferredLightAni");
+
+	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
+	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
+
+	renderer_->CreateFBXAnimation("Run", "Rio_Run.fbx", 0);
+	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx", 0);
+	renderer_->ChangeFBXAnimation("Wait");
+}
+
+void Rio::initInput()
+{
+	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
+	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
+}
+
+void Rio::initState()
+{
+	normalState_.CreateState(MakeState(Rio, Normal));
+	normalState_.CreateState(MakeState(Rio, CrowdControl));
+}
+
+void Rio::startNormal()
+{
+	renderer_->ChangeFBXAnimation("Wait");
+}
+
+void Rio::updateNormal(float _deltaTime)
 {
 }
 
-void GHRio::updateNormal(float _deltaTime)
+void Rio::startCrowdControl()
 {
 }
 
-void GHRio::startIdle()
+void Rio::updateCrowdControl(float _deltaTime)
 {
 }
 
-void GHRio::updateIdle(float _deltaTime)
+void Rio::endCrowdControl()
 {
 }
 
-void GHRio::startRun(float _deltaTime)
+void Rio::startIdle()
 {
 }
 
-void GHRio::updateRun(float _deltaTime)
+void Rio::updateIdle(float _deltaTime)
+{
+}
+
+void Rio::startRun()
+{
+}
+
+void Rio::updateRun(float _deltaTime)
+{
+}
+
+void Rio::startStun()
+{
+}
+
+void Rio::updateStun(float _deltaTime)
 {
 }

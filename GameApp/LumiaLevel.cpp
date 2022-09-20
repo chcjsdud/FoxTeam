@@ -90,7 +90,7 @@ void LumiaLevel::GenerateCharactor()
 
 
 
-		GHRio* newCharacter = CreateActor<GHRio>();
+		Rio* newCharacter = CreateActor<Rio>();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		characterActorList_.emplace_back(newCharacter);
 		// 캐릭터 액터를 만들어 주고(무슨 캐릭터를 고를 것인지에 대한 코드가 여기로 리팩토링 될 것)
@@ -114,7 +114,7 @@ void LumiaLevel::GenerateCharactor()
 #else
 	for (size_t i = 0; i < 1; i++)
 	{
-		GHRio* newCharacter = CreateActor<GHRio>();
+		Rio* newCharacter = CreateActor<Rio>();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		PlayerInfo newPlayer;
 		newPlayer.playerNumber_ = i;

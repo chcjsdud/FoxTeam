@@ -6,19 +6,18 @@
 
 class GameEngineFBXRenderer;
 class LumiaMap;
-class GHNavMesh;
-class GHRio : public Character
+class Rio : public Character
 {
 public:
 	bool TempFlag = false;
 
 public:
-	GHRio();
-	~GHRio();
-	GHRio(const GHRio& _other) = delete;
-	GHRio(GHRio&& _other) = delete;
-	GHRio& operator=(const GHRio& _other) = delete;
-	GHRio& operator=(const GHRio&& _other) = delete;
+	Rio();
+	~Rio();
+	Rio(const Rio& _other) = delete;
+	Rio(Rio&& _other) = delete;
+	Rio& operator=(const Rio& _other) = delete;
+	Rio& operator=(const Rio&& _other) = delete;
 
 public:
 	void Start() override;
@@ -29,26 +28,43 @@ public:
 
 
 private:
+	void initRendererAnimation();
+	void initInput();
+	void initState();
+
+
 #pragma region MainState
 	void startNormal();
 	void updateNormal(float _deltaTime);
+
+	void startCrowdControl();
+	void updateCrowdControl(float _deltaTime);
+	void endCrowdControl();
 #pragma endregion
 
-
+#pragma region NormalState
 	void startIdle();
 	void updateIdle(float _deltaTime);
 
-	void startRun(float _deltaTime);
+	void startRun();
 	void updateRun(float _deltaTime);
+#pragma endregion
+
+#pragma region CrowdControlState
+	void startStun();
+	void updateStun(float _deltaTime);
+#pragma endregion
+
 
 private:
 	const float SPEED = 300.f;
 
 private:
 	GameEngineFBXRenderer* renderer_;
+
 	GameEngineFSM mainState_;
 	GameEngineFSM normalState_;
-	GameEngineFSM callbackState_;;
+	GameEngineFSM crowdControlState_;
 
 	float4 destination_;
 	float4 direction_;
