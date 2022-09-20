@@ -87,6 +87,9 @@ void LumiaLevel::GenerateCharactor()
 #ifdef SERVER
 	for (size_t i = 0; i < pm->GetPlayerList().size(); i++)
 	{
+
+
+
 		GHRio* newCharacter = CreateActor<GHRio>();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		characterActorList_.emplace_back(newCharacter);
@@ -94,7 +97,7 @@ void LumiaLevel::GenerateCharactor()
 
 		if (i == pm->GetMyNumber())
 		{
-			newCharacter->TempFlag = true;
+			newCharacter->TempFlag = false;
 			// TempFlag 는 액터 안의 업데이트 중 컨트롤 부분을 쓰거나 건너뛸 수 있게 만든 임시 플래그값입니다.
 			// 액터의 입력부가 게임 컨트롤러 클래스로 분화되면 지워질 예정입니다.
 
@@ -102,6 +105,10 @@ void LumiaLevel::GenerateCharactor()
 			// pm->SetMainCharacter(player_);
 			// 어차피 내 캐릭터 인덱스 가지고 있고...
 			// characterActorList[내 인덱스] 면 내 캐릭터 액터 찾아간다...
+		}
+		else
+		{
+			newCharacter->TempFlag = true;
 		}
 	}
 #else

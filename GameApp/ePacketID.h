@@ -12,6 +12,7 @@ enum class ePacketID
 	GameJoinPacket2,
 	SetPlayerNumberPacket,
 	CharSelectPacket,
+	StartPointSelectPacket,
 	ReadyPacket,
 	LoadingLumiaPacket,
 	LobbyToLumiaPacket,

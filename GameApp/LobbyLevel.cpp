@@ -5,6 +5,7 @@
 #include "CharSelectPacket.h"
 #include "GameJoinPacket.h"
 #include "GameJoinPacket2.h"
+#include "StartPointSelectPacket.h"
 #include "ReadyPacket.h"
 #include "Enums.h"
 
@@ -14,6 +15,7 @@
 #include "Lobby_PortraitBg.h"
 #include "TempLobbyRenderer.h"
 #include "UI_TestMouse.h"
+#include "Lobby_Map.h"
 #include "Lobby_StartButton.h"
 
 #include <GameEngine/GameEngineCollision.h>
@@ -167,11 +169,12 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
 		serverSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
 		serverSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
+		serverSocket_->AddPacketHandler(ePacketID::StartPointSelectPacket, new StartPointSelectPacket);
 		serverSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.\n");
 
 		std::string nicknameTemp = PlayerInfoManager::GetInstance()->GetNickname();
-		PlayerInfoManager::GetInstance()->AddNewPlayer({ 0, -1, -1, 0, nicknameTemp});
+		PlayerInfoManager::GetInstance()->AddNewPlayer({ 0, -1, -1, -1, nicknameTemp});
 		
 		// AddNewPlayer() 의 파라미터는 곧 PlayerInfo 의 생성자 파라미터로,
 		// 순서대로 {플레이어 번호, 캐릭터, 시작 지역, 준비 상태} 의 이니셜라이즈 값입니다.
@@ -193,6 +196,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
 		clientSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
 		clientSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
+		clientSocket_->AddPacketHandler(ePacketID::StartPointSelectPacket, new StartPointSelectPacket);
 		clientSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
 
 		GameEngineDebug::OutPutDebugString("클라이언트로서 방에 참여합니다.\n");
@@ -202,7 +206,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		GameJoinPacket2 packet;
 
 		std::string nicknameTemp = PlayerInfoManager::GetInstance()->GetNickname();
-		packet.SetPlayerInfo({ -1, -1, -1, 0, nicknameTemp });
+		packet.SetPlayerInfo({ -1, -1, -1, -1, nicknameTemp });
 		
 		packet.SetListSize(PlayerInfoManager::GetInstance()->GetPlayerList().size());
 
@@ -259,11 +263,11 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 					CharSelectPacket packet;
 					packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
 					packet.SetCharacter(static_cast<int>(UIController_->GetPortraitVector(x)->GetChar())); // 나의 캐릭터 선택을 알려준다
-					packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
+					//packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
 					serverSocket_->Send(&packet);
 
 					pm->GetPlayerList()[pm->GetMyNumber()].character_ = static_cast<int>(UIController_->GetPortraitVector(x)->GetChar());
-					pm->GetPlayerList()[pm->GetMyNumber()].startPoint_ = static_cast<int>(Location::UPTOWN);
+					
 
 					for (int o = 0; o < (int)JobType::MAX; o++)
 					{
@@ -278,6 +282,16 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 
 					}
 				}
+			}
+
+			if (UIController_->GetMapUI()->GetCollision()->Collision(CollisionGroup::MousePointer) && GameEngineInput::GetInst().Down("LBUTTON"))
+			{
+				UIController_->GetMapUI()->GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
+
+				StartPointSelectPacket packet;
+				packet.SetStartPoint(UIController_->GetMapUI()->GetNodeList()[pm->GetMyNumber()]->GetSelectedLocation()); // 나의 스타팅 포인트 지역을 알려준다
+				pm->GetPlayerList()[pm->GetMyNumber()].startPoint_ = UIController_->GetMapUI()->GetNodeList()[pm->GetMyNumber()]->GetSelectedLocation();
+				serverSocket_->Send(&packet);
 			}
 		}
 
@@ -316,7 +330,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 					CharSelectPacket packet;
 					packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
 					packet.SetCharacter(static_cast<int>(UIController_->GetPortraitVector(x)->GetChar())); // 나의 캐릭터 선택을 알려준다
-					packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
+					//packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
 					clientSocket_->Send(&packet);
 
 					for (int o = 0; o < (int)JobType::MAX; o++)
@@ -332,6 +346,18 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 
 					}
 				}
+
+
+			}
+
+			if (UIController_->GetMapUI()->GetCollision()->Collision(CollisionGroup::MousePointer) && GameEngineInput::GetInst().Down("LBUTTON"))
+			{
+				UIController_->GetMapUI()->GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
+
+				StartPointSelectPacket packet;
+				packet.SetTargetIndex(pm->GetMyNumber());
+				packet.SetStartPoint(UIController_->GetMapUI()->GetNodeList()[pm->GetMyNumber()]->GetSelectedLocation()); // 나의 스타팅 포인트 지역을 알려준다
+				clientSocket_->Send(&packet);
 			}
 		}
 
@@ -395,6 +421,9 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			break;
 		}
 	}
+
+
+		
 }
 
 void LobbyLevel::EndSelect()
