@@ -8,6 +8,7 @@
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
 
+//#include "LumiaUIController.h"
 
 LumiaLevel::LumiaLevel()
 	: mouse_(nullptr)
@@ -31,6 +32,7 @@ void LumiaLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("O", 'O');
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
 	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
+	GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
 }
 
 void LumiaLevel::LevelUpdate(float _DeltaTime)
@@ -306,6 +308,10 @@ void LumiaLevel::createActor()
 		Actor->GetLight()->SetAmbientPower(10.f);
 		Actor->GetLight()->SetSpacularLightPow(10.f);
 	}
+
+	
+	//LumiaUIController* UIController = CreateActor<LumiaUIController>();
+	
 }
 
 void LumiaLevel::adjustCamera()
