@@ -157,8 +157,7 @@ void Rio::inputProcess(float _deltaTime)
 			destination_ = mousePosition;
 		}
 	}
-
-	if (GameEngineInput::Press("LButton"))
+	else if (GameEngineInput::Press("LButton"))
 	{
 		mousePressDelay_ -= _deltaTime;
 
@@ -178,8 +177,7 @@ void Rio::inputProcess(float _deltaTime)
 			mousePressDelay_ = FT::Char::MOUSE_PRESS_DELAY;
 		}
 	}
-
-	if (GameEngineInput::Up("LButton"))
+	else if (GameEngineInput::Up("LButton"))
 	{
 		bool result = false;
 		result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
