@@ -261,7 +261,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GHRio.cpp">
+    <ClCompile Include="Rio.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -479,7 +479,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GHRio.h">
+    <ClInclude Include="Rio.h">
       <SubType>
       </SubType>
     </ClInclude>

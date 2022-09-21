@@ -140,7 +140,7 @@ NavFace* NavMesh::GetNavFaceFromPositionXZ(const float4& _position, const float4
 	}
 
 	float4 rayPosition = _position;
-	rayPosition.y = FT::MAX_HEIGHT;
+	rayPosition.y = FT::Map::MAX_HEIGHT;
 	float height = 0.0f;
 
 	bool result = false;
@@ -165,7 +165,7 @@ NavFace* NavMesh::GetNavFaceFromPositionXZ(const float4& _position, const float4
 			V2.DirectVector,
 			_height);
 
-		_height = FT::MAX_HEIGHT - _height;
+		_height = FT::Map::MAX_HEIGHT - _height;
 
 		if (result)
 		{
@@ -419,12 +419,12 @@ float NavFace::YCheck(GameEngineTransform* _Transform)
 		return -1.0f;
 	}
 
-	return Dist - FT::MAX_HEIGHT;
+	return Dist - FT::Map::MAX_HEIGHT;
 }
 
 bool NavFace::OutCheck(GameEngineTransform* _Transform, float& _Dist)
 {
-	float4 RayPos = _Transform->GetWorldPosition() + float4(0.0f, FT::MAX_HEIGHT, 0.0f);
+	float4 RayPos = _Transform->GetWorldPosition() + float4(0.0f, FT::Map::MAX_HEIGHT, 0.0f);
 
 	bool Check = false;
 

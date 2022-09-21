@@ -130,7 +130,7 @@
     <ClCompile Include="LumiaLoadingManager.cpp">
       <Filter>02.GameServer</Filter>
     </ClCompile>
-    <ClCompile Include="GHRio.cpp">
+    <ClCompile Include="Rio.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="TitleIDInput.cpp">
@@ -452,7 +452,7 @@
     <ClInclude Include="LumiaLoadingManager.h">
       <Filter>02.GameServer</Filter>
     </ClInclude>
-    <ClInclude Include="GHRio.h">
+    <ClInclude Include="Rio.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="TitleIDInput.h">

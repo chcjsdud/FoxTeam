@@ -1,5 +1,5 @@
 #include "PreCompile.h"
-#include "GHRio.h"
+#include "Rio.h"
 #include "MousePointer.h"
 #include "LumiaMap.h"
 
@@ -7,11 +7,10 @@
 #include <GameEngine/GameEngineLevelControlWindow.h>
 #include <GameApp/LumiaLevel.h>
 
-
 Rio::Rio()
 	: Character()
 	, renderer_(nullptr)
-	, mousePressDelay_(FT::MOUSE_PRESS_DELAY)
+	, mousePressDelay_(FT::Char::MOUSE_PRESS_DELAY)
 {
 
 }
@@ -40,8 +39,22 @@ void Rio::Update(float _deltaTime)
 		return;
 	}
 
-	state_.Update(_deltaTime);
-	Character::Update(_deltaTime);
+	mainState_.Update(_deltaTime);
+
+	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	{
+		if (nullptr != controlWindow)
+		{
+			controlWindow->AddText("MainState : " + mainState_.GetCurrentState()->Name_);
+			controlWindow->AddText("NormalState : " + normalState_.GetCurrentState()->Name_);
+			controlWindow->AddText("Character Pos : " + 
+				std::to_string(transform_.GetWorldPosition().x) + ", " + 
+				std::to_string(transform_.GetWorldPosition().y) + ", " + 
+				std::to_string(transform_.GetWorldPosition().z) + ", ");
+
+
+		}
+	}
 }
 
 void Rio::InitSpawnPoint(const float4& _position)
@@ -84,7 +97,7 @@ void Rio::MoveWithPathFind(const float4& _position)
 
 	destinations_.clear();
 
-	if ((destination_ - transform_.GetWorldPosition()).Len3D() > 200.f)
+	if ((destination_ - transform_.GetWorldPosition()).Len3D() > 300.f)
 	{
 		destinations_ = currentMap_->FindPath(transform_.GetWorldPosition(), destination_);
 		if (destinations_.size() > 0)
@@ -119,27 +132,19 @@ void Rio::initInput()
 
 void Rio::initState()
 {
-	state_.CreateState(MakeState(Rio, NormalState));
-	state_.CreateState(MakeState(Rio, CrowdControlState));
+	mainState_.CreateState(MakeState(Rio, NormalState));
+	mainState_.CreateState(MakeState(Rio, CrowdControlState));
 
 	normalState_.CreateState(MakeState(Rio, Wait));
 	normalState_.CreateState(MakeState(Rio, Run));
 
-	state_ << "NormalState";
+	mainState_ << "NormalState";
 }
 
-void Rio::startNormalState()
-{
-	normalState_ << "Wait";
-}
-
-void Rio::updateNormalState(float _deltaTime)
+void Rio::inputProcess(float _deltaTime)
 {
 	bool result = false;
-
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
-
-	// 입력 판정
 	if (GameEngineInput::Down("LButton"))
 	{
 		result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
@@ -170,7 +175,7 @@ void Rio::updateNormalState(float _deltaTime)
 				destination_ = mousePosition;
 			}
 
-			mousePressDelay_ = FT::MOUSE_PRESS_DELAY;
+			mousePressDelay_ = FT::Char::MOUSE_PRESS_DELAY;
 		}
 	}
 
@@ -193,10 +198,75 @@ void Rio::updateNormalState(float _deltaTime)
 
 		}
 	}
+}
+
+void Rio::moveProcess(float _deltaTime)
+{
+	float4 worldPosition = transform_.GetWorldPosition();
+	worldPosition.y = destination_.y;
+	if ((destination_ - worldPosition).Len3D() > 10.f)
+	{
+		moveTick(_deltaTime, worldPosition);
+	}
+	else
+	{
+		if (!destinations_.empty())
+		{
+			destination_ = destinations_.back();
+			destinations_.pop_back();
+
+			// 여기서 한번 더 해주지 않으면 움직임이 1 프레임 손실된다.
+			if ((destination_ - worldPosition).Len3D() > 10.f)
+			{
+				moveTick(_deltaTime, worldPosition);
+			}
+		}
+		else
+		{
+			normalState_ << "Wait";
+			return;
+		}
+	}
+}
+
+void Rio::moveTick(float _deltaTime, const float4& _startPosition)
+{
+	direction_ = destination_ - _startPosition;
+	direction_.Normalize3D();
+
+	float4 cross = float4::Cross3D(direction_, { 0.0f, 0.0f, 1.0f });
+	cross.Normalize3D();
+
+	float angle = float4::DegreeDot3DToACosAngle(direction_, { 0.0f, 0.0f, 1.0f });
+
+	GetTransform()->SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
+
+	float4 moveSpeed = direction_ * BASE_SPEED * _deltaTime;
+	float4 nextMovePosition = _startPosition + moveSpeed;
+
+	float temp;
+	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+	{
+		renderer_->ChangeFBXAnimation("Run");
+		GetTransform()->SetWorldPosition(nextMovePosition);
+	}
+	else
+	{
+		destination_ = _startPosition;
+	}
+}
+
+void Rio::startNormalState()
+{
+	normalState_ << "Wait";
+}
+
+void Rio::updateNormalState(float _deltaTime)
+{
+	
 
 	// Normal State 업데이트
 	normalState_.Update(_deltaTime);
-
 	Character::Update(_deltaTime);
 
 	if (nullptr != currentNavFace_)
@@ -227,64 +297,25 @@ void Rio::startWait()
 
 void Rio::updateWait(float _deltaTime)
 {
-	float4 worldPosition = GetTransform()->GetWorldPosition();
+	inputProcess(_deltaTime);
 
+	float4 worldPosition = GetTransform()->GetWorldPosition();
 	worldPosition.y = destination_.y;
 	if ((destination_ - worldPosition).Len3D() > 10.f)
 	{
 		normalState_ << "Run";
+		return;
 	}
 }
 
 void Rio::startRun()
 {
-	//renderer_->ChangeFBXAnimation("Run");
 }
 
 void Rio::updateRun(float _deltaTime)
 {
-	float4 worldPosition = transform_.GetWorldPosition();
-	worldPosition.y = destination_.y;
-	if ((destination_ - worldPosition).Len3D() > 10.f)
-	{
-		direction_ = destination_ - worldPosition;
-		direction_.Normalize3D();
-
-		float4 cross = float4::Cross3D(direction_, { 0.0f, 0.0f, 1.0f });
-		cross.Normalize3D();
-
-		float angle = float4::DegreeDot3DToACosAngle(direction_, { 0.0f, 0.0f, 1.0f });
-
-		GetTransform()->SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
-
-
-		float4 moveSpeed = direction_ * SPEED * _deltaTime;
-		float4 nextMovePosition = worldPosition + moveSpeed;
-
-		float temp;
-		if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
-		{
-			renderer_->ChangeFBXAnimation("Run");
-			GetTransform()->SetWorldPosition(nextMovePosition);
-		}
-		else
-		{
-			destination_ = worldPosition;
-		}
-	}
-	else
-	{
-		if (!destinations_.empty())
-		{
-			destination_ = destinations_.back();
-			destinations_.pop_back();
-		}
-		else
-		{
-			normalState_ << "Wait";
-
-		}
-	}
+	inputProcess(_deltaTime);
+	moveProcess(_deltaTime);
 }
 
 void Rio::startStun()

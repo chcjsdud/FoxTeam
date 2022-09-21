@@ -4,7 +4,7 @@
 
 #include <GameApp/MousePointer.h>
 #include <GameApp/ItemBoxManager.h>
-#include <GameApp/GHRio.h>
+#include <GameApp/Rio.h>
 
 //#define SERVER
 

@@ -17,6 +17,7 @@ public:
 	Character& operator=(const Character& _other) = delete;
 	Character& operator=(const Character&& _other) = delete;
 
+public:
 	void SetNaviMesh(NavMesh* _NaviMesh);
 
 	NavFace* GetCurrentNavi()

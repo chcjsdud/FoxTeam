@@ -3,8 +3,16 @@
 // Fox Team
 namespace FT
 {
-	const float MAX_HEIGHT = 1000.f;
-	const float MOUSE_PRESS_DELAY = 0.1f;
+	namespace Char
+	{
+		const float MOUSE_PRESS_DELAY = 0.1f;
+		const float MOVE_FINISH_CHECK_DISTANCE = 10.f;
+	};
+
+	namespace Map
+	{
+		const float MAX_HEIGHT = 1000.f;
+	};
 };
 
 enum class CollisionGroup
@@ -60,7 +68,7 @@ enum class JobType // 직업타입
 	RIO,
 	AYA,
 	// ....
-				MAX
+	MAX
 };
 
 

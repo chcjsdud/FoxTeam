@@ -9,7 +9,7 @@ class LumiaMap;
 class Rio : public Character
 {
 public:
-	bool TempFlag = false;
+	bool TempFlag = false; 	// TODO : delete later
 
 public:
 	Rio();
@@ -30,11 +30,15 @@ public:
 	void MoveWithPathFind(const float4& _position);
 
 private:
-	// 처음 생성됐을 때 해야할 것을 함수로 분리 했음
 	void initRendererAnimation();
 	void initInput();
 	void initState();
 
+	void inputProcess(float _deltaTime);
+	void moveProcess(float _deltaTime);
+	void moveTick(float _deltaTime, const float4& _startPosition);
+
+private:
 #pragma region MainState
 	void startNormalState();
 	void updateNormalState(float _deltaTime);
@@ -54,7 +58,7 @@ private:
 	void updateRun(float _deltaTime);
 #pragma endregion
 
-	// CC, 상태이상등을 받는 상태
+	// CC 등을 받는 상태
 #pragma region CrowdControlState
 	void startStun();
 	void updateStun(float _deltaTime);
@@ -62,12 +66,13 @@ private:
 
 
 private:
-	const float SPEED = 300.f;
+	const float BASE_SPEED = 300.f;
+
 
 private:
 	GameEngineFBXRenderer* renderer_;
 
-	GameEngineFSM state_;
+	GameEngineFSM mainState_;
 	GameEngineFSM normalState_;
 	GameEngineFSM crowdControlState_;
 
