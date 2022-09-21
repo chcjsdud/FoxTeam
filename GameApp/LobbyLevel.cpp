@@ -233,13 +233,15 @@ void LobbyLevel::StartSelect()
 
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
-
 		playerCount_ = PlayerInfoManager::GetInstance()->GetPlayerList().size();
 	}
+
 }
 
 void LobbyLevel::UpdateSelect(float _DeltaTime)
 {
+
+
 	GameServer* serverSocket_ = GameServer::GetInstance();
 	GameClient* clientSocket_ = GameClient::GetInstance();
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
@@ -287,7 +289,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			if (UIController_->GetMapUI()->GetCollision()->Collision(CollisionGroup::MousePointer) && GameEngineInput::GetInst().Down("LBUTTON"))
 			{
 				UIController_->GetMapUI()->GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
-
+				UIController_->GetMapUI()->ResizeMyPin();
 				StartPointSelectPacket packet;
 				packet.SetStartPoint(UIController_->GetMapUI()->GetNodeList()[pm->GetMyNumber()]->GetSelectedLocation()); // 나의 스타팅 포인트 지역을 알려준다
 				pm->GetPlayerList()[pm->GetMyNumber()].startPoint_ = UIController_->GetMapUI()->GetNodeList()[pm->GetMyNumber()]->GetSelectedLocation();
@@ -353,7 +355,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			if (UIController_->GetMapUI()->GetCollision()->Collision(CollisionGroup::MousePointer) && GameEngineInput::GetInst().Down("LBUTTON"))
 			{
 				UIController_->GetMapUI()->GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
-
+				UIController_->GetMapUI()->ResizeMyPin();
 				StartPointSelectPacket packet;
 				packet.SetTargetIndex(pm->GetMyNumber());
 				packet.SetStartPoint(UIController_->GetMapUI()->GetNodeList()[pm->GetMyNumber()]->GetSelectedLocation()); // 나의 스타팅 포인트 지역을 알려준다

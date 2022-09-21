@@ -30,6 +30,7 @@ public:
 	Lobby_ButtonTwo* GetClientButton() { return clientButtonUI_; }
 	Lobby_StartButton* GetStartButton() { return startButtonUI_; }
 	Lobby_Map* GetMapUI() { return mapUI_; }
+
 public:
 	//내가 고른 캐릭터가 뭔지 가지고 있을 static 변수
 	static JobType SelectedChar;

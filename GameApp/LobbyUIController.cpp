@@ -71,8 +71,6 @@ void LobbyUIController::Start()
 
 void LobbyUIController::Update(float _DeltaTime)
 {
-
-
 	for (int i = 0; i < PlayerInfoManager::GetInstance()->GetPlayerList().size(); i++)
 	{
 		if (nullptr == mapUI_->GetNodeList()[i])
@@ -80,83 +78,173 @@ void LobbyUIController::Update(float _DeltaTime)
 			continue;
 		}
 
-		switch (static_cast<Location>(PlayerInfoManager::GetInstance()->GetPlayerList()[i].startPoint_))
+		if (i == PlayerInfoManager::GetInstance()->GetMyNumber())
 		{
-		case Location::NONE:
-			mapUI_->GetNodeList()[i]->GetRenderer()->Off();
-			break;
-		case Location::DOCK:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Harbor_Pin.png", "PointSmp");
-			break;
-		case Location::POND:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Pond_Pin.png", "PointSmp");
-			break;
-		case Location::BEACH:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_SandyBeach_Pin.png", "PointSmp");
-			break;
-		case Location::UPTOWN:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_UpTown_Pin.png", "PointSmp");
-			break;
-		case Location::ALLEY:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Alley_Pin.png", "PointSmp");
-			break;
-		case Location::HOTEL:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Hotel_Pin.png", "PointSmp");
-			break;
-		case Location::AVENUE:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_DownTown_Pin.png", "PointSmp");
-			break;
-		case Location::HOSPITAL:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Hospital_Pin.png", "PointSmp");
-			break;
-		case Location::TEMPLE:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Temple_Pin.png", "PointSmp");
-			break;
-		case Location::ARCHERY_RANGE:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Archery_Pin.png", "PointSmp");
-			break;
-		case Location::CEMETERY:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Cemetery_Pin.png", "PointSmp");
-			break;
-		case Location::FOREST:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Forest_Pin.png", "PointSmp");
-			break;
-		case Location::FACTORY:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Factory_Pin.png", "PointSmp");
-			break;
-		case Location::CHAPEL:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Church_Pin.png", "PointSmp");
-			break;
-		case Location::SCHOOL:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_School_Pin.png", "PointSmp");
-			break;
-		case Location::RESERCH_CENTRE:
-			mapUI_->GetNodeList()[i]->GetRenderer()->On();
-			mapUI_->GetNodeList()[i]->GetRenderer()->SetImage("Map_Laboratory_Pin.png", "PointSmp");
-			break;
-		case Location::ESCAPE_DOCK:
-			mapUI_->GetNodeList()[i]->GetRenderer()->Off();
-			break;
-		case Location::MAX:
-			mapUI_->GetNodeList()[i]->GetRenderer()->Off();
-			break;
-		default:
-			break;
+			GameEngineImageRenderer* renderer = mapUI_->GetNodeList()[i]->GetRenderer();
+
+			switch (static_cast<Location>(PlayerInfoManager::GetInstance()->GetPlayerList()[i].startPoint_))
+			{
+			case Location::NONE:
+				renderer->Off();
+
+				break;
+			case Location::DOCK:
+				renderer->On();
+				renderer->SetImage("Map_Harbor_Pin.png", "PointSmp");
+				break;
+			case Location::POND:
+				renderer->On();
+				renderer->SetImage("Map_Pond_Pin.png", "PointSmp");
+				break;
+			case Location::BEACH:
+				renderer->On();
+				renderer->SetImage("Map_SandyBeach_Pin.png", "PointSmp");
+				break;
+			case Location::UPTOWN:
+				renderer->On();
+				renderer->SetImage("Map_UpTown_Pin.png", "PointSmp");
+				break;
+			case Location::ALLEY:
+				renderer->On();
+				renderer->SetImage("Map_Alley_Pin.png", "PointSmp");
+				break;
+			case Location::HOTEL:
+				renderer->On();
+				renderer->SetImage("Map_Hotel_Pin.png", "PointSmp");
+				break;
+			case Location::AVENUE:
+				renderer->On();
+				renderer->SetImage("Map_DownTown_Pin.png", "PointSmp");
+				break;
+			case Location::HOSPITAL:
+				renderer->On();
+				renderer->SetImage("Map_Hospital_Pin.png", "PointSmp");
+				break;
+			case Location::TEMPLE:
+				renderer->On();
+				renderer->SetImage("Map_Temple_Pin.png", "PointSmp");
+				break;
+			case Location::ARCHERY_RANGE:
+				renderer->On();
+				renderer->SetImage("Map_Archery_Pin.png", "PointSmp");
+				break;
+			case Location::CEMETERY:
+				renderer->On();
+				renderer->SetImage("Map_Cemetery_Pin.png", "PointSmp");
+				break;
+			case Location::FOREST:
+				renderer->On();
+				renderer->SetImage("Map_Forest_Pin.png", "PointSmp");
+				break;
+			case Location::FACTORY:
+				renderer->On();
+				renderer->SetImage("Map_Factory_Pin.png", "PointSmp");
+				break;
+			case Location::CHAPEL:
+				renderer->On();
+				renderer->SetImage("Map_Church_Pin.png", "PointSmp");
+				break;
+			case Location::SCHOOL:
+				renderer->On();
+				renderer->SetImage("Map_School_Pin.png", "PointSmp");
+				break;
+			case Location::RESERCH_CENTRE:
+				//renderer->On();
+				//renderer->SetImage("Map_Laboratory_Pin.png", "PointSmp");
+				break;
+			case Location::ESCAPE_DOCK:
+				renderer->Off();
+				break;
+			case Location::MAX:
+				renderer->Off();
+				break;
+			default:
+				break;
+			}
+		}
+		else
+		{
+			GameEngineImageRenderer* renderer = mapUI_->GetNodeList()[i]->GetRenderer();
+
+			switch (static_cast<Location>(PlayerInfoManager::GetInstance()->GetPlayerList()[i].startPoint_))
+			{
+			case Location::NONE:
+				renderer->Off();
+
+				break;
+			case Location::DOCK:
+				renderer->On();
+				renderer->SetImage("Map_Harbor_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::POND:
+				renderer->On();
+				renderer->SetImage("Map_Pond_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::BEACH:
+				renderer->On();
+				renderer->SetImage("Map_SandyBeach_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::UPTOWN:
+				renderer->On();
+				renderer->SetImage("Map_UpTown_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::ALLEY:
+				renderer->On();
+				renderer->SetImage("Map_Alley_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::HOTEL:
+				renderer->On();
+				renderer->SetImage("Map_Hotel_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::AVENUE:
+				renderer->On();
+				renderer->SetImage("Map_DownTown_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::HOSPITAL:
+				renderer->On();
+				renderer->SetImage("Map_Hospital_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::TEMPLE:
+				renderer->On();
+				renderer->SetImage("Map_Temple_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::ARCHERY_RANGE:
+				renderer->On();
+				renderer->SetImage("Map_Archery_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::CEMETERY:
+				renderer->On();
+				renderer->SetImage("Map_Cemetery_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::FOREST:
+				renderer->On();
+				renderer->SetImage("Map_Forest_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::FACTORY:
+				renderer->On();
+				renderer->SetImage("Map_Factory_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::CHAPEL:
+				renderer->On();
+				renderer->SetImage("Map_Church_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::SCHOOL:
+				renderer->On();
+				renderer->SetImage("Map_School_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::RESERCH_CENTRE:
+				//renderer->On();
+				//renderer->SetImage("Map_Laboratory_Pin_Enemy.png", "PointSmp");
+				break;
+			case Location::ESCAPE_DOCK:
+				renderer->Off();
+				break;
+			case Location::MAX:
+				renderer->Off();
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }

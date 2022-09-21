@@ -41,8 +41,7 @@ public:
 	~Lobby_Map();
 
 	int GetSelectLocation(float4 _Position);
-
-
+	void ResizeMyPin();
 
 	GameEngineCollision* GetCollision() { return textureCollision_; }
 	std::vector<LocationNode*> GetNodeList() { return selectAreaNodeList_; }

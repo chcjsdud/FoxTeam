@@ -92,7 +92,7 @@ void LumiaLevel::GenerateCharactor()
 		switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
 		{
 		case JobType::NONE:
-			GameEngineDebug::MsgBoxError("캐릭터 선택을 하지 않고 게임을 시작한 유저가 있습니다.\n" + std::to_string(pm->GetPlayerList()[i].playerNumber_) + " 번 플레이어");
+			GameEngineDebug::MsgBoxError("캐릭터 선택을 하지 않고 게임을 시작한 유저가 있습니다.\n" + std::to_string(i) + " 번 플레이어");
 			break;
 		case JobType::YUKI:
 		{
@@ -151,10 +151,10 @@ void LumiaLevel::GenerateCharactor()
 			break;
 		}
 		case JobType::MAX:
-			GameEngineDebug::MsgBoxError("캐릭터 선택을 하지 않고 게임을 시작한 유저가 있습니다.\n" + std::to_string(pm->GetPlayerList()[i].playerNumber_) + " 번 플레이어");
+			GameEngineDebug::MsgBoxError("캐릭터 선택을 하지 않고 게임을 시작한 유저가 있습니다.\n" + std::to_string(i) + " 번 플레이어");
 			break;
 		default:
-			GameEngineDebug::MsgBoxError("캐릭터 선택을 하지 않고 게임을 시작한 유저가 있습니다.\n" + std::to_string(pm->GetPlayerList()[i].playerNumber_) + " 번 플레이어");
+			GameEngineDebug::MsgBoxError("캐릭터 선택을 하지 않고 게임을 시작한 유저가 있습니다.\n" + std::to_string(i) + " 번 플레이어");
 			break;
 		}
 

@@ -5,6 +5,7 @@
 #include "GameEngineBase/GameEngineDebug.h"
 #include "PlayerInfoManager.h"
 
+
 Lobby_Map::Lobby_Map()
 {
 }
@@ -44,11 +45,11 @@ void Lobby_Map::Start()
 	{
 		if (selectAreaNodeList_.size() == 0)
 		{
-			for (size_t i = 0; i < 6; i++)
+			for (int i = 0; i < 6; i++)
 			{
 				GameEngineImageRenderer* selectAreaRenderer0_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
 				selectAreaRenderer0_->SetImage("Map_Laboratory_Pin.png", "PointSmp");
-				selectAreaRenderer0_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -104.0f });
+				selectAreaRenderer0_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -105.0f });
 				selectAreaRenderer0_->GetTransform()->SetLocalScaling(selectAreaRenderer0_->GetCurrentTexture()->GetTextureSize());
 				selectAreaRenderer0_->Off();
 
@@ -81,94 +82,6 @@ void Lobby_Map::Start()
 
 void Lobby_Map::Update(float _DeltaTime)
 {
-	//if (textureCollision_->Collision(CollisionGroup::MousePointer))
-	//{
-	//	//마우스콜리전과 맵콜리전이 충돌중일때만 겟컬러를한다
-	//	GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
-	//
-	//	//맵콜리전이 충돌중일때 
-	//	if (GameEngineInput::GetInst().Down("LBUTTON"))
-	//	{
-	//		switch (SelectedLocation)
-	//		{
-	//		case Location::NONE:
-	//			selectAreaRenderer_->Off();
-	//			break;
-	//		case Location::DOCK:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Harbor_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::POND:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Pond_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::BEACH:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_SandyBeach_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::UPTOWN:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_UpTown_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::ALLEY:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Alley_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::HOTEL:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Hotel_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::AVENUE:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_DownTown_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::HOSPITAL:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Hospital_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::TEMPLE:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Temple_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::ARCHERY_RANGE:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Archery_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::CEMETERY:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Cemetery_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::FOREST:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Forest_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::FACTORY:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Factory_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::CHAPEL:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Church_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::SCHOOL:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_School_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::RESERCH_CENTRE:
-	//			selectAreaRenderer_->On();
-	//			selectAreaRenderer_->SetImage("Map_Laboratory_Pin.png", "PointSmp");
-	//			break;
-	//		case Location::ESCAPE_DOCK:
-	//			selectAreaRenderer_->Off();
-	//			break;
-	//		case Location::MAX:
-	//			selectAreaRenderer_->Off();
-	//			break;
-	//		default:
-	//			break;
-	//		}
-	//	}
-	//}
 }
 
 
@@ -232,7 +145,7 @@ int Lobby_Map::GetSelectLocation(float4 _Position)
 		if (Color.y < 0.6f && Color.y > 0.4f && Color.x < 0.1f)
 		{
 			//255, 128, 0
-			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::RESERCH_CENTRE));
+			//selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::RESERCH_CENTRE));
 		}
 
 		if (Color.y < 0.6f && Color.y > 0.4f && Color.x > 0.95f)
@@ -321,4 +234,10 @@ int Lobby_Map::GetSelectLocation(float4 _Position)
 
 
 	return selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetSelectedLocation();
+}
+
+void Lobby_Map::ResizeMyPin()
+{
+	GameEngineImageRenderer* renderer = selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetRenderer();
+	renderer->GetTransform()->SetLocalPosition({420.0f, 90.0f, -102.0f});
 }
