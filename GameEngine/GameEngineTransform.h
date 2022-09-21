@@ -229,6 +229,11 @@ public:
 		//SetLocalPosition(TransformData_.vLocalPosition_ + _Value);
 	}
 
+	void AddLocalPosition(float _x, float _y, float _z);
+	void AddLocalPosition(const float4& _position);
+	void AddWorldPosition(float _x, float _y, float _z);
+	void AddWorldPosition(const float4& _position);
+
 	inline void SetWorldMove(const float4& _Value)
 	{
 		//이현, 임시 수정

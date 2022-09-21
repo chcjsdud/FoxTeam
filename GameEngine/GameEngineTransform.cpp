@@ -251,6 +251,98 @@ void GameEngineTransform::SetWorldPosition(const float4& _Value)
 	TransformUpdate();
 }
 
+void GameEngineTransform::AddLocalPosition(float _x, float _y, float _z)
+{
+	TransformData_.vLocalPosition_.x = _x;
+	TransformData_.vLocalPosition_.y = _y;
+	TransformData_.vLocalPosition_.z = _z;
+
+	if (nullptr == Parent_)
+	{
+		TransformData_.vWorldPosition_.x = _x;
+		TransformData_.vWorldPosition_.y = _y;
+		TransformData_.vWorldPosition_.z = _z;
+
+		AllChildCalculationPosition();
+		TransformUpdate();
+		return;
+	}
+
+	CalculationWorldPosition();
+	AllChildCalculationPosition();
+
+	TransformUpdate();
+}
+
+void GameEngineTransform::AddLocalPosition(const float4& _position)
+{
+	TransformData_.vLocalPosition_.x = _position.x;
+	TransformData_.vLocalPosition_.y = _position.y;
+	TransformData_.vLocalPosition_.z = _position.z;
+
+	if (nullptr == Parent_)
+	{
+		TransformData_.vWorldPosition_.x = _position.x;
+		TransformData_.vWorldPosition_.y = _position.y;
+		TransformData_.vWorldPosition_.z = _position.z;
+
+		AllChildCalculationPosition();
+		TransformUpdate();
+		return;
+	}
+
+	CalculationWorldPosition();
+	AllChildCalculationPosition();
+
+	TransformUpdate();
+}
+
+void GameEngineTransform::AddWorldPosition(float _x, float _y, float _z)
+{
+	TransformData_.vWorldPosition_.x = _x;
+	TransformData_.vWorldPosition_.y = _y;
+	TransformData_.vWorldPosition_.z = _z;
+
+	if (nullptr == Parent_)
+	{
+		TransformData_.vLocalPosition_.x = _x;
+		TransformData_.vLocalPosition_.y = _y;
+		TransformData_.vLocalPosition_.z = _z;
+
+		AllChildCalculationPosition();
+		TransformUpdate();
+		return;
+	}
+
+	CalculationWorldPosition();
+	AllChildCalculationPosition();
+
+	TransformUpdate();
+}
+
+void GameEngineTransform::AddWorldPosition(const float4& _position)
+{
+	TransformData_.vWorldPosition_.x = _position.x;
+	TransformData_.vWorldPosition_.y = _position.y;
+	TransformData_.vWorldPosition_.z = _position.z;
+
+	if (nullptr == Parent_)
+	{
+		TransformData_.vLocalPosition_.x = _position.x;
+		TransformData_.vLocalPosition_.y = _position.y;
+		TransformData_.vLocalPosition_.z = _position.z;
+
+		AllChildCalculationPosition();
+		TransformUpdate();
+		return;
+	}
+
+	CalculationWorldPosition();
+	AllChildCalculationPosition();
+
+	TransformUpdate();
+}
+
 void GameEngineTransform::DetachChildTransform(GameEngineTransform* _Transform)
 {
 	// 지역변수 할당을 줄이려고
