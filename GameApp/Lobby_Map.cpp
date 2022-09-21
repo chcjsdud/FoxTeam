@@ -4,6 +4,7 @@
 #include "GameEngine/GameEngineCollision.h"
 #include "GameEngineBase/GameEngineDebug.h"
 #include "PlayerInfoManager.h"
+#include <GameEngine/GameEngineUIRenderer.h>
 
 
 Lobby_Map::Lobby_Map()
@@ -41,7 +42,7 @@ void Lobby_Map::Start()
 		fullMapRenderer_->GetTransform()->SetLocalScaling(fullMapRenderer_->GetCurrentTexture()->GetTextureSize());
 	}
 
-	
+
 	{
 		if (selectAreaNodeList_.size() == 0)
 		{
@@ -60,6 +61,15 @@ void Lobby_Map::Start()
 				selectAreaNodeList_.emplace_back(node);
 			}
 		}
+	}
+
+	{
+		for (int i = 0; i < 15; i++)
+		{
+			NodeCapacityCounter* capacityCounter = GetLevel()->CreateActor<NodeCapacityCounter>();
+			capacityCounterList_.emplace_back(capacityCounter);
+		}
+
 	}
 
 
@@ -240,4 +250,110 @@ void Lobby_Map::ResizeMyPin()
 {
 	GameEngineImageRenderer* renderer = selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetRenderer();
 	renderer->GetTransform()->SetLocalPosition({420.0f, 90.0f, -102.0f});
+}
+
+void Lobby_Map::ArrangeCounter()
+{
+	for (int i = 0; i < capacityCounterList_.size(); i++)
+	{
+		switch (static_cast<Location>(i))
+		{
+		case Location::NONE:
+			break;
+		case Location::DOCK:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 424.0f, -45.0f });
+			break;
+		case Location::POND:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 486.0f, 109.0f });
+			break;
+		case Location::BEACH:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 313.0f, 44.0f });
+			break;
+		case Location::UPTOWN:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 362.0f, 0.0f });
+			break;
+		case Location::ALLEY:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 406.0f, 225.0f });
+			break;
+		case Location::HOTEL:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 317.0f, 106.0f });
+			break;
+		case Location::AVENUE:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 439.0f, 169.0f });
+			break;
+		case Location::HOSPITAL:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 532.0f, 74.0f });
+			break;
+		case Location::TEMPLE:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 523.0f, 175.0f });
+			break;
+		case Location::ARCHERY_RANGE:
+			// 347 180
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 347.0f, 180.0f });
+			break;
+		case Location::CEMETERY:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 465.0f, 55.0f });
+			break;
+		case Location::FOREST:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 380.0f, 68.0f });
+			break;
+		case Location::FACTORY:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 508.0f, -12.0f });
+			break;
+		case Location::CHAPEL:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 443.0f, 7.0f });
+			break;
+		case Location::SCHOOL:
+			capacityCounterList_[i]->GetRenderer()->GetTransform()->SetLocalPosition({ 375.0f, 141.0f });
+			break;
+		case Location::RESERCH_CENTRE:
+			break;
+		case Location::ESCAPE_DOCK:
+			break;
+		case Location::MAX:
+			break;
+		default:
+			break;
+		}
+
+
+	}
+
+}
+
+NodeCapacityCounter::NodeCapacityCounter()
+	: count_("0")
+{
+}
+
+NodeCapacityCounter::~NodeCapacityCounter()
+{
+}
+
+
+void NodeCapacityCounter::SetCounter(int _count)
+{
+	count_ = std::to_string(_count);
+}
+
+void NodeCapacityCounter::Start()
+{
+	counterRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	counterRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+
+}
+
+void NodeCapacityCounter::Update(float _DeltaTime)
+{
+
+	//if ("0" == count_ || "1" == count_)
+	//{
+	//	counterRenderer_->Off();
+	//}
+	//else
+	{
+		counterRenderer_->On();
+		counterRenderer_->TextSetting("±¼¸²", count_, 20, float4::WHITE);
+	}
+
 }

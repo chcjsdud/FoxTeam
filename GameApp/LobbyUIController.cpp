@@ -246,6 +246,30 @@ void LobbyUIController::Update(float _DeltaTime)
 				break;
 			}
 		}
+	
+	
+
+	}
+
+	for (int i = 0; i < mapUI_->GetCapacityCounterList().size(); i++)
+	{
+
+		int tempCount = 0;
+		// 모든 맵의 해당되는 카운터 리스트를 쭉 타고 돌아다니며 내부 카운트를 갱신한다.
+		for (int o = 0; o < PlayerInfoManager::GetInstance()->GetPlayerList().size(); o++)
+		{
+			if (i == PlayerInfoManager::GetInstance()->GetPlayerList()[o].startPoint_)
+			{
+				tempCount++;
+			}
+			else
+			{
+				continue;
+			}
+		}
+
+		mapUI_->GetCapacityCounterList()[i]->SetCounter(tempCount);
+
 	}
 }
 

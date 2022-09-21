@@ -70,38 +70,6 @@ void TitleIDInput::Start()
 
 void TitleIDInput::Update(float _DeltaTime)
 {
-	//if (true == GameEngineInput::GetInst().Down("Chatting_Enter"))
-	//{
-	//	ChattingInputOK_ = !ChattingInputOK_; // 채팅 활성화 / 비활성화 토글
-	//}
-
-	//if (true == ChattingInputOK_)
-	//{
-	//	// 캐럿 생성
-	//	if (false == caretshow_)
-	//	{
-	//		caretshow_ = true;
-	//		CreateCaret(GameEngineWindow::GetInst().GetWindowHWND(), NULL, 20, 140);
-	//		ShowCaret(GameEngineWindow::GetInst().GetWindowHWND());
-	//		SetCaretBlinkTime(10);
-	//		SetCaretPos(0, 0);
-	//	}
-	//}
-	//else if (false == ChattingInputOK_)
-	//{
-	//	if (true == caretshow_)
-	//	{
-	//		caretshow_ = false;
-	//
-	//		// 캐럿 반납
-	//		SetCaretBlinkTime(500);
-	//		HideCaret(GameEngineWindow::GetInst().GetWindowHWND());
-	//		DestroyCaret();
-	//	}
-	//}
-
-	//////
-
 	if (false == caretshow_)
 	{
 		caretshow_ = true;

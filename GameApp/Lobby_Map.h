@@ -30,12 +30,38 @@ public:
 	void ChangeLocation(int _location) { SelectedLocation = static_cast<Location>(_location); }
 };
 
+
+class GameEngineUIRenderer;
+class NodeCapacityCounter : public GameEngineActor
+{
+	friend class Lobby_Map;
+
+public:
+	NodeCapacityCounter();
+	~NodeCapacityCounter();
+
+public:
+	GameEngineUIRenderer* GetRenderer() { return counterRenderer_; }
+	void SetCounter(int _count);
+	std::string GetCount() { return count_; }
+
+
+protected:
+	GameEngineUIRenderer* counterRenderer_;
+
+protected:
+	virtual void Start();
+	virtual void Update(float _DeltaTime);
+
+private:
+	std::string count_;
+
+};
+
+
 class GameEngineUIRenderer;
 class Lobby_Map : public GameEngineActor
 {
-public:
-
-
 public:
 	Lobby_Map();
 	~Lobby_Map();
@@ -45,6 +71,8 @@ public:
 
 	GameEngineCollision* GetCollision() { return textureCollision_; }
 	std::vector<LocationNode*> GetNodeList() { return selectAreaNodeList_; }
+	std::vector<NodeCapacityCounter*> GetCapacityCounterList() { return capacityCounterList_; }
+	void ArrangeCounter();
 
 public:
 	GameEngineImageRenderer* fullMapRenderer_;
@@ -52,8 +80,8 @@ public:
 	GameEngineImageRenderer* areaChoiceMapRenderer_;
 	
 	std::vector<LocationNode*> selectAreaNodeList_;
-
-	std::vector<GameEngineUIRenderer*> capacityRendererList_;
+	std::vector<NodeCapacityCounter*> capacityCounterList_;
+	// 0~14 까지가 사용되는 로케이션
 
 	GameEngineCollision* textureCollision_;
 

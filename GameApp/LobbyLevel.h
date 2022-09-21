@@ -3,7 +3,7 @@
 #include <GameEngine/GameEngineFSM.h>
 
 
-
+class UI_TestMouse;
 class TempLobbyRenderer;
 class GameEngineImageRenderer;
 class Lobby_PortraitBg;
@@ -64,6 +64,7 @@ private:
 	int myCharacterSelection_;
 	int myStartPointSelection_;
 	bool myIsReady_;
+	UI_TestMouse* Mouse_;
 
 	//이건호 : 로비내 UI용 멤버변수
 private:

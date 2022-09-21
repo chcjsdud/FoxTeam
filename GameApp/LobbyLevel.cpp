@@ -30,6 +30,9 @@
 
 #include "UserGame.h"
 
+#include <GameEngine/GameEngineGUI.h>
+#include <GameEngine/GameEngineLevelControlWindow.h>
+
 LobbyLevel::LobbyLevel()
 	: playerCount_(0), myCharacterSelection_(-1), myStartPointSelection_(-1), myIsReady_(false)
 {
@@ -90,6 +93,20 @@ void LobbyLevel::LevelUpdate(float _DeltaTime)
 
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	int a = 0;
+
+	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	if (nullptr != controlWindow)
+	{
+		if (nullptr != Mouse_)
+		{
+			float4 mousePosition = GameEngineInput::GetInst().GetMousePos();
+			float pointX = mousePosition.x - GameEngineWindow::GetInst().GetSize().halffloat4().x;
+			float pointY = -1.0f * (mousePosition.y - GameEngineWindow::GetInst().GetSize().halffloat4().y);
+
+			controlWindow->AddText("X : " + std::to_string(pointX));
+			controlWindow->AddText("Y : " + std::to_string(pointY));
+		}
+	}
 }
 
 void LobbyLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
@@ -138,7 +155,7 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	}
 
 	{
-		UI_TestMouse* Mouse = CreateActor<UI_TestMouse>();
+		Mouse_ = CreateActor<UI_TestMouse>();
 	}
 
 }
@@ -235,7 +252,8 @@ void LobbyLevel::StartSelect()
 	{
 		playerCount_ = PlayerInfoManager::GetInstance()->GetPlayerList().size();
 	}
-
+	
+	UIController_->GetMapUI()->ArrangeCounter();
 }
 
 void LobbyLevel::UpdateSelect(float _DeltaTime)
