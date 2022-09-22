@@ -1,5 +1,4 @@
 #include "PreCompile.h"
-#include "ItemBoxWindow.h"
 #include "ItemBoxManager.h"
 #include "ItemBase.h"
 #include <GameEngine/GameEngineCore.h>
@@ -7,7 +6,7 @@
 #include "UseableItem.h"
 #include "MiscItem.h"
 
-void ItemBoxWindow::CreateAllItemList()
+void ItemBoxManager::CreateAllItemList()
 {
 	EquipmentItem* Item = reinterpret_cast<EquipmentItem*>(
 		CreateItem("Scissors", ItemType::Equipment, "ItemIcon_101101.png"));
@@ -15,7 +14,7 @@ void ItemBoxWindow::CreateAllItemList()
 	CreateItem("Knite", ItemType::Misc, "ItemIcon_101104.png");
 }
 
-ItemBase* ItemBoxWindow::CreateItem(const std::string _Name, ItemType _Type,
+ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type,
 	const std::string _ImageName /*= ""*/)
 {
 	ItemBase* NewItem = nullptr;
@@ -46,9 +45,7 @@ ItemBase* ItemBoxWindow::CreateItem(const std::string _Name, ItemType _Type,
 		NewItem->SetImage(_ImageName);
 	}
 
-	AllItemList.push_back(NewItem);
-
-	AllItemName.push_back(NewItem->GetName().c_str());
+	allItemList.push_back(NewItem);
 
 	return NewItem;
 }

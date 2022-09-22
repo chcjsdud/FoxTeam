@@ -93,10 +93,6 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 		}
 	}
 
-
-	{
-	}
-
 }
 
 void LumiaLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)

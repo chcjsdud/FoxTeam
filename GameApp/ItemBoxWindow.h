@@ -16,17 +16,12 @@ public:
 	ItemBoxWindow& operator=(const ItemBoxWindow& _other) = delete;
 	ItemBoxWindow& operator=(const ItemBoxWindow&& _other) = delete;
 
-
 protected:
 	void OnGUI() override;
 
 private:
-	void PushItem();
-	void DeleteItem();
-
-	void CreateAllItemList();
-	ItemBase* CreateItem(const std::string _Name, ItemType _Type,
-		const std::string _ImageName = "");
+	//void PushItem();
+	//void DeleteItem();
 
 public:
 	ItemBoxManager* ItemBoxManager_;
@@ -35,7 +30,7 @@ public:
 	int ListSelectItem;
 	int ListSelectItemBox;
 	
-	std::list<ItemBase*> AllItemList;
-	std::vector<const char*> AllItemName;
+	//std::list<ItemBase*> AllItemList;
+	//std::vector<const char*> AllItemName;
 };
 

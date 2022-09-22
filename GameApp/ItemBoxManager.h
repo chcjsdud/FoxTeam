@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
+#include <GameEngineBase/GameEngineRandom.h>
 
 //#define USERSAVE
 
@@ -28,18 +29,17 @@ public:
 
 	ItemBox* GetSelectBox()
 	{
-		return SelectBox;
+		return selectBox;
 	}
 
 	UI_ItemBox* GetItemBoxUI()
 	{
-		return ItemBoxUI_;
+		return itemBoxUI_;
 	}
 
 	void OpenItemBox();
 	void CloseItemBox();
 	ItemBase* GetItemFromItemBox(int _index);
-
 
 protected:
 	void Start() override;
@@ -50,13 +50,23 @@ private:
 	void BoxSelectUpdate();
 	void DebugRender();
 
+	// Item 관련
+	void CreateAllItemList();
+	ItemBase* CreateItem(const std::string _Name, ItemType _Type,
+		const std::string _ImageName = "");
+
+	void PushRandomItem(const std::string& _area, const std::string& _item, int _amount = 1);
+
 private:
-	std::string ItemBoxInfoPath;
-	std::map<std::string, std::vector<ItemBox*>> ItemBoxs;
-	ItemBox* SelectBox;
+	std::string itemBoxInfoPath;
+	std::map<std::string, std::vector<ItemBox*>> itemBoxs;
+	ItemBox* selectBox;
+
+	std::list<ItemBase*> allItemList;
+	GameEngineRandom randomManager;
 
 	//이건호 UI아이템 박스 작업
 private:
-	UI_ItemBox* ItemBoxUI_;
+	UI_ItemBox* itemBoxUI_;
 };
 

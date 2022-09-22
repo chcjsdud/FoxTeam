@@ -12,7 +12,7 @@ ItemBoxWindow::ItemBoxWindow()
 	, ListSelectItem(-1)
 	, ListSelectItemBox(-1)
 {
-	CreateAllItemList();
+	//CreateAllItemList();
 }
 
 ItemBoxWindow::~ItemBoxWindow()
@@ -54,71 +54,71 @@ void ItemBoxWindow::OnGUI()
 			ItemListName.push_back(GameEngineString::AnsiToUTF8Return(Item->GetName()).c_str());
 		}
 
-		if (true == ImGui::Button("PushItem") &&
-			-1 != ListSelectItem)
-		{
-			PushItem();
-		}
-		ImGui::SameLine();
-		if (true == ImGui::Button("DeleteItem") &&
-			-1 != ListSelectItemBox)
-		{
-			DeleteItem();
-		}
+		//if (true == ImGui::Button("PushItem") &&
+		//	-1 != ListSelectItem)
+		//{
+		//	PushItem();
+		//}
+		//ImGui::SameLine();
+		//if (true == ImGui::Button("DeleteItem") &&
+		//	-1 != ListSelectItemBox)
+		//{
+		//	DeleteItem();
+		//}
 
-		ImGui::PushItemWidth(200);
-		ImGui::ListBox("##ItemList", &ListSelectItem, &AllItemName[0], static_cast<ImGuiID>(AllItemName.size()));
+		//ImGui::PushItemWidth(200);
+		//ImGui::ListBox("##ItemList", &ListSelectItem, &AllItemName[0], static_cast<ImGuiID>(AllItemName.size()));
 	
-		if (false == ItemListName.empty())
-		{
-			ImGui::SameLine();
-			ImGui::PushItemWidth(200);
-			ImGui::ListBox("##ItemBoxList", &ListSelectItemBox, &ItemListName[0], static_cast<ImGuiID>(ItemListName.size()));
-		}
-		
+		//if (false == ItemListName.empty())
+		//{
+		//	ImGui::SameLine();
+		//	ImGui::PushItemWidth(200);
+		//	ImGui::ListBox("##ItemBoxList", &ListSelectItemBox, &ItemListName[0], static_cast<ImGuiID>(ItemListName.size()));
+		//}
+		//
 	}
 
 }
-
-void ItemBoxWindow::PushItem()
-{
-	// ItemBase* NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
-	// NewItem->SetName(AllItemName[ListSelectItem]);
-
-	int index = 0;
-
-	std::list<ItemBase*>::iterator iter = AllItemList.begin();
-
-	for (; iter != AllItemList.end(); iter++)
-	{
-		if (index == ListSelectItem)
-		{
-			SelectBox_->itemList.push_back((*iter)->Copy());
-
-			//이건호 : UI에 아이템정보를 0번 슬롯에 넣도록 세팅
-			BoxUI_->PushItem(*iter, 0);
-			break;
-		}
-
-		index++;
-	}
-}
-
-void ItemBoxWindow::DeleteItem()
-{
-	int index = 0;
-
-	std::list<ItemBase*>::iterator iter = SelectBox_->itemList.begin();
-
-	for (; iter != SelectBox_->itemList.end(); iter++)
-	{
-		if (index == ListSelectItemBox)
-		{
-			(*iter)->Death();
-			SelectBox_->itemList.erase(iter);
-			ListSelectItemBox = -1;
-			break;
-		}
-		index++;
-	}
-}
+//
+//void ItemBoxWindow::PushItem()
+//{
+//	// ItemBase* NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
+//	// NewItem->SetName(AllItemName[ListSelectItem]);
+//
+//	int index = 0;
+//
+//	std::list<ItemBase*>::iterator iter = AllItemList.begin();
+//
+//	for (; iter != AllItemList.end(); iter++)
+//	{
+//		if (index == ListSelectItem)
+//		{
+//			SelectBox_->itemList.push_back((*iter)->Copy());
+//
+//			//이건호 : UI에 아이템정보를 0번 슬롯에 넣도록 세팅
+//			BoxUI_->PushItem(*iter, 0);
+//			break;
+//		}
+//
+//		index++;
+//	}
+//}
+//
+//void ItemBoxWindow::DeleteItem()
+//{
+//	int index = 0;
+//
+//	std::list<ItemBase*>::iterator iter = SelectBox_->itemList.begin();
+//
+//	for (; iter != SelectBox_->itemList.end(); iter++)
+//	{
+//		if (index == ListSelectItemBox)
+//		{
+//			(*iter)->Death();
+//			SelectBox_->itemList.erase(iter);
+//			ListSelectItemBox = -1;
+//			break;
+//		}
+//		index++;
+//	}
+//}
