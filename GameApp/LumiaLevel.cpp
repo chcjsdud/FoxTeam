@@ -11,6 +11,8 @@
 #include "Rio.h"
 #include "Hyunwoo.h"
 
+#include "GameServer.h"
+#include "GameClient.h"
 //#include "LumiaUIController.h"
 
 LumiaLevel::LumiaLevel()
@@ -40,6 +42,19 @@ void LumiaLevel::LevelStart()
 
 void LumiaLevel::LevelUpdate(float _DeltaTime)
 {
+	// 캐릭터의 실질적 액터를 관리 중인 건 현재 레벨(== 사실상 게임 컨트롤러 클래스의 역할도 할 수 있다 볼 수 있다)
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		GameServer* server = GameServer::GetInstance();
+		server->ProcessPacket();
+
+	}
+	else if (true == GameClient::GetInstance()->IsConnected())
+	{
+		GameClient* client = GameClient::GetInstance();
+		client->ProcessPacket();
+	}
+
 	if (GameEngineInput::GetInst().Down("O"))
 	{
 		GetMainCameraActor()->FreeCameraModeSwitch();
@@ -75,6 +90,11 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 
 		}
 	}
+
+
+	{
+	}
+
 }
 
 void LumiaLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
