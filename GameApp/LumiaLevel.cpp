@@ -8,6 +8,8 @@
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
 
+#include "Rio.h"
+
 //#include "LumiaUIController.h"
 
 LumiaLevel::LumiaLevel()
@@ -96,56 +98,56 @@ void LumiaLevel::GenerateCharactor()
 			break;
 		case JobType::YUKI:
 		{
-			Rio* newCharacter = CreateActor<Rio>();
+			Character* newCharacter = CreateActor<Rio>();
 			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 			characterActorList_.emplace_back(newCharacter);
 			break;
 		}
 		case JobType::FIORA:
 		{
-			Rio* newCharacter = CreateActor<Rio>();
+			Character* newCharacter = CreateActor<Rio>();
 			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 			characterActorList_.emplace_back(newCharacter);
 			break;
 		}
 		case JobType::ZAHIR:
 		{
-			Rio* newCharacter = CreateActor<Rio>();
+			Character* newCharacter = CreateActor<Rio>();
 			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 			characterActorList_.emplace_back(newCharacter);
 			break;
 		}
 		case JobType::NADINE:
 		{
-			Rio* newCharacter = CreateActor<Rio>();
+			Character* newCharacter = CreateActor<Rio>();
 			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 			characterActorList_.emplace_back(newCharacter);
 			break;
 		}
 		case JobType::HYUNWOO:
 		{
-			Rio* newCharacter = CreateActor<Rio>();
+			Character* newCharacter = CreateActor<Rio>();
 			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 			characterActorList_.emplace_back(newCharacter);
 			break;
 		}
 		case JobType::JACKIE:
 		{
-			Rio* newCharacter = CreateActor<Rio>();
+			Character* newCharacter = CreateActor<Rio>();
 			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 			characterActorList_.emplace_back(newCharacter);
 			break;
 		}
 		case JobType::RIO:
 		{
-			Rio* newCharacter = CreateActor<Rio>();
+			Character* newCharacter = CreateActor<Rio>();
 			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 			characterActorList_.emplace_back(newCharacter);
 			break;
 		}
 		case JobType::AYA:
 		{
-			Rio* newCharacter = CreateActor<Rio>();
+			Character* newCharacter = CreateActor<Rio>();
 			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 			characterActorList_.emplace_back(newCharacter);
 			break;
@@ -176,9 +178,9 @@ void LumiaLevel::GenerateCharactor()
 		}
 	}
 #else
-	for (size_t i = 0; i < 2; i++)
+	for (int i = 0; i < 2; i++)
 	{
-		Rio* newCharacter = CreateActor<Rio>();
+		Character* newCharacter = CreateActor<Rio>();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		PlayerInfo newPlayer;
 		newPlayer.playerNumber_ = i;
@@ -187,13 +189,10 @@ void LumiaLevel::GenerateCharactor()
 		newPlayer.isReady_ = true;
 		pm->AddNewPlayer(newPlayer);
 		characterActorList_.push_back(newCharacter);
-
-		if (i == 0)
-		{
-			characterActorList_[0]->TempFlag = true;
-			pm->SetMainCharacter(characterActorList_[0]);
-		}
 	}
+
+	characterActorList_[0]->Focus();
+	pm->SetMainCharacter(characterActorList_[0]);
 
 	pm->SetPlayerNumber(0);
 #endif

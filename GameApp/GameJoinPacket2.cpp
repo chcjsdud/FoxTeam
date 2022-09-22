@@ -77,7 +77,7 @@ void GameJoinPacket2::execute(SOCKET _sender, GameEngineSocketInterface* _networ
         }
 
         // 이건 접속한 클라이언트의 정보가 될 것이다.
-        info_.playerNumber_ = pm->GetPlayerList().size();
+        info_.playerNumber_ = static_cast<int>(pm->GetPlayerList().size());
         info_.character_ = -1;
         info_.startPoint_ = -1;
         info_.isReady_ = 0;

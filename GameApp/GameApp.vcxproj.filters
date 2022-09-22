@@ -214,6 +214,9 @@
     <ClCompile Include="StartPointSelectPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterStat.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -535,6 +538,9 @@
     </ClInclude>
     <ClInclude Include="StartPointSelectPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterStat.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

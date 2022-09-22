@@ -399,9 +399,11 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="UserGame_Resources_Shader.cpp" />
+    <ClCompile Include="CharacterStat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
+    <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="CharSelectPacket.h">
       <SubType>
       </SubType>

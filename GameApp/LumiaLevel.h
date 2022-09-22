@@ -4,7 +4,7 @@
 
 #include <GameApp/MousePointer.h>
 #include <GameApp/ItemBoxManager.h>
-#include <GameApp/Rio.h>
+#include <GameApp/Character.h>
 
 //#define SERVER
 
@@ -52,7 +52,7 @@ private:
 	// 현재 Available 한 캐릭터는 리오밖에 없어서 Rio 로 고정했지만 모든 캐릭터 액터의 부모 액터가 대체할 예정입니다.
 	// 모든 캐릭터의 정보는 PlayerInfoManager 에서 관리하고,
 	// 이건 그냥 "캐릭터 액터" 의 리스트일 뿐입니다.
-	std::vector<Rio*> characterActorList_;
+	std::vector<Character*> characterActorList_;
 	
 
 	MousePointer* mouse_;

@@ -225,7 +225,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		std::string nicknameTemp = PlayerInfoManager::GetInstance()->GetNickname();
 		packet.SetPlayerInfo({ -1, -1, -1, -1, nicknameTemp });
 		
-		packet.SetListSize(PlayerInfoManager::GetInstance()->GetPlayerList().size());
+		packet.SetListSize(static_cast<int>(PlayerInfoManager::GetInstance()->GetPlayerList().size()));
 
 		clientSocket_->Send(&packet);
 
@@ -250,7 +250,7 @@ void LobbyLevel::StartSelect()
 
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
-		playerCount_ = PlayerInfoManager::GetInstance()->GetPlayerList().size();
+		playerCount_ = static_cast<int>(PlayerInfoManager::GetInstance()->GetPlayerList().size());
 	}
 	
 	UIController_->GetMapUI()->ArrangeCounter();

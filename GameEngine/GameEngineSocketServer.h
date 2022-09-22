@@ -37,7 +37,7 @@ public:
 	// 0829 ╧за╬©Ь
 	int GetClientSocketSize()
 	{
-		return clientSocketList_.size();
+		return static_cast<int>(clientSocketList_.size());
 	}
 
 public:
