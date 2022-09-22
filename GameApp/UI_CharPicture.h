@@ -27,7 +27,8 @@ public:
 	}
 
 protected:
-	GameEngineUIRenderer* Renderer;
+	GameEngineUIRenderer* BackGroundRenderer;
+	GameEngineUIRenderer* CharRenderer;
 	float Time;
 
 

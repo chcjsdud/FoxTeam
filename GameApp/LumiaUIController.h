@@ -25,7 +25,7 @@ public:
 
 public:
 	void InitUI();
-
+	//UI컨트롤러가 내 캐릭터가 뭔지 정보를 가지고있는게 좋을듯
 
 public:
 
