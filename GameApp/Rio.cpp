@@ -43,11 +43,16 @@ void Rio::initRendererAndAnimation()
 
 void Rio::changeAnimationWait()
 {
+	curAnimation_ = "Wait";
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
 void Rio::changeAnimationRun()
 {
+	curAnimation_ = "Run";
+	// Character 클래스에 새 멤버 curAnimation_ 이 추가되었습니다.
+	// 
+
 	renderer_->ChangeFBXAnimation("Run");
 }
 

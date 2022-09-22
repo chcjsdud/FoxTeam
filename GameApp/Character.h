@@ -28,6 +28,14 @@ public:
 	void Move(const float4& _position);
 	void MoveWithPathFind(const float4& _position);
 
+
+public:
+	// 0922 박종원
+	float4 GetDirection() { return direction_; }
+	std::string GetCurAnimation() { return curAnimation_; }
+	void SetDirection(float4 _dir) { direction_ = _dir; }
+	bool isFocused() { return bFocused_; }
+
 public:
 	NavFace* GetCurrentNavFace() { return currentNavFace_; }
 
@@ -40,6 +48,10 @@ protected:
 	// override 해서 애니메이션을 바꿀 수 있다.
 	virtual void initRendererAndAnimation() = 0;
 
+	// 0922 박종원
+public:
+	virtual void changeAnimation(std::string _animationName);
+protected:
 	virtual void changeAnimationRun() = 0;
 	virtual void changeAnimationWait() = 0;
 	virtual void changeAnimationBasicAttack() = 0;
@@ -131,6 +143,7 @@ protected:
 	MousePointer* mouse_;
 
 	CharacterStat stat_;
+	std::string curAnimation_;
 
 private:
 	GameEngineFSM mainState_;

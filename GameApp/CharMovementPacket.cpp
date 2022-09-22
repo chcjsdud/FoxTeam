@@ -60,8 +60,10 @@ GameEnginePacketBase* CharMovementPacket::getUserObject()
 
 void CharMovementPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
-	PlayerInfoManager::GetInstance()->GetPlayerList()[targetIndex_].curPos_ = pos_;
-	PlayerInfoManager::GetInstance()->GetPlayerList()[targetIndex_].curDir_ = dir_;
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	pm->GetPlayerList()[targetIndex_].curPos_ = pos_;
+	pm->GetPlayerList()[targetIndex_].curDir_ = dir_;
+	
 
 	if (_bServer)
 	{

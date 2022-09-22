@@ -7,6 +7,7 @@
 #include "MousePointer.h"
 #include "LumiaMap.h"
 #include "ItemBox.h"
+#include "PlayerInfoManager.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -67,8 +68,14 @@ void Character::Start()
 
 void Character::Update(float _DeltaTime)
 {
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
 	if (false == bFocused_)
 	{
+		// direction 에 따라 로테이션을 바꿔 주고
+		// 적절한 애니메이션으로 바꿔 주는 코드가 여기에도 존재해야 함.
+
+		
 		return;
 	}
 
@@ -199,6 +206,17 @@ void Character::MoveWithPathFind(const float4& _position)
 	}
 }
 
+void Character::changeAnimation(std::string _animationName)
+{
+		if ("" == _animationName)
+		{
+			return;
+		}
+		
+		curAnimation_ = _animationName;
+		renderer_->ChangeFBXAnimation(_animationName);
+}
+
 void Character::initInput()
 {
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
@@ -307,6 +325,7 @@ void Character::moveProcess(float _deltaTime)
 
 void Character::moveTick(float _deltaTime, const float4& _startPosition)
 {
+
 	direction_ = destination_ - _startPosition;
 	direction_.Normalize3D();
 
@@ -323,6 +342,7 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 	float temp;
 	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
 	{
+		
 		changeAnimationRun();
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}
@@ -396,6 +416,7 @@ void Character::updateStop(float _deltaTime)
 
 void Character::startRun()
 {
+
 }
 
 void Character::updateRun(float _deltaTime)

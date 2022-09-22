@@ -18,9 +18,12 @@ public:
 protected:
 	// Character을(를) 통해 상속됨
 	virtual void initRendererAndAnimation() override;
+
+
 	virtual void changeAnimationRun() override;
 	virtual void changeAnimationWait() override;
 	virtual void changeAnimationBasicAttack() override;
 
+	// 0922 박종원
 };
 

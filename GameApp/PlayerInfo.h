@@ -15,5 +15,5 @@ struct PlayerInfo
 	// Lumia Level Only
 	float4 curPos_;
 	float4 curDir_;
-
+	std::string curAnimation_;
 };

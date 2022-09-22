@@ -16,6 +16,7 @@
 #include "GameClient.h"
 #include "ePacketID.h"
 #include "CharMovementPacket.h"
+#include "CharAnimationPacket.h"
 //#include "LumiaUIController.h"
 
 LumiaLevel::LumiaLevel()
@@ -45,18 +46,70 @@ void LumiaLevel::LevelStart()
 
 void LumiaLevel::LevelUpdate(float _DeltaTime)
 {
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
 	// 캐릭터의 실질적 액터를 관리 중인 건 현재 레벨(== 사실상 게임 컨트롤러 클래스의 역할도 할 수 있다 볼 수 있다)
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
 		GameServer* server = GameServer::GetInstance();
 		server->ProcessPacket();
 
+		{
+			CharMovementPacket packet;
+			packet.SetTargetIndex(pm->GetMyNumber());
+			packet.SetPos(characterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalPosition());
+			packet.SetDirection(characterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalRotation());
+			server->Send(&packet);
+		}
+
+		{
+			CharAnimationPacket packet;
+			packet.SetTargetIndex(pm->GetMyNumber());
+			packet.SetAnimation(characterActorList_[pm->GetMyNumber()]->GetCurAnimation());
+			server->Send(&packet);
+
+		}
+
 	}
 	else if (true == GameClient::GetInstance()->IsConnected())
 	{
 		GameClient* client = GameClient::GetInstance();
 		client->ProcessPacket();
+
+		{
+			CharMovementPacket packet;
+			packet.SetTargetIndex(pm->GetMyNumber());
+			packet.SetPos(characterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalPosition());
+			packet.SetDirection(characterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalRotation());
+			client->Send(&packet);
+		}
+
+		{
+			CharAnimationPacket packet;
+			packet.SetTargetIndex(pm->GetMyNumber());
+			packet.SetAnimation(characterActorList_[pm->GetMyNumber()]->GetCurAnimation());
+			client->Send(&packet);
+
+		}
 	}
+
+#ifdef SERVER
+	for (int i = 0; i < pm->GetPlayerList().size(); i++)
+	{
+		// 받은 패킷의 정보로 갱신된 playerinfo 값에 따라
+		// 레벨의 캐릭터 액터들의 위치 회전 애니메이션 등을 변경해주는 코드블록입니다.
+
+		if (i == pm->GetMyNumber())
+		{
+			continue;
+		}
+
+		characterActorList_[i]->GetTransform()->SetLocalPosition(pm->GetPlayerList()[i].curPos_);
+		//characterActorList_[i]->SetDirection(pm->GetPlayerList()[i].curDir_);
+		characterActorList_[i]->changeAnimation(pm->GetPlayerList()[i].curAnimation_);
+		characterActorList_[i]->GetTransform()->SetWorldRotationDegree(pm->GetPlayerList()[i].curDir_);
+	}
+#endif
 
 	if (GameEngineInput::GetInst().Down("O"))
 	{
@@ -65,7 +118,7 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 
 	if (!GetMainCameraActor()->IsFreeCameraMode())
 	{
-		float4 playerPosition = characterActorList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetTransform()->GetWorldPosition();
+		float4 playerPosition = characterActorList_[pm->GetMyNumber()]->GetTransform()->GetWorldPosition();
 
 		GetMainCameraActor()->GetTransform()->SetWorldPosition(playerPosition + float4(400.f, 1280.f, -600.f));
 
@@ -136,6 +189,8 @@ void LumiaLevel::GenerateCharactor()
 #ifdef SERVER
 	for (size_t i = 0; i < pm->GetPlayerList().size(); i++)
 	{
+		pm->GetPlayerList()[i].curAnimation_ = "";
+
 		switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
 		{
 		case JobType::NONE:
@@ -171,7 +226,7 @@ void LumiaLevel::GenerateCharactor()
 		}
 		case JobType::HYUNWOO:
 		{
-			Character* newCharacter = CreateActor<Rio>();
+			Character* newCharacter = CreateActor<Hyunwoo>();
 			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 			characterActorList_.emplace_back(newCharacter);
 			break;
@@ -205,33 +260,31 @@ void LumiaLevel::GenerateCharactor()
 			break;
 		}
 
-		// 캐릭터 액터를 만들어 주고(무슨 캐릭터를 고를 것인지에 대한 코드가 여기로 리팩토링 될 것)
+		
 
 		if (i == pm->GetMyNumber())
 		{
-			characterActorList_[i]->TempFlag = false;
-			// TempFlag 는 액터 안의 업데이트 중 컨트롤 부분을 쓰거나 건너뛸 수 있게 만든 임시 플래그값입니다.
-			// 액터의 입력부가 게임 컨트롤러 클래스로 분화되면 지워질 예정입니다.
-			// player_ = newCharacter;
-			// pm->SetMainCharacter(player_);
-			// 어차피 내 캐릭터 인덱스 가지고 있고...
-			// characterActorList[내 인덱스] 면 내 캐릭터 액터 찾아간다...
-		}
-		else
-		{
-			characterActorList_[i]->TempFlag = true;
+			characterActorList_[i]->Focus();
+			pm->SetMainCharacter(characterActorList_[pm->GetMyNumber()]);
+			pm->SetPlayerNumber(pm->GetMyNumber());
 		}
 	}
 #else
 	for (int i = 0; i < 2; i++)
 	{
+
 		Character* newCharacter = CreateActor<Hyunwoo>();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		PlayerInfo newPlayer;
 		newPlayer.playerNumber_ = i;
 		newPlayer.startPoint_ = 0;
 		newPlayer.character_ = 0;
+		newPlayer.curAnimation_ = "";
 		newPlayer.isReady_ = true;
+
+		newPlayer.curDir_ = float4::ZERO;
+		newPlayer.curPos_ = float4::ZERO;
+
 		pm->AddNewPlayer(newPlayer);
 		characterActorList_.push_back(newCharacter);
 	}
@@ -414,12 +467,13 @@ void LumiaLevel::serverCheck()
 	{
 		GameServer* server = GameServer::GetInstance();
 		server->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
-
+		server->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
 	}
 	else if (true == GameClient::GetInstance()->IsConnected())
 	{
 		GameClient* client = GameClient::GetInstance();
 		client->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
+		client->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
 	}
 }
 
