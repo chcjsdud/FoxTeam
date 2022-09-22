@@ -70,7 +70,17 @@ public:
 		_File->Read(SpcTextureName); // ≈ÿΩ∫√≥
 
 		std::filesystem::path path = std::filesystem::current_path();
-		path = path.parent_path();
+
+		while (path.root_directory() != path)
+		{
+			if (path.filename().string() == "FoxTeam")
+			{
+				break;
+			}
+
+			path = path.parent_path();
+		}
+
 		std::string prevPath;
 
 		if (false == GameEngineDirectory::IsExist(DifTexturePath) &&

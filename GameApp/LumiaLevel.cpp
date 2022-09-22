@@ -224,9 +224,12 @@ void LumiaLevel::loadResource()
 			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx"));
 			Mesh->CreateRenderingBuffer();
 		}
+	}
 
-		tempDir.MoveParent("FBX");
-		tempDir / "UserMesh" / "Map";
+	{
+		GameEngineDirectory tempDir;
+		tempDir.MoveParent("FoxTeam");
+		tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
 
 		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
 
@@ -251,6 +254,7 @@ void LumiaLevel::loadResource()
 			}
 		}
 	}
+
 
 	{
 		GameEngineDirectory dir;

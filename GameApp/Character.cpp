@@ -187,7 +187,7 @@ void Character::MoveWithPathFind(const float4& _position)
 
 	destinations_.clear();
 
-	if ((destination_ - transform_.GetWorldPosition()).Len3D() > 300.f)
+	if ((destination_ - transform_.GetWorldPosition()).Len3D() > 400.f)
 	{
 		destinations_ = currentMap_->FindPath(transform_.GetWorldPosition(), destination_);
 		if (destinations_.size() > 0)
