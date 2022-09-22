@@ -358,7 +358,6 @@ void LumiaLevel::releaseResource()
 void LumiaLevel::createActor()
 {
 	mouse_ = CreateActor<MousePointer>();
-	map_ = CreateActor<LumiaMap>();
 
 	{
 		GameEngineDirectory tempDir;
@@ -370,6 +369,8 @@ void LumiaLevel::createActor()
 		itemBox_->UserAllLoad(tempDir);
 		itemBox_->GetTransform()->SetLocalScaling(100.0f);
 	}
+
+	map_ = CreateActor<LumiaMap>();
 
 	SKySphereActor* Actor = CreateActor<SKySphereActor>();
 

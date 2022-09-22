@@ -41,6 +41,8 @@ public:
 	void CloseItemBox();
 	ItemBase* GetItemFromItemBox(int _index);
 
+	void PushRandomItem(const std::string& _area, const std::string& _item, int _amount = 1);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -54,8 +56,6 @@ private:
 	void CreateAllItemList();
 	ItemBase* CreateItem(const std::string _Name, ItemType _Type,
 		const std::string _ImageName = "");
-
-	void PushRandomItem(const std::string& _area, const std::string& _item, int _amount = 1);
 
 private:
 	std::string itemBoxInfoPath;

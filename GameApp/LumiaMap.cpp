@@ -6,6 +6,8 @@
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineCore.h>
 
+#include "LumiaLevel.h"
+
 #include "NavMesh.h"
 #include "PlayerInfoManager.h"
 
@@ -94,6 +96,9 @@ void LumiaMap::Start()
 
 		mapRenderers.push_back(FBX);
 	}
+
+
+	setAllItem();
 
 	int a = 0;
 }
@@ -476,4 +481,19 @@ void LumiaMap::updateAStarNodeVertexInfo()
 	dc->Map(tileVertexBuffer_->Buffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
 	memcpy(subResource.pData, &tileVertices_[0], subResource.RowPitch);
 	dc->Unmap(tileVertexBuffer_->Buffer_, 0);
+}
+
+void LumiaMap::setAllItem()
+{
+	ItemBoxManager* itembox = GetLevelConvert<LumiaLevel>()->GetItemBoxManager();
+
+	if (nullptr == itembox)
+	{
+		GameEngineDebug::MsgBoxError("루미아레벨에서 아이템박스매니저가 생성되지 않았습니다.");
+		return;
+	}
+
+	itembox->PushRandomItem("DOWNTOWN", "Scissors", 3);
+	itembox->PushRandomItem("DOWNTOWN", "Pen", 5);
+	itembox->PushRandomItem("DOWNTOWN", "Knite", 7);
 }

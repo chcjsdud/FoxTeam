@@ -34,6 +34,8 @@ private:
 	void checkASterNodeObstacle();
 	void updateAStarNodeVertexInfo();
 
+	void setAllItem();
+
 public:
 	// 플레이어 거리 기준
 	const float RENDER_RANGE = 1200.f;
