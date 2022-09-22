@@ -39,15 +39,14 @@ private:
 	void initRenderWindow();
 	void createActor();
 	void adjustCamera();
+	// 0922 박종원
+	void serverCheck();
 
 	// On level change end event
 	void releaseResource();
 	void releaseRenderWindow();
 
 private:
-	// 0920 박종원 삭제예정
-	//Rio* player_;
-
 	// 루미아레벨에서 고정적으로 관리하는 캐릭터 액터 리스트입니다.
 	// 현재 Available 한 캐릭터는 리오밖에 없어서 Rio 로 고정했지만 모든 캐릭터 액터의 부모 액터가 대체할 예정입니다.
 	// 모든 캐릭터의 정보는 PlayerInfoManager 에서 관리하고,

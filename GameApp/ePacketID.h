@@ -17,6 +17,8 @@ enum class ePacketID
 	LoadingLumiaPacket,
 	LobbyToLumiaPacket,
 	
+	// LumiaLevel
+	CharMovementPacket,
 
 	MAX
 };

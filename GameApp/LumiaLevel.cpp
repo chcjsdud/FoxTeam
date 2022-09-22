@@ -3,7 +3,7 @@
 #include <GameEngine/SKySphereActor.h>
 #include <GameEngine/LightActor.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
-
+#include <GameEngine/GameEngineFBXMesh.h>
 #include "PlayerInfoManager.h"
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
@@ -13,6 +13,8 @@
 
 #include "GameServer.h"
 #include "GameClient.h"
+#include "ePacketID.h"
+#include "CharMovementPacket.h"
 //#include "LumiaUIController.h"
 
 LumiaLevel::LumiaLevel()
@@ -110,11 +112,13 @@ void LumiaLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	serverCheck();
 	loadResource();
 	initRenderWindow();
 	createActor();
 	adjustCamera();
 	GenerateCharactor();
+
 }
 
 void LumiaLevel::GenerateCharactor()
@@ -393,6 +397,21 @@ void LumiaLevel::adjustCamera()
 	GetMainCameraActor()->GetCamera()->SetFov(50.f);
 	GetMainCameraActor()->FreeCameraModeSwitch();
 	GetMainCameraActor()->GetTransform()->SetWorldPosition({ 0.0f, 100.f, -200.f });
+}
+
+void LumiaLevel::serverCheck()
+{
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		GameServer* server = GameServer::GetInstance();
+		server->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
+
+	}
+	else if (true == GameClient::GetInstance()->IsConnected())
+	{
+		GameClient* client = GameClient::GetInstance();
+		client->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
+	}
 }
 
 void LumiaLevel::initRenderWindow()

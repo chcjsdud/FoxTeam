@@ -11,4 +11,9 @@ struct PlayerInfo
 	int startPoint_;
 	int isReady_;
 	std::string playerNickname_;
+
+	// Lumia Level Only
+	float4 curPos_;
+	float4 curDir_;
+
 };
