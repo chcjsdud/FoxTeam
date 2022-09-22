@@ -1,12 +1,13 @@
 #include "Precompile.h"
 #include <GameEngine/GameEngineRenderWindow.h>
 #include <GameEngine/SKySphereActor.h>
-#include <GameEngine/LightActor.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
+#include <GameEngine/LightActor.h>
 #include <GameEngine/GameEngineFBXMesh.h>
 #include "PlayerInfoManager.h"
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
+#include "ItemBoxWindow.h"
 
 #include "Rio.h"
 #include "Hyunwoo.h"
@@ -115,6 +116,17 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	adjustCamera();
 	GenerateCharactor();
 
+	ItemBoxWindow* Window = nullptr;
+
+	if (nullptr == GameEngineGUI::GetInst()->FindGUIWindow("ItemBoxWindow"))
+	{
+		Window = GameEngineGUI::GetInst()->CreateGUIWindow<ItemBoxWindow>("ItemBoxWindow");
+	}
+
+	if (nullptr != Window)
+	{
+		Window->ItemBoxManager_ = itemBox_;
+	}
 }
 
 void LumiaLevel::GenerateCharactor()

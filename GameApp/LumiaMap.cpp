@@ -493,7 +493,8 @@ void LumiaMap::setAllItem()
 		return;
 	}
 
-	itembox->PushRandomItem("DOWNTOWN", "Scissors", 3);
-	itembox->PushRandomItem("DOWNTOWN", "Pen", 5);
-	itembox->PushRandomItem("DOWNTOWN", "Knite", 7);
+	// 아이템 중복 체크 안함
+	itembox->PushRandomItem("DOWNTOWN", "Scissors", 30);
+	itembox->PushRandomItem("DOWNTOWN", "Pen", 50);
+	itembox->PushRandomItem("DOWNTOWN", "Knite", 70);
 }

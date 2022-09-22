@@ -5,7 +5,6 @@
 class ItemBoxManager;
 class ItemBox;
 class ItemBase;
-class UI_ItemBox;
 class ItemBoxWindow : public GameEngineGUIWindow
 {
 public:
@@ -20,17 +19,9 @@ protected:
 	void OnGUI() override;
 
 private:
-	//void PushItem();
-	//void DeleteItem();
 
 public:
 	ItemBoxManager* ItemBoxManager_;
 	ItemBox* SelectBox_;
-	UI_ItemBox* BoxUI_;
-	int ListSelectItem;
-	int ListSelectItemBox;
-	
-	//std::list<ItemBase*> AllItemList;
-	//std::vector<const char*> AllItemName;
 };
 
