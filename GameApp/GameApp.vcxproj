@@ -220,6 +220,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Hyunwoo.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="LoadingLumiaPacket.cpp">
       <SubType>
       </SubType>
@@ -437,6 +441,10 @@
     </ClInclude>
     <ClInclude Include="GameJoinPacket2.h" />
     <ClInclude Include="GameServer.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Hyunwoo.h">
       <SubType>
       </SubType>
     </ClInclude>

@@ -143,8 +143,6 @@ private:
 
 	std::vector<float4> destinations_;
 
-	float mousePressDelay_;
-
 	bool bFocused_;
 
 };

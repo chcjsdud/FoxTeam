@@ -16,7 +16,6 @@ Character::Character()
 	, currentMap_(nullptr)
 	, mouse_(nullptr)
 	, renderer_(nullptr)
-	, mousePressDelay_(FT::Char::MOUSE_PRESS_DELAY)
 	, bFocused_(false)
 {
 }
@@ -246,22 +245,14 @@ void Character::inputProcess(float _deltaTime)
 	}
 	else if (GameEngineInput::Press("LButton"))
 	{
-		mousePressDelay_ -= _deltaTime;
-
-		if (mousePressDelay_ <= 0)
+		result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
+		if (result)
 		{
-			result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
-
-			if (result)
-			{
-				Move(destination_);
-			}
-			else
-			{
-				destination_ = mousePosition;
-			}
-
-			mousePressDelay_ = FT::Char::MOUSE_PRESS_DELAY;
+			Move(destination_);
+		}
+		else
+		{
+			destination_ = mousePosition;
 		}
 	}
 	else if (GameEngineInput::Up("LButton"))

@@ -9,6 +9,7 @@
 #include "LumiaMap.h"
 
 #include "Rio.h"
+#include "Hyunwoo.h"
 
 //#include "LumiaUIController.h"
 
@@ -192,7 +193,7 @@ void LumiaLevel::GenerateCharactor()
 #else
 	for (int i = 0; i < 2; i++)
 	{
-		Character* newCharacter = CreateActor<Rio>();
+		Character* newCharacter = CreateActor<Hyunwoo>();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		PlayerInfo newPlayer;
 		newPlayer.playerNumber_ = i;
@@ -217,16 +218,6 @@ void LumiaLevel::loadResource()
 
 		tempDir.MoveParent("FoxTeam");
 		tempDir / "Resources" / "FBX" / "Map";
-
-		//{
-		//	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Downtown.fbx"));
-		//	Mesh->CreateRenderingBuffer();
-		//}
-
-		{
-			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("DowntownNavMesh.fbx"));
-			Mesh->CreateRenderingBuffer();
-		}
 
 		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx")))
 		{
@@ -267,13 +258,24 @@ void LumiaLevel::loadResource()
 		dir.MoveParent("FoxTeam");
 		dir / "Resources" / "FBX" / "GH";
 
-		std::string meshName = "Rio_Run.fbx";
-
 		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
 		mesh->CreateRenderingBuffer();
 
 		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
 		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Wait.fbx"));
+	}
+
+	{
+		GameEngineDirectory dir;
+
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "FBX" / "PJW";
+
+		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_run.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_run.fbx"));
+		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_wait.fbx"));
 	}
 }
 
@@ -281,12 +283,49 @@ void LumiaLevel::releaseResource()
 {
 	// loadResource에서 로드한 리소스 삭제
 
-	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh_Cobalt.fbx");
 	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh.fbx");
-	GameEngineFBXMeshManager::GetInst().Delete("Rio_Run.fbx");
+	{
+		GameEngineDirectory tempDir;
+		tempDir.MoveParent("FoxTeam");
+		tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
 
-	GameEngineFBXAnimationManager::GetInst().Delete("Rio_Run.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Rio_Wait.fbx");
+		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+
+		for (size_t i = 0; i < vecFile.size(); i++)
+		{
+			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+			{
+				GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
+			}
+		}
+
+		tempDir.MoveParent("UserMesh");
+		tempDir.MoveChild("ItemBox");
+
+		vecFile = tempDir.GetAllFile(".UserMesh");
+
+		for (size_t i = 0; i < vecFile.size(); i++)
+		{
+			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+			{
+				GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
+			}
+		}
+	}
+
+	{
+		GameEngineFBXMeshManager::GetInst().Delete("Rio_Run.fbx");
+
+		GameEngineFBXAnimationManager::GetInst().Delete("Rio_Run.fbx");
+		GameEngineFBXAnimationManager::GetInst().Delete("Rio_Wait.fbx");
+	}
+
+	{
+		GameEngineFBXMeshManager::GetInst().Delete("hyunwoo_run.fbx");
+
+		GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_run.fbx");
+		GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_wait.fbx");
+	}
 
 	mouse_ = nullptr;
 	itemBox_ = nullptr;
