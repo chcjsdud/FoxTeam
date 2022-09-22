@@ -46,10 +46,14 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 
 	if (!GetMainCameraActor()->IsFreeCameraMode())
 	{
-		GetMainCameraActor()->GetTransform()->SetWorldPosition(characterActorList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetTransform()->GetLocalPosition() + float4(-200.0f, 800.f, -200.f));
-		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 70.0f, 45.0f, 0.0f });
+		float4 playerPosition = characterActorList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetTransform()->GetWorldPosition();
+
+		GetMainCameraActor()->GetTransform()->SetWorldPosition(playerPosition + float4(400.f, 1280.f, -600.f));
+
+		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 60.f, -35.f, 0.0f });
 	}
 
+	
 
 	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
 	if (nullptr != controlWindow)
@@ -60,6 +64,14 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 
 			controlWindow->AddText("X : " + std::to_string(position.x));
 			controlWindow->AddText("Z : " + std::to_string(position.z));
+
+			float4 playerPosition = characterActorList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetTransform()->GetWorldPosition();
+			float4 camPos = GetMainCameraActor()->GetTransform()->GetWorldPosition();
+			float4 playerToCamera = camPos - playerPosition;
+			float4 cameraRotation = GetMainCameraActor()->GetTransform()->GetLocalRotation();
+			controlWindow->AddText("Player to Camera vector : " + std::to_string(playerToCamera.x) + ", " + std::to_string(playerToCamera.y) + ", " + std::to_string(playerToCamera.z));
+			controlWindow->AddText("CameraRotation : " + std::to_string(cameraRotation.x) + ", " + std::to_string(cameraRotation.y) + ", " + std::to_string(cameraRotation.z));
+
 		}
 	}
 }
@@ -315,7 +327,7 @@ void LumiaLevel::createActor()
 
 void LumiaLevel::adjustCamera()
 {
-	GetMainCameraActor()->GetCamera()->SetFov(60.f);
+	GetMainCameraActor()->GetCamera()->SetFov(50.f);
 	GetMainCameraActor()->FreeCameraModeSwitch();
 	GetMainCameraActor()->GetTransform()->SetWorldPosition({ 0.0f, 100.f, -200.f });
 }
