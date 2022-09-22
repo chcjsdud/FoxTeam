@@ -21,9 +21,6 @@ public:
 	UI_ItemBox& operator=(const UI_ItemBox& _Other) = delete;
 	UI_ItemBox& operator=(UI_ItemBox&& _Other) noexcept = delete;
 
-
-
-
 public:
 	void SetPlayer(Player* _Player)
 	{
@@ -135,6 +132,11 @@ private:
 	-> 마우스와 아이템이 충돌중일때, 클릭시 인벤토리로 옮겨지게 만들예정
 	-> 드래그가능케 하는건 후순위
 	
+
+	아이템박스의 아이템을 좌클릭하면 바로 인벤토리에들어옴
+	이동에 필요한 우클릭을 누르면 상호작용하지 않음
+	아이템박스에서 인벤토리로 드래그는 안된다
+	인게임에서는 인벤토리에서 아이템박스로 드래그하면 아이템박스 슬롯에 들어가긴하던데 포폴에서는 굳히 필요할까?
 
 	
 	*/
