@@ -206,7 +206,7 @@ void Character::MoveWithPathFind(const float4& _position)
 	}
 }
 
-void Character::changeAnimation(std::string _animationName)
+void Character::ChangeAnimation(std::string _animationName)
 {
 		if ("" == _animationName)
 		{
@@ -431,4 +431,62 @@ void Character::startStun()
 
 void Character::updateStun(float _deltaTime)
 {
+}
+
+void Character::startBasicAttack()
+{
+}
+
+void Character::updateBasicAttack(float _deltaTime)
+{
+}
+
+void Character::startQSkill()
+{
+	onStartQSkill();
+}
+
+void Character::updateQSkill(float _deltaTime)
+{
+	onUpdateQSkill(_deltaTime);
+}
+
+void Character::startWSkill()
+{
+	onStartWSkill();
+}
+
+void Character::updateWSkill(float _deltaTime)
+{
+	onUpdateWSkill(_deltaTime);
+}
+
+void Character::startESkill()
+{
+	onStartESkill();
+}
+
+void Character::updateESkill(float _deltaTime)
+{
+	onUpdateESkill(_deltaTime);
+}
+
+void Character::startRSkill()
+{
+	onStartRSkill();
+}
+
+void Character::updateRSkill(float _deltaTime)
+{
+	onUpdateRSkill(_deltaTime);
+}
+
+void Character::startDSkill()
+{
+	onStartDSkill();
+}
+
+void Character::updateDSkill(float _deltaTime)
+{
+	onUpdateDSkill(_deltaTime);
 }

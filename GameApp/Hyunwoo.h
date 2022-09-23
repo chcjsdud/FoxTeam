@@ -24,6 +24,22 @@ protected:
 	virtual void changeAnimationWait() override;
 	virtual void changeAnimationBasicAttack() override;
 
+
+	virtual void onStartQSkill() override;
+	virtual void onUpdateQSkill(float _deltaTime) override;
+
+	virtual void onStartWSkill() override;
+	virtual void onUpdateWSkill(float _deltaTime) override;
+
+	virtual void onStartESkill() override;
+	virtual void onUpdateESkill(float _deltaTime) override;
+
+	virtual void onStartRSkill() override;
+	virtual void onUpdateRSkill(float _deltaTime) override;
+
+	virtual void onStartDSkill() override;
+	virtual void onUpdateDSkill(float _deltaTime) override;
+
 	// 0922 ╧за╬©Ь
 };
 

@@ -41,3 +41,43 @@ void Hyunwoo::changeAnimationBasicAttack()
 {
 }
 
+void Hyunwoo::onStartQSkill()
+{
+}
+
+void Hyunwoo::onUpdateQSkill(float _deltaTime)
+{
+}
+
+void Hyunwoo::onStartWSkill()
+{
+}
+
+void Hyunwoo::onUpdateWSkill(float _deltaTime)
+{
+}
+
+void Hyunwoo::onStartESkill()
+{
+}
+
+void Hyunwoo::onUpdateESkill(float _deltaTime)
+{
+}
+
+void Hyunwoo::onStartRSkill()
+{
+}
+
+void Hyunwoo::onUpdateRSkill(float _deltaTime)
+{
+}
+
+void Hyunwoo::onStartDSkill()
+{
+}
+
+void Hyunwoo::onUpdateDSkill(float _deltaTime)
+{
+}
+

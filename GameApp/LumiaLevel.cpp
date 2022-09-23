@@ -105,7 +105,7 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 		}
 
 		characterActorList_[i]->GetTransform()->SetLocalPosition(pm->GetPlayerList()[i].curPos_);
-		characterActorList_[i]->changeAnimation(pm->GetPlayerList()[i].curAnimation_);
+		characterActorList_[i]->ChangeAnimation(pm->GetPlayerList()[i].curAnimation_);
 		characterActorList_[i]->GetTransform()->SetWorldRotationDegree(pm->GetPlayerList()[i].curDir_);
 	}
 #endif

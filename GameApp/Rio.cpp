@@ -60,4 +60,44 @@ void Rio::changeAnimationBasicAttack()
 {
 }
 
+void Rio::onStartQSkill()
+{
+}
+
+void Rio::onUpdateQSkill(float _deltaTime)
+{
+}
+
+void Rio::onStartWSkill()
+{
+}
+
+void Rio::onUpdateWSkill(float _deltaTime)
+{
+}
+
+void Rio::onStartESkill()
+{
+}
+
+void Rio::onUpdateESkill(float _deltaTime)
+{
+}
+
+void Rio::onStartRSkill()
+{
+}
+
+void Rio::onUpdateRSkill(float _deltaTime)
+{
+}
+
+void Rio::onStartDSkill()
+{
+}
+
+void Rio::onUpdateDSkill(float _deltaTime)
+{
+}
+
 

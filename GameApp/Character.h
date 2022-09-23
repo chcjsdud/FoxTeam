@@ -28,13 +28,13 @@ public:
 	void Move(const float4& _position);
 	void MoveWithPathFind(const float4& _position);
 
-
 public:
-	// 0922 박종원
 	float4 GetDirection() { return direction_; }
 	std::string GetCurAnimation() { return curAnimation_; }
 	void SetDirection(float4 _dir) { direction_ = _dir; }
-	bool isFocused() { return bFocused_; }
+	// 0922 박종원
+	bool IsFocused() { return bFocused_; }
+	void ChangeAnimation(std::string _animationName);
 
 public:
 	NavFace* GetCurrentNavFace() { return currentNavFace_; }
@@ -48,13 +48,25 @@ protected:
 	// override 해서 애니메이션을 바꿀 수 있다.
 	virtual void initRendererAndAnimation() = 0;
 
-	// 0922 박종원
-public:
-	virtual void changeAnimation(std::string _animationName);
 protected:
 	virtual void changeAnimationRun() = 0;
 	virtual void changeAnimationWait() = 0;
 	virtual void changeAnimationBasicAttack() = 0;
+
+	virtual void onStartQSkill() = 0;
+	virtual void onUpdateQSkill(float _deltaTime) = 0;
+
+	virtual void onStartWSkill() = 0;
+	virtual void onUpdateWSkill(float _deltaTime) = 0;
+
+	virtual void onStartESkill() = 0;
+	virtual void onUpdateESkill(float _deltaTime) = 0;
+
+	virtual void onStartRSkill() = 0;
+	virtual void onUpdateRSkill(float _deltaTime) = 0;
+
+	virtual void onStartDSkill() = 0;
+	virtual void onUpdateDSkill(float _deltaTime) = 0;
 
 private:
 	void initInput();
@@ -123,7 +135,23 @@ private:
 
 
 #pragma region AttackState
+	void startBasicAttack();
+	void updateBasicAttack(float _deltaTime);
 
+	void startQSkill();
+	void updateQSkill(float _deltaTime);
+
+	void startWSkill();
+	void updateWSkill(float _deltaTime);
+
+	void startESkill();
+	void updateESkill(float _deltaTime);
+
+	void startRSkill();
+	void updateRSkill(float _deltaTime);
+
+	void startDSkill();
+	void updateDSkill(float _deltaTime);
 #pragma endregion
 
 
