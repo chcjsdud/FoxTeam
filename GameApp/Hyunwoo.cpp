@@ -27,16 +27,12 @@ void Hyunwoo::initRendererAndAnimation()
 
 void Hyunwoo::changeAnimationRun()
 {
-	//PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-	//pm->GetPlayerList()[pm->GetMyNumber()].curAnimation_ = "Run";
 	curAnimation_ = "Run";
 	renderer_->ChangeFBXAnimation("Run");
 }
 
 void Hyunwoo::changeAnimationWait()
 {
-	//PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-	//pm->GetPlayerList()[pm->GetMyNumber()].curAnimation_ = "Wait";
 	curAnimation_ = "Wait";
 	renderer_->ChangeFBXAnimation("Wait");
 }
