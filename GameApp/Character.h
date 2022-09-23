@@ -185,5 +185,4 @@ private:
 	std::vector<float4> destinations_;
 
 	bool bFocused_;
-
 };

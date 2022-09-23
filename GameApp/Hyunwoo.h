@@ -41,5 +41,18 @@ protected:
 	virtual void onUpdateDSkill(float _deltaTime) override;
 
 	// 0922 ╧за╬©Ь
+
+public:
+	void InitHyunwooCollision();
+
+
+private:
+	float timer_collision_Q;
+	float timer_end_Q;
+	bool b_Qhit_;
+	GameEngineCollision* collision_Q;
+
+	
+	
 };
 

@@ -43,9 +43,4 @@ protected:
 
 	virtual void onStartDSkill() override;
 	virtual void onUpdateDSkill(float _deltaTime) override;
-
-private:
-
-
-
 };
