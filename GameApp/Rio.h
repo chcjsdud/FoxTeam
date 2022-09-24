@@ -17,7 +17,8 @@ public:
 	Rio& operator=(const Rio&& _other) = delete;
 
 public:
-
+	static void LoadResource();
+	static void ReleaseResource();
 
 protected:
 	void Start() override;

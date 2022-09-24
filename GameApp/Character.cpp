@@ -68,6 +68,12 @@ void Character::Start()
 
 void Character::Update(float _DeltaTime)
 {
+	if (nullptr != collision_ &&
+		collision_->IsUpdate())
+	{
+		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
+	}
+
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
 	if (false == bFocused_)
@@ -79,11 +85,7 @@ void Character::Update(float _DeltaTime)
 		return;
 	}
 
-	if (nullptr != collision_ &&
-		collision_->IsUpdate())
-	{
-		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
-	}
+
 
 	checkCurrentNavFace();
 

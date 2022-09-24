@@ -24,8 +24,8 @@ public:
 public:
 	virtual void LevelStart() override;
 	virtual void LevelUpdate(float _DeltaTime) override;
-	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
+	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 
 public:
 	void GenerateCharactor();

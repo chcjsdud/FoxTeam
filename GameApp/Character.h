@@ -159,30 +159,34 @@ private:
 	//------------------------------------------------------------------------------------------------------------------
 
 protected:
+	// 컴포넌트
 	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* collision_;
 
+
+	// 맵, 이동
 	LumiaMap* currentMap_;
 	NavFace* currentNavFace_;
 	NavMesh* currentNavMesh_;
+	float4 destination_;
+	float4 direction_;
+	std::vector<float4> destinations_;
 
+
+	// 아이템
 	ItemBoxManager* itemBoxmanager_;
 
-	MousePointer* mouse_;
 
+	// 캐릭터 상태
 	CharacterStat stat_;
 	std::string curAnimation_;
-
-private:
 	GameEngineFSM mainState_;
 	GameEngineFSM normalState_;
 	GameEngineFSM crowdControlState_;
 	GameEngineFSM attackState_;
 
-	float4 destination_;
-	float4 direction_;
 
-	std::vector<float4> destinations_;
-
+	// 그 외
+	MousePointer* mouse_;
 	bool bFocused_;
 };

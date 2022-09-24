@@ -298,6 +298,7 @@ void LumiaLevel::GenerateCharactor()
 
 void LumiaLevel::loadResource()
 {
+	// 맵, 네비게이션 메쉬, 아이템박스
 	{
 		GameEngineDirectory tempDir;
 
@@ -309,12 +310,9 @@ void LumiaLevel::loadResource()
 			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx"));
 			Mesh->CreateRenderingBuffer();
 		}
-	}
-
-	{
-		GameEngineDirectory tempDir;
-		tempDir.MoveParent("FoxTeam");
-		tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
+	
+		tempDir.MoveParent("FBX");
+		tempDir / "UserMesh" / "Map";
 
 		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
 
@@ -340,47 +338,16 @@ void LumiaLevel::loadResource()
 		}
 	}
 
-
-	{
-		GameEngineDirectory dir;
-
-		dir.MoveParent("FoxTeam");
-		dir / "Resources" / "FBX" / "GH";
-
-		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
-		mesh->CreateRenderingBuffer();
-
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Wait.fbx"));
-	}
-
-	{
-		GameEngineDirectory dir;
-
-		dir.MoveParent("FoxTeam");
-		dir / "Resources" / "FBX" / "PJW";
-
-		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_run.fbx"));
-		mesh->CreateRenderingBuffer();
-
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_run.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_wait.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_atk0.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_atk1.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillQ.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillE_start.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillE_loop.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillE_end.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillR_start.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillR_loop.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillR_end.fbx"));
-	}
+	// 캐릭터
+	Rio::LoadResource();
+	Hyunwoo::LoadResource();
 }
 
 void LumiaLevel::releaseResource()
 {
 	// loadResource에서 로드한 리소스 삭제
 
+	// 맵, 네비게이션 메쉬, 아이템박스
 	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh.fbx");
 	{
 		GameEngineDirectory tempDir;
@@ -411,19 +378,10 @@ void LumiaLevel::releaseResource()
 		}
 	}
 
-	{
-		GameEngineFBXMeshManager::GetInst().Delete("Rio_Run.fbx");
+	// 캐릭터
+	Rio::ReleaseResource();
+	Hyunwoo::ReleaseResource();
 
-		GameEngineFBXAnimationManager::GetInst().Delete("Rio_Run.fbx");
-		GameEngineFBXAnimationManager::GetInst().Delete("Rio_Wait.fbx");
-	}
-
-	{
-		GameEngineFBXMeshManager::GetInst().Delete("hyunwoo_run.fbx");
-
-		GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_run.fbx");
-		GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_wait.fbx");
-	}
 
 	mouse_ = nullptr;
 	itemBox_ = nullptr;

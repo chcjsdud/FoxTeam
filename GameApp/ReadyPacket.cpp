@@ -58,7 +58,7 @@ void ReadyPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, b
 
     if (_bServer)
     {
-        GameEngineDebug::OutPutDebugString("플레이어 " + std::to_string(targetIndex_) + " 가 레디를 박았습니다.");
+        GameEngineDebug::OutPutDebugString("플레이어 " + std::to_string(targetIndex_) + " 가 레디를 박았습니다.\n");
         _network->Send(this);
     }
 }

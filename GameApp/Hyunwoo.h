@@ -14,6 +14,9 @@ public:
 	Hyunwoo& operator=(const Hyunwoo& _other) = delete;
 	Hyunwoo& operator=(const Hyunwoo&& _other) = delete;
 
+public:
+	static void LoadResource();
+	static void ReleaseResource();
 
 protected:
 	// Character을(를) 통해 상속됨

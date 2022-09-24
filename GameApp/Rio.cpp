@@ -18,6 +18,39 @@ Rio::~Rio()
 
 }
 
+void Rio::LoadResource()
+{
+	GameEngineDirectory dir;
+
+	dir.MoveParent("FoxTeam");
+	dir / "Resources" / "FBX" / "Character" / "Rio";
+
+	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
+	mesh->CreateRenderingBuffer();
+
+
+	std::vector<GameEngineFile> allFile = dir.GetAllFile("fbx");
+	for (GameEngineFile& file : allFile)
+	{
+		GameEngineFBXAnimationManager::GetInst().Load(file.GetFullPath());
+	}
+}
+
+void Rio::ReleaseResource()
+{
+	GameEngineDirectory dir;
+	dir.MoveParent("FoxTeam");
+	dir / "Resources" / "FBX" / "Character" / "Rio";
+
+	std::vector<GameEngineFile> allFile = dir.GetAllFile("fbx");
+	for (GameEngineFile& file : allFile)
+	{
+		GameEngineFBXAnimationManager::GetInst().Delete(file.GetFileName());
+	}
+
+	GameEngineFBXMeshManager::GetInst().Delete("Rio_Run.fbx");
+}
+
 void Rio::Start()
 {
 	Character::Start();
