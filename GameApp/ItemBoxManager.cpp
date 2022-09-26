@@ -201,6 +201,7 @@ void ItemBoxManager::OpenItemBox()
 	}
 	itemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
 	itemBoxUI_->RenderOn();
+	itemBoxUI_->GetItemBoxInfo(GetSelectBox());
 }
 
 void ItemBoxManager::CloseItemBox()

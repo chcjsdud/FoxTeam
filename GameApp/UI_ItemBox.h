@@ -7,6 +7,8 @@ using namespace std;
 class GameEngineUIRenderer;
 class Player;
 class ItemBase;
+class ItemBox;
+
 
 class UI_ItemBox : public GameEngineActor
 {
@@ -33,6 +35,11 @@ public:
 
 	bool MouseCollisionCheck();
 
+	//아이템 리스트를 받아서 pushitem을 해주는 함수
+	void GetItemBoxInfo(list<ItemBase*> _ItemList);
+
+	void GetItemBoxInfo(ItemBox* _ItemBox);
+
 	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
 
 protected:
@@ -54,14 +61,14 @@ private:
 	//자동으로 빈슬롯을 찾아서 ItemBase를 세팅해주는 함수
 	void EmptySlotReturn(ItemBase* _TargetSlot);
 
-	//아이템 슬롯을 체크해서 비어있지 않으면 이미지를 출력해주는 함수
-	void CheckItemSlot();
+	//슬롯에 아이템이 들어있을때 이미지 렌더를 위한 함수
+	void ItemRenderCheck();
 
 	//이현
 private:
 	Player* Player_;
 
-#pragma region 아이템 출력용 아이템베이스 모음
+#pragma region 아이템 출력용 렌더러 + 아이템베이스 모음
 
 	ItemBase* Slot0_Item;
 	ItemBase* Slot1_Item;
@@ -72,11 +79,43 @@ private:
 	ItemBase* Slot6_Item;
 	ItemBase* Slot7_Item;
 
+	GameEngineUIRenderer* Slot0_ItemRenderer;
+	GameEngineUIRenderer* Slot1_ItemRenderer;
+	GameEngineUIRenderer* Slot2_ItemRenderer;
+	GameEngineUIRenderer* Slot3_ItemRenderer;
+	GameEngineUIRenderer* Slot4_ItemRenderer;
+	GameEngineUIRenderer* Slot5_ItemRenderer;
+	GameEngineUIRenderer* Slot6_ItemRenderer;
+	GameEngineUIRenderer* Slot7_ItemRenderer;
+
+
 	//너무 양이 많아진다고 느껴지면 자료구조 사용하자
 	//list<ItemBase*> SlotList_;
 
 #pragma endregion 
 
+#pragma region 슬롯별 충돌 콜리전 모음
+
+	GameEngineCollision* Slot0Collision;
+	GameEngineCollision* Slot1Collision;
+	GameEngineCollision* Slot2Collision;
+	GameEngineCollision* Slot3Collision;
+	GameEngineCollision* Slot4Collision;
+	GameEngineCollision* Slot5Collision;
+	GameEngineCollision* Slot6Collision;
+	GameEngineCollision* Slot7Collision;
+
+#pragma endregion 
+
+#pragma region 슬롯 float4 피봇값
+
+	float4 ItemBox_BackgroundPos;
+	float4 ItemBox_BasicSlotPos;
+	float4 ItemBox_SlotXPivot;
+	float4 ItemBox_SlotYPivot;
+	float4 ItemBox_SlotSize;
+
+#pragma endregion
 
 #pragma region 참고사항
 	/*
