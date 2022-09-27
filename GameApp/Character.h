@@ -29,27 +29,30 @@ public:
 	void Move(const float4& _position);
 	void MoveWithPathFind(const float4& _position);
 
-public:
-	float4 GetDirection() { return direction_; }
-	std::string GetCurAnimation() { return curAnimation_; }
-	void SetDirection(float4 _dir) { direction_ = _dir; }
-	// 0922 박종원
-	bool IsFocused() { return bFocused_; }
+	void Focus()								{ bFocused_ = true; }
+	void UnFocus()								{ bFocused_ = false; }
+	bool IsFocused()							{ return bFocused_; }
+
 	void ChangeAnimation(std::string _animationName);
 
+	void Damage(float _amount);
+
+#pragma region GetterSetter
 public:
-	NavFace* GetCurrentNavFace() { return currentNavFace_; }
+	float4 GetDirection()						{ return direction_; }
+	std::string GetCurAnimation()				{ return curAnimation_; }
+	NavFace* GetCurrentNavFace()				{ return currentNavFace_; }
 
-	void Focus() { bFocused_ = true; }
-	void UnFocus() { bFocused_ = false; }
+	void SetDirection(float4 _dir)				{ direction_ = _dir; }
+	void SetCurrentNavFace(NavFace* _Navi)		{ currentNavFace_ = _Navi; }
 	void SetCurrentNavMesh(NavMesh* _NaviMesh);
-	void SetCurrentNavFace(NavFace* _Navi) { currentNavFace_ = _Navi; }
 
+#pragma endregion
+
+#pragma region PureVirtualFunc
 protected:
-	// override 해서 애니메이션을 바꿀 수 있다.
 	virtual void initRendererAndAnimation() = 0;
 
-protected:
 	virtual void changeAnimationRun() = 0;
 	virtual void changeAnimationWait() = 0;
 	virtual void changeAnimationBasicAttack() = 0;
@@ -68,11 +71,14 @@ protected:
 
 	virtual void onStartDSkill() = 0;
 	virtual void onUpdateDSkill(float _deltaTime) = 0;
+#pragma endregion
 
+	
 private:
 	void initInput();
 	void initState();
 
+private:
 	void inputProcess(float _deltaTime);
 	void moveProcess(float _deltaTime);
 	void moveTick(float _deltaTime, const float4& _startPosition);
@@ -84,7 +90,7 @@ private:
 
 	Character* getMousePickedCharacter();
 
-
+	
 	//------------------------------------------------------------------------------------------------------------------
 	// State
 	//------------------------------------------------------------------------------------------------------------------
@@ -97,7 +103,6 @@ private:
 	//     |                 |                 |
 	//  [Normal]            [CC]            [Attack]
 	// 
-
 #pragma region MainState
 	void startNormalState();
 	void updateNormalState(float _deltaTime);
@@ -123,7 +128,8 @@ private:
 	void startRun();
 	void updateRun(float _deltaTime);
 
-
+	void startChase();
+	void updateChase(float _deltaTime);
 #pragma endregion
 
 

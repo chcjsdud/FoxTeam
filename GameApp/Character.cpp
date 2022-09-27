@@ -274,6 +274,11 @@ void Character::ChangeAnimation(std::string _animationName)
 	renderer_->ChangeFBXAnimation(_animationName);
 }
 
+void Character::Damage(float _amount)
+{
+	stat_.HP -= _amount;
+}
+
 void Character::initInput()
 {
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
@@ -297,6 +302,7 @@ void Character::initState()
 	normalState_.CreateState(MakeState(Character, Watch));
 	normalState_.CreateState(MakeState(Character, Stop));
 	normalState_.CreateState(MakeState(Character, Run));
+	normalState_.CreateState(MakeState(Character, Chase));
 
 	attackState_.CreateState(MakeState(Character, NoAttack));
 
@@ -489,6 +495,14 @@ void Character::updateRun(float _deltaTime)
 {
 	inputProcess(_deltaTime);
 	moveProcess(_deltaTime);
+}
+
+void Character::startChase()
+{
+}
+
+void Character::updateChase(float _deltaTime)
+{
 }
 
 void Character::startStun()
