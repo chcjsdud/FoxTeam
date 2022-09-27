@@ -432,4 +432,59 @@ void UI_ItemBox::ItemRenderCheck()
 		Slot2_ItemRenderer->Off();
 	}
 
+	if (Slot3_Item != nullptr)
+	{		
+		Slot3_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot3_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot3_ItemRenderer->SetImage("Item_Bottle_Test.png");
+	}		
+	else	
+	{		
+		Slot3_ItemRenderer->Off();
+	}
+
+	if (Slot4_Item != nullptr)
+	{
+		Slot4_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot4_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot4_ItemRenderer->SetImage("Item_Bottle_Test.png");
+	}
+	else
+	{
+		Slot4_ItemRenderer->Off();
+	}
+
+	if (Slot5_Item != nullptr)
+	{
+		Slot5_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot5_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot5_ItemRenderer->SetImage("Item_Bottle_Test.png");
+	}
+	else
+	{
+		Slot5_ItemRenderer->Off();
+	}
+
+	if (Slot6_Item != nullptr)
+	{
+		Slot6_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot6_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot6_ItemRenderer->SetImage("Item_Bottle_Test.png");
+	}
+	else
+	{
+		Slot6_ItemRenderer->Off();
+	}
+
+	if (Slot7_Item != nullptr)
+	{
+		Slot7_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot7_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot7_ItemRenderer->SetImage("Item_Bottle_Test.png");
+	}
+	else
+	{
+		Slot7_ItemRenderer->Off();
+	}
+
 }
