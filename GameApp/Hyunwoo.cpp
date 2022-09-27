@@ -87,14 +87,14 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("Wait", "hyunwoo_wait.fbx", 0);
 	renderer_->CreateFBXAnimation("Death", "hyunwoo_death.fbx", 0, false);
 	renderer_->CreateFBXAnimation("Atk0", "hyunwoo_atk0.fbx", 0, false);
-	renderer_->CreateFBXAnimation("Atk1", "hyunwoo_atk1.fbx", 0, false);
+	//renderer_->CreateFBXAnimation("Atk1", "hyunwoo_atk1.fbx", 0, false);
 	renderer_->CreateFBXAnimation("SkillQ", "hyunwoo_skillQ.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillE_start", "hyunwoo_skillE_start.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillE_loop", "hyunwoo_skillE_loop.fbx", 0);
-	renderer_->CreateFBXAnimation("SkillE_end", "hyunwoo_skillE_end.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillR_start", "hyunwoo_skillR_start.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillR_loop", "hyunwoo_skillR_loop.fbx", 0);
-	renderer_->CreateFBXAnimation("SkillR_end", "hyunwoo_skillR_end.fbx", 0, false);
+	//renderer_->CreateFBXAnimation("SkillE_start", "hyunwoo_skillE_start.fbx", 0, false);
+	//renderer_->CreateFBXAnimation("SkillE_loop", "hyunwoo_skillE_loop.fbx", 0);
+	//renderer_->CreateFBXAnimation("SkillE_end", "hyunwoo_skillE_end.fbx", 0, false);
+	//renderer_->CreateFBXAnimation("SkillR_start", "hyunwoo_skillR_start.fbx", 0, false);
+	//renderer_->CreateFBXAnimation("SkillR_loop", "hyunwoo_skillR_loop.fbx", 0);
+	//renderer_->CreateFBXAnimation("SkillR_end", "hyunwoo_skillR_end.fbx", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
 }

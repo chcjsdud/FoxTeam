@@ -93,7 +93,7 @@ void CharStatPacket::initPacketID()
 }
 
 GameEnginePacketBase* CharStatPacket::getUserObject()
-{
+{  
     return new CharStatPacket;
 }
 
@@ -101,7 +101,7 @@ void CharStatPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network
 {
     PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-    pm->GetPlayerList()[targetIndex_].stat_ = &stat_;
+    *(pm->GetPlayerList()[targetIndex_].stat_) = stat_;
 
     if (_bServer)
     {
