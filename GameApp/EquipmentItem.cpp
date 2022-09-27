@@ -2,6 +2,7 @@
 #include "EquipmentItem.h"
 
 EquipmentItem::EquipmentItem()
+	: type_(EquipmentType::NONE)
 {
 
 }

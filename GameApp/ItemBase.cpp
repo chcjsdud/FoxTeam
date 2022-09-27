@@ -2,7 +2,7 @@
 #include "ItemBase.h"
 
 ItemBase::ItemBase()
-	: Type(ItemType::None)
+	: Type(ItemType::NONE)
 	, Renderer(nullptr)
 {
 	

@@ -60,7 +60,18 @@ private:
 
 	// Item ฐüทร
 	void CreateAllItemList();
+	void CreateMiscItemList();
+	void CreateUseableItemList();
+	void CreateEquipmentItemList();
+
 	ItemBase* CreateItem(const std::string _Name, ItemType _Type,
+		const std::string _ImageName = "");
+
+	MiscItem* CreateMiscItem(const std::string _Name,
+		const std::string _ImageName = "");
+	UseableItem* CreateUseableItem(const std::string _Name,
+		const std::string _ImageName = "");
+	EquipmentItem* CreateEquipmentItem(const std::string _Name,
 		const std::string _ImageName = "");
 
 private:

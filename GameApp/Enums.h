@@ -65,8 +65,21 @@ enum class Location
 
 enum class ItemType
 {
-	None,
-	Equipment,
-	Useable,
-	Misc
+	NONE = -1,
+	EQUIPMENT,
+	USEABLE,
+	MISC,
+	MAX
+};
+
+enum class EquipmentType
+{
+	NONE = -1,
+	WEAPON,
+	HEAD,
+	CHEST,
+	ARM,
+	LEG,
+	ACCESSORY,
+	MAX
 };

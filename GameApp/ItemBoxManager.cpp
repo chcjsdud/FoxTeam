@@ -437,15 +437,15 @@ void ItemBoxManager::UserLoad_ItemListInfo()
 				
 				switch (static_cast<ItemType>(Type))
 				{
-				case ItemType::None:
+				case ItemType::NONE:
 					break;
-				case ItemType::Equipment:
+				case ItemType::EQUIPMENT:
 					Item = GetLevel()->CreateActor<EquipmentItem>();
 					break;
-				case ItemType::Useable:
+				case ItemType::USEABLE:
 					Item = GetLevel()->CreateActor<UseableItem>();
 					break;
-				case ItemType::Misc:
+				case ItemType::MISC:
 					Item = GetLevel()->CreateActor<MiscItem>();
 					break;
 				default:
