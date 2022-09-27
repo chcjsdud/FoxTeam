@@ -9,6 +9,7 @@
 #include "ItemBox.h"
 #include "PlayerInfoManager.h"
 
+
 Character::Character()
 	: collision_(nullptr)
 	, currentNavFace_(nullptr)
@@ -64,17 +65,28 @@ void Character::Start()
 	{
 		GameEngineDebug::MsgBoxError("level에 MousePointer 정보가 없습니다.");
 	}
+
+	
 }
 
 void Character::Update(float _DeltaTime)
 {
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
+	if (0.0f >= pm->GetMyPlayer().stat_->HP)
+	{
+		// 죽음 판정
+		mainState_.ChangeState("DeathState", true);
+		return;
+	}
+
 	if (nullptr != collision_ &&
 		collision_->IsUpdate())
 	{
 		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
 	}
 
-	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
 
 	if (false == bFocused_)
 	{
@@ -85,13 +97,11 @@ void Character::Update(float _DeltaTime)
 		return;
 	}
 
-
-
 	checkCurrentNavFace();
-
 	checkItemBox();
 
 	mainState_.Update(_DeltaTime);
+
 }
 
 void Character::checkCurrentNavFace()
@@ -276,7 +286,7 @@ void Character::ChangeAnimation(std::string _animationName)
 
 void Character::Damage(float _amount)
 {
-	stat_.HP -= _amount;
+	actorStat_.HP -= _amount;
 }
 
 void Character::initInput()
@@ -298,20 +308,26 @@ void Character::initState()
 	mainState_.CreateState(MakeState(Character, NormalState));
 	mainState_.CreateState(MakeState(Character, AttackState));
 	mainState_.CreateState(MakeState(Character, CrowdControlState));
+	mainState_.CreateState(MakeState(Character, DeathState));
+
 
 	normalState_.CreateState(MakeState(Character, Watch));
 	normalState_.CreateState(MakeState(Character, Stop));
 	normalState_.CreateState(MakeState(Character, Run));
 	normalState_.CreateState(MakeState(Character, Chase));
 
-	attackState_.CreateState(MakeState(Character, NoAttack));
+	//attackState_.CreateState(MakeState(Character, NoAttack));
+	attackState_.CreateState(MakeState(Character, QSkill));
+
+	deathState_.CreateState(MakeState(Character, PlayerDeath));
 
 
 	mainState_ << "NormalState";
 
 
 	normalState_ << "Watch";
-	attackState_ << "NoAttack";
+	attackState_ << "QSkill";
+	deathState_ << "PlayerDeath";
 }
 
 
@@ -363,6 +379,9 @@ void Character::inputProcess(float _deltaTime)
 
 		}
 	}
+
+
+
 }
 
 void Character::moveProcess(float _deltaTime)
@@ -407,7 +426,7 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 
 	GetTransform()->SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
 
-	float4 moveSpeed = direction_ * stat_.MovementSpeed * _deltaTime;
+	float4 moveSpeed = direction_ * actorStat_.MovementSpeed * _deltaTime;
 	float4 nextMovePosition = _startPosition + moveSpeed;
 
 	float temp;
@@ -425,13 +444,24 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 
 void Character::startNormalState()
 {
-	normalState_ << "Watch";
+	normalState_.ChangeState("Watch", true);
 }
 
 void Character::updateNormalState(float _deltaTime)
 {
+
+
+	if (true == GameEngineInput::GetInst().Down("Q"))
+	{
+		mainState_.ChangeState("AttackState", true);
+		attackState_.ChangeState("QSkill", true);
+		return;
+	}
+
+
 	// Normal State 업데이트
 	normalState_.Update(_deltaTime);
+
 
 	// 업데이트 후에 높이 체크
 	checkCurrentNavFace();
@@ -453,11 +483,23 @@ void Character::updateCrowdControlState(float _deltaTime)
 
 void Character::startAttackState()
 {
+
 }
 
 void Character::updateAttackState(float _deltaTime)
 {
 	attackState_.Update(_deltaTime);
+}
+
+void Character::startDeathState()
+{
+	// 죽음 패킷을 여기서 보내야 할까??
+
+}
+
+void Character::updateDeathState(float _deltaTime)
+{
+	deathState_.Update(_deltaTime);
 }
 
 void Character::startWatch()
@@ -519,6 +561,10 @@ void Character::startNoAttack()
 
 void Character::updateNoAttack(float _deltaTime)
 {
+
+	mainState_.ChangeState("NormalState");
+	
+	
 }
 
 void Character::startBasicAttack()
@@ -577,4 +623,14 @@ void Character::startDSkill()
 void Character::updateDSkill(float _deltaTime)
 {
 	onUpdateDSkill(_deltaTime);
+}
+
+void Character::startPlayerDeath()
+{
+	onStartDeath();
+}
+
+void Character::updatePlayerDeath(float _deltaTime)
+{
+	onUpdateDeath(_deltaTime);
 }

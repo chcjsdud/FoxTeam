@@ -133,4 +133,12 @@ void Rio::onUpdateDSkill(float _deltaTime)
 {
 }
 
+void Rio::onStartDeath()
+{
+}
+
+void Rio::onUpdateDeath(float _deltaTime)
+{
+}
+
 

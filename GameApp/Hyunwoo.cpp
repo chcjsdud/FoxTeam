@@ -2,7 +2,10 @@
 #include "Hyunwoo.h"
 #include "PlayerInfoManager.h"
 #include <GameEngine/GameEngineCollision.h>
+#include "CharStatPacket.h"
 
+#include "GameServer.h"
+#include "GameClient.h"
 
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false)
@@ -58,6 +61,19 @@ void Hyunwoo::ReleaseResource()
 
 }
 
+void Hyunwoo::Start()
+{
+	Character::Start();
+	initHyunwooCollision();
+	PlayerInfoManager::GetInstance()->GetMyPlayer().stat_ = &actorStat_;
+}
+
+void Hyunwoo::Update(float _deltaTime)
+{
+	Character::Update(_deltaTime);
+
+}
+
 void Hyunwoo::initRendererAndAnimation()
 {
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
@@ -82,6 +98,18 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
+
+void Hyunwoo::initHyunwooCollision()
+{
+	collision_Q = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	collision_Q->GetTransform()->SetLocalPosition({ 0.0f,0.0f,200.0f });
+	collision_Q->GetTransform()->SetLocalScaling({300.0f, 1.0f, 250.0f});
+	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
+	collision_Q->SetCollisionType(CollisionType::AABBBox3D);
+	collision_Q->Off();
+
+}
+
 void Hyunwoo::changeAnimationRun()
 {
 	curAnimation_ = "Run";
@@ -100,26 +128,68 @@ void Hyunwoo::changeAnimationBasicAttack()
 	renderer_->ChangeFBXAnimation("Atk0");
 }
 
+
+
+
 void Hyunwoo::onStartQSkill()
 {
+	curAnimation_ = "SkillQ";
+	renderer_->ChangeFBXAnimation("SkillQ", true);
 }
 
 void Hyunwoo::onUpdateQSkill(float _deltaTime)
 {
+	GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
 	timer_collision_Q += _deltaTime;
 	timer_end_Q += _deltaTime;
-
-	if (0.3f <= timer_collision_Q && false == b_Qhit_)
-	{
-		// 여기서 피격 충돌 판정이 나옴
-		collision_Q->On();
-		b_Qhit_ = true;
-	}
 
 	if (true == b_Qhit_)
 	{
 		collision_Q->Off();
 	}
+
+	if (0.3f <= timer_collision_Q && false == b_Qhit_)
+	{
+		// 여기서 피격 충돌 판정이 나옴
+		collision_Q->On();
+
+		auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
+		
+		for (GameEngineCollision* col : collisionList)
+		{
+			GameEngineActor* actor = col->GetActor();
+			Character* character = nullptr;
+			if (nullptr != actor && actor != this)
+			{
+				character = dynamic_cast<Character*>(actor);
+
+				if (nullptr != character)
+				{
+					// 여기에 들어왔다는 건 무언가에 대미지를 줬다는 뜻이다.
+					// 대미지 패킷 : Playerinfo 의 chracterstat 구조체에 있는 체력 값을 감산한다.
+					// 이는 역시 프레임마다 LumiaLevel 의 프로세스 패킷에서 실시간으로 감지한다.
+
+					character->Damage(100.0f);
+
+					CharStatPacket packet;
+					packet.SetTargetIndex(character->GetIndex());
+					packet.SetStat(character->GetStat());
+					
+					if (true == GameServer::GetInstance()->IsOpened())
+					{
+						GameServer::GetInstance()->Send(&packet);
+					}
+					else if (true == GameClient::GetInstance()->IsConnected())
+					{
+						GameClient::GetInstance()->Send(&packet);
+					}
+				}
+			}
+		}
+
+		b_Qhit_ = true;
+	}
+
 
 	if (1.05f <= timer_end_Q)
 	{
@@ -127,6 +197,8 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 		timer_collision_Q = 0.0f;
 		timer_end_Q = 0.0f;
 		b_Qhit_ = false;
+		changeAnimationWait();
+		mainState_ << "NormalState";
 		normalState_ << "Watch";
 		return;
 	}
@@ -174,6 +246,16 @@ void Hyunwoo::onStartDSkill()
 }
 
 void Hyunwoo::onUpdateDSkill(float _deltaTime)
+{
+}
+
+void Hyunwoo::onStartDeath()
+{
+	curAnimation_ = "Death";
+	renderer_->ChangeFBXAnimation("Death");
+}
+
+void Hyunwoo::onUpdateDeath(float _deltaTime)
 {
 }
 

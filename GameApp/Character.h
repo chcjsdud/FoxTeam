@@ -39,13 +39,17 @@ public:
 
 #pragma region GetterSetter
 public:
+	CharacterStat GetStat()					{ return actorStat_; }
 	float4 GetDirection()						{ return direction_; }
 	std::string GetCurAnimation()				{ return curAnimation_; }
 	NavFace* GetCurrentNavFace()				{ return currentNavFace_; }
+	int GetIndex()								{ return myIndex_; }
 
 	void SetDirection(float4 _dir)				{ direction_ = _dir; }
 	void SetCurrentNavFace(NavFace* _Navi)		{ currentNavFace_ = _Navi; }
 	void SetCurrentNavMesh(NavMesh* _NaviMesh);
+	void SetStat(CharacterStat _status)		 { actorStat_ = _status; }
+	void SetIndex(int _index)				 { myIndex_ = _index; }
 
 #pragma endregion
 
@@ -57,6 +61,7 @@ protected:
 	virtual void changeAnimationWait() = 0;
 	virtual void changeAnimationBasicAttack() = 0;
 
+	// Main(AttackState)
 	virtual void onStartQSkill() = 0;
 	virtual void onUpdateQSkill(float _deltaTime) = 0;
 
@@ -71,6 +76,12 @@ protected:
 
 	virtual void onStartDSkill() = 0;
 	virtual void onUpdateDSkill(float _deltaTime) = 0;
+
+
+	// Main(DeathState)
+	virtual void onStartDeath() = 0;
+	virtual void onUpdateDeath(float _deltaTime) = 0;
+
 #pragma endregion
 
 	
@@ -99,9 +110,9 @@ private:
 	//
 	//   계층도
 	//                    [Main]
-	//     ----------------  |  ----------------
-	//     |                 |                 |
-	//  [Normal]            [CC]            [Attack]
+	//     ----------------  |  ---------------- ---------------
+	//     |                 |                 |				|
+	//  [Normal]            [CC]            [Attack]		 [Death]
 	// 
 #pragma region MainState
 	void startNormalState();
@@ -112,6 +123,9 @@ private:
 
 	void startAttackState();
 	void updateAttackState(float _deltaTime);
+
+	void startDeathState();
+	void updateDeathState(float _deltaTime);
 #pragma endregion
 
 
@@ -164,7 +178,10 @@ private:
 	void updateDSkill(float _deltaTime);
 #pragma endregion
 
-
+#pragma region DeathState
+	void startPlayerDeath();
+	void updatePlayerDeath(float _deltaTime);
+#pragma endregion
 
 	//------------------------------------------------------------------------------------------------------------------
 
@@ -187,11 +204,14 @@ protected:
 	ItemBoxManager* itemBoxmanager_;
 	std::vector<ItemBase*> inventory_;	// 10칸
 
-
 	// 캐릭터 상태, 능력치
-	CharacterStat stat_;
+	CharacterStat actorStat_;
 	std::string curAnimation_;
+	
+	// Omni State
 	GameEngineFSM mainState_;
+
+	// In Main State
 	GameEngineFSM normalState_;
 	GameEngineFSM crowdControlState_;
 	GameEngineFSM attackState_;
@@ -199,8 +219,13 @@ protected:
 	// 공격
 	Character* target_;
 
+	GameEngineFSM deathState_;
+	//
 
 	// 그 외
 	MousePointer* mouse_;
 	bool bFocused_;
+
+	// 0927박종원
+	int myIndex_;
 };

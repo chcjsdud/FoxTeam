@@ -18,9 +18,15 @@ public:
 	static void LoadResource();
 	static void ReleaseResource();
 
+
+protected:
+	void Start() override;
+	void Update(float _deltaTime) override;
+
 protected:
 	// Character을(를) 통해 상속됨
 	virtual void initRendererAndAnimation() override;
+	void initHyunwooCollision();
 
 
 	virtual void changeAnimationRun() override;
@@ -43,11 +49,12 @@ protected:
 	virtual void onStartDSkill() override;
 	virtual void onUpdateDSkill(float _deltaTime) override;
 
-	// 0922 박종원
+
+	virtual void onStartDeath() override;
+	virtual void onUpdateDeath(float _deltaTime) override;
 
 public:
 	void InitHyunwooCollision();
-
 
 private:
 	float timer_collision_Q;
@@ -58,4 +65,3 @@ private:
 	
 	
 };
-

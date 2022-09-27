@@ -17,6 +17,7 @@
 #include "ePacketID.h"
 #include "CharMovementPacket.h"
 #include "CharAnimationPacket.h"
+#include "CharStatPacket.h"
 #include "Enums.h"
 //#include "LumiaUIController.h"
 
@@ -72,8 +73,8 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 			packet.SetTargetIndex(pm->GetMyNumber());
 			packet.SetAnimation(characterActorList_[pm->GetMyNumber()]->GetCurAnimation());
 			server->Send(&packet);
-
 		}
+
 
 	}
 	else if (true == GameClient::GetInstance()->IsConnected())
@@ -96,6 +97,15 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 			client->Send(&packet);
 
 		}
+
+		{
+			// 자기 스테이터스를 계속 업데이트하는 패킷
+			CharStatPacket packet;
+			packet.SetTargetIndex(pm->GetMyNumber());
+			packet.SetStat(*(pm->GetMyPlayer().stat_));
+			client->Send(&packet);
+		}
+
 	}
 
 #ifdef SERVER
@@ -195,6 +205,8 @@ void LumiaLevel::GenerateCharactor()
 	{
 		pm->GetPlayerList()[i].curAnimation_ = "";
 
+		Character* newCharacter = nullptr;
+
 		switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
 		{
 		case JobType::NONE:
@@ -202,58 +214,42 @@ void LumiaLevel::GenerateCharactor()
 			break;
 		case JobType::YUKI:
 		{
-			Character* newCharacter = CreateActor<Rio>();
-			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-			characterActorList_.emplace_back(newCharacter);
+			newCharacter = CreateActor<Rio>();
 			break;
 		}
 		case JobType::FIORA:
 		{
-			Character* newCharacter = CreateActor<Rio>();
-			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-			characterActorList_.emplace_back(newCharacter);
+			newCharacter = CreateActor<Rio>();
 			break;
 		}
 		case JobType::ZAHIR:
 		{
-			Character* newCharacter = CreateActor<Rio>();
-			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-			characterActorList_.emplace_back(newCharacter);
+			newCharacter = CreateActor<Rio>();
 			break;
 		}
 		case JobType::NADINE:
 		{
-			Character* newCharacter = CreateActor<Rio>();
-			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-			characterActorList_.emplace_back(newCharacter);
+			newCharacter = CreateActor<Rio>();
 			break;
 		}
 		case JobType::HYUNWOO:
 		{
-			Character* newCharacter = CreateActor<Hyunwoo>();
-			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-			characterActorList_.emplace_back(newCharacter);
+			newCharacter = CreateActor<Hyunwoo>();
 			break;
 		}
 		case JobType::JACKIE:
 		{
-			Character* newCharacter = CreateActor<Rio>();
-			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-			characterActorList_.emplace_back(newCharacter);
+			newCharacter = CreateActor<Rio>();
 			break;
 		}
 		case JobType::RIO:
 		{
-			Character* newCharacter = CreateActor<Rio>();
-			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-			characterActorList_.emplace_back(newCharacter);
+			newCharacter = CreateActor<Rio>();
 			break;
 		}
 		case JobType::AYA:
 		{
-			Character* newCharacter = CreateActor<Rio>();
-			newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-			characterActorList_.emplace_back(newCharacter);
+			newCharacter = CreateActor<Rio>();
 			break;
 		}
 		case JobType::MAX:
@@ -264,8 +260,10 @@ void LumiaLevel::GenerateCharactor()
 			break;
 		}
 
+		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+		newCharacter->SetIndex(i);
+		characterActorList_.emplace_back(newCharacter);
 		
-
 		if (i == pm->GetMyNumber())
 		{
 			characterActorList_[i]->Focus();
@@ -443,12 +441,14 @@ void LumiaLevel::serverCheck()
 		GameServer* server = GameServer::GetInstance();
 		server->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
 		server->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
+		server->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);
 	}
 	else if (true == GameClient::GetInstance()->IsConnected())
 	{
 		GameClient* client = GameClient::GetInstance();
 		client->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
 		client->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
+		client->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);
 	}
 }
 

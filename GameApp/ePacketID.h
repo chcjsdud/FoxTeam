@@ -20,6 +20,7 @@ enum class ePacketID
 	// LumiaLevel
 	CharMovementPacket,
 	CharAnimationPacket,
+	CharStatPacket,
 
 	MAX
 };

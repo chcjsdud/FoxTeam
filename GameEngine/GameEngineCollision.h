@@ -107,7 +107,7 @@ public:
 	GameEngineCollision* GetCollision(int _OtherGroup);
 	template<typename T> GameEngineCollision* GetCollision(T _otherGroup);
 	std::list<GameEngineCollision*> GetCollisionList(int _OtherGroup);
-
+	template<typename T> std::list<GameEngineCollision*> GetCollisionList(T _OtherGroup);
 
 	// 박종원 0728
 	// 콜리젼에게 "소속" 을 등록해서
@@ -135,4 +135,10 @@ template<typename T>
 inline GameEngineCollision* GameEngineCollision::GetCollision(T _otherGroup)
 {
 	return GetCollision(static_cast<int>(_otherGroup));
+}
+
+template<typename T>
+inline std::list<GameEngineCollision*> GameEngineCollision::GetCollisionList(T _OtherGroup)
+{
+	return GetCollisionList(static_cast<int>(_OtherGroup));
 }

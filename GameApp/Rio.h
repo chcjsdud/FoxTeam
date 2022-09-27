@@ -44,4 +44,9 @@ protected:
 
 	virtual void onStartDSkill() override;
 	virtual void onUpdateDSkill(float _deltaTime) override;
+
+
+	virtual void onStartDeath() override;
+	virtual void onUpdateDeath(float _deltaTime) override;
+
 };
