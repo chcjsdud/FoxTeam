@@ -73,7 +73,7 @@ void Character::Update(float _DeltaTime)
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-	if (0.0f >= pm->GetMyPlayer().stat_->HP)
+	if (0.0f >= actorStat_.HP)
 	{
 		// Á×À½ ÆÇÁ¤
 		mainState_.ChangeState("DeathState", true);

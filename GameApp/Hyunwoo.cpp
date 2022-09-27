@@ -65,11 +65,12 @@ void Hyunwoo::Start()
 {
 	Character::Start();
 	initHyunwooCollision();
-	PlayerInfoManager::GetInstance()->GetMyPlayer().stat_ = &actorStat_;
+
 }
 
 void Hyunwoo::Update(float _deltaTime)
 {
+
 	Character::Update(_deltaTime);
 
 }
@@ -173,7 +174,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 					CharStatPacket packet;
 					packet.SetTargetIndex(character->GetIndex());
-					packet.SetStat(character->GetStat());
+					packet.SetStat(*(character->GetStat()));
 					
 					if (true == GameServer::GetInstance()->IsOpened())
 					{

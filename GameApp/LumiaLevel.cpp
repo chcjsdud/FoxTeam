@@ -245,6 +245,7 @@ void LumiaLevel::GenerateCharactor()
 		case JobType::RIO:
 		{
 			newCharacter = CreateActor<Rio>();
+			
 			break;
 		}
 		case JobType::AYA:
@@ -260,6 +261,7 @@ void LumiaLevel::GenerateCharactor()
 			break;
 		}
 
+		PlayerInfoManager::GetInstance()->GetPlayerList()[i].stat_ = newCharacter->GetStat();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		newCharacter->SetIndex(i);
 		characterActorList_.emplace_back(newCharacter);

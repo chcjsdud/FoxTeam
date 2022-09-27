@@ -39,7 +39,7 @@ public:
 
 #pragma region GetterSetter
 public:
-	CharacterStat GetStat()					{ return actorStat_; }
+	CharacterStat* GetStat()					{ return &actorStat_; }
 	float4 GetDirection()						{ return direction_; }
 	std::string GetCurAnimation()				{ return curAnimation_; }
 	NavFace* GetCurrentNavFace()				{ return currentNavFace_; }
