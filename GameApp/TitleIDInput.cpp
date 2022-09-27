@@ -99,7 +99,7 @@ void TitleIDInput::Update(float _DeltaTime)
 			unsigned char ReadChar = KeyboardClass::GetInst().ReadChar();
 			SetStr += ReadChar;
 			AddText(SetStr);
-			inputRenderer_->TextSetting("굴림", InputText_, 30, float4::WHITE);
+			inputRenderer_->TextSetting("굴림", InputText_, 30, FW1_CENTER);
 		}
 	}
 	//else // 현재 입력상태가 아닌와중에도 키보드 입력이 있다면 charbuffer를 클리어한다.
@@ -130,7 +130,7 @@ void TitleIDInput::Update(float _DeltaTime)
 		if (!InputText_.empty())
 		{
 			InputText_.pop_back();
-			inputRenderer_->TextSetting("굴림", InputText_, 30, float4::WHITE);
+			inputRenderer_->TextSetting("굴림", InputText_, 30, FW1_CENTER);
 			curcaretpos_ = static_cast<int>(lstrlen(InputText_.c_str()));
 			SIZE CurTextSize;
 			GetTextExtentPoint(GameEngineWindow::GetInst().GetWindowDC(), InputText_.c_str(), lstrlen(InputText_.c_str()), &CurTextSize);

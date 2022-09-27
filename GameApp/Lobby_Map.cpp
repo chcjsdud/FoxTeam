@@ -353,7 +353,7 @@ void NodeCapacityCounter::Update(float _DeltaTime)
 	//else
 	{
 		counterRenderer_->On();
-		counterRenderer_->TextSetting("±¼¸²", count_, 20, float4::WHITE);
+		counterRenderer_->TextSetting("±¼¸²", count_, 20, FW1_CENTER);
 	}
 
 }

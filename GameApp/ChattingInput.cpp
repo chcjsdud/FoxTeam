@@ -99,7 +99,7 @@ void ChattingInput::Update(float _DeltaTime)
 			unsigned char ReadChar = KeyboardClass::GetInst().ReadChar();
 			SetStr += ReadChar;
 
-			chattingRenderer_->TextSetting("±¼¸²", InputText_, 30, float4::WHITE);
+			chattingRenderer_->TextSetting("±¼¸²", InputText_, 30, FW1_CENTER);
 			
 			AddText(SetStr);
 		}
