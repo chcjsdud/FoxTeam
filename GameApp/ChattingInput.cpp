@@ -1,6 +1,5 @@
 #include "PreCompile.h"
 #include "ChattingInput.h"
-#include "eCollisionGroup.h"
 #include "ChattingHistory.h"
 #include <GameEngine/GameEngineUIRenderer.h>
 #include "KeyboardClass.h"

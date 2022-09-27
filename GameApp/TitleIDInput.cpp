@@ -1,6 +1,5 @@
 #include "PreCompile.h"
 #include "TitleIDInput.h"
-#include "eCollisionGroup.h"
 #include "ChattingHistory.h"
 #include <GameEngine/GameEngineUIRenderer.h>
 #include <GameEngine/GameEngineImageRenderer.h>
@@ -65,7 +64,7 @@ void TitleIDInput::Start()
 	inputCollision_ = CreateTransformComponent<GameEngineCollision>();
 	inputCollision_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -102.0f });
 	inputCollision_->GetTransform()->SetLocalScaling({150.0f, 50.0f, 0.0f});
-	inputCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
+	inputCollision_->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 }
 
 void TitleIDInput::Update(float _DeltaTime)

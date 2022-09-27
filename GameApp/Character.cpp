@@ -40,7 +40,7 @@ void Character::Start()
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
-	collision_->SetCollisionGroup(CollisionGroup::Player);
+	collision_->SetCollisionGroup(eCollisionGroup::Player);
 	collision_->SetCollisionType(CollisionType::AABBBox3D);
 
 	itemBoxmanager_ = GetLevelConvert<LumiaLevel>()->GetItemBoxManager();
@@ -123,7 +123,7 @@ void Character::checkItemBox()
 {
 	// Player와 SelectBox가 서로 충돌상태인지를 체크
 
-	GameEngineCollision* OtherCol = collision_->GetCollision(static_cast<int>(CollisionGroup::ItemBox));
+	GameEngineCollision* OtherCol = collision_->GetCollision(static_cast<int>(eCollisionGroup::ItemBox));
 
 	if (nullptr != OtherCol)
 	{
@@ -154,6 +154,23 @@ void Character::checkItemBox()
 	// UI가 닫힌다.
 	// SelectBox도 nullptr로 초기화
 	// 초기화하지 않으면 SelectBox 근처에 다가가면 UI가 계속 열리게 됨
+}
+
+Character* Character::getMousePickedCharacter()
+{
+	GameEngineCollision* mousePickedCollision = mouse_->GetRayCollision()->GetCollision(eCollisionGroup::Player);
+	GameEngineActor* mousePickedActor = nullptr;
+	Character* mousePickedCharacter = nullptr;
+	if (nullptr != mousePickedCollision)
+	{
+		mousePickedActor = mousePickedCollision->GetActor();
+		if (nullptr != mousePickedActor)
+		{
+			return mousePickedCharacter = dynamic_cast<Character*>(mousePickedActor);
+		}
+	}
+
+	return nullptr;
 }
 
 void Character::InitSpawnPoint(const float4& _position)
@@ -257,33 +274,31 @@ void Character::initState()
 void Character::inputProcess(float _deltaTime)
 {
 	GameEngineCollision* rayCol = mouse_->GetRayCollision();
-	rayCol->GetCollision(eCollisionGroup::MouseRay);
 
 	bool result = false;
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
-	if (GameEngineInput::Down("LButton"))
+	if (GameEngineInput::Press("LButton") || GameEngineInput::Down("LButton"))
 	{
-		result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
-		if (result)
+
+		Character* otherCharacter = getMousePickedCharacter();
+		if (nullptr != otherCharacter)
 		{
-			Move(destination_);
+			// 공격 처리
+			target_ = otherCharacter;
 		}
 		else
 		{
-			destination_ = mousePosition;
+			result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
+			if (result)
+			{
+				Move(destination_);
+			}
+			else
+			{
+				destination_ = mousePosition;
+			}
 		}
-	}
-	else if (GameEngineInput::Press("LButton"))
-	{
-		result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
-		if (result)
-		{
-			Move(destination_);
-		}
-		else
-		{
-			destination_ = mousePosition;
-		}
+
 	}
 	else if (GameEngineInput::Up("LButton"))
 	{

@@ -182,7 +182,7 @@ void Hyunwoo::InitHyunwooCollision()
 	collision_Q = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	collision_Q->GetTransform()->SetLocalScaling(120.0f);
 	collision_Q->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 50.0f });
-	collision_Q->SetCollisionGroup(CollisionGroup::PlayerAttack);
+	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_Q->SetCollisionType(CollisionType::AABBBox3D);
 	collision_Q->Off();
 }

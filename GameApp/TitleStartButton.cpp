@@ -18,7 +18,7 @@ TitleStartButton::~TitleStartButton() // default destructer 디폴트 소멸자
 
 bool TitleStartButton::MouseCollisionCheck()
 {
-    return collision_->Collision(static_cast<int>(CollisionGroup::MousePointer));
+    return collision_->Collision(static_cast<int>(eCollisionGroup::MousePointer));
 }
 
 void TitleStartButton::SetImageByIndex(int _index)
@@ -50,7 +50,7 @@ void TitleStartButton::Start()
 	collision_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	collision_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
 	collision_->GetTransform()->SetLocalScaling(renderer_->GetCurrentTexture()->GetTextureSize());
-	collision_->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
+	collision_->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 
 }
 

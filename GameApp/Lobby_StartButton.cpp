@@ -15,7 +15,7 @@ Lobby_StartButton::~Lobby_StartButton()
 
 bool Lobby_StartButton::MouseCollisionCheck()
 {
-	return ButtonCollision->Collision(static_cast<int>(CollisionGroup::MousePointer));
+	return ButtonCollision->Collision(static_cast<int>(eCollisionGroup::MousePointer));
 }
 
 void Lobby_StartButton::CharSelectSwitch()
@@ -44,7 +44,7 @@ void Lobby_StartButton::Start()
 	ButtonCollision = CreateTransformComponent<GameEngineCollision>();
 	ButtonCollision->GetTransform()->SetLocalPosition(ButtonPos);
 	ButtonCollision->GetTransform()->SetLocalScaling(ButtonRenderer->GetCurrentTexture()->GetTextureSize());
-	ButtonCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
+	ButtonCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 }
 
 void Lobby_StartButton::Update(float _DeltaTime)

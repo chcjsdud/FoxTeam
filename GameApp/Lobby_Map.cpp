@@ -86,7 +86,7 @@ void Lobby_Map::Start()
 		textureCollision_ = CreateTransformComponent<GameEngineCollision>();
 		textureCollision_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -101.0f });
 		textureCollision_->GetTransform()->SetLocalScaling(fullMapRenderer_->GetCurrentTexture()->GetTextureSize());
-		textureCollision_->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
+		textureCollision_->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 	}
 }
 

@@ -61,7 +61,7 @@ void UI_ItemBox::Start()
 		ItemBoxCollision = CreateTransformComponent<GameEngineCollision>();
 		ItemBoxCollision->GetTransform()->SetLocalPosition(ItemBox_BackgroundPos);
 		ItemBoxCollision->GetTransform()->SetLocalScaling(ItemBoxBackGround_Renderer->GetCurrentTexture()->GetTextureSize());
-		ItemBoxCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
+		ItemBoxCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 	}
 
 	{
@@ -70,42 +70,42 @@ void UI_ItemBox::Start()
 		Slot0Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot0Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos);
 		Slot0Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
-		Slot0Collision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot0Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot1Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot1Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + ItemBox_SlotXPivot);
 		Slot1Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
-		Slot1Collision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot1Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot2Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot2Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + (ItemBox_SlotXPivot * 2.0f));
 		Slot2Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
-		Slot2Collision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot2Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot3Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot3Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + (ItemBox_SlotXPivot * 3.0f));
 		Slot3Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
-		Slot3Collision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot3Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot4Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot4Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + ItemBox_SlotYPivot);
 		Slot4Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
-		Slot4Collision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot4Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot5Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot5Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + ItemBox_SlotXPivot + ItemBox_SlotYPivot);
 		Slot5Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
-		Slot5Collision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot5Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot6Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot6Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + (ItemBox_SlotXPivot * 2.0f) + ItemBox_SlotYPivot);
 		Slot6Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
-		Slot6Collision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot6Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot7Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot7Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + (ItemBox_SlotXPivot * 3.0f) + ItemBox_SlotYPivot);
 		Slot7Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
-		Slot7Collision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot7Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 	}
 
 	{
@@ -212,7 +212,7 @@ void UI_ItemBox::GetItemBoxInfo(ItemBox* _ItemBox)
 
 bool UI_ItemBox::MouseCollisionCheck()
 {
-	if (true == ItemBoxCollision->Collision((int)CollisionGroup::MousePointer))
+	if (true == ItemBoxCollision->Collision((int)eCollisionGroup::MousePointer))
 	{
 		return true;
 	}

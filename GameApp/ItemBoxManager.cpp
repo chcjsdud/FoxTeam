@@ -104,8 +104,8 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 
 void ItemBoxManager::BoxSelectUpdate()
 {
-	GameEngineCollision* col = GetLevelConvert<LumiaLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
-	//GameEngineCollision* col = GetLevelConvert<SettingItemLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(CollisionGroup::ItemBox));
+	GameEngineCollision* col = GetLevelConvert<LumiaLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(eCollisionGroup::ItemBox));
+	//GameEngineCollision* col = GetLevelConvert<SettingItemLevel>()->GetMousePointer()->GetPickCollision(static_cast<int>(eCollisionGroup::ItemBox));
 
 	if (nullptr == col)
 	{
@@ -325,7 +325,7 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 		NewFile.Read(Data->info.Scale);
 		NewFile.Read(Data->area);
 
-		Data->col = CreateTransformComponent<GameEngineCollision>(static_cast<int>(CollisionGroup::ItemBox));
+		Data->col = CreateTransformComponent<GameEngineCollision>(static_cast<int>(eCollisionGroup::ItemBox));
 		Data->col->GetTransform()->SetLocalPosition(Data->info.Pos);
 		Data->col->GetTransform()->SetLocalScaling(Data->info.Scale);
 		Data->col->SetCollisionType(CollisionType::AABBBox3D);

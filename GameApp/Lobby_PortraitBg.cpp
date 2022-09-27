@@ -45,7 +45,7 @@ void Lobby_PortraitBg::Start()
 		MouseCollision = CreateTransformComponent<GameEngineCollision>();
 		MouseCollision->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 		MouseCollision->GetTransform()->SetLocalScaling(BasicImageRenderer->GetCurrentTexture()->GetTextureSize());
-		MouseCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
+		MouseCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 	}
 
 }
@@ -106,7 +106,7 @@ void Lobby_PortraitBg::SelectOff()
 
 void Lobby_PortraitBg::Update(float _DeltaTime)
 {
-	//if (MouseCollision->Collision(CollisionGroup::MousePointer))
+	//if (MouseCollision->Collision(eCollisionGroup::MousePointer))
 	//{
 	//	if (GameEngineInput::GetInst().Down("LBUTTON"))
 	//	{

@@ -14,7 +14,7 @@ Lobby_ButtonTwo::~Lobby_ButtonTwo()
 
 bool Lobby_ButtonTwo::MouseCollisionCheck()
 {
-	return ButtonTwoCollision->Collision(static_cast<int>(CollisionGroup::MousePointer));
+	return ButtonTwoCollision->Collision(static_cast<int>(eCollisionGroup::MousePointer));
 }
 
 void Lobby_ButtonTwo::Start()
@@ -31,7 +31,7 @@ void Lobby_ButtonTwo::Start()
 		ButtonTwoCollision = CreateTransformComponent<GameEngineCollision>();
 		ButtonTwoCollision->GetTransform()->SetLocalPosition({ 554.0f,330.0f, -102.0f });
 		ButtonTwoCollision->GetTransform()->SetLocalScaling(ButtonTwoRenderer->GetCurrentTexture()->GetTextureSize());
-		ButtonTwoCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::UI), CollisionType::Rect);
+		ButtonTwoCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 	}
 
 }

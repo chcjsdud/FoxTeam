@@ -350,9 +350,6 @@
     <ClInclude Include="Macro.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
-    <ClInclude Include="eCollisionGroup.h">
-      <Filter>01.GameObject\00.Constant</Filter>
-    </ClInclude>
     <ClInclude Include="ItemBoxManager.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\ItemBox</Filter>
     </ClInclude>
@@ -562,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="CharAnimationPacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="FTConstant.h">
+      <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

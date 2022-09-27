@@ -440,13 +440,13 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="eCollisionGroup.h" />
     <ClInclude Include="EndingLevel.h" />
     <ClInclude Include="ePacketID.h" />
     <ClInclude Include="EquipmentItem.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="FTConstant.h" />
     <ClInclude Include="GameClient.h">
       <SubType>
       </SubType>

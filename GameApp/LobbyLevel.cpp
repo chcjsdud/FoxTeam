@@ -273,9 +273,9 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		// 캐릭터 선택시 패킷 보내는 코드블록
 		for (int x = 0; x < (int)JobType::MAX; x++)
 		{
-			//PortraitBg[x]->GetCollision()->Collision(CollisionGroup::MousePointer)
+			//PortraitBg[x]->GetCollision()->Collision(eCollisionGroup::MousePointer)
 			
-			if (UIController_->GetPortraitVector(x)->GetCollision()->Collision(CollisionGroup::MousePointer))
+			if (UIController_->GetPortraitVector(x)->GetCollision()->Collision(eCollisionGroup::MousePointer))
 			{
 				if (GameEngineInput::GetInst().Down("LBUTTON"))
 				{
@@ -304,7 +304,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 				}
 			}
 
-			if (UIController_->GetMapUI()->GetCollision()->Collision(CollisionGroup::MousePointer) && GameEngineInput::GetInst().Down("LBUTTON"))
+			if (UIController_->GetMapUI()->GetCollision()->Collision(eCollisionGroup::MousePointer) && GameEngineInput::GetInst().Down("LBUTTON"))
 			{
 				UIController_->GetMapUI()->GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
 				UIController_->GetMapUI()->ResizeMyPin();
@@ -342,7 +342,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		// 캐릭터 선택시 패킷 보내는 코드블록
 		for (int x = 0; x < (int)JobType::MAX; x++)
 		{
-			if (UIController_->GetPortraitVector(x)->GetCollision()->Collision(CollisionGroup::MousePointer))
+			if (UIController_->GetPortraitVector(x)->GetCollision()->Collision(eCollisionGroup::MousePointer))
 			{
 				if (GameEngineInput::GetInst().Down("LBUTTON"))
 				{
@@ -370,7 +370,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 
 			}
 
-			if (UIController_->GetMapUI()->GetCollision()->Collision(CollisionGroup::MousePointer) && GameEngineInput::GetInst().Down("LBUTTON"))
+			if (UIController_->GetMapUI()->GetCollision()->Collision(eCollisionGroup::MousePointer) && GameEngineInput::GetInst().Down("LBUTTON"))
 			{
 				UIController_->GetMapUI()->GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
 				UIController_->GetMapUI()->ResizeMyPin();

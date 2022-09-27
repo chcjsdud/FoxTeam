@@ -81,7 +81,7 @@ private:
 	void getItem();
 	void checkItemBox();
 
-
+	Character* getMousePickedCharacter();
 
 
 	//------------------------------------------------------------------------------------------------------------------

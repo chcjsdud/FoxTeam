@@ -16,6 +16,5 @@
 #include <GameEngine/GameEngineLevel.h>
 
 #include "Macro.h"
-#include "eCollisionGroup.h"
 #include "Enums.h"
-
+#include "FTConstant.h"

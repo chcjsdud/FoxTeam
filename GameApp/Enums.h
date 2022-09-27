@@ -1,25 +1,6 @@
 #pragma once
 
-// Fox Team
-namespace FT
-{
-	namespace Char
-	{
-		const float MOVE_FINISH_CHECK_DISTANCE = 10.f;
-
-		const float DEFAULT_CRITICAL_DAMAGE_AMPLIFICATION = 1.65f;
-		const float DEFAULT_VISION_RANGE_DAY = 815.f;
-		const float DEFAULT_VISION_RANGE_NIGHT = 570.f;
-
-	};
-
-	namespace Map
-	{
-		const float MAX_HEIGHT = 1000.f;
-	};
-};
-
-enum class CollisionGroup
+enum class eCollisionGroup
 {
 	None = 0,
 	MousePointer,
@@ -34,30 +15,10 @@ enum class CollisionGroup
 	ItemBox,
 	UI,
 
-	//이현 추가
 	Unit,
 	MouseRay,
 
 	MAX = 999
-
-};
-
-enum class ObjectType
-{
-	Player_,
-	Monster_,
-	Item_
-
-
-};
-
-#pragma region SJH
-enum class CharacterType // 캐릭터 타입
-{
-	NONE = -1,
-	AI,
-	MAIN,
-	MAX
 };
 
 enum class JobType // 직업타입
@@ -109,31 +70,3 @@ enum class ItemType
 	Useable,
 	Misc
 };
-
-enum class BuffType
-{
-	None,
-	SomeBuff1,
-	SomeBuff2,
-	SomeBuff3,
-	SomeBuff4,
-	SomeBuff5,
-	SomeBuff6,
-	SomeBuff7,
-	SomeBuff8,
-	Max
-};
-
-//enum class AnimationType
-//{
-//	None,
-//	Idle,
-//	Attack,
-//	Walk,
-//	SKill1,
-//	SKill2,
-//	SKill3,
-//	SKill4,
-//	Reat,
-//	Death,
-//};

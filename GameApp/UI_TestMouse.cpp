@@ -17,7 +17,7 @@ void UI_TestMouse::Start()
 
 	PointerCollision = CreateTransformComponent<GameEngineCollision>();
 	PointerCollision->GetTransform()->SetLocalScaling(float4{ 2.0f, 2.0f, 30.0f });
-	PointerCollision->SetCollisionInfo(static_cast<int>(CollisionGroup::MousePointer), CollisionType::Rect);
+	PointerCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::MousePointer), CollisionType::Rect);
 
 	MousePointer::Start();
 }
