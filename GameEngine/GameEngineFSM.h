@@ -62,6 +62,8 @@ public:
 		return Current_;
 	}
 
+	std::string GetCurrentStateName();
+
 	void operator<<(const std::string& _stateName);
 
 protected:

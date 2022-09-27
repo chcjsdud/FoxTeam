@@ -45,6 +45,16 @@ void GameEngineFSM::Update(float _Time)
 	Current_->Update_(_Time);
 }
 
+std::string GameEngineFSM::GetCurrentStateName()
+{
+	if (Current_ == nullptr)
+	{
+		return "";
+	}
+
+	return Current_->Name_;
+}
+
 void GameEngineFSM::operator<<(const std::string& _stateName)
 {
 	if (nullptr != Current_)
