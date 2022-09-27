@@ -29,7 +29,7 @@ public:
 
 	ItemBox* GetSelectBox()
 	{
-		return selectBox;
+		return selectBox_;
 	}
 
 	UI_ItemBox* GetItemBoxUI()
@@ -37,9 +37,15 @@ public:
 		return itemBoxUI_;
 	}
 
+	bool isOpen()
+	{
+		return bOpen_;
+	}
+
 	void OpenItemBox();
 	void CloseItemBox();
 	ItemBase* GetItemFromItemBox(int _index);
+	void DeleteItemFromItemBox(int _index);
 
 	void PushRandomItem(const std::string& _area, const std::string& _item, int _amount = 1);
 
@@ -58,12 +64,13 @@ private:
 		const std::string _ImageName = "");
 
 private:
-	std::string itemBoxInfoPath;
-	std::map<std::string, std::vector<ItemBox*>> itemBoxs;
-	ItemBox* selectBox;
+	std::string itemBoxInfoPath_;
+	std::map<std::string, std::vector<ItemBox*>> itemBoxs_;
+	ItemBox* selectBox_;
+	bool bOpen_;
 
-	std::list<ItemBase*> allItemList;
-	GameEngineRandom randomManager;
+	std::list<ItemBase*> allItemList_;
+	GameEngineRandom randomManager_;
 
 	//이건호 UI아이템 박스 작업
 private:

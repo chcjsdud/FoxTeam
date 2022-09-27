@@ -30,6 +30,27 @@ ItemBase* ItemBox::GetItem(int _index)
 	return nullptr;
 }
 
+bool ItemBox::DeleteItem(int _index)
+{
+
+	int findIndex = 0;
+	std::list<ItemBase*>::iterator iter = itemList.begin();
+
+	for (; iter != itemList.end(); ++iter)
+	{
+		if (findIndex == _index)
+		{
+			(*iter)->Release();
+			itemList.erase(iter);
+			break;
+		}
+
+		++findIndex;
+	}
+
+	return true;
+}
+
 void ItemBox::Start()
 {
 }

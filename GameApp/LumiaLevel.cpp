@@ -43,6 +43,11 @@ void LumiaLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
 	GameEngineInput::GetInst().CreateKey("RButton", VK_RBUTTON);
 	GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
+
+	// Test Key
+	GameEngineInput::GetInst().CreateKey("1", '1');
+	GameEngineInput::GetInst().CreateKey("2", '2');
+	GameEngineInput::GetInst().CreateKey("3", '3');
 }
 
 void LumiaLevel::LevelUpdate(float _DeltaTime)

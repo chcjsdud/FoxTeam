@@ -32,6 +32,7 @@ public:
 
 	GameEngineCollision* GetCollision() { return col; }
 	ItemBase* GetItem(int _index);
+	bool DeleteItem(int _index);
 
 protected:
 	void Start() override;

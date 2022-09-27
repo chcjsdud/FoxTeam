@@ -9,6 +9,7 @@
 class ItemBoxManager;
 class MousePointer;
 class LumiaMap;
+class ItemBase;
 class Character : public GameEngineActor
 {
 public:
@@ -78,7 +79,7 @@ private:
 
 	void checkCurrentNavFace();
 
-	void getItem();
+	void getItem(int _index);
 	void checkItemBox();
 
 	Character* getMousePickedCharacter();
@@ -178,6 +179,7 @@ protected:
 
 	// 아이템
 	ItemBoxManager* itemBoxmanager_;
+	std::vector<ItemBase*> inventory_;	// 10칸
 
 
 	// 캐릭터 상태, 능력치

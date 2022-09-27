@@ -44,7 +44,7 @@ void Character::Start()
 	collision_->SetCollisionType(CollisionType::AABBBox3D);
 
 	itemBoxmanager_ = GetLevelConvert<LumiaLevel>()->GetItemBoxManager();
-
+	inventory_.resize(10);
 
 	LumiaLevel* level = dynamic_cast<LumiaLevel*>(level_);
 	if (nullptr == level)
@@ -112,15 +112,51 @@ void Character::checkCurrentNavFace()
 	}
 }
 
-void Character::getItem()
+void Character::getItem(int _index)
 {
 	// 박스가 열려있는 상태에서
 	// 열려있는 UI의 아이템을 클릭하는 경우
 	// 그 아이템을 가지고온다.
+
+	ItemBase* Item = itemBoxmanager_->GetItemFromItemBox(_index);
+
+	if (nullptr == Item)
+	{
+		GameEngineDebug::MsgBoxError("아이템을 찾지 못했습니다.");
+	}
+
+	for (auto& invenItem : inventory_)
+	{
+		if (nullptr != invenItem)
+		{
+			continue;
+		}
+
+		invenItem = Item;
+		itemBoxmanager_->DeleteItemFromItemBox(_index);
+		break;
+	}
 }
 
 void Character::checkItemBox()
 {
+	// Test용 
+	if (true == itemBoxmanager_->isOpen())
+	{
+		if (true == GameEngineInput::GetInst().Down("1"))
+		{
+			getItem(0);
+		}
+		if (true == GameEngineInput::GetInst().Down("2"))
+		{
+			getItem(1);
+		}
+		if (true == GameEngineInput::GetInst().Down("3"))
+		{
+			getItem(2);
+		}
+	}
+
 	// Player와 SelectBox가 서로 충돌상태인지를 체크
 
 	GameEngineCollision* OtherCol = collision_->GetCollision(static_cast<int>(eCollisionGroup::ItemBox));
@@ -145,6 +181,8 @@ void Character::checkItemBox()
 		itemBoxmanager_->OpenItemBox();
 		return;
 	}
+
+
 
 	itemBoxmanager_->CloseItemBox();
 

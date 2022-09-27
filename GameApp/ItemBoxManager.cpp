@@ -12,8 +12,9 @@
 #include "LumiaLevel.h"
 
 ItemBoxManager::ItemBoxManager()
-	: selectBox(nullptr)
+	: selectBox_(nullptr)
 	, itemBoxUI_(nullptr)
+	, bOpen_(false)
 {
 
 }
@@ -97,7 +98,7 @@ void ItemBoxManager::CreateItemBoxInfo(const std::string& _Name)
 		Item->area = AreaName;
 	}	
 
-	itemBoxs.insert(std::pair(AreaName, vecItemBox));
+	itemBoxs_.insert(std::pair(AreaName, vecItemBox));
 
 	UserSave(AreaName);
 }
@@ -109,7 +110,7 @@ void ItemBoxManager::BoxSelectUpdate()
 
 	if (nullptr == col)
 	{
-		selectBox = nullptr;
+		selectBox_ = nullptr;
 		return;
 	}
 
@@ -120,7 +121,7 @@ void ItemBoxManager::BoxSelectUpdate()
 		return;
 	}
 
-	for (const auto& ItemBox : itemBoxs)
+	for (const auto& ItemBox : itemBoxs_)
 	{
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
@@ -129,18 +130,18 @@ void ItemBoxManager::BoxSelectUpdate()
 				continue;
 			}
 
-			selectBox = ItemBox.second[i];
+			selectBox_ = ItemBox.second[i];
 		}
 	}
 }
 
 void ItemBoxManager::DebugRender()
 {
-	for (const auto& ItemBox : itemBoxs)
+	for (const auto& ItemBox : itemBoxs_)
 	{
 		for (size_t i = 0; i < ItemBox.second.size(); i++)
 		{
-			if (selectBox == ItemBox.second[i])
+			if (selectBox_ == ItemBox.second[i])
 			{
 				GetLevel()->PushDebugRender(ItemBox.second[i]->col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
 				continue;
@@ -153,9 +154,9 @@ void ItemBoxManager::DebugRender()
 
 void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string& _item, int _amount)
 {
-	std::map<std::string, std::vector<ItemBox*>>::iterator iter = itemBoxs.find(_area);
+	std::map<std::string, std::vector<ItemBox*>>::iterator iter = itemBoxs_.find(_area);
 
-	if (itemBoxs.end() == iter)
+	if (itemBoxs_.end() == iter)
 	{
 		GameEngineDebug::MsgBoxError("존재하지 않는 지역입니다.");
 		return;
@@ -163,7 +164,7 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 
 	ItemBase* findItem = nullptr;
 
-	for (const auto& item : allItemList)
+	for (const auto& item : allItemList_)
 	{
 		if (item->GetName() != _item)
 		{
@@ -184,15 +185,20 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 	for (size_t i = 0; i < _amount; i++)
 	{
 		// std::vector<ItemBox*>
-		randomValue = randomManager.RandomInt(0, static_cast<int>(iter->second.size()) - 1);
+		randomValue = randomManager_.RandomInt(0, static_cast<int>(iter->second.size()) - 1);
 
-		iter->second[randomValue]->itemList.push_back(findItem);
+		iter->second[randomValue]->itemList.push_back(findItem->Copy());
 	}
 
 }
 
 void ItemBoxManager::OpenItemBox()
 {
+	if (true == bOpen_)
+	{
+		return;
+	}
+
 	if (itemBoxUI_ != nullptr)
 	{
 		//이건호: 아이템박스가 켜져있는 상태에서 다시 박스를 클릭하면 원래 켜져 있던 박스는 없어지도록 했습니다
@@ -202,25 +208,44 @@ void ItemBoxManager::OpenItemBox()
 	itemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
 	itemBoxUI_->RenderOn();
 	itemBoxUI_->GetItemBoxInfo(GetSelectBox());
+
+	bOpen_ = true;
 }
 
 void ItemBoxManager::CloseItemBox()
 {
+	if (false == bOpen_)
+	{
+		return;
+	}
+
 	if (itemBoxUI_ != nullptr)
 	{
 		itemBoxUI_->Release();
 		itemBoxUI_ = nullptr;
 	}
+
+	bOpen_ = false;
 }
 
 ItemBase* ItemBoxManager::GetItemFromItemBox(int _index)
 {
-	if (nullptr == selectBox)
+	if (nullptr == selectBox_)
 	{
 		return nullptr;
 	}
 
-	return selectBox->GetItem(_index);
+	return selectBox_->GetItem(_index);
+}
+
+void ItemBoxManager::DeleteItemFromItemBox(int _index)
+{
+	if (nullptr == selectBox_)
+	{
+		return;
+	}
+
+	selectBox_->DeleteItem(_index);
 }
 
 void ItemBoxManager::Start()
@@ -263,11 +288,11 @@ void ItemBoxManager::UserSave(const std::string& _Path)
 	std::string AreaName = _Path;
 	AreaName = GameEngineString::toupper(AreaName);
 
-	std::map<std::string, std::vector<ItemBox*>>::iterator iter = itemBoxs.find(AreaName);
+	std::map<std::string, std::vector<ItemBox*>>::iterator iter = itemBoxs_.find(AreaName);
 
-	if (itemBoxs.end() == iter)
+	if (itemBoxs_.end() == iter)
 	{
-		GameEngineDebug::MsgBoxError("if (itemBoxs.end() == itemBoxs.find(AreaName))");
+		GameEngineDebug::MsgBoxError("if (itemBoxs_.end() == itemBoxs_.find(AreaName))");
 		return;
 	}
 
@@ -303,13 +328,13 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 
 	std::vector<ItemBox*> vecItemBox;
 
-	itemBoxs.insert(std::pair(AreaName, vecItemBox));
+	itemBoxs_.insert(std::pair(AreaName, vecItemBox));
 	
-	std::map<std::string, std::vector<ItemBox*>>::iterator iter = itemBoxs.find(AreaName);
+	std::map<std::string, std::vector<ItemBox*>>::iterator iter = itemBoxs_.find(AreaName);
 
-	if (itemBoxs.end() == iter)
+	if (itemBoxs_.end() == iter)
 	{
-		GameEngineDebug::MsgBoxError("if (itemBoxs.end() == itemBoxs.find(AreaName))");
+		GameEngineDebug::MsgBoxError("if (itemBoxs_.end() == itemBoxs_.find(AreaName))");
 		return;
 	}
 
@@ -341,18 +366,18 @@ void ItemBoxManager::UserAllLoad(GameEngineDirectory _Dir)
 		UserLoad(vecFile[i].GetFullPath());
 	}
 	
-	itemBoxInfoPath = _Dir.GetFullPath();
+	itemBoxInfoPath_ = _Dir.GetFullPath();
 
 	//UserLoad_ItemListInfo();
 }
 
 void ItemBoxManager::UserSave_ItemListInfo()
 {
-	GameEngineFile NewFile = GameEngineFile(itemBoxInfoPath + "\\ItemList.ItemListInfo", "wb");
+	GameEngineFile NewFile = GameEngineFile(itemBoxInfoPath_ + "\\ItemList.ItemListInfo", "wb");
 
-	NewFile.Write(static_cast<int>(itemBoxs.size()));
+	NewFile.Write(static_cast<int>(itemBoxs_.size()));
 
-	for (const auto& ItemBox : itemBoxs)
+	for (const auto& ItemBox : itemBoxs_)
 	{
 		NewFile.Write(ItemBox.first);
 		NewFile.Write(static_cast<int>(ItemBox.second.size()));
@@ -380,7 +405,7 @@ void ItemBoxManager::UserSave_ItemListInfo()
 
 void ItemBoxManager::UserLoad_ItemListInfo()
 {
-	GameEngineFile NewFile = GameEngineFile(itemBoxInfoPath + "\\ItemList.ItemListInfo", "rb");
+	GameEngineFile NewFile = GameEngineFile(itemBoxInfoPath_ + "\\ItemList.ItemListInfo", "rb");
 
 	int mapSize = 0;
 
@@ -440,7 +465,7 @@ void ItemBoxManager::UserLoad_ItemListInfo()
 					Item->SetImage(ImageName);
 				}
 
-				itemBoxs.find(KeyName)->second[j]->itemList.push_back(Item);
+				itemBoxs_.find(KeyName)->second[j]->itemList.push_back(Item);
 			}
 		}
 	}

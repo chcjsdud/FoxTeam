@@ -36,6 +36,11 @@ void ItemBoxWindow::OnGUI()
 		for (auto& Item : SelectBox_->itemList)
 		{
 			//listName.push_back(GameEngineString::AnsiToUTF8Return(Item->GetName()).c_str());
+			if (true == Item->IsDestroyed_)
+			{
+				continue;
+			}
+
 			listName.push_back(Item->GetName().c_str());
 		}
 
