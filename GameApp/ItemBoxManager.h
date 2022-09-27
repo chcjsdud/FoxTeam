@@ -6,6 +6,9 @@
 
 // Ό³Έν : 
 class ItemBase;
+class MiscItem;
+class UseableItem;
+class EquipmentItem;
 class ItemBox;
 class UI_ItemBox;
 class GameEngineFBXRenderer;
@@ -71,7 +74,8 @@ private:
 		const std::string _ImageName = "");
 	UseableItem* CreateUseableItem(const std::string _Name,
 		const std::string _ImageName = "");
-	EquipmentItem* CreateEquipmentItem(const std::string _Name,
+	EquipmentItem* CreateEquipmentItem(const std::string _Name, 
+		EquipmentType _EquipType = EquipmentType::NONE, 
 		const std::string _ImageName = "");
 
 private:

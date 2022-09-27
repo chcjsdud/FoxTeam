@@ -9,8 +9,8 @@
 void ItemBoxManager::CreateAllItemList()
 {
 	// Test¿ë
-	EquipmentItem* Item = CreateEquipmentItem("Scissors", "ItemIcon_101101.png");
-	Item->SetEquipType(EquipmentType::WEAPON);
+	EquipmentItem* Item = CreateEquipmentItem("Scissors", 
+		EquipmentType::WEAPON, "ItemIcon_101101.png");
 	CreateItem("Pen", ItemType::USEABLE, "ItemIcon_101102.png");
 	CreateItem("Knite", ItemType::MISC, "ItemIcon_101104.png");
 
@@ -66,15 +66,19 @@ UseableItem* ItemBoxManager::CreateUseableItem(const std::string _Name, const st
 	return reinterpret_cast<UseableItem*>(CreateItem(_Name, ItemType::USEABLE, _ImageName));
 }
 
-EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name, const std::string _ImageName)
+EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name,
+	EquipmentType _EquipType /*= EquipmentType::NONE*/ ,
+	const std::string _ImageName /*= ""*/)
 {
-	return reinterpret_cast<EquipmentItem*>(CreateItem(_Name, ItemType::MISC, _ImageName));
+	EquipmentItem* item = reinterpret_cast<EquipmentItem*>(CreateItem(_Name, ItemType::EQUIPMENT, _ImageName));
+	item->SetEquipType(_EquipType);
+	return item;
 }
 
 
 void ItemBoxManager::CreateMiscItemList()
 {
-	// Normal
+	// Common
 	CreateItem("FountainPen", ItemType::MISC, "ItemIcon_101102.png");
 	CreateItem("Pickaxe", ItemType::MISC, "ItemIcon_101104.png");
 	CreateItem("Branch", ItemType::MISC, "ItemIcon_101104.png");
@@ -105,8 +109,61 @@ void ItemBoxManager::CreateMiscItemList()
 
 void ItemBoxManager::CreateUseableItemList()
 {
+	// Common Food
+	CreateUseableItem("Potato", "ItemIcon_101101.png");
+	CreateUseableItem("Cod", "ItemIcon_101101.png");
+	CreateUseableItem("Lemon", "ItemIcon_101101.png");
+	CreateUseableItem("Garlic", "ItemIcon_101101.png");
+	CreateUseableItem("Carp", "ItemIcon_101101.png");
+	CreateUseableItem("Bread", "ItemIcon_101101.png");
+	CreateUseableItem("Meat", "ItemIcon_101101.png");
+	CreateUseableItem("Egg", "ItemIcon_101101.png");
+	CreateUseableItem("Ramen", "ItemIcon_101101.png");
+	CreateUseableItem("OrientalHerb", "ItemIcon_101101.png");
+	CreateUseableItem("Chocolate", "ItemIcon_101101.png");
+
+	// Common Beverage À½·á
+	CreateUseableItem("Honey", "ItemIcon_101101.png");
+	CreateUseableItem("Water", "ItemIcon_101101.png");
+	CreateUseableItem("Ice", "ItemIcon_101101.png");
+	CreateUseableItem("Whiskey", "ItemIcon_101101.png");
+	CreateUseableItem("Coffee", "ItemIcon_101101.png");
+	CreateUseableItem("CarbonatedWater", "ItemIcon_101101.png");
+	CreateUseableItem("Milk", "ItemIcon_101101.png");
+
 }
 
 void ItemBoxManager::CreateEquipmentItemList()
 {
+	// Common Head
+	CreateEquipmentItem("Hairband", EquipmentType::HEAD, "ItemIcon_101101.png");
+	CreateEquipmentItem("Hat", EquipmentType::HEAD, "ItemIcon_101101.png");
+	CreateEquipmentItem("BikeHelmet", EquipmentType::HEAD, "ItemIcon_101101.png");
+
+	// Common Chest
+	CreateEquipmentItem("Windbreaker", EquipmentType::CHEST, "ItemIcon_101101.png");
+	CreateEquipmentItem("MonksRobe", EquipmentType::CHEST, "ItemIcon_101101.png");
+	CreateEquipmentItem("Wetsuit", EquipmentType::CHEST, "ItemIcon_101101.png");
+	CreateEquipmentItem("FabricArmor", EquipmentType::CHEST, "ItemIcon_101101.png");
+	
+	// Common Arm
+	CreateEquipmentItem("Watch", EquipmentType::ARM, "ItemIcon_101101.png");
+	CreateEquipmentItem("Bandage", EquipmentType::ARM, "ItemIcon_101101.png");
+	CreateEquipmentItem("Bracelet", EquipmentType::ARM, "ItemIcon_101101.png");
+
+	// Common Leg
+	CreateEquipmentItem("Slippers", EquipmentType::LEG, "ItemIcon_101101.png");
+	CreateEquipmentItem("RunningShoes", EquipmentType::LEG, "ItemIcon_101101.png");
+	CreateEquipmentItem("Tights", EquipmentType::LEG, "ItemIcon_101101.png");
+
+	// Common Accessory
+	CreateEquipmentItem("Feather", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	CreateEquipmentItem("Ribbon", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	CreateEquipmentItem("Fan", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	CreateEquipmentItem("BuddhistScripture", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	CreateEquipmentItem("Box", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	CreateEquipmentItem("HolyGrail", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	CreateEquipmentItem("Cross", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	CreateEquipmentItem("Binoculars", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+
 }
