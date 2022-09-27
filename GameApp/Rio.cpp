@@ -71,6 +71,7 @@ void Rio::initRendererAndAnimation()
 
 	renderer_->CreateFBXAnimation("Run", "Rio_Short_Run.fbx", 0);
 	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx", 0);
+	renderer_->CreateFBXAnimation("BasicAttack", "Rio_Short_Attack.fbx");
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
@@ -91,6 +92,8 @@ void Rio::changeAnimationRun()
 
 void Rio::changeAnimationBasicAttack()
 {
+	curAnimation_ = "BasicAttack";
+	renderer_->ChangeFBXAnimation("BasicAttack", true);
 }
 
 void Rio::onStartQSkill()

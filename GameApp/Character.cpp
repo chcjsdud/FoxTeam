@@ -8,6 +8,7 @@
 #include "LumiaMap.h"
 #include "ItemBox.h"
 #include "PlayerInfoManager.h"
+#include <GameEngine/GameEngineLevelControlWindow.h>
 
 
 Character::Character()
@@ -19,6 +20,8 @@ Character::Character()
 	, mouse_(nullptr)
 	, renderer_(nullptr)
 	, bFocused_(false)
+	, attackDelay_(0.f)
+	, target_(nullptr)
 {
 }
 
@@ -102,6 +105,14 @@ void Character::Update(float _DeltaTime)
 
 	mainState_.Update(_DeltaTime);
 
+	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	if (nullptr != controlWindow)
+	{
+		controlWindow->AddText("MainState : " + mainState_.GetCurrentStateName());
+		controlWindow->AddText("NormalState : " + normalState_.GetCurrentStateName());
+		controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
+		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
+	}
 }
 
 void Character::checkCurrentNavFace()
@@ -320,14 +331,12 @@ void Character::initState()
 	attackState_.CreateState(MakeState(Character, QSkill));
 
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
-
+	attackState_.CreateState(MakeState(Character, BasicAttack));
 
 	mainState_ << "NormalState";
 
 
 	normalState_ << "Watch";
-	attackState_ << "QSkill";
-	deathState_ << "PlayerDeath";
 }
 
 
@@ -341,13 +350,16 @@ void Character::inputProcess(float _deltaTime)
 	{
 
 		Character* otherCharacter = getMousePickedCharacter();
-		if (nullptr != otherCharacter)
+		if (nullptr != otherCharacter && otherCharacter != this)
 		{
 			// 공격 처리
 			target_ = otherCharacter;
+			normalState_ << "Chase";
+			return;
 		}
 		else
 		{
+			target_ = nullptr;
 			result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
 			if (result)
 			{
@@ -376,7 +388,6 @@ void Character::inputProcess(float _deltaTime)
 			{
 				destination_ = mousePosition;
 			}
-
 		}
 	}
 
@@ -444,7 +455,6 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 
 void Character::startNormalState()
 {
-	normalState_.ChangeState("Watch", true);
 }
 
 void Character::updateNormalState(float _deltaTime)
@@ -545,21 +555,41 @@ void Character::startChase()
 
 void Character::updateChase(float _deltaTime)
 {
+	inputProcess(_deltaTime);
+	if (target_ == nullptr)
+	{
+		normalState_ << "Watch";
+		return;
+	}
+
+
+	float4 targetPosition = target_->GetTransform()->GetWorldPosition();
+	float4 playerPosition = transform_.GetWorldPosition();
+	float distance = float4::Calc_Len3D(playerPosition, targetPosition);
+	if (distance > actorStat_.VisionRange)
+	{
+		normalState_ << "Watch";
+		target_ = nullptr;
+		return;
+	}
+
+	if (distance < actorStat_.AttackRange)
+	{
+		mainState_ << "AttackState";
+		attackState_ << "BasicAttack";
+		return;
+	}
+
+	Move(targetPosition);
+	moveProcess(_deltaTime);
 }
 
 void Character::startStun()
 {
+	int a = 0;
 }
 
 void Character::updateStun(float _deltaTime)
-{
-}
-
-void Character::startNoAttack()
-{
-}
-
-void Character::updateNoAttack(float _deltaTime)
 {
 
 	mainState_.ChangeState("NormalState");
@@ -569,10 +599,18 @@ void Character::updateNoAttack(float _deltaTime)
 
 void Character::startBasicAttack()
 {
+	attackDelay_ = 0;
+	changeAnimationBasicAttack();
 }
 
 void Character::updateBasicAttack(float _deltaTime)
-{
+{	
+	attackDelay_ += _deltaTime;
+
+	if (attackDelay_ > 1.0f / actorStat_.AttackSpeed)
+	{
+		mainState_ << "NormalState";
+	}
 }
 
 void Character::startQSkill()

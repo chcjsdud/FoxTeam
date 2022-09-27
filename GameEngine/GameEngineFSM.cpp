@@ -57,14 +57,6 @@ std::string GameEngineFSM::GetCurrentStateName()
 
 void GameEngineFSM::operator<<(const std::string& _stateName)
 {
-	if (nullptr != Current_)
-	{
-		if (Current_->Name_ == _stateName)
-		{
-			return;
-		}
-	}
-
 	std::map<std::string, State*>::iterator FindIter = AllState_.find(_stateName);
 
 	if (AllState_.end() == FindIter)

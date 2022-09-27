@@ -156,9 +156,6 @@ private:
 
 
 #pragma region AttackState
-	void startNoAttack();
-	void updateNoAttack(float _deltaTime);
-	
 	void startBasicAttack();
 	void updateBasicAttack(float _deltaTime);
 
@@ -225,6 +222,7 @@ protected:
 	// 그 외
 	MousePointer* mouse_;
 	bool bFocused_;
+	float attackDelay_;
 
 	// 0927박종원
 	int myIndex_;

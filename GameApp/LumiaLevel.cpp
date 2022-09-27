@@ -277,7 +277,7 @@ void LumiaLevel::GenerateCharactor()
 	for (int i = 0; i < 2; i++)
 	{
 
-		Character* newCharacter = CreateActor<Hyunwoo>();
+		Character* newCharacter = CreateActor<Rio>();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		PlayerInfo newPlayer;
 		newPlayer.playerNumber_ = i;

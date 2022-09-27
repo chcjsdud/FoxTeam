@@ -65,12 +65,10 @@ void Hyunwoo::Start()
 {
 	Character::Start();
 	initHyunwooCollision();
-
 }
 
 void Hyunwoo::Update(float _deltaTime)
 {
-
 	Character::Update(_deltaTime);
 
 }
@@ -126,7 +124,7 @@ void Hyunwoo::changeAnimationWait()
 void Hyunwoo::changeAnimationBasicAttack()
 {
 	curAnimation_ = "Atk0";
-	renderer_->ChangeFBXAnimation("Atk0");
+	renderer_->ChangeFBXAnimation("Atk0", true);
 }
 
 
