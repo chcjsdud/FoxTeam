@@ -66,6 +66,7 @@ private:
 	void CreateMiscItemList();
 	void CreateUseableItemList();
 	void CreateEquipmentItemList();
+	void CreateWeaponItemList();
 
 	ItemBase* CreateItem(const std::string _Name, ItemType _Type,
 		const std::string _ImageName = "");

@@ -9,15 +9,16 @@
 void ItemBoxManager::CreateAllItemList()
 {
 	// Test용
-	EquipmentItem* Item = CreateEquipmentItem("Scissors", 
+	EquipmentItem* Item = CreateEquipmentItem("test1", 
 		EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateItem("Pen", ItemType::USEABLE, "ItemIcon_101102.png");
-	CreateItem("Knite", ItemType::MISC, "ItemIcon_101104.png");
+	CreateItem("test2", ItemType::USEABLE, "ItemIcon_101102.png");
+	CreateItem("test3", ItemType::MISC, "ItemIcon_101104.png");
 
 
 	CreateMiscItemList();		// 재료
 	CreateUseableItemList();	// 소모품
 	CreateEquipmentItemList();	// 장비
+	CreateWeaponItemList();		// 무기
 }
 
 ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type,
@@ -166,4 +167,78 @@ void ItemBoxManager::CreateEquipmentItemList()
 	CreateEquipmentItem("Cross", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
 	CreateEquipmentItem("Binoculars", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
 
+	
+}
+
+void ItemBoxManager::CreateWeaponItemList()
+{
+	// Common Dagger
+	CreateEquipmentItem("Scissors", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("KitchenKnife", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Two-handed Sword
+	CreateEquipmentItem("RustySword", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Axe
+	CreateEquipmentItem("Hatchet", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Dual Swords
+	CreateEquipmentItem("TwinBlades", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Pistol
+	CreateEquipmentItem("WaltherPPK", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Assault Rifle
+	CreateEquipmentItem("Fedorova", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Sniper Rifle
+	CreateEquipmentItem("LongRifle", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Rapier
+	CreateEquipmentItem("Needle", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Spear
+	CreateEquipmentItem("ShortSpear", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Hammer
+	CreateEquipmentItem("Hammer", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Bat
+	CreateEquipmentItem("ShortRod", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Throw
+	CreateEquipmentItem("IronBall", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("Baseball", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Shuriken
+	CreateEquipmentItem("Razor", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("PlayingCards", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Bow
+	CreateEquipmentItem("Bow", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Crossbow
+	CreateEquipmentItem("ShortCrossbow", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Glove
+	CreateEquipmentItem("BrassKnuckles", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("CottonGloves", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Tonfa
+	CreateEquipmentItem("Bamboo", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Guitar
+	CreateEquipmentItem("StarterGuitar", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Nunchaku
+	CreateEquipmentItem("SteelChain", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Whip
+	CreateEquipmentItem("Whip", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Camera
+	CreateEquipmentItem("Lens", EquipmentType::WEAPON, "ItemIcon_101101.png");
+
+	// Common Arcana
+	CreateEquipmentItem("GlassBead", EquipmentType::WEAPON, "ItemIcon_101101.png");
 }
