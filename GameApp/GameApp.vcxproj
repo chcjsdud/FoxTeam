@@ -232,6 +232,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LoadingLevel.cpp" />
     <ClCompile Include="LoadingLumiaPacket.cpp">
       <SubType>
       </SubType>
@@ -464,6 +465,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LoadingLevel.h" />
     <ClInclude Include="LoadingLumiaPacket.h">
       <SubType>
       </SubType>

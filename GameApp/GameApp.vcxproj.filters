@@ -226,6 +226,9 @@
     <ClCompile Include="CharAnimationPacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClCompile>
+    <ClCompile Include="LoadingLevel.cpp">
+      <Filter>01.GameObject\03.Level\LoadingLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -326,6 +329,39 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Packet">
       <UniqueIdentifier>{ef6238dd-17df-4fe0-a06b-aa55108914a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel">
+      <UniqueIdentifier>{446b4198-33aa-4c01-8a4e-d66569f67300}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet">
+      <UniqueIdentifier>{1f9ca13a-a89e-4fac-a2df-20cfd0ed5c2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket">
+      <UniqueIdentifier>{6135eee1-0cff-4578-985f-3558175e87fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\01.LoadingEndPacket">
+      <UniqueIdentifier>{a71199a1-9829-4c52-8d34-cfcb89f0c96a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\02.LevelChangePacket">
+      <UniqueIdentifier>{a16ff5df-de93-4253-9821-6ee36e7acc8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\01.MapCreation">
+      <UniqueIdentifier>{6140d157-37d5-4c6a-907e-45aeffbea8c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\02.MonsterCreation">
+      <UniqueIdentifier>{ed9a04a5-542f-4037-8181-3349988c827b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\03.CharacterCreation">
+      <UniqueIdentifier>{63449d30-7d57-450a-b625-f87c7946cf4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\01.Actor">
+      <UniqueIdentifier>{fb0a050c-a75a-4090-b4f5-9dbec0c794fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\01.Actor\00.BackDrop">
+      <UniqueIdentifier>{0b81a8dd-1108-4c73-92e4-ec8e78ef22e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\01.Actor\01.LoadingPercent">
+      <UniqueIdentifier>{1902fcaa-03a3-4bfa-b53f-27d3aa630256}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -562,6 +598,9 @@
     </ClInclude>
     <ClInclude Include="FTConstant.h">
       <Filter>01.GameObject\00.Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingLevel.h">
+      <Filter>01.GameObject\03.Level\LoadingLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
