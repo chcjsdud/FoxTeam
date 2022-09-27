@@ -11,8 +11,8 @@
 //#include "LoadingEndPacket.h"
 
 #include "MousePointer.h"
-//#include "LoadingLevel_BackDrop.h"
-//#include "LoadingLevel_LoadPercent.h"
+#include "LoadingLevel_BackDrop.h"
+#include "LoadingLevel_LoadPercent.h"
 
 bool LoadingLevel::ResourceLoadEndCheck = false;
 
@@ -35,14 +35,14 @@ void LoadingLevel::CreateBasicActor()
 		MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
 	}
 
-	//// BackDrop
-	//BackDrop_ = CreateActor<LoadingLevel_BackDrop>();
+	// BackDrop
+	BackDrop_ = CreateActor<LoadingLevel_BackDrop>();
 
-	//// Connection Player Loading Percent
-	//// -> 현재 게임에 참여한 플레이어의 수에 따라 로딩율을 계산하며,
-	////    모든 플레이어가 로딩이 완료되면 100%로 표시
-	//LoadPercent_ = CreateActor<LoadingLevel_LoadPercent>();
-	//LoadPercent_->SetConnectPlayerCount();
+	// Connection Player Loading Percent
+	// -> 현재 게임에 참여한 플레이어의 수에 따라 로딩율을 계산하며,
+	//    모든 플레이어가 로딩이 완료되면 100%로 표시
+	LoadPercent_ = CreateActor<LoadingLevel_LoadPercent>();
+	LoadPercent_->SetConnectPlayerCount();
 }
 
 void LoadingLevel::CreateGameInfomation()
@@ -120,31 +120,30 @@ void LoadingLevel::LevelStart()
 
 void LoadingLevel::LevelUpdate(float _DeltaTime)
 {
-	//// 리소스 로딩완료 후 액터생성 명령 패킷 송신
-	//if (true == ResourceLoadEndCheck && true == UserGameServer::GetInstance()->IsOpened())
-	//{
-	//	CreateGameInfomation();
-	//}
+	// 리소스 로딩완료 후 액터생성 명령 패킷 송신
+	if (true == ResourceLoadEndCheck && true == GameServer::GetInstance()->IsOpened())
+	{
+		CreateGameInfomation();
+	}
 
-	//// 리소스 로딩상태 체크 후 기본 액터 생성
-	//if (0 >= UserGame::LoadingFolder &&
-	//	false == ResourceLoadEndCheck)
-	//{
-	//	LoadingLevelInitalize();
-	//	ResourceLoadEndCheck = true;
-	//}
+	// 리소스 로딩상태 체크 후 기본 액터 생성
+	if (0 >= UserGame::LoadingFolder && false == ResourceLoadEndCheck)
+	{
+		LoadingLevelInitalize();
+		ResourceLoadEndCheck = true;
+	}
 
-	//// 서버측 패킷 수신처리
-	//if (true == UserGameServer::GetInstance()->IsOpened())
-	//{
-	//	UserGameServer::GetInstance()->ProcessPacket();
-	//}
+	// 서버측 패킷 수신처리
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		GameServer::GetInstance()->ProcessPacket();
+	}
 
-	//// 클라이언트측 패킷 수신처리
-	//if (true == UserGameClient::GetInstance()->IsConnected())
-	//{
-	//	UserGameClient::GetInstance()->ProcessPacket();
-	//}
+	// 클라이언트측 패킷 수신처리
+	if (true == GameClient::GetInstance()->IsConnected())
+	{
+		GameClient::GetInstance()->ProcessPacket();
+	}
 }
 
 void LoadingLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)

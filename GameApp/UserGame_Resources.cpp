@@ -19,7 +19,8 @@ void TextureLoading(GameEngineDirectory Dir)
 void UserGame::ResourcesLoad()
 {
 	GameEngineFontManager::GetInst().Load("±Ã¼­");
-
+	GameEngineFontManager::GetInst().Load("malgunbd");
+	GameEngineFontManager::GetInst().Load("HMKMRHD");
 
 	{
 		GameEngineDirectory SoundDir;

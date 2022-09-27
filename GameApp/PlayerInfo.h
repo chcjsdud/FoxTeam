@@ -10,6 +10,7 @@ struct PlayerInfo
 	int character_;
 	int startPoint_;
 	int isReady_;
+	int IsLoading_;						// 220927 SJH ADD
 	std::string playerNickname_;
 
 	// Lumia Level Only

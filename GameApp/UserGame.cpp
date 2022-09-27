@@ -13,8 +13,10 @@
 #include "ServerTestLevel.h"
 #include "LobbyLevel.h"
 #include "KeyboardClass.h"	
-#include <GameApp/LumiaLevel.h>
+#include "LumiaLevel.h"
 #include "TitleLevel.h"
+#include "LoadingLevel.h"
+
 std::atomic<int> UserGame::LoadingFolder = 0;
 bool UserGame::IsServer_ = false;
 
@@ -48,6 +50,7 @@ void UserGame::Initialize()
 	LevelCreate<LobbyLevel>("LobbyLevel");
 	LevelCreate<TitleLevel>("TitleLevel");
 	LevelCreate<LumiaLevel>("LumiaLevel");
+	LevelCreate<LoadingLevel>("LoadingLevel");
 
 	//LevelChange("LumiaLevel");
 	//LevelChange("RayTestLevel");

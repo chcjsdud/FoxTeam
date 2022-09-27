@@ -193,7 +193,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.\n");
 
 		std::string nicknameTemp = PlayerInfoManager::GetInstance()->GetNickname();
-		PlayerInfoManager::GetInstance()->AddNewPlayer({ 0, -1, -1, -1, nicknameTemp});
+		PlayerInfoManager::GetInstance()->AddNewPlayer({ 0, -1, -1, -1, 0, nicknameTemp});
 		
 		// AddNewPlayer() 의 파라미터는 곧 PlayerInfo 의 생성자 파라미터로,
 		// 순서대로 {플레이어 번호, 캐릭터, 시작 지역, 준비 상태} 의 이니셜라이즈 값입니다.
@@ -225,7 +225,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		GameJoinPacket2 packet;
 
 		std::string nicknameTemp = PlayerInfoManager::GetInstance()->GetNickname();
-		packet.SetPlayerInfo({ -1, -1, -1, -1, nicknameTemp });
+		packet.SetPlayerInfo({ -1, -1, -1, -1, 0, nicknameTemp });
 		
 		packet.SetListSize(static_cast<int>(PlayerInfoManager::GetInstance()->GetPlayerList().size()));
 
