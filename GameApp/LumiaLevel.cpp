@@ -21,8 +21,7 @@
 //#include "LumiaUIController.h"
 
 LumiaLevel::LumiaLevel()
-	: mouse_(nullptr)
-	, itemBox_(nullptr)
+	: itemBox_(nullptr)
 	, map_(nullptr)
 {
 }
@@ -135,9 +134,9 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
 	if (nullptr != controlWindow)
 	{
-		if (nullptr != mouse_)
+		if (nullptr != MousePointer::InGameMouse)
 		{
-			float4 position = mouse_->GetIntersectionYAxisPlane(0, 50000.f);
+			float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
 
 			controlWindow->AddText("X : " + std::to_string(position.x));
 			controlWindow->AddText("Z : " + std::to_string(position.z));
@@ -387,14 +386,18 @@ void LumiaLevel::releaseResource()
 	Rio::ReleaseResource();
 	Hyunwoo::ReleaseResource();
 
-
-	mouse_ = nullptr;
 	itemBox_ = nullptr;
 }
 
 void LumiaLevel::createActor()
 {
-	mouse_ = CreateActor<MousePointer>();
+	// 인게임 마우스 생성
+	if (nullptr == MousePointer::InGameMouse)
+	{
+		MousePointer::InGameMouse = CreateActor<MousePointer>();
+		MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
+		MousePointer::InGameMouse;
+	}
 
 	{
 		GameEngineDirectory tempDir;

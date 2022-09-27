@@ -19,11 +19,11 @@ void UI_TestMouse::Start()
 	PointerCollision->GetTransform()->SetLocalScaling(float4{ 2.0f, 2.0f, 30.0f });
 	PointerCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::MousePointer), CollisionType::Rect);
 
-	MousePointer::Start();
+	//MousePointer::Start();
 }
 
 void UI_TestMouse::Update(float _DeltaTime)
 {
-	MousePointer::Update(_DeltaTime);
+	//MousePointer::Update(_DeltaTime);
 	GetTransform()->SetWorldPosition(GameEngineInput::GetInst().GetMouse3DPos());
 }

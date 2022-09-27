@@ -28,12 +28,12 @@ void LoadingLevel::LoadingLevelInitalize()
 
 void LoadingLevel::CreateBasicActor()
 {
-	//// 인게임 마우스 생성
-	//if (nullptr == MousePointer::InGameMouse)
-	//{
-	//	MousePointer::InGameMouse = CreateActor<MousePointer>();
-	//	MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
-	//}
+	// 인게임 마우스 생성
+	if (nullptr == MousePointer::InGameMouse)
+	{
+		MousePointer::InGameMouse = CreateActor<MousePointer>();
+		MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
+	}
 
 	//// BackDrop
 	//BackDrop_ = CreateActor<LoadingLevel_BackDrop>();

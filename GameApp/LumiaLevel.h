@@ -31,7 +31,7 @@ public:
 	void GenerateCharactor();
 
 public:
-	MousePointer* GetMousePointer() { return mouse_; }
+	MousePointer* GetMousePointer() { return MousePointer::InGameMouse; }
 	LumiaMap* GetMap() { return map_; }
 	ItemBoxManager* GetItemBoxManager() { return itemBox_; }
 private:
@@ -54,8 +54,6 @@ private:
 	// 이건 그냥 "캐릭터 액터" 의 리스트일 뿐입니다.
 	std::vector<Character*> characterActorList_;
 	
-
-	MousePointer* mouse_;
 	LumiaMap* map_;
 
 	ItemBoxManager* itemBox_;

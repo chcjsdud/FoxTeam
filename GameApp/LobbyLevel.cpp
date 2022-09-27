@@ -154,10 +154,12 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		UIController_ = CreateActor<LobbyUIController>();
 	}
 
+	// 인게임 마우스 생성
+	if (nullptr == MousePointer::InGameMouse)
 	{
-		Mouse_ = CreateActor<UI_TestMouse>();
+		MousePointer::InGameMouse = CreateActor<MousePointer>();
+		MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
 	}
-
 }
 
 

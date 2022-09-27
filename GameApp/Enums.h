@@ -1,5 +1,40 @@
 #pragma once
 
+enum class RenderOrder
+{
+	BACKDROP,
+	MAP,
+	MONSTER,
+	PLAYER,
+	UIPANEL0,
+	UIPANEL1,
+	UIPANEL2,
+	UI,
+	UIICON,
+	UICOL,
+	MOUSE,
+	MAX
+};
+
+// UI 버튼 상태
+enum class ButtonState
+{
+	Normal,				// 기본상태
+	MouseOver,			// 마우스오버상태
+	Click,				// 마우스클릭상태
+	Disabled,			// 비활성화상태
+	Max
+};
+
+// UI ProgressBar Direct
+enum class ProgressBarDirect
+{
+	BottomToTop,		// Bottom -> Top
+	TopToBottom,		// Top -> Bottom
+	RightToLeft,		// Right -> Left
+	LeftToRight			// Left -> Right
+};
+
 enum class eCollisionGroup
 {
 	None = 0,
