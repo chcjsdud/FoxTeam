@@ -180,13 +180,16 @@ protected:
 	ItemBoxManager* itemBoxmanager_;
 
 
-	// 캐릭터 상태
+	// 캐릭터 상태, 능력치
 	CharacterStat stat_;
 	std::string curAnimation_;
 	GameEngineFSM mainState_;
 	GameEngineFSM normalState_;
 	GameEngineFSM crowdControlState_;
 	GameEngineFSM attackState_;
+
+	// 공격
+	Character* target_;
 
 
 	// 그 외

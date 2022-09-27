@@ -26,6 +26,7 @@ public:
 	float4 GetIntersectionYAxisPlane(float _height, float _rayLength);
 
 	GameEngineCollision* GetPickCollision(int _Order);
+	GameEngineCollision* GetRayCollision() { return rayCollision_; }
 
 private:
 	void updateMouseRay();

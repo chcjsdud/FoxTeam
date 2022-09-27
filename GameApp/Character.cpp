@@ -81,7 +81,7 @@ void Character::Update(float _DeltaTime)
 		// direction 에 따라 로테이션을 바꿔 주고
 		// 적절한 애니메이션으로 바꿔 주는 코드가 여기에도 존재해야 함.
 
-		
+
 		return;
 	}
 
@@ -123,7 +123,7 @@ void Character::checkItemBox()
 {
 	// Player와 SelectBox가 서로 충돌상태인지를 체크
 
-	GameEngineCollision* OtherCol = collision_->CollisionPtr(static_cast<int>(CollisionGroup::ItemBox));
+	GameEngineCollision* OtherCol = collision_->GetCollision(static_cast<int>(CollisionGroup::ItemBox));
 
 	if (nullptr != OtherCol)
 	{
@@ -210,13 +210,13 @@ void Character::MoveWithPathFind(const float4& _position)
 
 void Character::ChangeAnimation(std::string _animationName)
 {
-		if ("" == _animationName)
-		{
-			return;
-		}
-		
-		curAnimation_ = _animationName;
-		renderer_->ChangeFBXAnimation(_animationName);
+	if ("" == _animationName)
+	{
+		return;
+	}
+
+	curAnimation_ = _animationName;
+	renderer_->ChangeFBXAnimation(_animationName);
 }
 
 void Character::initInput()
@@ -256,6 +256,9 @@ void Character::initState()
 
 void Character::inputProcess(float _deltaTime)
 {
+	GameEngineCollision* rayCol = mouse_->GetRayCollision();
+	rayCol->GetCollision(eCollisionGroup::MouseRay);
+
 	bool result = false;
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
 	if (GameEngineInput::Down("LButton"))
@@ -351,7 +354,7 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 	float temp;
 	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
 	{
-		
+
 		changeAnimationRun();
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}

@@ -245,7 +245,7 @@ bool GameEngineCollision::Collision(int _OtherGroup)
 	return false;
 }
 
-GameEngineCollision* GameEngineCollision::CollisionPtr(int _OtherGroup)
+GameEngineCollision* GameEngineCollision::GetCollision(int _OtherGroup)
 {
 	if (true == IsUpdate())
 	{
@@ -300,7 +300,7 @@ GameEngineCollision* GameEngineCollision::CollisionPtr(int _OtherGroup)
 	return nullptr;
 }
 
-std::list<GameEngineCollision*> GameEngineCollision::CollisionPtrGroup(int _OtherGroup)
+std::list<GameEngineCollision*> GameEngineCollision::GetCollisionList(int _OtherGroup)
 {
 	std::list<GameEngineCollision*>& Group = GetLevel()->GetCollisionGroup(_OtherGroup);
 

@@ -101,13 +101,12 @@ public:
 		SetCollisionType(_ColType);
 	}
 
-	//충돌 여부를 Bool 값으로 리턴
 	bool Collision(int _OtherGroup);
-	template <typename T> bool Collision(T _OtherGroup);;
-	//충돌한 가장 가까운 ptr 리턴
-	GameEngineCollision* CollisionPtr(int _OtherGroup);
-	//충돌한 새끼들 싹다 리스트로 리턴
-	std::list<GameEngineCollision*> CollisionPtrGroup(int _OtherGroup);
+	template <typename T> bool Collision(T _OtherGroup);
+
+	GameEngineCollision* GetCollision(int _OtherGroup);
+	template<typename T> GameEngineCollision* GetCollision(T _otherGroup);
+	std::list<GameEngineCollision*> GetCollisionList(int _OtherGroup);
 
 
 	// 박종원 0728
@@ -131,3 +130,9 @@ private:
 
 template<typename T>
 inline bool GameEngineCollision::Collision(T _OtherGroup) { return Collision(static_cast<int>(_OtherGroup)); }
+
+template<typename T>
+inline GameEngineCollision* GameEngineCollision::GetCollision(T _otherGroup)
+{
+	return GetCollision(static_cast<int>(_otherGroup));
+}
