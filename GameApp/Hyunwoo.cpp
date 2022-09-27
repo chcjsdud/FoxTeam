@@ -27,6 +27,7 @@ void Hyunwoo::LoadResource()
 
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_run.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_wait.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_death.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_atk0.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_atk1.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillQ.fbx"));
@@ -44,6 +45,7 @@ void Hyunwoo::ReleaseResource()
 
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_run.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_wait.fbx");
+	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_death.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_atk0.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_atk1.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_skillQ.fbx");
@@ -66,6 +68,7 @@ void Hyunwoo::initRendererAndAnimation()
 
 	renderer_->CreateFBXAnimation("Run", "hyunwoo_run.fbx", 0);
 	renderer_->CreateFBXAnimation("Wait", "hyunwoo_wait.fbx", 0);
+	renderer_->CreateFBXAnimation("Death", "hyunwoo_death.fbx", 0, false);
 	renderer_->CreateFBXAnimation("Atk0", "hyunwoo_atk0.fbx", 0, false);
 	renderer_->CreateFBXAnimation("Atk1", "hyunwoo_atk1.fbx", 0, false);
 	renderer_->CreateFBXAnimation("SkillQ", "hyunwoo_skillQ.fbx", 0, false);
@@ -106,7 +109,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 	timer_collision_Q += _deltaTime;
 	timer_end_Q += _deltaTime;
 
-	if (0.09f <= timer_collision_Q && false == b_Qhit_)
+	if (0.3f <= timer_collision_Q && false == b_Qhit_)
 	{
 		// 여기서 피격 충돌 판정이 나옴
 		collision_Q->On();

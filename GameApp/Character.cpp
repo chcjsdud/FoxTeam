@@ -236,14 +236,21 @@ void Character::initInput()
 void Character::initState()
 {
 	mainState_.CreateState(MakeState(Character, NormalState));
+	mainState_.CreateState(MakeState(Character, AttackState));
 	mainState_.CreateState(MakeState(Character, CrowdControlState));
 
 	normalState_.CreateState(MakeState(Character, Watch));
 	normalState_.CreateState(MakeState(Character, Stop));
 	normalState_.CreateState(MakeState(Character, Run));
 
+	attackState_.CreateState(MakeState(Character, NoAttack));
+
+
 	mainState_ << "NormalState";
+
+
 	normalState_ << "Watch";
+	attackState_ << "NoAttack";
 }
 
 
@@ -386,8 +393,9 @@ void Character::startAttackState()
 {
 }
 
-void Character::updateAttackState()
+void Character::updateAttackState(float _deltaTime)
 {
+	attackState_.Update(_deltaTime);
 }
 
 void Character::startWatch()
@@ -432,6 +440,14 @@ void Character::startStun()
 }
 
 void Character::updateStun(float _deltaTime)
+{
+}
+
+void Character::startNoAttack()
+{
+}
+
+void Character::updateNoAttack(float _deltaTime)
 {
 }
 

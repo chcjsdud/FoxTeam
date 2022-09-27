@@ -105,7 +105,7 @@ private:
 	void updateCrowdControlState(float _deltaTime);
 
 	void startAttackState();
-	void updateAttackState();
+	void updateAttackState(float _deltaTime);
 #pragma endregion
 
 
@@ -135,6 +135,9 @@ private:
 
 
 #pragma region AttackState
+	void startNoAttack();
+	void updateNoAttack(float _deltaTime);
+	
 	void startBasicAttack();
 	void updateBasicAttack(float _deltaTime);
 
