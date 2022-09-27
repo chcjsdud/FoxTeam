@@ -31,6 +31,7 @@
     <FxCompile Include="EngineResources\Shader\Fade.fx" />
     <FxCompile Include="EngineResources\Shader\LightHeader.fx" />
     <FxCompile Include="EngineResources\Shader\PJWAni.fx" />
+    <FxCompile Include="EngineResources\Shader\ProgressBar.fx" />
     <FxCompile Include="EngineResources\Shader\TargetMerge.fx" />
     <FxCompile Include="EngineResources\Shader\TestColor.fx" />
     <FxCompile Include="EngineResources\Shader\Texture.fx" />

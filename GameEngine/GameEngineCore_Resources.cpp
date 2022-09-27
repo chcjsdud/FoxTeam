@@ -1010,4 +1010,17 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetPixelShader("Color_PS");
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
+
+	// ============================================= 특수기능 UI 관련 ============================================= //
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("ProgressBarUI");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("ProgressBar_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerNone");
+		Pipe->SetPixelShader("ProgressBar_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+		Pipe->SetOutputMergerDepthStencil("BaseDepthOff");
+	}
 }

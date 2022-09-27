@@ -124,6 +124,12 @@
     <Filter Include="Server\PacketBase">
       <UniqueIdentifier>{9d1ae88b-a471-4095-a365-b8336c41f92e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Component\Render\Widget">
+      <UniqueIdentifier>{d301fc60-bdcf-4c8f-a515-48fe580f2961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\Component\Render\Widget\00.PorgressBar">
+      <UniqueIdentifier>{6349d09d-4bbe-482b-8f91-bc5a97bf19ca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -398,6 +404,9 @@
     <ClInclude Include="GameEngineSerializer.h">
       <Filter>Server</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineProgressBarRenderer.h">
+      <Filter>Object\Component\Render\Widget\00.PorgressBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -657,6 +666,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineSerializer.cpp">
       <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineProgressBarRenderer.cpp">
+      <Filter>Object\Component\Render\Widget\00.PorgressBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

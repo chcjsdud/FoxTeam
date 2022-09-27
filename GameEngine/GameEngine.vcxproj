@@ -158,6 +158,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineProgressBarRenderer.h" />
     <ClInclude Include="GameEngineRasterizer.h" />
     <ClInclude Include="GameEngineRasterizerManager.h">
       <SubType>
@@ -435,6 +436,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineProgressBarRenderer.cpp" />
     <ClCompile Include="GameEngineRasterizer.cpp" />
     <ClCompile Include="GameEngineRasterizerManager.cpp">
       <SubType>
