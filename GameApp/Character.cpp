@@ -117,8 +117,8 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
 
 
-		controlWindow->AddText("P0 curHP : " + std::to_string(pm->GetPlayerList()[0].stat_->HP));
-		controlWindow->AddText("P1 curHP : " + std::to_string(pm->GetPlayerList()[1].stat_->HP));
+		//controlWindow->AddText("P0 curHP : " + std::to_string(pm->GetPlayerList()[0].stat_->HP));
+		//controlWindow->AddText("P1 curHP : " + std::to_string(pm->GetPlayerList()[1].stat_->HP));
 
 	}
 }
