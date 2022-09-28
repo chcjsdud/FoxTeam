@@ -154,25 +154,16 @@ void LumiaLevel::ClientMonsterCreation()
 		case MonsterType::WOLF:
 		{
 			NewMonster = CreateActor<Wolf>();
-			NewMonster->SetMonsterIndex(MonsterNum);
-			NewMonster->SetMonsterAreaType(AllMonster[MonsterNum].AreaType_);
-			NewMonster->InitalizeSpawnPosition(AllMonster[MonsterNum].SpawnPosition_);
 			break;
 		}
 		case MonsterType::BEAR:
 		{
 			//NewMonster = CreateActor<Bear>();
-			//NewMonster->SetMonsterIndex(MonsterNum);
-			//NewMonster->SetMonsterAreaType(AllMonster[MonsterNum].AreaType_);
-			//NewMonster->InitalizeSpawnPosition(AllMonster[MonsterNum].SpawnPosition_);
 			break;
 		}
 		case MonsterType::BAT:
 		{
 			//NewMonster = CreateActor<Bat>();
-			//NewMonster->SetMonsterIndex(MonsterNum);
-			//NewMonster->SetMonsterAreaType(AllMonster[MonsterNum].AreaType_);
-			//NewMonster->InitalizeSpawnPosition(AllMonster[MonsterNum].SpawnPosition_);
 			break;
 		}
 		}
@@ -183,6 +174,11 @@ void LumiaLevel::ClientMonsterCreation()
 			GameEngineDebug::OutPutDebugString(std::to_string(MonsterNum) + "번째 몬스터는 " + "등록되지않은 타입으로 생성하려고 시도했습니다!!!!\n");
 			continue;
 		}
+
+		// NewMonster Setting
+		NewMonster->SetMonsterIndex(MonsterNum);
+		NewMonster->SetMonsterAreaType(AllMonster[MonsterNum].AreaType_);
+		NewMonster->InitalizeSpawnPosition(AllMonster[MonsterNum].SpawnPosition_);
 
 		// 99. 몬스터 관리목록에 추가
 		MonsterActorList_.push_back(NewMonster);
