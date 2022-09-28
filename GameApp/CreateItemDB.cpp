@@ -76,6 +76,25 @@ EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name,
 	return item;
 }
 
+void ItemBoxManager::CreateAllItemRecipes()
+{
+	itemRecipes_.insert(std::make_pair(CombineItem("재료1", "재료2"), "조합1"));
+	itemRecipes_.insert(std::make_pair(CombineItem("재료4", "재료3"), "조합2"));
+	itemRecipes_.insert(std::make_pair(CombineItem("재료5", "재료6"), "조합3"));
+
+	std::map<CombineItem, std::string>::iterator iter = itemRecipes_.end();
+
+	iter = itemRecipes_.find(CombineItem("재료2", "재료1"));
+
+	std::string getstr;
+
+	if (itemRecipes_.end() != iter)
+	{
+		getstr = (*iter).second;
+	}
+
+	int a = 0;
+}
 
 void ItemBoxManager::CreateMiscItemList()
 {

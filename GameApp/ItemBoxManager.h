@@ -126,6 +126,8 @@ private:
 		EquipmentType _EquipType = EquipmentType::NONE, 
 		const std::string _ImageName = "");
 
+	void CreateAllItemRecipes();
+
 private:
 	std::string itemBoxInfoPath_;
 	std::map<std::string, std::vector<ItemBox*>> itemBoxs_;

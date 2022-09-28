@@ -334,6 +334,7 @@ void ItemBoxManager::Start()
 	int a = 0;
 
 	CreateAllItemList();
+	CreateAllItemRecipes();
 }
 
 void ItemBoxManager::Update(float _DeltaTime)
