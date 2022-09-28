@@ -32,6 +32,11 @@ public:
 	void						SetPlayerNumber(int _playerNumber)			{ playerNumber_ = _playerNumber; }
 	void						SetPlayerNickname(std::string _nickname)	{ playerName_ = _nickname; }
 	void						SetMainCharacter(Character* _character)		{ myCharacter_ = _character; }
+
+public: // Check Player Info Data Function
+	bool						AllPlayerReadyStateCheck();
+	bool						AllPlayerLoadingStateCheck();
+
 private:
 	std::vector<PlayerInfo> serverPlayerList_;
 	int playerNumber_;

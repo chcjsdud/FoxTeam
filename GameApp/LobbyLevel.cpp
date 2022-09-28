@@ -17,6 +17,7 @@
 #include "UI_TestMouse.h"
 #include "Lobby_Map.h"
 #include "Lobby_StartButton.h"
+#include "Lobby_GameStartButton.h"				// 220928 ADD SJH
 
 #include <GameEngine/GameEngineCollision.h>
 
@@ -25,6 +26,7 @@
 #include "PlayerInfoManager.h"
 #include "SetPlayerNumberPacket.h"
 #include "LobbyToLumiaPacket.h"
+#include "GameStartPacket.h"
 
 #include "LobbyUIController.h"
 
@@ -34,7 +36,12 @@
 #include <GameEngine/GameEngineLevelControlWindow.h>
 
 LobbyLevel::LobbyLevel()
-	: playerCount_(0), myCharacterSelection_(-1), myStartPointSelection_(-1), myIsReady_(false)
+	: playerCount_(0)
+	, myCharacterSelection_(-1)
+	, myStartPointSelection_(-1)
+	, myIsReady_(false)
+	, UIController_(nullptr)
+	, GameStartButton_(nullptr)
 {
 
 }
@@ -79,8 +86,8 @@ void LobbyLevel::LevelStart()
 		GameEngineInput::GetInst().CreateKey("Ready", VK_RETURN);
 		GameEngineInput::GetInst().CreateKey("LBUTTON", VK_LBUTTON);
 
-		
-		GameEngineInput::GetInst().CreateKey("PassLevel", 'P');
+		// 220928 DEL SJH
+		//GameEngineInput::GetInst().CreateKey("PassLevel", 'P');
 	}
 
 }
@@ -97,7 +104,7 @@ void LobbyLevel::LevelUpdate(float _DeltaTime)
 	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
 	if (nullptr != controlWindow)
 	{
-		if (nullptr != Mouse_)
+		if (nullptr != MousePointer::InGameMouse)
 		{
 			float4 mousePosition = GameEngineInput::GetInst().GetMousePos();
 			float pointX = mousePosition.x - GameEngineWindow::GetInst().GetSize().halffloat4().x;
@@ -116,6 +123,13 @@ void LobbyLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	// 인게임 마우스 생성 - 220927 EIDT SJH
+	if (nullptr == MousePointer::InGameMouse)
+	{
+		MousePointer::InGameMouse = CreateActor<MousePointer>();
+		MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
+	}
+
 	if (tempLobbyRenderers_.size() == 0)
 	{
 		for (size_t i = 0; i < 6; i++)
@@ -153,13 +167,6 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	{
 		UIController_ = CreateActor<LobbyUIController>();
 	}
-
-	// 인게임 마우스 생성
-	if (nullptr == MousePointer::InGameMouse)
-	{
-		MousePointer::InGameMouse = CreateActor<MousePointer>();
-		MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
-	}
 }
 
 
@@ -190,6 +197,8 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		serverSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 		serverSocket_->AddPacketHandler(ePacketID::StartPointSelectPacket, new StartPointSelectPacket);
 		serverSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
+		serverSocket_->AddPacketHandler(ePacketID::StartPacket, new GameStartPacket);							// 220928 SJH ADD
+
 		GameEngineDebug::OutPutDebugString("호스트로서 방을 만듭니다.\n");
 
 		std::string nicknameTemp = PlayerInfoManager::GetInstance()->GetNickname();
@@ -200,6 +209,14 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	
 		PlayerInfoManager::GetInstance()->SetPlayerNumber(0);
 		// 해당 플레이어 번호는 현 프로세스의 멤버 변수로도 따로 저장합니다.
+
+		// 220928 SJH ADD
+		// 해당 API는 호스트역할을 수행하므로 게임시작 버튼 생성
+		// 단, 한개만 생성해야하므로 조건 체크
+		if (nullptr == Lobby_GameStartButton::Button)
+		{
+			GameStartButton_ = CreateActor<Lobby_GameStartButton>();
+		}
 
 		state_.ChangeState("Select");
 		return;
@@ -217,6 +234,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		clientSocket_->AddPacketHandler(ePacketID::CharSelectPacket, new CharSelectPacket);
 		clientSocket_->AddPacketHandler(ePacketID::StartPointSelectPacket, new StartPointSelectPacket);
 		clientSocket_->AddPacketHandler(ePacketID::ReadyPacket, new ReadyPacket);
+		clientSocket_->AddPacketHandler(ePacketID::StartPacket, new GameStartPacket);							// 220928 SJH ADD
 
 		GameEngineDebug::OutPutDebugString("클라이언트로서 방에 참여합니다.\n");
 		
@@ -467,14 +485,15 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 		{
 			serverSocket_->ProcessPacket();
 
-			if (true == GameEngineInput::GetInst().Down("PassLevel"))
-			{
-				LobbyToLumiaPacket packet;
-				serverSocket_->Send(&packet);
+			// 220928 DEL SJH
+			//if (true == GameEngineInput::GetInst().Down("PassLevel"))
+			//{
+			//	LobbyToLumiaPacket packet;
+			//	serverSocket_->Send(&packet);
 
-				UserGame::LevelChange("LumiaLevel");
+			//	UserGame::LevelChange("LumiaLevel");
 
-			}
+			//}
 
 		}
 		else

@@ -74,6 +74,7 @@ public:
 	void SetEndCallBack(const std::string& _Name, std::function<void()> _CallBack);
 	void SetFrameCallBack(const std::string& _Name, int _Index, std::function<void()> _CallBack);
 
+	bool CheckAnimation(const std::string& _Name);
 
 	inline GameEngineTexture* GetCurrentTexture()
 	{

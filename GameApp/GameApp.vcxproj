@@ -232,6 +232,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameStartPacket.cpp" />
     <ClCompile Include="Hyunwoo.cpp">
       <SubType>
       </SubType>
@@ -240,6 +241,10 @@
     <ClCompile Include="LoadingLevel_BackDrop.cpp" />
     <ClCompile Include="LoadingLevel_LoadPercent.cpp" />
     <ClCompile Include="LoadingLumiaPacket.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Lobby_GameStartButton.cpp">
       <SubType>
       </SubType>
     </ClCompile>
@@ -377,6 +382,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="UIButton.cpp" />
     <ClCompile Include="UI_CharPicture.cpp" />
     <ClCompile Include="UI_Equip.cpp" />
     <ClCompile Include="UI_Inventory.cpp" />
@@ -471,6 +477,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameStartPacket.h" />
     <ClInclude Include="Hyunwoo.h">
       <SubType>
       </SubType>
@@ -479,6 +486,10 @@
     <ClInclude Include="LoadingLevel_BackDrop.h" />
     <ClInclude Include="LoadingLevel_LoadPercent.h" />
     <ClInclude Include="LoadingLumiaPacket.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Lobby_GameStartButton.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -619,6 +630,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="UIButton.h" />
     <ClInclude Include="UI_CharPicture.h" />
     <ClInclude Include="UI_Equip.h" />
     <ClInclude Include="UI_Inventory.h" />
