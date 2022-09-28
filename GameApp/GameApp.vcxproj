@@ -275,7 +275,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="LobbyBackground.cpp" />
-    <ClCompile Include="LumiaUIController.cpp" />
+    <ClCompile Include="PlayerUIController.cpp" />
     <ClCompile Include="MousePointer.cpp">
       <SubType>
       </SubType>
@@ -514,7 +514,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LobbyBackground.h" />
-    <ClInclude Include="LumiaUIController.h" />
+    <ClInclude Include="PlayerUIController.h" />
     <ClInclude Include="MousePointer.h">
       <SubType>
       </SubType>

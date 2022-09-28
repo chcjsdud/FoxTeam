@@ -19,7 +19,6 @@
 #include "CharAnimationPacket.h"
 #include "CharStatPacket.h"
 #include "Enums.h"
-//#include "LumiaUIController.h"
 
 LumiaLevel::LumiaLevel()
 	: itemBox_(nullptr)
@@ -425,7 +424,6 @@ void LumiaLevel::createActor()
 	}
 
 	
-	//LumiaUIController* UIController = CreateActor<LumiaUIController>();
 	
 }
 

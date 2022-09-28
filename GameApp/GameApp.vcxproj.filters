@@ -205,7 +205,7 @@
     <ClCompile Include="UI_TestMouse.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
-    <ClCompile Include="LumiaUIController.cpp">
+    <ClCompile Include="PlayerUIController.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="Character.cpp">
@@ -584,7 +584,7 @@
     <ClInclude Include="UI_TestMouse.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
-    <ClInclude Include="LumiaUIController.h">
+    <ClInclude Include="PlayerUIController.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="Character.h">

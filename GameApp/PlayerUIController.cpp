@@ -1,5 +1,5 @@
 #include "PreCompile.h"
-#include "LumiaUIController.h"
+#include "PlayerUIController.h"
 
 #include "UI_CharPicture.h"
 #include "UI_Equip.h"
@@ -7,22 +7,22 @@
 #include "UI_Skill.h"
 #include "UI_Status.h"
 
-LumiaUIController::LumiaUIController() // default constructer 디폴트 생성자
+PlayerUIController::PlayerUIController() // default constructer 디폴트 생성자
 {
 
 }
 
-LumiaUIController::~LumiaUIController() // default destructer 디폴트 소멸자
+PlayerUIController::~PlayerUIController() // default destructer 디폴트 소멸자
 {
 
 }
 
-LumiaUIController::LumiaUIController(LumiaUIController&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
+PlayerUIController::PlayerUIController(PlayerUIController&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
 {
 
 }
 
-void LumiaUIController::InitUI()
+void PlayerUIController::InitUI()
 {
 	charPicture_UI = GetLevel()->CreateActor<UI_CharPicture>();
 	equip_UI = GetLevel()->CreateActor<UI_Equip>();
@@ -32,12 +32,12 @@ void LumiaUIController::InitUI()
 }
 
 
-void LumiaUIController::Start()
+void PlayerUIController::Start()
 {
 	InitUI();
 }
 
-void LumiaUIController::Update(float _DeltaTime)
+void PlayerUIController::Update(float _DeltaTime)
 {
 
 }

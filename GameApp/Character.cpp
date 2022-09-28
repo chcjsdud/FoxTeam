@@ -8,6 +8,7 @@
 #include "LumiaMap.h"
 #include "ItemBox.h"
 #include "PlayerInfoManager.h"
+//#include "PlayerUIController.h"
 #include <GameEngine/GameEngineLevelControlWindow.h>
 
 
@@ -69,6 +70,7 @@ void Character::Start()
 		GameEngineDebug::MsgBoxError("level에 MousePointer 정보가 없습니다.");
 	}
 
+	//PlayerUIController* UIController = GetLevel()->CreateActor<PlayerUIController>();
 	
 }
 
