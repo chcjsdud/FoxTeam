@@ -22,7 +22,7 @@ bool LoadingLevel::ResourceLoadEndCheck = false;
 
 bool LoadingLevel::ReadyMapCreationCommand = false;
 bool LoadingLevel::ReadyMonsterCreationCommand = true;
-bool LoadingLevel::ReadyCharacterCreationCommnd = true;
+bool LoadingLevel::ReadyCharacterCreationCommand = true;
 
 void LoadingLevel::LoadingLevelInitalize()
 {
@@ -51,10 +51,10 @@ void LoadingLevel::LoadingLevelInitalize()
 void LoadingLevel::InGameCreationCommand()
 {
 	// 캐릭터생성 및 생성명령패킷 송신
-	if (false == ReadyCharacterCreationCommnd)
+	if (false == ReadyCharacterCreationCommand && true == ReadyMapCreationCommand)
 	{
 		CharacterCreationCommand();
-		ReadyCharacterCreationCommnd = true;
+		ReadyCharacterCreationCommand = true;
 	}
 
 	// 몬스터생성 및 생성명령패킷 송신
@@ -62,7 +62,7 @@ void LoadingLevel::InGameCreationCommand()
 	{
 		MonsterCreationCommand();
 		ReadyMonsterCreationCommand = true;
-		ReadyCharacterCreationCommnd = false;
+		ReadyCharacterCreationCommand = false;
 	}
 
 	// 맵생성 및 생성명령패킷 송신
@@ -76,7 +76,7 @@ void LoadingLevel::InGameCreationCommand()
 	// 모든 리소스 및 액터 생성완료
 	if (true == ReadyMapCreationCommand &&
 		true == ReadyMonsterCreationCommand &&
-		true == ReadyCharacterCreationCommnd)
+		true == ReadyCharacterCreationCommand)
 	{
 		// 서버의 로딩완료 Flag On
 		PlayerInfoManager* InfoManager = PlayerInfoManager::GetInstance();
