@@ -17,7 +17,7 @@ public:
 public:
 	static bool ReadyMapCreationCommand;
 	static bool ReadyMonsterCreationCommand;
-	static bool ReadyCharacterCreationCommnd;
+	static bool ReadyCharacterCreationCommand;
 
 public:
 protected:
