@@ -5,7 +5,7 @@
 
 // 분류 : 레벨(씬)
 // 용도 : 
-// 설명 : 플레이하려는 게임의 모든 맵, 오브젝트, 몬스터, 플레이어 액터 생성기능 제공
+// 설명 : 플레이하려는 게임의 모든 맵, 오브젝트, 몬스터, 플레이어 액터 생성명령기능 제공
 class SynchronizationInfoManager;
 class LoadingLevel_BackDrop;
 class LoadingLevel_LoadPercent;
@@ -23,10 +23,9 @@ public:
 protected:
 private:
 	void LoadingLevelInitalize();
-	void CreateBasicActor();
 
 private:
-	void CreateGameInfomation();
+	void InGameCreationCommand();
 
 private:
 	void MapCreationCommand();

@@ -18,6 +18,13 @@ enum class ePacketID
 	LobbyToLumiaPacket,
 	StartPacket,
 
+	// LoadingLevel
+	MapCreatPacket,
+	MonsterCreatePacket,
+	CharacterCreatePacket,
+	LoadEndPacket,
+	LvChangePacket,
+
 	// LumiaLevel
 	CharMovementPacket,
 	CharAnimationPacket,

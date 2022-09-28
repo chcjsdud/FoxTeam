@@ -1,14 +1,18 @@
 #include "Precompile.h"
 #include "LoadingLevel.h"
 
-//#include "SynchronizationInfoManager.h"
-#include "PlayerInfoManager.h"
+#include "ePacketID.h"
 #include "UserGame.h"
 #include "LumiaLevel.h"
+#include "PlayerInfoManager.h"
 #include "GameServer.h"
 #include "GameClient.h"
 
-//#include "LoadingEndPacket.h"
+#include "MapCreationPacket.h"
+#include "MonsterCreationPacket.h"
+#include "CharacterCreationPacket.h"
+#include "LoadingEndPacket.h"
+#include "LevelChangePacket.h"
 
 #include "MousePointer.h"
 #include "LoadingLevel_BackDrop.h"
@@ -23,11 +27,7 @@ bool LoadingLevel::ReadyCharacterCreationCommnd = true;
 void LoadingLevel::LoadingLevelInitalize()
 {
 	// 로딩화면 기본 액터 생성
-	CreateBasicActor();
-}
 
-void LoadingLevel::CreateBasicActor()
-{
 	// 인게임 마우스 생성
 	if (nullptr == MousePointer::InGameMouse)
 	{
@@ -43,72 +43,75 @@ void LoadingLevel::CreateBasicActor()
 	//    모든 플레이어가 로딩이 완료되면 100%로 표시
 	LoadPercent_ = CreateActor<LoadingLevel_LoadPercent>();
 	LoadPercent_->SetConnectPlayerCount();
+
+	// LoadingLevel Basic Actor Creation End
+	ResourceLoadEndCheck = true;
 }
 
-void LoadingLevel::CreateGameInfomation()
+void LoadingLevel::InGameCreationCommand()
 {
-	//// 맵생성 및 생성명령패킷 송신
-	//if (false == ReadyMapCreationCommand)
-	//{
-	//	MapCreationCommand();
-	//	ReadyMapCreationCommand = true;
-	//	ReadyMonsterCreationCommand = false;
-	//}
+	// 캐릭터생성 및 생성명령패킷 송신
+	if (false == ReadyCharacterCreationCommnd)
+	{
+		CharacterCreationCommand();
+		ReadyCharacterCreationCommnd = true;
+	}
 
-	//// 몬스터생성 및 생성명령패킷 송신
-	//if (false == ReadyMonsterCreationCommand)
-	//{
-	//	MonsterCreationCommand();
-	//	ReadyMonsterCreationCommand = true;
-	//	ReadyCharacterCreationCommnd = false;
-	//}
+	// 몬스터생성 및 생성명령패킷 송신
+	if (false == ReadyMonsterCreationCommand)
+	{
+		MonsterCreationCommand();
+		ReadyMonsterCreationCommand = true;
+		ReadyCharacterCreationCommnd = false;
+	}
 
-	//// 캐릭터생성 및 생성명령패킷 송신
-	//if (false == ReadyCharacterCreationCommnd)
-	//{
-	//	CharacterCreationCommand();
-	//	ReadyCharacterCreationCommnd = true;
-	//}
+	// 맵생성 및 생성명령패킷 송신
+	if (false == ReadyMapCreationCommand)
+	{
+		MapCreationCommand();
+		ReadyMapCreationCommand = true;
+		ReadyMonsterCreationCommand = false;
+	}
 
-	//// 모든 리소스 및 액터 생성완료
-	//if (true == ReadyMapCreationCommand &&
-	//	true == ReadyMonsterCreationCommand &&
-	//	true == ReadyCharacterCreationCommnd)
-	//{
-	//	// 서버의 로딩완료 Flag On
-	//	PlayerInfoManager* InfoManager = PlayerInfoManager::GetInstance();
-	//	InfoManager->GetAllPlayerList()[InfoManager->GetMyID()].IsLoading_ = 1;
+	// 모든 리소스 및 액터 생성완료
+	if (true == ReadyMapCreationCommand &&
+		true == ReadyMonsterCreationCommand &&
+		true == ReadyCharacterCreationCommnd)
+	{
+		// 서버의 로딩완료 Flag On
+		PlayerInfoManager* InfoManager = PlayerInfoManager::GetInstance();
+		InfoManager->GetPlayerList()[InfoManager->GetMyNumber()].IsLoading_ = 1;
 
-	//	// Update Loading ProgressBar
-	//	LoadingLevel_LoadPercent::Percent->CheckLoadingPercent();
+		// Update Loading ProgressBar
+		LoadingLevel_LoadPercent::Percent->CheckLoadingPercent();
 
-	//	// Server LoadingEnd Packet Send
-	//	LoadingEndPacket EndPacket;
-	//	EndPacket.SetUniqueID(InfoManager->GetMyID());
-	//	EndPacket.SetLoadingFlag(InfoManager->GetAllPlayerList()[InfoManager->GetMyID()].IsLoading_);
-	//	UserGameServer::GetInstance()->Send(&EndPacket);
-	//}
+		// Server LoadingEnd Packet Send
+		LoadingEndPacket EndPacket;
+		EndPacket.SetUniqueID(InfoManager->GetMyNumber());
+		EndPacket.SetLoadingFlag(InfoManager->GetPlayerList()[InfoManager->GetMyNumber()].IsLoading_);
+		GameServer::GetInstance()->Send(&EndPacket);
+	}
 }
 
 void LoadingLevel::MapCreationCommand()
 {
-	//// 플레이레벨에 강제 액터 생성 명령
-	//LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("Lumia"));
-	//PlayerLevel->OtherLevelCommand(LoadingType::MAP);
+	// 플레이레벨에 강제 액터 생성 명령
+	LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+	PlayerLevel->OtherLevelCommand(LoadingType::MAP);
 }
 
 void LoadingLevel::MonsterCreationCommand()
 {
-	//// 플레이레벨에 강제 액터 생성 명령
-	//LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("Lumia"));
-	//PlayerLevel->OtherLevelCommand(LoadingType::MONSTER);
+	// 플레이레벨에 강제 액터 생성 명령
+	LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+	PlayerLevel->OtherLevelCommand(LoadingType::MONSTER);
 }
 
 void LoadingLevel::CharacterCreationCommand()
 {
-	//// 플레이레벨에 강제 액터 생성 명령
-	//LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("Lumia"));
-	//PlayerLevel->OtherLevelCommand(LoadingType::CHARACTER);
+	// 플레이레벨에 강제 액터 생성 명령
+	LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+	PlayerLevel->OtherLevelCommand(LoadingType::CHARACTER);
 }
 
 void LoadingLevel::LevelStart()
@@ -123,14 +126,13 @@ void LoadingLevel::LevelUpdate(float _DeltaTime)
 	// 리소스 로딩완료 후 액터생성 명령 패킷 송신
 	if (true == ResourceLoadEndCheck && true == GameServer::GetInstance()->IsOpened())
 	{
-		CreateGameInfomation();
+		InGameCreationCommand();
 	}
 
 	// 리소스 로딩상태 체크 후 기본 액터 생성
 	if (0 >= UserGame::LoadingFolder && false == ResourceLoadEndCheck)
 	{
 		LoadingLevelInitalize();
-		ResourceLoadEndCheck = true;
 	}
 
 	// 서버측 패킷 수신처리
@@ -152,6 +154,27 @@ void LoadingLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void LoadingLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	// Add Socket Handle
+	GameServer* server = GameServer::GetInstance();
+	GameClient* client = GameClient::GetInstance();
+
+	if (true == server->IsOpened())
+	{
+		server->AddPacketHandler(ePacketID::MapCreatPacket, new MapCreationPacket);
+		server->AddPacketHandler(ePacketID::MonsterCreatePacket, new MonsterCreationPacket);
+		server->AddPacketHandler(ePacketID::CharacterCreatePacket, new CharacterCreationPacket);
+		server->AddPacketHandler(ePacketID::LoadEndPacket, new LoadingEndPacket);
+		server->AddPacketHandler(ePacketID::LvChangePacket, new LevelChangePacket);
+	}
+
+	if (true == client->IsConnected())
+	{
+		client->AddPacketHandler(ePacketID::MapCreatPacket, new MapCreationPacket);
+		client->AddPacketHandler(ePacketID::MonsterCreatePacket, new MonsterCreationPacket);
+		client->AddPacketHandler(ePacketID::CharacterCreatePacket, new CharacterCreationPacket);
+		client->AddPacketHandler(ePacketID::LoadEndPacket, new LoadingEndPacket);
+		client->AddPacketHandler(ePacketID::LvChangePacket, new LevelChangePacket);
+	}
 }
 
 LoadingLevel::LoadingLevel()

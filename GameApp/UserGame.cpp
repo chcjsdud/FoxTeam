@@ -5,8 +5,8 @@
 #include <GameEngineBase/GameEngineTime.h>
 #include <GameEngine/GameEngineWindow.h>
 #include <GameEngine/GameEngineRenderingPipeLine.h>
-#include <GameEngine\GameEngineLevelControlWindow.h>
-#include <GameEngine\GameEngineRenderWindow.h>
+#include <GameEngine/GameEngineLevelControlWindow.h>
+#include <GameEngine/GameEngineRenderWindow.h>
 
 #include "MeshLoadLevel.h"
 #include "SettingItemLevel.h"
@@ -41,23 +41,11 @@ void UserGame::Initialize()
 	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
 	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 
-
-	//LevelCreate<PlayLevel>("Play");
-	//LevelCreate<SJH_PlayLevel>("SJH_Play");	// 220727 SJH : TEST¿ë ·¹º§
-	//LevelCreate<SettingItemLevel>("SettingItemLevel");
-	//LevelCreate<GHRayTestLevel>("RayTestLevel");
-	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
-	LevelCreate<LobbyLevel>("LobbyLevel");
 	LevelCreate<TitleLevel>("TitleLevel");
-	LevelCreate<LumiaLevel>("LumiaLevel");
+	LevelCreate<LobbyLevel>("LobbyLevel");
 	LevelCreate<LoadingLevel>("LoadingLevel");
+	LevelCreate<LumiaLevel>("LumiaLevel");
 
-	//LevelChange("LumiaLevel");
-	//LevelChange("RayTestLevel");
-	//LevelChange("SJH_Play");
-	//LevelChange("Play");
-	//LevelChange("SJH_Play");
-	//LevelChange("LobbyLevel");
 	LevelChange("TitleLevel");
 	return;
 }

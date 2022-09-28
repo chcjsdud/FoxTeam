@@ -31,11 +31,8 @@ void GameStartPacket::execute(SOCKET _sender, GameEngineSocketInterface* _networ
     // 서버(호스트)측에서만 송신하므로 클라이언트(게스트)측 수신처리
     if (false == _bServer)
     {
-        // 로딩레벨로 체인지(임시주석)
-        //UserGame::LevelChange("LoadingLevel");
-
-        // 로딩레벨 구현중이므로 루미아레벨로 강제이동 - 임시사용
-        UserGame::LevelChange("LumiaLevel");
+        // 로딩레벨로 체인지
+        UserGame::LevelChange("LoadingLevel");
     }
 }
 

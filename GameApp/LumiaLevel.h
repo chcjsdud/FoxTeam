@@ -1,25 +1,78 @@
 #pragma once
-
 #include <GameEngine/GameEngineLevel.h>
 
-#include <GameApp/MousePointer.h>
-#include <GameApp/ItemBoxManager.h>
-#include <GameApp/Character.h>
+#include "MousePointer.h"
+#include "ItemBoxManager.h"
 
 #define SERVER
 
-class Character;
+// 분류 : 레벨(씬)
+// 용도 : 
+// 설명 : 플레이 레벨
 class LumiaMap;
 class NavMesh;
+class Character;
+class Monsters;
 class LumiaLevel : public GameEngineLevel
 {
-public:
-	LumiaLevel();
-	~LumiaLevel();
-	LumiaLevel(const LumiaLevel& _other) = delete;
-	LumiaLevel(LumiaLevel&& _other) = delete;
-	LumiaLevel& operator=(const LumiaLevel& _other) = delete;
-	LumiaLevel& operator=(const LumiaLevel&& _other) = delete;
+public: // Inline Get Function
+	inline MousePointer* GetMousePointer() const
+	{
+		return MousePointer::InGameMouse;
+	}
+
+	inline LumiaMap* GetMap() const
+	{
+		return CurMap_;
+	}
+
+	inline ItemBoxManager* GetItemBoxManager() const
+	{
+		return ItemBoxManager_;
+	}
+
+	inline std::vector<Character*> GetCharacterActorList()
+	{
+		return CharacterActorList_;
+	}
+
+public: // Inline Set Function
+
+public: // Public Function
+	void OtherLevelCommand(LoadingType _LoadingType);						// 로딩타입 수신
+	void ClientMapCreation();												// Guest 전용
+	void ClientMonsterCreation();											// Guest 전용
+	void ClientCharacterCreation();											// Guest 전용
+
+private: // Packet
+	void MapCreationPacketSend();											// 맵생성 패킷 전송
+	void MonsterCreationPacketSend();										// 몬스터생성 패킷 전송
+	void CharacterCreationPacketSend();										// 캐릭터생성 패킷 전송
+
+private: // Command
+	bool MapCreationCommand();												// Host & Guest 공통
+	bool MonsterCreationCommand();											// Host 전용
+	bool CharacterCreationCommand();										// Host & Guest 공통
+
+private: // Resource Load
+	void MapResourceLoad();													// Current Map Resource Load
+	void CharacterResourceLoad();											// InGame Play Character Resource Load
+
+private: // Basic Initalize Function
+	void CreateBasicActor();												// LumiaLevel Basic Actore Creation Function
+	void CreateLevelInput();												// LumiaLevel Input Creation Function
+	void AddSocketHandle();													// LumiaLevel Network Handle Add Function
+	void InitIMGUIWindow();													// LumiaLevel IMGUI Window Setting Function
+	void CameraAdjustment();												// LumiaLevel Main Camera Adjustment Function
+
+private: // State Update Function
+	void CharacterStateUpdatePacketSend();									// Character State Update Packet Send Function
+	void CharactersTransformUpdate();										// Character ManagerList Transform Update Function
+	void MonsterStateUpdatePacketSend();									// Monster State Update Packet Send Function
+	void MonstersTransformUpdate();											// Monster ManagerList Transform Update Function
+
+private: // Debug Function
+	void DebugWindowUpdate();												// Debug Window Update Function
 
 public:
 	virtual void LevelStart() override;
@@ -28,35 +81,25 @@ public:
 	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 
 public:
-	void GenerateCharactor();
+	LumiaLevel();
+	~LumiaLevel();
 
-public:
-	MousePointer* GetMousePointer() { return MousePointer::InGameMouse; }
-	LumiaMap* GetMap() { return map_; }
-	ItemBoxManager* GetItemBoxManager() { return itemBox_; }
-	std::vector<Character*> GetCharacterActorList() { return characterActorList_; }
-private:
-	// On level change start event
-	void loadResource();
-	void initRenderWindow();
-	void createActor();
-	void adjustCamera();
-	// 0922 박종원
-	void serverCheck();
-
-	// On level change end event
-	void releaseResource();
-	void releaseRenderWindow();
+protected:
+	LumiaLevel(const LumiaLevel& _other) = delete;
+	LumiaLevel(LumiaLevel&& _other) = delete;
 
 private:
-	// 루미아레벨에서 고정적으로 관리하는 캐릭터 액터 리스트입니다.
-	// 현재 Available 한 캐릭터는 리오밖에 없어서 Rio 로 고정했지만 모든 캐릭터 액터의 부모 액터가 대체할 예정입니다.
-	// 모든 캐릭터의 정보는 PlayerInfoManager 에서 관리하고,
-	// 이건 그냥 "캐릭터 액터" 의 리스트일 뿐입니다.
-	std::vector<Character*> characterActorList_;
-	
-	LumiaMap* map_;
+	LumiaLevel& operator=(const LumiaLevel& _other) = delete;
+	LumiaLevel& operator=(const LumiaLevel&& _other) = delete;
 
-	ItemBoxManager* itemBox_;
+private:
+	std::vector<Character*> CharacterActorList_;							// 캐릭터 목록(실질적 데이터는 PlayerInfoManager에서 관리)
+	std::vector<Monsters*> MonsterActorList_;								// 몬스터 목록(실직적 데이터는 MonsterInfoManager에서 관리)
+
+private:
+	LumiaMap* CurMap_;														// 맵
+	ItemBoxManager* ItemBoxManager_;										// 아이템박스 매니저
+
+private:
+	GameEngineLevelControlWindow* DebugAndControlWindow_;					// 디버그 & 강제레벨체인지 윈도우
 };
-

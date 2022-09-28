@@ -1,0 +1,13 @@
+#pragma once
+#include "Enums.h"
+
+struct MonsterInfo
+{
+public: // 생성정보
+	int Index_;										// 몬스터 생성 인덱스(탐색용)
+	Location AreaType_;								// 몬스터 스폰 지역 타입(탐색용)
+	MonsterType MonsterType_;						// 몬스터 타입
+
+public: // 초기화정보
+	float4 SpawnPosition_;							// 스폰 위치
+};

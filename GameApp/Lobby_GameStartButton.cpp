@@ -32,11 +32,8 @@ void Lobby_GameStartButton::ButtonClickFunction()
 			GameStartPacket Packet;
 			GameServer::GetInstance()->Send(&Packet);
 
-			// 로딩레벨로 체인지(임시주석)
-			//UserGame::LevelChange("LoadingLevel");
-
-			// 로딩레벨 구현중이므로 루미아레벨로 강제이동 - 임시사용
-			UserGame::LevelChange("LumiaLevel");
+			// 로딩레벨로 체인지
+			UserGame::LevelChange("LoadingLevel");
 		}
 	}
 }

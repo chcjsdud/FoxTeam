@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
     <ClCompile Include="Character.cpp" />
+    <ClCompile Include="CharacterCreationPacket.cpp" />
     <ClCompile Include="CharAnimationPacket.cpp">
       <SubType>
       </SubType>
@@ -241,6 +242,8 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LevelChangePacket.cpp" />
+    <ClCompile Include="LoadingEndPacket.cpp" />
     <ClCompile Include="LoadingLevel.cpp" />
     <ClCompile Include="LoadingLevel_BackDrop.cpp" />
     <ClCompile Include="LoadingLevel_LoadPercent.cpp" />
@@ -248,6 +251,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LoadingSyncManager.cpp" />
     <ClCompile Include="Lobby_GameStartButton.cpp">
       <SubType>
       </SubType>
@@ -284,6 +288,14 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="LobbyBackground.cpp" />
+    <ClCompile Include="MapCreationPacket.cpp" />
+    <ClCompile Include="MonsterCreationPacket.cpp" />
+    <ClCompile Include="MonsterInfoManager.cpp" />
+    <ClCompile Include="Monsters.cpp" />
+    <ClCompile Include="Monster_AttackState.cpp" />
+    <ClCompile Include="Monster_CrowdControlState.cpp" />
+    <ClCompile Include="Monster_MainState.cpp" />
+    <ClCompile Include="Monster_NormalState.cpp" />
     <ClCompile Include="PlayerUIController.cpp" />
     <ClCompile Include="MousePointer.cpp">
       <SubType>
@@ -429,9 +441,11 @@
     </ClCompile>
     <ClCompile Include="UserGame_Resources_Shader.cpp" />
     <ClCompile Include="CharacterStat.cpp" />
+    <ClCompile Include="Wolf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h" />
+    <ClInclude Include="CharacterCreationPacket.h" />
     <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="CharAnimationPacket.h">
       <SubType>
@@ -490,6 +504,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LevelChangePacket.h" />
+    <ClInclude Include="LoadingEndPacket.h" />
     <ClInclude Include="LoadingLevel.h" />
     <ClInclude Include="LoadingLevel_BackDrop.h" />
     <ClInclude Include="LoadingLevel_LoadPercent.h" />
@@ -497,6 +513,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LoadingSyncInfo.h" />
+    <ClInclude Include="LoadingSyncManager.h" />
     <ClInclude Include="Lobby_GameStartButton.h">
       <SubType>
       </SubType>
@@ -533,6 +551,12 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LobbyBackground.h" />
+    <ClInclude Include="MapCreationPacket.h" />
+    <ClInclude Include="MonsterCreationPacket.h" />
+    <ClInclude Include="MonsterInfo.h" />
+    <ClInclude Include="MonsterInfoManager.h" />
+    <ClInclude Include="Monsters.h" />
+    <ClInclude Include="MonsterStateInfo.h" />
     <ClInclude Include="PlayerUIController.h" />
     <ClInclude Include="MousePointer.h">
       <SubType>
@@ -668,6 +692,7 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="UserGame_Resources_Shader.h" />
+    <ClInclude Include="Wolf.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

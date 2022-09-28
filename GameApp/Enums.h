@@ -1,11 +1,19 @@
 #pragma once
 
-enum class RenderOrder
+// Loading Type
+enum class LoadingType
 {
-	BACKDROP,
+	NONE = -1,
 	MAP,
 	MONSTER,
-	PLAYER,
+	CHARACTER,
+	MAX
+};
+
+// UI RenderOrder
+enum class RenderOrder
+{
+	BACKDROP,					// 배경
 	UIPANEL0,
 	UIPANEL1,
 	UIPANEL2,
@@ -19,20 +27,60 @@ enum class RenderOrder
 // UI 버튼 상태
 enum class ButtonState
 {
-	Normal,				// 기본상태
-	MouseOver,			// 마우스오버상태
-	Click,				// 마우스클릭상태
-	Disabled,			// 비활성화상태
+	Normal,						// 기본상태
+	MouseOver,					// 마우스오버상태
+	Click,						// 마우스클릭상태
+	Disabled,					// 비활성화상태
 	Max
 };
 
 // UI ProgressBar Direct
 enum class ProgressBarDirect
 {
-	BottomToTop,		// Bottom -> Top
-	TopToBottom,		// Top -> Bottom
-	RightToLeft,		// Right -> Left
-	LeftToRight			// Left -> Right
+	BottomToTop,				// Bottom -> Top
+	TopToBottom,				// Top -> Bottom
+	RightToLeft,				// Right -> Left
+	LeftToRight					// Left -> Right
+};
+
+// Monster Type
+enum class MonsterType
+{
+	NONE = -1,
+	WOLF,						// 늑대
+	BEAR,						// 곰
+	BAT,						// 박쥐
+
+	MAX
+};
+
+// 몬스터상태 기본타입
+enum class MonsterStateBasicType
+{
+	NONE = -1,
+	NORMAL,
+	CROWDCONTROL,
+	ATTACK,
+	MAX
+};
+
+// 몬스터상태 상세타입
+enum class MonsterStateType
+{
+	NONE = -1,
+	APPEAR,						// 첫등장상태
+	REGEN,						// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)
+	IDLE,						// 대기상태
+	RUN,						// 이동상태
+	HOMINGINSTINCT,				// 귀환상태
+	CHASE,						// 추적상태
+	HIT,						// 피격상태
+	DEATH,						// 사망중상태
+	DEAD,						// 사망(리젠대기)상태
+	ATK01,						// 일반공격01상태
+	ATK02,						// 일반공격02상태
+	SKILLATTACK,				// 스킬공격상태
+	MAX
 };
 
 enum class eCollisionGroup
@@ -70,7 +118,6 @@ enum class JobType // 직업타입
 	// ....
 	MAX
 };
-
 
 enum class Location
 {
