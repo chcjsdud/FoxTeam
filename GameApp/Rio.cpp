@@ -96,6 +96,7 @@ void Rio::changeAnimationBasicAttack()
 	renderer_->ChangeFBXAnimation("BasicAttack", true);
 }
 
+
 void Rio::onStartQSkill()
 {
 }

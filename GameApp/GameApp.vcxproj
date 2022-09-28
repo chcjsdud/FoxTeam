@@ -214,6 +214,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="CreateItemDB.cpp" />
+    <ClCompile Include="Dummy.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EndingLevel.cpp" />
     <ClCompile Include="EquipmentItem.cpp">
       <SubType>
@@ -454,6 +458,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ChattingPacket.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Dummy.h">
       <SubType>
       </SubType>
     </ClInclude>

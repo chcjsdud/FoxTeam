@@ -101,8 +101,8 @@ void Hyunwoo::initRendererAndAnimation()
 void Hyunwoo::initHyunwooCollision()
 {
 	collision_Q = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	collision_Q->GetTransform()->SetLocalPosition({ 0.0f,0.0f,200.0f });
-	collision_Q->GetTransform()->SetLocalScaling({300.0f, 1.0f, 250.0f});
+	collision_Q->GetTransform()->SetLocalPosition({ 0.0f,0.0f,300.0f });
+	collision_Q->GetTransform()->SetLocalScaling({400.0f, 150.0f, 350.0f});
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_Q->SetCollisionType(CollisionType::AABBBox3D);
 	collision_Q->Off();
@@ -126,6 +126,7 @@ void Hyunwoo::changeAnimationBasicAttack()
 	curAnimation_ = "Atk0";
 	renderer_->ChangeFBXAnimation("Atk0", true);
 }
+
 
 
 
@@ -168,8 +169,11 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 					// 대미지 패킷 : Playerinfo 의 chracterstat 구조체에 있는 체력 값을 감산한다.
 					// 이는 역시 프레임마다 LumiaLevel 의 프로세스 패킷에서 실시간으로 감지한다.
 
-					character->Damage(100.0f);
+					// 충돌체에 감지된 대상에게 실제 대미지를 가하는 코드입니다.
+					character->Damage(300.0f);
 
+
+					// 대미지가 차감된 Status 를 패킷으로 넘겨줍니다.
 					CharStatPacket packet;
 					packet.SetTargetIndex(character->GetIndex());
 					packet.SetStat(*(character->GetStat()));
@@ -197,8 +201,8 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 		timer_end_Q = 0.0f;
 		b_Qhit_ = false;
 		changeAnimationWait();
-		mainState_ << "NormalState";
-		normalState_ << "Watch";
+		mainState_.ChangeState("NormalState",true);
+		normalState_.ChangeState("Watch",true);
 		return;
 	}
 	// 델타타임에 걸맞게 
@@ -251,19 +255,11 @@ void Hyunwoo::onUpdateDSkill(float _deltaTime)
 void Hyunwoo::onStartDeath()
 {
 	curAnimation_ = "Death";
-	renderer_->ChangeFBXAnimation("Death");
+	renderer_->ChangeFBXAnimation("Death", true);
 }
 
 void Hyunwoo::onUpdateDeath(float _deltaTime)
 {
+
 }
 
-void Hyunwoo::InitHyunwooCollision()
-{
-	collision_Q = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	collision_Q->GetTransform()->SetLocalScaling(120.0f);
-	collision_Q->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 50.0f });
-	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
-	collision_Q->SetCollisionType(CollisionType::AABBBox3D);
-	collision_Q->Off();
-}

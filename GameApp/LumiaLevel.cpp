@@ -9,6 +9,7 @@
 #include "LumiaMap.h"
 #include "ItemBoxWindow.h"
 
+#include "Dummy.h"
 #include "Rio.h"
 #include "Hyunwoo.h"
 
@@ -74,7 +75,13 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 			server->Send(&packet);
 		}
 
-
+		{
+			// 자기 스테이터스를 계속 업데이트하는 패킷
+			CharStatPacket packet;
+			packet.SetTargetIndex(pm->GetMyNumber());
+			packet.SetStat(*(pm->GetMyPlayer().stat_));
+			server->Send(&packet);
+		}
 	}
 	else if (true == GameClient::GetInstance()->IsConnected())
 	{
@@ -228,7 +235,7 @@ void LumiaLevel::GenerateCharactor()
 		}
 		case JobType::NADINE:
 		{
-			newCharacter = CreateActor<Rio>();
+			newCharacter = CreateActor<Dummy>();
 			break;
 		}
 		case JobType::HYUNWOO:

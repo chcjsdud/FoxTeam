@@ -247,6 +247,9 @@
     <ClCompile Include="GameStartPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet\GameStartPacket</Filter>
     </ClCompile>
+    <ClCompile Include="Dummy.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Dummy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -395,6 +398,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LobbyLevel\Packet\GameStartPacket">
       <UniqueIdentifier>{9828b190-3e45-49ae-a9b7-a665bffc7713}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Dummy">
+      <UniqueIdentifier>{d0df6d51-8665-4e69-968f-4544eeb1f2df}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -652,6 +658,9 @@
     </ClInclude>
     <ClInclude Include="GameStartPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet\GameStartPacket</Filter>
+    </ClInclude>
+    <ClInclude Include="Dummy.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Dummy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
