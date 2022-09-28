@@ -36,7 +36,7 @@ void LoadingEndPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 {
 	PlayerInfoManager* InfoManager = PlayerInfoManager::GetInstance();
 
-	// 클라이언트(게스트)측에서 송신하므로 서버(호스트)만 수신처리
+	// 서버(호스트) 수신처리
 	if (true == _bServer)
 	{
 		// 서버측에서 해당 패킷을 수신시 플레이어목록의 정보를 갱신하고,
@@ -53,6 +53,8 @@ void LoadingEndPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 
 		// 관리중은 플레이어정보목록에 존재하는 모든 플레이어가 로딩완료라면 레벨체인지 패킷 송신
 		// 단, 본인의 로딩완료상태 체크 포함
+		// -> 서버가 로딩완료되고 난뒤 클라가 순차적 로딩되었을때 아래 패킷으로 레벨체인지
+		//    해당 조건을 만족하지않는다면 서버가 로딩완료했을때 레벨체인지패킷송신
 		if (true == InfoManager->AllPlayerLoadingStateCheck())
 		{
 			// 반환값이 true 이라면 모든 플레이어(호스트 포함) 로딩완료 되었다는 의미이므로 레벨 체인지 패킷 송신
@@ -64,6 +66,7 @@ void LoadingEndPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 			UserGame::LevelChange("LumiaLevel");
 		}
 	}
+	// 클라(게스트) 수신처리
 	else if (false == _bServer)
 	{
 		// 서버측에서 해당 패킷을 수신시 플레이어목록의 정보를 갱신하고,

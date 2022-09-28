@@ -90,6 +90,20 @@ void LoadingLevel::InGameCreationCommand()
 		EndPacket.SetUniqueID(InfoManager->GetMyNumber());
 		EndPacket.SetLoadingFlag(InfoManager->GetPlayerList()[InfoManager->GetMyNumber()].IsLoading_);
 		GameServer::GetInstance()->Send(&EndPacket);
+
+		// 연결된 모든 클라이언트(게스트)가 로딩이 먼저 끝남을 방지
+		// 현재 레벨이 루미아레벨이아니고, 서버를 포함한 모든 클라이언트가 로딩완료시 로드완료레벨체인지 패킷 송신후 레벨체인지
+		LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+		if (true == InfoManager->AllPlayerLoadingStateCheck() && PlayerLevel != UserGame::CurrentLevel())
+		{
+			// 반환값이 true 이라면 모든 플레이어(호스트 포함) 로딩완료 되었다는 의미이므로 레벨 체인지 패킷 송신
+			LevelChangePacket Packet;
+			Packet.SetChangeLevelName("LumiaLevel");
+			GameServer::GetInstance()->Send(&Packet);
+
+			// 패킷송신이 끝났으므로 나의 레벨도 체인지
+			UserGame::LevelChange("LumiaLevel");
+		}
 	}
 }
 

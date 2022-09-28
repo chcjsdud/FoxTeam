@@ -67,7 +67,7 @@ void Monsters::InitalizeSpawnPosition(const float4& _SpawnPosition)
 	CurrentMap_ = GetLevelConvert<LumiaLevel>()->GetMap();
 	if (nullptr == CurrentMap_)
 	{
-		GameEngineDebug::MsgBoxError("현재레벨에 생성된 맵이 존재하지않습니다!!!!!");
+		//GameEngineDebug::MsgBoxError("현재레벨에 생성된 맵이 존재하지않습니다!!!!!");
 		return;
 	}
 }
