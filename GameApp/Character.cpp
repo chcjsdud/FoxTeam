@@ -122,9 +122,11 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
 
-
-		controlWindow->AddText("P0 curHP Server : " + std::to_string(pm->GetPlayerList()[0].stat_->HP));
-		controlWindow->AddText("P1 curHP Server : " + std::to_string(pm->GetPlayerList()[1].stat_->HP));
+		for (int i = 0; i < pm->GetPlayerList().size(); i++)
+		{
+			controlWindow->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
+		}
+		
 	}
 }
 
