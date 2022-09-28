@@ -4,6 +4,53 @@
 
 //#define USERSAVE
 
+struct CombineItem
+{
+public:
+	CombineItem(const std::string& _left, const std::string& _right)
+	{
+		if (_left > _right)
+		{
+			left_ = _right;
+			right_ = _left;
+		}
+		else
+		{
+			left_ = _left;
+			right_ = _right;
+		}
+	}
+
+	bool const operator==(const CombineItem& o)
+	{
+		return left_ == o.left_ && right_ == o.right_;
+	}
+
+	bool const operator<(const CombineItem& o) const
+	{
+		bool Check = false;
+		if (left_ < o.left_)
+		{
+			Check = true;
+		}
+		else
+		{
+			if (right_ < o.right_)
+			{
+				Check = true;
+			}
+		}
+		return Check;
+	}
+
+private:
+	std::string left_;
+	std::string right_;
+
+	// 정렬을 위해서 막음
+	CombineItem() {}
+};
+
 // 설명 : 
 class ItemBase;
 class MiscItem;
@@ -87,6 +134,7 @@ private:
 
 	std::list<ItemBase*> allItemList_;
 	GameEngineRandom randomManager_;
+	std::map<CombineItem, std::string> itemRecipes_;
 
 	//이건호 UI아이템 박스 작업
 private:
