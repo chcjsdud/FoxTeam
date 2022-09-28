@@ -13,6 +13,7 @@
 #include "ePacketID.h"
 #include "PlayerInfoManager.h"
 #include "MonsterInfoManager.h"
+#include "UserGame.h"
 #include "GameServer.h"
 #include "GameClient.h"
 
@@ -22,6 +23,10 @@
 #include "MapCreationPacket.h"
 #include "MonsterCreationPacket.h"
 #include "CharacterCreationPacket.h"
+#include "LoadingEndPacket.h"
+#include "LevelChangePacket.h"
+
+#include "LoadingLevel_LoadPercent.h"
 
 //======================== Map
 #include "LumiaMap.h"
@@ -80,6 +85,37 @@ void LumiaLevel::OtherLevelCommand(LoadingType _LoadingType)
 		if (true == CharacterCreationCommand() && true == GameServer::GetInstance()->IsOpened())
 		{
 			GameEngineDebug::OutPutDebugString("서버(호스트)의 캐릭터 생성을 완료했습니다!!!!\n");
+
+			// 220928 SJH 임시처리 -> 추후 삭제예정
+			// 서버&클라가 같은 API일때 OR 서버오픈상태로 게임시작시
+			PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+			if (1 >= static_cast<int>(pm->GetPlayerList().size()))
+			{
+				// 서버측에서 해당 패킷을 수신시 플레이어목록의 정보를 갱신하고,
+				pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_ = 1;
+
+				// 로딩퍼센트 동기화를 위해 다른 클라이언트에게 패킷 전송 후
+				LoadingEndPacket EndPacket;
+				EndPacket.SetUniqueID(pm->GetMyNumber());
+				EndPacket.SetLoadingFlag(pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_);
+				GameServer::GetInstance()->Send(&EndPacket);
+
+				// 나의 로딩퍼센트 갱신
+				LoadingLevel_LoadPercent::Percent->CheckLoadingPercent();
+
+				// 관리중은 플레이어정보목록에 존재하는 모든 플레이어가 로딩완료라면 레벨체인지 패킷 송신
+				// 단, 본인의 로딩완료상태 체크 포함
+				if (true == pm->AllPlayerLoadingStateCheck())
+				{
+					// 반환값이 true 이라면 모든 플레이어(호스트 포함) 로딩완료 되었다는 의미이므로 레벨 체인지 패킷 송신
+					LevelChangePacket Packet;
+					Packet.SetChangeLevelName("LumiaLevel");
+					GameServer::GetInstance()->Send(&Packet);
+
+					// 패킷송신이 끝났으므로 나의 레벨도 체인지
+					UserGame::LevelChange("LumiaLevel");
+				}
+			}
 		}
 
 		break;
