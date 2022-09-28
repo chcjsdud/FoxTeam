@@ -154,7 +154,9 @@ void ItemBoxManager::DebugRender()
 
 void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string& _item, int _amount)
 {
-	std::map<std::string, std::vector<ItemBox*>>::iterator iter = itemBoxs_.find(_area);
+	std::string areaUpperName = GameEngineString::toupper(_area);
+
+	std::map<std::string, std::vector<ItemBox*>>::iterator iter = itemBoxs_.find(areaUpperName);
 
 	if (itemBoxs_.end() == iter)
 	{
@@ -187,7 +189,63 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 		// std::vector<ItemBox*>
 		randomValue = randomManager_.RandomInt(0, static_cast<int>(iter->second.size()) - 1);
 
-		iter->second[randomValue]->itemList.push_back(findItem->Copy());
+		std::list<ItemBase*>& curList = iter->second[randomValue]->itemList;
+
+		bool SameItem = false;
+
+		for (const auto& item : curList)
+		{
+			if (item->GetName() == _item)
+			{
+				SameItem = true;
+				break;
+			}
+		}
+
+		int Count = 0;
+
+		while (SameItem)
+		{
+			randomValue = randomManager_.RandomInt(0, static_cast<int>(iter->second.size()) - 1);
+
+			curList = iter->second[randomValue]->itemList;
+
+			bool Check = false;
+
+			// 아이템 최대 갯수
+			if (curList.size() >= 6)
+			{
+				Check = true;
+			}
+			else
+			{
+				for (const auto& item : curList)
+				{
+					if (item->GetName() == _item)
+					{
+						Check = true;
+						break;
+					}
+				}
+			}
+
+			if (false == Check)
+			{
+				SameItem = false;
+				Count;
+
+				int a = 0;
+			}
+
+			++Count;
+		}
+
+		if (false == SameItem)
+		{
+			curList.push_back(findItem->Copy());
+
+			int a = 0;
+		}
 	}
 
 }

@@ -497,4 +497,22 @@ void LumiaMap::setAllItem()
 	itembox->PushRandomItem("DOWNTOWN", "Scissors", 30);
 	itembox->PushRandomItem("DOWNTOWN", "FountainPen", 50);
 	itembox->PushRandomItem("DOWNTOWN", "KitchenKnife", 70);
+
+
+	itembox->PushRandomItem("Alley", "Bandage", 14);
+	itembox->PushRandomItem("Alley", "Binoculars", 7);
+	itembox->PushRandomItem("Alley", "Bracelet", 11);
+	itembox->PushRandomItem("Alley", "Cross", 8);
+	itembox->PushRandomItem("Alley", "Garlic", 6);
+	itembox->PushRandomItem("Alley", "Glue", 9);
+	itembox->PushRandomItem("Alley", "Hammer", 13);
+	itembox->PushRandomItem("Alley", "Honey", 8);
+	itembox->PushRandomItem("Alley", "Lighter", 13);
+	itembox->PushRandomItem("Alley", "Needle", 9);
+	itembox->PushRandomItem("Alley", "Rubber", 9);
+	itembox->PushRandomItem("Alley", "RunningShoes", 11);
+	itembox->PushRandomItem("Alley", "Scissors", 13);
+	itembox->PushRandomItem("Alley", "StallionMedal", 9);
+	itembox->PushRandomItem("Alley", "SteelChain", 14);
+	itembox->PushRandomItem("Alley", "Wetsuit", 11);
 }
