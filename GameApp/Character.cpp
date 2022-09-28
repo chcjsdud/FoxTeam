@@ -82,6 +82,7 @@ void Character::Update(float _DeltaTime)
 	{
 		// 죽음 판정
 		mainState_.ChangeState("DeathState", true);
+		deathState_.ChangeState("PlayerDeath", true);
 		return;
 	}
 
@@ -114,6 +115,11 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("NormalState : " + normalState_.GetCurrentStateName());
 		controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
+
+
+		controlWindow->AddText("P0 curHP : " + std::to_string(pm->GetPlayerList()[0].stat_->HP));
+		controlWindow->AddText("P1 curHP : " + std::to_string(pm->GetPlayerList()[1].stat_->HP));
+
 	}
 }
 
@@ -323,22 +329,23 @@ void Character::initState()
 	mainState_.CreateState(MakeState(Character, CrowdControlState));
 	mainState_.CreateState(MakeState(Character, DeathState));
 
-
 	normalState_.CreateState(MakeState(Character, Watch));
 	normalState_.CreateState(MakeState(Character, Stop));
 	normalState_.CreateState(MakeState(Character, Run));
 	normalState_.CreateState(MakeState(Character, Chase));
 
-	//attackState_.CreateState(MakeState(Character, NoAttack));
+	attackState_.CreateState(MakeState(Character, BasicAttack));
 	attackState_.CreateState(MakeState(Character, QSkill));
 
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
-	attackState_.CreateState(MakeState(Character, BasicAttack));
+
+
 
 	mainState_ << "NormalState";
 
-
 	normalState_ << "Watch";
+	
+	deathState_ << "PlayerDeath";
 }
 
 
@@ -505,8 +512,7 @@ void Character::updateAttackState(float _deltaTime)
 
 void Character::startDeathState()
 {
-	// 죽음 패킷을 여기서 보내야 할까??
-
+	
 }
 
 void Character::updateDeathState(float _deltaTime)

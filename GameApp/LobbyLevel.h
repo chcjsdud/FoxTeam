@@ -8,6 +8,7 @@ class TempLobbyRenderer;
 class GameEngineImageRenderer;
 class Lobby_PortraitBg;
 class LobbyUIController;
+class Lobby_GameStartButton;
 class LobbyLevel : public GameEngineLevel
 {
 public:
@@ -64,7 +65,7 @@ private:
 	int myCharacterSelection_;
 	int myStartPointSelection_;
 	bool myIsReady_;
-	UI_TestMouse* Mouse_;
+	//UI_TestMouse* Mouse_;
 
 	//이건호 : 로비내 UI용 멤버변수
 private:
@@ -77,5 +78,8 @@ private:
 
 private:
 	std::vector<TempLobbyRenderer*> tempLobbyRenderers_;
+
+private:
+	Lobby_GameStartButton* GameStartButton_;
 };
 

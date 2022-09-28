@@ -373,3 +373,14 @@ void GameEngineImageRenderer::SetFrameCallBack(const std::string& _Name, int _In
 
 	FindIter->second->FrameCallBack_[_Index].push_back(_CallBack);
 }
+
+bool GameEngineImageRenderer::CheckAnimation(const std::string& _Name)
+{
+	std::map<std::string, Animation2D*>::iterator FindIter = AllAnimations_.find(_Name);
+	if (AllAnimations_.end() == FindIter)
+	{
+		return false;
+	}
+
+	return true;
+}
