@@ -187,6 +187,52 @@ void UI_ItemBox::RenderOn()
 	UI_On = true;
 }
 
+void UI_ItemBox::EmptySlot()
+{
+	//아이템정보를 비워주는 함수
+
+	if (Slot0_Item != nullptr)
+	{
+		Slot0_Item = nullptr;
+	}
+
+	if (Slot1_Item != nullptr)
+	{
+		Slot1_Item = nullptr;
+	}
+
+	if (Slot2_Item != nullptr)
+	{
+		Slot2_Item = nullptr;
+	}
+
+	if (Slot3_Item != nullptr)
+	{
+		Slot3_Item = nullptr;
+	}
+
+	if (Slot4_Item != nullptr)
+	{
+		Slot4_Item = nullptr;
+	}
+
+	if (Slot5_Item != nullptr)
+	{
+		Slot5_Item = nullptr;
+	}
+
+	if (Slot6_Item != nullptr)
+	{
+		Slot6_Item = nullptr;
+	}
+
+	if (Slot7_Item != nullptr)
+	{
+		Slot7_Item = nullptr;
+	}
+
+}
+
 void UI_ItemBox::GetItemBoxInfo(list<ItemBase*> _ItemList)
 {
 	list<ItemBase*>::iterator listiter = _ItemList.begin();
@@ -224,6 +270,10 @@ bool UI_ItemBox::MouseCollisionCheck()
 
 void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 {
+	//한번만 실행하는 함수라 실행시 기존 데이터들을 싹 비우고 다시 받아오게 해야함
+
+
+
 	switch (_SlotNumber)
 	{
 	case 0:
@@ -341,6 +391,7 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 
 void UI_ItemBox::EmptySlotReturn(ItemBase* _TargetSlot)
 {
+	EmptySlot();
 
 	if (Slot0_Item == nullptr)
 	{

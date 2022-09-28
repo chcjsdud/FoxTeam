@@ -42,6 +42,8 @@ public:
 
 	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
 
+	void EmptySlot();
+
 protected:
 	GameEngineUIRenderer* ItemBoxBackGround_Renderer;
 	
