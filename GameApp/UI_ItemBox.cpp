@@ -34,18 +34,18 @@ void UI_ItemBox::Start()
 	//위치를 조정한 리소스들은 UIRenderMap에 String과 같이 insert됩니다.
 	//인게임정보(HP나 스태미너 상태, 착용장비여부)등을 받으면, UIRendererMap에서 이미지이름으로 Find해서 리소스를 바꿀 예정업니다.
 
-	ItemBox_BackgroundPos = { 0.0f, -100.0f, 0.0f };
-	ItemBox_BasicSlotPos = { -77.0f, -93.0f, 0.0f };
-	ItemBox_SlotXPivot = { 52.0f, 0.0f, 0.0f };
-	ItemBox_SlotYPivot = { 0.0f, -37.0f, 0.0f };
-	ItemBox_SlotSize = { 44.0f,27.0f };
+	BackgroundPos = { 0.0f, -100.0f, 0.0f };
+	BasicSlotPos = { -77.0f, -93.0f, 0.0f };
+	SlotXPivot = { 52.0f, 0.0f, 0.0f };
+	SlotYPivot = { 0.0f, -37.0f, 0.0f };
+	SlotSize = { 44.0f,27.0f };
 
 		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
 	{
 		ItemBoxBackGround_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		ItemBoxBackGround_Renderer->SetImage("ItemBox_BackGround.png", "PointSmp");
-		ItemBoxBackGround_Renderer->GetTransform()->SetLocalPosition(ItemBox_BackgroundPos);
+		ItemBoxBackGround_Renderer->GetTransform()->SetLocalPosition(BackgroundPos);
 		ItemBoxBackGround_Renderer->GetTransform()->SetLocalScaling(ItemBoxBackGround_Renderer->GetCurrentTexture()->GetTextureSize());
 	}
 
@@ -59,7 +59,7 @@ void UI_ItemBox::Start()
 	{
 		//마우스와의 충돌을 위해서 aabbbox3d로 충돌
 		ItemBoxCollision = CreateTransformComponent<GameEngineCollision>();
-		ItemBoxCollision->GetTransform()->SetLocalPosition(ItemBox_BackgroundPos);
+		ItemBoxCollision->GetTransform()->SetLocalPosition(BackgroundPos);
 		ItemBoxCollision->GetTransform()->SetLocalScaling(ItemBoxBackGround_Renderer->GetCurrentTexture()->GetTextureSize());
 		ItemBoxCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 	}
@@ -68,43 +68,43 @@ void UI_ItemBox::Start()
 		//마우스와의 충돌을 위해서 aabbbox3d로 충돌
 
 		Slot0Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot0Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos);
-		Slot0Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot0Collision->GetTransform()->SetLocalPosition(BasicSlotPos);
+		Slot0Collision->GetTransform()->SetLocalScaling(SlotSize);
 		Slot0Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot1Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot1Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + ItemBox_SlotXPivot);
-		Slot1Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot1Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotXPivot);
+		Slot1Collision->GetTransform()->SetLocalScaling(SlotSize);
 		Slot1Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot2Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot2Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + (ItemBox_SlotXPivot * 2.0f));
-		Slot2Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot2Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 2.0f));
+		Slot2Collision->GetTransform()->SetLocalScaling(SlotSize);
 		Slot2Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot3Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot3Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + (ItemBox_SlotXPivot * 3.0f));
-		Slot3Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot3Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 3.0f));
+		Slot3Collision->GetTransform()->SetLocalScaling(SlotSize);
 		Slot3Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot4Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot4Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + ItemBox_SlotYPivot);
-		Slot4Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot4Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotYPivot);
+		Slot4Collision->GetTransform()->SetLocalScaling(SlotSize);
 		Slot4Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot5Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot5Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + ItemBox_SlotXPivot + ItemBox_SlotYPivot);
-		Slot5Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot5Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotXPivot + SlotYPivot);
+		Slot5Collision->GetTransform()->SetLocalScaling(SlotSize);
 		Slot5Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot6Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot6Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + (ItemBox_SlotXPivot * 2.0f) + ItemBox_SlotYPivot);
-		Slot6Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot6Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 2.0f) + SlotYPivot);
+		Slot6Collision->GetTransform()->SetLocalScaling(SlotSize);
 		Slot6Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 
 		Slot7Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot7Collision->GetTransform()->SetLocalPosition(ItemBox_BasicSlotPos + (ItemBox_SlotXPivot * 3.0f) + ItemBox_SlotYPivot);
-		Slot7Collision->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot7Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 3.0f) + SlotYPivot);
+		Slot7Collision->GetTransform()->SetLocalScaling(SlotSize);
 		Slot7Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
 	}
 
@@ -435,7 +435,7 @@ void UI_ItemBox::ItemRenderCheck()
 	if (Slot0_Item != nullptr)
 	{
 		Slot0_ItemRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
-		Slot0_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot0_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
 		Slot0_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
@@ -447,7 +447,7 @@ void UI_ItemBox::ItemRenderCheck()
 	if (Slot1_Item != nullptr)
 	{
 		Slot1_ItemRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
-		Slot1_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot1_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
 		Slot1_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
@@ -459,7 +459,7 @@ void UI_ItemBox::ItemRenderCheck()
 	if (Slot2_Item != nullptr)
 	{
 		Slot2_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
-		Slot2_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot2_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
 		Slot2_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
@@ -470,7 +470,7 @@ void UI_ItemBox::ItemRenderCheck()
 	if (Slot3_Item != nullptr)
 	{		
 		Slot3_ItemRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
-		Slot3_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot3_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
 		Slot3_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}		
 	else	
@@ -481,7 +481,7 @@ void UI_ItemBox::ItemRenderCheck()
 	if (Slot4_Item != nullptr)
 	{
 		Slot4_ItemRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
-		Slot4_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot4_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
 		Slot4_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
@@ -492,7 +492,7 @@ void UI_ItemBox::ItemRenderCheck()
 	if (Slot5_Item != nullptr)
 	{
 		Slot5_ItemRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
-		Slot5_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot5_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
 		Slot5_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
@@ -503,7 +503,7 @@ void UI_ItemBox::ItemRenderCheck()
 	if (Slot6_Item != nullptr)
 	{
 		Slot6_ItemRenderer->GetTransform()->SetLocalPosition(Slot6Collision->GetTransform()->GetLocalPosition());
-		Slot6_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot6_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
 		Slot6_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
@@ -514,7 +514,7 @@ void UI_ItemBox::ItemRenderCheck()
 	if (Slot7_Item != nullptr)
 	{
 		Slot7_ItemRenderer->GetTransform()->SetLocalPosition(Slot7Collision->GetTransform()->GetLocalPosition());
-		Slot7_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
+		Slot7_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
 		Slot7_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else

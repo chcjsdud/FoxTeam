@@ -111,11 +111,11 @@ private:
 
 #pragma region ½½·Ô float4 ÇÇº¿°ª
 
-	float4 ItemBox_BackgroundPos;
-	float4 ItemBox_BasicSlotPos;
-	float4 ItemBox_SlotXPivot;
-	float4 ItemBox_SlotYPivot;
-	float4 ItemBox_SlotSize;
+	float4 BackgroundPos;
+	float4 BasicSlotPos;
+	float4 SlotXPivot;
+	float4 SlotYPivot;
+	float4 SlotSize;
 
 #pragma endregion
 

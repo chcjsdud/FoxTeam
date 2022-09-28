@@ -35,10 +35,18 @@ private:
 	void Start() override;
 	void Update(float _Time) override;
 
-	//ÀÌÇö
 private:
 	Player* Player_;
 
+#pragma region ½½·Ô float4 ÇÇº¿°ª
+
+	float4 BackGroundPos;
+	float4 BasicSlotPos;
+	float4 SlotXPivot;
+	float4 SlotYPivot;
+	float4 SlotSize;
+
+#pragma endregion
 	
 };
 
