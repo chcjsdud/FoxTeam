@@ -163,18 +163,6 @@ void UI_ItemBox::Update(float _Time)
 		}
 	}
 
-	if (true == GameEngineInput::GetInst().Down("Esc"))
-	{
-		if (UI_On == true)
-		{
-			RenderOff();
-		}
-		else
-		{
-			RenderOn();
-		}
-	}
-
 }
 
 void UI_ItemBox::RenderOff()
@@ -481,7 +469,7 @@ void UI_ItemBox::ItemRenderCheck()
 
 	if (Slot3_Item != nullptr)
 	{		
-		Slot3_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot3_ItemRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 		Slot3_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
 		Slot3_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}		
@@ -492,7 +480,7 @@ void UI_ItemBox::ItemRenderCheck()
 
 	if (Slot4_Item != nullptr)
 	{
-		Slot4_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot4_ItemRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
 		Slot4_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
 		Slot4_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
@@ -503,7 +491,7 @@ void UI_ItemBox::ItemRenderCheck()
 
 	if (Slot5_Item != nullptr)
 	{
-		Slot5_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot5_ItemRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
 		Slot5_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
 		Slot5_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
@@ -514,7 +502,7 @@ void UI_ItemBox::ItemRenderCheck()
 
 	if (Slot6_Item != nullptr)
 	{
-		Slot6_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot6_ItemRenderer->GetTransform()->SetLocalPosition(Slot6Collision->GetTransform()->GetLocalPosition());
 		Slot6_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
 		Slot6_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
@@ -525,7 +513,7 @@ void UI_ItemBox::ItemRenderCheck()
 
 	if (Slot7_Item != nullptr)
 	{
-		Slot7_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot7_ItemRenderer->GetTransform()->SetLocalPosition(Slot7Collision->GetTransform()->GetLocalPosition());
 		Slot7_ItemRenderer->GetTransform()->SetLocalScaling(ItemBox_SlotSize);
 		Slot7_ItemRenderer->SetImage("Item_Bottle_Test.png");
 	}
