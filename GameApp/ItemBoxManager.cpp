@@ -246,6 +246,10 @@ void ItemBoxManager::DeleteItemFromItemBox(int _index)
 	}
 
 	selectBox_->DeleteItem(_index);
+
+	//이건호 : 기존 UI의 아이템 슬롯에 들어 와 있던 정보들을 싹 비우고 바뀐 박스정보를 넣습니다 
+	itemBoxUI_->EmptySlot();
+	itemBoxUI_->GetItemBoxInfo(GetSelectBox());
 }
 
 void ItemBoxManager::Start()

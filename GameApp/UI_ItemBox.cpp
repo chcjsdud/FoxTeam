@@ -270,9 +270,6 @@ bool UI_ItemBox::MouseCollisionCheck()
 
 void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 {
-	//한번만 실행하는 함수라 실행시 기존 데이터들을 싹 비우고 다시 받아오게 해야함
-
-
 
 	switch (_SlotNumber)
 	{
@@ -391,7 +388,6 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 
 void UI_ItemBox::EmptySlotReturn(ItemBase* _TargetSlot)
 {
-	EmptySlot();
 
 	if (Slot0_Item == nullptr)
 	{
