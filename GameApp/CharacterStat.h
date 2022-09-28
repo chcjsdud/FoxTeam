@@ -33,7 +33,9 @@ public:
 	float OmniVamp; // 모든 피해 흡혈
 
 	// 속도
-	float AttackSpeed; // 공격 속도
+	float AttackSpeed; // 초당 공격 속도
+	float AttackStartTime; // 실질적으로 공격이 나가는 시간
+	float AttackEndTime; // 공격이 끝나는 시간
 	float MovementSpeed; // 이동 속도
 	float CooldownReduction; // 쿨타임 감소
 
@@ -64,6 +66,8 @@ public:
 		, LifeSteel(0.0f)
 		, OmniVamp(0.0f)
 		, AttackSpeed(0.77f)
+		, AttackStartTime(0.15f)
+		, AttackEndTime(0.5f)
 		, MovementSpeed(346.f)
 		, CooldownReduction(0.0f)
 		, AttackRange(425.f)

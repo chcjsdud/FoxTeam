@@ -10,6 +10,9 @@
 #include "PlayerInfoManager.h"
 //#include "PlayerUIController.h"
 #include <GameEngine/GameEngineLevelControlWindow.h>
+#include "CharStatPacket.h"
+#include "GameServer.h"
+#include "GameClient.h"
 
 
 Character::Character()
@@ -21,7 +24,8 @@ Character::Character()
 	, mouse_(nullptr)
 	, renderer_(nullptr)
 	, bFocused_(false)
-	, attackDelay_(0.f)
+	, attackCooldown_(0.f)
+	, attackTime_(0.f)
 	, target_(nullptr)
 	, isPlayerDead_(false)
 {
@@ -35,7 +39,7 @@ Character::~Character()
 void Character::SetCurrentNavMesh(NavMesh* _NavMesh)
 {
 	currentNavMesh_ = _NavMesh;
-	currentNavFace_ = currentNavMesh_->CurrentCheck(GetTransform(), float4::DOWN);
+	currentNavFace_ = currentNavMesh_->CurrentCheck(&transform_, float4::DOWN);
 }
 
 void Character::Start()
@@ -72,7 +76,7 @@ void Character::Start()
 	}
 
 	//PlayerUIController* UIController = GetLevel()->CreateActor<PlayerUIController>();
-	
+
 }
 
 void Character::Update(float _DeltaTime)
@@ -85,7 +89,7 @@ void Character::Update(float _DeltaTime)
 		{
 			return;
 		}
-	
+
 		mainState_.ChangeState("DeathState", true);
 		deathState_.ChangeState("PlayerDeath", true);
 		isPlayerDead_ = true;
@@ -97,8 +101,6 @@ void Character::Update(float _DeltaTime)
 	{
 		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::OBBBox3D, float4::RED);
 	}
-
-
 
 	if (false == bFocused_)
 	{
@@ -112,6 +114,8 @@ void Character::Update(float _DeltaTime)
 	checkCurrentNavFace();
 	checkItemBox();
 
+	attackCooldown_ += _DeltaTime;
+
 	mainState_.Update(_DeltaTime);
 
 	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
@@ -122,11 +126,11 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
 
-		for (int i = 0; i < pm->GetPlayerList().size(); i++)
-		{
-			controlWindow->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
-		}
-		
+		//for (int i = 0; i < pm->GetPlayerList().size(); i++)
+		//{
+		//	controlWindow->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
+		//}
+
 	}
 }
 
@@ -331,7 +335,7 @@ void Character::initInput()
 
 void Character::initState()
 {
-	mainState_.CreateState(MakeState(Character, NormalState));
+	mainState_.CreateState(MakeStateWithEnd(Character, NormalState));
 	mainState_.CreateState(MakeState(Character, AttackState));
 	mainState_.CreateState(MakeState(Character, CrowdControlState));
 	mainState_.CreateState(MakeState(Character, DeathState));
@@ -342,6 +346,7 @@ void Character::initState()
 	normalState_.CreateState(MakeState(Character, Chase));
 
 	attackState_.CreateState(MakeState(Character, BasicAttack));
+	attackState_.CreateState(MakeState(Character, BasicAttackDone));
 	attackState_.CreateState(MakeState(Character, QSkill));
 
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
@@ -351,7 +356,7 @@ void Character::initState()
 	mainState_ << "NormalState";
 
 	normalState_ << "Watch";
-	
+
 	deathState_ << "PlayerDeath";
 }
 
@@ -442,16 +447,7 @@ void Character::moveProcess(float _deltaTime)
 
 void Character::moveTick(float _deltaTime, const float4& _startPosition)
 {
-
-	direction_ = destination_ - _startPosition;
-	direction_.Normalize3D();
-
-	float4 cross = float4::Cross3D(direction_, { 0.0f, 0.0f, 1.0f });
-	cross.Normalize3D();
-
-	float angle = float4::DegreeDot3DToACosAngle(direction_, { 0.0f, 0.0f, 1.0f });
-
-	GetTransform()->SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
+	setRotationTo(destination_, _startPosition);
 
 	float4 moveSpeed = direction_ * actorStat_.MovementSpeed * _deltaTime;
 	float4 nextMovePosition = _startPosition + moveSpeed;
@@ -461,12 +457,26 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 	{
 
 		changeAnimationRun();
+		currentAnimation_ = eCurrentAnimation::Run;
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}
 	else
 	{
 		destination_ = _startPosition;
 	}
+}
+
+void Character::setRotationTo(const float4& _destination, const float4 _startPosition)
+{
+	direction_ = _destination - _startPosition;
+	direction_.Normalize3D();
+
+	float4 cross = float4::Cross3D(direction_, { 0.0f, 0.0f, 1.0f });
+	cross.Normalize3D();
+
+	float angle = float4::DegreeDot3DToACosAngle(direction_, { 0.0f, 0.0f, 1.0f });
+
+	transform_.SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
 }
 
 void Character::startNormalState()
@@ -494,8 +504,14 @@ void Character::updateNormalState(float _deltaTime)
 	if (nullptr != currentNavFace_)
 	{
 		float Dist = currentNavFace_->YCheck(GetTransform());
-		GetTransform()->SetWorldMove({ 0.0f, -Dist, 0.0f });
+		transform_.SetWorldMove({ 0.0f, -Dist, 0.0f });
 	}
+}
+
+void Character::endNormalState()
+{
+	destination_ = transform_.GetWorldPosition();
+	destinations_.clear();
 }
 
 void Character::startCrowdControlState()
@@ -515,11 +531,18 @@ void Character::startAttackState()
 void Character::updateAttackState(float _deltaTime)
 {
 	attackState_.Update(_deltaTime);
+
+	checkCurrentNavFace();
+	if (nullptr != currentNavFace_)
+	{
+		float Dist = currentNavFace_->YCheck(GetTransform());
+		transform_.SetWorldMove({ 0.0f, -Dist, 0.0f });
+	}
 }
 
 void Character::startDeathState()
 {
-	
+
 }
 
 void Character::updateDeathState(float _deltaTime)
@@ -530,6 +553,7 @@ void Character::updateDeathState(float _deltaTime)
 void Character::startWatch()
 {
 	changeAnimationWait();
+	currentAnimation_ = eCurrentAnimation::Wait;
 }
 
 void Character::updateWatch(float _deltaTime)
@@ -538,7 +562,7 @@ void Character::updateWatch(float _deltaTime)
 
 	float4 worldPosition = GetTransform()->GetWorldPosition();
 	worldPosition.y = destination_.y;
-	if ((destination_ - worldPosition).Len3D() > 10.f)
+	if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
 	{
 		normalState_ << "Run";
 		return;
@@ -581,22 +605,46 @@ void Character::updateChase(float _deltaTime)
 	float4 targetPosition = target_->GetTransform()->GetWorldPosition();
 	float4 playerPosition = transform_.GetWorldPosition();
 	float distance = float4::Calc_Len3D(playerPosition, targetPosition);
-	if (distance > actorStat_.VisionRange)
-	{
-		normalState_ << "Watch";
-		target_ = nullptr;
-		return;
-	}
+
+	//if (distance > actorStat_.VisionRange)
+	//{
+	//	normalState_ << "Watch";
+	//	target_ = nullptr;
+	//	return;
+	//}
 
 	if (distance < actorStat_.AttackRange)
 	{
-		mainState_ << "AttackState";
-		attackState_ << "BasicAttack";
-		return;
+		setRotationTo(targetPosition, playerPosition);
+
+		if (attackCooldown_ > 1.0f / actorStat_.AttackSpeed)
+		{
+			mainState_ << "AttackState";
+			attackState_ << "BasicAttack";
+			return;
+		}
+
+		if (currentAnimation_ == eCurrentAnimation::BasicAttack)
+		{
+			if (renderer_->IsCurrentAnimationEnd())
+			{
+				changeAnimationWait();
+				currentAnimation_ = eCurrentAnimation::Wait;
+			}
+		}
+		else if (currentAnimation_ == eCurrentAnimation::Run)
+		{
+			changeAnimationWait();
+			currentAnimation_ = eCurrentAnimation::Wait;
+		}
+
+	}
+	else
+	{
+		Move(targetPosition);
+		moveProcess(_deltaTime);
 	}
 
-	Move(targetPosition);
-	moveProcess(_deltaTime);
 }
 
 void Character::startStun()
@@ -608,23 +656,82 @@ void Character::updateStun(float _deltaTime)
 {
 
 	mainState_.ChangeState("NormalState");
-	
-	
+
+
 }
 
 void Character::startBasicAttack()
 {
-	attackDelay_ = 0;
+	attackTime_ = 0.0f;
 	changeAnimationBasicAttack();
+	currentAnimation_ = eCurrentAnimation::BasicAttack;
 }
 
 void Character::updateBasicAttack(float _deltaTime)
-{	
-	attackDelay_ += _deltaTime;
+{
+	attackTime_ += _deltaTime;
 
-	if (attackDelay_ > 1.0f / actorStat_.AttackSpeed)
+	if (attackTime_ < actorStat_.AttackStartTime / actorStat_.AttackSpeed)
 	{
+		GameEngineCollision* rayCol = mouse_->GetRayCollision();
+
+		bool result = false;
+		float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
+		if (GameEngineInput::Press("LButton") || GameEngineInput::Down("LButton"))
+		{
+
+			Character* otherCharacter = getMousePickedCharacter();
+
+			if (target_ != otherCharacter)
+			{
+				inputProcess(_deltaTime);
+
+				float4 worldPosition = GetTransform()->GetWorldPosition();
+				worldPosition.y = destination_.y;
+				if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
+				{
+					normalState_ << "Run";
+				}
+
+				mainState_ << "NormalState";
+				return;
+			}
+		}
+	}
+
+	if (attackTime_ > actorStat_.AttackStartTime / actorStat_.AttackSpeed)
+	{
+		attackState_ << "BasicAttackDone";
+		return;
+	}
+}
+
+void Character::startBasicAttackDone()
+{
+	target_->Damage(actorStat_.AttackPower);
+	CharStatPacket packet;
+	packet.SetStat(target_->actorStat_);
+	packet.SetTargetIndex(target_->GetIndex());
+
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		GameServer::GetInstance()->Send(&packet);
+	}
+	else if (true == GameClient::GetInstance()->IsConnected())
+	{
+		GameClient::GetInstance()->Send(&packet);
+	}
+	
+}
+
+void Character::updateBasicAttackDone(float _deltaTime)
+{
+	attackTime_ += _deltaTime;
+	if (attackTime_ > actorStat_.AttackEndTime / actorStat_.AttackSpeed)
+	{
+		attackCooldown_ = 0.0f;
 		mainState_ << "NormalState";
+		return;
 	}
 }
 

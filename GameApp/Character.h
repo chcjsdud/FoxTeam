@@ -29,9 +29,9 @@ public:
 	void Move(const float4& _position);
 	void MoveWithPathFind(const float4& _position);
 
-	void Focus()								{ bFocused_ = true; }
-	void UnFocus()								{ bFocused_ = false; }
-	bool IsFocused()							{ return bFocused_; }
+	void Focus() { bFocused_ = true; }
+	void UnFocus() { bFocused_ = false; }
+	bool IsFocused() { return bFocused_; }
 
 	void ChangeAnimation(std::string _animationName);
 
@@ -39,17 +39,17 @@ public:
 
 #pragma region GetterSetter
 public:
-	CharacterStat* GetStat()					{ return &actorStat_; }
-	float4 GetDirection()						{ return direction_; }
-	std::string GetCurAnimation()				{ return curAnimation_; }
-	NavFace* GetCurrentNavFace()				{ return currentNavFace_; }
-	int GetIndex()								{ return myIndex_; }
+	CharacterStat* GetStat() { return &actorStat_; }
+	float4 GetDirection() { return direction_; }
+	std::string GetCurAnimation() { return curAnimation_; }
+	NavFace* GetCurrentNavFace() { return currentNavFace_; }
+	int GetIndex() { return myIndex_; }
 
-	void SetDirection(float4 _dir)				{ direction_ = _dir; }
-	void SetCurrentNavFace(NavFace* _Navi)		{ currentNavFace_ = _Navi; }
+	void SetDirection(float4 _dir) { direction_ = _dir; }
+	void SetCurrentNavFace(NavFace* _Navi) { currentNavFace_ = _Navi; }
 	void SetCurrentNavMesh(NavMesh* _NaviMesh);
-	void SetStat(CharacterStat _status)		 { actorStat_ = _status; }
-	void SetIndex(int _index)				 { myIndex_ = _index; }
+	void SetStat(CharacterStat _status) { actorStat_ = _status; }
+	void SetIndex(int _index) { myIndex_ = _index; }
 
 #pragma endregion
 
@@ -84,7 +84,7 @@ protected:
 
 #pragma endregion
 
-	
+
 private:
 	void initInput();
 	void initState();
@@ -93,6 +93,7 @@ private:
 	void inputProcess(float _deltaTime);
 	void moveProcess(float _deltaTime);
 	void moveTick(float _deltaTime, const float4& _startPosition);
+	void setRotationTo(const float4& _destination, const float4 _startPosition);
 
 	void checkCurrentNavFace();
 
@@ -101,7 +102,7 @@ private:
 
 	Character* getMousePickedCharacter();
 
-	
+
 	//------------------------------------------------------------------------------------------------------------------
 	// State
 	//------------------------------------------------------------------------------------------------------------------
@@ -117,6 +118,7 @@ private:
 #pragma region MainState
 	void startNormalState();
 	void updateNormalState(float _deltaTime);
+	void endNormalState();
 
 	void startCrowdControlState();
 	void updateCrowdControlState(float _deltaTime);
@@ -158,6 +160,9 @@ private:
 #pragma region AttackState
 	void startBasicAttack();
 	void updateBasicAttack(float _deltaTime);
+
+	void startBasicAttackDone();
+	void updateBasicAttackDone(float _deltaTime);
 
 	void startQSkill();
 	void updateQSkill(float _deltaTime);
@@ -204,7 +209,7 @@ protected:
 	// 캐릭터 상태, 능력치
 	CharacterStat actorStat_;
 	std::string curAnimation_;
-	
+
 	// Omni State
 	GameEngineFSM mainState_;
 
@@ -222,9 +227,20 @@ protected:
 	// 그 외
 	MousePointer* mouse_;
 	bool bFocused_;
-	float attackDelay_;
+	float attackCooldown_;
+	float attackTime_;
 
 	// 0927박종원
 	int myIndex_;
 	bool isPlayerDead_;
+
+
+private:
+	enum class eCurrentAnimation
+	{
+		Wait,
+		Run,
+		BasicAttack
+	};
+	eCurrentAnimation currentAnimation_;
 };

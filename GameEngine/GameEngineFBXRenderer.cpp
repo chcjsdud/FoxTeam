@@ -106,7 +106,7 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 				float4 Vtx = StartMesh.Vertexs[i].POSITION;
 
 				AllVtxPos += Vtx;
-				
+
 				if (abs(Vtx.x) > abs(MaxVtxValue.x))
 				{
 					MaxVtxValue.x = Vtx.x;
@@ -303,6 +303,15 @@ void GameEngineFBXRenderer::ChangeFBXAnimation(const std::string& _AnimationName
 	CurAnimation->ResetFrame();
 }
 
+bool GameEngineFBXRenderer::IsCurrentAnimationEnd()
+{
+	if (nullptr == CurAnimation)
+	{
+		return false;
+	}
+
+	return CurAnimation->bEnd_;
+}
 
 void FBXAnimation::Init(int _Index, bool _isLoop, float _frameTime)
 {
@@ -313,10 +322,10 @@ void FBXAnimation::Init(int _Index, bool _isLoop, float _frameTime)
 
 
 	End = PixAniData->TimeEndCount;
-	
-	
-	
-	
+	bEnd_ = false;
+
+
+
 	FrameTime = _frameTime;
 
 	// 0805 박종원 : 애니메이션 만들 시 루프/어웨이크를 결정짓는 bool 값입니다.
@@ -325,17 +334,12 @@ void FBXAnimation::Init(int _Index, bool _isLoop, float _frameTime)
 
 void FBXAnimation::Update(float _DeltaTime)
 {
-	// 행렬 만들어서
-
-	// 0~24진행이죠?
 	CurFrameTime += _DeltaTime;
-	//                      0.1
+
 	if (CurFrameTime >= FrameTime)
 	{
-		// 여분의 시간이 남게되죠?
-		// 여분의 시간이 중요합니다.
 		CurFrameTime -= FrameTime;
-		// 0.00011
+
 		++CurFrame;
 	}
 
@@ -347,6 +351,7 @@ void FBXAnimation::Update(float _DeltaTime)
 		// 0805 박종원 : 루프 애니메이션이 아니면 더 이상의 프레임 갱신을 하지 않습니다.
 		if (false == isLoop_)
 		{
+			bEnd_ = true;
 			return;
 		}
 
@@ -425,12 +430,12 @@ void FBXAnimation::Update(float _DeltaTime)
 
 }
 
-bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position, 
+bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position,
 	const float4& _Direction, float& _Distance)
 {
 	std::vector<FbxMeshSet>& vecMeshMap = FBXMesh->GetAllMeshMap();
 	std::vector<FbxExMeshInfo>& vecMeshInfos = FBXMesh->GetMeshInfos();
-	
+
 	bool Check = false;
 
 	float4 Dir = _Direction.NormalizeReturn3D();
@@ -463,7 +468,7 @@ bool GameEngineFBXRenderer::CheckIntersects(const float4& _Position,
 	return false;
 }
 
-bool GameEngineFBXRenderer::CheckMeshToPointCollision(const float4& _Position, 
+bool GameEngineFBXRenderer::CheckMeshToPointCollision(const float4& _Position,
 	const float4& _Direction, const float _Range)
 {
 	float dist = 0.0f;
@@ -489,5 +494,7 @@ bool GameEngineFBXRenderer::CheckMeshToPointCollision(const float4& _Position,
 void FBXAnimation::ResetFrame()
 {
 	CurFrame = Start;
+	CurFrameTime = 0.0f;
 	End = PixAniData->TimeEndCount;
+	bEnd_ = false;
 }

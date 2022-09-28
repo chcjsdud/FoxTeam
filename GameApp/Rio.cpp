@@ -71,7 +71,7 @@ void Rio::initRendererAndAnimation()
 
 	renderer_->CreateFBXAnimation("Run", "Rio_Short_Run.fbx", 0);
 	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx", 0);
-	renderer_->CreateFBXAnimation("BasicAttack", "Rio_Short_Attack.fbx");
+	renderer_->CreateFBXAnimation("BasicAttack", "Rio_Short_Attack.fbx", 0, false);
 	renderer_->ChangeFBXAnimation("Wait");
 }
 

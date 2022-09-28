@@ -36,6 +36,7 @@ public:
 	UINT End;
 	UINT Start;
 	bool isLoop_;
+	bool bEnd_;
 
 	void Init(int _Index, bool _isLoop = true, float _frameTime = 0.033f);
 	void Update(float _DeltaTime);
@@ -149,6 +150,8 @@ private:
 public:
 	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex = 0, bool _isLoop = true, float _frameTime = 0.033f);
 	void ChangeFBXAnimation(const std::string& _AnimationName, bool _bForceChange = false);
+	
+	bool IsCurrentAnimationEnd();
 
 private:
 

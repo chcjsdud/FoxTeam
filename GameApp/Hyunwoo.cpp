@@ -65,6 +65,7 @@ void Hyunwoo::Start()
 {
 	Character::Start();
 	initHyunwooCollision();
+	actorStat_.AttackStartTime = 0.15f;
 }
 
 void Hyunwoo::Update(float _deltaTime)
