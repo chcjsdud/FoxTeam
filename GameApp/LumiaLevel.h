@@ -34,6 +34,7 @@ public:
 	MousePointer* GetMousePointer() { return MousePointer::InGameMouse; }
 	LumiaMap* GetMap() { return map_; }
 	ItemBoxManager* GetItemBoxManager() { return itemBox_; }
+	std::vector<Character*> GetCharacterActorList() { return characterActorList_; }
 private:
 	// On level change start event
 	void loadResource();

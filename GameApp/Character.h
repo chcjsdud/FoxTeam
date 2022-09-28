@@ -226,4 +226,5 @@ protected:
 
 	// 0927╧за╬©Ь
 	int myIndex_;
+	bool isPlayerDead_;
 };

@@ -104,7 +104,7 @@ void Hyunwoo::initHyunwooCollision()
 	collision_Q->GetTransform()->SetLocalPosition({ 0.0f,0.0f,300.0f });
 	collision_Q->GetTransform()->SetLocalScaling({400.0f, 150.0f, 350.0f});
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
-	collision_Q->SetCollisionType(CollisionType::AABBBox3D);
+	collision_Q->SetCollisionType(CollisionType::OBBBox3D);
 	collision_Q->Off();
 
 }
@@ -135,11 +135,17 @@ void Hyunwoo::onStartQSkill()
 {
 	curAnimation_ = "SkillQ";
 	renderer_->ChangeFBXAnimation("SkillQ", true);
+	collision_Q->On();
 }
 
 void Hyunwoo::onUpdateQSkill(float _deltaTime)
 {
-	GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+
+	if (true == collision_Q->IsUpdate())
+	{
+		GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
+	}
+
 	timer_collision_Q += _deltaTime;
 	timer_end_Q += _deltaTime;
 
@@ -148,10 +154,22 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 		collision_Q->Off();
 	}
 
+	if (1.05f <= timer_end_Q)
+	{
+		// 모든 카운터 초기화
+		timer_collision_Q = 0.0f;
+		timer_end_Q = 0.0f;
+		b_Qhit_ = false;
+		changeAnimationWait();
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Watch", true);
+		return;
+	}
+
 	if (0.3f <= timer_collision_Q && false == b_Qhit_)
 	{
 		// 여기서 피격 충돌 판정이 나옴
-		collision_Q->On();
+
 
 		auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
 		
@@ -194,17 +212,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 	}
 
 
-	if (1.05f <= timer_end_Q)
-	{
-		// 모든 카운터 초기화
-		timer_collision_Q = 0.0f;
-		timer_end_Q = 0.0f;
-		b_Qhit_ = false;
-		changeAnimationWait();
-		mainState_.ChangeState("NormalState",true);
-		normalState_.ChangeState("Watch",true);
-		return;
-	}
+
 	// 델타타임에 걸맞게 
 	/*피해량:50/100/150/200/250(+공격력의 40%)(+스킬 증폭의 55%)
 	이동 속도 감소: -40%

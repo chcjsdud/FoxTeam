@@ -23,6 +23,7 @@ Character::Character()
 	, bFocused_(false)
 	, attackDelay_(0.f)
 	, target_(nullptr)
+	, isPlayerDead_(false)
 {
 }
 
@@ -46,7 +47,7 @@ void Character::Start()
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
 	collision_->SetCollisionGroup(eCollisionGroup::Player);
-	collision_->SetCollisionType(CollisionType::AABBBox3D);
+	collision_->SetCollisionType(CollisionType::OBBBox3D);
 
 	itemBoxmanager_ = GetLevelConvert<LumiaLevel>()->GetItemBoxManager();
 	inventory_.resize(10);
@@ -80,16 +81,21 @@ void Character::Update(float _DeltaTime)
 
 	if (0.0f >= actorStat_.HP)
 	{
-		// Á×À½ ÆÇÁ¤
+		if (true == isPlayerDead_)
+		{
+			return;
+		}
+	
 		mainState_.ChangeState("DeathState", true);
 		deathState_.ChangeState("PlayerDeath", true);
+		isPlayerDead_ = true;
 		return;
 	}
 
 	if (nullptr != collision_ &&
 		collision_->IsUpdate())
 	{
-		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
+		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::OBBBox3D, float4::RED);
 	}
 
 
@@ -117,9 +123,8 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
 
 
-		//controlWindow->AddText("P0 curHP : " + std::to_string(pm->GetPlayerList()[0].stat_->HP));
-		//controlWindow->AddText("P1 curHP : " + std::to_string(pm->GetPlayerList()[1].stat_->HP));
-
+		controlWindow->AddText("P0 curHP Server : " + std::to_string(pm->GetPlayerList()[0].stat_->HP));
+		controlWindow->AddText("P1 curHP Server : " + std::to_string(pm->GetPlayerList()[1].stat_->HP));
 	}
 }
 

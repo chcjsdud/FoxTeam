@@ -164,6 +164,9 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 			controlWindow->AddText("Player to Camera vector : " + std::to_string(playerToCamera.x) + ", " + std::to_string(playerToCamera.y) + ", " + std::to_string(playerToCamera.z));
 			controlWindow->AddText("CameraRotation : " + std::to_string(cameraRotation.x) + ", " + std::to_string(cameraRotation.y) + ", " + std::to_string(cameraRotation.z));
 
+			
+			controlWindow->AddText("P0 curHP (Local) : " + std::to_string(characterActorList_[0]->GetStat()->HP));
+			controlWindow->AddText("P1 curHP (Local) : " + std::to_string(characterActorList_[1]->GetStat()->HP));
 		}
 	}
 
