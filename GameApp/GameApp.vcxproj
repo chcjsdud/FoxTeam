@@ -403,6 +403,10 @@
     <ClCompile Include="UI_Equip.cpp" />
     <ClCompile Include="UI_Inventory.cpp" />
     <ClCompile Include="UI_ItemBox.cpp" />
+    <ClCompile Include="UI_ItemSettingHelper.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UI_Status.cpp" />
     <ClCompile Include="TestPlayer.cpp">
       <SubType>
@@ -668,6 +672,10 @@
     <ClInclude Include="UI_Inventory.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="UI_ItemBox.h" />
+    <ClInclude Include="UI_ItemSettingHelper.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UI_Status.h" />
     <ClInclude Include="TestPlayer.h">
       <SubType>

@@ -289,6 +289,9 @@
     <ClCompile Include="MonsterInfoManager.cpp">
       <Filter>02.GameServer\Infomation\Monsters</Filter>
     </ClCompile>
+    <ClCompile Include="UI_ItemSettingHelper.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI\UIHelper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -461,6 +464,9 @@
     </Filter>
     <Filter Include="02.GameServer\Infomation\Player">
       <UniqueIdentifier>{84464456-48bf-4a56-adcc-b5ea016f2319}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\UI\UIHelper">
+      <UniqueIdentifier>{20901b7d-a3ea-4f62-84b3-3ed81db5e4fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -757,6 +763,9 @@
     </ClInclude>
     <ClInclude Include="MonsterInfoManager.h">
       <Filter>02.GameServer\Infomation\Monsters</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_ItemSettingHelper.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI\UIHelper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
