@@ -167,6 +167,7 @@ void LumiaLevel::CharacterCreationCommand()
 
 		// 
 		PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].stat_ = NewCharacter->GetStat();
+		PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = float4(-2500.f, 0.0f, 10000.f);
 		NewCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		NewCharacter->SetIndex(PlayerNum);
 
