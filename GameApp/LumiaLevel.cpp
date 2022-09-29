@@ -603,9 +603,6 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		// 기본 액터 생성
 		CreateBasicActor();
 
-		// Create LumiaLevel Input
-		CreateLevelInput();
-
 		// 네트워크 핸들러 등록
 		AddSocketHandle();
 
