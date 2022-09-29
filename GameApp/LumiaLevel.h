@@ -71,6 +71,22 @@ private: // State Update Function
 private: // Debug Function
 	void DebugWindowUpdate();												// Debug Window Update Function
 
+#pragma region 테스트용함수(추후삭제예정)
+	// LevelControlWindow에의해 강제 레벨이동한경우 사용하는 함수
+	// 서버 생성이 없이 해당 레벨로 체인지한경우
+private:
+	void Test_loadResource();
+	void Test_initRenderWindow();
+	void Test_createActor();
+	void Test_adjustCamera();
+	void Test_serverCheck();
+	void Test_releaseRenderWindow();
+	void Test_releaseResource();
+
+private:
+	void Test_GenerateCharactor();
+#pragma endregion
+
 public:
 	virtual void LevelStart() override;
 	virtual void LevelUpdate(float _DeltaTime) override;

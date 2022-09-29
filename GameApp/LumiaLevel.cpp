@@ -378,51 +378,53 @@ void LumiaLevel::CharacterStateUpdatePacketSend()
 	GameClient* ClientSocket = GameClient::GetInstance();
 
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-
-	// 캐릭터 이동갱신 패킷
-	CharMovementPacket MovePacket;
-	MovePacket.SetTargetIndex(pm->GetMyNumber());
-	MovePacket.SetPos(CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalPosition());
-	MovePacket.SetDirection(CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalRotation());
-
-	if (true == ServerSocket->IsOpened())
+	if (-1 != pm->GetMyNumber())
 	{
-		ServerSocket->Send(&MovePacket);
-	}
-	else if (true == ClientSocket->IsConnected())
-	{
-		ClientSocket->Send(&MovePacket);
-	}
+		// 캐릭터 이동갱신 패킷
+		CharMovementPacket MovePacket;
+		MovePacket.SetTargetIndex(pm->GetMyNumber());
+		MovePacket.SetPos(CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalPosition());
+		MovePacket.SetDirection(CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalRotation());
 
-	// 캐릭터 애니메이션갱신 패킷
-	CharAnimationPacket AnimPacket;
-	AnimPacket.SetTargetIndex(pm->GetMyNumber());
-	AnimPacket.SetAnimation(CharacterActorList_[pm->GetMyNumber()]->GetCurAnimation());
+		if (true == ServerSocket->IsOpened())
+		{
+			ServerSocket->Send(&MovePacket);
+		}
+		else if (true == ClientSocket->IsConnected())
+		{
+			ClientSocket->Send(&MovePacket);
+		}
 
-	if (true == ServerSocket->IsOpened())
-	{
-		ServerSocket->Send(&AnimPacket);
-	}
-	else if (true == ClientSocket->IsConnected())
-	{
-		ClientSocket->Send(&AnimPacket);
-	}
+		// 캐릭터 애니메이션갱신 패킷
+		CharAnimationPacket AnimPacket;
+		AnimPacket.SetTargetIndex(pm->GetMyNumber());
+		AnimPacket.SetAnimation(CharacterActorList_[pm->GetMyNumber()]->GetCurAnimation());
 
-	// 캐릭터 상태갱신 패킷
-	CharStatPacket StatePacket;
-	StatePacket.SetTargetIndex(pm->GetMyNumber());
-	StatePacket.SetStat(*(pm->GetMyPlayer().stat_));
+		if (true == ServerSocket->IsOpened())
+		{
+			ServerSocket->Send(&AnimPacket);
+		}
+		else if (true == ClientSocket->IsConnected())
+		{
+			ClientSocket->Send(&AnimPacket);
+		}
 
-	if (true == ServerSocket->IsOpened())
-	{
-		ServerSocket->Send(&StatePacket);
-	}
-	else if (true == ClientSocket->IsConnected())
-	{
-		ClientSocket->Send(&StatePacket);
-	}
+		// 캐릭터 상태갱신 패킷
+		CharStatPacket StatePacket;
+		StatePacket.SetTargetIndex(pm->GetMyNumber());
+		StatePacket.SetStat(*(pm->GetMyPlayer().stat_));
 
-	// ...
+		if (true == ServerSocket->IsOpened())
+		{
+			ServerSocket->Send(&StatePacket);
+		}
+		else if (true == ClientSocket->IsConnected())
+		{
+			ClientSocket->Send(&StatePacket);
+		}
+
+		// ...
+	}
 }
 
 void LumiaLevel::CharactersTransformUpdate()
@@ -506,6 +508,8 @@ LumiaLevel::~LumiaLevel()
 
 void LumiaLevel::LevelStart()
 {
+	// Create LumiaLevel Input
+	CreateLevelInput();
 }
 
 void LumiaLevel::LevelUpdate(float _DeltaTime)
@@ -543,7 +547,7 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 	}
 
 	// MainCamera Adjustment
-	if (false == GetMainCameraActor()->IsFreeCameraMode())
+	if (false == GetMainCameraActor()->IsFreeCameraMode() && -1 != pm->GetMyNumber())
 	{
 		float4 playerPosition = CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetWorldPosition();
 		GetMainCameraActor()->GetTransform()->SetWorldPosition(playerPosition + float4(400.f, 1280.f, -600.f));
@@ -556,45 +560,269 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 
 void LumiaLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
-	// 220929 ADD SJH
-	// 테스트용 
-	// 서버를 생성하지않고 LevelControlWindow에의해 강제로 레벨이동한 경우
+	// 220929 ADD SJH : 테스트용(추후삭제예정)
+	// 서버를 생성을 안했거나 클라이언트로 서버에 연결되지않은상태에서 LevelControlWindow에의해 강제로 레벨이동한 경우
 	if (false == GameServer::GetInstance()->IsOpened() && false == GameClient::GetInstance()->IsConnected())
 	{
+		this->ClearAll();
+		Test_releaseRenderWindow();
+		Test_releaseResource();
 
-
-
-		return;
+		MainCameraActor_ = CreateActor<CameraActor>();
+		UICameraActor_ = CreateActor<CameraActor>();
+		UICameraActor_->GetCamera()->SetProjectionMode(ProjectionMode::Orthographic);
 	}
 }
 
 void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
-	// 220929 ADD SJH
-	// 테스트용 
-	// 서버를 생성하지않고 LevelControlWindow에의해 강제로 레벨이동한 경우
+	// 220929 ADD SJH : 테스트용(추후삭제예정)
+	// 서버를 생성을 안했거나 클라이언트로 서버에 연결되지않은상태에서 LevelControlWindow에의해 강제로 레벨이동한 경우
 	if (false == GameServer::GetInstance()->IsOpened() && false == GameClient::GetInstance()->IsConnected())
 	{
+		Test_loadResource();
+		Test_initRenderWindow();
+		Test_createActor();
+		Test_adjustCamera();
+		Test_serverCheck();
 
+		ItemBoxWindow* Window = nullptr;
 
+		if (nullptr == GameEngineGUI::GetInst()->FindGUIWindow("ItemBoxWindow"))
+		{
+			Window = GameEngineGUI::GetInst()->CreateGUIWindow<ItemBoxWindow>("ItemBoxWindow");
+		}
 
+		if (nullptr != Window)
+		{
+			Window->ItemBoxManager_ = ItemBoxManager_;
+		}
+	}
+	else
+	{
+		// 기본 액터 생성
+		CreateBasicActor();
 
+		// Create LumiaLevel Input
+		CreateLevelInput();
 
-		return;
+		// 네트워크 핸들러 등록
+		AddSocketHandle();
+
+		// IMGUI Window Find & Setting
+		InitIMGUIWindow();
+
+		// MainCamera Adjustment
+		CameraAdjustment();
+	}
+}
+
+#pragma region 테스트용함수(추후삭제예정)
+// LevelControlWindow에의해 강제 레벨이동한경우 사용하는 함수
+// 서버 생성이 없이 해당 레벨로 체인지한경우
+
+void LumiaLevel::Test_loadResource()
+{
+	// 맵, 네비게이션 메쉬, 아이템박스
+	{
+		GameEngineDirectory tempDir;
+
+		tempDir.MoveParent("FoxTeam");
+		tempDir / "Resources" / "FBX" / "Map";
+
+		if (nullptr == GameEngineFBXMeshManager::GetInst().Find(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx")))
+		{
+			GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(tempDir.PathToPlusFileName("Bg_NaviMesh.fbx"));
+			Mesh->CreateRenderingBuffer();
+		}
+
+		tempDir.MoveParent("FBX");
+		tempDir / "UserMesh" / "Map";
+
+		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+
+		for (size_t i = 0; i < vecFile.size(); i++)
+		{
+			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+			{
+				GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
+			}
+		}
+
+		tempDir.MoveParent("UserMesh");
+		tempDir.MoveChild("ItemBox");
+
+		vecFile = tempDir.GetAllFile(".UserMesh");
+
+		for (size_t i = 0; i < vecFile.size(); i++)
+		{
+			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+			{
+				GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().LoadUser(vecFile[i].GetFullPath());
+			}
+		}
 	}
 
-	// 기본 액터 생성
-	CreateBasicActor();
-
-	// Create LumiaLevel Input
-	CreateLevelInput();
-
-	// 네트워크 핸들러 등록
-	AddSocketHandle();
-
-	// IMGUI Window Find & Setting
-	InitIMGUIWindow();
-
-	// MainCamera Adjustment
-	CameraAdjustment();
+	// 캐릭터
+	Rio::LoadResource();
+	Hyunwoo::LoadResource();
 }
+
+void LumiaLevel::Test_initRenderWindow()
+{
+	if (nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow"))
+	{
+		GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+		Window->ClaerRenderTarget();
+		float4 Size = { 128, 72 };
+		Window->PushRenderTarget("메인 카메라 타겟", GetMainCamera()->GetCameraRenderTarget(), Size);
+		Window->PushRenderTarget("UI 카메라 타겟", GetUICamera()->GetCameraRenderTarget(), Size);
+		Window->PushRenderTarget("메인 카메라 G-Buffer", GetMainCamera()->GetCameraDeferredGBufferTarget(), Size);
+		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size);
+		Window->PushRenderTarget("메인 카메라 디퍼드 타겟", GetMainCamera()->GetCameraDeferredTarget(), Size);
+	}
+}
+
+void LumiaLevel::Test_createActor()
+{
+	// 인게임 마우스 생성
+	if (nullptr == MousePointer::InGameMouse)
+	{
+		MousePointer::InGameMouse = CreateActor<MousePointer>();
+		MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
+		MousePointer::InGameMouse;
+	}
+
+	{
+		GameEngineDirectory tempDir;
+
+		tempDir.MoveParent("FoxTeam");
+		tempDir / "Resources" / "FBX" / "UserMesh" / "ItemBox" / "ItemBoxInfo";
+
+		ItemBoxManager_ = CreateActor<ItemBoxManager>();
+		ItemBoxManager_->UserAllLoad(tempDir);
+		ItemBoxManager_->GetTransform()->SetLocalScaling(100.0f);
+	}
+
+	CurMap_ = CreateActor<LumiaMap>();
+
+	SKySphereActor* Actor = CreateActor<SKySphereActor>();
+
+
+	{
+		LightActor* Actor;
+
+		Actor = CreateActor<LightActor>();
+		Actor->GetLight()->SetDiffusePower(1.f);
+		Actor->GetLight()->SetAmbientPower(10.f);
+		Actor->GetLight()->SetSpacularLightPow(10.f);
+	}
+
+	Test_GenerateCharactor();
+}
+
+void LumiaLevel::Test_adjustCamera()
+{
+	GetMainCameraActor()->GetCamera()->SetFov(50.f);
+	GetMainCameraActor()->FreeCameraModeSwitch();
+	GetMainCameraActor()->GetTransform()->SetWorldPosition({ 0.0f, 100.f, -200.f });
+}
+
+void LumiaLevel::Test_serverCheck()
+{
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		GameServer* server = GameServer::GetInstance();
+		server->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
+		server->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
+		server->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);
+	}
+	else if (true == GameClient::GetInstance()->IsConnected())
+	{
+		GameClient* client = GameClient::GetInstance();
+		client->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
+		client->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
+		client->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);
+	}
+}
+
+void LumiaLevel::Test_releaseRenderWindow()
+{
+	if (nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow"))
+	{
+		GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+		Window->ClaerRenderTarget();
+	}
+}
+
+void LumiaLevel::Test_releaseResource()
+{
+	// loadResource에서 로드한 리소스 삭제
+
+	// 맵, 네비게이션 메쉬, 아이템박스
+	GameEngineFBXMeshManager::GetInst().Delete("Bg_NaviMesh.fbx");
+	{
+		GameEngineDirectory tempDir;
+		tempDir.MoveParent("FoxTeam");
+		tempDir / "Resources" / "FBX" / "UserMesh" / "Map";
+
+		std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".UserMesh");
+
+		for (size_t i = 0; i < vecFile.size(); i++)
+		{
+			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+			{
+				GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
+			}
+		}
+
+		tempDir.MoveParent("UserMesh");
+		tempDir.MoveChild("ItemBox");
+
+		vecFile = tempDir.GetAllFile(".UserMesh");
+
+		for (size_t i = 0; i < vecFile.size(); i++)
+		{
+			if (nullptr == GameEngineFBXMeshManager::GetInst().Find(vecFile[i].GetFullPath()))
+			{
+				GameEngineFBXMeshManager::GetInst().Delete(vecFile[i].FileName());
+			}
+		}
+	}
+
+	// 캐릭터
+	Rio::ReleaseResource();
+	Hyunwoo::ReleaseResource();
+
+	ItemBoxManager_ = nullptr;
+}
+
+void LumiaLevel::Test_GenerateCharactor()
+{
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
+	for (int i = 0; i < 2; i++)
+	{
+		Character* newCharacter = CreateActor<Rio>();
+		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+		PlayerInfo newPlayer;
+		newPlayer.playerNumber_ = i;
+		newPlayer.startPoint_ = 0;
+		newPlayer.character_ = 0;
+		newPlayer.curAnimation_ = "";
+		newPlayer.isReady_ = true;
+
+		newPlayer.curDir_ = float4::ZERO;
+		newPlayer.curPos_ = float4::ZERO;
+
+		pm->AddNewPlayer(newPlayer);
+		CharacterActorList_.push_back(newCharacter);
+	}
+
+	CharacterActorList_[0]->Focus();
+	pm->SetMainCharacter(CharacterActorList_[0]);
+
+	pm->SetPlayerNumber(0);
+}
+
+#pragma endregion
