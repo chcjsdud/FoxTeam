@@ -70,7 +70,7 @@ void Rio::initRendererAndAnimation()
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	renderer_->CreateFBXAnimation("Run", "Rio_Short_Run.fbx", 0);
-	renderer_->CreateFBXAnimation("Wait", "Rio_Wait.fbx", 0);
+	renderer_->CreateFBXAnimation("Wait", "Rio_Short_Wait.fbx", 0);
 	renderer_->CreateFBXAnimation("BasicAttack", "Rio_Short_Attack.fbx", 0, false);
 	renderer_->ChangeFBXAnimation("Wait");
 }
@@ -103,6 +103,7 @@ void Rio::onStartQSkill()
 
 void Rio::onUpdateQSkill(float _deltaTime)
 {
+	mainState_ << "NormalState";
 }
 
 void Rio::onStartWSkill()
