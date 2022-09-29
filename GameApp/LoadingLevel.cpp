@@ -51,14 +51,14 @@ void LoadingLevel::LoadingLevelInitalize()
 void LoadingLevel::InGameCreationCommand()
 {
 	// 캐릭터생성 및 생성명령패킷 송신
-	if (false == ReadyCharacterCreationCommand && true == ReadyMapCreationCommand)
+	if (false == ReadyCharacterCreationCommand && true == ReadyMapCreationCommand && true == ReadyMonsterCreationCommand)
 	{
 		CharacterCreationCommand();
 		ReadyCharacterCreationCommand = true;
 	}
 
 	// 몬스터생성 및 생성명령패킷 송신
-	if (false == ReadyMonsterCreationCommand)
+	if (false == ReadyMonsterCreationCommand && true == ReadyMapCreationCommand)
 	{
 		MonsterCreationCommand();
 		ReadyMonsterCreationCommand = true;

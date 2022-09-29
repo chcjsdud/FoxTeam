@@ -148,6 +148,10 @@ void LumiaLevel::ClientMonsterCreation()
 		// 99. 몬스터 관리목록에 추가
 		MonsterActorList_.push_back(NewMonster);
 	}
+
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	int MyNumber = pm->GetMyNumber();
+	GameEngineDebug::OutPutDebugString("클라이언트(게스트) Number: " + std::to_string(MyNumber) + "의 몬스터 생성을 완료했습니다!!!!\n");
 }
 
 void LumiaLevel::ClientCharacterCreation()
