@@ -33,21 +33,21 @@ void Lobby_GameStartButton::ButtonClickFunction()
 			GameServer::GetInstance()->Send(&Packet);
 
 			// 테스트용코드(추후삭제예정) - 220929 SJH ADD
-			// 서버(호스트) 플레이어만 존재하는 경우 더미 플레이어 생성 ----- 모르것다...
+			// 서버(호스트) 플레이어만 존재하는 경우 더미 플레이어 생성
 			if (1 == static_cast<int>(InfoManager->GetPlayerList().size()))
 			{
-				//PlayerInfo DummyPlayerInfo = {};
-				//DummyPlayerInfo.playerNumber_ = 1;
-				//DummyPlayerInfo.startPoint_ = 0;
-				//DummyPlayerInfo.character_ = 0;
-				//DummyPlayerInfo.curAnimation_ = "Wait";
-				//DummyPlayerInfo.isReady_ = 1;
-				//DummyPlayerInfo.IsLoading_ = 1;
+				PlayerInfo DummyPlayerInfo = {};
+				DummyPlayerInfo.playerNumber_ = 1;
+				DummyPlayerInfo.startPoint_ = 0;
+				DummyPlayerInfo.character_ = 8;
+				DummyPlayerInfo.curAnimation_ = "";
+				DummyPlayerInfo.isReady_ = 1;
+				DummyPlayerInfo.IsLoading_ = 1;
 
-				//DummyPlayerInfo.curDir_ = float4::ZERO;
-				//DummyPlayerInfo.curPos_ = float4::ZERO;
+				DummyPlayerInfo.curDir_ = float4::ZERO;
+				DummyPlayerInfo.curPos_ = { -2500.f, 0.0f, 10000.f };
 
-				//InfoManager->AddNewPlayer(DummyPlayerInfo);
+				InfoManager->AddNewPlayer(DummyPlayerInfo);
 			}
 
 			// 서버(호스트) 로딩레벨로 체인지
