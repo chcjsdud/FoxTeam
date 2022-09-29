@@ -106,6 +106,7 @@ enum class JobType // 직업타입
 	RIO,
 	AYA,
 	// ....
+	DUMMY,		// 더미
 	MAX
 };
 

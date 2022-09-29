@@ -109,48 +109,53 @@ void LumiaLevel::CharacterCreationCommand()
 	CharacterResourceLoad();
 
 	// Get 현재 게임에 진입한 플레이어 정보
-	PlayerInfoManager* PlayerInfo = PlayerInfoManager::GetInstance();
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
 	// 캐릭터 생성
-	int PlayerCount = static_cast<int>(PlayerInfo->GetPlayerList().size());
+	int PlayerCount = static_cast<int>(pm->GetPlayerList().size());
 	for (int PlayerNum = 0; PlayerNum < PlayerCount; ++PlayerNum)
 	{
 		// 캐릭터 타입별
-		JobType CurCharacterType = static_cast<JobType>(PlayerInfo->GetPlayerList()[PlayerNum].character_);
+		JobType CurCharacterType = static_cast<JobType>(pm->GetPlayerList()[PlayerNum].character_);
 
 		Character* NewCharacter = nullptr;
 		switch (CurCharacterType)
 		{
-		case JobType::YUKI:
-		{
-			//NewCharacter = CreateActor<Yuki>();
-			break;
-		}
-		case JobType::FIORA:
-		{
-			//NewCharacter = CreateActor<Fiora>();
-			break;
-		}
-		case JobType::HYUNWOO:
-		{
-			NewCharacter = CreateActor<Hyunwoo>();
-			break;
-		}
-		case JobType::AYA:
-		{
-			//NewCharacter = CreateActor<Aya>();
-			break;
-		}
-		case JobType::RIO:
-		{
-			NewCharacter = CreateActor<Rio>();
-			break;
-		}
-		case JobType::JACKIE:
-		{
-			//NewCharacter = CreateActor<Jackie>();
-			break;
-		}
+			case JobType::YUKI:
+			{
+				//NewCharacter = CreateActor<Yuki>();
+				break;
+			}
+			case JobType::FIORA:
+			{
+				//NewCharacter = CreateActor<Fiora>();
+				break;
+			}
+			case JobType::HYUNWOO:
+			{
+				NewCharacter = CreateActor<Hyunwoo>();
+				break;
+			}
+			case JobType::AYA:
+			{
+				//NewCharacter = CreateActor<Aya>();
+				break;
+			}
+			case JobType::RIO:
+			{
+				NewCharacter = CreateActor<Rio>();
+				break;
+			}
+			case JobType::JACKIE:
+			{
+				//NewCharacter = CreateActor<Jackie>();
+				break;
+			}
+			case JobType::DUMMY:
+			{
+				NewCharacter = CreateActor<Rio>();
+				break;
+			}
 		}
 
 		// 예외처리
@@ -169,7 +174,7 @@ void LumiaLevel::CharacterCreationCommand()
 		CharacterActorList_.emplace_back(NewCharacter);
 
 		// 현재 호스트 or 게스트의 메인 캐릭터 포커싱
-		if (PlayerNum == PlayerInfo->GetMyNumber())
+		if (PlayerNum == pm->GetMyNumber())
 		{
 			CharacterActorList_[PlayerNum]->Focus();
 		}
@@ -597,6 +602,8 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		{
 			Window->ItemBoxManager_ = ItemBoxManager_;
 		}
+
+		// 
 	}
 	else
 	{
@@ -678,6 +685,8 @@ void LumiaLevel::Test_initRenderWindow()
 		Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetMainCamera()->GetCameraDeferredLightTarget(), Size);
 		Window->PushRenderTarget("메인 카메라 디퍼드 타겟", GetMainCamera()->GetCameraDeferredTarget(), Size);
 	}
+
+	DebugAndControlWindow_ = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
 }
 
 void LumiaLevel::Test_createActor()
@@ -687,7 +696,6 @@ void LumiaLevel::Test_createActor()
 	{
 		MousePointer::InGameMouse = CreateActor<MousePointer>();
 		MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
-		MousePointer::InGameMouse;
 	}
 
 	{
@@ -800,8 +808,6 @@ void LumiaLevel::Test_GenerateCharactor()
 
 	for (int i = 0; i < 2; i++)
 	{
-		Character* newCharacter = CreateActor<Rio>();
-		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		PlayerInfo newPlayer;
 		newPlayer.playerNumber_ = i;
 		newPlayer.startPoint_ = 0;
@@ -813,13 +819,17 @@ void LumiaLevel::Test_GenerateCharactor()
 		newPlayer.curPos_ = float4::ZERO;
 
 		pm->AddNewPlayer(newPlayer);
+		
+		Character* newCharacter = CreateActor<Rio>();
+		PlayerInfoManager::GetInstance()->GetPlayerList()[i].stat_ = newCharacter->GetStat();
+		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+		newCharacter->SetIndex(i);
 		CharacterActorList_.push_back(newCharacter);
 	}
 
 	CharacterActorList_[0]->Focus();
-	pm->SetMainCharacter(CharacterActorList_[0]);
-
 	pm->SetPlayerNumber(0);
+	pm->SetMainCharacter(CharacterActorList_[0]);
 }
 
 #pragma endregion

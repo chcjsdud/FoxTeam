@@ -32,7 +32,25 @@ void Lobby_GameStartButton::ButtonClickFunction()
 			GameStartPacket Packet;
 			GameServer::GetInstance()->Send(&Packet);
 
-			// 로딩레벨로 체인지
+			// 테스트용코드(추후삭제예정) - 220929 SJH ADD
+			// 서버(호스트) 플레이어만 존재하는 경우 더미 플레이어 생성 ----- 모르것다...
+			if (1 == static_cast<int>(InfoManager->GetPlayerList().size()))
+			{
+				//PlayerInfo DummyPlayerInfo = {};
+				//DummyPlayerInfo.playerNumber_ = 1;
+				//DummyPlayerInfo.startPoint_ = 0;
+				//DummyPlayerInfo.character_ = 0;
+				//DummyPlayerInfo.curAnimation_ = "Wait";
+				//DummyPlayerInfo.isReady_ = 1;
+				//DummyPlayerInfo.IsLoading_ = 1;
+
+				//DummyPlayerInfo.curDir_ = float4::ZERO;
+				//DummyPlayerInfo.curPos_ = float4::ZERO;
+
+				//InfoManager->AddNewPlayer(DummyPlayerInfo);
+			}
+
+			// 서버(호스트) 로딩레벨로 체인지
 			UserGame::LevelChange("LoadingLevel");
 		}
 	}
