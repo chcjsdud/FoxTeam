@@ -52,8 +52,10 @@ void Lobby_GameStartButton::Start()
 
 	// 기본 렌더러 생성
 	Renderer_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UI));
-	Renderer_->GetTransform()->SetWorldScaling(float4(281.0f, 47.0f));
-	Renderer_->GetTransform()->SetWorldPosition(float4(WindowSizeHarf.x - 170.f, -WindowSizeHarf.y + 120.f));
+	//Renderer_->GetTransform()->SetWorldScaling(float4(281.0f, 47.0f));
+	//Renderer_->GetTransform()->SetWorldPosition(float4(WindowSizeHarf.x - 170.f, -WindowSizeHarf.y + 120.f));
+	Renderer_->GetTransform()->SetWorldScaling(float4(190.0f, 89.0f));
+	Renderer_->GetTransform()->SetWorldPosition(float4(WindowSizeHarf.x - 170.f, -WindowSizeHarf.y + 135.f));
 
 	// 버튼 텍스쳐 등록
 	SetButtonState(ButtonState::Normal, "Lobby_GameStart_Btn.png");
@@ -63,7 +65,7 @@ void Lobby_GameStartButton::Start()
 	Renderer_->SetChangeAnimation("Normal");
 
 	// 버튼 텍스트 등록
-	Renderer_->TextSetting("malgunbd", "게임 시작", 20.f, FW1_CENTER | FW1_VCENTER, float4::WHITE);
+	//Renderer_->TextSetting("malgunbd", "게임 시작", 20.f, FW1_CENTER | FW1_VCENTER, float4::WHITE);
 
 	//// 버튼 상태별 사운드 등록
 	//MouseOverSoundName_ = "";
