@@ -19,9 +19,7 @@ enum class ePacketID
 	StartPacket,
 
 	// LoadingLevel
-	MapCreatPacket,
-	MonsterCreatePacket,
-	CharacterCreatePacket,
+	CreationPacket,
 	LoadEndPacket,
 	LvChangePacket,
 

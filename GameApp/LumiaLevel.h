@@ -39,20 +39,17 @@ public: // Inline Get Function
 public: // Inline Set Function
 
 public: // Public Function
-	void OtherLevelCommand(LoadingType _LoadingType);						// 로딩타입 수신
-	void ClientMapCreation();												// Guest 전용
-	void ClientMonsterCreation();											// Guest 전용
-	void ClientCharacterCreation();											// Guest 전용
+	void HostCreateCommand();												// Host 전용
+	void GuestCreateCommand();												// Guest 전용
 
-private: // Packet
-	void MapCreationPacketSend();											// 맵생성 패킷 전송
-	void MonsterCreationPacketSend();										// 몬스터생성 패킷 전송
-	void CharacterCreationPacketSend();										// 캐릭터생성 패킷 전송
+private: // Create MonsterInfo
+	void CreateMonsterInfo();												// Host 전용(현재 맵에 배치하려는 몬스터들을 미리 셋팅)
+																			// 몬스터가 스폰되는 지역과 위치가 해당 함수에서 모두 결정난다.
 
 private: // Command
-	bool MapCreationCommand();												// Host & Guest 공통
-	bool MonsterCreationCommand();											// Host 전용
-	bool CharacterCreationCommand();										// Host & Guest 공통
+	void MapCreationCommand();												// Host & Guest 공통
+	void MonsterCreationCommand();											// Host & Guest 공통
+	void CharacterCreationCommand();										// Host & Guest 공통
 
 private: // Resource Load
 	void MapResourceLoad();													// Current Map Resource Load

@@ -247,15 +247,6 @@
     <ClCompile Include="Dummy.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Dummy</Filter>
     </ClCompile>
-    <ClCompile Include="MapCreationPacket.cpp">
-      <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\01.MapCreation</Filter>
-    </ClCompile>
-    <ClCompile Include="MonsterCreationPacket.cpp">
-      <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\02.MonsterCreation</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterCreationPacket.cpp">
-      <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\03.CharacterCreation</Filter>
-    </ClCompile>
     <ClCompile Include="LoadingEndPacket.cpp">
       <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\01.LoadingEndPacket</Filter>
     </ClCompile>
@@ -283,14 +274,14 @@
     <ClCompile Include="PlayerInfoManager.cpp">
       <Filter>02.GameServer\Infomation\Player</Filter>
     </ClCompile>
-    <ClCompile Include="LoadingSyncManager.cpp">
-      <Filter>02.GameServer\Infomation\LoadingSync</Filter>
-    </ClCompile>
     <ClCompile Include="MonsterInfoManager.cpp">
       <Filter>02.GameServer\Infomation\Monsters</Filter>
     </ClCompile>
     <ClCompile Include="UI_ItemSettingHelper.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI\UIHelper</Filter>
+    </ClCompile>
+    <ClCompile Include="CreationCommandPacket.cpp">
+      <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\00.CreationCommandPacket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -405,15 +396,6 @@
     <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\02.LevelChangePacket">
       <UniqueIdentifier>{a16ff5df-de93-4253-9821-6ee36e7acc8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\01.MapCreation">
-      <UniqueIdentifier>{6140d157-37d5-4c6a-907e-45aeffbea8c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\02.MonsterCreation">
-      <UniqueIdentifier>{ed9a04a5-542f-4037-8181-3349988c827b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\03.CharacterCreation">
-      <UniqueIdentifier>{63449d30-7d57-450a-b625-f87c7946cf4f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.GameObject\03.Level\LoadingLevel\01.Actor">
       <UniqueIdentifier>{fb0a050c-a75a-4090-b4f5-9dbec0c794fa}</UniqueIdentifier>
     </Filter>
@@ -459,14 +441,14 @@
     <Filter Include="02.GameServer\Infomation\Monsters">
       <UniqueIdentifier>{ba7ec77a-837f-4b66-872f-a1d2f8aa302c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.GameServer\Infomation\LoadingSync">
-      <UniqueIdentifier>{f59ef747-7941-4e13-8b86-c80da0c6dade}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.GameServer\Infomation\Player">
       <UniqueIdentifier>{84464456-48bf-4a56-adcc-b5ea016f2319}</UniqueIdentifier>
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\UI\UIHelper">
       <UniqueIdentifier>{20901b7d-a3ea-4f62-84b3-3ed81db5e4fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\00.CreationCommandPacket">
+      <UniqueIdentifier>{b2775f2b-b6ee-4d5f-93a7-eefe23bf4603}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -722,15 +704,6 @@
     <ClInclude Include="Dummy.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Dummy</Filter>
     </ClInclude>
-    <ClInclude Include="MapCreationPacket.h">
-      <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\01.MapCreation</Filter>
-    </ClInclude>
-    <ClInclude Include="MonsterCreationPacket.h">
-      <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\02.MonsterCreation</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterCreationPacket.h">
-      <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\03.CharacterCreation</Filter>
-    </ClInclude>
     <ClInclude Include="LoadingEndPacket.h">
       <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\01.LoadingEndPacket</Filter>
     </ClInclude>
@@ -752,12 +725,6 @@
     <ClInclude Include="PlayerInfoManager.h">
       <Filter>02.GameServer\Infomation\Player</Filter>
     </ClInclude>
-    <ClInclude Include="LoadingSyncInfo.h">
-      <Filter>02.GameServer\Infomation\LoadingSync</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadingSyncManager.h">
-      <Filter>02.GameServer\Infomation\LoadingSync</Filter>
-    </ClInclude>
     <ClInclude Include="MonsterInfo.h">
       <Filter>02.GameServer\Infomation\Monsters</Filter>
     </ClInclude>
@@ -766,6 +733,9 @@
     </ClInclude>
     <ClInclude Include="UI_ItemSettingHelper.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI\UIHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="CreationCommandPacket.h">
+      <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\00.CreationCommandPacket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

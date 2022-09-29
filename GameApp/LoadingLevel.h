@@ -15,9 +15,7 @@ public:
 	static bool ResourceLoadEndCheck;
 
 public:
-	static bool ReadyMapCreationCommand;
-	static bool ReadyMonsterCreationCommand;
-	static bool ReadyCharacterCreationCommand;
+	static bool ReadyCreationCommand;
 
 public:
 protected:
@@ -25,12 +23,7 @@ private:
 	void LoadingLevelInitalize();
 
 private:
-	void InGameCreationCommand();
-
-private:
-	void MapCreationCommand();
-	void MonsterCreationCommand();
-	void CharacterCreationCommand();
+	void CreationCommand();
 
 private:
 	virtual void LevelStart() override;

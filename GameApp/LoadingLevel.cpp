@@ -8,9 +8,7 @@
 #include "GameServer.h"
 #include "GameClient.h"
 
-#include "MapCreationPacket.h"
-#include "MonsterCreationPacket.h"
-#include "CharacterCreationPacket.h"
+#include "CreationCommandPacket.h"
 #include "LoadingEndPacket.h"
 #include "LevelChangePacket.h"
 
@@ -19,10 +17,7 @@
 #include "LoadingLevel_LoadPercent.h"
 
 bool LoadingLevel::ResourceLoadEndCheck = false;
-
-bool LoadingLevel::ReadyMapCreationCommand = false;
-bool LoadingLevel::ReadyMonsterCreationCommand = true;
-bool LoadingLevel::ReadyCharacterCreationCommand = true;
+bool LoadingLevel::ReadyCreationCommand = false;
 
 void LoadingLevel::LoadingLevelInitalize()
 {
@@ -48,84 +43,39 @@ void LoadingLevel::LoadingLevelInitalize()
 	ResourceLoadEndCheck = true;
 }
 
-void LoadingLevel::InGameCreationCommand()
+void LoadingLevel::CreationCommand()
 {
-	// 캐릭터생성 및 생성명령패킷 송신
-	if (false == ReadyCharacterCreationCommand && true == ReadyMapCreationCommand)
-	{
-		CharacterCreationCommand();
-		ReadyCharacterCreationCommand = true;
-	}
-
-	// 몬스터생성 및 생성명령패킷 송신
-	if (false == ReadyMonsterCreationCommand)
-	{
-		MonsterCreationCommand();
-		ReadyMonsterCreationCommand = true;
-		ReadyCharacterCreationCommand = false;
-	}
-
-	// 맵생성 및 생성명령패킷 송신
-	if (false == ReadyMapCreationCommand)
-	{
-		MapCreationCommand();
-		ReadyMapCreationCommand = true;
-		ReadyMonsterCreationCommand = false;
-	}
-
-	// 모든 리소스 및 액터 생성완료
-	if (true == ReadyMapCreationCommand &&
-		true == ReadyMonsterCreationCommand &&
-		true == ReadyCharacterCreationCommand)
-	{
-		// 서버의 로딩완료 Flag On
-		PlayerInfoManager* InfoManager = PlayerInfoManager::GetInstance();
-		InfoManager->GetPlayerList()[InfoManager->GetMyNumber()].IsLoading_ = 1;
-
-		// Update Loading ProgressBar
-		LoadingLevel_LoadPercent::Percent->CheckLoadingPercent();
-
-		// Server LoadingEnd Packet Send
-		LoadingEndPacket EndPacket;
-		EndPacket.SetUniqueID(InfoManager->GetMyNumber());
-		EndPacket.SetLoadingFlag(InfoManager->GetPlayerList()[InfoManager->GetMyNumber()].IsLoading_);
-		GameServer::GetInstance()->Send(&EndPacket);
-
-		// 연결된 모든 클라이언트(게스트)가 로딩이 먼저 끝남을 방지
-		// 현재 레벨이 루미아레벨이아니고, 서버를 포함한 모든 클라이언트가 로딩완료시 로드완료레벨체인지 패킷 송신후 레벨체인지
-		LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
-		if (true == InfoManager->AllPlayerLoadingStateCheck() && PlayerLevel != UserGame::CurrentLevel())
-		{
-			// 반환값이 true 이라면 모든 플레이어(호스트 포함) 로딩완료 되었다는 의미이므로 레벨 체인지 패킷 송신
-			LevelChangePacket Packet;
-			Packet.SetChangeLevelName("LumiaLevel");
-			GameServer::GetInstance()->Send(&Packet);
-
-			// 패킷송신이 끝났으므로 나의 레벨도 체인지
-			UserGame::LevelChange("LumiaLevel");
-		}
-	}
-}
-
-void LoadingLevel::MapCreationCommand()
-{
-	// 플레이레벨에 강제 액터 생성 명령
+	// 클라이언트에게 강제생성커맨드 패킷 전송 및 루미아레벨에 강제생성 명령전달
 	LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
-	PlayerLevel->OtherLevelCommand(LoadingType::MAP);
-}
+	PlayerLevel->HostCreateCommand();
 
-void LoadingLevel::MonsterCreationCommand()
-{
-	// 플레이레벨에 강제 액터 생성 명령
-	LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
-	PlayerLevel->OtherLevelCommand(LoadingType::MONSTER);
-}
+	// 서버(호스트)로딩상태 갱신
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_ = 1;
+	LoadingLevel_LoadPercent::Percent->CheckLoadingPercent();
 
-void LoadingLevel::CharacterCreationCommand()
-{
-	// 플레이레벨에 강제 액터 생성 명령
-	LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
-	PlayerLevel->OtherLevelCommand(LoadingType::CHARACTER);
+	// Server LoadingEnd Packet Send
+	LoadingEndPacket EndPacket;
+	EndPacket.SetUniqueID(pm->GetMyNumber());
+	EndPacket.SetLoadingFlag(pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_);
+	GameServer::GetInstance()->Send(&EndPacket);
+
+	// 본로직은 로딩엔딩패킷을 수신했을때 연결된 모든 클라이언트의 로딩상태를 체크하여 루미아레벨로 넘어오지만
+	// 서버가 제일 마지막에 로딩완료되는 상태가 되었을때 강제로 레벨체인지
+	LumiaLevel* CurLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+	if (true == pm->AllPlayerLoadingStateCheck() && CurLevel != UserGame::CurrentLevel())
+	{
+		// 반환값이 true 이라면 모든 플레이어(호스트 포함) 로딩완료 되었다는 의미이므로 레벨 체인지 패킷 송신
+		LevelChangePacket Packet;
+		Packet.SetChangeLevelName("LumiaLevel");
+		GameServer::GetInstance()->Send(&Packet);
+
+		// 패킷송신이 끝났으므로 나의 레벨도 체인지
+		UserGame::LevelChange("LumiaLevel");
+	}
+
+	// 생성명령 및 패킷 전송완료
+	ReadyCreationCommand = true;
 }
 
 void LoadingLevel::LevelStart()
@@ -138,9 +88,12 @@ void LoadingLevel::LevelStart()
 void LoadingLevel::LevelUpdate(float _DeltaTime)
 {
 	// 리소스 로딩완료 후 액터생성 명령 패킷 송신
-	if (true == ResourceLoadEndCheck && true == GameServer::GetInstance()->IsOpened())
+	if (true == GameServer::GetInstance()->IsOpened())
 	{
-		InGameCreationCommand();
+		if (true == ResourceLoadEndCheck && false == ReadyCreationCommand)
+		{
+			CreationCommand();
+		}
 	}
 
 	// 리소스 로딩상태 체크 후 기본 액터 생성
@@ -174,18 +127,14 @@ void LoadingLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 	if (true == server->IsOpened())
 	{
-		server->AddPacketHandler(ePacketID::MapCreatPacket, new MapCreationPacket);
-		server->AddPacketHandler(ePacketID::MonsterCreatePacket, new MonsterCreationPacket);
-		server->AddPacketHandler(ePacketID::CharacterCreatePacket, new CharacterCreationPacket);
+		server->AddPacketHandler(ePacketID::CreationPacket, new CreationCommandPacket);
 		server->AddPacketHandler(ePacketID::LoadEndPacket, new LoadingEndPacket);
 		server->AddPacketHandler(ePacketID::LvChangePacket, new LevelChangePacket);
 	}
 
 	if (true == client->IsConnected())
 	{
-		client->AddPacketHandler(ePacketID::MapCreatPacket, new MapCreationPacket);
-		client->AddPacketHandler(ePacketID::MonsterCreatePacket, new MonsterCreationPacket);
-		client->AddPacketHandler(ePacketID::CharacterCreatePacket, new CharacterCreationPacket);
+		client->AddPacketHandler(ePacketID::CreationPacket, new CreationCommandPacket);
 		client->AddPacketHandler(ePacketID::LoadEndPacket, new LoadingEndPacket);
 		client->AddPacketHandler(ePacketID::LvChangePacket, new LevelChangePacket);
 	}

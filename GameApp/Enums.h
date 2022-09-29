@@ -1,15 +1,5 @@
 #pragma once
 
-// Loading Type
-enum class LoadingType
-{
-	NONE = -1,
-	MAP,
-	MONSTER,
-	CHARACTER,
-	MAX
-};
-
 // UI RenderOrder
 enum class RenderOrder
 {

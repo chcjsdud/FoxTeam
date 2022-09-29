@@ -20,9 +20,8 @@
 #include "CharMovementPacket.h"
 #include "CharAnimationPacket.h"
 #include "CharStatPacket.h"
-#include "MapCreationPacket.h"
-#include "MonsterCreationPacket.h"
-#include "CharacterCreationPacket.h"
+#include "CreationCommandPacket.h"
+#include "LoadingEndPacket.h"
 
 //======================== Map
 #include "LumiaMap.h"
@@ -37,235 +36,74 @@
 #include "Monsters.h"
 #include "Wolf.h"
 
-
-void LumiaLevel::OtherLevelCommand(LoadingType _LoadingType)
+void LumiaLevel::HostCreateCommand()
 {
-	// 로딩레벨로부터 수신하는 명령
-	switch (_LoadingType)
-	{
-	case LoadingType::MAP:
-	{
-		// 별도 정보 필요없음
-		// 맵생성 명령 패킷 전송후
-		MapCreationPacketSend();
+	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
-		// 생성 성공시 패킷 전송
-		if (true == MapCreationCommand() && true == GameServer::GetInstance()->IsOpened())
-		{
-			GameEngineDebug::OutPutDebugString("서버(호스트)의 맵 생성을 완료했습니다!!!!\n");
-		}
+	// 생성명령패킷 전송전 몬스터 목록 작성
+	CreateMonsterInfo();
 
-		break;
-	}
-	case LoadingType::MONSTER:
-	{
-		// 생성 성공시 패킷 전송
-		if (true == MonsterCreationCommand() && true == GameServer::GetInstance()->IsOpened())
-		{
-			GameEngineDebug::OutPutDebugString("서버(호스트)의 몬스터 생성을 완료했습니다!!!!\n");
+	// 생성 패킷 전송 후
+	CreationCommandPacket CommandPacket;
+	CommandPacket.SetMonsterInfos(mm->GetAllMonsterListValue());
+	GameServer::GetInstance()->Send(&CommandPacket);
 
-			// 별도 정보 필요
-			// 몬스터 정보 생성완료 후 패킷 전송
-			MonsterCreationPacketSend();
-		}
-
-		break;
-	}
-	case LoadingType::CHARACTER:
-	{
-		// 별도 정보 필요없음
-		// 캐릭터생성 명령 패킷 전송후
-		CharacterCreationPacketSend();
-
-		// 생성 성공시 패킷 전송
-		if (true == CharacterCreationCommand() && true == GameServer::GetInstance()->IsOpened())
-		{
-			GameEngineDebug::OutPutDebugString("서버(호스트)의 캐릭터 생성을 완료했습니다!!!!\n");
-		}
-
-		break;
-	}
-	}
+	// 서버(호스트)의 리소스 로딩 및 액터 생성 시작
+	MapCreationCommand();
+	MonsterCreationCommand();
+	CharacterCreationCommand();
 }
 
-void LumiaLevel::ClientMapCreation()
+void LumiaLevel::GuestCreateCommand()
 {
-	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-
-	if (true == MapCreationCommand())
-	{
-		int MyNumber = pm->GetMyNumber();
-		GameEngineDebug::OutPutDebugString("클라이언트(게스트) Number: " + std::to_string(MyNumber) + "의 맵 생성을 완료했습니다!!!!\n");
-	}
+	// 생성시작
+	MapCreationCommand();
+	MonsterCreationCommand();
+	CharacterCreationCommand();
 }
 
-void LumiaLevel::ClientMonsterCreation()
+void LumiaLevel::CreateMonsterInfo()
 {
-	// 클라이언트(게스트)측에서 호출하는 함수로 
-	// 수신한 몬스터 정보를 토대로 몬스터 액터를 생성하는 로직을 구현
-	MonsterInfoManager* InfoManager = MonsterInfoManager::GetInstance();
+	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
-	// 생성하려는 몬스터 정보 Get
-	std::vector<MonsterInfo>& AllMonster = InfoManager->GetAllMonsterListRef();
+	// 몬스터 생성정보 작성 시작
+	// -> 몬스터별 스폰가능지역과 지역당 생성되는 몬스터수, 각 몬스터의 스폰위치(둥지위치)는 여기서 결정
 
-	int MonsterCount = InfoManager->GetCurMonsterListSize();
-	for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
-	{
-		Monsters* NewMonster = nullptr;
 
-		MonsterType CurMonsterType = AllMonster[MonsterNum].MonsterType_;
-		switch (CurMonsterType)
-		{
-		case MonsterType::WOLF:
-		{
-			NewMonster = CreateActor<Wolf>();
-			break;
-		}
-		case MonsterType::BEAR:
-		{
-			//NewMonster = CreateActor<Bear>();
-			break;
-		}
-		case MonsterType::BAT:
-		{
-			//NewMonster = CreateActor<Bat>();
-			break;
-		}
-		}
 
-		// 예외처리
-		if (nullptr == NewMonster)
-		{
-			GameEngineDebug::OutPutDebugString(std::to_string(MonsterNum) + "번째 몬스터는 " + "등록되지않은 타입으로 생성하려고 시도했습니다!!!!\n");
-			continue;
-		}
 
-		// NewMonster Setting
-		NewMonster->SetMonsterIndex(MonsterNum);
-		NewMonster->SetMonsterAreaType(AllMonster[MonsterNum].AreaType_);
-		NewMonster->InitalizeSpawnPosition(AllMonster[MonsterNum].SpawnPosition_);
 
-		// 99. 몬스터 관리목록에 추가
-		MonsterActorList_.push_back(NewMonster);
-	}
-
-	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-	int MyNumber = pm->GetMyNumber();
-	GameEngineDebug::OutPutDebugString("클라이언트(게스트) Number: " + std::to_string(MyNumber) + "의 몬스터 생성을 완료했습니다!!!!\n");
 }
 
-void LumiaLevel::ClientCharacterCreation()
-{
-	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-
-	if (true == CharacterCreationCommand())
-	{
-		int MyNumber = pm->GetMyNumber();
-		GameEngineDebug::OutPutDebugString("클라이언트(게스트) Number: " + std::to_string(MyNumber) + "의 캐릭터 생성을 완료했습니다!!!!\n");
-	}
-}
-
-void LumiaLevel::MapCreationPacketSend()
-{
-	MapCreationPacket MapPacket;
-	GameServer::GetInstance()->Send(&MapPacket);
-}
-
-void LumiaLevel::MonsterCreationPacketSend()
-{
-	MonsterInfoManager* InfoManager = MonsterInfoManager::GetInstance();
-
-	// 몬스터생성 패킷 데이터 셋팅
-	int MonsterCount = static_cast<int>(MonsterActorList_.size());
-	for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
-	{
-		MonsterInfo NewMonsterInfo = {};
-
-		NewMonsterInfo.Index_ = MonsterNum;
-		NewMonsterInfo.AreaType_ = MonsterActorList_[MonsterNum]->GetMonsterAreaType();
-		NewMonsterInfo.MonsterType_ = MonsterActorList_[MonsterNum]->GetMonsterType();
-		NewMonsterInfo.SpawnPosition_ = MonsterActorList_[MonsterNum]->GetMonsterStateInfo().NestPosition_;
-
-		InfoManager->AddMonsterInfo(NewMonsterInfo);
-	}
-
-	// 패킷전송
-	MonsterCreationPacket MonsterPacket;
-	MonsterPacket.SetMonsterInfos(InfoManager->GetAllMonsterListValue());
-	GameServer::GetInstance()->Send(&MonsterPacket);
-}
-
-void LumiaLevel::CharacterCreationPacketSend()
-{
-	CharacterCreationPacket CharacterPacket;
-	GameServer::GetInstance()->Send(&CharacterPacket);
-}
-
-bool LumiaLevel::MapCreationCommand()
+void LumiaLevel::MapCreationCommand()
 {
 	// 맵관련 리소스 로드
 	MapResourceLoad();
 
 	// 맵 생성
 	CurMap_ = CreateActor<LumiaMap>();
-
-	return true;
 }
 
-bool LumiaLevel::MonsterCreationCommand()
+void LumiaLevel::MonsterCreationCommand()
 {
-	// 패킷 전송을 위해 먼저데이터를 만들어내므로 생성된 데이터를 기준으로 액터생성
+	// 몬스터정보목록을 참고하여 몬스터 생성시작
+	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
-	// 0. 랜덤한 갯수 몬스터 생성
-	GameEngineRandom CountRandom;
-	//int CreateCount = CountRandom.RandomInt(1, 10);			// 임시주석
-	int CreateCount = 1;										// 임시사용(1마리만 생성)
-	for (int MonsterNum = 0; MonsterNum < CreateCount; ++MonsterNum)
+	int AllMonsterCount = mm->GetCurMonsterListSize();
+	for (int MonsterNum = 0; MonsterNum < AllMonsterCount; ++MonsterNum)
 	{
-		Monsters* NewMonster = nullptr;
 
-		// 1. 랜덤한 몬스터 타입으로 몬스터 생성
-		GameEngineRandom TypeRandom;
-		//MonsterType CurType = static_cast<MonsterType>(TypeRandom.RandomInt(0, static_cast<int>(MonsterType::MAX) - 1));			// 임시주석
-		MonsterType CurType = MonsterType::WOLF;																					// 임시사용
-		switch (CurType)
-		{
-		case MonsterType::WOLF:
-		{
-			NewMonster = CreateActor<Wolf>();
-			break;
-		}
-		case MonsterType::BEAR:
-		{
-			//NewMonster = CreateActor<Bear>();
-			break;
-		}
-		case MonsterType::BAT:
-		{
-			//NewMonster = CreateActor<Bat>();
-			break;
-		}
-		}
 
-		// 예외처리
-		if (nullptr == NewMonster)
-		{
-			GameEngineDebug::OutPutDebugString(std::to_string(MonsterNum) + "번째 몬스터는 " + "등록되지않은 타입으로 생성하려고 시도했습니다!!!!\n");
-			continue;
-		}
 
-		// 액터 생성 성공시 초기화 & 셋팅함수 호출
-		NewMonster->SetMonsterIndex(MonsterNum);
-		NewMonster->InitalizeSpawnAreaType();
 
-		// 99. 몬스터 관리목록에 추가
-		MonsterActorList_.push_back(NewMonster);
+
+
+
+
 	}
-
-	return true;
 }
 
-bool LumiaLevel::CharacterCreationCommand()
+void LumiaLevel::CharacterCreationCommand()
 {
 	// 캐릭터관련 리소스 로드
 	CharacterResourceLoad();
@@ -336,8 +174,6 @@ bool LumiaLevel::CharacterCreationCommand()
 			CharacterActorList_[PlayerNum]->Focus();
 		}
 	}
-
-	return true;
 }
 
 void LumiaLevel::MapResourceLoad()
@@ -720,10 +556,33 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 
 void LumiaLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
+	// 220929 ADD SJH
+	// 테스트용 
+	// 서버를 생성하지않고 LevelControlWindow에의해 강제로 레벨이동한 경우
+	if (false == GameServer::GetInstance()->IsOpened() && false == GameClient::GetInstance()->IsConnected())
+	{
+
+
+
+		return;
+	}
 }
 
 void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	// 220929 ADD SJH
+	// 테스트용 
+	// 서버를 생성하지않고 LevelControlWindow에의해 강제로 레벨이동한 경우
+	if (false == GameServer::GetInstance()->IsOpened() && false == GameClient::GetInstance()->IsConnected())
+	{
+
+
+
+
+
+		return;
+	}
+
 	// 기본 액터 생성
 	CreateBasicActor();
 

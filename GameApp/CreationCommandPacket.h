@@ -5,8 +5,8 @@
 
 // 분류 : 패킷
 // 용도 : 
-// 설명 : 몬스터 생성 명령 패킷
-class MonsterCreationPacket : public GameEnginePacketBase
+// 설명 : 클라이언트에게 리소스 로드 및 액터생성시작 명령을 내리는 패킷
+class CreationCommandPacket : public GameEnginePacketBase
 {
 public:
 	void SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos);
@@ -22,16 +22,16 @@ protected:
 private:
 
 public:
-	MonsterCreationPacket();
-	~MonsterCreationPacket();
+	CreationCommandPacket();
+	~CreationCommandPacket();
 
 protected:
-	MonsterCreationPacket(const MonsterCreationPacket& _other) = delete;
-	MonsterCreationPacket(MonsterCreationPacket&& _other) noexcept = delete;
+	CreationCommandPacket(const CreationCommandPacket& _other) = delete;
+	CreationCommandPacket(CreationCommandPacket&& _other) noexcept = delete;
 
 private:
-	MonsterCreationPacket& operator=(const MonsterCreationPacket& _other) = delete;
-	MonsterCreationPacket& operator=(const MonsterCreationPacket&& _other) = delete;
+	CreationCommandPacket& operator=(const CreationCommandPacket& _other) = delete;
+	CreationCommandPacket& operator=(const CreationCommandPacket&& _other) = delete;
 
 public:
 protected:

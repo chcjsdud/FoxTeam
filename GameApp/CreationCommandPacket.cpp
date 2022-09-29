@@ -1,24 +1,28 @@
 #include "PreCompile.h"
-#include "MonsterCreationPacket.h"
+#include "CreationCommandPacket.h"
 
 #include "Enums.h"
 #include "ePacketID.h"
-#include "LoadingSyncManager.h"
+#include "PlayerInfoManager.h"
 #include "MonsterInfoManager.h"
 #include "UserGame.h"
 #include "LumiaLevel.h"
 
-void MonsterCreationPacket::SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos)
+#include "LoadingEndPacket.h"
+
+#include "LoadingLevel_LoadPercent.h"
+
+void CreationCommandPacket::SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos)
 {
-    MonsterInfos_ = _MonsterInfos;
+	MonsterInfos_ = _MonsterInfos;
 }
 
-void MonsterCreationPacket::SetMonsterInfo(MonsterInfo _MonsterInfo)
+void CreationCommandPacket::SetMonsterInfo(MonsterInfo _MonsterInfo)
 {
-    MonsterInfos_.push_back(_MonsterInfo);
+	MonsterInfos_.push_back(_MonsterInfo);
 }
 
-void MonsterCreationPacket::userSerialize()
+void CreationCommandPacket::userSerialize()
 {
     int AllMonsterCount = static_cast<int>(MonsterInfos_.size());
     serializer_ << AllMonsterCount;
@@ -32,11 +36,11 @@ void MonsterCreationPacket::userSerialize()
     }
 }
 
-void MonsterCreationPacket::userDeserialize()
+void CreationCommandPacket::userDeserialize()
 {
     int AllMonsterCount = -1;
     serializer_ >> AllMonsterCount;
-    
+
     for (int i = 0; i < AllMonsterCount; ++i)
     {
         MonsterInfo NewMonsterInfo = {};
@@ -57,22 +61,21 @@ void MonsterCreationPacket::userDeserialize()
     }
 }
 
-void MonsterCreationPacket::initPacketID()
+void CreationCommandPacket::initPacketID()
 {
-    SetPacketID(ePacketID::MonsterCreatePacket);
+    SetPacketID(ePacketID::CreationPacket);
 }
 
-GameEnginePacketBase* MonsterCreationPacket::getUserObject()
+GameEnginePacketBase* CreationCommandPacket::getUserObject()
 {
-    return new MonsterCreationPacket;
+	return new CreationCommandPacket;
 }
 
-void MonsterCreationPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
+void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
-    LoadingSyncManager* LoadInfoManager = LoadingSyncManager::GetInstance();
     MonsterInfoManager* InfoManager = MonsterInfoManager::GetInstance();
 
-    // 클라이언트(게스트)측 수신 처리
+    // 클라(게스트)에서만 수신
     if (false == _bServer)
     {
         // 수신받은 몬스터 정보 셋팅 후
@@ -80,17 +83,25 @@ void MonsterCreationPacket::execute(SOCKET _sender, GameEngineSocketInterface* _
 
         // 강제 생성 함수 호출(클라이언트 전용 함수)
         LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
-        PlayerLevel->ClientMonsterCreation();
+        PlayerLevel->GuestCreateCommand();
 
-        // 내 로딩정보 상태 갱신
-        LoadInfoManager->GetCurrentLoadingInfo().MonsterLoadEnd_ = 1;
+        // 클라이언트(게스트)로딩상태 갱신
+        PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+        pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_ = 1;
+        LoadingLevel_LoadPercent::Percent->CheckLoadingPercent();
+
+        // Client LoadingEnd Packet Send
+        LoadingEndPacket EndPacket;
+        EndPacket.SetUniqueID(pm->GetMyNumber());
+        EndPacket.SetLoadingFlag(pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_);
+        _network->Send(&EndPacket);
     }
 }
 
-MonsterCreationPacket::MonsterCreationPacket()
+CreationCommandPacket::CreationCommandPacket()
 {
 }
 
-MonsterCreationPacket::~MonsterCreationPacket()
+CreationCommandPacket::~CreationCommandPacket()
 {
 }
