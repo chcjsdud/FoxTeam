@@ -1,19 +1,19 @@
 #pragma once
-#include <GameEngine/GameEngineActor.h>
+#include "ItemBase.h"
 
 using namespace std;
 
 //
 
-class UI_ItemSettingHelper : public GameEngineActor
+class UI_ItemSettingHelper
 {
 public:
 	UI_ItemSettingHelper();
 	~UI_ItemSettingHelper();
 
-protected:
-	virtual void Start();
-	virtual void Update(float _DeltaTime);
+public:
+	static string GetItemTextureName(ItemBase* _Item);
+
 
 private:
 	UI_ItemSettingHelper(const UI_ItemSettingHelper& _Other) = delete;

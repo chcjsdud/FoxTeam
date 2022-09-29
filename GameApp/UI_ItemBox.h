@@ -81,14 +81,14 @@ private:
 	ItemBase* Slot6_Item;
 	ItemBase* Slot7_Item;
 
-	GameEngineUIRenderer* Slot0_ItemRenderer;
-	GameEngineUIRenderer* Slot1_ItemRenderer;
-	GameEngineUIRenderer* Slot2_ItemRenderer;
-	GameEngineUIRenderer* Slot3_ItemRenderer;
-	GameEngineUIRenderer* Slot4_ItemRenderer;
-	GameEngineUIRenderer* Slot5_ItemRenderer;
-	GameEngineUIRenderer* Slot6_ItemRenderer;
-	GameEngineUIRenderer* Slot7_ItemRenderer;
+	GameEngineUIRenderer* Slot0_BGRenderer;
+	GameEngineUIRenderer* Slot1_BGRenderer;
+	GameEngineUIRenderer* Slot2_BGRenderer;
+	GameEngineUIRenderer* Slot3_BGRenderer;
+	GameEngineUIRenderer* Slot4_BGRenderer;
+	GameEngineUIRenderer* Slot5_BGRenderer;
+	GameEngineUIRenderer* Slot6_BGRenderer;
+	GameEngineUIRenderer* Slot7_BGRenderer;
 
 
 	//너무 양이 많아진다고 느껴지면 자료구조 사용하자

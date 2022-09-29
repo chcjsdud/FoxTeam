@@ -7,6 +7,7 @@
 
 #include "ItemBase.h"
 #include "ItemBox.h"
+#include "UI_ItemSettingHelper.h"
 
 
 UI_ItemBox::UI_ItemBox()
@@ -109,14 +110,14 @@ void UI_ItemBox::Start()
 	}
 
 	{
-		Slot0_ItemRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot1_ItemRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot2_ItemRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot3_ItemRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot4_ItemRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot5_ItemRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot6_ItemRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot7_ItemRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot0_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot1_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot2_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot3_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot4_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot5_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot6_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot7_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	}
 
 	//SlotList_.push_back(Slot0_Item);
@@ -434,92 +435,96 @@ void UI_ItemBox::ItemRenderCheck()
 {
 	if (Slot0_Item != nullptr)
 	{
-		Slot0_ItemRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
-		Slot0_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot0_ItemRenderer->SetImage("Item_Bottle_Test.png");
+		Slot0_BGRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
+		Slot0_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		Slot0_BGRenderer->SetImage("Item_Bottle_Test.png");
+		//Slot0_BGRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot0_Item));
+		//일단은 아이콘만 나오는중 
+		//나중에 등급별 enum나오면 그거에 맞춰서 아이콘도 추가하자
+		//BG렌더러 말고 IconRenderer도 만들예정
 	}
 	else
 	{
-		Slot0_ItemRenderer->Off();
+		Slot0_BGRenderer->Off();
 	}
 
 
 	if (Slot1_Item != nullptr)
 	{
-		Slot1_ItemRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
-		Slot1_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot1_ItemRenderer->SetImage("Item_Bottle_Test.png");
+		Slot1_BGRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
+		Slot1_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		Slot1_BGRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
 	{
-		Slot1_ItemRenderer->Off();
+		Slot1_BGRenderer->Off();
 	}
 
 
 	if (Slot2_Item != nullptr)
 	{
-		Slot2_ItemRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
-		Slot2_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot2_ItemRenderer->SetImage("Item_Bottle_Test.png");
+		Slot2_BGRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot2_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		Slot2_BGRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
 	{
-		Slot2_ItemRenderer->Off();
+		Slot2_BGRenderer->Off();
 	}
 
 	if (Slot3_Item != nullptr)
 	{		
-		Slot3_ItemRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
-		Slot3_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot3_ItemRenderer->SetImage("Item_Bottle_Test.png");
+		Slot3_BGRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
+		Slot3_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		Slot3_BGRenderer->SetImage("Item_Bottle_Test.png");
 	}		
 	else	
 	{		
-		Slot3_ItemRenderer->Off();
+		Slot3_BGRenderer->Off();
 	}
 
 	if (Slot4_Item != nullptr)
 	{
-		Slot4_ItemRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
-		Slot4_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot4_ItemRenderer->SetImage("Item_Bottle_Test.png");
+		Slot4_BGRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
+		Slot4_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		Slot4_BGRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
 	{
-		Slot4_ItemRenderer->Off();
+		Slot4_BGRenderer->Off();
 	}
 
 	if (Slot5_Item != nullptr)
 	{
-		Slot5_ItemRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
-		Slot5_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot5_ItemRenderer->SetImage("Item_Bottle_Test.png");
+		Slot5_BGRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
+		Slot5_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		Slot5_BGRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
 	{
-		Slot5_ItemRenderer->Off();
+		Slot5_BGRenderer->Off();
 	}
 
 	if (Slot6_Item != nullptr)
 	{
-		Slot6_ItemRenderer->GetTransform()->SetLocalPosition(Slot6Collision->GetTransform()->GetLocalPosition());
-		Slot6_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot6_ItemRenderer->SetImage("Item_Bottle_Test.png");
+		Slot6_BGRenderer->GetTransform()->SetLocalPosition(Slot6Collision->GetTransform()->GetLocalPosition());
+		Slot6_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		Slot6_BGRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
 	{
-		Slot6_ItemRenderer->Off();
+		Slot6_BGRenderer->Off();
 	}
 
 	if (Slot7_Item != nullptr)
 	{
-		Slot7_ItemRenderer->GetTransform()->SetLocalPosition(Slot7Collision->GetTransform()->GetLocalPosition());
-		Slot7_ItemRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot7_ItemRenderer->SetImage("Item_Bottle_Test.png");
+		Slot7_BGRenderer->GetTransform()->SetLocalPosition(Slot7Collision->GetTransform()->GetLocalPosition());
+		Slot7_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		Slot7_BGRenderer->SetImage("Item_Bottle_Test.png");
 	}
 	else
 	{
-		Slot7_ItemRenderer->Off();
+		Slot7_BGRenderer->Off();
 	}
 
 }
