@@ -21,8 +21,8 @@
 bool LoadingLevel::ResourceLoadEndCheck = false;
 
 bool LoadingLevel::ReadyMapCreationCommand = false;
-bool LoadingLevel::ReadyMonsterCreationCommand = true;
-bool LoadingLevel::ReadyCharacterCreationCommand = true;
+bool LoadingLevel::ReadyMonsterCreationCommand = false;
+bool LoadingLevel::ReadyCharacterCreationCommand = false;
 
 void LoadingLevel::LoadingLevelInitalize()
 {
@@ -51,18 +51,17 @@ void LoadingLevel::LoadingLevelInitalize()
 void LoadingLevel::InGameCreationCommand()
 {
 	// 캐릭터생성 및 생성명령패킷 송신
-	if (false == ReadyCharacterCreationCommand && true == ReadyMapCreationCommand && true == ReadyMonsterCreationCommand)
+	if (true == ReadyCharacterCreationCommand && true == ReadyMapCreationCommand && true == ReadyMonsterCreationCommand)
 	{
 		CharacterCreationCommand();
 		ReadyCharacterCreationCommand = true;
 	}
 
 	// 몬스터생성 및 생성명령패킷 송신
-	if (false == ReadyMonsterCreationCommand && true == ReadyMapCreationCommand)
+	if (true == ReadyMonsterCreationCommand && true == ReadyMapCreationCommand)
 	{
 		MonsterCreationCommand();
-		ReadyMonsterCreationCommand = true;
-		ReadyCharacterCreationCommand = false;
+		ReadyCharacterCreationCommand = true;
 	}
 
 	// 맵생성 및 생성명령패킷 송신
@@ -70,7 +69,7 @@ void LoadingLevel::InGameCreationCommand()
 	{
 		MapCreationCommand();
 		ReadyMapCreationCommand = true;
-		ReadyMonsterCreationCommand = false;
+		ReadyMonsterCreationCommand = true;
 	}
 
 	// 모든 리소스 및 액터 생성완료
