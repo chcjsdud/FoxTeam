@@ -436,7 +436,6 @@ void LumiaLevel::CharactersTransformUpdate()
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-#ifdef SERVER
 	for (int i = 0; i < pm->GetPlayerList().size(); i++)
 	{
 		// 받은 패킷의 정보로 갱신된 playerinfo 값에 따라
@@ -450,7 +449,6 @@ void LumiaLevel::CharactersTransformUpdate()
 		CharacterActorList_[i]->ChangeAnimation(pm->GetPlayerList()[i].curAnimation_);
 		CharacterActorList_[i]->GetTransform()->SetWorldRotationDegree(pm->GetPlayerList()[i].curDir_);
 	}
-#endif
 }
 
 void LumiaLevel::MonsterStateUpdatePacketSend()
@@ -811,12 +809,12 @@ void LumiaLevel::Test_GenerateCharactor()
 		PlayerInfo newPlayer;
 		newPlayer.playerNumber_ = i;
 		newPlayer.startPoint_ = 0;
-		newPlayer.character_ = 0;
+		newPlayer.character_ = 6;
 		newPlayer.curAnimation_ = "";
 		newPlayer.isReady_ = true;
 
 		newPlayer.curDir_ = float4::ZERO;
-		newPlayer.curPos_ = float4::ZERO;
+		newPlayer.curPos_ = { -2500.f, 0.0f, 10000.f };
 
 		pm->AddNewPlayer(newPlayer);
 		
