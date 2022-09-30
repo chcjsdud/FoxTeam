@@ -451,15 +451,15 @@ void ItemBoxManager::UserSave_ItemListInfo()
 			for (const auto& Item : ItemBox.second[i]->itemList)
 			{
 				NewFile.Write(Item->GetName());
-				NewFile.Write(static_cast<int>(Item->Type));
-				if (nullptr == Item->Renderer)
+				NewFile.Write(static_cast<int>(Item->type_));
+				if (nullptr == Item->renderer_)
 				{
 					std::string str = "";
 					NewFile.Write(str);
 				}
 				else
 				{
-					NewFile.Write(Item->Renderer->GetName());
+					NewFile.Write(Item->renderer_->GetName());
 				}
 			}
 		}
@@ -518,7 +518,7 @@ void ItemBoxManager::UserLoad_ItemListInfo()
 				if (nullptr != Item)
 				{
 					Item->SetName(ItemName);
-					Item->Type = static_cast<ItemType>(Type);
+					Item->type_ = static_cast<ItemType>(Type);
 				}
 
 				std::string ImageName;

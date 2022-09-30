@@ -115,16 +115,16 @@ private:
 	void CreateEquipmentItemList();
 	void CreateWeaponItemList();
 
-	ItemBase* CreateItem(const std::string _Name, ItemType _Type,
+	ItemBase* CreateItem(const std::string _Name, ItemType _Type, ItemTier _Tier,
 		const std::string _ImageName = "");
 
-	MiscItem* CreateMiscItem(const std::string _Name,
-		const std::string _ImageName = "");
+	MiscItem* CreateMiscItem(const std::string _Name, 
+		const std::string _ImageName, ItemTier _Tier = ItemTier::COMMON);
 	UseableItem* CreateUseableItem(const std::string _Name,
-		const std::string _ImageName = "");
-	EquipmentItem* CreateEquipmentItem(const std::string _Name, 
-		EquipmentType _EquipType = EquipmentType::NONE, 
-		const std::string _ImageName = "");
+		const std::string _ImageName, ItemTier _Tier = ItemTier::COMMON);
+	EquipmentItem* CreateEquipmentItem(const std::string _Name,
+		EquipmentType _EquipType, 
+		const std::string _ImageName, ItemTier _Tier = ItemTier::COMMON);
 
 	void CreateAllItemRecipes();
 

@@ -20,11 +20,25 @@ public:
 
 	//ItemBase* CombineItem(ItemBase* _Other);
 
-	void SetItemType(ItemType _Type)
+	void SetItemType(ItemType _type)
 	{
-		Type = _Type;
+		type_ = _type;
 	}
-	void SetImage(const std::string& _ImageName, const std::string& _Sampler = "");
+	void SetItemTier(ItemTier _tier)
+	{
+		tier_ = _tier;
+	}
+	
+	ItemType GetItemType()
+	{
+		return type_;
+	}
+	ItemTier GetItemTier()
+	{
+		return tier_;
+	}
+
+	void SetImage(const std::string& _imageName, const std::string& _sampler = "");
 
 	// ItemType 따라서 Copy 할 정보가 다름 virtual
 	ItemBase* Copy();
@@ -34,7 +48,8 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-	ItemType Type;
-	GameEngineImageRenderer* Renderer;
+	ItemType type_;
+	ItemTier tier_;
+	GameEngineImageRenderer* renderer_;
 };
 

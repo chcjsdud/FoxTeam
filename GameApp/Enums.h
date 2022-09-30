@@ -145,6 +145,17 @@ enum class ItemType
 	MAX
 };
 
+enum class ItemTier
+{
+	NONE = -1,
+	COMMON,		// 회색
+	UNCOMMON,	// 초록
+	RARE,		// 파랑
+	EPIC,		// 보라
+	LEGENDARY,	// 노랑
+	MAX
+};
+
 enum class EquipmentType
 {
 	NONE = -1,

@@ -11,8 +11,8 @@ void ItemBoxManager::CreateAllItemList()
 	// Test용
 	EquipmentItem* Item = CreateEquipmentItem("test1", 
 		EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateItem("test2", ItemType::USEABLE, "ItemIcon_101102.png");
-	CreateItem("test3", ItemType::MISC, "ItemIcon_101104.png");
+	CreateItem("test2", ItemType::USEABLE, ItemTier::COMMON, "ItemIcon_101102.png");
+	CreateItem("test3", ItemType::MISC, ItemTier::COMMON, "ItemIcon_101104.png");
 
 
 	CreateMiscItemList();		// 재료
@@ -21,7 +21,7 @@ void ItemBoxManager::CreateAllItemList()
 	CreateWeaponItemList();		// 무기
 }
 
-ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type,
+ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type, ItemTier _Tier,
 	const std::string _ImageName /*= ""*/)
 {
 	ItemBase* NewItem = nullptr;
@@ -46,6 +46,7 @@ ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type,
 
 	NewItem->SetName(_Name);
 	NewItem->SetItemType(_Type);
+	NewItem->SetItemTier(_Tier);
 
 	if ("" != _ImageName)
 	{
@@ -57,21 +58,26 @@ ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type,
 	return NewItem;
 }
 
-MiscItem* ItemBoxManager::CreateMiscItem(const std::string _Name, const std::string _ImageName)
+MiscItem* ItemBoxManager::CreateMiscItem(const std::string _Name, 
+	const std::string _ImageName,
+	ItemTier _Tier/* = ItemTier::COMMON*/)
 {
-	return reinterpret_cast<MiscItem*>(CreateItem(_Name, ItemType::MISC, _ImageName));
+	return reinterpret_cast<MiscItem*>(CreateItem(_Name, ItemType::MISC, _Tier, _ImageName));
 }
 
-UseableItem* ItemBoxManager::CreateUseableItem(const std::string _Name, const std::string _ImageName)
+UseableItem* ItemBoxManager::CreateUseableItem(const std::string _Name,
+	const std::string _ImageName,
+	ItemTier _Tier/* = ItemTier::COMMON*/)
 {
-	return reinterpret_cast<UseableItem*>(CreateItem(_Name, ItemType::USEABLE, _ImageName));
+	return reinterpret_cast<UseableItem*>(CreateItem(_Name, ItemType::USEABLE, _Tier, _ImageName));
 }
 
 EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name,
-	EquipmentType _EquipType /*= EquipmentType::NONE*/ ,
-	const std::string _ImageName /*= ""*/)
+	EquipmentType _EquipType,
+	const std::string _ImageName,
+	ItemTier _Tier/* = ItemTier::COMMON*/)
 {
-	EquipmentItem* item = reinterpret_cast<EquipmentItem*>(CreateItem(_Name, ItemType::EQUIPMENT, _ImageName));
+	EquipmentItem* item = reinterpret_cast<EquipmentItem*>(CreateItem(_Name, ItemType::EQUIPMENT, _Tier, _ImageName));
 	item->SetEquipType(_EquipType);
 	return item;
 }
@@ -99,32 +105,32 @@ void ItemBoxManager::CreateAllItemRecipes()
 void ItemBoxManager::CreateMiscItemList()
 {
 	// Common
-	CreateItem("FountainPen", ItemType::MISC, "ItemIcon_101102.png");
-	CreateItem("Pickaxe", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Branch", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Stone", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("GlassBottle", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Chalk", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Flower", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Nail", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Leather", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("TurtleShell", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Rubber", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("ScrapMetal", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Lighter", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("LaserPointer", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("StallionMedal", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Battery", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Alcohol", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Oil", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Cloth", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Gemstone", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Glue", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Paper", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("IronOre", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Can", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("Gunpowder", ItemType::MISC, "ItemIcon_101104.png");
-	CreateItem("PianoWire", ItemType::MISC, "ItemIcon_101104.png");
+	CreateMiscItem("FountainPen", "ItemIcon_101102.png");
+	CreateMiscItem("Pickaxe", "ItemIcon_101104.png");
+	CreateMiscItem("Branch", "ItemIcon_101104.png");
+	CreateMiscItem("Stone", "ItemIcon_101104.png");
+	CreateMiscItem("GlassBottle", "ItemIcon_101104.png");
+	CreateMiscItem("Chalk", "ItemIcon_101104.png");
+	CreateMiscItem("Flower", "ItemIcon_101104.png");
+	CreateMiscItem("Nail", "ItemIcon_101104.png");
+	CreateMiscItem("Leather", "ItemIcon_101104.png");
+	CreateMiscItem("TurtleShell", "ItemIcon_101104.png");
+	CreateMiscItem("Rubber", "ItemIcon_101104.png");
+	CreateMiscItem("ScrapMetal", "ItemIcon_101104.png");
+	CreateMiscItem("Lighter", "ItemIcon_101104.png");
+	CreateMiscItem("LaserPointer", "ItemIcon_101104.png");
+	CreateMiscItem("StallionMedal", "ItemIcon_101104.png");
+	CreateMiscItem("Battery", "ItemIcon_101104.png");
+	CreateMiscItem("Alcohol", "ItemIcon_101104.png");
+	CreateMiscItem("Oil", "ItemIcon_101104.png");
+	CreateMiscItem("Cloth", "ItemIcon_101104.png");
+	CreateMiscItem("Gemstone", "ItemIcon_101104.png");
+	CreateMiscItem("Glue", "ItemIcon_101104.png");
+	CreateMiscItem("Paper", "ItemIcon_101104.png");
+	CreateMiscItem("IronOre", "ItemIcon_101104.png");
+	CreateMiscItem("Can", "ItemIcon_101104.png");
+	CreateMiscItem("Gunpowder", "ItemIcon_101104.png");
+	CreateMiscItem("PianoWire", "ItemIcon_101104.png");
 }
 
 void ItemBoxManager::CreateUseableItemList()

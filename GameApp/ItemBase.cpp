@@ -2,8 +2,9 @@
 #include "ItemBase.h"
 
 ItemBase::ItemBase()
-	: Type(ItemType::NONE)
-	, Renderer(nullptr)
+	: type_(ItemType::NONE)
+	, tier_(ItemTier::NONE)
+	, renderer_(nullptr)
 {
 	
 }
@@ -13,24 +14,24 @@ ItemBase::~ItemBase()
 
 }
 
-void ItemBase::SetImage(const std::string& _ImageName, const std::string& _Sampler)
+void ItemBase::SetImage(const std::string& _imageName, const std::string& _sampler)
 {
-	Renderer->SetImage(_ImageName, _Sampler);
+	renderer_->SetImage(_imageName, _sampler);
 }
 
 ItemBase* ItemBase::Copy()
 {
 	ItemBase* CopyItem = GetLevel()->CreateActor<ItemBase>();
 	CopyItem->SetName(GetName());
-	CopyItem->Type = Type;
-	CopyItem->Renderer = Renderer;
+	CopyItem->type_ = type_;
+	CopyItem->renderer_ = renderer_;
 
 	return CopyItem;
 }
 
 void ItemBase::Start()
 {
-	Renderer = CreateTransformComponent<GameEngineImageRenderer>();
+	renderer_ = CreateTransformComponent<GameEngineImageRenderer>();
 }
 
 void ItemBase::Update(float _DeltaTime)
