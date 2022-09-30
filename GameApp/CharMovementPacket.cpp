@@ -64,7 +64,6 @@ void CharMovementPacket::execute(SOCKET _sender, GameEngineSocketInterface* _net
 	pm->GetPlayerList()[targetIndex_].curPos_ = pos_;
 	pm->GetPlayerList()[targetIndex_].curDir_ = dir_;
 	
-
 	if (_bServer)
 	{
 		_network->Send(this);

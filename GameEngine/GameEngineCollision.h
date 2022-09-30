@@ -32,6 +32,7 @@ public:
 	static bool AABBToCirCle(GameEngineTransform* _Left, GameEngineTransform* _Right);
 
 	static bool OBBToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool AABBToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
 
 	static bool RayToAABB(GameEngineTransform* _left, GameEngineTransform* _right);
 	static bool AABBToRay(GameEngineTransform* _left, GameEngineTransform* _right);

@@ -444,12 +444,17 @@ void LumiaLevel::CharactersTransformUpdate()
 		// 레벨의 캐릭터 액터들의 위치 회전 애니메이션 등을 변경해주는 코드블록입니다.
 		if (i == pm->GetMyNumber())
 		{
+			pm->GetMyPlayer().curPos_ = CharacterActorList_[i]->GetTransform()->GetLocalPosition();
+			pm->GetMyPlayer().curDir_ = CharacterActorList_[i]->GetDirection();
+			pm->GetMyPlayer().curAnimation_ = CharacterActorList_[i]->GetCurAnimation();
+
 			continue;
 		}
 
 		CharacterActorList_[i]->GetTransform()->SetLocalPosition(pm->GetPlayerList()[i].curPos_);
 		CharacterActorList_[i]->ChangeAnimation(pm->GetPlayerList()[i].curAnimation_);
-		CharacterActorList_[i]->GetTransform()->SetWorldRotationDegree(pm->GetPlayerList()[i].curDir_);
+		CharacterActorList_[i]->GetTransform()->SetLocalRotationDegree(pm->GetPlayerList()[i].curDir_);
+
 	}
 }
 
@@ -475,6 +480,7 @@ void LumiaLevel::DebugWindowUpdate()
 {
 	if (nullptr != DebugAndControlWindow_ && nullptr != MousePointer::InGameMouse)
 	{
+		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 		// InGameMouse Debug Value
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
 		DebugAndControlWindow_->AddText("X : " + std::to_string(position.x));
@@ -490,13 +496,14 @@ void LumiaLevel::DebugWindowUpdate()
 
 		for (int i = 0; i < CharacterActorList_.size(); i++)
 		{
-			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->HP));
+			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "HP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->HP));
+			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "HP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
+			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "Pos(Local) : " + std::to_string(CharacterActorList_[i]->GetTransform()->GetLocalPosition().x) + " ," + std::to_string(CharacterActorList_[i]->GetTransform()->GetLocalPosition().z));
+			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "Pos(Server) : " + std::to_string(pm->GetPlayerList()[i].curPos_.x) + " ," + std::to_string(pm->GetPlayerList()[i].curPos_.z));
+			
+			//DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "Dir(Local) : " + std::to_string(CharacterActorList_[i]->GetDirection().x) + " ," + std::to_string(CharacterActorList_[i]->GetDirection().z));
+			//DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "Dir(Server) : " + std::to_string(pm->GetPlayerList()[i].curDir_.x) + " ," + std::to_string(pm->GetPlayerList()[i].curDir_.z));
 		}
-
-		// Monster Debug Value
-
-
-
 	}
 }
 

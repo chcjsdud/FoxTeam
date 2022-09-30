@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include "GameServer.h"
 #include "GameClient.h"
+#include <GameEngine/GameEngineLevelControlWindow.h>
 
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false)
@@ -72,6 +73,13 @@ void Hyunwoo::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
 
+	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	if (nullptr != controlWindow)
+	{
+		controlWindow->AddText("P1Dir" + std::to_string(direction_.x) + ", " + std::to_string(direction_.z));
+		controlWindow->AddText("ColQpos " + std::to_string(collision_Q->GetTransform()->GetWorldPosition().x) + ", " + std::to_string(collision_Q->GetTransform()->GetWorldPosition().z));
+	}
+
 }
 
 void Hyunwoo::initRendererAndAnimation()
@@ -102,12 +110,13 @@ void Hyunwoo::initRendererAndAnimation()
 void Hyunwoo::initHyunwooCollision()
 {
 	collision_Q = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	collision_Q->GetTransform()->SetLocalPosition({ 0.0f,0.0f,300.0f });
+
+	collision_Q->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	
 	collision_Q->GetTransform()->SetLocalScaling({400.0f, 150.0f, 350.0f});
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
-	collision_Q->SetCollisionType(CollisionType::OBBBox3D);
-	collision_Q->Off();
-
+	collision_Q->SetCollisionType(CollisionType::AABBBox3D);
+//	collision_Q->Off();
 }
 
 void Hyunwoo::changeAnimationRun()
@@ -136,15 +145,19 @@ void Hyunwoo::onStartQSkill()
 {
 	curAnimation_ = "SkillQ";
 	renderer_->ChangeFBXAnimation("SkillQ", true);
+
+	collision_Q->GetTransform()->SetLocalPosition({direction_.x * 80.0f, 0.0f, direction_.z * 80.0f});
+	
 	collision_Q->On();
 }
 
 void Hyunwoo::onUpdateQSkill(float _deltaTime)
 {
+	PlayerInfoManager* pm = PlayerInfoManager().GetInstance();
 
 	if (true == collision_Q->IsUpdate())
 	{
-		GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
+		GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
 	}
 
 	timer_collision_Q += _deltaTime;
@@ -191,6 +204,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 					// 충돌체에 감지된 대상에게 실제 대미지를 가하는 코드입니다.
 					character->Damage(300.0f);
 
+					pm->GetPlayerList()[character->GetIndex()].stat_->HP -= 300.0f;
 
 					// 대미지가 차감된 Status 를 패킷으로 넘겨줍니다.
 					CharStatPacket packet;
