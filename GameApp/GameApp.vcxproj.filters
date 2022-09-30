@@ -283,6 +283,9 @@
     <ClCompile Include="CreationCommandPacket.cpp">
       <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\00.CreationCommandPacket</Filter>
     </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>01.GameObject\03.Level\TestLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -449,6 +452,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\00.CreationCommandPacket">
       <UniqueIdentifier>{b2775f2b-b6ee-4d5f-93a7-eefe23bf4603}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\TestLevel">
+      <UniqueIdentifier>{02c5c2e2-dfc9-49e2-9772-25d4c803e6ae}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -736,6 +742,9 @@
     </ClInclude>
     <ClInclude Include="CreationCommandPacket.h">
       <Filter>01.GameObject\03.Level\LoadingLevel\00.Packet\00.LoadingPacket\00.CreationCommandPacket</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>01.GameObject\03.Level\TestLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
