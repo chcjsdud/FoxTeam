@@ -72,6 +72,7 @@ void Rio::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("Run", "Rio_Short_Run.fbx", 0);
 	renderer_->CreateFBXAnimation("Wait", "Rio_Short_Wait.fbx", 0);
 	renderer_->CreateFBXAnimation("BasicAttack", "Rio_Short_Attack.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillQ", "Rio_Short_Skill_Q.fbx", 0, false);
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
@@ -112,6 +113,7 @@ void Rio::onStartWSkill()
 
 void Rio::onUpdateWSkill(float _deltaTime)
 {
+	mainState_ << "NormalState";
 }
 
 void Rio::onStartESkill()
@@ -120,6 +122,7 @@ void Rio::onStartESkill()
 
 void Rio::onUpdateESkill(float _deltaTime)
 {
+	mainState_ << "NormalState";
 }
 
 void Rio::onStartRSkill()
@@ -128,6 +131,7 @@ void Rio::onStartRSkill()
 
 void Rio::onUpdateRSkill(float _deltaTime)
 {
+	mainState_ << "NormalState";
 }
 
 void Rio::onStartDSkill()

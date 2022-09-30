@@ -2,6 +2,7 @@
 
 #include <GameEngine/GameEngineLevel.h>
 
+class Rio;
 class TestLevel : public GameEngineLevel
 {
 public:
@@ -20,6 +21,7 @@ public:
 	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) override;
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
-
+private:
+	Rio* rio_;
 };
 

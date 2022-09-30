@@ -16,6 +16,7 @@
 #include "LumiaLevel.h"
 #include "TitleLevel.h"
 #include "LoadingLevel.h"
+#include "TestLevel.h"
 
 std::atomic<int> UserGame::LoadingFolder = 0;
 bool UserGame::IsServer_ = false;
@@ -45,6 +46,7 @@ void UserGame::Initialize()
 	LevelCreate<LobbyLevel>("LobbyLevel");
 	LevelCreate<LoadingLevel>("LoadingLevel");
 	LevelCreate<LumiaLevel>("LumiaLevel");
+	LevelCreate<TestLevel>("TestLevel");
 
 	LevelChange("TitleLevel");
 	return;
