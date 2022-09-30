@@ -285,6 +285,12 @@ GameEngineCollision* GameEngineCollision::GetCollision(int _OtherGroup)
 				continue;
 			}
 
+			if (this == OtherCollision)
+			{
+				continue;
+			}
+
+
 			auto& CheckFunction = CollisionCheckFunction[static_cast<int>(ColType_)][static_cast<int>(OtherCollision->ColType_)];
 
 			if (nullptr == CheckFunction)
