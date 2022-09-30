@@ -20,7 +20,7 @@ void TestOBB::Start()
 
 
 
-	collision_ = CreateTransformComponent<GameEngineCollision>(tc2_->GetTransform());
+	collision_ = CreateTransformComponent<GameEngineCollision>(nullptr);
 	collision_->GetTransform()->SetLocalScaling(100.f);
 	collision_->SetCollisionGroup(0);
 	collision_->SetCollisionType(CollisionType::AABBBox3D);
@@ -41,7 +41,11 @@ void TestOBB::Start()
 
 void TestOBB::Update(float _deltaTime)
 {
-	collision_->GetTransform()->SetWorldPosition(tc2_->GetTransform()->GetWorldPosition());
+
+	TransformData td = tc2_->GetTransform()->GetTransformData();
+	collision_->GetTransform()->SetWorldPosition(td.WorldWorld_.vw);
+	collision_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
+
 
 	if (GameEngineInput::Press("Left"))
 	{
