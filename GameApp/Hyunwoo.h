@@ -1,5 +1,5 @@
 #pragma once
-
+#include <GameEngine/GameEngineRenderer.h>
 #include "Character.h"
 
 class Hyunwoo : public Character
@@ -58,7 +58,4 @@ private:
 	float timer_end_Q;
 	bool b_Qhit_;
 	GameEngineCollision* collision_Q;
-
-	
-	
 };

@@ -296,7 +296,7 @@ void Character::InitSpawnPoint(const float4& _position)
 	//float4 spawnPoint = { -6780.f, 0.0f, -780.f };
 	//float4 spawnPoint = { -2500.f, 0.0f, 10000.f };
 	//float4 spawnPoint = { 0.f, 0.0f, 0.f };
-	GetTransform()->SetLocalPosition(_position);
+	GetTransform()->SetWorldPosition(_position);
 	destination_ = _position;
 
 	currentMap_ = GetLevelConvert<LumiaLevel>()->GetMap();

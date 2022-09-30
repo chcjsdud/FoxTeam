@@ -7,7 +7,7 @@
 #include "GameServer.h"
 #include "GameClient.h"
 #include <GameEngine/GameEngineLevelControlWindow.h>
-
+#include "MousePointer.h"
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false)
 {
@@ -76,8 +76,14 @@ void Hyunwoo::Update(float _deltaTime)
 	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
 	if (nullptr != controlWindow)
 	{
+		GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
 		controlWindow->AddText("P1Dir" + std::to_string(direction_.x) + ", " + std::to_string(direction_.z));
+		controlWindow->AddText("P1Pos " + std::to_string(collision_->GetTransform()->GetWorldPosition().x) + " , " + std::to_string(collision_->GetTransform()->GetWorldPosition().z));
 		controlWindow->AddText("ColQpos " + std::to_string(collision_Q->GetTransform()->GetWorldPosition().x) + ", " + std::to_string(collision_Q->GetTransform()->GetWorldPosition().z));
+		
+		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
+		controlWindow->AddText("MPos : " + std::to_string(position.x) + ", " + std::to_string(position.z));
+	
 	}
 
 }
@@ -104,18 +110,30 @@ void Hyunwoo::initRendererAndAnimation()
 	//renderer_->CreateFBXAnimation("SkillR_end", "hyunwoo_skillR_end.fbx", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
+
+//	tempRenderer_ = CreateTransformComponent<GameEngineRenderer>(GetTransform());
+//	tempRenderer_->SetRenderingPipeLine("DebugBox");
+//	tempRenderer_->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+//	tempRenderer_->GetTransform()->SetLocalScaling({ 10.f,10.f,10.f });
+//
+//	tempRenderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4::GREEN);
+
 }
 
 
 void Hyunwoo::initHyunwooCollision()
 {
 	collision_Q = CreateTransformComponent<GameEngineCollision>(GetTransform());
-
-	collision_Q->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-	
-	collision_Q->GetTransform()->SetLocalScaling({400.0f, 150.0f, 350.0f});
+	collision_Q->GetTransform()->SetLocalPosition({ 0.f,0.f,300.f });
+	collision_Q->GetTransform()->SetLocalScaling({10.0f, 10.0f, 10.0f});
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
-	collision_Q->SetCollisionType(CollisionType::AABBBox3D);
+	collision_Q->SetCollisionType(CollisionType::OBBBox3D);
+
+	//tempCollision_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	//tempCollision_->GetTransform()->SetLocalPosition({0.f,0.f,300.f});
+	//tempCollision_->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
+	//tempCollision_->SetCollisionGroup(eCollisionGroup::PlayerAttack);
+	//tempCollision_->SetCollisionType(CollisionType::OBBBox3D);
 //	collision_Q->Off();
 }
 
@@ -137,17 +155,11 @@ void Hyunwoo::changeAnimationBasicAttack()
 	renderer_->ChangeFBXAnimation("Atk0", true);
 }
 
-
-
-
-
 void Hyunwoo::onStartQSkill()
 {
 	curAnimation_ = "SkillQ";
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
-	collision_Q->GetTransform()->SetLocalPosition({direction_.x * 80.0f, 0.0f, direction_.z * 80.0f});
-	
 	collision_Q->On();
 }
 
@@ -157,7 +169,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 	if (true == collision_Q->IsUpdate())
 	{
-		GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+		GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
 	}
 
 	timer_collision_Q += _deltaTime;

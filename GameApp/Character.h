@@ -193,7 +193,6 @@ protected:
 	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* collision_;
 
-
 	// ∏ , ¿Ãµø
 	LumiaMap* currentMap_;
 	NavFace* currentNavFace_;
