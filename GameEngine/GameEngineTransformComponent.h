@@ -9,7 +9,7 @@ class GameEngineTransformComponent : public GameEngineComponent
 public:
 	// constrcuter destructer
 	GameEngineTransformComponent();
-	virtual ~GameEngineTransformComponent() = 0;
+	virtual ~GameEngineTransformComponent();
 
 	// delete Function
 	GameEngineTransformComponent(const GameEngineTransformComponent& _Other) = delete;
@@ -25,6 +25,8 @@ public:
 public:
 	void AttachTransform(GameEngineTransform* _Transform);
 	
+	virtual void Start() {};
+	virtual void Update(float _DeltaTime) {};
 
 protected:
 	// virtual void InitComponent(GameEngineActor* Actor_);

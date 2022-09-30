@@ -6,6 +6,8 @@
 #include <GameEngine/LightActor.h>
 #include "Rio.h"
 
+#include "TestOBB.h"
+
 TestLevel::TestLevel()
 	: rio_(nullptr)
 {
@@ -32,14 +34,16 @@ void TestLevel::LevelUpdate(float _DeltaTime)
 
 void TestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
-	Rio::ReleaseResource();
+	//Rio::ReleaseResource();
 }
 
 void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
-	Rio::LoadResource();
+	//Rio::LoadResource();
 
-	Rio* rio_ = CreateActor<Rio>();
+	//Rio* rio_ = CreateActor<Rio>();
+	CreateActor<TestOBB>();
+
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();
 	light->GetLight()->SetDiffusePower(1.0f);
