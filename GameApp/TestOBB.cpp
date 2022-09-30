@@ -20,7 +20,7 @@ void TestOBB::Start()
 
 
 
-	collision_ = CreateTransformComponent<GameEngineCollision>(nullptr);
+	collision_ = CreateTransformComponent<GameEngineCollision>(tc2_->GetTransform());
 	collision_->GetTransform()->SetLocalScaling(100.f);
 	collision_->SetCollisionGroup(0);
 	collision_->SetCollisionType(CollisionType::AABBBox3D);
@@ -45,14 +45,14 @@ void TestOBB::Update(float _deltaTime)
 
 	if (GameEngineInput::Press("Left"))
 	{
-		transform_.SetWorldMove({ -100.f * _deltaTime, 0.0f, 0.0f });
-		//transform_.AddLocalRotationDegreeY(-180.f * _deltaTime);
+		//transform_.SetWorldMove({ -100.f * _deltaTime, 0.0f, 0.0f });
+		transform_.AddLocalRotationDegreeY(-180.f * _deltaTime);
 	}
 
 	if (GameEngineInput::Press("Right"))
 	{
-		transform_.SetWorldMove({ 100.f * _deltaTime, 0.0f, 0.0f });
-		//transform_.AddLocalRotationDegreeY(180.f * _deltaTime);
+		//transform_.SetWorldMove({ 100.f * _deltaTime, 0.0f, 0.0f });
+		transform_.AddLocalRotationDegreeY(180.f * _deltaTime);
 	}
 
 	GetLevel()->PushDebugRender(tc_->GetTransform(), CollisionType::OBBBox3D, float4::RED);
