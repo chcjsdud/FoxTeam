@@ -84,7 +84,7 @@ EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name,
 
 void ItemBoxManager::CreateAllItemRecipes()
 {
-	itemRecipes_.insert(std::make_pair(CombineItem("재료1", "재료2"), "조합1"));
+	/*itemRecipes_.insert(std::make_pair(CombineItem("재료1", "재료2"), "조합1"));
 	itemRecipes_.insert(std::make_pair(CombineItem("재료4", "재료3"), "조합2"));
 	itemRecipes_.insert(std::make_pair(CombineItem("재료5", "재료6"), "조합3"));
 
@@ -97,7 +97,13 @@ void ItemBoxManager::CreateAllItemRecipes()
 	if (itemRecipes_.end() != iter)
 	{
 		getstr = (*iter).second;
-	}
+	}*/
+
+	// 플라즈마 톤파
+	CreateItemRecipe("Stone", "Chalk", "WhitePowder");
+	CreateItemRecipe("Branch", "Bamboo", "WoodenTonfa");
+	CreateItemRecipe("WhitePowder", "WoodenTonfa", "RyukyuTonfa");
+	CreateItemRecipe("RyukyuTonfa", "LaserPointer", "PlasmaTonfa");
 
 	int a = 0;
 }

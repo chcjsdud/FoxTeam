@@ -534,3 +534,21 @@ void ItemBoxManager::UserLoad_ItemListInfo()
 	}
 }
 
+void ItemBoxManager::CreateItemRecipe(const std::string& _left, 
+	const std::string& _right, const std::string& _result)
+{
+	if (_left == _right)
+	{
+		GameEngineDebug::MsgBoxError("if (_left == _right)");
+		return;
+	}
+
+	std::pair<std::map<CombineItem, std::string>::iterator, bool> pair;
+	pair = itemRecipes_.insert(std::make_pair(CombineItem(_left, _right), _result));
+
+	if (false == pair.second)
+	{
+		GameEngineDebug::MsgBoxError("중복된 조합식이 이미 존재합니다!");
+		return;
+	}
+}

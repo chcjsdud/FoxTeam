@@ -14,10 +14,14 @@ public:
 			left_ = _right;
 			right_ = _left;
 		}
-		else
+		else if(_left < _right)
 		{
 			left_ = _left;
 			right_ = _right;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("조합식이 잘못되었습니다.");
 		}
 	}
 
@@ -28,19 +32,17 @@ public:
 
 	bool const operator<(const CombineItem& o) const
 	{
-		bool Check = false;
-		if (left_ < o.left_)
+		if (left_ != o.left_)
 		{
-			Check = true;
+			return left_ < o.left_;
 		}
-		else
+
+		if (right_ != o.right_)
 		{
-			if (right_ < o.right_)
-			{
-				Check = true;
-			}
+			return right_ < o.right_;
 		}
-		return Check;
+
+		return false;
 	}
 
 private:
@@ -127,6 +129,8 @@ private:
 		const std::string _ImageName, ItemTier _Tier = ItemTier::COMMON);
 
 	void CreateAllItemRecipes();
+	void CreateItemRecipe(const std::string& _left, const std::string& _right,
+		const std::string& _result);
 
 private:
 	std::string itemBoxInfoPath_;
