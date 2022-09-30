@@ -14,6 +14,8 @@ public:
 public:
 	static string GetItemTextureName(ItemBase* _Item);
 
+	//렌더러와 등급enum같은걸 넣으면 등급에 맞춘 뒷배경을 SetImage해주는 함수
+	//static void SetItemRenderValue(GameEngineUIRenderer* Renderer, 등급enum);
 
 private:
 	UI_ItemSettingHelper(const UI_ItemSettingHelper& _Other) = delete;

@@ -90,6 +90,14 @@ private:
 	GameEngineUIRenderer* Slot6_BGRenderer;
 	GameEngineUIRenderer* Slot7_BGRenderer;
 
+	GameEngineUIRenderer* Slot0_IconRenderer;
+	GameEngineUIRenderer* Slot1_IconRenderer;
+	GameEngineUIRenderer* Slot2_IconRenderer;
+	GameEngineUIRenderer* Slot3_IconRenderer;
+	GameEngineUIRenderer* Slot4_IconRenderer;
+	GameEngineUIRenderer* Slot5_IconRenderer;
+	GameEngineUIRenderer* Slot6_IconRenderer;
+	GameEngineUIRenderer* Slot7_IconRenderer;
 
 	//너무 양이 많아진다고 느껴지면 자료구조 사용하자
 	//list<ItemBase*> SlotList_;

@@ -120,6 +120,18 @@ void UI_ItemBox::Start()
 		Slot7_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	}
 
+	{
+		Slot0_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot1_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot2_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot3_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot4_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot5_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot6_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot7_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	}
+
+
 	//SlotList_.push_back(Slot0_Item);
 	//SlotList_.push_back(Slot1_Item);
 	//SlotList_.push_back(Slot2_Item);
@@ -437,11 +449,13 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot0_BGRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
 		Slot0_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot0_BGRenderer->SetImage("Item_Bottle_Test.png");
-		//Slot0_BGRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot0_Item));
-		//일단은 아이콘만 나오는중 
-		//나중에 등급별 enum나오면 그거에 맞춰서 아이콘도 추가하자
-		//BG렌더러 말고 IconRenderer도 만들예정
+		Slot0_BGRenderer->SetImage("ItemBg_Common.png");
+
+		Slot0_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot0_Item));
+		Slot0_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot0_IconRenderer->GetTransform()->SetLocalPosition((Slot0_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+		//Slot0_IconRenderer->GetTransform()->AttachTransform(Slot0_BGRenderer->GetTransform());
+
 	}
 	else
 	{
@@ -453,7 +467,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot1_BGRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
 		Slot1_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot1_BGRenderer->SetImage("Item_Bottle_Test.png");
+		Slot1_BGRenderer->SetImage("ItemBg_Common.png");
 	}
 	else
 	{
@@ -465,7 +479,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot2_BGRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
 		Slot2_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot2_BGRenderer->SetImage("Item_Bottle_Test.png");
+		Slot2_BGRenderer->SetImage("ItemBg_Common.png");
 	}
 	else
 	{
@@ -476,7 +490,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{		
 		Slot3_BGRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 		Slot3_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot3_BGRenderer->SetImage("Item_Bottle_Test.png");
+		Slot3_BGRenderer->SetImage("ItemBg_Common.png");
 	}		
 	else	
 	{		
@@ -487,7 +501,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot4_BGRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
 		Slot4_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot4_BGRenderer->SetImage("Item_Bottle_Test.png");
+		Slot4_BGRenderer->SetImage("ItemBg_Common.png");
 	}
 	else
 	{
@@ -498,7 +512,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot5_BGRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
 		Slot5_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot5_BGRenderer->SetImage("Item_Bottle_Test.png");
+		Slot5_BGRenderer->SetImage("ItemBg_Common.png");
 	}
 	else
 	{
@@ -509,7 +523,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot6_BGRenderer->GetTransform()->SetLocalPosition(Slot6Collision->GetTransform()->GetLocalPosition());
 		Slot6_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot6_BGRenderer->SetImage("Item_Bottle_Test.png");
+		Slot6_BGRenderer->SetImage("ItemBg_Common.png");
 	}
 	else
 	{
@@ -520,7 +534,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot7_BGRenderer->GetTransform()->SetLocalPosition(Slot7Collision->GetTransform()->GetLocalPosition());
 		Slot7_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot7_BGRenderer->SetImage("Item_Bottle_Test.png");
+		Slot7_BGRenderer->SetImage("ItemBg_Common.png");
 	}
 	else
 	{
