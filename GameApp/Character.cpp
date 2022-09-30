@@ -7,6 +7,7 @@
 #include "MousePointer.h"
 #include "LumiaMap.h"
 #include "ItemBox.h"
+#include "ItemBase.h"
 #include "PlayerInfoManager.h"
 //#include "PlayerUIController.h"
 #include <GameEngine/GameEngineLevelControlWindow.h>
@@ -128,22 +129,8 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
 	}
 
-	std::vector<std::vector<int>> cases = 
-		GameEngineMath::Combination(inventory_.size(), 2);
+	
 
-	for (size_t i = 0; i < cases.size(); i++)
-	{
-		int left  = cases[i][0];
-		int right = cases[i][1];
-
-		if (nullptr == inventory_[left] ||
-			nullptr == inventory_[right])
-		{
-			continue;
-		}
-
-		// 아이템 조합가능여부를 판별
-	}
 }
 
 void Character::checkCurrentNavFace()
@@ -188,6 +175,8 @@ void Character::getItem(int _index)
 		itemBoxmanager_->DeleteItemFromItemBox(_index);
 		break;
 	}
+
+	checkItemRecipes();
 }
 
 void Character::checkItemBox()
@@ -244,6 +233,35 @@ void Character::checkItemBox()
 	// UI가 닫힌다.
 	// SelectBox도 nullptr로 초기화
 	// 초기화하지 않으면 SelectBox 근처에 다가가면 UI가 계속 열리게 됨
+}
+
+void Character::checkItemRecipes()
+{
+	std::vector<std::vector<int>> cases =
+		GameEngineMath::Combination(inventory_.size(), 2);
+
+	for (size_t i = 0; i < cases.size(); i++)
+	{
+		int left = cases[i][0];
+		int right = cases[i][1];
+
+		if (nullptr == inventory_[left] ||
+			nullptr == inventory_[right])
+		{
+			continue;
+		}
+
+		// 아이템 조합가능여부를 판별
+		std::map<CombineItem, std::string>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
+		std::map<CombineItem, std::string>::iterator iter = itemRecipes.end();
+
+		iter = itemRecipes.find(CombineItem(inventory_[left]->GetName(), inventory_[right]->GetName()));
+
+		if (itemRecipes.end() != iter)
+		{
+			int a = 0;
+		}
+	}
 }
 
 Character* Character::getMousePickedCharacter()

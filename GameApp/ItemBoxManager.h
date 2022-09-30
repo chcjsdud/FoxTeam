@@ -89,6 +89,11 @@ public:
 		return itemBoxUI_;
 	}
 
+	std::map<CombineItem, std::string>& GetAllItemRecipes()
+	{
+		return itemRecipes_;
+	}
+
 	bool isOpen()
 	{
 		return bOpen_;

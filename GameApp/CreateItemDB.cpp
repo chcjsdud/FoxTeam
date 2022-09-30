@@ -97,6 +97,9 @@ EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name,
 
 void ItemBoxManager::CreateAllItemRecipes()
 {
+	// 조합 Test용
+	CreateItemRecipe("Scissors", "FountainPen", "TestObject");
+
 	// 현우 쿨감 스증 [공 - 숲 - 고 - 묘 - 학]
 	
 	// 플라즈마 톤파
