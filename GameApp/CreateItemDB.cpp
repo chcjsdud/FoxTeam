@@ -8,13 +8,6 @@
 
 void ItemBoxManager::CreateAllItemList()
 {
-	// Test용
-	EquipmentItem* Item = CreateEquipmentItem("test1", 
-		EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateItem("test2", ItemType::USEABLE, ItemTier::COMMON, "ItemIcon_101102.png");
-	CreateItem("test3", ItemType::MISC, ItemTier::COMMON, "ItemIcon_101104.png");
-
-
 	CreateMiscItemList();		// 재료
 	CreateUseableItemList();	// 소모품
 	CreateEquipmentItemList();	// 장비
@@ -47,11 +40,7 @@ ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type, It
 	NewItem->SetName(_Name);
 	NewItem->SetItemType(_Type);
 	NewItem->SetItemTier(_Tier);
-
-	if ("" != _ImageName)
-	{
-		NewItem->SetImage(_ImageName);
-	}
+	NewItem->SetImage(_ImageName);
 
 	allItemList_.push_back(NewItem);
 
@@ -65,6 +54,12 @@ MiscItem* ItemBoxManager::CreateMiscItem(const std::string _Name,
 	return reinterpret_cast<MiscItem*>(CreateItem(_Name, ItemType::MISC, _Tier, _ImageName));
 }
 
+MiscItem* ItemBoxManager::CreateMiscItem(const std::string _Name, ItemTier _Tier)
+{
+	std::string imageName = _Name + ".png";
+	return reinterpret_cast<MiscItem*>(CreateItem(_Name, ItemType::MISC, _Tier, imageName));
+}
+
 UseableItem* ItemBoxManager::CreateUseableItem(const std::string _Name,
 	const std::string _ImageName,
 	ItemTier _Tier/* = ItemTier::COMMON*/)
@@ -72,12 +67,30 @@ UseableItem* ItemBoxManager::CreateUseableItem(const std::string _Name,
 	return reinterpret_cast<UseableItem*>(CreateItem(_Name, ItemType::USEABLE, _Tier, _ImageName));
 }
 
+UseableItem* ItemBoxManager::CreateUseableItem(const std::string _Name,
+	ItemTier _Tier)
+{
+	std::string imageName = _Name + ".png";
+	return reinterpret_cast<UseableItem*>(CreateItem(_Name, ItemType::USEABLE, _Tier, imageName));
+}
+
 EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name,
 	EquipmentType _EquipType,
 	const std::string _ImageName,
 	ItemTier _Tier/* = ItemTier::COMMON*/)
 {
-	EquipmentItem* item = reinterpret_cast<EquipmentItem*>(CreateItem(_Name, ItemType::EQUIPMENT, _Tier, _ImageName));
+	EquipmentItem* item = reinterpret_cast<EquipmentItem*>(
+		CreateItem(_Name, ItemType::EQUIPMENT, _Tier, _ImageName));
+	item->SetEquipType(_EquipType);
+	return item;
+}
+
+EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name, 
+	EquipmentType _EquipType, ItemTier _Tier)
+{
+	std::string imageName = _Name + ".png";
+	EquipmentItem* item = reinterpret_cast<EquipmentItem*>(
+		CreateItem(_Name, ItemType::EQUIPMENT, _Tier, imageName));
 	item->SetEquipType(_EquipType);
 	return item;
 }

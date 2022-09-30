@@ -120,13 +120,23 @@ private:
 	ItemBase* CreateItem(const std::string _Name, ItemType _Type, ItemTier _Tier,
 		const std::string _ImageName = "");
 
+	// _ImageName 을 지정해주지 않는다면 _Name + ".png" 로 지정
 	MiscItem* CreateMiscItem(const std::string _Name, 
 		const std::string _ImageName, ItemTier _Tier = ItemTier::COMMON);
+	MiscItem* CreateMiscItem(const std::string _Name, 
+		ItemTier _Tier = ItemTier::COMMON);
+
 	UseableItem* CreateUseableItem(const std::string _Name,
 		const std::string _ImageName, ItemTier _Tier = ItemTier::COMMON);
+	UseableItem* CreateUseableItem(const std::string _Name,
+		ItemTier _Tier = ItemTier::COMMON);
+
 	EquipmentItem* CreateEquipmentItem(const std::string _Name,
 		EquipmentType _EquipType, 
 		const std::string _ImageName, ItemTier _Tier = ItemTier::COMMON);
+	EquipmentItem* CreateEquipmentItem(const std::string _Name,
+		EquipmentType _EquipType, 
+		ItemTier _Tier = ItemTier::COMMON);
 
 	void CreateAllItemRecipes();
 	void CreateItemRecipe(const std::string& _left, const std::string& _right,
