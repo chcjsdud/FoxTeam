@@ -53,9 +53,6 @@ protected:
 	virtual void onStartDeath() override;
 	virtual void onUpdateDeath(float _deltaTime) override;
 
-public:
-	void InitHyunwooCollision();
-
 private:
 	float timer_collision_Q;
 	float timer_end_Q;

@@ -3,7 +3,7 @@
 #include "PlayerInfoManager.h"
 #include <GameEngine/GameEngineCollision.h>
 #include "CharStatPacket.h"
-
+#include <GameEngine/GameEngineFBXRenderer.h>
 #include "GameServer.h"
 #include "GameClient.h"
 

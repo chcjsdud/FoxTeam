@@ -87,6 +87,7 @@ void Character::Update(float _DeltaTime)
 	{
 		if (true == isPlayerDead_)
 		{
+			mainState_.Update(_DeltaTime);
 			return;
 		}
 
