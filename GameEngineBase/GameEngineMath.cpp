@@ -153,3 +153,49 @@ float4 float4::MatrixToQuaternion(const class float4x4& M)
 
 	return Return;
 }
+
+std::vector<std::vector<int>> GameEngineMath::Combination(int n, int k)
+{
+	std::vector<std::vector<int>> arrVec;
+
+	std::vector<int> v;
+
+	for (int i = 0; i < n; i++)
+	{
+		v.push_back(i);
+	}
+
+	std::vector<int> tempVector;
+
+	for (int i = 0; i < k; i++)
+	{
+		tempVector.push_back(1);
+	}
+
+	for (int i = 0; i < v.size() - k; i++)
+	{
+		tempVector.push_back(0);
+	}
+
+	sort(tempVector.begin(), tempVector.end());
+
+	int index = 0;
+
+	do
+	{
+		arrVec.push_back(std::vector<int>());
+
+		for (int i = 0; i < tempVector.size(); i++)
+		{
+			if (tempVector[i] == 1)
+			{
+				arrVec[index].push_back(v[i]);
+			}
+		}
+
+		++index;
+
+	} while (next_permutation(tempVector.begin(), tempVector.end()));
+
+	return arrVec;
+}

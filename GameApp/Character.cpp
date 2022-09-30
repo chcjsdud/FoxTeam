@@ -127,6 +127,23 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
 	}
+
+	std::vector<std::vector<int>> cases = 
+		GameEngineMath::Combination(inventory_.size(), 2);
+
+	for (size_t i = 0; i < cases.size(); i++)
+	{
+		int left  = cases[i][0];
+		int right = cases[i][1];
+
+		if (nullptr == inventory_[left] ||
+			nullptr == inventory_[right])
+		{
+			continue;
+		}
+
+		// 아이템 조합가능여부를 판별
+	}
 }
 
 void Character::checkCurrentNavFace()

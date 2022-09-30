@@ -12,6 +12,9 @@ public:
 
 	// 단위 벡터를 360도 각도로 변환, 단위 벡터만 가능
 	static const float UnitVectorToDegree(float x, float y);
+
+	// 서로 다른 n개중에 k개를 선택하는 경우의 수, 순서 상관없음
+	static std::vector<std::vector<int>> Combination(int n, int k);
 };
 
 class float4x4;
