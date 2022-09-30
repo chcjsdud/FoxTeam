@@ -84,28 +84,40 @@ EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name,
 
 void ItemBoxManager::CreateAllItemRecipes()
 {
-	/*itemRecipes_.insert(std::make_pair(CombineItem("재료1", "재료2"), "조합1"));
-	itemRecipes_.insert(std::make_pair(CombineItem("재료4", "재료3"), "조합2"));
-	itemRecipes_.insert(std::make_pair(CombineItem("재료5", "재료6"), "조합3"));
-
-	std::map<CombineItem, std::string>::iterator iter = itemRecipes_.end();
-
-	iter = itemRecipes_.find(CombineItem("재료2", "재료1"));
-
-	std::string getstr;
-
-	if (itemRecipes_.end() != iter)
-	{
-		getstr = (*iter).second;
-	}*/
-
+	// 현우 쿨감 스증 [공 - 숲 - 고 - 묘 - 학]
+	
 	// 플라즈마 톤파
 	CreateItemRecipe("Stone", "Chalk", "WhitePowder");
 	CreateItemRecipe("Branch", "Bamboo", "WoodenTonfa");
 	CreateItemRecipe("WhitePowder", "WoodenTonfa", "RyukyuTonfa");
 	CreateItemRecipe("RyukyuTonfa", "LaserPointer", "PlasmaTonfa");
+	
+	// 지휘관의 갑옷
+	CreateItemRecipe("FabricArmor", "Leather", "LeatherArmor");
+	CreateItemRecipe("LeatherArmor", "SteelChain", "ChainArmor");
+	CreateItemRecipe("ChainArmor", "Gold", "CommandersArmor");
 
-	int a = 0;
+	// 황실 부르고넷
+	CreateItemRecipe("Hat", "SteelChain", "ChainCoif");
+	CreateItemRecipe("Hairband", "Feather", "Mask");
+	CreateItemRecipe("ChainCoif", "Mask", "CloseHelm");
+	CreateItemRecipe("Pickaxe", "Gemstone", "Gold");
+	CreateItemRecipe("CloseHelm", "Gold", "ImperialBurgonet");
+	
+	// 틴달로스의 팔찌
+	CreateItemRecipe("Bracelet", "Gold", "GoldenBracelet");
+	CreateItemRecipe("Watch", "Glue", "BrokenWatch");
+	CreateItemRecipe("GoldenBracelet", "BrokenWatch", "TindalosBand");
+	
+	// 타키온 브레이스
+	CreateItemRecipe("Tights", "Glue", "KneePads");
+	CreateItemRecipe("Battery", "PianoWire", "ElectronicParts");
+	CreateItemRecipe("ElectronicParts", "ScrapMetal", "Motor");
+	CreateItemRecipe("KneePads", "Motor", "TachyonBrace");
+	
+	// 백우선
+	CreateItemRecipe("Fan", "Nail", "GildedQuillFan");
+	CreateItemRecipe("GildedQuillFan", "Feather", "WhiteCraneFan");
 }
 
 void ItemBoxManager::CreateMiscItemList()
