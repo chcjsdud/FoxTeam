@@ -30,6 +30,7 @@
     <ClInclude Include="DeferredCalLightEffect.h" />
     <ClInclude Include="DeferredMerge.h" />
     <ClInclude Include="EngineVertex.h" />
+    <ClInclude Include="FBXAnimation.h" />
     <ClInclude Include="GameEngineDebugRenderData.h">
       <SubType>
       </SubType>
@@ -290,6 +291,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="RenderSet.h" />
     <ClInclude Include="SKySphereActor.h">
       <SubType>
       </SubType>
@@ -308,6 +310,7 @@
     <ClCompile Include="DeferredCalLightEffect.cpp" />
     <ClCompile Include="DeferredMerge.cpp" />
     <ClCompile Include="EngineVertex.cpp" />
+    <ClCompile Include="FBXAnimation.cpp" />
     <ClCompile Include="GameEngineCore_Resources.cpp" />
     <ClCompile Include="GameEngineDebugRenderData.cpp">
       <SubType>

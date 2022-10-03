@@ -1,49 +1,8 @@
 #pragma once
-#include "GameEngineRendererBase.h"
-#include "GameEngineRenderingPipeLine.h"
-#include "GameEngineShaderResHelper.h"
 
-class RenderSet 
-{
-public:
-	GameEngineShaderResHelper* ShaderHelper;
-	GameEngineRenderingPipeLine* PipeLine_;
-	int Index;
-	std::vector<float4x4> BoneData;
+#include "RenderSet.h"
+#include "FBXAnimation.h"
 
-	float4 LocalPos;
-	float Radius;
-	bool isRender = true;
-};
-
-class FbxExAniData;
-class GameEngineFBXRenderer;
-class GameEngineFBXMesh;
-class GameEngineFBXAnimation;
-class FBXAnimation
-{
-public:
-	GameEngineFBXMesh* Mesh;
-	GameEngineFBXAnimation* Animation;
-	FbxExAniData* PixAniData;
-	GameEngineFBXRenderer* ParentRenderer;
-
-	std::string AnimationName_;
-
-	float CurFrameTime;
-	float FrameTime;
-	UINT CurFrame;
-	UINT End;
-	UINT Start;
-	bool isLoop_;
-	bool bEnd_;
-
-	void Init(int _Index, bool _isLoop = true, float _frameTime = 0.033f);
-	void Update(float _DeltaTime);
-	void ResetFrame();
-};
-
-// 설명 : 하나의 랜더 단위를 표현합니다.
 class CameraComponent;
 class GameEngineLevel;
 class GameEngineIndexBuffer;
@@ -116,19 +75,19 @@ public:
 
 	const std::string GetCurAnimationName()
 	{
-		return CurAnimation->AnimationName_;
+		return currentAnimation_->AnimationName_;
 	}
 	const int GetCurAnimationCurFrame()
 	{
-		return CurAnimation->CurFrame;
+		return currentAnimation_->CurFrame;
 	}
 	const float GetCurAnimationFrameTime()
 	{
-		return CurAnimation->CurFrameTime;
+		return currentAnimation_->CurFrameTime;
 	}
 	const float GetCurAnimationCurFrameTime()
 	{
-		return CurAnimation->FrameTime;
+		return currentAnimation_->FrameTime;
 	}
 
 protected:
@@ -150,13 +109,16 @@ private:
 public:
 	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex = 0, bool _isLoop = true, float _frameTime = 0.033f);
 	void ChangeFBXAnimation(const std::string& _AnimationName, bool _bForceChange = false);
+	void BlendFBXAnimation(const std::string& _AnimationName, bool _bForceChange = false);
 	
 	bool IsCurrentAnimationEnd();
+
 
 private:
 
 	std::map<std::string, FBXAnimation*> Animations;
-	FBXAnimation* CurAnimation;
+	FBXAnimation* currentAnimation_;
+	FBXAnimation* blendAnimation_;
 
 
 };

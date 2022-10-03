@@ -407,6 +407,12 @@
     <ClInclude Include="GameEngineProgressBarRenderer.h">
       <Filter>Object\Component\Render\Widget\00.PorgressBar</Filter>
     </ClInclude>
+    <ClInclude Include="RenderSet.h">
+      <Filter>Object\Component\Render\Sub</Filter>
+    </ClInclude>
+    <ClInclude Include="FBXAnimation.h">
+      <Filter>Object\Component\Render\Sub</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -669,6 +675,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineProgressBarRenderer.cpp">
       <Filter>Object\Component\Render\Widget\00.PorgressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="FBXAnimation.cpp">
+      <Filter>Object\Component\Render\Sub</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
