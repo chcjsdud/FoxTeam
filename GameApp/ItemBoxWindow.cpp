@@ -5,6 +5,8 @@
 #include "ItemBox.h"
 #include "UI_ItemBox.h"
 #include <GameEngine/GameEngineCore.h>
+#include "PlayerInfoManager.h"
+#include "Character.h"
 
 ItemBoxWindow::ItemBoxWindow()
 	: ItemBoxManager_(nullptr)
@@ -19,6 +21,36 @@ ItemBoxWindow::~ItemBoxWindow()
 
 void ItemBoxWindow::OnGUI()
 {
+
+	ImGui::Text("Inventory");
+
+	std::vector<const char*> invenListName;
+
+	std::vector<ItemBase*> vecInven = PlayerInfoManager::GetInstance()->GetMainCharacter()->GetInventory();
+
+	for (auto& item : vecInven)
+	{
+		if (nullptr == item)
+		{
+			continue;
+		}
+
+		invenListName.push_back(item->GetName().c_str());
+	}
+
+	if (invenListName.empty())
+	{
+		ImGui::Text("Inventory Empty");
+	}
+	else
+	{
+		int selectIndex = -1;
+		ImGui::PushItemWidth(200);
+		ImGui::ListBox("##invenlist", &selectIndex, &invenListName[0],
+			static_cast<ImGuiID>(invenListName.size()));
+	}
+
+
 	SelectBox_ = ItemBoxManager_->GetSelectBox();
 
 	if (nullptr != SelectBox_)

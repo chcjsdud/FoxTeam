@@ -9,19 +9,15 @@ struct CombineItem
 public:
 	CombineItem(const std::string& _left, const std::string& _right)
 	{
-		if (_left > _right)
-		{
-			left_ = _right;
-			right_ = _left;
-		}
-		else if(_left < _right)
+		if (_left <= _right)
 		{
 			left_ = _left;
 			right_ = _right;
 		}
 		else
 		{
-			GameEngineDebug::MsgBoxError("조합식이 잘못되었습니다.");
+			left_ = _right;
+			right_ = _left;
 		}
 	}
 
@@ -92,6 +88,11 @@ public:
 	std::map<CombineItem, std::string>& GetAllItemRecipes()
 	{
 		return itemRecipes_;
+	}
+
+	std::list<ItemBase*> GetAllItemList()
+	{
+		return allItemList_;
 	}
 
 	bool isOpen()

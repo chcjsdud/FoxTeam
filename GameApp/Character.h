@@ -44,6 +44,7 @@ public:
 	std::string GetCurAnimation() { return curAnimation_; }
 	NavFace* GetCurrentNavFace() { return currentNavFace_; }
 	int GetIndex() { return myIndex_; }
+	std::vector<ItemBase*> GetInventory() { return inventory_; }
 
 	void SetDirection(float4 _dir) { direction_ = _dir; }
 	void SetCurrentNavFace(NavFace* _Navi) { currentNavFace_ = _Navi; }

@@ -15,7 +15,6 @@
 #include "GameServer.h"
 #include "GameClient.h"
 
-
 Character::Character()
 	: collision_(nullptr)
 	, currentNavFace_(nullptr)
@@ -250,6 +249,9 @@ void Character::checkItemRecipes()
 	std::vector<std::vector<int>> cases =
 		GameEngineMath::Combination(inventory_.size(), 2);
 
+	std::map<CombineItem, std::string>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
+	std::list<ItemBase*> itemList = itemBoxmanager_->GetAllItemList();
+
 	for (size_t i = 0; i < cases.size(); i++)
 	{
 		int left = cases[i][0];
@@ -262,14 +264,50 @@ void Character::checkItemRecipes()
 		}
 
 		// 아이템 조합가능여부를 판별
-		std::map<CombineItem, std::string>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
 		std::map<CombineItem, std::string>::iterator iter = itemRecipes.end();
 
 		iter = itemRecipes.find(CombineItem(inventory_[left]->GetName(), inventory_[right]->GetName()));
 
-		if (itemRecipes.end() != iter)
+		if (itemRecipes.end() == iter)
 		{
-			int a = 0;
+			continue;
+		}
+
+		std::string resultItemName = iter->second;
+		bool isFind = false;
+
+		for (const auto& item : itemList)
+		{
+			if (item->GetName() != resultItemName)
+			{
+				continue;
+			}
+
+			isFind = true;
+
+			inventory_[left]->Release();
+			inventory_[right]->Release();
+				
+			inventory_[left] = nullptr;
+			inventory_[right] = nullptr;
+
+			for (auto& invenItem : inventory_)
+			{
+				if (nullptr != invenItem)
+				{
+					continue;
+				}
+
+				invenItem = item->Copy();
+				break;
+			}
+
+			break;
+		}
+
+		if (false == isFind)
+		{
+			GameEngineDebug::MsgBoxError("조합 실패, 아이템리스트에 존재하지 않음");
 		}
 	}
 }
