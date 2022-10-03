@@ -109,7 +109,7 @@ private:
 public:
 	void CreateFBXAnimation(const std::string& _AnimationName, const std::string& _AnimationFBXName, int _AnimationIndex = 0, bool _isLoop = true, float _frameTime = 0.033f);
 	void ChangeFBXAnimation(const std::string& _AnimationName, bool _bForceChange = false);
-	void BlendFBXAnimation(const std::string& _AnimationName, bool _bForceChange = false);
+	void OverrideFBXAnimation(const std::string& _animationName, const std::string& _boneNameToAffect, bool _bForceChange = false);
 	
 	bool IsCurrentAnimationEnd();
 
@@ -118,7 +118,7 @@ private:
 
 	std::map<std::string, FBXAnimation*> Animations;
 	FBXAnimation* currentAnimation_;
-	FBXAnimation* blendAnimation_;
+	FBXAnimation* overrideAnimation_;
 
 
 };

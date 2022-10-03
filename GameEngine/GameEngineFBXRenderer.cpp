@@ -20,6 +20,7 @@
 
 GameEngineFBXRenderer::GameEngineFBXRenderer()
 	: currentAnimation_(nullptr)
+	, overrideAnimation_(nullptr)
 	, FBXMesh(nullptr)
 {
 }
@@ -303,8 +304,14 @@ void GameEngineFBXRenderer::ChangeFBXAnimation(const std::string& _AnimationName
 	currentAnimation_->ResetFrame();
 }
 
-void GameEngineFBXRenderer::BlendFBXAnimation(const std::string& _AnimationName, bool _bForceChange)
+void GameEngineFBXRenderer::OverrideFBXAnimation(const std::string& _AnimationName, const std::string& _boneNameToAffect, bool _bForceChange)
 {
+	if (currentAnimation_ == nullptr)
+	{
+		GameEngineDebug::MsgBoxError("currentAnimation_ is nullptr");
+		return;
+	}
+
 	std::map<std::string, FBXAnimation*>::iterator FindIter = Animations.find(_AnimationName);
 
 	if (Animations.end() == FindIter)
@@ -313,13 +320,13 @@ void GameEngineFBXRenderer::BlendFBXAnimation(const std::string& _AnimationName,
 		return;
 	}
 
-	if (_bForceChange == false && currentAnimation_ == FindIter->second)
+	if (_bForceChange == false && overrideAnimation_ == FindIter->second)
 	{
 		return;
 	}
 
-	currentAnimation_ = FindIter->second;
-	currentAnimation_->ResetFrame();
+	overrideAnimation_ = FindIter->second;
+	overrideAnimation_->ResetFrame();
 }
 
 bool GameEngineFBXRenderer::IsCurrentAnimationEnd()
