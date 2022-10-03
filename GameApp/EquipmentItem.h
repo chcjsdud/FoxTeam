@@ -15,12 +15,12 @@ public:
 
 	void SetEquipType(EquipmentType _type)
 	{
-		type_ = _type;
+		equipType_ = _type;
 	}
 
 	EquipmentType GetEquipType()
 	{
-		return type_;
+		return equipType_;
 	}
 
 protected:
@@ -28,6 +28,6 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-	EquipmentType type_;
+	EquipmentType equipType_;
 };
 

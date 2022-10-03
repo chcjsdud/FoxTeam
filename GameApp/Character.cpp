@@ -125,6 +125,13 @@ void Character::Update(float _DeltaTime)
 	checkCurrentNavFace();
 	checkItemBox();
 
+	if (true == GameEngineInput::Down("Mixing"))
+	{
+		// 큐에 들어있는 조합을 실행
+		// Mixing State 따로 만들 예정
+		mixingItem();
+	}
+
 	attackCooldown_ += _DeltaTime;
 
 	mainState_.Update(_DeltaTime);
@@ -170,7 +177,8 @@ void Character::getItem(int _index)
 
 	if (nullptr == Item)
 	{
-		GameEngineDebug::MsgBoxError("아이템을 찾지 못했습니다.");
+		GameEngineDebug::MsgBox("아이템을 찾지 못했습니다.");
+		return;
 	}
 
 	for (auto& invenItem : inventory_)
@@ -250,7 +258,6 @@ void Character::checkItemRecipes()
 		GameEngineMath::Combination(inventory_.size(), 2);
 
 	std::map<CombineItem, std::string>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
-	std::list<ItemBase*> itemList = itemBoxmanager_->GetAllItemList();
 
 	for (size_t i = 0; i < cases.size(); i++)
 	{
@@ -259,6 +266,22 @@ void Character::checkItemRecipes()
 
 		if (nullptr == inventory_[left] ||
 			nullptr == inventory_[right])
+		{
+			continue;
+		}
+
+		bool isOverlap = false;
+		for (const auto& queueItem : queueItemMixing_)
+		{
+			if (queueItem.first == inventory_[left]->GetName() &&
+				queueItem.second == inventory_[right]->GetName())
+			{
+				isOverlap = true;
+				break;
+			}
+		}
+
+		if (true == isOverlap)
 		{
 			continue;
 		}
@@ -273,42 +296,95 @@ void Character::checkItemRecipes()
 			continue;
 		}
 
-		std::string resultItemName = iter->second;
-		bool isFind = false;
+		// 조합 대기열에 등록
+		queueItemMixing_.push_back(std::make_pair(
+			inventory_[left]->GetName(), 
+			inventory_[right]->GetName()
+		));
+	}
+}
 
-		for (const auto& item : itemList)
+void Character::mixingItem()
+{
+	if (queueItemMixing_.empty())
+	{
+		return;
+	}
+
+	std::pair<std::string, std::string> itemNames = queueItemMixing_.front();
+	queueItemMixing_.pop_front();
+
+	std::map<CombineItem, std::string>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
+
+	std::map<CombineItem, std::string>::iterator iter = itemRecipes.end();
+	iter = itemRecipes.find(CombineItem(itemNames.first, itemNames.second));
+
+	if (itemRecipes.end() == iter)
+	{
+		GameEngineDebug::MsgBoxError("없는 아이템 조합식입니다.");
+		return;
+	}
+
+	std::string resultItemName = iter->second;
+
+	std::list<ItemBase*> itemList = itemBoxmanager_->GetAllItemList();
+	bool isFind = false;
+
+	for (const auto& item : itemList)
+	{
+		if (item->GetName() != resultItemName)
 		{
-			if (item->GetName() != resultItemName)
+			continue;
+		}
+
+		isFind = true;
+
+		for (auto& invenItem : inventory_)
+		{
+			if (nullptr == invenItem)
 			{
 				continue;
 			}
 
-			isFind = true;
-
-			inventory_[left]->Release();
-			inventory_[right]->Release();
-				
-			inventory_[left] = nullptr;
-			inventory_[right] = nullptr;
-
-			for (auto& invenItem : inventory_)
+			if (invenItem->GetName() == itemNames.first)
 			{
-				if (nullptr != invenItem)
-				{
-					continue;
-				}
-
-				invenItem = item->Copy();
+				invenItem->Release();
+				invenItem = nullptr;
 				break;
 			}
+		}
+		for (auto& invenItem : inventory_)
+		{
+			if (nullptr == invenItem)
+			{
+				continue;
+			}
 
+			if (invenItem->GetName() == itemNames.second)
+			{
+				invenItem->Release();
+				invenItem = nullptr;
+				break;
+			}
+		}
+
+		for (auto& invenItem : inventory_)
+		{
+			if (nullptr != invenItem)
+			{
+				continue;
+			}
+
+			invenItem = item->Copy();
 			break;
 		}
 
-		if (false == isFind)
-		{
-			GameEngineDebug::MsgBoxError("조합 실패, 아이템리스트에 존재하지 않음");
-		}
+		break;
+	}
+
+	if (false == isFind)
+	{
+		GameEngineDebug::MsgBoxError("조합 실패, 아이템리스트에 존재하지 않음");
 	}
 }
 
@@ -409,6 +485,7 @@ void Character::initInput()
 	GameEngineInput::GetInst().CreateKey("S", 'S');
 	GameEngineInput::GetInst().CreateKey("M", 'M');
 	GameEngineInput::GetInst().CreateKey("Tab", VK_TAB);
+	GameEngineInput::GetInst().CreateKey("Mixing", VK_OEM_3);	// ~ Key
 }
 
 void Character::initState()

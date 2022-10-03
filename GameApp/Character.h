@@ -101,6 +101,7 @@ private:
 	void getItem(int _index);
 	void checkItemBox();
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
+	void mixingItem();
 
 	Character* getMousePickedCharacter();
 
@@ -206,6 +207,7 @@ protected:
 	// 아이템
 	ItemBoxManager* itemBoxmanager_;
 	std::vector<ItemBase*> inventory_;	// 10칸
+	std::list<std::pair<std::string, std::string>> queueItemMixing_;
 
 	// 캐릭터 상태, 능력치
 	CharacterStat actorStat_;
