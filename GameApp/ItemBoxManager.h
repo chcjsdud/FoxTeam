@@ -7,6 +7,9 @@
 struct CombineItem
 {
 public:
+	std::string left_;
+	std::string right_;
+
 	CombineItem(const std::string& _left, const std::string& _right)
 	{
 		if (_left <= _right)
@@ -42,9 +45,6 @@ public:
 	}
 
 private:
-	std::string left_;
-	std::string right_;
-
 	// 정렬을 위해서 막음
 	CombineItem() {}
 };
