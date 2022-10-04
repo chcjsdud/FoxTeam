@@ -525,13 +525,15 @@ void LumiaLevel::DebugWindowUpdate()
 {
 	if (nullptr != DebugAndControlWindow_ && nullptr != MousePointer::InGameMouse)
 	{
+
+		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 		// InGameMouse Debug Value
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
 		DebugAndControlWindow_->AddText("X : " + std::to_string(position.x));
 		DebugAndControlWindow_->AddText("Z : " + std::to_string(position.z));
 
 		// Player Debug Value
-		float4 playerPosition = CharacterActorList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetTransform()->GetWorldPosition();
+		float4 playerPosition = CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetWorldPosition();
 		float4 camPos = GetMainCameraActor()->GetTransform()->GetWorldPosition();
 		float4 playerToCamera = camPos - playerPosition;
 		float4 cameraRotation = GetMainCameraActor()->GetTransform()->GetLocalRotation();
@@ -541,6 +543,7 @@ void LumiaLevel::DebugWindowUpdate()
 		for (int i = 0; i < CharacterActorList_.size(); i++)
 		{
 			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->HP));
+			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
 		}
 
 		// Monster Debug Value

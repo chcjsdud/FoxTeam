@@ -75,7 +75,7 @@ protected:
 	virtual void onUpdateESkill(float _deltaTime) = 0;
 
 	virtual void onStartRSkill() = 0;
-	virtual void onUpdateRSkill(float _deltaTime) = 0;
+	virtual void onUpdateRSkill(float _d1eltaTime) = 0;
 
 	virtual void onStartDSkill() = 0;
 	virtual void onUpdateDSkill(float _deltaTime) = 0;

@@ -58,4 +58,7 @@ private:
 	float timer_end_Q;
 	bool b_Qhit_;
 	GameEngineCollision* collision_Q;
+
+
+	float timer_Dash_E;		// 대쉬 지속시간
 };

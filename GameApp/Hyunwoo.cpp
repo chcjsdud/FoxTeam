@@ -8,6 +8,7 @@
 #include "GameClient.h"
 #include <GameEngine/GameEngineLevelControlWindow.h>
 #include "MousePointer.h"
+#include "LumiaMap.h"
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false)
 {
@@ -102,9 +103,9 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("Atk0", "hyunwoo_atk0.fbx", 0, false);
 	//renderer_->CreateFBXAnimation("Atk1", "hyunwoo_atk1.fbx", 0, false);
 	renderer_->CreateFBXAnimation("SkillQ", "hyunwoo_skillQ.fbx", 0, false);
-	//renderer_->CreateFBXAnimation("SkillE_start", "hyunwoo_skillE_start.fbx", 0, false);
-	//renderer_->CreateFBXAnimation("SkillE_loop", "hyunwoo_skillE_loop.fbx", 0);
-	//renderer_->CreateFBXAnimation("SkillE_end", "hyunwoo_skillE_end.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillE_start", "hyunwoo_skillE_start.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillE_loop", "hyunwoo_skillE_loop.fbx", 0);
+	renderer_->CreateFBXAnimation("SkillE_end", "hyunwoo_skillE_end.fbx", 0, false);
 	//renderer_->CreateFBXAnimation("SkillR_start", "hyunwoo_skillR_start.fbx", 0, false);
 	//renderer_->CreateFBXAnimation("SkillR_loop", "hyunwoo_skillR_loop.fbx", 0);
 	//renderer_->CreateFBXAnimation("SkillR_end", "hyunwoo_skillR_end.fbx", 0, false);
@@ -128,13 +129,7 @@ void Hyunwoo::initHyunwooCollision()
 	collision_Q->GetTransform()->SetLocalScaling({10.0f, 10.0f, 10.0f});
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_Q->SetCollisionType(CollisionType::OBBBox3D);
-
-	//tempCollision_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	//tempCollision_->GetTransform()->SetLocalPosition({0.f,0.f,300.f});
-	//tempCollision_->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
-	//tempCollision_->SetCollisionGroup(eCollisionGroup::PlayerAttack);
-	//tempCollision_->SetCollisionType(CollisionType::OBBBox3D);
-//	collision_Q->Off();
+	collision_Q->Off();
 }
 
 void Hyunwoo::changeAnimationRun()
@@ -215,8 +210,9 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 					// 충돌체에 감지된 대상에게 실제 대미지를 가하는 코드입니다.
 					character->Damage(300.0f);
+					//pm->GetPlayerList()[character->GetIndex()].stat_->HP -= 300.0f;
+					
 
-					pm->GetPlayerList()[character->GetIndex()].stat_->HP -= 300.0f;
 
 					// 대미지가 차감된 Status 를 패킷으로 넘겨줍니다.
 					CharStatPacket packet;
@@ -265,10 +261,62 @@ void Hyunwoo::onUpdateWSkill(float _deltaTime)
 
 void Hyunwoo::onStartESkill()
 {
+	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.0f);
+	direction_ = mousePosition - GetTransform()->GetWorldPosition(); // 커서 위치가 돌진 방향이 된다.
+	direction_.Normalize3D();
+
+	curAnimation_ = "SkillE_start";
+	renderer_->ChangeFBXAnimation("SkillE_start", true);
+
 }
 
 void Hyunwoo::onUpdateESkill(float _deltaTime)
 {
+	if (true == renderer_->IsCurrentAnimationEnd())
+	{
+		curAnimation_ = "SkillE_loop";
+		renderer_->ChangeFBXAnimation("SkillE_loop", true);
+	}
+
+
+	float4 dashSpeed = direction_ * 1000.f * _deltaTime;
+	float4 nextMovePosition = GetTransform()->GetWorldPosition() + dashSpeed;
+	timer_Dash_E += _deltaTime;
+
+
+	float temp;
+	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+	{
+		if (0.5f <= timer_Dash_E)
+		{
+			timer_Dash_E = 0.0f;
+			changeAnimationWait();
+			mainState_.ChangeState("NormalState", true);
+			normalState_.ChangeState("Watch", true);
+			return;
+		}
+
+		GetTransform()->SetWorldPosition(nextMovePosition);
+	}
+	else
+	{
+		timer_Dash_E = 0.0f;
+		changeAnimationWait();
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Watch", true);
+	}
+
+	/*  처음 적과 부딪힐 때 피해: (+공격력의 70%)(+스킬 증폭의 30%)(+적 현재 체력의 5/8/11/14/17%)
+		벽에 부딪힐 시 추가 피해:60/95/130/165/200(+공격력의 55%)(+스킬 증폭의 60%)
+		방어력 감소: 4/6/8/10/12%
+		사정거리: 5m
+		스테미너 소모: 70/75/80/85/90
+		기절 지속 시간: 1.5초
+		쿨다운: 18/17/16/15/14초  */
+
+
+
+
 }
 
 void Hyunwoo::onStartRSkill()

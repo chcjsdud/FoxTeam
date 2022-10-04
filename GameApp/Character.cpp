@@ -517,6 +517,7 @@ void Character::initState()
 	attackState_.CreateState(MakeState(Character, BasicAttack));
 	attackState_.CreateState(MakeState(Character, BasicAttackDone));
 	attackState_.CreateState(MakeState(Character, QSkill));
+	attackState_.CreateState(MakeState(Character, ESkill));
 
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
 
@@ -663,6 +664,12 @@ void Character::updateNormalState(float _deltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::GetInst().Down("E"))
+	{
+		mainState_.ChangeState("AttackState", true);
+		attackState_.ChangeState("ESkill", true);
+		return;
+	}
 
 	// Normal State 업데이트
 	normalState_.Update(_deltaTime);
