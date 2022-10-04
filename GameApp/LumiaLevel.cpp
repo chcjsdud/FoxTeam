@@ -41,6 +41,9 @@
 
 void LumiaLevel::HostCreateCommand()
 {
+	// 서버(호스트) 생성 명령전 생성하려는 몬스터 정보 생성
+	CreateMonsterInfo();
+
 	// 서버(호스트)의 리소스 로딩 및 액터생성 시작
 	//GameEngineCore::ThreadQueue.JobPost([&]
 	//	{
@@ -72,10 +75,20 @@ void LumiaLevel::CreateMonsterInfo()
 	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
 	// 몬스터 생성정보 작성 시작
-	// -> 몬스터별 스폰가능지역과 지역당 생성되는 몬스터수, 각 몬스터의 스폰위치(둥지위치)는 여기서 결정
+	//int Index_;									// 몬스터 생성 인덱스(탐색용)
+	//Location AreaType_;							// 몬스터 스폰 지역 타입(탐색용)
+	//MonsterType MonsterType_;						// 몬스터 타입
+	//float4 SpawnPosition_;						// 스폰 위치
+	// -> 위의 정보 모두 해당 함수에서 결정
+
+	// 현재맵의 몬스터타입-출현지역-갯수 기준으로 몬스터 생성
+	//int LocationCnt = static_cast<int>(Location::MAX);
+	//for (int LocationNum = 0; LocationNum < LocationCnt; ++LocationNum)
+	//{
 
 
 
+	//}
 
 	// 생성 패킷 전송
 	CreationCommandPacket CommandPacket;
@@ -85,6 +98,7 @@ void LumiaLevel::CreateMonsterInfo()
 
 void LumiaLevel::HostAllCreationCommand()
 {
+	// Host(서버) 생성관련 명령
 	MapCreationCommand();
 	MonsterCreationCommand();
 	CharacterCreationCommand();
@@ -92,6 +106,7 @@ void LumiaLevel::HostAllCreationCommand()
 
 void LumiaLevel::GuestAllCreationCommand()
 {
+	// Guest(클라이언트) 생성관련 명령
 	MapCreationCommand();
 	MonsterCreationCommand();
 	CharacterCreationCommand();
@@ -109,7 +124,6 @@ void LumiaLevel::MapCreationCommand()
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 맵생성을 완료했습니다\n");
 #endif // _DEBUG
-
 }
 
 void LumiaLevel::MonsterCreationCommand()

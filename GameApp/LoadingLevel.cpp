@@ -48,9 +48,6 @@ void LoadingLevel::CreationCommand()
 {
 	LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
 
-	// 클라이언트에게 강제생성커맨드 패킷 전송 후
-	PlayerLevel->CreateMonsterInfo();
-
 	// 루미아레벨에 강제생성 시작
 	PlayerLevel->HostCreateCommand();
 
