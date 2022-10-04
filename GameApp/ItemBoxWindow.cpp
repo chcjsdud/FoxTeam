@@ -26,7 +26,13 @@ void ItemBoxWindow::OnGUI()
 
 	std::vector<const char*> invenListName;
 
-	std::vector<ItemBase*> vecInven = PlayerInfoManager::GetInstance()->GetMainCharacter()->GetInventory();
+	Character* CurMainPlayer =  PlayerInfoManager::GetInstance()->GetMainCharacter();
+	if (nullptr == CurMainPlayer)
+	{
+		return;
+	}
+
+	std::vector<ItemBase*> vecInven = CurMainPlayer->GetInventory();
 
 	for (auto& item : vecInven)
 	{

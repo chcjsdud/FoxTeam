@@ -42,9 +42,13 @@ public: // Public Function
 	void HostCreateCommand();												// Host 전용
 	void GuestCreateCommand();												// Guest 전용
 
-private: // Create MonsterInfo
+public: // Create MonsterInfo
 	void CreateMonsterInfo();												// Host 전용(현재 맵에 배치하려는 몬스터들을 미리 셋팅)
-																			// 몬스터가 스폰되는 지역과 위치가 해당 함수에서 모두 결정난다.
+	// 몬스터가 스폰되는 지역과 위치가 해당 함수에서 모두 결정난다.
+
+private: // Command
+	void HostAllCreationCommand();											// Host 전용
+	void GuestAllCreationCommand();											// Guest 전용
 
 private: // Command
 	void MapCreationCommand();												// Host & Guest 공통

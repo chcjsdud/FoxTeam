@@ -6,6 +6,7 @@
 #include "PlayerInfoManager.h"
 #include "MonsterInfoManager.h"
 #include "UserGame.h"
+#include "LoadingLevel.h"
 #include "LumiaLevel.h"
 
 #include "LoadingEndPacket.h"
@@ -14,12 +15,12 @@
 
 void CreationCommandPacket::SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos)
 {
-	MonsterInfos_ = _MonsterInfos;
+    MonsterInfos_ = _MonsterInfos;
 }
 
 void CreationCommandPacket::SetMonsterInfo(MonsterInfo _MonsterInfo)
 {
-	MonsterInfos_.push_back(_MonsterInfo);
+    MonsterInfos_.push_back(_MonsterInfo);
 }
 
 void CreationCommandPacket::userSerialize()
@@ -68,7 +69,7 @@ void CreationCommandPacket::initPacketID()
 
 GameEnginePacketBase* CreationCommandPacket::getUserObject()
 {
-	return new CreationCommandPacket;
+    return new CreationCommandPacket;
 }
 
 void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
@@ -81,20 +82,9 @@ void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _
         // 수신받은 몬스터 정보 셋팅 후
         InfoManager->SetMonsterInfos(MonsterInfos_);
 
-        // 강제 생성 함수 호출(클라이언트 전용 함수)
+        // 강제 생성 함수 호출(클라이언트 전용 함수) - 스레드
         LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
         PlayerLevel->GuestCreateCommand();
-
-        // 클라이언트(게스트)로딩상태 갱신
-        PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-        pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_ = 1;
-        LoadingLevel_LoadPercent::Percent->CheckLoadingPercent();
-
-        // Client LoadingEnd Packet Send
-        LoadingEndPacket EndPacket;
-        EndPacket.SetUniqueID(pm->GetMyNumber());
-        EndPacket.SetLoadingFlag(pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_);
-        _network->Send(&EndPacket);
     }
 }
 

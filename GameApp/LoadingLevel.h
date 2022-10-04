@@ -6,16 +6,16 @@
 // 분류 : 레벨(씬)
 // 용도 : 
 // 설명 : 플레이하려는 게임의 모든 맵, 오브젝트, 몬스터, 플레이어 액터 생성명령기능 제공
+class GameEngineThreadQueue;
 class SynchronizationInfoManager;
 class LoadingLevel_BackDrop;
 class LoadingLevel_LoadPercent;
 class LoadingLevel : public GameEngineLevel
 {
-public:
+public: // Static Value & Function
 	static bool ResourceLoadEndCheck;
-
-public:
 	static bool ReadyCreationCommand;
+	static bool ThreadLoadingEnd;
 
 public:
 protected:
@@ -24,6 +24,9 @@ private:
 
 private:
 	void CreationCommand();
+
+private:
+	void CheckThreadLoadingEnd();
 
 private:
 	virtual void LevelStart() override;

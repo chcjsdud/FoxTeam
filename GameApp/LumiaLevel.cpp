@@ -23,8 +23,11 @@
 #include "CreationCommandPacket.h"
 #include "LoadingEndPacket.h"
 
+#include "LoadingLevel.h"
+
 //======================== Map
 #include "LumiaMap.h"
+#include "ItemBoxManager.h"
 
 //======================== Characters
 #include "Character.h"
@@ -38,28 +41,23 @@
 
 void LumiaLevel::HostCreateCommand()
 {
-	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
-
-	// 생성명령패킷 전송전 몬스터 목록 작성
-	CreateMonsterInfo();
-
-	// 생성 패킷 전송 후
-	CreationCommandPacket CommandPacket;
-	CommandPacket.SetMonsterInfos(mm->GetAllMonsterListValue());
-	GameServer::GetInstance()->Send(&CommandPacket);
-
-	// 서버(호스트)의 리소스 로딩 및 액터 생성 시작
-	MapCreationCommand();
-	MonsterCreationCommand();
-	CharacterCreationCommand();
+	// 서버(호스트)의 리소스 로딩 및 액터생성 시작
+	HostAllCreationCommand();
 }
 
 void LumiaLevel::GuestCreateCommand()
 {
-	// 생성시작
-	MapCreationCommand();
-	MonsterCreationCommand();
-	CharacterCreationCommand();
+	int Count = GameEngineCore::ThreadQueue.GetWorkingCount();
+
+	// 클라이언트(게스트)의 리소스 로딩 및 액터생성 시작
+	//GameEngineCore::ThreadQueue.JobPost([&]
+	//	{
+			GuestAllCreationCommand();
+
+			// Loading Thread End Flag On
+			LoadingLevel::ThreadLoadingEnd = true;
+	//	}
+	//);
 }
 
 void LumiaLevel::CreateMonsterInfo()
@@ -72,7 +70,24 @@ void LumiaLevel::CreateMonsterInfo()
 
 
 
+	// 생성 패킷 전송
+	CreationCommandPacket CommandPacket;
+	CommandPacket.SetMonsterInfos(mm->GetAllMonsterListValue());
+	GameServer::GetInstance()->Send(&CommandPacket);
+}
 
+void LumiaLevel::HostAllCreationCommand()
+{
+	MapCreationCommand();
+	MonsterCreationCommand();
+	CharacterCreationCommand();
+}
+
+void LumiaLevel::GuestAllCreationCommand()
+{
+	MapCreationCommand();
+	MonsterCreationCommand();
+	CharacterCreationCommand();
 }
 
 void LumiaLevel::MapCreationCommand()
@@ -82,6 +97,12 @@ void LumiaLevel::MapCreationCommand()
 
 	// 맵 생성
 	CurMap_ = CreateActor<LumiaMap>();
+
+#ifdef _DEBUG
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 맵생성을 완료했습니다\n");
+#endif // _DEBUG
+
 }
 
 void LumiaLevel::MonsterCreationCommand()
@@ -101,6 +122,11 @@ void LumiaLevel::MonsterCreationCommand()
 
 
 	}
+
+#ifdef _DEBUG
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 몬스터생성을 완료했습니다\n");
+#endif // _DEBUG
 }
 
 void LumiaLevel::CharacterCreationCommand()
@@ -121,41 +147,41 @@ void LumiaLevel::CharacterCreationCommand()
 		Character* NewCharacter = nullptr;
 		switch (CurCharacterType)
 		{
-			case JobType::YUKI:
-			{
-				//NewCharacter = CreateActor<Yuki>();
-				break;
-			}
-			case JobType::FIORA:
-			{
-				//NewCharacter = CreateActor<Fiora>();
-				break;
-			}
-			case JobType::HYUNWOO:
-			{
-				NewCharacter = CreateActor<Hyunwoo>();
-				break;
-			}
-			case JobType::AYA:
-			{
-				//NewCharacter = CreateActor<Aya>();
-				break;
-			}
-			case JobType::RIO:
-			{
-				NewCharacter = CreateActor<Rio>();
-				break;
-			}
-			case JobType::JACKIE:
-			{
-				//NewCharacter = CreateActor<Jackie>();
-				break;
-			}
-			case JobType::DUMMY:
-			{
-				NewCharacter = CreateActor<Rio>();
-				break;
-			}
+		case JobType::YUKI:
+		{
+			//NewCharacter = CreateActor<Yuki>();
+			break;
+		}
+		case JobType::FIORA:
+		{
+			//NewCharacter = CreateActor<Fiora>();
+			break;
+		}
+		case JobType::HYUNWOO:
+		{
+			NewCharacter = CreateActor<Hyunwoo>();
+			break;
+		}
+		case JobType::AYA:
+		{
+			//NewCharacter = CreateActor<Aya>();
+			break;
+		}
+		case JobType::RIO:
+		{
+			NewCharacter = CreateActor<Rio>();
+			break;
+		}
+		case JobType::JACKIE:
+		{
+			//NewCharacter = CreateActor<Jackie>();
+			break;
+		}
+		case JobType::DUMMY:
+		{
+			NewCharacter = CreateActor<Rio>();
+			break;
+		}
 		}
 
 		// 예외처리
@@ -170,7 +196,6 @@ void LumiaLevel::CharacterCreationCommand()
 		PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = float4(-2500.f, 0.0f, 10000.f);
 		NewCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		NewCharacter->SetIndex(PlayerNum);
-		PlayerInfoManager::GetInstance()->SetMainCharacter(NewCharacter);
 
 		// 관리목록에 추가
 		CharacterActorList_.emplace_back(NewCharacter);
@@ -181,6 +206,10 @@ void LumiaLevel::CharacterCreationCommand()
 			CharacterActorList_[PlayerNum]->Focus();
 		}
 	}
+
+#ifdef _DEBUG
+	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 캐릭터생성을 완료했습니다\n");
+#endif // _DEBUG
 }
 
 void LumiaLevel::MapResourceLoad()
@@ -385,7 +414,7 @@ void LumiaLevel::CharacterStateUpdatePacketSend()
 	GameClient* ClientSocket = GameClient::GetInstance();
 
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-	if (-1 != pm->GetMyNumber())
+	if (-1 != pm->GetMyNumber() && 0 <= static_cast<int>(CharacterActorList_.size()))
 	{
 		// 캐릭터 이동갱신 패킷
 		CharMovementPacket MovePacket;
@@ -444,17 +473,12 @@ void LumiaLevel::CharactersTransformUpdate()
 		// 레벨의 캐릭터 액터들의 위치 회전 애니메이션 등을 변경해주는 코드블록입니다.
 		if (i == pm->GetMyNumber())
 		{
-			pm->GetMyPlayer().curPos_ = CharacterActorList_[i]->GetTransform()->GetLocalPosition();
-			pm->GetMyPlayer().curDir_ = CharacterActorList_[i]->GetDirection();
-			pm->GetMyPlayer().curAnimation_ = CharacterActorList_[i]->GetCurAnimation();
-
 			continue;
 		}
 
 		CharacterActorList_[i]->GetTransform()->SetLocalPosition(pm->GetPlayerList()[i].curPos_);
 		CharacterActorList_[i]->ChangeAnimation(pm->GetPlayerList()[i].curAnimation_);
-		CharacterActorList_[i]->GetTransform()->SetLocalRotationDegree(pm->GetPlayerList()[i].curDir_);
-
+		CharacterActorList_[i]->GetTransform()->SetWorldRotationDegree(pm->GetPlayerList()[i].curDir_);
 	}
 }
 
@@ -480,7 +504,6 @@ void LumiaLevel::DebugWindowUpdate()
 {
 	if (nullptr != DebugAndControlWindow_ && nullptr != MousePointer::InGameMouse)
 	{
-		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 		// InGameMouse Debug Value
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
 		DebugAndControlWindow_->AddText("X : " + std::to_string(position.x));
@@ -496,14 +519,13 @@ void LumiaLevel::DebugWindowUpdate()
 
 		for (int i = 0; i < CharacterActorList_.size(); i++)
 		{
-			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "HP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->HP));
-			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "HP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
-			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "Pos(Local) : " + std::to_string(CharacterActorList_[i]->GetTransform()->GetLocalPosition().x) + " ," + std::to_string(CharacterActorList_[i]->GetTransform()->GetLocalPosition().z));
-			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "Pos(Server) : " + std::to_string(pm->GetPlayerList()[i].curPos_.x) + " ," + std::to_string(pm->GetPlayerList()[i].curPos_.z));
-			
-			//DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "Dir(Local) : " + std::to_string(CharacterActorList_[i]->GetDirection().x) + " ," + std::to_string(CharacterActorList_[i]->GetDirection().z));
-			//DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "Dir(Server) : " + std::to_string(pm->GetPlayerList()[i].curDir_.x) + " ," + std::to_string(pm->GetPlayerList()[i].curDir_.z));
+			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->HP));
 		}
+
+		// Monster Debug Value
+
+
+
 	}
 }
 
@@ -826,7 +848,7 @@ void LumiaLevel::Test_GenerateCharactor()
 		newPlayer.curPos_ = { -2500.f, 0.0f, 10000.f };
 
 		pm->AddNewPlayer(newPlayer);
-		
+
 		Character* newCharacter = CreateActor<Rio>();
 		PlayerInfoManager::GetInstance()->GetPlayerList()[i].stat_ = newCharacter->GetStat();
 		newCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
