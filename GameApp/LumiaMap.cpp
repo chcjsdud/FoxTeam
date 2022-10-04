@@ -475,6 +475,7 @@ void LumiaMap::checkASterNodeObstacle()
 			i++;
 		}
 	}
+	threads.clear();
 
 	timer.TimeCheck();
 	float elapsedTime = timer.GetDeltaTime();
