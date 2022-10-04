@@ -32,9 +32,10 @@ public:
 private:
 	void makeAStarNode(float _intervalX, float _intervalZ);
 	void checkASterNodeObstacle();
-	void updateAStarNodeVertexInfo();
-
 	void setAllItem();
+
+public:
+	void updateAStarNodeVertexInfo();
 
 public:
 	// 플레이어 거리 기준

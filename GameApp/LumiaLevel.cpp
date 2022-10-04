@@ -45,14 +45,14 @@ void LumiaLevel::HostCreateCommand()
 	CreateMonsterInfo();
 
 	// 서버(호스트)의 리소스 로딩 및 액터생성 시작
-	//GameEngineCore::ThreadQueue.JobPost([&]
-	//	{
+	GameEngineCore::ThreadQueue.JobPost([&]
+		{
 			HostAllCreationCommand();
 
 			// Loading Thread End Flag On
 			LoadingLevel::ThreadLoadingEnd = true;
-	//	}
-	//);
+		}
+	);
 }
 
 void LumiaLevel::GuestCreateCommand()
@@ -60,14 +60,14 @@ void LumiaLevel::GuestCreateCommand()
 	int Count = GameEngineCore::ThreadQueue.GetWorkingCount();
 
 	// 클라이언트(게스트)의 리소스 로딩 및 액터생성 시작
-	//GameEngineCore::ThreadQueue.JobPost([&]
-	//	{
+	GameEngineCore::ThreadQueue.JobPost([&]
+		{
 			GuestAllCreationCommand();
 
 			// Loading Thread End Flag On
 			LoadingLevel::ThreadLoadingEnd = true;
-	//	}
-	//);
+		}
+	);
 }
 
 void LumiaLevel::CreateMonsterInfo()
@@ -273,7 +273,6 @@ void LumiaLevel::MapResourceLoad()
 	GameEngineDirectory ItemBoxInfoDir;
 	ItemBoxInfoDir.MoveParent("FoxTeam");
 	ItemBoxInfoDir / "Resources" / "FBX" / "UserMesh" / "ItemBox" / "ItemBoxInfo";
-
 	ItemBoxManager_ = CreateActor<ItemBoxManager>();
 	ItemBoxManager_->UserAllLoad(ItemBoxInfoDir);
 	ItemBoxManager_->GetTransform()->SetLocalScaling(100.0f);
@@ -435,7 +434,7 @@ void LumiaLevel::CharacterStateUpdatePacketSend()
 	GameClient* ClientSocket = GameClient::GetInstance();
 
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-	if (-1 != pm->GetMyNumber() && 0 <= static_cast<int>(CharacterActorList_.size()))
+	if (-1 != pm->GetMyNumber() && 0 < static_cast<int>(CharacterActorList_.size()))
 	{
 		// 캐릭터 이동갱신 패킷
 		CharMovementPacket MovePacket;
@@ -488,18 +487,21 @@ void LumiaLevel::CharactersTransformUpdate()
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-	for (int i = 0; i < pm->GetPlayerList().size(); i++)
+	if (0 < static_cast<int>(CharacterActorList_.size()))
 	{
-		// 받은 패킷의 정보로 갱신된 playerinfo 값에 따라
-		// 레벨의 캐릭터 액터들의 위치 회전 애니메이션 등을 변경해주는 코드블록입니다.
-		if (i == pm->GetMyNumber())
+		for (int i = 0; i < pm->GetPlayerList().size(); i++)
 		{
-			continue;
-		}
+			// 받은 패킷의 정보로 갱신된 playerinfo 값에 따라
+			// 레벨의 캐릭터 액터들의 위치 회전 애니메이션 등을 변경해주는 코드블록입니다.
+			if (i == pm->GetMyNumber())
+			{
+				continue;
+			}
 
-		CharacterActorList_[i]->GetTransform()->SetLocalPosition(pm->GetPlayerList()[i].curPos_);
-		CharacterActorList_[i]->ChangeAnimation(pm->GetPlayerList()[i].curAnimation_);
-		CharacterActorList_[i]->GetTransform()->SetWorldRotationDegree(pm->GetPlayerList()[i].curDir_);
+			CharacterActorList_[i]->GetTransform()->SetLocalPosition(pm->GetPlayerList()[i].curPos_);
+			CharacterActorList_[i]->ChangeAnimation(pm->GetPlayerList()[i].curAnimation_);
+			CharacterActorList_[i]->GetTransform()->SetWorldRotationDegree(pm->GetPlayerList()[i].curDir_);
+		}
 	}
 }
 
@@ -523,7 +525,7 @@ void LumiaLevel::MonstersTransformUpdate()
 
 void LumiaLevel::DebugWindowUpdate()
 {
-	if (nullptr != DebugAndControlWindow_ && nullptr != MousePointer::InGameMouse)
+	if (nullptr != DebugAndControlWindow_ && nullptr != MousePointer::InGameMouse && 0 < static_cast<int>(CharacterActorList_.size()))
 	{
 
 		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();

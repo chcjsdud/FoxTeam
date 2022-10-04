@@ -16,6 +16,8 @@
 #include "LoadingLevel_BackDrop.h"
 #include "LoadingLevel_LoadPercent.h"
 
+#include "LumiaMap.h"
+
 bool LoadingLevel::ResourceLoadEndCheck = false;
 bool LoadingLevel::ReadyCreationCommand = false;
 bool LoadingLevel::ThreadLoadingEnd = false;
@@ -63,6 +65,12 @@ void LoadingLevel::CheckThreadLoadingEnd()
 		// 클라이언트라면
 		if (true == GameClient::GetInstance()->IsConnected())
 		{
+			LumiaLevel* LumiaLv = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+
+			// A* 노드(타일)정보 갱신
+			// -> 주스레드와 로딩스레드가 Context에 동시접근을 막기위해 Public으로 변경하여 외부에서 호출
+			LumiaLv->GetMap()->updateAStarNodeVertexInfo();
+
 			// 클라이언트(게스트)의 모든 로딩완료시 로딩완료 패킷 전송
 			PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 			pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_ = 1;
@@ -80,6 +88,12 @@ void LoadingLevel::CheckThreadLoadingEnd()
 		// 서버라면
 		else if (true == GameServer::GetInstance()->IsOpened())
 		{
+			LumiaLevel* LumiaLv = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+
+			// A* 노드(타일)정보 갱신
+			// -> 주스레드와 로딩스레드가 Context에 동시접근을 막기위해 Public으로 변경하여 외부에서 호출
+			LumiaLv->GetMap()->updateAStarNodeVertexInfo();
+
 			// 서버(호스트)로딩상태 갱신
 			PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 			pm->GetPlayerList()[pm->GetMyNumber()].IsLoading_ = 1;
@@ -93,8 +107,7 @@ void LoadingLevel::CheckThreadLoadingEnd()
 
 			// 본로직은 로딩엔딩패킷을 수신했을때 연결된 모든 클라이언트의 로딩상태를 체크하여 루미아레벨로 넘어오지만
 			// 서버가 제일 마지막에 로딩완료되는 상태가 되었을때 강제로 레벨체인지
-			LumiaLevel* CurLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
-			if (true == pm->AllPlayerLoadingStateCheck() && CurLevel != UserGame::CurrentLevel())
+			if (true == pm->AllPlayerLoadingStateCheck() && LumiaLv != UserGame::CurrentLevel())
 			{
 				// 반환값이 true 이라면 모든 플레이어(호스트 포함) 로딩완료 되었다는 의미이므로 레벨 체인지 패킷 송신
 				LevelChangePacket Packet;
@@ -123,18 +136,6 @@ void LoadingLevel::LevelUpdate(float _DeltaTime)
 	// 로딩스레드종료 체크
 	CheckThreadLoadingEnd();
 
-	// 서버측 패킷 수신처리
-	if (true == GameServer::GetInstance()->IsOpened())
-	{
-		GameServer::GetInstance()->ProcessPacket();
-	}
-
-	// 클라이언트측 패킷 수신처리
-	if (true == GameClient::GetInstance()->IsConnected())
-	{
-		GameClient::GetInstance()->ProcessPacket();
-	}
-
 	// 리소스 로딩완료 후 액터생성 명령 패킷 송신
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
@@ -148,6 +149,18 @@ void LoadingLevel::LevelUpdate(float _DeltaTime)
 	if (0 >= UserGame::LoadingFolder && false == ResourceLoadEndCheck)
 	{
 		LoadingLevelInitalize();
+	}
+
+	// 서버측 패킷 수신처리
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		GameServer::GetInstance()->ProcessPacket();
+	}
+
+	// 클라이언트측 패킷 수신처리
+	if (true == GameClient::GetInstance()->IsConnected())
+	{
+		GameClient::GetInstance()->ProcessPacket();
 	}
 }
 

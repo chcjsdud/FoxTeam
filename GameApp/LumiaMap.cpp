@@ -65,7 +65,7 @@ void LumiaMap::Start()
 
 	makeAStarNode(200.f, 200.f);
 	checkASterNodeObstacle();
-	updateAStarNodeVertexInfo();
+	//updateAStarNodeVertexInfo();
 
 	GameEngineDirectory tempDir;
 
