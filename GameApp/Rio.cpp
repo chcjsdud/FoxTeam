@@ -100,12 +100,17 @@ void Rio::changeAnimationBasicAttack()
 
 void Rio::onStartQSkill()
 {
-	//renderer_->OverrideFBXAnimation("SkillQ", "Bip001 Spine2");
+	renderer_->OverrideFBXAnimation("SkillQ", "Bip001 Spine2");
+	//renderer_->OverrideFBXAnimation("SkillQ", "Bip001 L UpperArm");
 }
 
 void Rio::onUpdateQSkill(float _deltaTime)
 {
-	mainState_ << "NormalState";
+	if (renderer_->IsOverrideAnimationEnd())
+	{
+		renderer_->ClearOverrideAnimation();
+		mainState_ << "NormalState";
+	}
 }
 
 void Rio::onStartWSkill()

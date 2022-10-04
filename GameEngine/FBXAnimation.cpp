@@ -56,6 +56,7 @@ void FBXAnimation::Update(float _DeltaTime)
 		NextFrame = 0;
 	}
 
+
 	for (int o = 0; o < ParentRenderer->RenderSets.size(); o++)
 	{
 		RenderSet& Render = ParentRenderer->RenderSets[o];
@@ -116,6 +117,126 @@ void FBXAnimation::Update(float _DeltaTime)
 			Render.BoneData[i] = BoneData->BonePos.Offset * float4x4::Affine(LerpScale, SLerpQ, LerpPos);
 
 			// ParentRenderer->BoneData[i].Transpose();
+		}
+	}
+}
+
+void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnimation)
+{
+	FBXAnimation* oa = _overrideAnimation;
+
+	CurFrameTime += _deltaTime;
+
+
+	if (CurFrameTime >= FrameTime)
+	{
+		CurFrameTime -= FrameTime;
+		++CurFrame;
+	}
+
+	int NextFrame = CurFrame;
+	++NextFrame;
+
+	if (CurFrame >= End)
+	{
+		if (false == isLoop_)
+		{
+			bEnd_ = true;
+			return;
+		}
+
+		CurFrame = Start;
+	}
+	if (NextFrame >= End)
+	{
+		NextFrame = 0;
+	}
+
+	oa->CurFrameTime += _deltaTime;
+	if (oa->CurFrameTime >= oa->FrameTime)
+	{
+		oa->CurFrameTime -= oa->FrameTime;
+		++oa->CurFrame;
+	}
+	int oaNextFrame = oa->CurFrame;
+	++oaNextFrame;
+
+	if (oa->CurFrame >= oa->End)
+	{
+		if (false == oa->isLoop_)
+		{
+			oa->bEnd_ = true;
+			return;
+		}
+
+		oa->CurFrame = oa->Start;
+	}
+	if (oaNextFrame >= oa->End)
+	{
+		oaNextFrame = 0;
+	}
+
+
+	for (int o = 0; o < ParentRenderer->RenderSets.size(); o++)
+	{
+		RenderSet& Render = ParentRenderer->RenderSets[o];
+
+		for (int i = 0; i < Render.BoneData.size(); i++)
+		{
+			Bone* BoneData = ParentRenderer->FBXMesh->FindBone(Render.Index, i);
+
+			if (ParentRenderer->overrideBoneIndexCache_.end() == ParentRenderer->overrideBoneIndexCache_.find(BoneData->Index))
+			{
+				if (true == PixAniData->AniFrameData[Render.Index][i].BoneMatData.empty())
+				{
+					Render.BoneData[i] = float4x4::Affine(BoneData->BonePos.GlobalScale, BoneData->BonePos.GlobalRotation, BoneData->BonePos.GlobalTranslation);
+					return;
+				}
+
+				FbxExBoneFrameData& CurData = PixAniData->AniFrameData[Render.Index][i].BoneMatData[CurFrame];
+				FbxExBoneFrameData& NextData = PixAniData->AniFrameData[Render.Index][i].BoneMatData[NextFrame];
+
+				if (CurData.FrameMat == NextData.FrameMat)
+				{
+					int a = 0;
+					return;
+				}
+
+				float4 LerpScale = float4::Lerp(CurData.S, NextData.S, CurFrameTime);
+				float4 SLerpQ = float4::SLerp(CurData.Q, NextData.Q, CurFrameTime);
+				float4 LerpPos = float4::Lerp(CurData.T, NextData.T, CurFrameTime);
+
+				size_t Size = sizeof(float4x4);
+
+				Render.BoneData[i] = BoneData->BonePos.Offset * float4x4::Affine(LerpScale, SLerpQ, LerpPos);
+			}
+			else
+			{
+				if (true == oa->PixAniData->AniFrameData[Render.Index][i].BoneMatData.empty())
+				{
+					Render.BoneData[i] = float4x4::Affine(BoneData->BonePos.GlobalScale, BoneData->BonePos.GlobalRotation, BoneData->BonePos.GlobalTranslation);
+					return;
+				}
+
+				FbxExBoneFrameData& CurData = oa->PixAniData->AniFrameData[Render.Index][i].BoneMatData[oa->CurFrame];
+				FbxExBoneFrameData& NextData = oa->PixAniData->AniFrameData[Render.Index][i].BoneMatData[oaNextFrame];
+
+				if (CurData.FrameMat == NextData.FrameMat)
+				{
+					int a = 0;
+					return;
+				}
+
+				float4 LerpScale = float4::Lerp(CurData.S, NextData.S, oa->CurFrameTime);
+				float4 SLerpQ = float4::SLerp(CurData.Q, NextData.Q, oa->CurFrameTime);
+				float4 LerpPos = float4::Lerp(CurData.T, NextData.T, oa->CurFrameTime);
+
+				size_t Size = sizeof(float4x4);
+
+				Render.BoneData[i] = BoneData->BonePos.Offset * float4x4::Affine(LerpScale, SLerpQ, LerpPos);
+			}
+
+
 		}
 	}
 }

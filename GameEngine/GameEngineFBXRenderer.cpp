@@ -245,7 +245,14 @@ void GameEngineFBXRenderer::Update(float _DeltaTime)
 {
 	if (nullptr != currentAnimation_)
 	{
-		currentAnimation_->Update(_DeltaTime);
+		if (nullptr != overrideAnimation_)
+		{
+			currentAnimation_->UpdateOverride(_DeltaTime, overrideAnimation_);
+		}
+		else
+		{
+			currentAnimation_->Update(_DeltaTime);
+		}
 	}
 }
 
@@ -308,7 +315,7 @@ void GameEngineFBXRenderer::OverrideFBXAnimation(const std::string& _AnimationNa
 {
 	if (currentAnimation_ == nullptr)
 	{
-		GameEngineDebug::MsgBoxError("currentAnimation_ is nullptr");
+		GameEngineDebug::MsgBoxError("덮어씌울 애니메이션이 없습니다.");
 		return;
 	}
 
@@ -327,6 +334,60 @@ void GameEngineFBXRenderer::OverrideFBXAnimation(const std::string& _AnimationNa
 
 	overrideAnimation_ = FindIter->second;
 	overrideAnimation_->ResetFrame();
+
+	// 본 세팅
+	std::vector<Bone>& bones = FBXMesh->GetAllBones();
+	int boneCount = static_cast<int>(bones.size());
+
+	int boneIndex = -1;
+	for (int i = 0; i < boneCount; i++)
+	{
+		if (bones[i].Name == _boneNameToAffect)
+		{
+			boneIndex = i;
+			break;
+		}
+	}
+
+	if (boneIndex == -1)
+	{
+		GameEngineDebug::MsgBoxError("적용시킬 본이 없습니다.");
+		return;
+	}
+
+	if (overrideBoneIndexCache_.empty() || overrideBoneIndexCache_.end() == overrideBoneIndexCache_.find(boneIndex))
+	{
+		overrideBoneIndexCache_.clear();
+		overrideBoneIndexCache_.insert(std::pair(boneIndex, boneIndex));
+
+		std::vector<int> temp;
+		temp.push_back(boneIndex);
+
+		while (!temp.empty())
+		{
+			int currentIndex = temp.back();
+			temp.pop_back();
+
+			for (int i = 0; i < boneCount; i++)
+			{
+				Bone* currentBone = &bones[i];
+				if (currentBone->ParentIndex == currentIndex)
+				{
+					overrideBoneIndexCache_.insert(std::pair(currentBone->Index, currentBone->Index));
+
+					if (temp.end() == std::find(temp.begin(), temp.end(), currentBone->Index))
+					{
+						temp.push_back(currentBone->Index);
+					}
+				}
+			}
+		}
+	}
+}
+
+void GameEngineFBXRenderer::ClearOverrideAnimation()
+{
+	overrideAnimation_ = nullptr;
 }
 
 bool GameEngineFBXRenderer::IsCurrentAnimationEnd()
@@ -337,6 +398,16 @@ bool GameEngineFBXRenderer::IsCurrentAnimationEnd()
 	}
 
 	return currentAnimation_->bEnd_;
+}
+
+bool GameEngineFBXRenderer::IsOverrideAnimationEnd()
+{
+	if (nullptr == overrideAnimation_)
+	{
+		return false;
+	}
+
+	return overrideAnimation_->bEnd_;
 }
 
 

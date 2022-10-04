@@ -590,6 +590,12 @@ public:
 	{
 		return AllMeshMap;
 	}
+
+	std::vector<Bone>& GetAllBones()
+	{
+		return AllBones[0];
+	}
+
 	std::vector<FbxExMeshInfo>& GetMeshInfos()
 	{
 		return MeshInfos;

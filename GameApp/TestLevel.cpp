@@ -34,15 +34,16 @@ void TestLevel::LevelUpdate(float _DeltaTime)
 
 void TestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
-	//Rio::ReleaseResource();
+	Rio::ReleaseResource();
 }
 
 void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
-	//Rio::LoadResource();
+	Rio::LoadResource();
 
-	//Rio* rio_ = CreateActor<Rio>();
-	CreateActor<TestOBB>();
+	Rio* rio_ = CreateActor<Rio>();
+	rio_->Focus();
+	//CreateActor<TestOBB>();
 
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();

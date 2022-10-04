@@ -25,5 +25,6 @@ public:
 
 	void Init(int _Index, bool _isLoop = true, float _frameTime = 0.033f);
 	void Update(float _DeltaTime);
+	void UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnimation);
 	void ResetFrame();
 };
