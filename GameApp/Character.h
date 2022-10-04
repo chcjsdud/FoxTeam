@@ -12,6 +12,7 @@ class ItemBoxManager;
 class MousePointer;
 class LumiaMap;
 class ItemBase;
+class PlayerUIController;
 class Character : public GameEngineActor
 {
 public:
@@ -240,6 +241,8 @@ protected:
 	int myIndex_;
 	bool isPlayerDead_;
 
+	// 1004 이건호 : UI컨트롤러 멤버변수화
+	PlayerUIController* uiController_;
 
 private:
 	enum class eCurrentAnimation

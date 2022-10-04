@@ -9,7 +9,7 @@
 #include "ItemBox.h"
 #include "ItemBase.h"
 #include "PlayerInfoManager.h"
-//#include "PlayerUIController.h"
+#include "PlayerUIController.h"
 #include <GameEngine/GameEngineLevelControlWindow.h>
 #include "CharStatPacket.h"
 #include "GameServer.h"
@@ -86,7 +86,7 @@ void Character::Start()
 
 
 
-	//PlayerUIController* UIController = GetLevel()->CreateActor<PlayerUIController>();
+	uiController_ = GetLevel()->CreateActor<PlayerUIController>();
 
 }
 

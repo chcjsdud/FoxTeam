@@ -171,21 +171,455 @@ void UI_Inventory::Update(float _Time)
 
 void UI_Inventory::EmptySlotReturn(ItemBase* _TargetSlot)
 {
+	if (Slot0_Item == nullptr)
+	{
+		Slot0_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot1_Item == nullptr)
+	{
+		Slot1_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot2_Item == nullptr)
+	{
+		Slot2_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot3_Item == nullptr)
+	{
+		Slot3_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot4_Item == nullptr)
+	{
+		Slot4_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot5_Item == nullptr)
+	{
+		Slot5_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot6_Item == nullptr)
+	{
+		Slot6_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot7_Item == nullptr)
+	{
+		Slot7_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot8_Item == nullptr)
+	{
+		Slot8_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	if (Slot9_Item == nullptr)
+	{
+		Slot9_Item = _TargetSlot->Copy();
+		return;
+	}
+
+	GameEngineDebug::MsgBox("인벤토리에 빈 슬롯이 없습니다");
+	return;
 }
 
 void UI_Inventory::ItemRenderCheck()
 {
+	if(Slot0_Item != nullptr)
+	{
+		Slot0_BGRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
+		Slot0_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot0_BGRenderer, Slot0_Item);
+
+		Slot0_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot0_Item));
+		Slot0_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot0_IconRenderer->GetTransform()->SetLocalPosition((Slot0_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+	}
+	else
+	{
+		Slot0_BGRenderer->Off();
+		Slot0_IconRenderer->Off();
+	}
+
+
+	if (Slot1_Item != nullptr)
+	{
+		Slot1_BGRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
+		Slot1_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot1_BGRenderer, Slot1_Item);
+
+		Slot1_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot1_Item));
+		Slot1_IconRenderer->GetTransform()->SetLocalScaling(Slot1_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot1_IconRenderer->GetTransform()->SetLocalPosition((Slot1_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+
+	}
+	else
+	{
+		Slot1_BGRenderer->Off();
+		Slot1_IconRenderer->Off();
+	}
+
+
+	if (Slot2_Item != nullptr)
+	{
+		Slot2_BGRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
+		Slot2_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot2_BGRenderer, Slot2_Item);
+
+		Slot2_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot2_Item));
+		Slot2_IconRenderer->GetTransform()->SetLocalScaling(Slot2_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot2_IconRenderer->GetTransform()->SetLocalPosition((Slot2_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+	}
+	else
+	{
+		Slot2_BGRenderer->Off();
+		Slot2_IconRenderer->Off();
+	}
+
+	if (Slot3_Item != nullptr)
+	{
+		Slot3_BGRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
+		Slot3_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot2_BGRenderer, Slot2_Item);
+
+		Slot3_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot3_Item));
+		Slot3_IconRenderer->GetTransform()->SetLocalScaling(Slot3_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot3_IconRenderer->GetTransform()->SetLocalPosition((Slot3_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+	}
+	else
+	{
+		Slot3_BGRenderer->Off();
+		Slot3_IconRenderer->Off();
+	}
+
+	if (Slot4_Item != nullptr)
+	{
+		Slot4_BGRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
+		Slot4_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot4_BGRenderer, Slot4_Item);
+
+		Slot4_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot4_Item));
+		Slot4_IconRenderer->GetTransform()->SetLocalScaling(Slot4_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot4_IconRenderer->GetTransform()->SetLocalPosition((Slot4_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+	}
+	else
+	{
+		Slot4_BGRenderer->Off();
+		Slot4_IconRenderer->Off();
+	}
+
+	if (Slot5_Item != nullptr)
+	{
+		Slot5_BGRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
+		Slot5_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot5_BGRenderer, Slot5_Item);
+
+		Slot5_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot5_Item));
+		Slot5_IconRenderer->GetTransform()->SetLocalScaling(Slot5_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot5_IconRenderer->GetTransform()->SetLocalPosition((Slot5_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+	}
+	else
+	{
+		Slot5_BGRenderer->Off();
+		Slot5_IconRenderer->Off();
+	}
+
+	if (Slot6_Item != nullptr)
+	{
+		Slot6_BGRenderer->GetTransform()->SetLocalPosition(Slot6Collision->GetTransform()->GetLocalPosition());
+		Slot6_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot6_BGRenderer, Slot6_Item);
+
+		Slot6_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot6_Item));
+		Slot6_IconRenderer->GetTransform()->SetLocalScaling(Slot6_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot6_IconRenderer->GetTransform()->SetLocalPosition((Slot6_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+	}
+	else
+	{
+		Slot6_BGRenderer->Off();
+		Slot6_IconRenderer->Off();
+	}
+
+	if (Slot7_Item != nullptr)
+	{
+		Slot7_BGRenderer->GetTransform()->SetLocalPosition(Slot7Collision->GetTransform()->GetLocalPosition());
+		Slot7_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot7_BGRenderer, Slot7_Item);
+
+		Slot7_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot7_Item));
+		Slot7_IconRenderer->GetTransform()->SetLocalScaling(Slot7_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot7_IconRenderer->GetTransform()->SetLocalPosition((Slot7_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+	}
+	else
+	{
+		Slot7_BGRenderer->Off();
+		Slot7_IconRenderer->Off();
+	}
+
+	if (Slot8_Item != nullptr)
+	{
+		Slot8_BGRenderer->GetTransform()->SetLocalPosition(Slot8Collision->GetTransform()->GetLocalPosition());
+		Slot8_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot8_BGRenderer, Slot8_Item);
+
+		Slot8_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot8_Item));
+		Slot8_IconRenderer->GetTransform()->SetLocalScaling(Slot8_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot8_IconRenderer->GetTransform()->SetLocalPosition((Slot8_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+	}
+	else
+	{
+		Slot8_BGRenderer->Off();
+		Slot8_IconRenderer->Off();
+	}
+
+
+	if (Slot9_Item != nullptr)
+	{
+		Slot9_BGRenderer->GetTransform()->SetLocalPosition(Slot9Collision->GetTransform()->GetLocalPosition());
+		Slot9_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot9_BGRenderer, Slot9_Item);
+
+		Slot9_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot9_Item));
+		Slot9_IconRenderer->GetTransform()->SetLocalScaling(Slot9_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Slot9_IconRenderer->GetTransform()->SetLocalPosition((Slot9_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+	}
+	else
+	{
+		Slot9_BGRenderer->Off();
+		Slot9_IconRenderer->Off();
+	}
 }
 
 void UI_Inventory::GetInventoryInfo(list<ItemBase*> _ItemList)
 {
+	list<ItemBase*>::iterator listiter = _ItemList.begin();
+
+	for (listiter = _ItemList.begin(); listiter != _ItemList.end(); listiter++)
+	{
+		PushItem(*listiter);
+	}
+
+	return;
 }
 
 void UI_Inventory::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 {
+	switch (_SlotNumber)
+	{
+	case 0:
+	{
+		EmptySlotReturn(_OriginItemBase);
+		return;
+	}
+	break;
+	case 1:
+	{
+		if (Slot1_Item == nullptr)
+		{
+			Slot1_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+	break;
+	case 2:
+	{
+		if (Slot2_Item == nullptr)
+		{
+			Slot2_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+	break;
+	case 3:
+	{
+		if (Slot3_Item == nullptr)
+		{
+			Slot3_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+	break;
+	case 4:
+	{
+		if (Slot4_Item == nullptr)
+		{
+			Slot4_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+	break;
+	case 5:
+	{
+		if (Slot5_Item == nullptr)
+		{
+			Slot5_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+	break;
+	case 6:
+	{
+		if (Slot6_Item == nullptr)
+		{
+			Slot6_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+	break;
+	case 7:
+	{
+		if (Slot7_Item == nullptr)
+		{
+			Slot7_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+	break;
+	case 8:
+	{
+		if (Slot8_Item == nullptr)
+		{
+			Slot8_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+	break;
+	case 9:
+	{
+		if (Slot9_Item == nullptr)
+		{
+			Slot9_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
+	}
+	break;
+	default:
+	{
+		GameEngineDebug::MsgBoxError("슬롯번호가 제대로 세팅되지 않았습니다");
+		return;
+	}
+	break;
+	}
 }
 
 void UI_Inventory::EmptySlot()
 {
+	//아이템정보를 비워주는 함수
+
+	if (Slot0_Item != nullptr)
+	{
+		Slot0_Item = nullptr;
+	}
+
+	if (Slot1_Item != nullptr)
+	{
+		Slot1_Item = nullptr;
+	}
+
+	if (Slot2_Item != nullptr)
+	{
+		Slot2_Item = nullptr;
+	}
+
+	if (Slot3_Item != nullptr)
+	{
+		Slot3_Item = nullptr;
+	}
+
+	if (Slot4_Item != nullptr)
+	{
+		Slot4_Item = nullptr;
+	}
+
+	if (Slot5_Item != nullptr)
+	{
+		Slot5_Item = nullptr;
+	}
+
+	if (Slot6_Item != nullptr)
+	{
+		Slot6_Item = nullptr;
+	}
+
+	if (Slot7_Item != nullptr)
+	{
+		Slot7_Item = nullptr;
+	}
+
+	if (Slot8_Item != nullptr)
+	{
+		Slot8_Item = nullptr;
+	}
+
+	if (Slot9_Item != nullptr)
+	{
+		Slot9_Item = nullptr;
+	}
 }
 

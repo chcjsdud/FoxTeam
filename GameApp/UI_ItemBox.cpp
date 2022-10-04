@@ -454,12 +454,11 @@ void UI_ItemBox::ItemRenderCheck()
 		Slot0_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot0_Item));
 		Slot0_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot0_IconRenderer->GetTransform()->SetLocalPosition((Slot0_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
-		//Slot0_IconRenderer->GetTransform()->AttachTransform(Slot0_BGRenderer->GetTransform());
-
 	}
 	else
 	{
 		Slot0_BGRenderer->Off();
+		Slot0_IconRenderer->Off();
 	}
 
 
@@ -478,6 +477,7 @@ void UI_ItemBox::ItemRenderCheck()
 	else
 	{
 		Slot1_BGRenderer->Off();
+		Slot1_IconRenderer->Off();
 	}
 
 
@@ -495,6 +495,7 @@ void UI_ItemBox::ItemRenderCheck()
 	else
 	{
 		Slot2_BGRenderer->Off();
+		Slot2_IconRenderer->Off();
 	}
 
 	if (Slot3_Item != nullptr)
@@ -511,6 +512,7 @@ void UI_ItemBox::ItemRenderCheck()
 	else	
 	{		
 		Slot3_BGRenderer->Off();
+		Slot3_IconRenderer->Off();
 	}
 
 	if (Slot4_Item != nullptr)
@@ -527,6 +529,7 @@ void UI_ItemBox::ItemRenderCheck()
 	else
 	{
 		Slot4_BGRenderer->Off();
+		Slot4_IconRenderer->Off();
 	}
 
 	if (Slot5_Item != nullptr)
@@ -543,6 +546,7 @@ void UI_ItemBox::ItemRenderCheck()
 	else
 	{
 		Slot5_BGRenderer->Off();
+		Slot5_IconRenderer->Off();
 	}
 
 	if (Slot6_Item != nullptr)
@@ -559,6 +563,7 @@ void UI_ItemBox::ItemRenderCheck()
 	else
 	{
 		Slot6_BGRenderer->Off();
+		Slot6_IconRenderer->Off();
 	}
 
 	if (Slot7_Item != nullptr)
@@ -575,6 +580,7 @@ void UI_ItemBox::ItemRenderCheck()
 	else
 	{
 		Slot7_BGRenderer->Off();
+		Slot7_IconRenderer->Off();
 	}
 
 }

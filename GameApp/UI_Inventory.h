@@ -27,7 +27,9 @@ public:
 		Player_ = _Player;
 	}
 
-
+	void EmptySlot();
+	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
+	void GetInventoryInfo(list<ItemBase*> _ItemList);
 
 protected:
 	GameEngineUIRenderer* Renderer;
@@ -44,11 +46,10 @@ private:
 	//슬롯에 아이템이 들어있을때 이미지 렌더를 위한 함수
 	void ItemRenderCheck();
 
-	void GetInventoryInfo(list<ItemBase*> _ItemList);
 
-	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
 
-	void EmptySlot();
+
+
 
 private:
 	Player* Player_;
