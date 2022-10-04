@@ -8,6 +8,7 @@
 struct MonsterStateInfo
 {
 public: // 기본스텟
+	int Level_;								// 레벨(늦게 생성된 몬스터(야생동물)일수록 레벨이 높게 설정) - 생성과 동시에 지정(지정없이 생성된 몬스터의 경우 기본 1레벨고정)
 	float HPMax_;							// 최대체력
 	float HP_;								// 현재체력
 	float HPRegenPercent_;					// 체력회복량(% 수치)
@@ -41,7 +42,8 @@ public: // 확률드랍아이템정보
 
 public:
 	MonsterStateInfo()
-		: HPMax_(0.0f)
+		: Level_(1)
+		, HPMax_(0.0f)
 		, HP_(0.0f)
 		, HPRegenPercent_(0.0f)
 		, SPMax_(0.0f)

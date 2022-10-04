@@ -30,10 +30,12 @@ void CreationCommandPacket::userSerialize()
 
     for (int i = 0; i < AllMonsterCount; ++i)
     {
-        serializer_ << MonsterInfos_[i].Index_;
-        serializer_ << static_cast<int>(MonsterInfos_[i].AreaType_);
-        serializer_ << static_cast<int>(MonsterInfos_[i].MonsterType_);
-        serializer_ << MonsterInfos_[i].SpawnPosition_;
+        serializer_ << MonsterInfos_[i].Index_;                                         // 생성인덱스(탐색용)
+        serializer_ << static_cast<int>(MonsterInfos_[i].AreaType_);                    // 생성지역(탐색용)
+        serializer_ << static_cast<int>(MonsterInfos_[i].MonsterType_);                 // 몬스터(야생동물) 타입
+        serializer_ << MonsterInfos_[i].IsGroup_;                                       // 그룹생성여부
+        serializer_ << MonsterInfos_[i].GroupCount_;                                    // 그룹생성시 생성되어야하는 몬스터(야생동물)수
+        serializer_ << MonsterInfos_[i].SpawnPosition_;                                 // 몬스터(야생동물) 스폰(둥지) 위치
     }
 }
 
@@ -56,6 +58,8 @@ void CreationCommandPacket::userDeserialize()
         serializer_ >> RcvMonsterType;
         NewMonsterInfo.MonsterType_ = static_cast<MonsterType>(RcvMonsterType);
 
+        serializer_ >> NewMonsterInfo.IsGroup_;
+        serializer_ >> NewMonsterInfo.GroupCount_;
         serializer_ >> NewMonsterInfo.SpawnPosition_;
 
         MonsterInfos_.push_back(NewMonsterInfo);

@@ -74,19 +74,23 @@ void LumiaLevel::CreateMonsterInfo()
 {
 	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
-	// 몬스터 생성정보 작성 시작
+	// 몬스터 생성정보 작성 시작(생성지역당 생성되는 몬스터타입과 수는 고정)
 	//int Index_;									// 몬스터 생성 인덱스(탐색용)
 	//Location AreaType_;							// 몬스터 스폰 지역 타입(탐색용)
 	//MonsterType MonsterType_;						// 몬스터 타입
 	//float4 SpawnPosition_;						// 스폰 위치
+	//int IsGroup_;									// 그룹생성여부(1: 그룹으로생성, 0: 단독생성)
+	//int GroupCount_;								// 그룹생성일때 같은위치에 생성해야하는 야생동물수
 	// -> 위의 정보 모두 해당 함수에서 결정
 
-	// 현재맵의 몬스터타입-출현지역-갯수 기준으로 몬스터 생성
+	// 현재맵(루미아맵)의 지역별 좌표범위를 알아낸다.
+
+
+	// 현재맵의 출현지역-몬스터타입-몬스터갯수 기준으로 몬스터 생성
 	//int LocationCnt = static_cast<int>(Location::MAX);
 	//for (int LocationNum = 0; LocationNum < LocationCnt; ++LocationNum)
 	//{
-
-
+	//	
 
 	//}
 
