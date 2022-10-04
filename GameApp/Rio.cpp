@@ -25,14 +25,14 @@ void Rio::LoadResource()
 	dir.MoveParent("FoxTeam");
 	dir / "Resources" / "FBX" / "Character" / "Rio";
 
-	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Run.fbx"));
+	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Short_Run.fbx"));
 	mesh->CreateRenderingBuffer();
 
 
-	std::vector<GameEngineFile> allFile = dir.GetAllFile("fbx");
+	std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 	for (GameEngineFile& file : allFile)
 	{
-		GameEngineFBXAnimationManager::GetInst().Load(file.GetFullPath());
+		GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
 	}
 }
 
@@ -42,13 +42,13 @@ void Rio::ReleaseResource()
 	dir.MoveParent("FoxTeam");
 	dir / "Resources" / "FBX" / "Character" / "Rio";
 
-	std::vector<GameEngineFile> allFile = dir.GetAllFile("fbx");
+	std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 	for (GameEngineFile& file : allFile)
 	{
 		GameEngineFBXAnimationManager::GetInst().Delete(file.GetFileName());
 	}
 
-	GameEngineFBXMeshManager::GetInst().Delete("Rio_Run.fbx");
+	GameEngineFBXMeshManager::GetInst().Delete("Rio_Short_Run.fbx");
 }
 
 void Rio::Start()
@@ -64,15 +64,15 @@ void Rio::Update(float _deltaTime)
 void Rio::initRendererAndAnimation()
 {
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	renderer_->SetFBXMesh("Rio_Run.fbx", "TextureDeferredLightAni");
+	renderer_->SetFBXMesh("Rio_Short_Run.fbx", "TextureDeferredLightAni");
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	renderer_->CreateFBXAnimation("Run", "Rio_Short_Run.fbx", 0);
-	renderer_->CreateFBXAnimation("Wait", "Rio_Short_Wait.fbx", 0);
-	renderer_->CreateFBXAnimation("BasicAttack", "Rio_Short_Attack.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillQ", "Rio_Short_Skill_Q.fbx", 0, false);
+	renderer_->CreateFBXAnimation("Run", "Rio_Short_Run.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("Wait", "Rio_Short_Wait.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("BasicAttack", "Rio_Short_Attack.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillQ", "Rio_Short_Skill_Q.UserAnimation", 0, false);
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
@@ -100,6 +100,7 @@ void Rio::changeAnimationBasicAttack()
 
 void Rio::onStartQSkill()
 {
+	//renderer_->OverrideFBXAnimation("SkillQ", "Bip001 Spine2");
 }
 
 void Rio::onUpdateQSkill(float _deltaTime)

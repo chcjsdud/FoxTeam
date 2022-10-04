@@ -161,7 +161,8 @@ void Character::checkCurrentNavFace()
 	}
 	else
 	{
-		if (nullptr != GetLevelConvert<LumiaLevel>()->GetMap())
+		LumiaLevel* level = GetLevelConvert<LumiaLevel>();
+		if (nullptr != level)
 		{
 			SetCurrentNavFace(GetLevelConvert<LumiaLevel>()->GetMap()->GetNavMesh()->CurrentCheck(GetTransform(), float4::DOWN));
 		}
@@ -199,7 +200,11 @@ void Character::getItem(int _index)
 
 void Character::checkItemBox()
 {
-	// Test¿ë 
+	if (itemBoxmanager_ == nullptr)
+	{
+		return;
+	}
+
 	if (true == itemBoxmanager_->isOpen())
 	{
 		if (true == GameEngineInput::GetInst().Down("1"))
@@ -533,6 +538,10 @@ void Character::initState()
 
 void Character::inputProcess(float _deltaTime)
 {
+	if (mouse_ == nullptr)
+	{
+		return;
+	}
 	GameEngineCollision* rayCol = mouse_->GetRayCollision();
 
 	bool result = false;
