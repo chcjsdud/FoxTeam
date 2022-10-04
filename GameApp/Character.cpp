@@ -265,6 +265,8 @@ void Character::checkItemRecipes()
 
 	std::map<CombineItem, std::string>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
 
+	queueItemMixing_.clear();
+
 	for (int i = 0; i < cases.size(); i++)
 	{
 		int left = cases[i][0];
@@ -272,28 +274,6 @@ void Character::checkItemRecipes()
 
 		if (nullptr == inventory_[left] ||
 			nullptr == inventory_[right])
-		{
-			continue;
-		}
-
-		bool isOverlap = false;
-		for (const CombineItem& queueItem : queueItemMixing_)
-		{
-			if (queueItem.left_ == inventory_[left]->GetName() &&
-				queueItem.right_ == inventory_[right]->GetName())
-			{
-				isOverlap = true;
-				break;
-			}
-			else if (queueItem.right_ == inventory_[left]->GetName() &&
-				queueItem.left_ == inventory_[right]->GetName())
-			{
-				isOverlap = true;
-				break;
-			}
-		}
-
-		if (true == isOverlap)
 		{
 			continue;
 		}
@@ -399,7 +379,10 @@ void Character::mixingItem()
 	if (false == isFind)
 	{
 		GameEngineDebug::MsgBoxError("조합 실패, 아이템리스트에 존재하지 않음");
+		return;
 	}
+
+	checkItemRecipes();
 }
 
 bool Character::sortItemQueue()
