@@ -52,14 +52,7 @@ void LoadingLevel::CreationCommand()
 	PlayerLevel->CreateMonsterInfo();
 
 	// 루미아레벨에 강제생성 시작
-	//GameEngineCore::ThreadQueue.JobPost([&]
-	//	{
-			PlayerLevel->HostCreateCommand();
-
-			// Thread End Flag On
-			ThreadLoadingEnd = true;
-	//	}
-	//);
+	PlayerLevel->HostCreateCommand();
 
 	// 생성명령 및 패킷 전송완료
 	ReadyCreationCommand = true;

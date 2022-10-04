@@ -436,34 +436,44 @@ void LumiaMap::checkASterNodeObstacle()
 	timer.TimeCheckReset();
 	timer.TimeCheck();
 
+	std::vector<std::thread> threads;
 	for (std::vector<AStarNode>& v : allNodes_)
 	{
-
-		GameEngineCore::ThreadQueue.JobPost(
-			[&]()
+		auto func = [&]()
+		{
+			for (AStarNode& n : v)
 			{
-				for (AStarNode& n : v)
+				float height = 0.0f;
+				NavFace* face = navMesh_->GetNavFaceFromPositionXZ(n.GetPosition(), float4::DOWN, height);
+				if (nullptr == face)
 				{
-					float height = 0.0f;
-					NavFace* face = navMesh_->GetNavFaceFromPositionXZ(n.GetPosition(), float4::DOWN, height);
-					if (nullptr == face)
-					{
-						n.SetObstacle(true);
-						tileVertices_[n.GetIndex()].COLOR = float4::RED;
-					}
-					else
-					{
-						tileVertices_[n.GetIndex()].POSITION.y = height;
-					}
+					n.SetObstacle(true);
+					tileVertices_[n.GetIndex()].COLOR = float4::RED;
 				}
-			});
+				else
+				{
+					tileVertices_[n.GetIndex()].POSITION.y = height;
+				}
+			}
+		};
+
+		threads.emplace_back(func);
 	}
 
-	Sleep(50);
-
-	while (0 < GameEngineCore::ThreadQueue.GetWorkingCount())
+	int i = 0;
+	while (i < threads.size())
 	{
-		Sleep(100);
+		// 해당 스레드 사용중이라면
+		if (true == threads[i].joinable())
+		{
+			// 해당 스레드 종료까지 대기
+			threads[i].join();
+			i = 0;
+		}
+		else
+		{
+			i++;
+		}
 	}
 
 	timer.TimeCheck();

@@ -42,7 +42,14 @@
 void LumiaLevel::HostCreateCommand()
 {
 	// 서버(호스트)의 리소스 로딩 및 액터생성 시작
-	HostAllCreationCommand();
+	GameEngineCore::ThreadQueue.JobPost([&]
+		{
+			HostAllCreationCommand();
+
+			// Loading Thread End Flag On
+			LoadingLevel::ThreadLoadingEnd = true;
+		}
+	);
 }
 
 void LumiaLevel::GuestCreateCommand()
@@ -50,14 +57,14 @@ void LumiaLevel::GuestCreateCommand()
 	int Count = GameEngineCore::ThreadQueue.GetWorkingCount();
 
 	// 클라이언트(게스트)의 리소스 로딩 및 액터생성 시작
-	//GameEngineCore::ThreadQueue.JobPost([&]
-	//	{
+	GameEngineCore::ThreadQueue.JobPost([&]
+		{
 			GuestAllCreationCommand();
 
 			// Loading Thread End Flag On
 			LoadingLevel::ThreadLoadingEnd = true;
-	//	}
-	//);
+		}
+	);
 }
 
 void LumiaLevel::CreateMonsterInfo()
