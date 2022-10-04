@@ -8,6 +8,7 @@
 struct CombineItem;
 
 // 이터널 리턴에 나오는 실험체의 베이스가 되는 클래스
+class Hyunwoo;
 class ItemBoxManager;
 class MousePointer;
 class LumiaMap;
@@ -15,6 +16,8 @@ class ItemBase;
 class PlayerUIController;
 class Character : public GameEngineActor
 {
+	friend Hyunwoo;
+
 public:
 	Character();
 	~Character();
@@ -80,6 +83,7 @@ protected:
 
 	virtual void onStartDSkill() = 0;
 	virtual void onUpdateDSkill(float _deltaTime) = 0;
+
 
 
 	// Main(DeathState)
@@ -160,6 +164,10 @@ private:
 #pragma region CrowdControlState
 	void startStun();
 	void updateStun(float _deltaTime);
+
+	void startHyunwooE();
+	void updateHyunwooE(float _deltaTime);
+
 #pragma endregion
 
 
@@ -229,7 +237,13 @@ protected:
 	Character* target_;
 
 	GameEngineFSM deathState_;
-	//
+
+
+	// 군중 제어
+	float timerStun_;
+	
+	float timerHyunwooE_;
+	float4 dirHyunwooE_;
 
 	// 그 외
 	MousePointer* mouse_;

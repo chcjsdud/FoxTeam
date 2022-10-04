@@ -524,6 +524,9 @@ void Character::initState()
 	attackState_.CreateState(MakeState(Character, QSkill));
 	attackState_.CreateState(MakeState(Character, ESkill));
 
+	
+	crowdControlState_.CreateState(MakeState(Character, HyunwooE));
+
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
 
 
@@ -531,6 +534,8 @@ void Character::initState()
 	mainState_ << "NormalState";
 
 	normalState_ << "Watch";
+
+	crowdControlState_ << "HyunwooE";
 
 	deathState_ << "PlayerDeath";
 }
@@ -840,8 +845,53 @@ void Character::startStun()
 void Character::updateStun(float _deltaTime)
 {
 
+
+
 	mainState_.ChangeState("NormalState");
 
+
+}
+
+void Character::startHyunwooE()
+{
+	timerHyunwooE_ = 0.0f;
+
+}
+
+void Character::updateHyunwooE(float _deltaTime)
+{
+	timerHyunwooE_ += _deltaTime;
+
+	float4 tempPos = GetTransform()->GetWorldPosition();
+
+	float4 knockBackDir = tempPos - dirHyunwooE_;
+	knockBackDir.Normalize3D();
+
+	float4 knockBackSpeed = knockBackDir * 1000.f * _deltaTime;
+	float4 nextMovePosition = GetTransform()->GetWorldPosition() + knockBackDir;
+
+	float temp;
+	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+	{
+		// º®²á
+		timerHyunwooE_ = 0.0f;
+		dirHyunwooE_ = float4::ZERO;
+
+		changeAnimationWait();
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Watch", true);
+	}
+	else if (0.5f <= timerHyunwooE_)
+	{
+		timerHyunwooE_ = 0.0f;
+		// ³Ë¹éÀÌ ³¡³µ´Ù.
+		dirHyunwooE_ = float4::ZERO;
+
+		changeAnimationWait();
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Watch", true);
+		return;
+	}
 
 }
 

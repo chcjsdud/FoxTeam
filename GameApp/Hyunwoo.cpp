@@ -9,8 +9,9 @@
 #include <GameEngine/GameEngineLevelControlWindow.h>
 #include "MousePointer.h"
 #include "LumiaMap.h"
+#include "Character.h"
 Hyunwoo::Hyunwoo()
-	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false)
+	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr)
 {
 
 }
@@ -130,6 +131,14 @@ void Hyunwoo::initHyunwooCollision()
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_Q->SetCollisionType(CollisionType::OBBBox3D);
 	collision_Q->Off();
+
+	collision_E = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	collision_E->GetTransform()->SetLocalPosition({ 0.f,0.f,0.f });
+	collision_E->GetTransform()->SetLocalScaling({ 150.f });
+	collision_E->SetCollisionGroup(eCollisionGroup::PlayerAttack);
+	collision_E->SetCollisionType(CollisionType::OBBBox3D);
+	collision_E->Off();
+
 }
 
 void Hyunwoo::changeAnimationRun()
@@ -152,6 +161,10 @@ void Hyunwoo::changeAnimationBasicAttack()
 
 void Hyunwoo::onStartQSkill()
 {
+	timer_collision_Q = 0.0f;
+	timer_end_Q = 0.0f;
+	b_Qhit_ = false;
+
 	curAnimation_ = "SkillQ";
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
@@ -261,9 +274,20 @@ void Hyunwoo::onUpdateWSkill(float _deltaTime)
 
 void Hyunwoo::onStartESkill()
 {
+	timer_Dash_E = 0.0f;
+	b_Ehit_ = false;
+	collision_E->On();
+
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.0f);
 	direction_ = mousePosition - GetTransform()->GetWorldPosition(); // 커서 위치가 돌진 방향이 된다.
 	direction_.Normalize3D();
+
+	float4 cross = float4::Cross3D(direction_, { 0.0f, 0.0f, 1.0f });
+	cross.Normalize3D();
+
+	float angle = float4::DegreeDot3DToACosAngle(direction_, { 0.0f, 0.0f, 1.0f });
+
+	transform_.SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
 
 	curAnimation_ = "SkillE_start";
 	renderer_->ChangeFBXAnimation("SkillE_start", true);
@@ -272,6 +296,11 @@ void Hyunwoo::onStartESkill()
 
 void Hyunwoo::onUpdateESkill(float _deltaTime)
 {
+	if (true == collision_E->IsUpdate())
+	{
+		GetLevel()->PushDebugRender(collision_E->GetTransform(), CollisionType::OBBBox3D, float4::WHITE);
+	}
+
 	if (true == renderer_->IsCurrentAnimationEnd())
 	{
 		curAnimation_ = "SkillE_loop";
@@ -290,17 +319,78 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 		if (0.5f <= timer_Dash_E)
 		{
 			timer_Dash_E = 0.0f;
+			collision_E->Off();
+			// 대쉬가 끝났다.
+			if (!destinations_.empty()) // 만약 이전에 이동을 명령한 경로가 아직 있다면? 
+			{
+				destination_ = GetTransform()->GetWorldPosition();
+				destinations_.clear();
+				// 목적지를 현 위치로 만들어 주고 클리어
+			}
+			b_Ehit_ = false;
 			changeAnimationWait();
 			mainState_.ChangeState("NormalState", true);
 			normalState_.ChangeState("Watch", true);
 			return;
 		}
 
+
+			// 여기서 피격 충돌 판정이 나옴
+			auto collisionList = collision_E->GetCollisionList(eCollisionGroup::Player);
+		
+			if (false == b_Ehit_)
+			{
+				for (GameEngineCollision* col : collisionList)
+				{
+					GameEngineActor* actor = col->GetActor();
+					Character* character = nullptr;
+
+					if (nullptr != actor && actor != this)
+					{
+						character = dynamic_cast<Character*>(actor);
+
+						if (nullptr != character)
+						{
+
+							character->Damage(150.0f);
+							character->dirHyunwooE_ = direction_;
+							character->mainState_.ChangeState("CrowdControlState", true);
+							character->crowdControlState_.ChangeState("HyunwooE", true);
+
+							CharStatPacket packet;
+							packet.SetTargetIndex(character->GetIndex());
+							packet.SetStat(*(character->GetStat()));
+
+							if (true == GameServer::GetInstance()->IsOpened())
+							{
+								GameServer::GetInstance()->Send(&packet);
+							}
+							else if (true == GameClient::GetInstance()->IsConnected())
+							{
+								GameClient::GetInstance()->Send(&packet);
+							}
+						}
+					}
+				}
+				b_Ehit_ = true;
+			}
+
+			
+
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}
 	else
 	{
 		timer_Dash_E = 0.0f;
+		collision_E->Off();
+		b_Ehit_ = false;
+
+		if (!destinations_.empty())
+		{
+			destination_ = GetTransform()->GetWorldPosition();
+			destinations_.clear();
+		}
+	
 		changeAnimationWait();
 		mainState_.ChangeState("NormalState", true);
 		normalState_.ChangeState("Watch", true);

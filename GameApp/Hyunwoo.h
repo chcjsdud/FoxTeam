@@ -61,4 +61,6 @@ private:
 
 
 	float timer_Dash_E;		// 대쉬 지속시간
+	GameEngineCollision* collision_E;
+	bool b_Ehit_;
 };
