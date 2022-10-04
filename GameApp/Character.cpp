@@ -191,6 +191,7 @@ void Character::getItem(int _index)
 		}
 
 		invenItem = Item;
+		uiController_->GetInventoryUI()->PushItem(Item);
 		itemBoxmanager_->DeleteItemFromItemBox(_index);
 		break;
 	}

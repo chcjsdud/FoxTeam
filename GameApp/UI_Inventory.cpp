@@ -30,7 +30,7 @@ UI_Inventory::~UI_Inventory()
 void UI_Inventory::Start()
 {
 	BackGroundPos = { 248.0f, -315.0f, 0.0f };
-	BasicSlotPos = { 142.0f, -309.0f, 10.0f };
+	BasicSlotPos = { 141.0f, -309.0f, -1.0f };
 	SlotXPivot = { 47.0f, 0.0f, 0.0f };
 	SlotYPivot = { 0.0f, -33.0f, 0.0f };
 	SlotSize = { 44.0f,27.0f };
@@ -133,11 +133,15 @@ void UI_Inventory::Update(float _Time)
 	}
 
 	//제대로 나옴
+
+	ItemRenderCheck();
+
 	//Slot0_BGRenderer->GetTransform()->SetLocalPosition({0.f, 0.f, -2.f});
 	//Slot0_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
 	//Slot0_BGRenderer->SetImage("ItemBg_Legendary.png");
 
-	ItemRenderCheck();
+
+
 
 	//UI 온오프 체크
 	{
@@ -252,6 +256,9 @@ void UI_Inventory::ItemRenderCheck()
 		Slot0_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot0_Item));
 		Slot0_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot0_IconRenderer->GetTransform()->SetLocalPosition((Slot0_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+		Slot0_BGRenderer->On();
+		Slot0_IconRenderer->On();
 	}
 	else
 	{
@@ -269,6 +276,9 @@ void UI_Inventory::ItemRenderCheck()
 		Slot1_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot1_Item));
 		Slot1_IconRenderer->GetTransform()->SetLocalScaling(Slot1_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot1_IconRenderer->GetTransform()->SetLocalPosition((Slot1_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
+
+		Slot1_BGRenderer->On();
+		Slot1_IconRenderer->On();
 	}
 	else
 	{
@@ -287,6 +297,8 @@ void UI_Inventory::ItemRenderCheck()
 		Slot2_IconRenderer->GetTransform()->SetLocalScaling(Slot2_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot2_IconRenderer->GetTransform()->SetLocalPosition((Slot2_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
 
+		Slot2_BGRenderer->On();
+		Slot2_IconRenderer->On();
 	}
 	else
 	{
@@ -298,12 +310,14 @@ void UI_Inventory::ItemRenderCheck()
 	{
 		Slot3_BGRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 		Slot3_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		UI_ItemSettingHelper::SetItemRenderValue(Slot2_BGRenderer, Slot2_Item);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot3_BGRenderer, Slot3_Item);
 
 		Slot3_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot3_Item));
 		Slot3_IconRenderer->GetTransform()->SetLocalScaling(Slot3_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot3_IconRenderer->GetTransform()->SetLocalPosition((Slot3_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
 
+		Slot3_BGRenderer->On();
+		Slot3_IconRenderer->On();
 	}
 	else
 	{
@@ -321,6 +335,8 @@ void UI_Inventory::ItemRenderCheck()
 		Slot4_IconRenderer->GetTransform()->SetLocalScaling(Slot4_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot4_IconRenderer->GetTransform()->SetLocalPosition((Slot4_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
 
+		Slot4_BGRenderer->On();
+		Slot4_IconRenderer->On();
 	}
 	else
 	{
@@ -338,6 +354,8 @@ void UI_Inventory::ItemRenderCheck()
 		Slot5_IconRenderer->GetTransform()->SetLocalScaling(Slot5_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot5_IconRenderer->GetTransform()->SetLocalPosition((Slot5_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
 
+		Slot5_BGRenderer->On();
+		Slot5_IconRenderer->On();
 	}
 	else
 	{
@@ -355,6 +373,8 @@ void UI_Inventory::ItemRenderCheck()
 		Slot6_IconRenderer->GetTransform()->SetLocalScaling(Slot6_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot6_IconRenderer->GetTransform()->SetLocalPosition((Slot6_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
 
+		Slot6_BGRenderer->On();
+		Slot6_IconRenderer->On();
 	}
 	else
 	{
@@ -372,6 +392,8 @@ void UI_Inventory::ItemRenderCheck()
 		Slot7_IconRenderer->GetTransform()->SetLocalScaling(Slot7_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot7_IconRenderer->GetTransform()->SetLocalPosition((Slot7_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
 
+		Slot7_BGRenderer->On();
+		Slot7_IconRenderer->On();
 	}
 	else
 	{
@@ -389,6 +411,8 @@ void UI_Inventory::ItemRenderCheck()
 		Slot8_IconRenderer->GetTransform()->SetLocalScaling(Slot8_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot8_IconRenderer->GetTransform()->SetLocalPosition((Slot8_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
 
+		Slot8_BGRenderer->On();
+		Slot8_IconRenderer->On();
 	}
 	else
 	{
@@ -407,6 +431,8 @@ void UI_Inventory::ItemRenderCheck()
 		Slot9_IconRenderer->GetTransform()->SetLocalScaling(Slot9_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot9_IconRenderer->GetTransform()->SetLocalPosition((Slot9_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
 
+		Slot9_BGRenderer->On();
+		Slot9_IconRenderer->On();
 	}
 	else
 	{
