@@ -1,11 +1,6 @@
 #include "PreCompile.h"
 #include "PlayerUIController.h"
 
-#include "UI_CharPicture.h"
-#include "UI_Equip.h"
-#include "UI_Inventory.h"
-#include "UI_Skill.h"
-#include "UI_Status.h"
 
 PlayerUIController::PlayerUIController() // default constructer 디폴트 생성자
 {
@@ -39,6 +34,6 @@ void PlayerUIController::Start()
 
 void PlayerUIController::Update(float _DeltaTime)
 {
-
+	
 }
 

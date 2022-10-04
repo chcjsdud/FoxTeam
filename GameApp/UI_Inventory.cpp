@@ -29,10 +29,8 @@ UI_Inventory::~UI_Inventory()
 
 void UI_Inventory::Start()
 {
-
-
 	BackGroundPos = { 248.0f, -315.0f, 0.0f };
-	BasicSlotPos = { 142.0f, -309.0f, 0.0f };
+	BasicSlotPos = { 142.0f, -309.0f, 10.0f };
 	SlotXPivot = { 47.0f, 0.0f, 0.0f };
 	SlotYPivot = { 0.0f, -33.0f, 0.0f };
 	SlotSize = { 44.0f,27.0f };
@@ -133,7 +131,14 @@ void UI_Inventory::Update(float _Time)
 	{
 		//TopRenderer->SetAlpha(Time);
 	}
-	
+
+	//제대로 나옴
+	//Slot0_BGRenderer->GetTransform()->SetLocalPosition({0.f, 0.f, -2.f});
+	//Slot0_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
+	//Slot0_BGRenderer->SetImage("ItemBg_Legendary.png");
+
+	ItemRenderCheck();
+
 	//UI 온오프 체크
 	{
 		if (false == UIOn)
@@ -237,7 +242,8 @@ void UI_Inventory::EmptySlotReturn(ItemBase* _TargetSlot)
 
 void UI_Inventory::ItemRenderCheck()
 {
-	if(Slot0_Item != nullptr)
+
+	if (Slot0_Item != nullptr)
 	{
 		Slot0_BGRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
 		Slot0_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
@@ -263,8 +269,6 @@ void UI_Inventory::ItemRenderCheck()
 		Slot1_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot1_Item));
 		Slot1_IconRenderer->GetTransform()->SetLocalScaling(Slot1_IconRenderer->GetCurrentTexture()->GetTextureSize());
 		Slot1_IconRenderer->GetTransform()->SetLocalPosition((Slot1_BGRenderer->GetTransform()->GetLocalPosition() + float4{ 0.0f, 0.0f, -1.0f, 0.0f }));
-
-
 	}
 	else
 	{

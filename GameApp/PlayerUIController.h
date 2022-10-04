@@ -5,12 +5,11 @@
 // 설명 : 
 
 
-class UI_CharPicture;
-class UI_Equip;
-class UI_Inventory;
-class UI_ItemBox;
-class UI_Skill;
-class UI_Status;
+#include "UI_CharPicture.h"
+#include "UI_Equip.h"
+#include "UI_Inventory.h"
+#include "UI_Skill.h"
+#include "UI_Status.h"
 
 
 class PlayerUIController : public GameEngineActor
@@ -26,6 +25,31 @@ public:
 public:
 	void InitUI();
 	//UI컨트롤러가 내 캐릭터가 뭔지 정보를 가지고있는게 좋을듯
+
+	UI_CharPicture* GetCharPictureUI()
+	{
+		return charPicture_UI;
+	}
+
+	UI_Equip* GetEquipUI()
+	{
+		return equip_UI;
+	}
+
+	UI_Inventory* GetInventoryUI()
+	{
+		return inventory_UI;
+	}
+
+	UI_Skill* GetSkillUI()
+	{
+		return skill_UI;
+	}
+
+	UI_Status* GetStatusUI()
+	{
+		return status_UI;
+	}
 
 public:
 

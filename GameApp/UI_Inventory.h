@@ -31,6 +31,9 @@ public:
 	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
 	void GetInventoryInfo(list<ItemBase*> _ItemList);
 
+	//슬롯에 아이템이 들어있을때 이미지 렌더를 위한 함수
+	void ItemRenderCheck();
+
 protected:
 	GameEngineUIRenderer* Renderer;
 	float Time;
@@ -43,8 +46,6 @@ private:
 	//자동으로 빈슬롯을 찾아서 ItemBase를 세팅해주는 함수
 	void EmptySlotReturn(ItemBase* _TargetSlot);
 
-	//슬롯에 아이템이 들어있을때 이미지 렌더를 위한 함수
-	void ItemRenderCheck();
 
 
 
