@@ -21,3 +21,35 @@ string UI_ItemSettingHelper::GetItemTextureName(ItemBase* _Item)
 
 	return name + Ext;
 }
+
+void UI_ItemSettingHelper::SetItemRenderValue(GameEngineUIRenderer* _Renderer, ItemBase* _Item)
+{
+	ItemTier Tier =	_Item->GetItemTier();
+
+	switch (Tier)
+	{
+	case ItemTier::NONE:
+		_Renderer->SetImage("ItemBg_Common.png");
+		break;
+	case ItemTier::COMMON:
+		_Renderer->SetImage("ItemBg_Common.png");
+		break;
+	case ItemTier::UNCOMMON:
+		_Renderer->SetImage("ItemBg_UnCommon.png");
+		break;
+	case ItemTier::RARE:
+		_Renderer->SetImage("ItemBg_Rare.png");
+		break;
+	case ItemTier::EPIC:
+		_Renderer->SetImage("ItemBg_Epic.png");
+		break;
+	case ItemTier::LEGENDARY:
+		_Renderer->SetImage("ItemBg_Legendary.png");
+		break;
+	case ItemTier::MAX:
+		_Renderer->SetImage("ItemBg_Common.png");
+		break;
+	default:
+		break;
+	}
+}

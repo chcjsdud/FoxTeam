@@ -449,7 +449,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot0_BGRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
 		Slot0_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot0_BGRenderer->SetImage("ItemBg_Common.png");
+		UI_ItemSettingHelper::SetItemRenderValue(Slot0_BGRenderer, Slot0_Item);
 
 		Slot0_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot0_Item));
 		Slot0_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
@@ -467,7 +467,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot1_BGRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
 		Slot1_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot1_BGRenderer->SetImage("ItemBg_Common.png");
+		UI_ItemSettingHelper::SetItemRenderValue(Slot1_BGRenderer, Slot1_Item);
 
 		Slot1_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot1_Item));
 		Slot1_IconRenderer->GetTransform()->SetLocalScaling(Slot1_IconRenderer->GetCurrentTexture()->GetTextureSize());
@@ -485,7 +485,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot2_BGRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
 		Slot2_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot2_BGRenderer->SetImage("ItemBg_Common.png");
+		UI_ItemSettingHelper::SetItemRenderValue(Slot2_BGRenderer, Slot2_Item);
 
 		Slot2_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot2_Item));
 		Slot2_IconRenderer->GetTransform()->SetLocalScaling(Slot2_IconRenderer->GetCurrentTexture()->GetTextureSize());
@@ -501,7 +501,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{		
 		Slot3_BGRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 		Slot3_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot3_BGRenderer->SetImage("ItemBg_Common.png");
+		UI_ItemSettingHelper::SetItemRenderValue(Slot2_BGRenderer, Slot2_Item);
 
 		Slot3_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot3_Item));
 		Slot3_IconRenderer->GetTransform()->SetLocalScaling(Slot3_IconRenderer->GetCurrentTexture()->GetTextureSize());
@@ -517,7 +517,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot4_BGRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
 		Slot4_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot4_BGRenderer->SetImage("ItemBg_Common.png");
+		UI_ItemSettingHelper::SetItemRenderValue(Slot4_BGRenderer, Slot4_Item);
 
 		Slot4_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot4_Item));
 		Slot4_IconRenderer->GetTransform()->SetLocalScaling(Slot4_IconRenderer->GetCurrentTexture()->GetTextureSize());
@@ -533,7 +533,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot5_BGRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
 		Slot5_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot5_BGRenderer->SetImage("ItemBg_Common.png");
+		UI_ItemSettingHelper::SetItemRenderValue(Slot5_BGRenderer, Slot5_Item);
 
 		Slot5_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot5_Item));
 		Slot5_IconRenderer->GetTransform()->SetLocalScaling(Slot5_IconRenderer->GetCurrentTexture()->GetTextureSize());
@@ -549,7 +549,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot6_BGRenderer->GetTransform()->SetLocalPosition(Slot6Collision->GetTransform()->GetLocalPosition());
 		Slot6_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot6_BGRenderer->SetImage("ItemBg_Common.png");
+		UI_ItemSettingHelper::SetItemRenderValue(Slot6_BGRenderer, Slot6_Item);
 
 		Slot6_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot6_Item));
 		Slot6_IconRenderer->GetTransform()->SetLocalScaling(Slot6_IconRenderer->GetCurrentTexture()->GetTextureSize());
@@ -565,7 +565,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{
 		Slot7_BGRenderer->GetTransform()->SetLocalPosition(Slot7Collision->GetTransform()->GetLocalPosition());
 		Slot7_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		Slot7_BGRenderer->SetImage("ItemBg_Common.png");
+		UI_ItemSettingHelper::SetItemRenderValue(Slot7_BGRenderer, Slot7_Item);
 
 		Slot7_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot7_Item));
 		Slot7_IconRenderer->GetTransform()->SetLocalScaling(Slot7_IconRenderer->GetCurrentTexture()->GetTextureSize());
