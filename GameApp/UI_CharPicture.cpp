@@ -20,6 +20,39 @@ UI_CharPicture::~UI_CharPicture()
 	//}
 }
 
+void UI_CharPicture::SetJobType(JobType _myjob)
+{
+	switch (_myjob)
+	{
+	case JobType::NONE:
+		break;
+	case JobType::YUKI:
+		break;
+	case JobType::FIORA:
+		break;
+	case JobType::ZAHIR:
+		break;
+	case JobType::NADINE:
+		break;
+	case JobType::HYUNWOO:
+		CharRenderer->SetImage("Char_UI_Hyunwoo.png", "PointSmp");
+		break;
+	case JobType::JACKIE:
+		break;
+	case JobType::RIO:
+		CharRenderer->SetImage("Char_UI_Rio.png", "PointSmp");
+		break;
+	case JobType::AYA:
+		break;
+	case JobType::DUMMY:
+		break;
+	case JobType::MAX:
+		break;
+	default:
+		break;
+	}
+}
+
 void UI_CharPicture::Start()
 {
 	//리소스들을 SetImage하고 위치를 조정합니다

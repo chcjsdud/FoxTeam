@@ -25,6 +25,8 @@ public:
 	{
 		Player_ = _Player;
 	}
+		
+	void SetJobType(JobType _myjob);
 
 protected:
 	GameEngineUIRenderer* BackGroundRenderer;

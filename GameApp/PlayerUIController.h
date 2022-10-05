@@ -67,7 +67,5 @@ private:
 	UI_Skill* skill_UI;
 	UI_Status* status_UI;
 
-	JobType job_UI;
-
 };
 
