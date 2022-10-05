@@ -136,14 +136,14 @@ void Character::Update(float _DeltaTime)
 		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::OBBBox3D, float4::RED);
 	}
 
-	if (false == bFocused_)
-	{
-		// direction 에 따라 로테이션을 바꿔 주고
-		// 적절한 애니메이션으로 바꿔 주는 코드가 여기에도 존재해야 함.
+	//if (false == bFocused_)
+	//{
+	//	// direction 에 따라 로테이션을 바꿔 주고
+	//	// 적절한 애니메이션으로 바꿔 주는 코드가 여기에도 존재해야 함.
 
 
-		return;
-	}
+	//	return;
+	//}
 
 	checkCurrentNavFace();
 	checkItemBox();
@@ -592,7 +592,7 @@ void Character::initState()
 	crowdControlState_.CreateState(MakeState(Character, Stun));
 	crowdControlState_.CreateState(MakeState(Character, Knockback));
 	crowdControlState_.CreateState(MakeState(Character, WallSlam));
-	crowdControlState_.CreateState(MakeState(Character, HyunwooE));
+	//crowdControlState_.CreateState(MakeState(Character, HyunwooE));
 
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
 
@@ -602,7 +602,9 @@ void Character::initState()
 
 	normalState_ << "Watch";
 
-	crowdControlState_ << "HyunwooE";
+	//crowdControlState_ << "HyunwooE";
+
+	crowdControlState_ << "Stun";
 
 	deathState_ << "PlayerDeath";
 }
@@ -610,6 +612,11 @@ void Character::initState()
 
 void Character::inputProcess(float _deltaTime)
 {
+	if (!bFocused_)
+	{
+		return;
+	}
+
 	if (mouse_ == nullptr)
 	{
 		return;
@@ -736,20 +743,21 @@ void Character::startNormalState()
 
 void Character::updateNormalState(float _deltaTime)
 {
-
-
-	if (true == GameEngineInput::GetInst().Down("Q"))
+	if (bFocused_)
 	{
-		mainState_.ChangeState("AttackState", true);
-		attackState_.ChangeState("QSkill", true);
-		return;
-	}
+		if (true == GameEngineInput::GetInst().Down("Q"))
+		{
+			mainState_.ChangeState("AttackState", true);
+			attackState_.ChangeState("QSkill", true);
+			return;
+		}
 
-	if (true == GameEngineInput::GetInst().Down("E"))
-	{
-		mainState_.ChangeState("AttackState", true);
-		attackState_.ChangeState("ESkill", true);
-		return;
+		if (true == GameEngineInput::GetInst().Down("E"))
+		{
+			mainState_.ChangeState("AttackState", true);
+			attackState_.ChangeState("ESkill", true);
+			return;
+		}
 	}
 
 	// Normal State 업데이트
@@ -961,47 +969,47 @@ void Character::updateWallSlam(float _deltaTime)
 	}
 }
 
-void Character::startHyunwooE()
-{
-	timerHyunwooE_ = 0.0f;
-}
-
-void Character::updateHyunwooE(float _deltaTime)
-{
-	timerHyunwooE_ += _deltaTime;
-
-	float4 tempPos = GetTransform()->GetWorldPosition();
-
-	float4 knockBackDir = tempPos - dirHyunwooE_;
-	knockBackDir.Normalize3D();
-
-	float4 knockBackSpeed = knockBackDir * 1000.f * _deltaTime;
-	float4 nextMovePosition = GetTransform()->GetWorldPosition() + knockBackDir;
-
-	float temp;
-	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
-	{
-		// 벽꿍
-		timerHyunwooE_ = 0.0f;
-		dirHyunwooE_ = float4::ZERO;
-
-		changeAnimationWait();
-		mainState_.ChangeState("NormalState", true);
-		normalState_.ChangeState("Watch", true);
-	}
-	else if (0.5f <= timerHyunwooE_)
-	{
-		timerHyunwooE_ = 0.0f;
-		// 넉백이 끝났다.
-		dirHyunwooE_ = float4::ZERO;
-
-		changeAnimationWait();
-		mainState_.ChangeState("NormalState", true);
-		normalState_.ChangeState("Watch", true);
-		return;
-	}
-
-}
+//void Character::startHyunwooE()
+//{
+//	timerHyunwooE_ = 0.0f;
+//}
+//
+//void Character::updateHyunwooE(float _deltaTime)
+//{
+//	timerHyunwooE_ += _deltaTime;
+//
+//	float4 tempPos = GetTransform()->GetWorldPosition();
+//
+//	float4 knockBackDir = tempPos - dirHyunwooE_;
+//	knockBackDir.Normalize3D();
+//
+//	float4 knockBackSpeed = knockBackDir * 1000.f * _deltaTime;
+//	float4 nextMovePosition = GetTransform()->GetWorldPosition() + knockBackDir;
+//
+//	float temp;
+//	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+//	{
+//		// 벽꿍
+//		timerHyunwooE_ = 0.0f;
+//		dirHyunwooE_ = float4::ZERO;
+//
+//		changeAnimationWait();
+//		mainState_.ChangeState("NormalState", true);
+//		normalState_.ChangeState("Watch", true);
+//	}
+//	else if (0.5f <= timerHyunwooE_)
+//	{
+//		timerHyunwooE_ = 0.0f;
+//		// 넉백이 끝났다.
+//		dirHyunwooE_ = float4::ZERO;
+//
+//		changeAnimationWait();
+//		mainState_.ChangeState("NormalState", true);
+//		normalState_.ChangeState("Watch", true);
+//		return;
+//	}
+//
+//}
 
 void Character::startBasicAttack()
 {

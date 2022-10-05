@@ -82,10 +82,10 @@ void Hyunwoo::Update(float _deltaTime)
 		controlWindow->AddText("P1Dir" + std::to_string(direction_.x) + ", " + std::to_string(direction_.z));
 		controlWindow->AddText("P1Pos " + std::to_string(collision_->GetTransform()->GetWorldPosition().x) + " , " + std::to_string(collision_->GetTransform()->GetWorldPosition().z));
 		controlWindow->AddText("ColQpos " + std::to_string(collision_Q->GetTransform()->GetWorldPosition().x) + ", " + std::to_string(collision_Q->GetTransform()->GetWorldPosition().z));
-		
+
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
 		controlWindow->AddText("MPos : " + std::to_string(position.x) + ", " + std::to_string(position.z));
-	
+
 	}
 
 }
@@ -113,12 +113,12 @@ void Hyunwoo::initRendererAndAnimation()
 
 	renderer_->ChangeFBXAnimation("Wait");
 
-//	tempRenderer_ = CreateTransformComponent<GameEngineRenderer>(GetTransform());
-//	tempRenderer_->SetRenderingPipeLine("DebugBox");
-//	tempRenderer_->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-//	tempRenderer_->GetTransform()->SetLocalScaling({ 10.f,10.f,10.f });
-//
-//	tempRenderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4::GREEN);
+	//	tempRenderer_ = CreateTransformComponent<GameEngineRenderer>(GetTransform());
+	//	tempRenderer_->SetRenderingPipeLine("DebugBox");
+	//	tempRenderer_->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	//	tempRenderer_->GetTransform()->SetLocalScaling({ 10.f,10.f,10.f });
+	//
+	//	tempRenderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4::GREEN);
 
 }
 
@@ -127,7 +127,7 @@ void Hyunwoo::initHyunwooCollision()
 {
 	collision_Q = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	collision_Q->GetTransform()->SetLocalPosition({ 0.f,0.f,300.f });
-	collision_Q->GetTransform()->SetLocalScaling({10.0f, 10.0f, 10.0f});
+	collision_Q->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_Q->SetCollisionType(CollisionType::OBBBox3D);
 	collision_Q->Off();
@@ -206,7 +206,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 
 		auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
-		
+
 		for (GameEngineCollision* col : collisionList)
 		{
 			GameEngineActor* actor = col->GetActor();
@@ -224,14 +224,14 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 					// 충돌체에 감지된 대상에게 실제 대미지를 가하는 코드입니다.
 					character->Damage(300.0f);
 					//pm->GetPlayerList()[character->GetIndex()].stat_->HP -= 300.0f;
-					
+
 
 
 					// 대미지가 차감된 Status 를 패킷으로 넘겨줍니다.
 					CharStatPacket packet;
 					packet.SetTargetIndex(character->GetIndex());
 					packet.SetStat(*(character->GetStat()));
-					
+
 					if (true == GameServer::GetInstance()->IsOpened())
 					{
 						GameServer::GetInstance()->Send(&packet);
@@ -321,12 +321,10 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 			timer_Dash_E = 0.0f;
 			collision_E->Off();
 			// 대쉬가 끝났다.
-			if (!destinations_.empty()) // 만약 이전에 이동을 명령한 경로가 아직 있다면? 
-			{
-				destination_ = GetTransform()->GetWorldPosition();
-				destinations_.clear();
-				// 목적지를 현 위치로 만들어 주고 클리어
-			}
+			destination_ = GetTransform()->GetWorldPosition();
+			destinations_.clear();
+			// 목적지를 현 위치로 만들어 주고 클리어
+
 			b_Ehit_ = false;
 			changeAnimationWait();
 			mainState_.ChangeState("NormalState", true);
@@ -335,47 +333,47 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 		}
 
 
-			// 여기서 피격 충돌 판정이 나옴
-			auto collisionList = collision_E->GetCollisionList(eCollisionGroup::Player);
-		
-			if (false == b_Ehit_)
+		// 여기서 피격 충돌 판정이 나옴
+		auto collisionList = collision_E->GetCollisionList(eCollisionGroup::Player);
+
+		if (false == b_Ehit_)
+		{
+			for (GameEngineCollision* col : collisionList)
 			{
-				for (GameEngineCollision* col : collisionList)
+				GameEngineActor* actor = col->GetActor();
+				Character* character = nullptr;
+
+				if (nullptr != actor && actor != this)
 				{
-					GameEngineActor* actor = col->GetActor();
-					Character* character = nullptr;
+					character = dynamic_cast<Character*>(actor);
 
-					if (nullptr != actor && actor != this)
+					if (nullptr != character)
 					{
-						character = dynamic_cast<Character*>(actor);
+						character->Damage(150.0f);
+						character->WallSlam(0.2f, direction_ * 3000.f, 0.5f);
+						//character->dirHyunwooE_ = direction_;
+						//character->mainState_.ChangeState("CrowdControlState", true);
+						//character->crowdControlState_.ChangeState("HyunwooE", true);
 
-						if (nullptr != character)
+						CharStatPacket packet;
+						packet.SetTargetIndex(character->GetIndex());
+						packet.SetStat(*(character->GetStat()));
+
+						if (true == GameServer::GetInstance()->IsOpened())
 						{
-
-							character->Damage(150.0f);
-							character->dirHyunwooE_ = direction_;
-							character->mainState_.ChangeState("CrowdControlState", true);
-							character->crowdControlState_.ChangeState("HyunwooE", true);
-
-							CharStatPacket packet;
-							packet.SetTargetIndex(character->GetIndex());
-							packet.SetStat(*(character->GetStat()));
-
-							if (true == GameServer::GetInstance()->IsOpened())
-							{
-								GameServer::GetInstance()->Send(&packet);
-							}
-							else if (true == GameClient::GetInstance()->IsConnected())
-							{
-								GameClient::GetInstance()->Send(&packet);
-							}
+							GameServer::GetInstance()->Send(&packet);
 						}
+						else if (true == GameClient::GetInstance()->IsConnected())
+						{
+							GameClient::GetInstance()->Send(&packet);
+						}
+
+						b_Ehit_ = true;
 					}
 				}
-				b_Ehit_ = true;
 			}
-
 			
+		}
 
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}
@@ -385,12 +383,11 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 		collision_E->Off();
 		b_Ehit_ = false;
 
-		if (!destinations_.empty())
-		{
-			destination_ = GetTransform()->GetWorldPosition();
-			destinations_.clear();
-		}
-	
+
+		destination_ = GetTransform()->GetWorldPosition();
+		destinations_.clear();
+
+
 		changeAnimationWait();
 		mainState_.ChangeState("NormalState", true);
 		normalState_.ChangeState("Watch", true);

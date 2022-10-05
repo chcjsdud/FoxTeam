@@ -181,8 +181,8 @@ private:
 	void startWallSlam();
 	void updateWallSlam(float _deltaTime);
 
-	void startHyunwooE();
-	void updateHyunwooE(float _deltaTime);
+	//void startHyunwooE();
+	//void updateHyunwooE(float _deltaTime);
 
 #pragma endregion
 
