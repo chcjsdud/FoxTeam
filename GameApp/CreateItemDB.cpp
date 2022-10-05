@@ -22,16 +22,16 @@ ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type, It
 	switch (_Type)
 	{
 	case ItemType::NONE:
-		NewItem = GameEngineCore::CurrentLevel()->CreateActor<ItemBase>();
+		NewItem = GetLevel()->CreateActor<ItemBase>();
 		break;
 	case ItemType::EQUIPMENT:
-		NewItem = GameEngineCore::CurrentLevel()->CreateActor<EquipmentItem>();
+		NewItem = GetLevel()->CreateActor<EquipmentItem>();
 		break;
 	case ItemType::USEABLE:
-		NewItem = GameEngineCore::CurrentLevel()->CreateActor<UseableItem>();
+		NewItem = GetLevel()->CreateActor<UseableItem>();
 		break;
 	case ItemType::MISC:
-		NewItem = GameEngineCore::CurrentLevel()->CreateActor<MiscItem>();
+		NewItem = GetLevel()->CreateActor<MiscItem>();
 		break;
 	default:
 		break;
