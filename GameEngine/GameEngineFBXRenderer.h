@@ -122,6 +122,8 @@ private:
 	FBXAnimation* currentAnimation_;
 	FBXAnimation* overrideAnimation_;
 
+	float4 overrideBoneOffset_;
+
 	std::unordered_map<int, int> overrideBoneIndexCache_;
 
 

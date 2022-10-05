@@ -198,15 +198,12 @@ void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnima
 
 				if (CurData.FrameMat == NextData.FrameMat)
 				{
-					int a = 0;
 					return;
 				}
 
 				float4 LerpScale = float4::Lerp(CurData.S, NextData.S, CurFrameTime);
 				float4 SLerpQ = float4::SLerp(CurData.Q, NextData.Q, CurFrameTime);
 				float4 LerpPos = float4::Lerp(CurData.T, NextData.T, CurFrameTime);
-
-				size_t Size = sizeof(float4x4);
 
 				Render.BoneData[i] = BoneData->BonePos.Offset * float4x4::Affine(LerpScale, SLerpQ, LerpPos);
 			}
@@ -218,25 +215,25 @@ void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnima
 					return;
 				}
 
-				FbxExBoneFrameData& CurData = oa->PixAniData->AniFrameData[Render.Index][i].BoneMatData[oa->CurFrame];
-				FbxExBoneFrameData& NextData = oa->PixAniData->AniFrameData[Render.Index][i].BoneMatData[oaNextFrame];
+				FbxExBoneFrameData& oaCurData = oa->PixAniData->AniFrameData[Render.Index][i].BoneMatData[oa->CurFrame];
+				FbxExBoneFrameData& oaNextData = oa->PixAniData->AniFrameData[Render.Index][i].BoneMatData[oaNextFrame];
 
-				if (CurData.FrameMat == NextData.FrameMat)
+				if (oaCurData.FrameMat == oaNextData.FrameMat)
 				{
-					int a = 0;
 					return;
 				}
 
-				float4 LerpScale = float4::Lerp(CurData.S, NextData.S, oa->CurFrameTime);
-				float4 SLerpQ = float4::SLerp(CurData.Q, NextData.Q, oa->CurFrameTime);
-				float4 LerpPos = float4::Lerp(CurData.T, NextData.T, oa->CurFrameTime);
+				float4 oaLerpScale = float4::Lerp(oaCurData.S, oaNextData.S, oa->CurFrameTime);
+				float4 oaSLerpQ = float4::SLerp(oaCurData.Q, oaNextData.Q, oa->CurFrameTime);
+				float4 oaLerpPos = float4::Lerp(oaCurData.T, oaNextData.T, oa->CurFrameTime);
 
-				size_t Size = sizeof(float4x4);
+				float4x4 matOverrideAnim = float4x4::Affine(oaLerpScale, oaSLerpQ, oaLerpPos);
 
-				Render.BoneData[i] = BoneData->BonePos.Offset * float4x4::Affine(LerpScale, SLerpQ, LerpPos);
+				matOverrideAnim.vw += ParentRenderer->overrideBoneOffset_;
+
+				Render.BoneData[i] = BoneData->BonePos.Offset * matOverrideAnim;
+
 			}
-
-
 		}
 	}
 }

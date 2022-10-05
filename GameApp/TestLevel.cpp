@@ -34,7 +34,12 @@ void TestLevel::LevelUpdate(float _DeltaTime)
 
 void TestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
+	this->ClearAll();
 	Rio::ReleaseResource();
+
+	MainCameraActor_ = CreateActor<CameraActor>();
+	UICameraActor_ = CreateActor<CameraActor>();
+	UICameraActor_->GetCamera()->SetProjectionMode(ProjectionMode::Orthographic);
 }
 
 void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
