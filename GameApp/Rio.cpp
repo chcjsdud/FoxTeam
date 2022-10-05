@@ -108,6 +108,7 @@ void Rio::onStartQSkill()
 
 void Rio::onUpdateQSkill(float _deltaTime)
 {
+	moveProcess(_deltaTime);
 	if (renderer_->IsOverrideAnimationEnd())
 	{
 		renderer_->ClearOverrideAnimation();

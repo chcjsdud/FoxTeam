@@ -94,6 +94,8 @@ protected:
 
 #pragma endregion
 
+protected:
+	void moveProcess(float _deltaTime);
 
 private:
 	void initInput();
@@ -101,7 +103,6 @@ private:
 
 private:
 	void inputProcess(float _deltaTime);
-	void moveProcess(float _deltaTime);
 	void moveTick(float _deltaTime, const float4& _startPosition);
 	void setRotationTo(const float4& _destination, const float4 _startPosition);
 

@@ -459,7 +459,7 @@ void Character::MoveWithPathFind(const float4& _position)
 
 	destinations_.clear();
 
-	if ((destination_ - transform_.GetWorldPosition()).Len3D() > 400.f)
+	if ((destination_ - transform_.GetWorldPosition()).Len3D() > FT::Char::MOVE_PATH_FIND_DISTANCE)
 	{
 		destinations_ = currentMap_->FindPath(transform_.GetWorldPosition(), destination_);
 		if (destinations_.size() > 0)
@@ -714,7 +714,7 @@ void Character::updateNormalState(float _deltaTime)
 
 void Character::endNormalState()
 {
-	destination_ = transform_.GetWorldPosition();
+	//destination_ = transform_.GetWorldPosition();
 	destinations_.clear();
 }
 

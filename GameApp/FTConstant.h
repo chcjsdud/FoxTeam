@@ -6,6 +6,7 @@ namespace FT
 	namespace Char
 	{
 		const float MOVE_FINISH_CHECK_DISTANCE = 10.f;
+		const float MOVE_PATH_FIND_DISTANCE = 600.f;
 
 		const float DEFAULT_CRITICAL_DAMAGE_AMPLIFICATION = 1.65f;
 		const float DEFAULT_VISION_RANGE_DAY = 815.f;
