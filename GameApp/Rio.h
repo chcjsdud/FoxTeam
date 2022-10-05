@@ -20,6 +20,9 @@ public:
 	static void LoadResource();
 	static void ReleaseResource();
 
+public:
+	virtual JobType GetJobType() { return JobType::RIO; }
+
 protected:
 	void Start() override;
 	void Update(float _deltaTime) override;

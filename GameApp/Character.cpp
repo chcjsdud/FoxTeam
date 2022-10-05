@@ -495,12 +495,21 @@ void Character::Stun(float _stunTime)
 	mainState_ << "CrowdControlState";
 	crowdControlState_ << "Stun";
 	timerStun_ = _stunTime;
+	changeAnimationWait();
 }
 
 void Character::Knockback(float _knockbackTime, float4 _knockbackSpeed)
 {
 	mainState_ << "CrowdControlState";
-	crowdControlState_ << "Stun";
+	crowdControlState_ << "Knockback";
+	timerKnockback_ = _knockbackTime;
+	knockbackSpeed_ = _knockbackSpeed;
+}
+
+void Character::WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime)
+{
+	mainState_ << "CrowdControlState";
+	crowdControlState_ << "WallSlam";
 	timerKnockback_ = _knockbackTime;
 	knockbackSpeed_ = _knockbackSpeed;
 }
@@ -542,6 +551,7 @@ void Character::initState()
 
 	crowdControlState_.CreateState(MakeState(Character, Stun));
 	crowdControlState_.CreateState(MakeState(Character, Knockback));
+	crowdControlState_.CreateState(MakeState(Character, WallSlam));
 	crowdControlState_.CreateState(MakeState(Character, HyunwooE));
 
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
@@ -882,6 +892,33 @@ void Character::updateKnockback(float _deltaTime)
 	}
 
 	transform_.SetWorldPosition(knockbackSpeed_ * _deltaTime);
+}
+
+void Character::startWallSlam()
+{
+}
+
+void Character::updateWallSlam(float _deltaTime)
+{
+	timerKnockback_ -= _deltaTime;
+	if (timerKnockback_ <= 0.0f)
+	{
+		mainState_ << "NormalState";
+		return;
+	}
+
+	float4 moveSpeed = knockbackSpeed_ * _deltaTime;
+	float4 nextMovePosition = transform_.GetWorldPosition() + moveSpeed;
+
+	float temp;
+	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+	{
+		GetTransform()->SetWorldPosition(nextMovePosition);
+	}
+	else
+	{
+		Stun(timerStun_);
+	}
 }
 
 void Character::startHyunwooE()

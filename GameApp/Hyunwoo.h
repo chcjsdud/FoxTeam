@@ -18,6 +18,8 @@ public:
 	static void LoadResource();
 	static void ReleaseResource();
 
+public:
+	virtual JobType GetJobType() { return JobType::HYUNWOO; }
 
 protected:
 	void Start() override;

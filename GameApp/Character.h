@@ -44,6 +44,7 @@ public:
 	void Damage(float _amount);
 	void Stun(float _stunTime);
 	void Knockback(float _knockbackTime, float4 _knockbackSpeed);
+	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime);
 
 #pragma region GetterSetter
 public:
@@ -63,6 +64,9 @@ public:
 #pragma endregion
 
 #pragma region PureVirtualFunc
+public:
+	virtual JobType GetJobType() = 0;
+
 protected:
 	virtual void initRendererAndAnimation() = 0;
 
@@ -170,6 +174,9 @@ private:
 
 	void startKnockback();
 	void updateKnockback(float _deltaTime);
+
+	void startWallSlam();
+	void updateWallSlam(float _deltaTime);
 
 	void startHyunwooE();
 	void updateHyunwooE(float _deltaTime);
