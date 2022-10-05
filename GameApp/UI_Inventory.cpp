@@ -132,16 +132,7 @@ void UI_Inventory::Update(float _Time)
 		//TopRenderer->SetAlpha(Time);
 	}
 
-	//제대로 나옴
-
 	ItemRenderCheck();
-
-	//Slot0_BGRenderer->GetTransform()->SetLocalPosition({0.f, 0.f, -2.f});
-	//Slot0_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-	//Slot0_BGRenderer->SetImage("ItemBg_Legendary.png");
-
-
-
 
 	//UI 온오프 체크
 	{

@@ -84,9 +84,10 @@ void Character::Start()
 	//	GameEngineDebug::MsgBoxError("level 변환에 실패했습니다. class GameEngineLevel to " + std::string(typeid(LumiaLevel).name()));
 	//}
 
-
-
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	uiController_ = GetLevel()->CreateActor<PlayerUIController>();
+	uiController_->SetJobType((JobType)(pm->GetMyPlayer().character_));
+
 
 }
 

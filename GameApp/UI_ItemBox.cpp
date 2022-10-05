@@ -289,7 +289,7 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 		}
 		else
 		{
-			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			GameEngineDebug::MsgBox("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
 			return;
 		}
 	}
@@ -303,7 +303,7 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 		}
 		else
 		{
-			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			GameEngineDebug::MsgBox("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
 			return;
 		}
 	}
@@ -317,7 +317,7 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 		}
 		else
 		{
-			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			GameEngineDebug::MsgBox("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
 			return;
 		}
 	}
@@ -331,7 +331,7 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 		}
 		else
 		{
-			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			GameEngineDebug::MsgBox("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
 			return;
 		}
 	}
@@ -345,7 +345,7 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 		}
 		else
 		{
-			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			GameEngineDebug::MsgBox("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
 			return;
 		}
 	}
@@ -359,7 +359,7 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 		}
 		else
 		{
-			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			GameEngineDebug::MsgBox("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
 			return;
 		}
 	}
@@ -373,7 +373,7 @@ void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 		}
 		else
 		{
-			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			GameEngineDebug::MsgBox("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
 			return;
 		}
 	}

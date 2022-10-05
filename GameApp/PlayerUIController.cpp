@@ -27,6 +27,11 @@ void PlayerUIController::InitUI()
 }
 
 
+void PlayerUIController::SetJobType(JobType _MyJob)
+{
+	job_UI = _MyJob;
+}
+
 void PlayerUIController::Start()
 {
 	InitUI();
