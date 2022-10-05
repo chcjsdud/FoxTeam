@@ -43,6 +43,15 @@ void MonsterInfoManager::LoadSpawnPointMeshByRegion()
 	{
 		Location CurRegion = static_cast<Location>(LocationNum);
 
+		// 오래된선창은 일반적으로 진입이 불가하므로 스폰위치에서 제외처리
+		if (Location::ESCAPE_DOCK == CurRegion)
+		{
+#ifdef _DEBUG
+			GameEngineDebug::OutPutDebugString("오래된선창은 일반적으로 진입이 불가하므로 스폰위치에서 제외처리\n");
+			continue;
+#endif // _DEBUG
+		}
+
 		// 경로편집
 		GameEngineDirectory SpawnPointPath;
 		SpawnPointPath.MoveParent("FoxTeam");
@@ -56,11 +65,17 @@ void MonsterInfoManager::LoadSpawnPointMeshByRegion()
 		SpawnPosFileName += ConversionTypeToString(CurRegion);
 		SpawnPosFileName += ".fbx";
 
+		// 최종경로
+		std::string FullPath = SpawnPointPath.PathToPlusFileName(SpawnPosFileName);
+
 		// 파일로드 및 포인터 저장
-		GameEngineFBXMesh* LoadMesh = GameEngineFBXMeshManager::GetInst().Load(SpawnPointPath.PathToPlusFileName(SpawnPosFileName));
+		GameEngineFBXMesh* LoadMesh = GameEngineFBXMeshManager::GetInst().Load(FullPath);
 		if (nullptr == LoadMesh)
 		{
-			GameEngineDebug::MsgBoxError("잘못된 파일 로드를 시도하였습니다!!!!!");
+#ifdef _DEBUG
+			std::string ErrorMsg = "해당 파일이 존재하지않습니다!!! (파일명: " + FullPath + ")\n";
+			GameEngineDebug::OutPutDebugString(ErrorMsg);
+#endif // _DEBUG
 			continue;
 		}
 		else
@@ -83,7 +98,7 @@ void MonsterInfoManager::CreateReferenceInfomation(Location _Location)
 	// Debug Complie Logging
 #ifdef _DEBUG
 	std::string CurLocationName = LoggingTypeToString(_Location);
-	GameEngineDebug::OutPutDebugString(CurLocationName + "의 정보 생성을 시작했습니다." + "Region Number: " + std::to_string(LocationNum));
+	GameEngineDebug::OutPutDebugString(CurLocationName + "의 정보 생성을 시작했습니다." + "Region Number: " + std::to_string(LocationNum) + "\n");
 #endif // _DEBUG
 
 	// 지역별 정보생성시작
@@ -277,7 +292,7 @@ std::string MonsterInfoManager::ConversionTypeToString(Location _Type)
 		}
 		case Location::ARCHERY_RANGE:
 		{
-			ReturnString = "ARCHERY_RANGE";
+			ReturnString = "ARCHERY";
 			break;
 		}
 		case Location::CEMETERY:
