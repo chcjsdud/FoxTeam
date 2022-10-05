@@ -92,16 +92,24 @@ void Character::Start()
 
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-	if (nullptr != uiController_)
-	{
-		uiController_->SetJobType((JobType)(pm->GetMyPlayer().character_));
-	}
-	else
+	if (nullptr == uiController_)
 	{
 		uiController_ = GetLevel()->CreateActor<PlayerUIController>();
 	}
+	uiController_->SetJobType((JobType)(pm->GetMyPlayer().character_));
 
+	equipedItem_.resize(static_cast<int>(EquipmentType::MAX));
+	equipBuildItem_.resize(static_cast<int>(EquipmentType::MAX));
 
+	// 현우아이템트리로 일단 고정
+	equipBuildItem_[static_cast<int>(EquipmentType::HEAD)] = "ImperialBurgonet";
+	equipBuildItem_[static_cast<int>(EquipmentType::CHEST)] = "CommandersArmor";
+	equipBuildItem_[static_cast<int>(EquipmentType::ARM)] = "TindalosBand";
+	equipBuildItem_[static_cast<int>(EquipmentType::LEG)] = "TachyonBrace";
+	equipBuildItem_[static_cast<int>(EquipmentType::ACCESSORY)] = "WhiteCraneFan";
+	equipBuildItem_[static_cast<int>(EquipmentType::WEAPON)] = "PlasmaTonfa";
+
+	checkBuildItems();
 }
 
 void Character::Update(float _DeltaTime)
@@ -403,6 +411,37 @@ void Character::mixingItem()
 bool Character::sortItemQueue()
 {
 	return false;
+}
+
+void Character::checkBuildItems()
+{
+	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::HEAD)]);
+	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::CHEST)]);
+	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::ARM)]);
+	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::LEG)]);
+	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::ACCESSORY)]);
+	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::WEAPON)]);
+
+	allMyBuildItems_;
+
+	int a = 0;
+}
+
+void Character::checkBuildItemsRecursive(const std::string& _itemName)
+{
+	std::map<CombineItem, std::string> Recipes = itemBoxmanager_->GetAllItemRecipes();
+
+	for (const auto& iter : Recipes)
+	{
+		if (iter.second == _itemName)
+		{
+			allMyBuildItems_.push_back(iter.first.left_);
+			allMyBuildItems_.push_back(iter.first.right_);
+
+			checkBuildItemsRecursive(iter.first.left_);
+			checkBuildItemsRecursive(iter.first.right_);
+		}
+	}
 }
 
 Character* Character::getMousePickedCharacter()

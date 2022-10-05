@@ -13,6 +13,7 @@ class ItemBoxManager;
 class MousePointer;
 class LumiaMap;
 class ItemBase;
+class EquipmentItem;
 class PlayerUIController;
 class Character : public GameEngineActor
 {
@@ -117,6 +118,9 @@ private:
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
 	void mixingItem();
 	bool sortItemQueue();
+
+	void checkBuildItems();
+	void checkBuildItemsRecursive(const std::string& _itemName);
 
 	Character* getMousePickedCharacter();
 
@@ -233,6 +237,10 @@ protected:
 	ItemBoxManager* itemBoxmanager_;
 	std::vector<ItemBase*> inventory_;	// 10칸
 	std::list<CombineItem> queueItemMixing_;
+
+	std::vector<EquipmentItem*> equipedItem_;
+	std::vector<std::string>	equipBuildItem_;	// 부위별 최종 장비 아이템
+	std::list<std::string>		allMyBuildItems_;	// 아이템을 완성하기 위한 모든 재료
 
 	// 캐릭터 상태, 능력치
 	CharacterStat actorStat_;

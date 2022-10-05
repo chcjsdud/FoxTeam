@@ -51,5 +51,6 @@ private:
 	ItemType type_;
 	ItemTier tier_;
 	GameEngineImageRenderer* renderer_;
+	bool isMyBuild_;
 };
 
