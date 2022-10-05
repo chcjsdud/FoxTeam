@@ -51,7 +51,7 @@ protected:
 
 private: // 
 	void LoadSpawnPointMeshByRegion();														// 지역별 네비메쉬 로드
-	void CreateLocationToInfo(Location _Location);											// 지역별 몬스터개체수, ... 정보를 생성
+	void CreateReferenceInfomation(Location _Location);											// 지역별 몬스터개체수, ... 정보를 생성
 	void SaveCreationCountByRegion(RefInfoByRegion& _ResultInfo);							// 지역별 최대생성몬스터갯수 정보 저장 - 상수때려박은...
 	void CreateBasicMonsterInfos();															// 앞서 생성된 정보를 통해 생성하려는 몬스터 기본정보 생성
 

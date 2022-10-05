@@ -26,11 +26,8 @@ bool MonsterInfoManager::CreatMonsterInfomation()
 	int LocationCount = static_cast<int>(Location::MAX);
 	for (int LocationNum = 0; LocationNum < LocationCount; ++LocationNum)
 	{
-		// 
-		CreateLocationToInfo(static_cast<Location>(LocationNum));
-
-		// 
-
+		// 1-1. 참고정보 생성
+		CreateReferenceInfomation(static_cast<Location>(LocationNum));
 	}
 	
 	// 2. 참고정보를 토대로 몬스터 기본정보 생성
@@ -73,7 +70,7 @@ void MonsterInfoManager::LoadSpawnPointMeshByRegion()
 	}
 }
 
-void MonsterInfoManager::CreateLocationToInfo(Location _Location)
+void MonsterInfoManager::CreateReferenceInfomation(Location _Location)
 {
 	// 지역별 몬스터개체수, 지역좌표범위, A* 노드(그리드)인덱스, ... 정보를 생성
 	int LocationNum = static_cast<int>(_Location);
