@@ -42,6 +42,8 @@ public:
 	void ChangeAnimation(std::string _animationName);
 
 	void Damage(float _amount);
+	void Stun(float _stunTime);
+	void Knockback(float _knockbackTime, float4 _knockbackSpeed);
 
 #pragma region GetterSetter
 public:
@@ -165,6 +167,9 @@ private:
 	void startStun();
 	void updateStun(float _deltaTime);
 
+	void startKnockback();
+	void updateKnockback(float _deltaTime);
+
 	void startHyunwooE();
 	void updateHyunwooE(float _deltaTime);
 
@@ -241,6 +246,8 @@ protected:
 
 	// 군중 제어
 	float timerStun_;
+	float timerKnockback_;
+	float4 knockbackSpeed_;
 	
 	float timerHyunwooE_;
 	float4 dirHyunwooE_;
@@ -261,6 +268,7 @@ protected:
 private:
 	enum class eCurrentAnimation
 	{
+		None,
 		Wait,
 		Run,
 		BasicAttack

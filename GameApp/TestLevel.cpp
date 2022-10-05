@@ -21,6 +21,9 @@ TestLevel::~TestLevel()
 void TestLevel::LevelStart()
 {
 	GameEngineInput::GetInst().CreateKey("O", 'O');
+	GameEngineInput::GetInst().CreateKey("Z", 'Z');
+	GameEngineInput::GetInst().CreateKey("X", 'X');
+	GameEngineInput::GetInst().CreateKey("C", 'C');
 }
 
 void TestLevel::LevelUpdate(float _DeltaTime)
@@ -30,6 +33,20 @@ void TestLevel::LevelUpdate(float _DeltaTime)
 		MainCameraActor_->FreeCameraModeSwitch();
 	}
 
+	if (GameEngineInput::Press("C"))
+	{
+		rio_->ChangeAnimation(std::string("Run_Long"));
+	}
+
+	if (GameEngineInput::Press("X"))
+	{
+		rio_->ChangeAnimation(std::string("Run"));
+	}
+
+	if (GameEngineInput::Press("Z"))
+	{
+		rio_->ChangeAnimation(std::string("Wait"));
+	}
 }
 
 void TestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
@@ -46,7 +63,7 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
 	Rio::LoadResource();
 
-	Rio* rio_ = CreateActor<Rio>();
+	rio_ = CreateActor<Rio>();
 	rio_->Focus();
 	//CreateActor<TestOBB>();
 

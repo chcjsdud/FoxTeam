@@ -29,6 +29,12 @@ Character::Character()
 	, attackTime_(0.f)
 	, target_(nullptr)
 	, isPlayerDead_(false)
+	, timerStun_(0.0f)
+	, timerKnockback_(0.0f)
+	, currentAnimation_(eCurrentAnimation::None)
+	, myIndex_(-1)
+	, uiController_(nullptr)
+
 {
 }
 
@@ -147,7 +153,7 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
 	}
 
-	
+
 
 }
 
@@ -477,6 +483,21 @@ void Character::Damage(float _amount)
 	actorStat_.HP -= _amount;
 }
 
+void Character::Stun(float _stunTime)
+{
+	mainState_ << "CrowdControlState";
+	crowdControlState_ << "Stun";
+	timerStun_ = _stunTime;
+}
+
+void Character::Knockback(float _knockbackTime, float4 _knockbackSpeed)
+{
+	mainState_ << "CrowdControlState";
+	crowdControlState_ << "Stun";
+	timerKnockback_ = _knockbackTime;
+	knockbackSpeed_ = _knockbackSpeed;
+}
+
 void Character::initInput()
 {
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
@@ -485,9 +506,11 @@ void Character::initInput()
 	GameEngineInput::GetInst().CreateKey("W", 'W');
 	GameEngineInput::GetInst().CreateKey("E", 'E');
 	GameEngineInput::GetInst().CreateKey("R", 'R');
+	GameEngineInput::GetInst().CreateKey("D", 'D');
 	GameEngineInput::GetInst().CreateKey("A", 'A');
 	GameEngineInput::GetInst().CreateKey("S", 'S');
 	GameEngineInput::GetInst().CreateKey("M", 'M');
+	GameEngineInput::GetInst().CreateKey("V", 'V');
 	GameEngineInput::GetInst().CreateKey("Tab", VK_TAB);
 	GameEngineInput::GetInst().CreateKey("Mixing", VK_OEM_3);	// ~ Key
 }
@@ -509,7 +532,9 @@ void Character::initState()
 	attackState_.CreateState(MakeState(Character, QSkill));
 	attackState_.CreateState(MakeState(Character, ESkill));
 
-	
+
+	crowdControlState_.CreateState(MakeState(Character, Stun));
+	crowdControlState_.CreateState(MakeState(Character, Knockback));
 	crowdControlState_.CreateState(MakeState(Character, HyunwooE));
 
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
@@ -824,23 +849,37 @@ void Character::updateChase(float _deltaTime)
 
 void Character::startStun()
 {
-	int a = 0;
 }
 
 void Character::updateStun(float _deltaTime)
 {
+	timerStun_ -= _deltaTime;
+	if (timerStun_ <= 0.0f)
+	{
+		mainState_ << "NormalState";
+		return;
+	}
+}
 
+void Character::startKnockback()
+{
+}
 
+void Character::updateKnockback(float _deltaTime)
+{
+	timerKnockback_ -= _deltaTime;
+	if (timerKnockback_ <= 0.0f)
+	{
+		mainState_ << "NormalState";
+		return;
+	}
 
-	mainState_.ChangeState("NormalState");
-
-
+	transform_.SetWorldPosition(knockbackSpeed_ * _deltaTime);
 }
 
 void Character::startHyunwooE()
 {
 	timerHyunwooE_ = 0.0f;
-
 }
 
 void Character::updateHyunwooE(float _deltaTime)
@@ -941,7 +980,7 @@ void Character::startBasicAttackDone()
 	{
 		GameClient::GetInstance()->Send(&packet);
 	}
-	
+
 }
 
 void Character::updateBasicAttackDone(float _deltaTime)

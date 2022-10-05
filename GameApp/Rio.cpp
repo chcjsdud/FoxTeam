@@ -70,9 +70,11 @@ void Rio::initRendererAndAnimation()
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	renderer_->CreateFBXAnimation("Run", "Rio_Short_Run.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("Run_Long", "Rio_Long_Run.UserAnimation", 0);
 	renderer_->CreateFBXAnimation("Wait", "Rio_Short_Wait.UserAnimation", 0);
 	renderer_->CreateFBXAnimation("BasicAttack", "Rio_Short_Attack.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillQ", "Rio_Short_Skill_Q.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillQ_Short", "Rio_Short_Skill_Q.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillQ_Long", "Rio_Long_Skill_Q.UserAnimation", 0, false);
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
@@ -100,7 +102,7 @@ void Rio::changeAnimationBasicAttack()
 
 void Rio::onStartQSkill()
 {
-	renderer_->OverrideFBXAnimation("SkillQ", "Bip001 Spine2");
+	renderer_->OverrideFBXAnimation("SkillQ_Long", "Bip001 Spine2");
 	//renderer_->OverrideFBXAnimation("SkillQ", "Bip001 L UpperArm");
 }
 
