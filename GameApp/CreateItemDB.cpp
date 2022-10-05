@@ -6,6 +6,8 @@
 #include "UseableItem.h"
 #include "MiscItem.h"
 
+#include "LumiaLevel.h"
+
 void ItemBoxManager::CreateAllItemList()
 {
 	CreateMiscItemList();		// Àç·á
@@ -19,19 +21,26 @@ ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type, It
 {
 	ItemBase* NewItem = nullptr;
 
+	// 221005 SJH ADD : LumiaLevel Get
+	GameEngineLevel* CurLevel = GetLevel();
+	if (nullptr == CurLevel)
+	{
+		CurLevel = dynamic_cast<LumiaLevel*>(GameEngineCore::LevelFind("LumiaLevel"));
+	}
+
 	switch (_Type)
 	{
 	case ItemType::NONE:
-		NewItem = GetLevel()->CreateActor<ItemBase>();
+		NewItem = CurLevel->CreateActor<ItemBase>();
 		break;
 	case ItemType::EQUIPMENT:
-		NewItem = GetLevel()->CreateActor<EquipmentItem>();
+		NewItem = CurLevel->CreateActor<EquipmentItem>();
 		break;
 	case ItemType::USEABLE:
-		NewItem = GetLevel()->CreateActor<UseableItem>();
+		NewItem = CurLevel->CreateActor<UseableItem>();
 		break;
 	case ItemType::MISC:
-		NewItem = GetLevel()->CreateActor<MiscItem>();
+		NewItem = CurLevel->CreateActor<MiscItem>();
 		break;
 	default:
 		break;
