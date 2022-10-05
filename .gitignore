@@ -351,3 +351,5 @@ MigrationBackup/
 
 ThirdParty/
 imgui.ini
+GameApp/imgui.ini
+*.ini
