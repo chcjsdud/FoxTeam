@@ -94,8 +94,11 @@ void Character::Start()
 
 	if (nullptr != uiController_)
 	{
-		uiController_ = GetLevel()->CreateActor<PlayerUIController>();
 		uiController_->SetJobType((JobType)(pm->GetMyPlayer().character_));
+	}
+	else
+	{
+		uiController_ = GetLevel()->CreateActor<PlayerUIController>();
 	}
 
 
