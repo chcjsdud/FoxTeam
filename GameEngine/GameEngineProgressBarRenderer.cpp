@@ -28,6 +28,11 @@ void GameEngineProgressBarRenderer::Start()
 
 void GameEngineProgressBarRenderer::Render(float _DeltaTime, bool _IsDeferred)
 {
+	if (true == _IsDeferred)
+	{
+		return;
+	}
+
 	GameEngineRenderer::Render(_DeltaTime, _IsDeferred);
 }
 
