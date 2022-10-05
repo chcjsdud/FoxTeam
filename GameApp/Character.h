@@ -117,7 +117,6 @@ private:
 	void checkItemBox();
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
 	void mixingItem();
-	bool sortItemQueue();
 
 	void checkBuildItems();
 	void checkBuildItemsRecursive(const std::string& _itemName);

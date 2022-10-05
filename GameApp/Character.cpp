@@ -281,6 +281,11 @@ void Character::checkItemBox()
 	// 초기화하지 않으면 SelectBox 근처에 다가가면 UI가 계속 열리게 됨
 }
 
+bool sortItemQueue(const CombineItem& _left, const CombineItem& _right)
+{
+	return false;
+}
+
 void Character::checkItemRecipes()
 {
 	std::vector<std::vector<int>> cases =
@@ -317,7 +322,7 @@ void Character::checkItemRecipes()
 		queueItemMixing_.push_back(CI);
 
 		// 우선도에 따라 정렬 (루트, 아이템등급)
-		//std::sort(queueItemMixing_.begin(), queueItemMixing_.end(), sortItemQueue);
+		queueItemMixing_.sort(sortItemQueue);
 	}
 }
 
@@ -408,10 +413,6 @@ void Character::mixingItem()
 	checkItemRecipes();
 }
 
-bool Character::sortItemQueue()
-{
-	return false;
-}
 
 void Character::checkBuildItems()
 {
