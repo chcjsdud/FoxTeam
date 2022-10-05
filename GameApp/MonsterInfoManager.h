@@ -5,7 +5,7 @@
 struct RefInfoByRegion
 {
 public: // 기본정보관련
-	Location Location_;																		// 지역타입
+	Location Region_;																		// 지역타입
 
 public: // 위치정보관련(스폰위치생성용) - 해당 지역에 해당하는 버텍스를 모두알고있는다.
 	GameEngineFBXMesh* SpawnPoints_;														// 좌표목록메쉬(네비메쉬활용: 스폰위치지정용)

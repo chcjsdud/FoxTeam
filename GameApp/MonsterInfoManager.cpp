@@ -22,11 +22,15 @@ bool MonsterInfoManager::CreatMonsterInfomation()
 	// 0. 지역별 네비메쉬 로드 및 지역별참고정보에 메쉬 지정
 	LoadSpawnPointMeshByRegion();
 
-	// 1. 현재맵의 지역별 몬스터개체수, ... 정보를 생성
+	// 1. 현재맵의 지역별 몬스터개체수등 정보를 생성
 	int LocationCount = static_cast<int>(Location::MAX);
 	for (int LocationNum = 0; LocationNum < LocationCount; ++LocationNum)
 	{
+		// 
 		CreateLocationToInfo(static_cast<Location>(LocationNum));
+
+		// 
+
 	}
 	
 	// 2. 참고정보를 토대로 몬스터 기본정보 생성
@@ -87,7 +91,7 @@ void MonsterInfoManager::CreateLocationToInfo(Location _Location)
 
 	// 지역별 정보생성시작
 	RefInfoByRegion& CurLocationInfo = RefInfoByRegion_[LocationNum];
-	CurLocationInfo.Location_ = _Location;
+	CurLocationInfo.Region_ = _Location;
 
 	// 몬스터 타입별 최대생성수 정보 저장
 	SaveCreationCountByRegion(CurLocationInfo);
@@ -97,9 +101,13 @@ void MonsterInfoManager::SaveCreationCountByRegion(RefInfoByRegion& _ResultInfo)
 {
 	int MaxCreationCount = 0;
 
-	// 지역의 몬스터타입별 최대생성개체수
-
-
+	// 지역의 몬스터타입별 최대생성개체수 지정
+	//WOLF,						// 늑대
+	//BEAR,						// 곰
+	//BAT,						// 박쥐
+	//DOG,						// 들개
+	//CHICKEN,					// 닭
+	//BOAR,						// 멧돼지
 
 
 
