@@ -40,7 +40,9 @@ enum class MonsterType
 	WOLF,						// ´Á´ë
 	BEAR,						// °õ
 	BAT,						// ¹ÚÁã
-
+	DOG,						// µé°³
+	CHICKEN,					// ´ß
+	BOAR,						// ¸äµÅÁö
 	MAX
 };
 
