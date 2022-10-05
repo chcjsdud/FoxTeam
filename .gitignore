@@ -350,4 +350,4 @@ MigrationBackup/
 .ionide/
 
 ThirdParty/
-GameApp/imgui.ini
+imgui.ini
