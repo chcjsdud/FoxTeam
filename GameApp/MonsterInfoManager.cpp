@@ -129,7 +129,6 @@ void MonsterInfoManager::SaveCreationCountByRegion(RefInfoByRegion& _ResultInfo)
 
 void MonsterInfoManager::CreateBasicMonsterInfos()
 {
-	//// 몬스터 생성정보 작성 시작(생성지역당 생성되는 몬스터타입과 수는 고정)
 	////int Index_;									// 몬스터 생성 인덱스(탐색용)
 	////Location AreaType_;							// 몬스터 스폰 지역 타입(탐색용)
 	////MonsterType MonsterType_;						// 몬스터 타입
@@ -138,8 +137,15 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 	////int GroupCount_;								// 그룹생성일때 같은위치에 생성해야하는 야생동물수
 	//// -> 위의 정보 모두 해당 함수에서 결정
 
+	// 0. 최대생성가능몬스터개체수(생성몬스터총갯수)만큼 반복하며 몬스터생성시작
+	for (int MonsterNum = 0; MonsterNum < MaxCreationCount_; ++MonsterNum)
+	{
+		// 1. 몬스터 기본정보(패킷정보) 생성시작!!
 
 
+
+
+	}
 }
 
 #pragma region Logging & Conversion Function
