@@ -22,6 +22,7 @@ GameEngineFBXRenderer::GameEngineFBXRenderer()
 	: currentAnimation_(nullptr)
 	, overrideAnimation_(nullptr)
 	, FBXMesh(nullptr)
+	, overrideBoneIndex_(-1)
 {
 }
 
@@ -384,11 +385,7 @@ void GameEngineFBXRenderer::OverrideFBXAnimation(const std::string& _AnimationNa
 		}
 	}
 
-	// 오프셋 보정
-	float4 pos = currentAnimation_->PixAniData->AniFrameData[0][boneIndex].BoneMatData[0].T;
-	float4 overridePos = overrideAnimation_->PixAniData->AniFrameData[0][boneIndex].BoneMatData[0].T;
-
-	overrideBoneOffset_ = pos - overridePos;
+	overrideBoneIndex_ = boneIndex;
 }
 
 void GameEngineFBXRenderer::ClearOverrideAnimation()

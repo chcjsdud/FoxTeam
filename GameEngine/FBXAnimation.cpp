@@ -215,6 +215,7 @@ void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnima
 					return;
 				}
 
+
 				FbxExBoneFrameData& oaCurData = oa->PixAniData->AniFrameData[Render.Index][i].BoneMatData[oa->CurFrame];
 				FbxExBoneFrameData& oaNextData = oa->PixAniData->AniFrameData[Render.Index][i].BoneMatData[oaNextFrame];
 
@@ -227,9 +228,14 @@ void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnima
 				float4 oaSLerpQ = float4::SLerp(oaCurData.Q, oaNextData.Q, oa->CurFrameTime);
 				float4 oaLerpPos = float4::Lerp(oaCurData.T, oaNextData.T, oa->CurFrameTime);
 
+				float4 originalPos = PixAniData->AniFrameData[Render.Index][ParentRenderer->overrideBoneIndex_].BoneMatData[CurFrame].T;
+				float4 overridePos = oa->PixAniData->AniFrameData[Render.Index][ParentRenderer->overrideBoneIndex_].BoneMatData[oa->CurFrame].T;
+				float4 offsetPos = originalPos - overridePos;
+
 				float4x4 matOverrideAnim = float4x4::Affine(oaLerpScale, oaSLerpQ, oaLerpPos);
 
-				matOverrideAnim.vw += ParentRenderer->overrideBoneOffset_;
+				// 기존 애니메이션에 본 오프셋 보정
+				matOverrideAnim.vw += offsetPos;
 
 				Render.BoneData[i] = BoneData->BonePos.Offset * matOverrideAnim;
 
