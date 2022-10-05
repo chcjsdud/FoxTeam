@@ -91,8 +91,12 @@ void Character::Start()
 	//}
 
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-	uiController_ = GetLevel()->CreateActor<PlayerUIController>();
-	uiController_->SetJobType((JobType)(pm->GetMyPlayer().character_));
+
+	if (nullptr != uiController_)
+	{
+		uiController_ = GetLevel()->CreateActor<PlayerUIController>();
+		uiController_->SetJobType((JobType)(pm->GetMyPlayer().character_));
+	}
 
 
 }
