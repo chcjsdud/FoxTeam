@@ -21,7 +21,7 @@ ItemBase* ItemBox::GetItem(int _index)
 	{
 		if (findIndex == _index)
 		{
-			return item;
+			return item->Copy();
 		}
 
 		++findIndex;
