@@ -1,6 +1,8 @@
 #pragma once
 
 //#include "ePacketID.h"
+#include <vector>
+#include <string>
 
 class GameEngineSerializer
 {

@@ -27,6 +27,6 @@ enum class ePacketID
 	CharMovementPacket,
 	CharAnimationPacket,
 	CharStatPacket,
-
+	CharCrowdControlPacket,
 	MAX
 };
