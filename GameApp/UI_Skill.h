@@ -21,10 +21,7 @@ public:
 	bool UIOn;
 
 public:
-	void SetPlayer(Player* _Player)
-	{
-		Player_ = _Player;
-	}
+	void SetJobType(JobType _myjob);
 
 protected:
 	GameEngineUIRenderer* BackGroundRenderer;
@@ -39,8 +36,28 @@ private:
 
 	//이현
 private:
-	Player* Player_;
 
-	
+#pragma region 아이콘 렌더러
+
+	GameEngineUIRenderer* Icon_Q;
+	GameEngineUIRenderer* Icon_W;
+	GameEngineUIRenderer* Icon_E;
+	GameEngineUIRenderer* Icon_R;
+	GameEngineUIRenderer* Icon_Passive;
+	GameEngineUIRenderer* Icon_Weapon;
+
+#pragma endregion
+
+#pragma region float4 모음
+
+	float4 Skill_BackGroundPos;
+	float4 Icon_Q_Pos;
+	float4 Icon_W_Pos;
+	float4 Icon_E_Pos;
+	float4 Icon_R_Pos;
+	float4 Icon_Passive_Pos;
+	float4 Icon_Weapon_Pos;
+
+#pragma endregion
 };
 

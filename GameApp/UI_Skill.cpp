@@ -22,32 +22,48 @@ UI_Skill::~UI_Skill()
 
 void UI_Skill::Start()
 {
-	//리소스들을 SetImage하고 위치를 조정합니다
-	//위치를 조정한 리소스들은 UIRenderMap에 String과 같이 insert됩니다.
-	//인게임정보(HP나 스태미너 상태, 착용장비여부)등을 받으면, UIRendererMap에서 이미지이름으로 Find해서 리소스를 바꿀 예정업니다.
+	float4 Skill_IconSize = { 35.f,35.f };
+	float4 Passive_IconSize = { 31.f,31.f };
+	
+	Skill_BackGroundPos = { -20.0f, -315.0f, 0.0f };
+	Icon_Q_Pos = { -123.0f, -300.0f, -1.0f };
+	Icon_W_Pos = { -80.0f, -300.0f, -1.0f };
+	Icon_E_Pos = { -36.0f, -300.0f, -1.0f };
+	Icon_R_Pos = { 7.0f, -300.0f, -1.0f };
+	Icon_Weapon_Pos = { 50.0f, -300.0f, -1.0f };
 
 	{
-		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
-		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
-
-		float4 Skill_BackGroundPos = { -20.0f, -315.0f, 0.0f };
-
-
-		{
-			BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-			BackGroundRenderer->SetImage("Skill_BackGround.png", "PointSmp");
-			BackGroundRenderer->GetTransform()->SetLocalPosition(Skill_BackGroundPos);
-			BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
-		//	UIRendererMap.insert(make_pair("Skill_BackGround", BackGroundRenderer));
-		}
+		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		BackGroundRenderer->SetImage("Skill_BackGround.png", "PointSmp");
+		BackGroundRenderer->GetTransform()->SetLocalPosition(Skill_BackGroundPos);
+		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
 	}
 
+	{
+		Icon_Q = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Icon_Q->GetTransform()->SetLocalScaling(Skill_IconSize);
+		Icon_Q->GetTransform()->SetLocalPosition(Icon_Q_Pos);
 
-	//이현, Player 예제 함수
-	//int HP = Player_->PlayerGetHP();
-	//float Stmina = Player_->PlayerGetStamina();
-	//Player_->PlayerSetHP(10);
-	//Player_->PlayerSetStamina(100.f);
+		Icon_W = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Icon_W->GetTransform()->SetLocalScaling(Skill_IconSize);
+		Icon_W->GetTransform()->SetLocalPosition(Icon_W_Pos);
+
+		Icon_E = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Icon_E->GetTransform()->SetLocalScaling(Skill_IconSize);
+		Icon_E->GetTransform()->SetLocalPosition(Icon_E_Pos);
+
+		Icon_R = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Icon_R->GetTransform()->SetLocalScaling(Skill_IconSize);
+		Icon_R->GetTransform()->SetLocalPosition(Icon_R_Pos);
+
+		Icon_Passive = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	
+
+		Icon_Weapon = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		//Icon_Weapon->GetTransform()->SetLocalScaling(Skill_IconSize);
+		//Icon_Weapon->GetTransform()->SetLocalPosition(Icon_Weapon_Pos);
+	}
+
 
 
 }
@@ -61,23 +77,26 @@ void UI_Skill::Update(float _Time)
 	
 	//UI 온오프 체크
 	{
-		//map<string, GameEngineUIRenderer*>::iterator FindIter = UIRendererMap.begin();
 
 		if (false == UIOn)
 		{
 			BackGroundRenderer->Off();
-			//for (; FindIter != UIRendererMap.end(); FindIter++)
-			//{
-			//	FindIter->second->Off();
-			//}
+			Icon_Q->Off();
+			Icon_W->Off();
+			Icon_E->Off();
+			Icon_R->Off();
+			Icon_Passive->Off();
+			Icon_Weapon->Off();
 		}
 		else
 		{
 			BackGroundRenderer->On();
-			//for (; FindIter != UIRendererMap.end(); FindIter++)
-			//{
-			//	FindIter->second->On();
-			//}
+			Icon_Q->On();
+			Icon_W->On();
+			Icon_E->On();
+			Icon_R->On();
+			Icon_Passive->On();
+			Icon_Weapon->On();
 		}
 	}
 
@@ -94,3 +113,39 @@ void UI_Skill::Update(float _Time)
 	}
 }
 
+void UI_Skill::SetJobType(JobType _myjob)
+{
+	switch (_myjob)
+	{
+	case JobType::NONE:
+		break;
+	case JobType::YUKI:
+		break;
+	case JobType::FIORA:
+		break;
+	case JobType::ZAHIR:
+		break;
+	case JobType::NADINE:
+		break;
+	case JobType::HYUNWOO:
+	{
+		Icon_Q->SetImage("HyunWoo_Q_Icon.png", "PointSmp");
+		Icon_W->SetImage("HyunWoo_W_Icon.png", "PointSmp");
+		Icon_E->SetImage("HyunWoo_E_Icon.png", "PointSmp");
+		Icon_R->SetImage("HyunWoo_R_Icon.png", "PointSmp");
+	}
+		break;
+	case JobType::JACKIE:
+		break;
+	case JobType::RIO:
+		break;
+	case JobType::AYA:
+		break;
+	case JobType::DUMMY:
+		break;
+	case JobType::MAX:
+		break;
+	default:
+		break;
+	}
+}

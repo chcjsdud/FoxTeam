@@ -30,6 +30,7 @@ void PlayerUIController::InitUI()
 void PlayerUIController::SetJobType(JobType _MyJob)
 {
 	charPicture_UI->SetJobType(_MyJob);
+	skill_UI->SetJobType(_MyJob);
 }
 
 void PlayerUIController::Start()
