@@ -20,6 +20,7 @@
 #include "CharMovementPacket.h"
 #include "CharAnimationPacket.h"
 #include "CharStatPacket.h"
+#include "CharCrowdControlPacket.h"
 #include "CreationCommandPacket.h"
 #include "LoadingEndPacket.h"
 
@@ -372,6 +373,8 @@ void LumiaLevel::AddSocketHandle()
 		server->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
 		server->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
 		server->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);
+		server->AddPacketHandler(ePacketID::CharCrowdControlPacket, new CharCrowdControlPacket);
+
 	}
 
 	if (true == client->IsConnected())
@@ -379,6 +382,7 @@ void LumiaLevel::AddSocketHandle()
 		client->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
 		client->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
 		client->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);
+		client->AddPacketHandler(ePacketID::CharCrowdControlPacket, new CharCrowdControlPacket);
 	}
 }
 

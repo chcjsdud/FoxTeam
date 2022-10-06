@@ -10,6 +10,7 @@
 #include "MousePointer.h"
 #include "LumiaMap.h"
 #include "Character.h"
+#include "CharCrowdControlPacket.h"
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr)
 {
@@ -350,7 +351,11 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 					if (nullptr != character)
 					{
 						character->Damage(150.0f);
-						character->WallSlam(0.2f, direction_ * 3000.f, 0.5f);
+						//character->WallSlam(0.2f, direction_ * 3000.f, 0.5f);
+						CharCrowdControlPacket ccPacket;
+						ccPacket.SetTargetIndex(character->GetIndex());
+						ccPacket.SetWallSlam(0.2f, direction_ * 3000.f, 0.5f);
+
 						//character->dirHyunwooE_ = direction_;
 						//character->mainState_.ChangeState("CrowdControlState", true);
 						//character->crowdControlState_.ChangeState("HyunwooE", true);
@@ -361,10 +366,12 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 
 						if (true == GameServer::GetInstance()->IsOpened())
 						{
+							GameServer::GetInstance()->Send(&ccPacket);
 							GameServer::GetInstance()->Send(&packet);
 						}
 						else if (true == GameClient::GetInstance()->IsConnected())
 						{
+							GameClient::GetInstance()->Send(&ccPacket);
 							GameClient::GetInstance()->Send(&packet);
 						}
 
