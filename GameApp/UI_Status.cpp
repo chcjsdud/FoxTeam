@@ -47,10 +47,10 @@ void UI_Status::Start()
 
 	{
 		//to_string= 숫자를 string으로
-		int a = 0;
+		int a = 1;
 		AttackValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	//	AttackValue_Renderer->TextSetting("굴림", to_string(a), 1, float4::WHITE);
-		AttackValue_Renderer->GetTransform()->SetLocalPosition({-200.0f,-200.0f,-1.0f});
+		AttackValue_Renderer->TextSetting("굴림", to_string(a), 20);
+		AttackValue_Renderer->GetTransform()->SetLocalPosition({-415.f, -315.f, -1.f});
 	}
 
 	{
@@ -58,13 +58,6 @@ void UI_Status::Start()
 		//DefenseValue_Renderer->TextSetting("KBIZ한마음고딕 M", "시험", 1, float4::WHITE);
 		DefenseValue_Renderer->GetTransform()->SetLocalPosition({ 100.0f, 100.0f, 0.0f, 0.0f });
 	}
-
-
-	//이현, Player 예제 함수
-	//int HP = Player_->PlayerGetHP();
-	//float Stmina = Player_->PlayerGetStamina();
-	//Player_->PlayerSetHP(10);
-	//Player_->PlayerSetStamina(100.f);
 
 
 }
@@ -107,3 +100,7 @@ void UI_Status::Update(float _Time)
 	}
 }
 
+void UI_Status::SetStatus(CharacterStat* _Mystat)
+{
+	AttackValue_Renderer->TextSetting("굴림", to_string((int)(_Mystat->HP)), 20);
+}

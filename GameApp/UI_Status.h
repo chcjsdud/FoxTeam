@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
+#include "CharacterStat.h"
 
 using namespace std;
 // 설명 :
@@ -21,10 +22,7 @@ public:
 	bool UIOn;
 
 public:
-	void SetPlayer(Player* _Player)
-	{
-		Player_ = _Player;
-	}
+	void SetStatus(CharacterStat* _Mystat);
 	
 protected:
 	GameEngineUIRenderer* MainStatusRenderer;
@@ -38,7 +36,6 @@ private:
 
 	//이현
 private:
-	Player* Player_;
 
 #pragma region 스테이터스 값 출력용 렌더러 모음
 

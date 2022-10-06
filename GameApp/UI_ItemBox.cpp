@@ -52,8 +52,8 @@ void UI_ItemBox::Start()
 
 	{
 		BoxtypeFont_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	//	BoxtypeFont_Renderer->TextSetting("±¼¸²", "»óÀÚ", 30, float4::WHITE);
-	//	BoxtypeFont_Renderer->GetTransform()->SetLocalPosition(ItemBox_BackgroundPos);
+	//	BoxtypeFont_Renderer->TextSetting("±¼¸²", "»óÀÚ", 30);
+	//	BoxtypeFont_Renderer->GetTransform()->SetLocalPosition(BackgroundPos);
 	}
 
 

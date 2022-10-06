@@ -1,5 +1,6 @@
 #include "PreCompile.h"
 #include "PlayerUIController.h"
+#include "PlayerInfoManager.h"
 
 
 PlayerUIController::PlayerUIController() // default constructer 디폴트 생성자
@@ -40,6 +41,7 @@ void PlayerUIController::Start()
 
 void PlayerUIController::Update(float _DeltaTime)
 {
-	
+	//스테이터스를 상시 받아야함
+	status_UI->SetStatus(PlayerInfoManager::GetInstance()->GetMyPlayer().stat_);
 }
 
