@@ -136,14 +136,14 @@ void Character::Update(float _DeltaTime)
 		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::OBBBox3D, float4::RED);
 	}
 
-	//if (false == bFocused_)
-	//{
-	//	// direction 에 따라 로테이션을 바꿔 주고
-	//	// 적절한 애니메이션으로 바꿔 주는 코드가 여기에도 존재해야 함.
+	if (false == bFocused_)
+	{
+		// direction 에 따라 로테이션을 바꿔 주고
+		// 적절한 애니메이션으로 바꿔 주는 코드가 여기에도 존재해야 함.
 
 
-	//	return;
-	//}
+		return;
+	}
 
 	checkCurrentNavFace();
 	checkItemBox();
@@ -612,11 +612,6 @@ void Character::initState()
 
 void Character::inputProcess(float _deltaTime)
 {
-	if (!bFocused_)
-	{
-		return;
-	}
-
 	if (mouse_ == nullptr)
 	{
 		return;
