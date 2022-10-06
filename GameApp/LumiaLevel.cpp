@@ -208,7 +208,6 @@ void LumiaLevel::CharacterCreationCommand()
 		PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = float4(-2500.f, 0.0f, 10000.f);
 		NewCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		NewCharacter->SetIndex(PlayerNum);
-		PlayerInfoManager::GetInstance()->SetMainCharacter(NewCharacter);
 		// 관리목록에 추가
 		CharacterActorList_.emplace_back(NewCharacter);
 
@@ -216,6 +215,7 @@ void LumiaLevel::CharacterCreationCommand()
 		if (PlayerNum == pm->GetMyNumber())
 		{
 			CharacterActorList_[PlayerNum]->Focus();
+			PlayerInfoManager::GetInstance()->SetMainCharacter(NewCharacter);
 		}
 	}
 
