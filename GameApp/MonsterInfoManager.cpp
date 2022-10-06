@@ -1,6 +1,17 @@
 #include "PreCompile.h"
 #include "MonsterInfoManager.h"
 
+#include <GameEngineBase/GameEngineRandom.h>
+
+#include "PlayerInfoManager.h"
+#include "MonsterInfoManager.h"
+
+#include "GameServer.h"
+#include "GameClient.h"
+#include "CreationCommandPacket.h"
+
+bool MonsterInfoManager::CreationPacketFlag = false;
+
 MonsterInfoManager* MonsterInfoManager::GetInstance()
 {
 	static MonsterInfoManager instance;
@@ -19,19 +30,8 @@ void MonsterInfoManager::SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos)
 
 bool MonsterInfoManager::CreatMonsterInfomation()
 {
-	// 0. 지역별 네비메쉬 로드 및 지역별참고정보에 메쉬 지정
+	// 0. 지역별 레퍼런스 정보 생성 및 생성패킷정보 셋팅, 생성패킷전송
 	LoadSpawnPointMeshByRegion();
-
-	// 1. 현재맵의 지역별 몬스터개체수등 정보를 생성
-	int LocationCount = static_cast<int>(Location::MAX);
-	for (int LocationNum = 0; LocationNum < LocationCount; ++LocationNum)
-	{
-		// 1-1. 참고정보 생성
-		CreateReferenceInfomation(static_cast<Location>(LocationNum));
-	}
-	
-	// 2. 참고정보를 토대로 몬스터 기본정보 생성
-	CreateBasicMonsterInfos();
 
 	return true;
 }
@@ -41,16 +41,10 @@ void MonsterInfoManager::LoadSpawnPointMeshByRegion()
 	int LocationCount = static_cast<int>(Location::MAX);
 	for (int LocationNum = 0; LocationNum < LocationCount; ++LocationNum)
 	{
-		Location CurRegion = static_cast<Location>(LocationNum);
+		RefInfoByRegion& CurRefInfo = RefInfoByRegion_[LocationNum];
 
-		// 오래된선창은 일반적으로 진입이 불가하므로 스폰위치에서 제외처리
-		if (Location::ESCAPE_DOCK == CurRegion)
-		{
-#ifdef _DEBUG
-			GameEngineDebug::OutPutDebugString("오래된선창은 일반적으로 진입이 불가하므로 스폰위치에서 제외처리\n");
-			continue;
-#endif // _DEBUG
-		}
+		Location CurRegion = static_cast<Location>(LocationNum);
+		RefInfoByRegion_[LocationNum].RegionType_ = CurRegion;
 
 		// 경로편집
 		GameEngineDirectory SpawnPointPath;
@@ -66,22 +60,67 @@ void MonsterInfoManager::LoadSpawnPointMeshByRegion()
 		SpawnPosFileName += ".fbx";
 
 		// 최종경로
-		std::string FullPath = SpawnPointPath.PathToPlusFileName(SpawnPosFileName);
+		std::string SpawnRefMeshFilePath = SpawnPointPath.PathToPlusFileName(SpawnPosFileName);
 
-		// 파일로드 및 포인터 저장
-		GameEngineFBXMesh* LoadMesh = GameEngineFBXMeshManager::GetInst().Load(FullPath);
-		if (nullptr == LoadMesh)
+		// 오래된선창(ESCAPE_DOCK)은 일반적으로 진입이 불가하므로 몬스터스폰위치에서 제외처리
+		if (Location::ESCAPE_DOCK == static_cast<Location>(LocationNum))
 		{
 #ifdef _DEBUG
-			std::string ErrorMsg = "해당 파일이 존재하지않습니다!!! (파일명: " + FullPath + ")\n";
-			GameEngineDebug::OutPutDebugString(ErrorMsg);
+			GameEngineDebug::OutPutDebugString("경로생성 중 오래된선창은 일반적으로 진입이 불가하므로 제외처리\n");
 #endif // _DEBUG
+
 			continue;
 		}
-		else
+
+		// 최종경로
+		CurRefInfo.FullSpawnFilePath_ = SpawnRefMeshFilePath;
+	}
+
+	// Thread 할당하여 스폰위치좌표참조를 위한 지역메쉬 로드
+	auto Func = [&]()
+	{
+		for (RefInfoByRegion& CurRefInfo : RefInfoByRegion_)
 		{
-			RefInfoByRegion_[LocationNum].SpawnPoints_ = LoadMesh;
+			// 오래된선창(ESCAPE_DOCK)은 일반적으로 진입이 불가하므로 몬스터스폰위치에서 제외처리
+			if (Location::ESCAPE_DOCK == CurRefInfo.RegionType_)
+			{
+#ifdef _DEBUG
+				GameEngineDebug::OutPutDebugString("메쉬로드 중 오래된선창은 일반적으로 진입이 불가하므로 제외처리\n");
+#endif // _DEBUG
+	
+				continue;
+			}
+	
+
+			CurRefInfo.SpawnPointMesh_ = GameEngineFBXMeshManager::GetInst().Load(CurRefInfo.FullSpawnFilePath_);
 		}
+	};
+
+	// 스레드 작업할당
+	std::thread Threads(Func);
+
+	// 해당 스레드 사용중이라면
+	if (true == Threads.joinable())
+	{
+		// 해당 스레드 종료까지 대기
+		Threads.join();
+
+		// 1. 현재맵의 지역별 몬스터개체수등 정보를 생성
+		int LocationCount = static_cast<int>(Location::MAX);
+		for (int LocationNum = 0; LocationNum < LocationCount; ++LocationNum)
+		{
+			// 1-1. 참고정보 생성
+			CreateReferenceInfomation(static_cast<Location>(LocationNum));
+		}
+
+		// 2. 참고정보를 토대로 몬스터 기본정보 생성
+		CreateBasicMonsterInfos();
+
+		// 3. 생성패킷 정보 저장
+		MonsterInfoManager::GetInstance()->SetMonsterInfos(AllMonsters_);
+
+		// 종료후 생성패킷 전송가능 Flag On(서버에서 한번처리 후 다시 Off처리된다)
+		CreationPacketFlag = true;
 	}
 }
 
@@ -95,15 +134,14 @@ void MonsterInfoManager::CreateReferenceInfomation(Location _Location)
 		return;
 	}
 
-	// Debug Complie Logging
+	// Debug Complie Logging(주석처리)
 #ifdef _DEBUG
-	std::string CurLocationName = LoggingTypeToString(_Location);
-	GameEngineDebug::OutPutDebugString(CurLocationName + "의 정보 생성을 시작했습니다." + "Region Number: " + std::to_string(LocationNum) + "\n");
+	//std::string CurLocationName = LoggingTypeToString(_Location);
+	//GameEngineDebug::OutPutDebugString(CurLocationName + "의 정보 생성을 시작했습니다." + "Region Number: " + std::to_string(LocationNum) + "\n");
 #endif // _DEBUG
 
 	// 지역별 정보생성시작
 	RefInfoByRegion& CurLocationInfo = RefInfoByRegion_[LocationNum];
-	CurLocationInfo.Region_ = _Location;
 
 	// 몬스터 타입별 최대생성수 정보 저장
 	SaveCreationCountByRegion(CurLocationInfo);
@@ -111,40 +149,279 @@ void MonsterInfoManager::CreateReferenceInfomation(Location _Location)
 
 void MonsterInfoManager::SaveCreationCountByRegion(RefInfoByRegion& _ResultInfo)
 {
-	int MaxCreationCount = 0;
-
 	// 지역의 몬스터타입별 최대생성개체수 지정
-	//WOLF,						// 늑대
-	//BEAR,						// 곰
-	//BAT,						// 박쥐
-	//DOG,						// 들개
-	//CHICKEN,					// 닭
-	//BOAR,						// 멧돼지
+	Location CurRegion = _ResultInfo.RegionType_;
+	switch (CurRegion)
+	{
+		case Location::DOCK:			// 항구
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 0;
+			break;
+		}
+		case Location::POND:			// 연못
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 2;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 4;
+			break;
+		}
+		case Location::BEACH:			// 모래사장
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 3;
+			break;
+		}
+		case Location::UPTOWN:			// 고급주택가
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 2;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 6;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 6;
+			break;
+		}
+		case Location::ALLEY:			// 골목길
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 8;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 0;
+			break;
+		}
+		case Location::HOTEL:			// 호텔
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 0;
+			break;
+		}
+		case Location::AVENUE:			// 번화가
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 5;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 6;
+			break;
+		}
+		case Location::HOSPITAL:		// 병원
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 0;
+			break;
+		}
+		case Location::TEMPLE:			// 절
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 2;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 3;
+			break;
+		}
+		case Location::ARCHERY_RANGE:	// 양궁장
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 3;
+			break;
+		}
+		case Location::CEMETERY:		// 묘지
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 2;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 4;
+			break;
+		}
+		case Location::FOREST:			// 숲
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 2;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 2;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 4;
+			break;
+		}
+		case Location::FACTORY:			// 공장
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 0;
+			break;
+		}
+		case Location::CHAPEL:			// 성당
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 3;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 8;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 3;
+			break;
+		}
+		case Location::SCHOOL:			// 학교
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 4;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 6;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 0;
+			break;
+		}
+		case Location::RESERCH_CENTRE:	// 연구소
+		{
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::WOLF)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BEAR)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BAT)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::DOG)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::CHICKEN)] = 0;
+			_ResultInfo.MonsterCount_[static_cast<int>(MonsterType::BOAR)] = 0;
+			break;
+		}
+	}
 
+	// 지역별 최대 생성몬스터수 합산
+	for (int MonsterNum = 0; MonsterNum < static_cast<int>(MonsterType::MAX); ++MonsterNum)
+	{
+		_ResultInfo.TotalMonsterCnt_ += _ResultInfo.MonsterCount_[MonsterNum];
+	}
 
-
-	// 각 지역의 몬스터타입별 최대생성개체수를 합산하여 저장 = 최대생성가능몬스터개체수(생성몬스터총갯수)
-	MaxCreationCount_ = MaxCreationCount;
+	// 각 지역의 몬스터타입별 최대생성개체수를 합산하여 저장 = 전체지역에 대한 최대생성가능몬스터개체수(생성몬스터총갯수)
+	MaxCreationCount_ += _ResultInfo.TotalMonsterCnt_;
 }
 
 void MonsterInfoManager::CreateBasicMonsterInfos()
 {
-	////int Index_;									// 몬스터 생성 인덱스(탐색용)
-	////Location AreaType_;							// 몬스터 스폰 지역 타입(탐색용)
-	////MonsterType MonsterType_;						// 몬스터 타입
-	////float4 SpawnPosition_;						// 스폰 위치
-	////int IsGroup_;									// 그룹생성여부(1: 그룹으로생성, 0: 단독생성)
-	////int GroupCount_;								// 그룹생성일때 같은위치에 생성해야하는 야생동물수
-	//// -> 위의 정보 모두 해당 함수에서 결정
+	int CreationIndex = 0;
 
-	// 0. 최대생성가능몬스터개체수(생성몬스터총갯수)만큼 반복하며 몬스터생성시작
-	for (int MonsterNum = 0; MonsterNum < MaxCreationCount_; ++MonsterNum)
+	// 0-0. 현재맵에 배치(생성)하려는 몬스터 목록 작성시작!!!
+	for (int RegionNum = 0; RegionNum < static_cast<int>(Location::MAX); ++RegionNum)
 	{
-		// 1. 몬스터 기본정보(패킷정보) 생성시작!!
+		// 0-1. 현재 지역의 참고정보 Get
+		RefInfoByRegion CurRefInfo = RefInfoByRegion_[RegionNum];
 
+		// 1-0. 현재 지역의 몬스터타입수만큼 반복
+		int MonsterTypeCount = static_cast<int>(MonsterType::MAX); 
+		for (int MonsterTypeNum = 0; MonsterTypeNum < MonsterTypeCount; ++MonsterTypeNum)
+		{
+			// Initalize Local Value
+			bool IsGroup = false;
+			float4 RandomSpawnPos = float4::ZERO;
+			GameEngineRandom Random;
 
+			// 1-1. 현재 지역의 생성해야하는 몬스터제한갯수만큼 반복
+			MonsterType CurMonsterType = static_cast<MonsterType>(MonsterTypeNum);
+			int CountByRegion = CurRefInfo.MonsterCount_[MonsterTypeNum];
+			for (int RegionMonsterNum = 0; RegionMonsterNum < CountByRegion; ++RegionMonsterNum)
+			{
+				MonsterInfo NewMonsterInfo = {};
 
+				NewMonsterInfo.Index_ = CreationIndex++;										// 몬스터 생성 인덱스(탐색용)
+				NewMonsterInfo.RegionType_ = CurRefInfo.RegionType_;							// 몬스터 스폰 지역 타입
+				NewMonsterInfo.MonsterType_ = CurMonsterType;									// 몬스터 타입
+				NewMonsterInfo.IsGroup_ = 0;													// 그룹생성여부(1: 그룹으로생성, 0: 단독생성)
+				NewMonsterInfo.GroupCount_ = 0;													// 그룹생성일때 같은위치에 생성해야하는 야생동물수
 
+				// MonsterType::WOLF는 그룹생성
+				if (MonsterType::WOLF == CurMonsterType)
+				{
+					NewMonsterInfo.IsGroup_ = 1;
+					NewMonsterInfo.GroupCount_ = 2;
+				}
+
+				// 스폰위치 랜덤지정
+				// 단, 그룹생성이 필요한 몬스터는 첫지정스폰위치에서 X좌표 or Z좌표가 +-10 범위내에 위치하도록 설정
+				int RandomIndex = Random.RandomInt(0, static_cast<int>(CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs.size()) - 1);
+				if (1 == NewMonsterInfo.IsGroup_)
+				{
+					// 그룹생성 종료
+					if (true == IsGroup)
+					{
+						// 그룹생성에의한 스폰위치 지정
+						float4 GroupSpawnPos = float4(10.0f, 0.0f, 10.0f);
+						NewMonsterInfo.SpawnPosition_ = RandomSpawnPos + GroupSpawnPos;
+
+						// Flag & Position 초기화
+						RandomSpawnPos = float4::ZERO;
+						IsGroup = false;
+					}
+					// 그룹생성 시작
+					else
+					{
+						// Search SpawnPos
+						RandomSpawnPos = CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs[RandomIndex].POSITION;
+
+						// 이미 지정된 위치에 다시 스폰하려할때 스폰좌표 재지정
+						if (DesignatedSpawnPos_.end() != DesignatedSpawnPos_.find(RandomSpawnPos))
+						{
+							RandomIndex = Random.RandomInt(0, static_cast<int>(CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs.size()) - 1);
+							RandomSpawnPos = CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs[RandomIndex].POSITION;
+						}
+
+						// Group Creation Flag On & Spawn Position Setting
+						NewMonsterInfo.SpawnPosition_ = RandomSpawnPos;
+						IsGroup = true;
+					}
+				}
+				else
+				{
+					// 그룹생성이 아닌 몬스터의 스폰위치 지정
+					RandomSpawnPos = CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs[RandomIndex].POSITION;
+
+					// 이미 지정된 위치에 다시 스폰하려할때 스폰좌표 재지정
+					if (DesignatedSpawnPos_.end() != DesignatedSpawnPos_.find(RandomSpawnPos))
+					{
+						RandomIndex = Random.RandomInt(0, static_cast<int>(CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs.size()) - 1);
+						RandomSpawnPos = CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs[RandomIndex].POSITION;
+					}
+
+					// Spawn Position Setting
+					NewMonsterInfo.SpawnPosition_ = RandomSpawnPos;
+					RandomSpawnPos = float4::ZERO;
+				}
+
+				// 지정완료된 위치좌표 저장
+				DesignatedSpawnPos_.insert(RandomSpawnPos);
+
+				// 최종. 몬스터생성정보(패킷정보)목록에 추가
+				AllMonsters_.push_back(NewMonsterInfo);
+			}
+		}
 	}
 }
 

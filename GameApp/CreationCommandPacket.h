@@ -10,7 +10,7 @@ class CreationCommandPacket : public GameEnginePacketBase
 {
 public:
 	void SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos);
-	void SetMonsterInfo(MonsterInfo _MonsterInfo);
+	void AddMonsterInfo(MonsterInfo _MonsterInfo);
 
 protected:
 	virtual void userSerialize() override;

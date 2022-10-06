@@ -135,9 +135,6 @@ enum class Location
 	MAX
 };
 
-#pragma endregion
-
-
 enum class ItemType
 {
 	NONE = -1,

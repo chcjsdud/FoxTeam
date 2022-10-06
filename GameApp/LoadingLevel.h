@@ -26,6 +26,7 @@ private:
 	void CreationCommand();
 
 private:
+	void CheckThreadCreationInfoSettingEnd();
 	void CheckThreadLoadingEnd();
 
 private:

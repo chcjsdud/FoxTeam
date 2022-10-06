@@ -1,15 +1,17 @@
 #pragma once
 #include "MonsterInfo.h"
+#include <set>
 
 // 지역별 야생동물참고정보
 struct RefInfoByRegion
 {
 public: // 기본정보관련
-	Location Region_;																		// 지역타입
+	Location RegionType_;																	// 지역타입
 	int TotalMonsterCnt_;																	// 지역별 최대몬스터 스폰수
 
 public: // 위치정보관련(스폰위치생성용) - 해당 지역에 해당하는 버텍스를 모두알고있는다.
-	GameEngineFBXMesh* SpawnPoints_;														// 좌표목록메쉬(네비메쉬활용: 스폰위치지정용)
+	std::string FullSpawnFilePath_;															// 해당 지역의 메쉬파일경로
+	GameEngineFBXMesh* SpawnPointMesh_;														// 좌표목록메쉬(네비메쉬활용: 스폰위치지정용)
 
 public: // 개체수관련(생성하려는몬스터개체수 지정용)
 	int MonsterCount_[static_cast<int>(MonsterType::MAX)];									// 몬스터(야생동물) 타입별 개체수
@@ -22,6 +24,7 @@ class MonsterInfoManager
 {
 public:
 	static MonsterInfoManager* GetInstance();
+	static bool CreationPacketFlag;
 
 public: // Inline Get Function
 	inline int GetCurMonsterListSize()
@@ -52,10 +55,10 @@ protected:
 
 private: // 
 	void LoadSpawnPointMeshByRegion();														// 지역별 네비메쉬 로드
-	void CreateReferenceInfomation(Location _Location);											// 지역별 몬스터개체수, ... 정보를 생성
+	void CreateReferenceInfomation(Location _Location);										// 지역별 몬스터개체수, ... 정보를 생성
 	void SaveCreationCountByRegion(RefInfoByRegion& _ResultInfo);							// 지역별 최대생성몬스터갯수 정보 저장 - 상수때려박은...
 	void CreateBasicMonsterInfos();															// 앞서 생성된 정보를 통해 생성하려는 몬스터 기본정보 생성
-
+	
 private: // Logging & Conversion Function
 	std::string LoggingTypeToString(Location _Type);										// Type To String Conversion(Logging) - Korean(English)
 	std::string ConversionTypeToString(Location _Type);										// Type To String Conversion - English
@@ -80,6 +83,7 @@ private:
 private:
 	int MaxCreationCount_;																	// 생성하려는 몬스터 최대수(1~MaxCreationCount_까지 랜덤으로 생성갯수지정용)
 	RefInfoByRegion RefInfoByRegion_[static_cast<int>(Location::MAX)];						// 지역별 생성하려는 몬스터들의 기본정보(참고용)
+	std::set<float4> DesignatedSpawnPos_;													// 이미 지정되어있는 스폰위치목록
 
 };
 

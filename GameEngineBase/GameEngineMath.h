@@ -283,6 +283,16 @@ public:
 		return x != _Value.x || y != _Value.y || z != _Value.z || w != _Value.w;
 	}
 
+	bool operator<(const float4& _Value) const
+	{
+		return x < _Value.x && y < _Value.y && z < _Value.z;
+	}
+
+	bool operator>(const float4& _Value) const
+	{
+		return x > _Value.x&& y > _Value.y&& z > _Value.z;
+	}
+
 public:
 	unsigned int ColorToUint() const
 	{

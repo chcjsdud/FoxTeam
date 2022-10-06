@@ -5,6 +5,7 @@
 #include "UserGame.h"
 #include "LumiaLevel.h"
 #include "PlayerInfoManager.h"
+#include "MonsterInfoManager.h"
 #include "GameServer.h"
 #include "GameClient.h"
 
@@ -55,6 +56,39 @@ void LoadingLevel::CreationCommand()
 
 	// 생성명령 및 패킷 전송완료
 	ReadyCreationCommand = true;
+}
+
+void LoadingLevel::CheckThreadCreationInfoSettingEnd()
+{
+	// 몬스터생성정보가 모두 만들어지고, 서버라면 처리
+	if (true == MonsterInfoManager::GetInstance()->CreationPacketFlag && true == GameServer::GetInstance()->IsOpened())
+	{
+		// 패킷전송
+		int PlayerCount = static_cast<int>(PlayerInfoManager::GetInstance()->GetPlayerList().size());
+		if (1 < PlayerCount)
+		{
+			bool IsConnect = false;
+			for (int PlayerNum = 0; PlayerNum < PlayerCount; ++PlayerNum)
+			{
+				// 서버만 생성하고 게임시작버튼클릭시 더미정보를 1개만들어내므로 더미정보를 제외한 클라이언트(게스트)연결된 게임시작시 생성패킷전송
+				if (JobType::DUMMY == static_cast<JobType>(PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].character_))
+				{
+					IsConnect = true;
+					break;
+				}
+			}
+
+			if (false == IsConnect)
+			{
+				//CreationCommandPacket CommandPacket;
+				//CommandPacket.SetMonsterInfos(MonsterInfoManager::GetInstance()->GetAllMonsterListValue());
+				//GameServer::GetInstance()->Send(&CommandPacket);
+			}
+		}
+
+		// Flag Off
+		MonsterInfoManager::GetInstance()->CreationPacketFlag = false;
+	}
 }
 
 void LoadingLevel::CheckThreadLoadingEnd()
@@ -133,6 +167,9 @@ void LoadingLevel::LevelStart()
 
 void LoadingLevel::LevelUpdate(float _DeltaTime)
 {
+	// 생성패킷정보셋팅 스레드 종료체크
+	CheckThreadCreationInfoSettingEnd();
+
 	// 로딩스레드종료 체크
 	CheckThreadLoadingEnd();
 
