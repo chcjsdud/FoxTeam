@@ -13,6 +13,7 @@ class LumiaMap;
 class NavMesh;
 class Character;
 class Monsters;
+class GameEngineLevelControlWindow;
 class LumiaLevel : public GameEngineLevel
 {
 public: // Inline Get Function

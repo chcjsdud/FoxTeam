@@ -143,19 +143,19 @@ void Hyunwoo::initHyunwooCollision()
 
 void Hyunwoo::changeAnimationRun()
 {
-	curAnimation_ = "Run";
+	curAnimationName_ = "Run";
 	renderer_->ChangeFBXAnimation("Run");
 }
 
 void Hyunwoo::changeAnimationWait()
 {
-	curAnimation_ = "Wait";
+	curAnimationName_ = "Wait";
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
 void Hyunwoo::changeAnimationBasicAttack()
 {
-	curAnimation_ = "Atk0";
+	curAnimationName_ = "Atk0";
 	renderer_->ChangeFBXAnimation("Atk0", true);
 }
 
@@ -165,7 +165,7 @@ void Hyunwoo::onStartQSkill()
 	timer_end_Q = 0.0f;
 	b_Qhit_ = false;
 
-	curAnimation_ = "SkillQ";
+	curAnimationName_ = "SkillQ";
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
 	collision_Q->On();
@@ -289,7 +289,7 @@ void Hyunwoo::onStartESkill()
 
 	transform_.SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
 
-	curAnimation_ = "SkillE_start";
+	curAnimationName_ = "SkillE_start";
 	renderer_->ChangeFBXAnimation("SkillE_start", true);
 
 }
@@ -303,7 +303,7 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 
 	if (true == renderer_->IsCurrentAnimationEnd())
 	{
-		curAnimation_ = "SkillE_loop";
+		curAnimationName_ = "SkillE_loop";
 		renderer_->ChangeFBXAnimation("SkillE_loop", true);
 	}
 
@@ -424,7 +424,7 @@ void Hyunwoo::onUpdateDSkill(float _deltaTime)
 
 void Hyunwoo::onStartDeath()
 {
-	curAnimation_ = "Death";
+	curAnimationName_ = "Death";
 	renderer_->ChangeFBXAnimation("Death", true);
 }
 

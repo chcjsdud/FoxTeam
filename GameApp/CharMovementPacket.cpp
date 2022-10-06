@@ -5,6 +5,7 @@
 #include "PlayerInfoManager.h"
 
 CharMovementPacket::CharMovementPacket() // default constructer 디폴트 생성자
+	: targetIndex_(-1)
 {
 
 }
@@ -31,21 +32,21 @@ void CharMovementPacket::SetPos(float4 _pos)
 
 void CharMovementPacket::SetDirection(float4 _dir)
 {
-	dir_ = _dir;
+	rotation_ = _dir;
 }
 
 void CharMovementPacket::userSerialize()
 {
 	serializer_ << targetIndex_;
 	serializer_ << pos_;
-	serializer_ << dir_;
+	serializer_ << rotation_;
 }
 
 void CharMovementPacket::userDeserialize()
 {
 	serializer_ >> targetIndex_;
 	serializer_ >> pos_;
-	serializer_ >> dir_;
+	serializer_ >> rotation_;
 }
 
 void CharMovementPacket::initPacketID()
@@ -62,7 +63,7 @@ void CharMovementPacket::execute(SOCKET _sender, GameEngineSocketInterface* _net
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	pm->GetPlayerList()[targetIndex_].curPos_ = pos_;
-	pm->GetPlayerList()[targetIndex_].curDir_ = dir_;
+	pm->GetPlayerList()[targetIndex_].curRotation_ = rotation_;
 	
 	if (_bServer)
 	{

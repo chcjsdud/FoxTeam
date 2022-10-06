@@ -52,4 +52,6 @@ protected:
 	virtual void onStartDeath() override;
 	virtual void onUpdateDeath(float _deltaTime) override;
 
+private:
+	bool bLongBow_;
 };

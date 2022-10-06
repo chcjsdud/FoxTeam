@@ -44,7 +44,7 @@ void Lobby_GameStartButton::ButtonClickFunction()
 				DummyPlayerInfo.isReady_ = 1;
 				DummyPlayerInfo.IsLoading_ = 1;
 
-				DummyPlayerInfo.curDir_ = float4::ZERO;
+				DummyPlayerInfo.curRotation_ = float4::ZERO;
 				DummyPlayerInfo.curPos_ = float4::ZERO;
 
 				InfoManager->AddNewPlayer(DummyPlayerInfo);

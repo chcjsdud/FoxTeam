@@ -40,7 +40,8 @@ public:
 	void UnFocus() { bFocused_ = false; }
 	bool IsFocused() { return bFocused_; }
 
-	void ChangeAnimation(std::string _animationName);
+	void ChangeAnimation(const std::string& _animationName);
+	void ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect);
 
 	void Damage(float _amount);
 	void Stun(float _stunTime);
@@ -51,7 +52,9 @@ public:
 public:
 	CharacterStat* GetStat() { return &actorStat_; }
 	float4 GetDirection() { return direction_; }
-	std::string GetCurAnimation() { return curAnimation_; }
+	std::string GetCurAnimation() { return curAnimationName_; }
+	std::string GetOverrideAnimationName() { return overrideAnimationName_; }
+	std::string GetOverrideAnimationBoneName() { return overrideAnimationBoneName_; }
 	NavFace* GetCurrentNavFace() { return currentNavFace_; }
 	int GetIndex() { return myIndex_; }
 	std::vector<ItemBase*> GetInventory() { return inventory_; }
@@ -243,7 +246,9 @@ protected:
 
 	// 캐릭터 상태, 능력치
 	CharacterStat actorStat_;
-	std::string curAnimation_;
+	std::string curAnimationName_;
+	std::string overrideAnimationName_;
+	std::string overrideAnimationBoneName_;
 
 	// Omni State
 	GameEngineFSM mainState_;
@@ -263,9 +268,9 @@ protected:
 	float timerStun_;
 	float timerKnockback_;
 	float4 knockbackSpeed_;
-	
-	float timerHyunwooE_;
-	float4 dirHyunwooE_;
+
+	//float timerHyunwooE_;
+	//float4 dirHyunwooE_;
 
 	// 그 외
 	MousePointer* mouse_;

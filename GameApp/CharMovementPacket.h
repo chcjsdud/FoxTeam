@@ -30,7 +30,7 @@ public:
 
 	float4 GetDirection()
 	{
-		return dir_;
+		return rotation_;
 	}
 
 protected:
@@ -46,7 +46,7 @@ private:
 	// 2. 어떤 지점을 시작 지점으로 선택했나?
 	int targetIndex_;
 	float4 pos_;
-	float4 dir_;
+	float4 rotation_;
 	// 정수로 해놨지만 이후 enum 이든 합의된 값으로 바꿀 것.
 
 };

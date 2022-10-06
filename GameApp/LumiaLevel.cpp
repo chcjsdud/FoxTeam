@@ -426,11 +426,12 @@ void LumiaLevel::CharacterStateUpdatePacketSend()
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	if (-1 != pm->GetMyNumber() && 0 < static_cast<int>(CharacterActorList_.size()))
 	{
+		Character* currentCharacter = CharacterActorList_[pm->GetMyNumber()];
 		// 캐릭터 이동갱신 패킷
 		CharMovementPacket MovePacket;
 		MovePacket.SetTargetIndex(pm->GetMyNumber());
-		MovePacket.SetPos(CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalPosition());
-		MovePacket.SetDirection(CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetLocalRotation());
+		MovePacket.SetPos(currentCharacter->GetTransform()->GetLocalPosition());
+		MovePacket.SetDirection(currentCharacter->GetTransform()->GetLocalRotation());
 
 		if (true == ServerSocket->IsOpened())
 		{
@@ -444,7 +445,8 @@ void LumiaLevel::CharacterStateUpdatePacketSend()
 		// 캐릭터 애니메이션갱신 패킷
 		CharAnimationPacket AnimPacket;
 		AnimPacket.SetTargetIndex(pm->GetMyNumber());
-		AnimPacket.SetAnimation(CharacterActorList_[pm->GetMyNumber()]->GetCurAnimation());
+		AnimPacket.SetAnimationName(currentCharacter->GetCurAnimation());
+		AnimPacket.SetOverrideAnimation(currentCharacter->GetOverrideAnimationName(), currentCharacter->GetOverrideAnimationBoneName());
 
 		if (true == ServerSocket->IsOpened())
 		{
@@ -488,9 +490,12 @@ void LumiaLevel::CharactersTransformUpdate()
 				continue;
 			}
 
-			CharacterActorList_[i]->GetTransform()->SetLocalPosition(pm->GetPlayerList()[i].curPos_);
-			CharacterActorList_[i]->ChangeAnimation(pm->GetPlayerList()[i].curAnimation_);
-			CharacterActorList_[i]->GetTransform()->SetWorldRotationDegree(pm->GetPlayerList()[i].curDir_);
+			PlayerInfo& currentInfo = pm->GetPlayerList()[i];
+
+			CharacterActorList_[i]->GetTransform()->SetLocalPosition(currentInfo.curPos_);
+			CharacterActorList_[i]->ChangeAnimation(currentInfo.curAnimation_);
+			CharacterActorList_[i]->ChangeOverrideAnimation(currentInfo.overrideAnimationName_, currentInfo.overrideAnimationBoneName_);
+			CharacterActorList_[i]->GetTransform()->SetWorldRotationDegree(pm->GetPlayerList()[i].curRotation_);
 		}
 	}
 }
@@ -860,7 +865,7 @@ void LumiaLevel::Test_GenerateCharactor()
 		newPlayer.curAnimation_ = "";
 		newPlayer.isReady_ = true;
 
-		newPlayer.curDir_ = float4::ZERO;
+		newPlayer.curRotation_ = float4::ZERO;
 		newPlayer.curPos_ = { -2500.f, 0.0f, 10000.f };
 
 		pm->AddNewPlayer(newPlayer);

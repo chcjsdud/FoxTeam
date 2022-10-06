@@ -43,7 +43,7 @@ public:
 	{
 		return RenderSets[_Index];
 	}
-	
+
 	std::vector<RenderSet>& GetAllRenderSet()
 	{
 		return RenderSets;
@@ -52,7 +52,7 @@ public:
 
 	bool CheckIntersects(const float4& _Position, const float4& _Direction, float& _Distance);
 
-	bool CheckMeshToPointCollision(const float4& _Position, const float4& _Direction, 
+	bool CheckMeshToPointCollision(const float4& _Position, const float4& _Direction,
 		const float _Range);
 
 public:
@@ -103,7 +103,7 @@ private:
 	void Update(float _DeltaTime) override;
 
 
-/////////////////////////////// 애니메이션
+	/////////////////////////////// 애니메이션
 	// FBXAnimation
 
 public:
@@ -111,7 +111,7 @@ public:
 	void ChangeFBXAnimation(const std::string& _AnimationName, bool _bForceChange = false);
 	void OverrideFBXAnimation(const std::string& _animationName, const std::string& _boneNameToAffect, bool _bForceChange = false);
 	void ClearOverrideAnimation();
-	
+
 	bool IsCurrentAnimationEnd();
 	bool IsOverrideAnimationEnd();
 

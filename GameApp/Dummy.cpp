@@ -93,19 +93,19 @@ void Dummy::initDummyCollision()
 
 void Dummy::changeAnimationRun()
 {
-	curAnimation_ = "Run";
+	curAnimationName_ = "Run";
 	renderer_->ChangeFBXAnimation("Run");
 }
 
 void Dummy::changeAnimationWait()
 {
-	curAnimation_ = "Wait";
+	curAnimationName_ = "Wait";
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
 void Dummy::changeAnimationBasicAttack()
 {
-	curAnimation_ = "Atk0";
+	curAnimationName_ = "Atk0";
 	renderer_->ChangeFBXAnimation("Atk0", true);
 }
 
@@ -157,7 +157,7 @@ void Dummy::onUpdateDSkill(float _deltaTime)
 
 void Dummy::onStartDeath()
 {
-	curAnimation_ = "Death";
+	curAnimationName_ = "Death";
 	renderer_->ChangeFBXAnimation("Death", true);
 }
 

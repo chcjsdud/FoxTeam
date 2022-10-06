@@ -15,8 +15,10 @@ struct PlayerInfo
 
 	// Lumia Level Only
 	float4 curPos_;
-	float4 curDir_;
+	float4 curRotation_;
 	std::string curAnimation_;
+	std::string overrideAnimationName_;
+	std::string overrideAnimationBoneName_;
 
 
 	// 캐릭터 상태, 능력치

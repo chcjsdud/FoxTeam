@@ -9,6 +9,7 @@
 
 Rio::Rio()
 	: Character()
+	, bLongBow_(false)
 {
 
 }
@@ -80,14 +81,14 @@ void Rio::initRendererAndAnimation()
 
 void Rio::changeAnimationWait()
 {
-	curAnimation_ = "Wait";
+	curAnimationName_ = "Wait";
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
 void Rio::changeAnimationRun()
 {
-	curAnimation_ = "Run";
-	// Character 클래스에 새 멤버 curAnimation_ 이 추가되었습니다.
+	curAnimationName_ = "Run";
+	// Character 클래스에 새 멤버 curAnimationName_ 이 추가되었습니다.
 	// 
 
 	renderer_->ChangeFBXAnimation("Run");
@@ -95,13 +96,15 @@ void Rio::changeAnimationRun()
 
 void Rio::changeAnimationBasicAttack()
 {
-	curAnimation_ = "BasicAttack";
+	curAnimationName_ = "BasicAttack";
 	renderer_->ChangeFBXAnimation("BasicAttack", true);
 }
 
 
 void Rio::onStartQSkill()
 {
+	overrideAnimationName_ = "SkillQ_Long";
+	overrideAnimationBoneName_ = "Bip001 Spine2";
 	renderer_->OverrideFBXAnimation("SkillQ_Long", "Bip001 Spine2");
 	//renderer_->OverrideFBXAnimation("SkillQ", "Bip001 L UpperArm");
 }
@@ -111,6 +114,8 @@ void Rio::onUpdateQSkill(float _deltaTime)
 	moveProcess(_deltaTime);
 	if (renderer_->IsOverrideAnimationEnd())
 	{
+		overrideAnimationName_ = "";
+		overrideAnimationBoneName_ = "";
 		renderer_->ClearOverrideAnimation();
 		mainState_ << "NormalState";
 	}

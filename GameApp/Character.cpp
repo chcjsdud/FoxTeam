@@ -34,6 +34,7 @@ Character::Character()
 	, currentAnimation_(eCurrentAnimation::None)
 	, myIndex_(-1)
 	, uiController_(nullptr)
+	, overrideAnimationName_("")
 
 {
 }
@@ -514,15 +515,28 @@ void Character::MoveWithPathFind(const float4& _position)
 	}
 }
 
-void Character::ChangeAnimation(std::string _animationName)
+void Character::ChangeAnimation(const std::string& _animationName)
 {
 	if ("" == _animationName)
 	{
 		return;
 	}
 
-	curAnimation_ = _animationName;
+	curAnimationName_ = _animationName;
 	renderer_->ChangeFBXAnimation(_animationName);
+}
+
+void Character::ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect)
+{
+	if ("" == _animationName)
+	{
+		renderer_->ClearOverrideAnimation();
+		return;
+	}
+
+	overrideAnimationName_ = _animationName;
+	overrideAnimationBoneName_ = _boneNameToAffect;
+	renderer_->OverrideFBXAnimation(_animationName, _boneNameToAffect);
 }
 
 void Character::Damage(float _amount)
