@@ -134,9 +134,10 @@ void Rio::onStartBasicAttacking(Character* _target)
 {
 	if (bLongBow_)
 	{
+		float4 offset = { 20.f, 140.f, 30.f, 0.f };
+		offset = offset * transform_.GetTransformData().WorldWorld_;
 		float4 startPosition = transform_.GetWorldPosition();
-		startPosition.y += 50.f;
-		startPosition += transform_.GetWorldForwardVector() * 50.f;
+		startPosition += offset;
 
 		RioArrow* arrow = level_->CreateActor<RioArrow>();
 		arrow->MakeTargetArrow(this, stat_.AttackPower, startPosition, 1000.f, target_);
@@ -145,9 +146,10 @@ void Rio::onStartBasicAttacking(Character* _target)
 	{
 		float doubleStrikeDelay = (stat_.AttackEndTime - stat_.AttackStartTime) / stat_.AttackSpeed / 2.0f;
 
+		float4 offset = { 20.f, 120.f, 30.f, 0.f };
+		offset = offset * transform_.GetTransformData().WorldWorld_;
 		float4 startPosition = transform_.GetWorldPosition();
-		startPosition.y += 50.f;
-		startPosition += transform_.GetWorldForwardVector() * 50.f;
+		startPosition += offset;
 
 		RioArrow* arrow = level_->CreateActor<RioArrow>();
 		arrow->MakeTargetArrow(this, stat_.AttackPower / 2.0f, startPosition, 1000.f, target_);
