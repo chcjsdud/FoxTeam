@@ -16,8 +16,6 @@ class EquipmentItem;
 class PlayerUIController;
 class Character : public GameEngineActor
 {
-	friend Hyunwoo;
-
 public:
 	Character();
 	~Character();
@@ -119,9 +117,10 @@ private:
 	void checkItemBox();
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
 	void mixingItem();
+	void SetEquipBuildItem(const std::string& _itemName, EquipmentType _type);
 
 	void checkBuildItems();
-	void checkBuildItemsRecursive(const std::string& _itemName);
+	void checkBuildItemsRecursive(ItemBase* _item);
 
 	Character* getMousePickedCharacter();
 
@@ -240,8 +239,8 @@ protected:
 	std::list<CombineItem> queueItemMixing_;
 
 	std::vector<EquipmentItem*> equipedItem_;
-	std::vector<std::string>	equipBuildItem_;	// 부위별 최종 장비 아이템
-	std::list<std::string>		allMyBuildItems_;	// 아이템을 완성하기 위한 모든 재료
+	std::vector<EquipmentItem*>	equipBuildItem_;	// 부위별 최종 장비 아이템
+	std::list<ItemBase*>		allMyBuildItems_;	// 아이템을 완성하기 위한 모든 재료
 
 	// 캐릭터 상태, 능력치
 	CharacterStat actorStat_;

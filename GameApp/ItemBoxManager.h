@@ -1,18 +1,20 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngineBase/GameEngineRandom.h>
+#include "ItemBase.h"
 
 //#define USERSAVE
 
 struct CombineItem
 {
+	friend struct QueueItem;
 public:
-	std::string left_;
-	std::string right_;
+	ItemBase* left_;
+	ItemBase* right_;
 
-	CombineItem(const std::string& _left, const std::string& _right)
+	CombineItem(ItemBase* _left, ItemBase* _right)
 	{
-		if (_left <= _right)
+		if (_left->GetName() <= _right->GetName())
 		{
 			left_ = _left;
 			right_ = _right;
@@ -26,19 +28,20 @@ public:
 
 	bool const operator==(const CombineItem& o)
 	{
-		return left_ == o.left_ && right_ == o.right_;
+		return left_->GetName() == o.left_->GetName() &&
+			right_->GetName() == o.right_->GetName();
 	}
 
 	bool const operator<(const CombineItem& o) const
 	{
-		if (left_ != o.left_)
+		if (left_->GetName() != o.left_->GetName())
 		{
-			return left_ < o.left_;
+			return left_->GetName() < o.left_->GetName();
 		}
 
-		if (right_ != o.right_)
+		if (right_->GetName() != o.right_->GetName())
 		{
-			return right_ < o.right_;
+			return right_->GetName() < o.right_->GetName();
 		}
 
 		return false;
@@ -49,8 +52,20 @@ private:
 	CombineItem() {}
 };
 
+
+struct QueueItem
+{
+public:
+	CombineItem CI_;
+	bool isMyBuild_;
+	int itemTier_;
+
+	QueueItem() {};
+	~QueueItem() {};
+};
+
+
 // Ό³Έν : 
-class ItemBase;
 class MiscItem;
 class UseableItem;
 class EquipmentItem;
@@ -104,6 +119,7 @@ public:
 	void CloseItemBox();
 	ItemBase* GetItemFromItemBox(int _index);
 	void DeleteItemFromItemBox(int _index);
+	ItemBase* GetItemFromItemList(const std::string& _itemName);
 
 	void PushRandomItem(const std::string& _area, const std::string& _item, int _amount = 1);
 

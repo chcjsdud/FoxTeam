@@ -3,7 +3,6 @@
 #include <GameEngine/GameEngineCollision.h>
 #include "MousePointer.h"
 #include "Enums.h"
-#include "ItemBase.h"
 #include "EquipmentItem.h"
 #include "UseableItem.h"
 #include "MiscItem.h"
@@ -310,6 +309,24 @@ void ItemBoxManager::DeleteItemFromItemBox(int _index)
 	itemBoxUI_->GetItemBoxInfo(GetSelectBox());
 }
 
+ItemBase* ItemBoxManager::GetItemFromItemList(const string& _itemName)
+{
+	std::list<ItemBase*>::iterator iter = allItemList_.begin();
+
+	for ( ; iter != allItemList_.end() ; ++iter)
+	{
+		if ((*iter)->GetName() != _itemName)
+		{
+			continue;
+		}
+
+		return *iter;
+	}
+
+	GameEngineDebug::MsgBoxError("아이템 리스트에서 아이템을 찾는데 실패했습니다.");
+	return nullptr;
+}
+
 void ItemBoxManager::Start()
 {
 #ifdef USERSAVE
@@ -543,8 +560,31 @@ void ItemBoxManager::CreateItemRecipe(const std::string& _left,
 		return;
 	}
 
+	ItemBase* leftItem = nullptr;
+	ItemBase* rightItem = nullptr;
+
+	for (const auto& item : allItemList_)
+	{
+		if (item->GetName() == _left)
+		{
+			leftItem = item;
+		}
+
+		if (item->GetName() == _right)
+		{
+			rightItem = item;
+		}
+	}
+
+	if (nullptr == leftItem ||
+		nullptr == rightItem)
+	{ 
+		GameEngineDebug::MsgBoxError("없는 아이템으로 조합식을 만들려했습니다.");
+		return;
+	}
+
 	std::pair<std::map<CombineItem, std::string>::iterator, bool> pair;
-	pair = itemRecipes_.insert(std::make_pair(CombineItem(_left, _right), _result));
+	pair = itemRecipes_.insert(std::make_pair(CombineItem(leftItem, rightItem), _result));
 
 	if (false == pair.second)
 	{

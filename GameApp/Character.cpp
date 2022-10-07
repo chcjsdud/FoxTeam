@@ -103,12 +103,12 @@ void Character::Start()
 	equipBuildItem_.resize(static_cast<int>(EquipmentType::MAX));
 
 	// 현우아이템트리로 일단 고정
-	equipBuildItem_[static_cast<int>(EquipmentType::HEAD)] = "ImperialBurgonet";
-	equipBuildItem_[static_cast<int>(EquipmentType::CHEST)] = "CommandersArmor";
-	equipBuildItem_[static_cast<int>(EquipmentType::ARM)] = "TindalosBand";
-	equipBuildItem_[static_cast<int>(EquipmentType::LEG)] = "TachyonBrace";
-	equipBuildItem_[static_cast<int>(EquipmentType::ACCESSORY)] = "WhiteCraneFan";
-	equipBuildItem_[static_cast<int>(EquipmentType::WEAPON)] = "PlasmaTonfa";
+	SetEquipBuildItem("ImperialBurgonet", EquipmentType::HEAD);
+	SetEquipBuildItem("CommandersArmor", EquipmentType::CHEST);
+	SetEquipBuildItem("TindalosBand", EquipmentType::ARM);
+	SetEquipBuildItem("TachyonBrace", EquipmentType::LEG);
+	SetEquipBuildItem("WhiteCraneFan", EquipmentType::ACCESSORY);
+	SetEquipBuildItem("PlasmaTonfa", EquipmentType::WEAPON);
 
 	checkBuildItems();
 }
@@ -217,12 +217,12 @@ void Character::getItem(int _index)
 		uiController_->GetInventoryUI()->PushItem(Item);
 		itemBoxmanager_->DeleteItemFromItemBox(_index);
 
-		std::list<std::string>::iterator iter = allMyBuildItems_.begin();
-		std::list<std::string>::iterator iterErase = allMyBuildItems_.end();
+		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
+		std::list<ItemBase*>::iterator iterErase = allMyBuildItems_.end();
 
 		for ( ; iter != allMyBuildItems_.end(); ++iter)
 		{
-			if ((*iter) != Item->GetName())
+			if ((*iter) != Item)
 			{
 				continue;
 			}
@@ -304,6 +304,7 @@ void Character::checkItemBox()
 
 bool sortItemQueue(const CombineItem& _left, const CombineItem& _right)
 {
+	// 우선도에 따라 정렬 (루트, 아이템등급)
 	return false;
 }
 
@@ -330,7 +331,7 @@ void Character::checkItemRecipes()
 		// 아이템 조합가능여부를 판별
 		std::map<CombineItem, std::string>::iterator iter = itemRecipes.end();
 
-		CombineItem CI = CombineItem(inventory_[left]->GetName(), inventory_[right]->GetName());
+		CombineItem CI = CombineItem(inventory_[left], inventory_[right]);
 
 		iter = itemRecipes.find(CI);
 
@@ -339,10 +340,13 @@ void Character::checkItemRecipes()
 			continue;
 		}
 
+		//QueueItem QI;
+		//QI.CI_ = CI;
+		//QI.
+
 		// 조합 대기열에 등록
 		queueItemMixing_.push_back(CI);
 
-		// 우선도에 따라 정렬 (루트, 아이템등급)
 		queueItemMixing_.sort(sortItemQueue);
 	}
 }
@@ -389,7 +393,7 @@ void Character::mixingItem()
 				continue;
 			}
 
-			if (invenItem->GetName() == itemNames.left_)
+			if (invenItem == itemNames.left_)
 			{
 				invenItem->Release();
 				invenItem = nullptr;
@@ -403,7 +407,7 @@ void Character::mixingItem()
 				continue;
 			}
 
-			if (invenItem->GetName() == itemNames.right_)
+			if (invenItem == itemNames.right_)
 			{
 				invenItem->Release();
 				invenItem = nullptr;
@@ -434,31 +438,34 @@ void Character::mixingItem()
 	checkItemRecipes();
 }
 
+void Character::SetEquipBuildItem(const std::string& _itemName, EquipmentType _type)
+{
+	equipBuildItem_[static_cast<int>(_type)] = reinterpret_cast<EquipmentItem*>
+		(itemBoxmanager_->GetItemFromItemList(_itemName));
+}
+
 
 void Character::checkBuildItems()
 {
-	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::HEAD)]);
-	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::CHEST)]);
-	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::ARM)]);
-	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::LEG)]);
-	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::ACCESSORY)]);
-	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::WEAPON)]);
+	checkBuildItemsRecursive(reinterpret_cast<ItemBase*>(equipBuildItem_[static_cast<int>(EquipmentType::HEAD)]));
+	checkBuildItemsRecursive(reinterpret_cast<ItemBase*>(equipBuildItem_[static_cast<int>(EquipmentType::CHEST)]));
+	checkBuildItemsRecursive(reinterpret_cast<ItemBase*>(equipBuildItem_[static_cast<int>(EquipmentType::ARM)]));
+	checkBuildItemsRecursive(reinterpret_cast<ItemBase*>(equipBuildItem_[static_cast<int>(EquipmentType::LEG)]));
+	checkBuildItemsRecursive(reinterpret_cast<ItemBase*>(equipBuildItem_[static_cast<int>(EquipmentType::ACCESSORY)]));
+	checkBuildItemsRecursive(reinterpret_cast<ItemBase*>(equipBuildItem_[static_cast<int>(EquipmentType::WEAPON)]));
 
 	allMyBuildItems_;
-
-	allMyBuildItems_.push_back("Scissors");
-	allMyBuildItems_.push_back("Slippers");
 
 	int a = 0;
 }
 
-void Character::checkBuildItemsRecursive(const std::string& _itemName)
+void Character::checkBuildItemsRecursive(ItemBase* _item)
 {
 	std::map<CombineItem, std::string> Recipes = itemBoxmanager_->GetAllItemRecipes();
 
 	for (const auto& iter : Recipes)
 	{
-		if (iter.second == _itemName)
+		if (iter.second == _item->GetName())
 		{
 			allMyBuildItems_.push_back(iter.first.left_);
 			allMyBuildItems_.push_back(iter.first.right_);
