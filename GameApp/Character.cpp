@@ -313,7 +313,7 @@ void Character::checkItemRecipes()
 	std::vector<std::vector<int>> cases =
 		GameEngineMath::Combination(static_cast<int>(inventory_.size()), 2);
 
-	std::map<CombineItem, std::string>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
+	std::map<CombineItem, ItemBase*>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
 
 	queueItemMixing_.clear();
 
@@ -329,7 +329,7 @@ void Character::checkItemRecipes()
 		}
 
 		// 아이템 조합가능여부를 판별
-		std::map<CombineItem, std::string>::iterator iter = itemRecipes.end();
+		std::map<CombineItem, ItemBase*>::iterator iter = itemRecipes.end();
 
 		CombineItem CI = CombineItem(inventory_[left], inventory_[right]);
 
@@ -361,9 +361,9 @@ void Character::mixingItem()
 	CombineItem itemNames = queueItemMixing_.front();
 	queueItemMixing_.pop_front();
 
-	std::map<CombineItem, std::string>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
+	std::map<CombineItem, ItemBase*>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
 
-	std::map<CombineItem, std::string>::iterator iter = itemRecipes.end();
+	std::map<CombineItem, ItemBase*>::iterator iter = itemRecipes.end();
 	iter = itemRecipes.find(itemNames);
 
 	if (itemRecipes.end() == iter)
@@ -372,67 +372,45 @@ void Character::mixingItem()
 		return;
 	}
 
-	std::string resultItemName = iter->second;
-
-	std::list<ItemBase*> itemList = itemBoxmanager_->GetAllItemList();
-	bool isFind = false;
-
-	for (const auto& item : itemList)
+	for (auto& invenItem : inventory_)
 	{
-		if (item->GetName() != resultItemName)
+		if (nullptr == invenItem)
 		{
 			continue;
 		}
 
-		isFind = true;
-
-		for (auto& invenItem : inventory_)
+		if (invenItem == itemNames.left_)
 		{
-			if (nullptr == invenItem)
-			{
-				continue;
-			}
-
-			if (invenItem == itemNames.left_)
-			{
-				invenItem->Release();
-				invenItem = nullptr;
-				break;
-			}
-		}
-		for (auto& invenItem : inventory_)
-		{
-			if (nullptr == invenItem)
-			{
-				continue;
-			}
-
-			if (invenItem == itemNames.right_)
-			{
-				invenItem->Release();
-				invenItem = nullptr;
-				break;
-			}
-		}
-
-		for (auto& invenItem : inventory_)
-		{
-			if (nullptr != invenItem)
-			{
-				continue;
-			}
-
-			invenItem = item->Copy();
+			invenItem->Release();
+			invenItem = nullptr;
 			break;
 		}
-
-		break;
 	}
 
-	if (false == isFind)
+	for (auto& invenItem : inventory_)
 	{
-		GameEngineDebug::MsgBoxError("조합 실패, 아이템리스트에 존재하지 않음");
-		return;
+		if (nullptr == invenItem)
+		{
+			continue;
+		}
+
+		if (invenItem == itemNames.right_)
+		{
+			invenItem->Release();
+			invenItem = nullptr;
+			break;
+		}
+	}
+
+	for (auto& invenItem : inventory_)
+	{
+		if (nullptr != invenItem)
+		{
+			continue;
+		}
+
+		invenItem = iter->second->Copy();
+		break;
 	}
 
 	checkItemRecipes();
@@ -461,11 +439,11 @@ void Character::checkBuildItems()
 
 void Character::checkBuildItemsRecursive(ItemBase* _item)
 {
-	std::map<CombineItem, std::string> Recipes = itemBoxmanager_->GetAllItemRecipes();
+	std::map<CombineItem, ItemBase*> Recipes = itemBoxmanager_->GetAllItemRecipes();
 
 	for (const auto& iter : Recipes)
 	{
-		if (iter.second == _item->GetName())
+		if (iter.second->GetName() == _item->GetName())
 		{
 			allMyBuildItems_.push_back(iter.first.left_);
 			allMyBuildItems_.push_back(iter.first.right_);

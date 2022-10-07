@@ -100,7 +100,7 @@ public:
 		return itemBoxUI_;
 	}
 
-	std::map<CombineItem, std::string>& GetAllItemRecipes()
+	std::map<CombineItem, ItemBase*>& GetAllItemRecipes()
 	{
 		return itemRecipes_;
 	}
@@ -172,7 +172,7 @@ private:
 
 	std::list<ItemBase*> allItemList_;
 	GameEngineRandom randomManager_;
-	std::map<CombineItem, std::string> itemRecipes_;
+	std::map<CombineItem, ItemBase*> itemRecipes_;
 
 	//이건호 UI아이템 박스 작업
 private:

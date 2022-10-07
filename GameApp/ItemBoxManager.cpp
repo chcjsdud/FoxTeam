@@ -562,6 +562,7 @@ void ItemBoxManager::CreateItemRecipe(const std::string& _left,
 
 	ItemBase* leftItem = nullptr;
 	ItemBase* rightItem = nullptr;
+	ItemBase* resultItem = nullptr;
 
 	for (const auto& item : allItemList_)
 	{
@@ -574,17 +575,23 @@ void ItemBoxManager::CreateItemRecipe(const std::string& _left,
 		{
 			rightItem = item;
 		}
+
+		if (item->GetName() == _result)
+		{
+			resultItem = item;
+		}
 	}
 
 	if (nullptr == leftItem ||
-		nullptr == rightItem)
+		nullptr == rightItem ||
+		nullptr == resultItem)
 	{ 
 		GameEngineDebug::MsgBoxError("없는 아이템으로 조합식을 만들려했습니다.");
 		return;
 	}
 
-	std::pair<std::map<CombineItem, std::string>::iterator, bool> pair;
-	pair = itemRecipes_.insert(std::make_pair(CombineItem(leftItem, rightItem), _result));
+	std::pair<std::map<CombineItem, ItemBase*>::iterator, bool> pair;
+	pair = itemRecipes_.insert(std::make_pair(CombineItem(leftItem, rightItem), resultItem));
 
 	if (false == pair.second)
 	{
