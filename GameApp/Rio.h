@@ -36,6 +36,9 @@ protected:
 	virtual void changeAnimationRun() override;
 	virtual void changeAnimationBasicAttack() override;
 
+	virtual void onStartBasicAttacking(Character* _target) override;
+	virtual void onUpdateBasicAttacking(Character* _target, float _deltaTime) override;
+
 	virtual void onStartQSkill() override;
 	virtual void onUpdateQSkill(float _deltaTime) override;
 
@@ -51,10 +54,13 @@ protected:
 	virtual void onStartDSkill() override;
 	virtual void onUpdateDSkill(float _deltaTime) override;
 
-
 	virtual void onStartDeath() override;
 	virtual void onUpdateDeath(float _deltaTime) override;
 
 private:
+
+
+private:
 	bool bLongBow_;
+
 };

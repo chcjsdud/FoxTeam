@@ -69,7 +69,7 @@ void Hyunwoo::Start()
 {
 	Character::Start();
 	initHyunwooCollision();
-	actorStat_.AttackStartTime = 0.15f;
+	stat_.AttackStartTime = 0.15f;
 }
 
 void Hyunwoo::Update(float _deltaTime)
@@ -229,18 +229,18 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 
 					// 대미지가 차감된 Status 를 패킷으로 넘겨줍니다.
-					CharStatPacket packet;
-					packet.SetTargetIndex(character->GetIndex());
-					packet.SetStat(*(character->GetStat()));
+					//CharStatPacket packet;
+					//packet.SetTargetIndex(character->GetIndex());
+					//packet.SetStat(*(character->GetStat()));
 
-					if (true == GameServer::GetInstance()->IsOpened())
-					{
-						GameServer::GetInstance()->Send(&packet);
-					}
-					else if (true == GameClient::GetInstance()->IsConnected())
-					{
-						GameClient::GetInstance()->Send(&packet);
-					}
+					//if (true == GameServer::GetInstance()->IsOpened())
+					//{
+					//	GameServer::GetInstance()->Send(&packet);
+					//}
+					//else if (true == GameClient::GetInstance()->IsConnected())
+					//{
+					//	GameClient::GetInstance()->Send(&packet);
+					//}
 				}
 			}
 		}
@@ -360,19 +360,19 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 						//character->mainState_.ChangeState("CrowdControlState", true);
 						//character->crowdControlState_.ChangeState("HyunwooE", true);
 
-						CharStatPacket packet;
-						packet.SetTargetIndex(character->GetIndex());
-						packet.SetStat(*(character->GetStat()));
+						//CharStatPacket packet;
+						//packet.SetTargetIndex(character->GetIndex());
+						//packet.SetStat(*(character->GetStat()));
 
 						if (true == GameServer::GetInstance()->IsOpened())
 						{
 							GameServer::GetInstance()->Send(&ccPacket);
-							GameServer::GetInstance()->Send(&packet);
+							//GameServer::GetInstance()->Send(&packet);
 						}
 						else if (true == GameClient::GetInstance()->IsConnected())
 						{
 							GameClient::GetInstance()->Send(&ccPacket);
-							GameClient::GetInstance()->Send(&packet);
+							//GameClient::GetInstance()->Send(&packet);
 						}
 
 						b_Ehit_ = true;
@@ -440,3 +440,11 @@ void Hyunwoo::onUpdateDeath(float _deltaTime)
 
 }
 
+void Hyunwoo::onStartBasicAttacking(Character* _target)
+{
+	target_->Damage(stat_.AttackPower);
+}
+
+void Hyunwoo::onUpdateBasicAttacking(Character* _target, float _deltaTime)
+{
+}

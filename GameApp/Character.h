@@ -48,7 +48,7 @@ public:
 
 #pragma region GetterSetter
 public:
-	CharacterStat* GetStat() { return &actorStat_; }
+	CharacterStat* GetStat() { return &stat_; }
 	float4 GetDirection() { return direction_; }
 	std::string GetCurAnimation() { return curAnimationName_; }
 	std::string GetOverrideAnimationName() { return overrideAnimationName_; }
@@ -60,12 +60,12 @@ public:
 	void SetDirection(float4 _dir) { direction_ = _dir; }
 	void SetCurrentNavFace(NavFace* _Navi) { currentNavFace_ = _Navi; }
 	void SetCurrentNavMesh(NavMesh* _NaviMesh);
-	void SetStat(CharacterStat _status) { actorStat_ = _status; }
+	void SetStat(CharacterStat _status) { stat_ = _status; }
 	void SetIndex(int _index) { myIndex_ = _index; }
 
 #pragma endregion
 
-#pragma region PureVirtualFunc
+#pragma region VirtualFunc
 public:
 	virtual JobType GetJobType() = 0;
 
@@ -77,6 +77,9 @@ protected:
 	virtual void changeAnimationBasicAttack() = 0;
 
 	// Main(AttackState)
+	virtual void onStartBasicAttacking(Character* _target) = 0;
+	virtual void onUpdateBasicAttacking(Character* _target, float _deltaTime) = 0;
+
 	virtual void onStartQSkill() = 0;
 	virtual void onUpdateQSkill(float _deltaTime) = 0;
 
@@ -91,8 +94,6 @@ protected:
 
 	virtual void onStartDSkill() = 0;
 	virtual void onUpdateDSkill(float _deltaTime) = 0;
-
-
 
 	// Main(DeathState)
 	virtual void onStartDeath() = 0;
@@ -195,8 +196,8 @@ private:
 	void startBasicAttack();
 	void updateBasicAttack(float _deltaTime);
 
-	void startBasicAttackDone();
-	void updateBasicAttackDone(float _deltaTime);
+	void startBasicAttacking();
+	void updateBasicAttacking(float _deltaTime);
 
 	void startQSkill();
 	void updateQSkill(float _deltaTime);
@@ -245,7 +246,7 @@ protected:
 	std::list<ItemBase*>		allMyBuildItems_;	// 아이템을 완성하기 위한 모든 재료
 
 	// 캐릭터 상태, 능력치
-	CharacterStat actorStat_;
+	CharacterStat stat_;
 	std::string curAnimationName_;
 	std::string overrideAnimationName_;
 	std::string overrideAnimationBoneName_;

@@ -357,6 +357,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="ResultLevel.cpp" />
+    <ClCompile Include="RioArrow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ServerTestLevel.cpp">
       <SubType>
       </SubType>
@@ -637,6 +641,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ResultLevel.h" />
+    <ClInclude Include="RioArrow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ServerTestLevel.h">
       <SubType>
       </SubType>

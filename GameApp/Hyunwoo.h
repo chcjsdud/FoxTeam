@@ -35,6 +35,8 @@ protected:
 	virtual void changeAnimationWait() override;
 	virtual void changeAnimationBasicAttack() override;
 
+	virtual void onStartBasicAttacking(Character* _target) override;
+	virtual void onUpdateBasicAttacking(Character* _target, float _deltaTime) override;
 
 	virtual void onStartQSkill() override;
 	virtual void onUpdateQSkill(float _deltaTime) override;

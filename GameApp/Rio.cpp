@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
 #include <GameApp/LumiaLevel.h>
+#include "RioArrow.h"
 
 Rio::Rio()
 	: Character()
@@ -129,6 +130,38 @@ void Rio::changeAnimationBasicAttack()
 	}
 }
 
+void Rio::onStartBasicAttacking(Character* _target)
+{
+	if (bLongBow_)
+	{
+		float4 startPosition = transform_.GetWorldPosition();
+		startPosition.y += 50.f;
+		startPosition += transform_.GetWorldForwardVector() * 50.f;
+
+		RioArrow* arrow = level_->CreateActor<RioArrow>();
+		arrow->MakeTargetArrow(this, stat_.AttackPower, startPosition, 1000.f, target_);
+	}
+	else
+	{
+		float doubleStrikeDelay = (stat_.AttackEndTime - stat_.AttackStartTime) / stat_.AttackSpeed / 2.0f;
+
+		float4 startPosition = transform_.GetWorldPosition();
+		startPosition.y += 50.f;
+		startPosition += transform_.GetWorldForwardVector() * 50.f;
+
+		RioArrow* arrow = level_->CreateActor<RioArrow>();
+		arrow->MakeTargetArrow(this, stat_.AttackPower / 2.0f, startPosition, 1000.f, target_);
+
+		arrow = level_->CreateActor<RioArrow>();
+		arrow->MakeTargetArrow(this, stat_.AttackPower / 2.0f, startPosition, 1000.f, target_);
+		arrow->SetWaitTime(doubleStrikeDelay);
+	}
+
+}
+
+void Rio::onUpdateBasicAttacking(Character* _target, float _deltaTime)
+{
+}
 
 void Rio::onStartQSkill()
 {
@@ -205,5 +238,4 @@ void Rio::onStartDeath()
 void Rio::onUpdateDeath(float _deltaTime)
 {
 }
-
 

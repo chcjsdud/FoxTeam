@@ -117,7 +117,7 @@ void Character::Update(float _DeltaTime)
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-	if (0.0f >= actorStat_.HP)
+	if (0.0f >= stat_.HP)
 	{
 		if (true == isPlayerDead_)
 		{
@@ -603,7 +603,20 @@ void Character::ChangeOverrideAnimation(const std::string& _animationName, const
 
 void Character::Damage(float _amount)
 {
-	actorStat_.HP -= _amount;
+	stat_.HP -= _amount;
+
+	CharStatPacket packet;
+	packet.SetStat(stat_);
+	packet.SetTargetIndex(GetIndex());
+
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		GameServer::GetInstance()->Send(&packet);
+	}
+	else if (true == GameClient::GetInstance()->IsConnected())
+	{
+		GameClient::GetInstance()->Send(&packet);
+	}
 }
 
 void Character::Stun(float _stunTime)
@@ -660,7 +673,7 @@ void Character::initState()
 	normalState_.CreateState(MakeState(Character, Chase));
 
 	attackState_.CreateState(MakeState(Character, BasicAttack));
-	attackState_.CreateState(MakeState(Character, BasicAttackDone));
+	attackState_.CreateState(MakeState(Character, BasicAttacking));
 	attackState_.CreateState(MakeState(Character, QSkill));
 	attackState_.CreateState(MakeState(Character, ESkill));
 
@@ -778,7 +791,7 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 {
 	setRotationTo(destination_, _startPosition);
 
-	float4 moveSpeed = direction_ * actorStat_.MovementSpeed * _deltaTime;
+	float4 moveSpeed = direction_ * stat_.MovementSpeed * _deltaTime;
 	float4 nextMovePosition = _startPosition + moveSpeed;
 
 	float temp;
@@ -942,18 +955,18 @@ void Character::updateChase(float _deltaTime)
 	float4 playerPosition = transform_.GetWorldPosition();
 	float distance = float4::Calc_Len3D(playerPosition, targetPosition);
 
-	//if (distance > actorStat_.VisionRange)
+	//if (distance > stat_.VisionRange)
 	//{
 	//	normalState_ << "Watch";
 	//	target_ = nullptr;
 	//	return;
 	//}
 
-	if (distance < actorStat_.AttackRange)
+	if (distance < stat_.AttackRange)
 	{
 		setRotationTo(targetPosition, playerPosition);
 
-		if (attackCooldown_ > 1.0f / actorStat_.AttackSpeed)
+		if (attackCooldown_ > 1.0f / stat_.AttackSpeed)
 		{
 			mainState_ << "AttackState";
 			attackState_ << "BasicAttack";
@@ -1093,7 +1106,7 @@ void Character::updateBasicAttack(float _deltaTime)
 {
 	attackTime_ += _deltaTime;
 
-	if (attackTime_ < actorStat_.AttackStartTime / actorStat_.AttackSpeed)
+	if (attackTime_ < stat_.AttackStartTime / stat_.AttackSpeed)
 	{
 		GameEngineCollision* rayCol = mouse_->GetRayCollision();
 
@@ -1121,40 +1134,29 @@ void Character::updateBasicAttack(float _deltaTime)
 		}
 	}
 
-	if (attackTime_ > actorStat_.AttackStartTime / actorStat_.AttackSpeed)
+	if (attackTime_ > stat_.AttackStartTime / stat_.AttackSpeed)
 	{
-		attackState_ << "BasicAttackDone";
+		attackState_ << "BasicAttacking";
 		return;
 	}
 }
 
-void Character::startBasicAttackDone()
+void Character::startBasicAttacking()
 {
-	target_->Damage(actorStat_.AttackPower);
-	CharStatPacket packet;
-	packet.SetStat(target_->actorStat_);
-	packet.SetTargetIndex(target_->GetIndex());
-
-	if (true == GameServer::GetInstance()->IsOpened())
-	{
-		GameServer::GetInstance()->Send(&packet);
-	}
-	else if (true == GameClient::GetInstance()->IsConnected())
-	{
-		GameClient::GetInstance()->Send(&packet);
-	}
-
+	onStartBasicAttacking(target_);
 }
 
-void Character::updateBasicAttackDone(float _deltaTime)
+void Character::updateBasicAttacking(float _deltaTime)
 {
 	attackTime_ += _deltaTime;
-	if (attackTime_ > actorStat_.AttackEndTime / actorStat_.AttackSpeed)
+	if (attackTime_ > stat_.AttackEndTime / stat_.AttackSpeed)
 	{
 		attackCooldown_ = 0.0f;
 		mainState_ << "NormalState";
 		return;
 	}
+
+	onUpdateBasicAttacking(target_, _deltaTime);
 }
 
 void Character::startQSkill()
