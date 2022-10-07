@@ -242,6 +242,47 @@ void Character::getItem(int _index)
 	checkItemRecipes();
 }
 
+void Character::getItem(const std::string& _itemName)
+{
+	// 임의로 아이템을 인벤토리에 넣음
+
+	ItemBase* item = itemBoxmanager_->GetItemFromItemList(_itemName);
+
+	for (auto& invenItem : inventory_)
+	{
+		if (nullptr != invenItem)
+		{
+			continue;
+		}
+
+		invenItem = item;
+		uiController_->GetInventoryUI()->PushItem(item);
+
+		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
+		std::list<ItemBase*>::iterator iterErase = allMyBuildItems_.end();
+
+		for (; iter != allMyBuildItems_.end(); ++iter)
+		{
+			if ((*iter) != item)
+			{
+				continue;
+			}
+
+			iterErase = iter;
+			break;
+		}
+
+		if (iterErase != allMyBuildItems_.end())
+		{
+			allMyBuildItems_.erase(iterErase);
+		}
+
+		break;
+	}
+
+	checkItemRecipes();
+}
+
 void Character::checkItemBox()
 {
 	if (itemBoxmanager_ == nullptr)
@@ -302,10 +343,16 @@ void Character::checkItemBox()
 	// 초기화하지 않으면 SelectBox 근처에 다가가면 UI가 계속 열리게 됨
 }
 
-bool sortItemQueue(const CombineItem& _left, const CombineItem& _right)
+bool sortItemQueue(QueueItem _left, QueueItem _right)
 {
-	// 우선도에 따라 정렬 (루트, 아이템등급)
-	return false;
+	// 우선도에 따라 정렬 (루트)
+	if (false == _left.isMyBuild_ &&
+		true == _right.isMyBuild_)
+	{
+		return false;
+	}
+
+	return true;
 }
 
 void Character::checkItemRecipes()
@@ -340,12 +387,19 @@ void Character::checkItemRecipes()
 			continue;
 		}
 
-		//QueueItem QI;
-		//QI.CI_ = CI;
-		//QI.
+		QueueItem QI;
+		QI.CI_ = CI;
+
+		for (const auto& myItem : allMyBuildItems_)
+		{
+			if (myItem == (*iter).second)
+			{
+				QI.isMyBuild_ = true;
+			}
+		}
 
 		// 조합 대기열에 등록
-		queueItemMixing_.push_back(CI);
+		queueItemMixing_.push_back(QI);
 
 		queueItemMixing_.sort(sortItemQueue);
 	}
@@ -358,7 +412,7 @@ void Character::mixingItem()
 		return;
 	}
 
-	CombineItem itemNames = queueItemMixing_.front();
+	CombineItem itemNames = queueItemMixing_.front().CI_;
 	queueItemMixing_.pop_front();
 
 	std::map<CombineItem, ItemBase*>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();

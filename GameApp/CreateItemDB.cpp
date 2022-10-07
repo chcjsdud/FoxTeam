@@ -116,7 +116,7 @@ EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name,
 void ItemBoxManager::CreateAllItemRecipes()
 {
 	// Á¶ÇÕ Test¿ë
-	CreateItemRecipe("Scissors", "FountainPen", "Slippers");
+	CreateItemRecipe("Scissors", "FountainPen", "LongRifle");
 
 	// Çö¿ì Äð°¨ ½ºÁõ [°ø - ½£ - °í - ¹¦ - ÇÐ]
 	

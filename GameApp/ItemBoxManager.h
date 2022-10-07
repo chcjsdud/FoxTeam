@@ -49,21 +49,22 @@ public:
 
 private:
 	// 정렬을 위해서 막음
-	CombineItem() {}
+	CombineItem()
+		: left_(nullptr)
+		, right_(nullptr)
+	{}
 };
-
 
 struct QueueItem
 {
 public:
 	CombineItem CI_;
 	bool isMyBuild_;
-	int itemTier_;
 
-	QueueItem() {};
-	~QueueItem() {};
+	QueueItem()
+		: isMyBuild_(false)
+	{};
 };
-
 
 // 설명 : 
 class MiscItem;
