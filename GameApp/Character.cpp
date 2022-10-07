@@ -216,6 +216,26 @@ void Character::getItem(int _index)
 		invenItem = Item;
 		uiController_->GetInventoryUI()->PushItem(Item);
 		itemBoxmanager_->DeleteItemFromItemBox(_index);
+
+		std::list<std::string>::iterator iter = allMyBuildItems_.begin();
+		std::list<std::string>::iterator iterErase = allMyBuildItems_.end();
+
+		for ( ; iter != allMyBuildItems_.end(); ++iter)
+		{
+			if ((*iter) != Item->GetName())
+			{
+				continue;
+			}
+
+			iterErase = iter;
+			break;
+		}
+
+		if (iterErase != allMyBuildItems_.end())
+		{
+			allMyBuildItems_.erase(iterErase);
+		}
+
 		break;
 	}
 
@@ -425,6 +445,9 @@ void Character::checkBuildItems()
 	checkBuildItemsRecursive(equipBuildItem_[static_cast<int>(EquipmentType::WEAPON)]);
 
 	allMyBuildItems_;
+
+	allMyBuildItems_.push_back("Scissors");
+	allMyBuildItems_.push_back("Slippers");
 
 	int a = 0;
 }

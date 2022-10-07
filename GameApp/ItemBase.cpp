@@ -5,7 +5,6 @@ ItemBase::ItemBase()
 	: type_(ItemType::NONE)
 	, tier_(ItemTier::NONE)
 	, renderer_(nullptr)
-	, isMyBuild_(false)
 {
 	
 }
