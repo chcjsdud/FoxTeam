@@ -83,6 +83,7 @@ enum class eCollisionGroup
 	PlayerGround,
 	PlayerSight,
 	PlayerAttack,
+	Projectile,
 	MonsterSight,
 	Monster,
 	MonsterAttack,

@@ -124,9 +124,6 @@
     <ClCompile Include="LumiaLoadingManager.cpp">
       <Filter>02.GameServer</Filter>
     </ClCompile>
-    <ClCompile Include="Rio.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="TitleIDInput.cpp">
       <Filter>01.GameObject\03.Level\TitleLevel</Filter>
     </ClCompile>
@@ -202,14 +199,8 @@
     <ClCompile Include="PlayerUIController.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Character.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="StartPointSelectPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterStat.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Hyunwoo.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
@@ -291,6 +282,15 @@
     </ClCompile>
     <ClCompile Include="CharCrowdControlPacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Rio.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterStat.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -462,6 +462,12 @@
     <Filter Include="01.GameObject\03.Level\TestLevel">
       <UniqueIdentifier>{02c5c2e2-dfc9-49e2-9772-25d4c803e6ae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character">
+      <UniqueIdentifier>{bf4d605e-60b7-46a9-bcbf-0cb4cd56edf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio">
+      <UniqueIdentifier>{282fe2d7-3fcd-4313-a257-12bb60ee19c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -590,9 +596,6 @@
     <ClInclude Include="LumiaLoadingManager.h">
       <Filter>02.GameServer</Filter>
     </ClInclude>
-    <ClInclude Include="Rio.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="TitleIDInput.h">
       <Filter>01.GameObject\03.Level\TitleLevel</Filter>
     </ClInclude>
@@ -668,14 +671,8 @@
     <ClInclude Include="PlayerUIController.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="StartPointSelectPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterStat.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="Hyunwoo.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
@@ -760,6 +757,15 @@
     </ClInclude>
     <ClInclude Include="eCrowdControlType.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Rio.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterStat.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

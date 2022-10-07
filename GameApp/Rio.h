@@ -23,6 +23,9 @@ public:
 public:
 	virtual JobType GetJobType() { return JobType::RIO; }
 
+public:
+	bool IsLongBow() { return bLongBow_; }
+
 protected:
 	void Start() override;
 	void Update(float _deltaTime) override;

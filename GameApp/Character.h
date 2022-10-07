@@ -8,7 +8,6 @@
 struct CombineItem;
 
 // 이터널 리턴에 나오는 실험체의 베이스가 되는 클래스
-class Hyunwoo;
 class ItemBoxManager;
 class MousePointer;
 class LumiaMap;
@@ -103,6 +102,7 @@ protected:
 #pragma endregion
 
 protected:
+	void inputProcess(float _deltaTime);
 	void moveProcess(float _deltaTime);
 
 private:
@@ -110,7 +110,6 @@ private:
 	void initState();
 
 private:
-	void inputProcess(float _deltaTime);
 	void moveTick(float _deltaTime, const float4& _startPosition);
 	void setRotationTo(const float4& _destination, const float4 _startPosition);
 
