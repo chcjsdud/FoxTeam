@@ -3,7 +3,8 @@
 #include "PlayerInfoManager.h"
 
 
-PlayerUIController::PlayerUIController() // default constructer 디폴트 생성자
+PlayerUIController::PlayerUIController()
+	: Rio_bLongBow_(false), MyJob(JobType::HYUNWOO)
 {
 
 }
@@ -30,9 +31,17 @@ void PlayerUIController::InitUI()
 
 void PlayerUIController::SetJobType(JobType _MyJob)
 {
-	charPicture_UI->SetJobType(_MyJob);
-	skill_UI->SetJobType(_MyJob);
+	MyJob = _MyJob;
+
+	charPicture_UI->SetJobType(MyJob);
+	skill_UI->SetJobType(MyJob);
+
+	if (MyJob == JobType::RIO)
+	{
+		Rio_bLongBow_ = false;
+	}
 }
+
 
 void PlayerUIController::Start()
 {
@@ -41,7 +50,17 @@ void PlayerUIController::Start()
 
 void PlayerUIController::Update(float _DeltaTime)
 {
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
 	//스테이터스를 상시 받아야함
-	status_UI->SetStatus(PlayerInfoManager::GetInstance()->GetMyPlayer().stat_);
+	status_UI->SetStatus(pm->GetMyPlayer().stat_);
+
+	pm->GetMainCharacter();
+
+	if (MyJob == JobType::RIO)
+	{
+		skill_UI->SetSkillType(MyJob, Rio_bLongBow_);
+	}
+
 }
 

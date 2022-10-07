@@ -66,6 +66,9 @@ private:
 	UI_Inventory* inventory_UI;
 	UI_Skill* skill_UI;
 	UI_Status* status_UI;
+	
+	JobType MyJob;
 
+	bool Rio_bLongBow_;
 };
 

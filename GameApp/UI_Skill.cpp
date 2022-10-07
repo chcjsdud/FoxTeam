@@ -138,6 +138,12 @@ void UI_Skill::SetJobType(JobType _myjob)
 	case JobType::JACKIE:
 		break;
 	case JobType::RIO:
+	{
+		//Icon_Q->SetImage("Rio_Q_Icon.png", "PointSmp");
+		//Icon_W->SetImage("Rio_W_Icon.png", "PointSmp");
+		//Icon_E->SetImage("Rio_E_Icon.png", "PointSmp");
+		//Icon_R->SetImage("Rio_R_Icon.png", "PointSmp");
+	}
 		break;
 	case JobType::AYA:
 		break;
@@ -148,4 +154,9 @@ void UI_Skill::SetJobType(JobType _myjob)
 	default:
 		break;
 	}
+}
+
+void UI_Skill::SetSkillType(JobType _myjob, bool _Skilltype)
+{
+	
 }
