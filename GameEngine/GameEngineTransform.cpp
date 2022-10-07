@@ -253,15 +253,15 @@ void GameEngineTransform::SetWorldPosition(const float4& _Value)
 
 void GameEngineTransform::AddLocalPosition(float _x, float _y, float _z)
 {
-	TransformData_.vLocalPosition_.x = _x;
-	TransformData_.vLocalPosition_.y = _y;
-	TransformData_.vLocalPosition_.z = _z;
+	TransformData_.vLocalPosition_.x += _x;
+	TransformData_.vLocalPosition_.y += _y;
+	TransformData_.vLocalPosition_.z += _z;
 
 	if (nullptr == Parent_)
 	{
-		TransformData_.vWorldPosition_.x = _x;
-		TransformData_.vWorldPosition_.y = _y;
-		TransformData_.vWorldPosition_.z = _z;
+		TransformData_.vWorldPosition_.x += _x;
+		TransformData_.vWorldPosition_.y += _y;
+		TransformData_.vWorldPosition_.z += _z;
 
 		AllChildCalculationPosition();
 		TransformUpdate();
@@ -276,15 +276,15 @@ void GameEngineTransform::AddLocalPosition(float _x, float _y, float _z)
 
 void GameEngineTransform::AddLocalPosition(const float4& _position)
 {
-	TransformData_.vLocalPosition_.x = _position.x;
-	TransformData_.vLocalPosition_.y = _position.y;
-	TransformData_.vLocalPosition_.z = _position.z;
+	TransformData_.vLocalPosition_.x += _position.x;
+	TransformData_.vLocalPosition_.y += _position.y;
+	TransformData_.vLocalPosition_.z += _position.z;
 
 	if (nullptr == Parent_)
 	{
-		TransformData_.vWorldPosition_.x = _position.x;
-		TransformData_.vWorldPosition_.y = _position.y;
-		TransformData_.vWorldPosition_.z = _position.z;
+		TransformData_.vWorldPosition_.x += _position.x;
+		TransformData_.vWorldPosition_.y += _position.y;
+		TransformData_.vWorldPosition_.z += _position.z;
 
 		AllChildCalculationPosition();
 		TransformUpdate();
@@ -299,15 +299,15 @@ void GameEngineTransform::AddLocalPosition(const float4& _position)
 
 void GameEngineTransform::AddWorldPosition(float _x, float _y, float _z)
 {
-	TransformData_.vWorldPosition_.x = _x;
-	TransformData_.vWorldPosition_.y = _y;
-	TransformData_.vWorldPosition_.z = _z;
+	TransformData_.vWorldPosition_.x += _x;
+	TransformData_.vWorldPosition_.y += _y;
+	TransformData_.vWorldPosition_.z += _z;
 
 	if (nullptr == Parent_)
 	{
-		TransformData_.vLocalPosition_.x = _x;
-		TransformData_.vLocalPosition_.y = _y;
-		TransformData_.vLocalPosition_.z = _z;
+		TransformData_.vLocalPosition_.x += _x;
+		TransformData_.vLocalPosition_.y += _y;
+		TransformData_.vLocalPosition_.z += _z;
 
 		AllChildCalculationPosition();
 		TransformUpdate();
@@ -322,15 +322,15 @@ void GameEngineTransform::AddWorldPosition(float _x, float _y, float _z)
 
 void GameEngineTransform::AddWorldPosition(const float4& _position)
 {
-	TransformData_.vWorldPosition_.x = _position.x;
-	TransformData_.vWorldPosition_.y = _position.y;
-	TransformData_.vWorldPosition_.z = _position.z;
+	TransformData_.vWorldPosition_.x += _position.x;
+	TransformData_.vWorldPosition_.y += _position.y;
+	TransformData_.vWorldPosition_.z += _position.z;
 
 	if (nullptr == Parent_)
 	{
-		TransformData_.vLocalPosition_.x = _position.x;
-		TransformData_.vLocalPosition_.y = _position.y;
-		TransformData_.vLocalPosition_.z = _position.z;
+		TransformData_.vLocalPosition_.x += _position.x;
+		TransformData_.vLocalPosition_.y += _position.y;
+		TransformData_.vLocalPosition_.z += _position.z;
 
 		AllChildCalculationPosition();
 		TransformUpdate();
