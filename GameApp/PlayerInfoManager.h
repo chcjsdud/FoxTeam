@@ -25,7 +25,7 @@ public:
 	std::vector<PlayerInfo>&	GetPlayerList()								{ return serverPlayerList_; }
 	int							GetMyNumber()								{ return playerNumber_; }
 	std::string					GetNickname()						     	{ return playerName_; }
-	PlayerInfo& GetMyPlayer()											    { return serverPlayerList_[playerNumber_]; }
+	PlayerInfo&					GetMyPlayer()								{ return serverPlayerList_[playerNumber_]; }
 
 	Character*					GetMainCharacter()							{ return myCharacter_; }
 

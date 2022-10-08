@@ -1,6 +1,7 @@
 #include "PreCompile.h"
 #include "PlayerUIController.h"
 #include "PlayerInfoManager.h"
+#include "LumiaLevel.h"
 
 
 PlayerUIController::PlayerUIController()
@@ -51,6 +52,13 @@ void PlayerUIController::Start()
 void PlayerUIController::Update(float _DeltaTime)
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
+	// 현재 레벨이 루미아 레벨이 아닌 경우 처리하지 않음
+	LumiaLevel* lumiaLevel = GetLevelConvert<LumiaLevel>();
+	if (nullptr == lumiaLevel)
+	{
+		return;
+	}
 
 	//스테이터스를 상시 받아야함
 	status_UI->SetStatus(pm->GetMyPlayer().stat_);

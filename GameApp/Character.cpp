@@ -63,33 +63,28 @@ void Character::Start()
 
 
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
-	if (nullptr != level)
+	// 현재 레벨이 루미아 레벨이 아닌 경우 처리하지 않음
+	if (nullptr == level)
 	{
-		itemBoxmanager_ = level->GetItemBoxManager();
-		inventory_.resize(10);
-
-		LumiaLevel* level = dynamic_cast<LumiaLevel*>(level_);
-
-
-		currentMap_ = level->GetMap();
-		mouse_ = level->GetMousePointer();
-
-		if (nullptr == currentMap_)
-		{
-			GameEngineDebug::MsgBoxError("level에 Map 정보가 없습니다.");
-		}
-
-		if (nullptr == mouse_)
-		{
-			GameEngineDebug::MsgBoxError("level에 MousePointer 정보가 없습니다.");
-		}
+		return;
 	}
 
+	itemBoxmanager_ = level->GetItemBoxManager();
+	inventory_.resize(10);
 
-	//if (nullptr == level)
-	//{
-	//	GameEngineDebug::MsgBoxError("level 변환에 실패했습니다. class GameEngineLevel to " + std::string(typeid(LumiaLevel).name()));
-	//}
+	currentMap_ = level->GetMap();
+	mouse_ = level->GetMousePointer();
+
+	if (nullptr == currentMap_)
+	{
+		GameEngineDebug::MsgBoxError("level에 Map 정보가 없습니다.");
+	}
+
+	if (nullptr == mouse_)
+	{
+		GameEngineDebug::MsgBoxError("level에 MousePointer 정보가 없습니다.");
+	}
+
 
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
@@ -220,7 +215,7 @@ void Character::getItem(int _index)
 		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
 		std::list<ItemBase*>::iterator iterErase = allMyBuildItems_.end();
 
-		for ( ; iter != allMyBuildItems_.end(); ++iter)
+		for (; iter != allMyBuildItems_.end(); ++iter)
 		{
 			if ((*iter) != Item)
 			{

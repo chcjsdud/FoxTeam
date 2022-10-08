@@ -40,12 +40,12 @@ void TestLevel::LevelUpdate(float _DeltaTime)
 
 	if (GameEngineInput::Press("X"))
 	{
-		rio_->ChangeAnimation(std::string("Run"));
+		rio_->ChangeAnimation(std::string("Run_Short"));
 	}
 
 	if (GameEngineInput::Press("Z"))
 	{
-		rio_->ChangeAnimation(std::string("Wait"));
+		rio_->ChangeAnimation(std::string("Wait_Short"));
 	}
 }
 
