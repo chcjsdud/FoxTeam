@@ -122,11 +122,11 @@ void Rio::changeAnimationBasicAttack()
 {
 	if (bLongBow_)
 	{
-		ChangeAnimation("BasicAttack_Long");
+		ChangeAnimation("BasicAttack_Long", true);
 	}
 	else
 	{
-		ChangeAnimation("BasicAttack_Short");
+		ChangeAnimation("BasicAttack_Short", true);
 	}
 }
 

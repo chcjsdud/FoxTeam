@@ -2,7 +2,7 @@
 #include "GameEngineWindow.h"
 #include <GameEngineBase/GameEngineDebug.h>
 #include <GameEngineBase/GameEngineTime.h>
-#include <GameEngineBase/GameEngineSound.h>
+#include <GameEngineBase/GameEngineSoundManager.h>
 #include <iostream>
 #include <GameApp/KeyboardClass.h>
 

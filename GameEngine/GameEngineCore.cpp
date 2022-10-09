@@ -50,7 +50,7 @@ void GameEngineCore::EngineInitialize()
 	GameEngineCollision::Init();
 
 
-	GameEngineSoundManager::GetInst().Initialize();
+	GameEngineSoundManager::GetInstance()->Initialize();
 }
 
 
@@ -83,7 +83,7 @@ void GameEngineCore::EngineDestroy()
 void GameEngineCore::MainLoop()
 {
 	GameEngineTime::GetInst().TimeCheck();
-	GameEngineSoundManager::GetInst().SoundUpdate();
+	GameEngineSoundManager::GetInstance()->Update();
 	GameEngineInput::GetInst().Update();
 
 	if (nullptr != NextLevel_)

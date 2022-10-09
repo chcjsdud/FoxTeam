@@ -1,43 +1,40 @@
 #pragma once
-#include "FMOD/fmod.hpp"
-#include "GameEngineSound.h"
+
 #include "GameEngineSoundManager.h"
 
-// 분류 :
-// 용도 :
-// 설명 :
 class GameEngineSoundPlayer
 {
-	friend GameEngineSoundManager;
+public:
+	// SoundManager 에 로드된 사운드만 재생할 수 있습니다.
+	// 사운드 플레이어는 비어있는 사운드를 허용하지 않습니다.
+	GameEngineSoundPlayer(const std::string& _soundName);
+	~GameEngineSoundPlayer();
+	GameEngineSoundPlayer(const GameEngineSoundPlayer& _other) = delete;
+	GameEngineSoundPlayer(GameEngineSoundPlayer&& _other) = delete;
+	GameEngineSoundPlayer& operator=(const GameEngineSoundPlayer& _other) = delete;
+	GameEngineSoundPlayer& operator=(const GameEngineSoundPlayer&& _other) = delete;
 
-private:	// member Var
-	GameEngineSoundManager* playSoundFile_;
-	FMOD::Channel* playChannel_; // 
-	int PlayCount;
+public:
+	void ChangeSound(const std::string& _soundName);
 
-private:		
-	GameEngineSoundPlayer(); // default constructer 디폴트 생성자
-	~GameEngineSoundPlayer(); // default destructer 디폴트 소멸자
-
-public:		// delete constructer
-	GameEngineSoundPlayer(const GameEngineSoundPlayer& _other) = delete; // default Copy constructer 디폴트 복사생성자
-	GameEngineSoundPlayer(GameEngineSoundPlayer&& _other) noexcept; // default RValue Copy constructer 디폴트 RValue 복사생성자
-
-public:		//delete operator
-	GameEngineSoundPlayer& operator=(const GameEngineSoundPlayer& _other) = delete; // default Copy operator 디폴트 대입 연산자
-	GameEngineSoundPlayer& operator=(const GameEngineSoundPlayer&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
-
-public:		//member Func
-	bool IsPlay();
-
-	void PlayCountReset(int _Count = -1);
-
-	// 겹쳐서 재생 기존의 사운드가 재생되고 있어도 그냥 재생한다. OneShot.
-	void PlayOverLap(const std::string& _name, int _LoopCount = 1);
-
-	// 기존의 사운드가 재생이 끝나야만 다음 사운드를 재생한다.
-	void PlayAlone(const std::string& _name, int _LoopCount = 1);
-
+	void Play();
 	void Stop();
+
+	bool IsPlaying();
+	bool IsPaused();
+	void SetPaused(bool _bPause);
+	void SetVolume(float _volume);
+	void SetPitch(float _pitch);
+	void SetPosition(unsigned int _positionMilliSec);
+	unsigned int GetPositionMillisecond();
+	unsigned int GetLengthMillisecond();
+
+	float GetVolume() const { return volume_; }
+
+private:
+	FMOD::Sound* sound_;
+	FMOD::Channel* channel_;
+
+	float volume_;
 };
 

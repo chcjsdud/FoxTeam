@@ -1,154 +1,156 @@
 #include "PreCompile.h"
-#include "GameEngineSound.h"
+#include "GameEngineSoundManager.h"
 #include "GameEngineDebug.h"
-#include "GameEngineSound.h"
-#include "GameEngineSoundPlayer.h"
-#include "GameEnginePath.h"
 
+#include <Windows.h>
 
-GameEngineSoundManager* GameEngineSoundManager::Inst = new GameEngineSoundManager();
+float GameEngineSoundManager::globalVolume_ = 1.0f;
 
-// Static Var
-// Static Func
-
-// constructer destructer
 GameEngineSoundManager::GameEngineSoundManager()
+	: system_(nullptr)
+	, channel_(nullptr)
 {
+}
+
+FMOD::Sound* GameEngineSoundManager::getSound(const std::string& _name)
+{
+	std::unordered_map<std::string, FMOD::Sound*>::iterator findIter = allSounds_.find(_name);
+	std::unordered_map<std::string, FMOD::Sound*>::iterator endIter = allSounds_.end();
+
+	if (findIter == endIter)
+	{
+		GameEngineDebug::MsgBoxError("No Sounds. named : " + _name);
+		return nullptr;
+	}
+
+	return findIter->second;
 }
 
 GameEngineSoundManager::~GameEngineSoundManager()
 {
-	{
-		std::list<GameEngineSoundPlayer*>::iterator StartIter = allSoundPlayer_.begin();
-		std::list<GameEngineSoundPlayer*>::iterator EndIter = allSoundPlayer_.end();
+	std::unordered_map<std::string, FMOD::Sound*>::iterator startIter = allSounds_.begin();
+	std::unordered_map<std::string, FMOD::Sound*>::iterator endIter = allSounds_.end();
 
-		for (; StartIter != EndIter; ++StartIter)
-		{
-			if (nullptr != *StartIter)
-			{
-				delete *StartIter;
-			}
-		}
-		allSoundPlayer_.clear();
+	while (startIter != endIter)
+	{
+		startIter->second->release();
+		++startIter;
 	}
 
-	{
-		std::map<std::string, GameEngineSound*>::iterator StartIter = allLoadSound_.begin();
-		std::map<std::string, GameEngineSound*>::iterator EndIter = allLoadSound_.end();
+	allSounds_.clear();
 
-		for (; StartIter != EndIter; ++StartIter)
-		{
-			if (nullptr != StartIter->second)
-			{
-				delete StartIter->second;
-				StartIter->second = nullptr;
-			}
-		}
-		allLoadSound_.clear();
-	}
-
-
-	if (nullptr != soundSystem_)
-	{
-		soundSystem_->release();
-		soundSystem_ = nullptr;
-	}
+	system_->close();
+	system_->release();
 }
-
-GameEngineSoundManager::GameEngineSoundManager(GameEngineSoundManager&& _other) noexcept
-{
-
-}
-
-GameEngineSound* GameEngineSoundManager::FindSound(const std::string& _name)
-{
-	std::map<std::string, GameEngineSound*>::iterator FindIter = allLoadSound_.find(_name);
-
-	if (FindIter == allLoadSound_.end())
-	{
-		return nullptr;
-	}
-
-	return FindIter->second;
-}
-
-void GameEngineSoundManager::SoundUpdate() 
-{
-	if (nullptr == soundSystem_)
-	{
-		GameEngineDebug::MsgBoxError("SoundSystem Is null");
-		return;
-	}
-
-	soundSystem_->update();
-}
-
-GameEngineSoundPlayer* GameEngineSoundManager::CreateSoundPlayer()
-{
-	GameEngineSoundPlayer* NewSoundplayer = new GameEngineSoundPlayer();
-
-	allSoundPlayer_.push_back(NewSoundplayer);
-
-	return  NewSoundplayer;
-}
-
-void GameEngineSoundManager::Load(const std::string& _path) 
-{
-	Load(GameEnginePath::GetFileName(_path), _path);
-}
-
-void GameEngineSoundManager::Load(const std::string& _name, const std::string& _path)
-{
-	if (nullptr != FindSound(_name))
-	{
-		GameEngineDebug::MsgBoxError("Sound Load overlap error");
-		return;
-	}
-
-	GameEngineSound* newLoadSound = new GameEngineSound();
-
-	if (false == newLoadSound->Load(_path))
-	{
-		GameEngineDebug::MsgBoxError("Sound Load Error");
-		delete newLoadSound;
-		return;
-	}
-
-	allLoadSound_.insert(
-		std::map<std::string, GameEngineSound*>::value_type(_name, newLoadSound));
-}
-
-void GameEngineSoundManager::PlaySoundOneShot(const std::string& _name) 
-{
-	GameEngineSound* SoundPtr = FindSound(_name);
-
-	if (nullptr == SoundPtr)
-	{
-		GameEngineDebug::MsgBoxError("PlaySound Error");
-		return;
-	}
-
-	soundSystem_->playSound(SoundPtr->sound_, nullptr, false, nullptr);
-}
-
-//member Func
 
 void GameEngineSoundManager::Initialize()
 {
-	// 내부코드에서 NEW를 할 가능성이 매우 다분해.
-	FMOD::System_Create(&soundSystem_);
+	FMOD_RESULT result;
 
-	if (nullptr == soundSystem_)
+	result = FMOD::System_Create(&system_);
+	if (FMOD_OK != result)
 	{
-		GameEngineDebug::MsgBoxError("sound system create Error");
-		return;
+		GameEngineDebug::MsgBoxError("FMOD system create failed.");
 	}
 
-	// 동시에 32개 개수인지 사운드 채널의 의미인지를 잘 모르고 있습니다.
-	// 32채널을 재생할수 있다는 의미인데 선생님도 잘 모릅니다.
-	if (FMOD_OK != soundSystem_->init(32, FMOD_DEFAULT, nullptr))
+	result = system_->init(32, FMOD_INIT_NORMAL, nullptr);
+	if (FMOD_OK != result)
 	{
-		GameEngineDebug::MsgBoxError("sound system init Error");
-		return;
+		GameEngineDebug::MsgBoxError("FMOD system initialize failed.");
 	}
+}
+
+void GameEngineSoundManager::Update()
+{
+	if (nullptr == system_)
+	{
+		GameEngineDebug::AssertFalse();
+	}
+
+	system_->update();
+}
+
+void GameEngineSoundManager::CreateSound(const std::string& _name, const std::string& _path, bool _bLoop)
+{
+	std::unordered_map<std::string, FMOD::Sound*>::iterator findIter = allSounds_.find(_name);
+	std::unordered_map<std::string, FMOD::Sound*>::iterator endIter = allSounds_.end();
+
+	if (findIter != endIter)
+	{
+		findIter->second->release();
+	}
+
+	FMOD_RESULT result;
+	FMOD::Sound* newSound;
+	FMOD_MODE mode = FMOD_DEFAULT;
+
+	if (_bLoop)
+	{
+		mode = FMOD_LOOP_NORMAL;
+	}
+
+	result = system_->createSound(_path.c_str(), mode, nullptr, &newSound);
+
+	if (FMOD_OK != result)
+	{
+		GameEngineDebug::MsgBoxError("createSound failed.");
+	}
+
+	allSounds_[_name] = newSound;
+}
+
+void GameEngineSoundManager::PlaySoundByName(const std::string& _name)
+{
+	std::unordered_map<std::string, FMOD::Sound*>::iterator findIter = allSounds_.find(_name);
+	std::unordered_map<std::string, FMOD::Sound*>::iterator endIter = allSounds_.end();
+
+	if (findIter == endIter)
+	{
+		GameEngineDebug::MsgBoxError("No Sounds.");
+	}
+
+	system_->playSound(findIter->second, 0, false, &channel_);
+	if (channel_ != nullptr)
+	{
+		FMOD_RESULT result = channel_->setVolume(GameEngineSoundManager::globalVolume_);
+	}
+}
+
+void GameEngineSoundManager::SetGlobalVolume(float _volume)
+{
+	if (_volume <= 1.0f)
+	{
+		globalVolume_ = _volume;
+	}
+	else
+	{
+		globalVolume_ = 1.0f;
+	}
+
+	//int channels = 0;
+	//int realChannels = 0;
+	//system_->getChannelsPlaying(&channels, &realChannels);
+
+	FMOD::ChannelGroup* cg;
+	system_->getMasterChannelGroup(&cg);
+
+	int numChannels;
+	cg->getNumChannels(&numChannels);
+
+	for (int i = 0; i < numChannels; i++)
+	{
+		FMOD::Channel* channel = nullptr;
+		cg->getChannel(i, &channel);
+		if (nullptr != channel)
+		{
+			channel->setVolume(globalVolume_);
+		}
+	}
+
+	cg->release();
+}
+
+void GameEngineSoundManager::StopSound()
+{
+	channel_->stop();
 }

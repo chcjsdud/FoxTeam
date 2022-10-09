@@ -22,21 +22,19 @@ void UserGame::ResourcesLoad()
 	GameEngineFontManager::GetInst().Load("malgunbd");
 	GameEngineFontManager::GetInst().Load("HMKMRHD");
 
-	{
-		GameEngineDirectory SoundDir;
-		SoundDir.MoveParent("FoxTeam");
-		SoundDir.MoveChild("Resources");
-		SoundDir.MoveChild("Sound");
+	//{
+	//	GameEngineDirectory SoundDir;
+	//	SoundDir.MoveParent("FoxTeam");
+	//	SoundDir.MoveChild("Resources");
+	//	SoundDir.MoveChild("Sound");
 
-		std::vector<GameEngineFile> AllFile = SoundDir.GetAllFile("mp3");
+	//	std::vector<GameEngineFile> AllFile = SoundDir.GetAllFile("mp3");
 
-		for (size_t i = 0; i < AllFile.size(); i++)
-		{
-			GameEngineSoundManager::GetInst().Load(AllFile[i].GetFullPath());
-		}
-
-		// SoundDir / "aaaa" / "bbbb" / "cccc";
-	}
+	//	for (size_t i = 0; i < AllFile.size(); i++)
+	//	{
+	//		GameEngineSoundManager::GetInstance()->CreateSound(AllFile[i].FileName(), AllFile[i].GetFullPath());
+	//	}
+	//}
 
 	// FoxTeam\Resources\Image\ 하위 디렉터리 로딩
 	{

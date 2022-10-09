@@ -53,7 +53,7 @@ protected:
 protected:
 	std::string MouseOverSoundName_;
 	std::string MouseClickSoundName_;
-	GameEngineSoundPlayer* ButtonSound_;
+	//GameEngineSoundPlayer ButtonSound_;
 
 private:
 };

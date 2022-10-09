@@ -47,8 +47,6 @@ class GameEngineManagerHelper
 public:
 	static void ManagerRelease()
 	{
-		GameEngineSoundManager::Destroy();
-
 		GameEngineFBXAnimationManager::Destroy();
 		GameEngineFBXMeshManager::Destroy();
 		GameEngineFontManager::Destroy();

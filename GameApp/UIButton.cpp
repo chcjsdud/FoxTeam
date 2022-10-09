@@ -66,9 +66,9 @@ void UIButton::Update(float _DeltaTime)
 			}
 
 			// 클릭 사운드 재생
-			if (nullptr != ButtonSound_ && false == MouseClickSoundName_.empty())
+			if (false == MouseClickSoundName_.empty())
 			{
-				ButtonSound_->PlayAlone(MouseClickSoundName_, 0);
+				GameEngineSoundManager::GetInstance()->PlaySoundByName(MouseClickSoundName_);
 			}
 
 			// 마우스클릭 CallbackFunction 실행
@@ -103,9 +103,9 @@ void UIButton::Update(float _DeltaTime)
 						CurButtonState_ = ButtonState::MouseOver;
 
 						// 마우스오버 사운드 재생
-						if (nullptr != ButtonSound_ && false == MouseOverSoundName_.empty())
+						if (false == MouseOverSoundName_.empty())
 						{
-							ButtonSound_->PlayAlone(MouseOverSoundName_, 0);
+							GameEngineSoundManager::GetInstance()->PlaySoundByName(MouseOverSoundName_);
 						}
 
 						// 이미지 변경
@@ -191,7 +191,6 @@ UIButton::UIButton()
 	, CurButtonState_(ButtonState::Max)
 	, MouseOverSoundName_{}
 	, MouseClickSoundName_{}
-	, ButtonSound_(nullptr)
 {
 }
 

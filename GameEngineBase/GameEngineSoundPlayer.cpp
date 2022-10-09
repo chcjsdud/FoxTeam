@@ -1,111 +1,97 @@
 #include "PreCompile.h"
 #include "GameEngineSoundPlayer.h"
-#include "GameEngineSound.h"
-#include "GameEngineDebug.h"
 
-
-// Static Var
-// Static Func
-
-// constructer destructer
-GameEngineSoundPlayer::GameEngineSoundPlayer()
-	: playSoundFile_(nullptr)
-	, playChannel_(nullptr)
-	, PlayCount(-1)
+GameEngineSoundPlayer::GameEngineSoundPlayer(const std::string& _soundName)
+	: sound_(nullptr)
+	, channel_(nullptr)
+	, volume_(1.0f)
 {
+	sound_ = GameEngineSoundManager::GetInstance()->getSound(_soundName);
 }
 
 GameEngineSoundPlayer::~GameEngineSoundPlayer()
 {
 }
 
-GameEngineSoundPlayer::GameEngineSoundPlayer(GameEngineSoundPlayer&& _other) noexcept
-	: playSoundFile_(_other.playSoundFile_)
-	, playChannel_(_other.playChannel_)
+void GameEngineSoundPlayer::ChangeSound(const std::string& _soundName)
 {
+	sound_ = GameEngineSoundManager::GetInstance()->getSound(_soundName);
 }
 
-//member Func
-
-bool GameEngineSoundPlayer::IsPlay() 
+void GameEngineSoundPlayer::Play()
 {
-	bool Check = false;
-	// 이 FMOD를 짠사람이 그냥 이렇게 짠거에요.
-	playChannel_->isPlaying(&Check);
-	return Check;
-}
-
-void GameEngineSoundPlayer::PlayCountReset(int _Count /*= -1*/) 
-{
-	PlayCount = _Count;
-}
-
-void GameEngineSoundPlayer::PlayOverLap(const std::string& _name, int _LoopCount/* = 1*/)
-{
-	GameEngineSound* SoundPtr = GameEngineSoundManager::GetInst().FindSound(_name);
-
-	if (nullptr == SoundPtr)
+	GameEngineSoundManager::GetInstance()->system_->playSound(sound_, nullptr, false, &channel_);
+	if (channel_ != nullptr)
 	{
-		GameEngineDebug::MsgBoxError("PlaySound Error");
-		return;
+		FMOD_RESULT result = channel_->setVolume(GameEngineSoundManager::globalVolume_ * volume_);
 	}
-
-	if (0 == PlayCount)
-	{
-		return;
-	}
-
-	GameEngineSoundManager::GetInst().soundSystem_->playSound(
-		SoundPtr->sound_
-		, nullptr
-		, false
-		, &playChannel_);
-
-	--PlayCount;
-
-	playChannel_->setLoopCount(_LoopCount);
-	
-}
-
-void GameEngineSoundPlayer::PlayAlone(const std::string& _name, int _LoopCount /*= 1*/) 
-{
-	// 함수를 만들어서 그함수를 다시 실행
-	GameEngineSound* SoundPtr = GameEngineSoundManager::GetInst().FindSound(_name);
-
-	if (nullptr == SoundPtr)
-	{
-		GameEngineDebug::MsgBoxError("PlaySound Error");
-		return;
-	}
-
-	if (true == IsPlay())
-	{
-		return;
-	}
-
-	if (0 == PlayCount)
-	{
-		return;
-	}
-
-	GameEngineSoundManager::GetInst().soundSystem_->playSound(
-		SoundPtr->sound_
-		, nullptr
-		, false
-		, &playChannel_);
-
-	--PlayCount;
-
-	playChannel_->setLoopCount(_LoopCount);
 }
 
 void GameEngineSoundPlayer::Stop()
 {
-	if (nullptr == playChannel_)
-	{
-		return;
-	}
+	FMOD_RESULT result = channel_->stop();
+}
 
-	playChannel_->stop();
-	playChannel_ = nullptr;
+bool GameEngineSoundPlayer::IsPlaying()
+{
+	bool bReturn;
+	FMOD_RESULT result = channel_->isPlaying(&bReturn);
+	return bReturn;
+}
+
+bool GameEngineSoundPlayer::IsPaused()
+{
+	bool bReturn = true;
+	if (channel_ != nullptr)
+	{
+		FMOD_RESULT result = channel_->getPaused(&bReturn);
+	}
+	return bReturn;
+}
+
+void GameEngineSoundPlayer::SetPaused(bool _bPause)
+{
+	if (channel_ != nullptr)
+	{
+		FMOD_RESULT result = channel_->setPaused(_bPause);
+	}
+}
+
+void GameEngineSoundPlayer::SetVolume(float _volume)
+{
+	volume_ = _volume;
+	if (channel_ != nullptr)
+	{
+		FMOD_RESULT result = channel_->setVolume(GameEngineSoundManager::globalVolume_ * volume_);
+	}
+}
+
+void GameEngineSoundPlayer::SetPitch(float _pitch)
+{
+	if (channel_ != nullptr)
+	{
+		FMOD_RESULT result = channel_->setPitch(_pitch);
+	}
+}
+
+void GameEngineSoundPlayer::SetPosition(unsigned int _positionMilliSec)
+{
+	if (channel_ != nullptr)
+	{
+		FMOD_RESULT result = channel_->setPosition(_positionMilliSec, FMOD_TIMEUNIT_MS);
+	}
+}
+
+unsigned int GameEngineSoundPlayer::GetPositionMillisecond()
+{
+	unsigned int returnPosition;
+	FMOD_RESULT result = channel_->getPosition(&returnPosition, FMOD_TIMEUNIT_MS);
+	return returnPosition;
+}
+
+unsigned int GameEngineSoundPlayer::GetLengthMillisecond()
+{
+	unsigned int returnLength;
+	FMOD_RESULT result = sound_->getLength(&returnLength, FMOD_TIMEUNIT_MS);
+	return returnLength;
 }

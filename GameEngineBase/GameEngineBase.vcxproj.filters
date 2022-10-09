@@ -25,9 +25,6 @@
     <ClInclude Include="GameEngineSoundManager.h">
       <Filter>Midia</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineSound.h">
-      <Filter>Midia</Filter>
-    </ClInclude>
     <ClInclude Include="GameEngineSoundPlayer.h">
       <Filter>Midia</Filter>
     </ClInclude>
@@ -75,9 +72,6 @@
     </ClCompile>
     <ClCompile Include="GameEngineDebug.cpp">
       <Filter>Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineSound.cpp">
-      <Filter>Midia</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineSoundPlayer.cpp">
       <Filter>Midia</Filter>

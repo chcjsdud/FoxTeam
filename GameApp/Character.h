@@ -38,7 +38,7 @@ public:
 	void UnFocus() { bFocused_ = false; }
 	bool IsFocused() { return bFocused_; }
 
-	void ChangeAnimation(const std::string& _animationName);
+	void ChangeAnimation(const std::string& _animationName, bool _bForce = false);
 	void ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect);
 
 	void Damage(float _amount);

@@ -572,7 +572,7 @@ void Character::MoveWithPathFind(const float4& _position)
 	}
 }
 
-void Character::ChangeAnimation(const std::string& _animationName)
+void Character::ChangeAnimation(const std::string& _animationName, bool _bForce)
 {
 	if ("" == _animationName)
 	{
@@ -580,7 +580,7 @@ void Character::ChangeAnimation(const std::string& _animationName)
 	}
 
 	curAnimationName_ = _animationName;
-	renderer_->ChangeFBXAnimation(_animationName);
+	renderer_->ChangeFBXAnimation(_animationName, _bForce);
 }
 
 void Character::ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect)
