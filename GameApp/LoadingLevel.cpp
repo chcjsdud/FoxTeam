@@ -61,7 +61,7 @@ void LoadingLevel::CreationCommand()
 void LoadingLevel::CheckThreadCreationInfoSettingEnd()
 {
 	// 몬스터생성정보가 모두 만들어지고, 서버라면 처리
-	if (true == MonsterInfoManager::GetInstance()->CreationPacketFlag && true == GameServer::GetInstance()->IsOpened())
+	if (true == MonsterInfoManager::CreationPacketFlag && true == GameServer::GetInstance()->IsOpened())
 	{
 		// 패킷전송
 		int PlayerCount = static_cast<int>(PlayerInfoManager::GetInstance()->GetPlayerList().size());
@@ -80,14 +80,20 @@ void LoadingLevel::CheckThreadCreationInfoSettingEnd()
 
 			if (false == IsConnect)
 			{
-				//CreationCommandPacket CommandPacket;
-				//CommandPacket.SetMonsterInfos(MonsterInfoManager::GetInstance()->GetAllMonsterListValue());
-				//GameServer::GetInstance()->Send(&CommandPacket);
+				int MonsterCount = MonsterInfoManager::GetInstance()->GetCurMonsterListSize();
+				for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
+				{
+					CreationCommandPacket CommandPacket;
+					CommandPacket.SetTotMonsterCount(MonsterCount);
+					CommandPacket.SetCurMonsterIndex(MonsterNum);
+					CommandPacket.SetMonsterInfo(MonsterInfoManager::GetInstance()->GetAllMonsterListValue()[MonsterNum]);
+					GameServer::GetInstance()->Send(&CommandPacket);
+				}
 			}
 		}
 
 		// Flag Off
-		MonsterInfoManager::GetInstance()->CreationPacketFlag = false;
+		MonsterInfoManager::CreationPacketFlag = false;
 	}
 }
 
@@ -167,7 +173,7 @@ void LoadingLevel::LevelStart()
 
 void LoadingLevel::LevelUpdate(float _DeltaTime)
 {
-	// 생성패킷정보셋팅 스레드 종료체크
+	// 생성패킷정보셋팅 스레드종료체크
 	CheckThreadCreationInfoSettingEnd();
 
 	// 로딩스레드종료 체크

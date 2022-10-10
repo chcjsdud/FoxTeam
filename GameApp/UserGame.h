@@ -39,7 +39,7 @@ public:
 		return { 0, 0 };
 	}
 	virtual float4 StartWindowSize() {
-		return { 1920, 1080 };
+		return { 1280, 720 };
 	}
 };
 

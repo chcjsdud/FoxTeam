@@ -9,8 +9,9 @@
 class CreationCommandPacket : public GameEnginePacketBase
 {
 public:
-	void SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos);
-	void AddMonsterInfo(MonsterInfo _MonsterInfo);
+	void SetTotMonsterCount(int _Count);
+	void SetCurMonsterIndex(int _Index);
+	void SetMonsterInfo(MonsterInfo _MonsterInfo);
 
 protected:
 	virtual void userSerialize() override;
@@ -36,6 +37,8 @@ private:
 public:
 protected:
 private:
-	std::vector<MonsterInfo> MonsterInfos_;						// 현재 맵에 배치되는 모든 몬스터 정보
+	int TotMonsterCount_;										// 생성되는 몬스터 총갯수
+	int CurMonsterCount_;										// 현재 수신된 몬스터 인덱스
+	MonsterInfo MonsterInfo_;									// 몬스터정보
 };
 

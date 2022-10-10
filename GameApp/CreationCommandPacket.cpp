@@ -13,57 +13,50 @@
 
 #include "LoadingLevel_LoadPercent.h"
 
-void CreationCommandPacket::SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos)
+void CreationCommandPacket::SetTotMonsterCount(int _Count)
 {
-    MonsterInfos_ = _MonsterInfos;
+    TotMonsterCount_ = _Count;
 }
 
-void CreationCommandPacket::AddMonsterInfo(MonsterInfo _MonsterInfo)
+void CreationCommandPacket::SetCurMonsterIndex(int _Index)
 {
-    MonsterInfos_.push_back(_MonsterInfo);
+    CurMonsterCount_ = _Index;
+}
+
+void CreationCommandPacket::SetMonsterInfo(MonsterInfo _MonsterInfo)
+{
+    MonsterInfo_ = _MonsterInfo;
 }
 
 void CreationCommandPacket::userSerialize()
 {
-    int AllMonsterCount = static_cast<int>(MonsterInfos_.size());
-    serializer_ << AllMonsterCount;
-
-    for (int i = 0; i < AllMonsterCount; ++i)
-    {
-        serializer_ << MonsterInfos_[i].Index_;                                         // 생성인덱스(탐색용)
-        serializer_ << static_cast<int>(MonsterInfos_[i].RegionType_);                    // 생성지역(탐색용)
-        serializer_ << static_cast<int>(MonsterInfos_[i].MonsterType_);                 // 몬스터(야생동물) 타입
-        serializer_ << MonsterInfos_[i].IsGroup_;                                       // 그룹생성여부
-        serializer_ << MonsterInfos_[i].GroupCount_;                                    // 그룹생성시 생성되어야하는 몬스터(야생동물)수
-        serializer_ << MonsterInfos_[i].SpawnPosition_;                                 // 몬스터(야생동물) 스폰(둥지) 위치
-    }
+    serializer_ << TotMonsterCount_;
+    serializer_ << CurMonsterCount_;
+    serializer_ << MonsterInfo_.Index_;                                         // 생성인덱스(탐색용)
+    serializer_ << static_cast<int>(MonsterInfo_.RegionType_);                  // 생성지역(탐색용)
+    serializer_ << static_cast<int>(MonsterInfo_.MonsterType_);                 // 몬스터(야생동물) 타입
+    serializer_ << MonsterInfo_.IsGroup_;                                       // 그룹생성여부
+    serializer_ << MonsterInfo_.GroupCount_;                                    // 그룹생성시 생성되어야하는 몬스터(야생동물)수
+    serializer_ << MonsterInfo_.SpawnPosition_;                                 // 몬스터(야생동물) 스폰(둥지) 위치
 }
 
 void CreationCommandPacket::userDeserialize()
 {
-    int AllMonsterCount = -1;
-    serializer_ >> AllMonsterCount;
+    serializer_ >> TotMonsterCount_;
+    serializer_ >> CurMonsterCount_;
+    serializer_ >> MonsterInfo_.Index_;                                         // 생성인덱스(탐색용)
 
-    for (int i = 0; i < AllMonsterCount; ++i)
-    {
-        MonsterInfo NewMonsterInfo = {};
+    int RegionType = 0;
+    serializer_ >> RegionType;                                                  // 생성지역(탐색용)
+    MonsterInfo_.RegionType_ = static_cast<Location>(RegionType);
 
-        serializer_ >> NewMonsterInfo.Index_;
+    int Type = 0;
+    serializer_ >> Type;                                                        // 몬스터(야생동물) 타입
+    MonsterInfo_.MonsterType_ = static_cast<MonsterType>(Type);
 
-        int RcvAreaType = -1;
-        serializer_ >> RcvAreaType;
-        NewMonsterInfo.RegionType_ = static_cast<Location>(RcvAreaType);
-
-        int RcvMonsterType = -1;
-        serializer_ >> RcvMonsterType;
-        NewMonsterInfo.MonsterType_ = static_cast<MonsterType>(RcvMonsterType);
-
-        serializer_ >> NewMonsterInfo.IsGroup_;
-        serializer_ >> NewMonsterInfo.GroupCount_;
-        serializer_ >> NewMonsterInfo.SpawnPosition_;
-
-        MonsterInfos_.push_back(NewMonsterInfo);
-    }
+    serializer_ >> MonsterInfo_.IsGroup_;                                       // 그룹생성여부
+    serializer_ >> MonsterInfo_.GroupCount_;                                    // 그룹생성시 생성되어야하는 몬스터(야생동물)수
+    serializer_ >> MonsterInfo_.SpawnPosition_;                                 // 몬스터(야생동물) 스폰(둥지) 위치
 }
 
 void CreationCommandPacket::initPacketID()
@@ -84,15 +77,21 @@ void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _
     if (false == _bServer)
     {
         // 수신받은 몬스터 정보 셋팅 후
-        InfoManager->SetMonsterInfos(MonsterInfos_);
+        InfoManager->AddMonsterInfo(MonsterInfo_);
 
         // 강제 생성 함수 호출(클라이언트 전용 함수) - 스레드
-        LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
-        PlayerLevel->GuestCreateCommand();
+        if (TotMonsterCount_ == CurMonsterCount_ + 1)
+        {
+            LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+            PlayerLevel->GuestCreateCommand();
+        }
     }
 }
 
 CreationCommandPacket::CreationCommandPacket()
+    : TotMonsterCount_(-1)
+    , CurMonsterCount_(0)
+    , MonsterInfo_{}
 {
 }
 
