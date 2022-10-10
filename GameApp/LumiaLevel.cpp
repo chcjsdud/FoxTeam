@@ -105,10 +105,10 @@ void LumiaLevel::MapCreationCommand()
 	// 맵 생성
 	CurMap_ = CreateActor<LumiaMap>();
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 맵생성을 완료했습니다\n");
-#endif // _DEBUG
+//#endif // _DEBUG
 }
 
 void LumiaLevel::MonsterCreationCommand()
@@ -183,10 +183,10 @@ void LumiaLevel::MonsterCreationCommand()
 		MonsterActorList_.push_back(NewMonster);
 	}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 몬스터생성을 완료했습니다\n");
-#endif // _DEBUG
+//#endif // _DEBUG
 }
 
 void LumiaLevel::CharacterCreationCommand()
@@ -267,9 +267,9 @@ void LumiaLevel::CharacterCreationCommand()
 		}
 	}
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
 	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 캐릭터생성을 완료했습니다\n");
-#endif // _DEBUG
+//#endif // _DEBUG
 }
 
 void LumiaLevel::MapResourceLoad()
