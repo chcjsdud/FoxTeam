@@ -218,6 +218,11 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="CreateItemDB.cpp" />
+    <ClCompile Include="Macro.cpp" />
+    <ClCompile Include="PacketCreateProjectile.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="CreationCommandPacket.cpp">
       <SubType>
       </SubType>
@@ -495,6 +500,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ChattingPacket.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="PacketCreateProjectile.h">
       <SubType>
       </SubType>
     </ClInclude>

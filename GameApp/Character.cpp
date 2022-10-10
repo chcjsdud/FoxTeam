@@ -604,14 +604,7 @@ void Character::Damage(float _amount)
 	packet.SetStat(stat_);
 	packet.SetTargetIndex(GetIndex());
 
-	if (true == GameServer::GetInstance()->IsOpened())
-	{
-		GameServer::GetInstance()->Send(&packet);
-	}
-	else if (true == GameClient::GetInstance()->IsConnected())
-	{
-		GameClient::GetInstance()->Send(&packet);
-	}
+	FT::SendPacket(packet);
 }
 
 void Character::Stun(float _stunTime)

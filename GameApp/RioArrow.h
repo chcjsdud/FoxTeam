@@ -23,8 +23,8 @@ public:
 	virtual void Update(float _deltaTime);
 
 public:
-	void MakeTargetArrow(Character* _owner, float _damage, const float4& _position, float _speed, Character* _target);
-	void MakeNonTargetArrow(Character* _owner, float _damage, const float4& _position, float _rotationY, float _speed);
+	void MakeTargetArrow(Character& _owner, float _damage, const float4& _position, float _speed, Character& _target);
+	void MakeNonTargetArrow(Character& _owner, float _damage, const float4& _position, float _rotationY, float _speed);
 	void SetWaitTime(float _waitTime) { waitTime_ = _waitTime; }
 
 private:

@@ -46,15 +46,10 @@ void RioArrow::Update(float _deltaTime)
 	state_.Update(_deltaTime);
 }
 
-void RioArrow::MakeTargetArrow(Character* _owner, float _damage, const float4& _position, float _speed, Character* _target)
+void RioArrow::MakeTargetArrow(Character& _owner, float _damage, const float4& _position, float _speed, Character& _target)
 {
-	if (nullptr == _owner || nullptr == _target)
-	{
-		Release();
-		return;
-	}
-	owner_ = owner_;
-	target_ = _target;
+	owner_ = &_owner;
+	target_ = &_target;
 	damage_ = _damage;
 	transform_.SetWorldPosition(_position);
 	speed_ = _speed;
@@ -67,15 +62,10 @@ void RioArrow::MakeTargetArrow(Character* _owner, float _damage, const float4& _
 	setRotationTo(destination, transform_.GetWorldPosition());
 }
 
-void RioArrow::MakeNonTargetArrow(Character* _owner, float _damage, const float4& _position, float _rotationY, float _speed)
+void RioArrow::MakeNonTargetArrow(Character& _owner, float _damage, const float4& _position, float _rotationY, float _speed)
 {
-	if (nullptr == _owner)
-	{
-		Release();
-		return;
-	}
-
-	owner_ = _owner;
+	owner_ = &_owner;
+	target_ = nullptr;
 	damage_ = _damage;
 	transform_.SetWorldPosition(_position);
 	speed_ = _speed;
@@ -134,7 +124,11 @@ void RioArrow::updateChase(float _deltaTime)
 
 	if (float4::Calc_Len3D(destination, transform_.GetWorldPosition()) <= FT::Char::MOVE_FINISH_CHECK_DISTANCE)
 	{
-		target_->Damage(damage_);
+		if (damage_ > 0)
+		{
+			target_->Damage(damage_);
+		}
+
 		Release();
 	}
 }

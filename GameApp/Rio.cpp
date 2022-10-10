@@ -7,6 +7,7 @@
 #include <GameEngine/GameEngineLevelControlWindow.h>
 #include <GameApp/LumiaLevel.h>
 #include "RioArrow.h"
+#include "PacketCreateProjectile.h"
 
 Rio::Rio()
 	: Character()
@@ -140,7 +141,7 @@ void Rio::onStartBasicAttacking(Character* _target)
 		startPosition += offset;
 
 		RioArrow* arrow = level_->CreateActor<RioArrow>();
-		arrow->MakeTargetArrow(this, stat_.AttackPower, startPosition, 1000.f, target_);
+		arrow->MakeTargetArrow(*this, stat_.AttackPower, startPosition, 1000.f, *target_);
 	}
 	else
 	{
@@ -151,12 +152,22 @@ void Rio::onStartBasicAttacking(Character* _target)
 		float4 startPosition = transform_.GetWorldPosition();
 		startPosition += offset;
 
-		RioArrow* arrow = level_->CreateActor<RioArrow>();
-		arrow->MakeTargetArrow(this, stat_.AttackPower / 2.0f, startPosition, 1000.f, target_);
+		PacketCreateProjectile packetArrow;
+		packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, 1000.f, *target_);
+		FT::SendPacket(packetArrow);
 
-		arrow = level_->CreateActor<RioArrow>();
-		arrow->MakeTargetArrow(this, stat_.AttackPower / 2.0f, startPosition, 1000.f, target_);
-		arrow->SetWaitTime(doubleStrikeDelay);
+		packetArrow.SetWaitTime(doubleStrikeDelay);
+		FT::SendPacket(packetArrow);
+
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			RioArrow* arrow = level_->CreateActor<RioArrow>();
+			arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, 1000.f, *target_);
+
+			arrow = level_->CreateActor<RioArrow>();
+			arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, 1000.f, *target_);
+			arrow->SetWaitTime(doubleStrikeDelay);
+		}
 	}
 
 }

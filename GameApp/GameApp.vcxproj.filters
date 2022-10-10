@@ -295,6 +295,12 @@
     <ClCompile Include="RioArrow.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
     </ClCompile>
+    <ClCompile Include="PacketCreateProjectile.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Macro.cpp">
+      <Filter>01.GameObject\00.Constant</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -772,6 +778,9 @@
     </ClInclude>
     <ClInclude Include="RioArrow.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
+    </ClInclude>
+    <ClInclude Include="PacketCreateProjectile.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

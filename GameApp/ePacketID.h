@@ -28,5 +28,6 @@ enum class ePacketID
 	CharAnimationPacket,
 	CharStatPacket,
 	CharCrowdControlPacket,
+	PacketCreateProjectile,
 	MAX
 };
