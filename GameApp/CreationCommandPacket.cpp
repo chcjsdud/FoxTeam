@@ -81,7 +81,7 @@ void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _
 
         // 강제 생성 함수 호출(클라이언트 전용 함수) - 스레드
         // 단, 몬스터생성 총갯수를 모두 수신했을때 호출
-        if (TotMonsterCount_ == CurMonsterCount_ + 1)
+        if (TotMonsterCount_ == InfoManager->GetCurMonsterListSize())
         {
             LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
             PlayerLevel->GuestCreateCommand();
