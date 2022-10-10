@@ -45,7 +45,6 @@ void LumiaLevel::HostCreateCommand()
 	// 서버(호스트) 스레드 작업할당
 	GameEngineCore::ThreadQueue.JobPost([&]
 		{
-			// 221006 SJH 임시주석(테스트진행중)
 			// 서버(호스트) 생성 명령전 생성하려는 몬스터 정보 생성
 			CreateMonsterInfo();
 
@@ -56,12 +55,6 @@ void LumiaLevel::HostCreateCommand()
 			LoadingLevel::ThreadLoadingEnd = true;
 		}
 	);
-
-	//// 221006 SJH 임시처리(추후삭제예정)
-	//// 패킷전송
-	//CreationCommandPacket CommandPacket;
-	//CommandPacket.SetMonsterInfos(MonsterInfoManager::GetInstance()->GetAllMonsterListValue());
-	//GameServer::GetInstance()->Send(&CommandPacket);
 }
 
 void LumiaLevel::GuestCreateCommand()
