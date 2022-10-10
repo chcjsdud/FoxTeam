@@ -190,7 +190,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		//  프로세스를 호스트로 지정 (= 방을 만들겠다)
 		serverSocket_->Initialize();
 		serverSocket_->OpenServer();
-		serverSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
+		//serverSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		serverSocket_->AddPacketHandler(ePacketID::LobbyToLumiaPacket, new LobbyToLumiaPacket);
 		serverSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
 		serverSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
@@ -228,7 +228,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		clientSocket_->Initialize();
 		//clientSocket_->Connect("121.129.74.177");
 		clientSocket_->Connect("127.0.0.1");
-		clientSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
+		//clientSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);
 		clientSocket_->AddPacketHandler(ePacketID::LobbyToLumiaPacket, new LobbyToLumiaPacket);
 		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
 		clientSocket_->AddPacketHandler(ePacketID::SetPlayerNumberPacket, new SetPlayerNumberPacket);
