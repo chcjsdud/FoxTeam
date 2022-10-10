@@ -82,14 +82,18 @@ void LoadingLevel::CheckThreadCreationInfoSettingEnd()
 		if (false == IsConnect)
 		{
 			int MonsterCount = MonsterInfoManager::GetInstance()->GetCurMonsterListSize();
-			for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
-			{
-				CreationCommandPacket CommandPacket;
-				CommandPacket.SetTotMonsterCount(MonsterCount);
-				CommandPacket.SetCurMonsterIndex(MonsterNum);
-				CommandPacket.SetMonsterInfo(MonsterInfoManager::GetInstance()->GetAllMonsterListValue()[MonsterNum]);
-				GameServer::GetInstance()->Send(&CommandPacket);
-			}
+			//for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
+			//{
+			//	CreationCommandPacket CommandPacket;
+			//	CommandPacket.SetTotMonsterCount(MonsterCount);
+			//	CommandPacket.SetCurMonsterIndex(MonsterNum);
+			//	CommandPacket.SetMonsterInfo(MonsterInfoManager::GetInstance()->GetAllMonsterListValue()[MonsterNum]);
+			//	GameServer::GetInstance()->Send(&CommandPacket);
+			//}
+
+			CreationCommandPacket CommandPacket;
+			CommandPacket.SetTotMonsterCount(MonsterCount);
+			GameServer::GetInstance()->Send(&CommandPacket);
 		}
 
 		// Flag Off
