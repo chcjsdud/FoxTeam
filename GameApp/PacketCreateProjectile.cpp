@@ -52,6 +52,7 @@ void PacketCreateProjectile::userSerialize()
     serializer_ << speed_;
     serializer_ << rotationY_;
     serializer_ << waitTime_;
+    serializer_ << lifeTime_;
 }
 
 void PacketCreateProjectile::userDeserialize()
@@ -63,6 +64,7 @@ void PacketCreateProjectile::userDeserialize()
     serializer_ >> speed_;
     serializer_ >> rotationY_;
     serializer_ >> waitTime_;
+    serializer_ >> lifeTime_;
 }
 
 GameEnginePacketBase* PacketCreateProjectile::getUserObject()

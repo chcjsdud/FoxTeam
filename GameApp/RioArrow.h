@@ -26,6 +26,7 @@ public:
 	void MakeTargetArrow(Character& _owner, float _damage, const float4& _position, float _speed, Character& _target);
 	void MakeNonTargetArrow(Character& _owner, float _damage, const float4& _position, float _rotationY, float _speed);
 	void SetWaitTime(float _waitTime) { waitTime_ = _waitTime; }
+	void SetLifeTime(float _lifeTime) { lifeTime_ = _lifeTime; }
 
 private:
 	void startWait();
@@ -52,5 +53,6 @@ private:
 	float speed_;
 
 	float waitTime_;
+	float lifeTime_;
 };
 

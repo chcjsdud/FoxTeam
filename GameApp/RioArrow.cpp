@@ -31,7 +31,7 @@ void RioArrow::Start()
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
 	collision_->Off();
 
-	transform_.SetLocalScaling(float4(5.f, 5.f, 50.f));
+	transform_.SetLocalScaling(float4(5.f, 150.f, 50.f));
 
 	state_.CreateState(MakeState(RioArrow, Chase));
 	state_.CreateState(MakeState(RioArrow, Fly));
@@ -129,7 +129,7 @@ void RioArrow::updateChase(float _deltaTime)
 
 	if (float4::Calc_Len3D(destination, transform_.GetWorldPosition()) <= FT::Char::MOVE_FINISH_CHECK_DISTANCE)
 	{
-		if (damage_ > 0)
+		if (damage_ > 0.0f)
 		{
 			target_->Damage(damage_);
 		}
@@ -140,11 +140,19 @@ void RioArrow::updateChase(float _deltaTime)
 
 void RioArrow::startFly()
 {
+	transform_.SetLocalRotationDegree({ 0.0f, rotationY_, 0.0f });
 	collision_->On();
 }
 
 void RioArrow::updateFly(float _deltaTime)
 {
+	lifeTime_ -= _deltaTime;
+	if (lifeTime_ < 0)
+	{
+		Release();
+		return;
+	}
+
 	transform_.AddWorldPosition(transform_.GetWorldForwardVector() * speed_ * _deltaTime);
 
 	auto collisionList = collision_->GetCollisionList(eCollisionGroup::Player);

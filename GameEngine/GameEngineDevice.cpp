@@ -117,14 +117,11 @@ void GameEngineDevice::CreateSwapChain()
 
 	DXGI_SWAP_CHAIN_DESC ScInfo = { 0, };
 
-	// 그래픽카드에 버퍼는 들어있어야 겠죠.
 	ScInfo.BufferDesc.Width = ScreenSize.uix();
 	ScInfo.BufferDesc.Height = ScreenSize.uiy();
 
-	// 모니터에 간섭해서 
-	// 1초에
+
 	ScInfo.BufferDesc.RefreshRate.Denominator = 1;
-	// 60프레임 백버퍼를 스왑해라.
 	ScInfo.BufferDesc.RefreshRate.Numerator = 60;
 
 	ScInfo.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;

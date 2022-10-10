@@ -20,6 +20,7 @@ public:
 	void MakeNonTargetArrow(Character& _owner, float _damage, const float4& _position, float _rotationY, float _speed);
 	
 	void SetWaitTime(float _waitTime) { waitTime_ = _waitTime; }
+	void SetLifeTime(float _lifeTime) { lifeTime_ = _lifeTime; }
 
 protected:
 	virtual void initPacketID() override;
@@ -34,8 +35,8 @@ private:
 	float speed_;
 	float rotationY_;
 	float waitTime_;
+	float lifeTime_;
 	int ownerIndex_;
 	int targetIndex_;
-	
 };
 
