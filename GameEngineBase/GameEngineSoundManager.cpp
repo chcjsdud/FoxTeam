@@ -99,6 +99,18 @@ void GameEngineSoundManager::CreateSound(const std::string& _name, const std::st
 	allSounds_[_name] = newSound;
 }
 
+void GameEngineSoundManager::ReleaseSound(const std::string& _name)
+{
+	std::unordered_map<std::string, FMOD::Sound*>::iterator findIter = allSounds_.find(_name);
+	std::unordered_map<std::string, FMOD::Sound*>::iterator endIter = allSounds_.end();
+
+	if (findIter != endIter)
+	{
+		findIter->second->release();
+		allSounds_.erase(findIter);
+	}
+}
+
 void GameEngineSoundManager::PlaySoundByName(const std::string& _name)
 {
 	std::unordered_map<std::string, FMOD::Sound*>::iterator findIter = allSounds_.find(_name);

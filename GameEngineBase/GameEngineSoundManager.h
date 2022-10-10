@@ -33,6 +33,7 @@ public:
 	void Update();
 
 	void CreateSound(const std::string& _name, const std::string& _path, bool _bLoop = false);
+	void ReleaseSound(const std::string& _name);
 
 	void PlaySoundByName(const std::string& _name);
 	void SetGlobalVolume(float _volume);

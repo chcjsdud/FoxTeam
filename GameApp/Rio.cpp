@@ -23,24 +23,50 @@ Rio::~Rio()
 
 void Rio::LoadResource()
 {
-	GameEngineDirectory dir;
-
-	dir.MoveParent("FoxTeam");
-	dir / "Resources" / "FBX" / "Character" / "Rio";
-
-	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Short_Run.fbx"));
-	mesh->CreateRenderingBuffer();
-
-
-	std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
-	for (GameEngineFile& file : allFile)
 	{
-		GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
+		GameEngineDirectory dir;
+
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "FBX" / "Character" / "Rio";
+
+		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Short_Run.fbx"));
+		mesh->CreateRenderingBuffer();
+
+
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
+		}
+	}
+
+	{
+		GameEngineDirectory dir;
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "Sound" / "Char" / "Rio";
+
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("wav");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineSoundManager::GetInstance()->CreateSound(file.FileName(), file.GetFullPath());
+		}
 	}
 }
 
 void Rio::ReleaseResource()
 {
+	{
+		GameEngineDirectory dir;
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "Sound" / "Char" / "Rio";
+
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("wav");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineSoundManager::GetInstance()->ReleaseSound(file.FileName());
+		}
+	}
+
 	GameEngineDirectory dir;
 	dir.MoveParent("FoxTeam");
 	dir / "Resources" / "FBX" / "Character" / "Rio";
@@ -123,6 +149,7 @@ void Rio::changeAnimationBasicAttack()
 {
 	if (bLongBow_)
 	{
+		//GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_NormalAttack_01.wav");
 		ChangeAnimation("BasicAttack_Long", true);
 	}
 	else
@@ -199,6 +226,8 @@ void Rio::onStartQSkill()
 
 
 	//renderer_->OverrideFBXAnimation("SkillQ", "Bip001 L UpperArm");
+
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_Bow_Skill01_BowChange.wav");
 }
 
 void Rio::onUpdateQSkill(float _deltaTime)
@@ -233,6 +262,8 @@ void Rio::onStartWSkill()
 	}
 	else
 	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill02_Shot.wav");
+
 		float4 offset = { 20.f, 120.f, 30.f, 0.f };
 		offset = offset * transform_.GetTransformData().WorldWorld_;
 		float4 startPosition = transform_.GetWorldPosition();
@@ -253,7 +284,6 @@ void Rio::onStartWSkill()
 		{
 			for (size_t i = 0; i < 5; i++)
 			{
-
 				RioArrow* arrow = level_->CreateActor<RioArrow>();
 				arrow->MakeNonTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, transform_.GetWorldRotation().y - 10.f + 5 * i, 1000.f);
 				arrow->SetWaitTime(0.05f * i);

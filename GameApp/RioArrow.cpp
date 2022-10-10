@@ -101,6 +101,7 @@ void RioArrow::updateWait(float _deltaTime)
 
 void RioArrow::startChase()
 {
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_NormalAttack_01.wav");
 	collision_->On();
 }
 
@@ -131,6 +132,7 @@ void RioArrow::updateChase(float _deltaTime)
 	{
 		if (damage_ > 0.0f)
 		{
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Hit_01.wav");
 			target_->Damage(damage_);
 		}
 
@@ -164,6 +166,7 @@ void RioArrow::updateFly(float _deltaTime)
 
 			if (opponent != nullptr)
 			{
+				GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill02_Hit.wav");
 				opponent->Damage(damage_);
 				Release();
 				break;
