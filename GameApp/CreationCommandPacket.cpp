@@ -18,11 +18,6 @@ void CreationCommandPacket::SetTotMonsterCount(int _Count)
     TotMonsterCount_ = _Count;
 }
 
-void CreationCommandPacket::SetCurMonsterIndex(int _Index)
-{
-    CurMonsterCount_ = _Index;
-}
-
 void CreationCommandPacket::SetMonsterInfo(MonsterInfo _MonsterInfo)
 {
     MonsterInfo_ = _MonsterInfo;
@@ -31,7 +26,6 @@ void CreationCommandPacket::SetMonsterInfo(MonsterInfo _MonsterInfo)
 void CreationCommandPacket::userSerialize()
 {
     serializer_ << TotMonsterCount_;
-    serializer_ << CurMonsterCount_;
     serializer_ << MonsterInfo_.Index_;                                         // 생성인덱스(탐색용)
     serializer_ << static_cast<int>(MonsterInfo_.RegionType_);                  // 생성지역(탐색용)
     serializer_ << static_cast<int>(MonsterInfo_.MonsterType_);                 // 몬스터(야생동물) 타입
@@ -43,7 +37,6 @@ void CreationCommandPacket::userSerialize()
 void CreationCommandPacket::userDeserialize()
 {
     serializer_ >> TotMonsterCount_;
-    serializer_ >> CurMonsterCount_;
     serializer_ >> MonsterInfo_.Index_;                                         // 생성인덱스(탐색용)
 
     int RegionType = 0;
@@ -79,10 +72,11 @@ void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _
         // 수신받은 몬스터 정보 셋팅 후
         InfoManager->AddMonsterInfo(MonsterInfo_);
 
-        // 임시처리
+        // 221010 SJH 임시처리 : 패킷문제로 해당 패킷수신시 바로 생성으로 처리
         LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
         PlayerLevel->GuestCreateCommand();
 
+        // 221010 SJH : 임시주석처리
         //// 강제 생성 함수 호출(클라이언트 전용 함수) - 스레드
         //// 단, 몬스터생성 총갯수를 모두 수신했을때 호출
         //if (TotMonsterCount_ == InfoManager->GetCurMonsterListSize())
@@ -95,7 +89,6 @@ void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _
 
 CreationCommandPacket::CreationCommandPacket()
     : TotMonsterCount_(-1)
-    , CurMonsterCount_(0)
     , MonsterInfo_{}
 {
 }

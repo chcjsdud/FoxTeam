@@ -81,19 +81,21 @@ void LoadingLevel::CheckThreadCreationInfoSettingEnd()
 
 		if (false == IsConnect)
 		{
+			// 221010 SJH 임시사용 : 패킷지연시간으로인해 임시 사용
 			int MonsterCount = MonsterInfoManager::GetInstance()->GetCurMonsterListSize();
+			CreationCommandPacket CommandPacket;
+			CommandPacket.SetTotMonsterCount(MonsterCount);
+			GameServer::GetInstance()->Send(&CommandPacket);
+
+			// 221010 SJH 임시주석처리
+			//int MonsterCount = MonsterInfoManager::GetInstance()->GetCurMonsterListSize();
 			//for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
 			//{
 			//	CreationCommandPacket CommandPacket;
 			//	CommandPacket.SetTotMonsterCount(MonsterCount);
-			//	CommandPacket.SetCurMonsterIndex(MonsterNum);
 			//	CommandPacket.SetMonsterInfo(MonsterInfoManager::GetInstance()->GetAllMonsterListValue()[MonsterNum]);
 			//	GameServer::GetInstance()->Send(&CommandPacket);
 			//}
-
-			CreationCommandPacket CommandPacket;
-			CommandPacket.SetTotMonsterCount(MonsterCount);
-			GameServer::GetInstance()->Send(&CommandPacket);
 		}
 
 		// Flag Off

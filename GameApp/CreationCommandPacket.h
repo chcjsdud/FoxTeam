@@ -10,7 +10,6 @@ class CreationCommandPacket : public GameEnginePacketBase
 {
 public:
 	void SetTotMonsterCount(int _Count);
-	void SetCurMonsterIndex(int _Index);
 	void SetMonsterInfo(MonsterInfo _MonsterInfo);
 
 protected:
@@ -38,7 +37,6 @@ public:
 protected:
 private:
 	int TotMonsterCount_;										// 생성되는 몬스터 총갯수
-	int CurMonsterCount_;										// 현재 수신된 몬스터 인덱스
 	MonsterInfo MonsterInfo_;									// 몬스터정보
 };
 
