@@ -29,6 +29,7 @@ void RioArrow::Start()
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->SetCollisionGroup(eCollisionGroup::Projectile);
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
+	collision_->Off();
 
 	transform_.SetLocalScaling(float4(5.f, 5.f, 50.f));
 
@@ -41,7 +42,10 @@ void RioArrow::Start()
 
 void RioArrow::Update(float _deltaTime)
 {
-	level_->PushDebugRender(GetTransform(), CollisionType::OBBBox3D);
+	if (collision_->IsUpdate())
+	{
+		level_->PushDebugRender(GetTransform(), CollisionType::OBBBox3D);
+	}
 
 	state_.Update(_deltaTime);
 }
@@ -97,6 +101,7 @@ void RioArrow::updateWait(float _deltaTime)
 
 void RioArrow::startChase()
 {
+	collision_->On();
 }
 
 void RioArrow::updateChase(float _deltaTime)
@@ -135,6 +140,7 @@ void RioArrow::updateChase(float _deltaTime)
 
 void RioArrow::startFly()
 {
+	collision_->On();
 }
 
 void RioArrow::updateFly(float _deltaTime)
