@@ -11,14 +11,8 @@
 		, std::bind(&ClassName::end##StateName, this)
 
 
-void SendPacket(GameEnginePacketBase& packet)
+namespace FT
 {
-	if (true == GameServer::GetInstance()->IsOpened())
-	{
-		GameServer::GetInstance()->Send(&packet);
-	}
-	else if (true == GameClient::GetInstance()->IsConnected())
-	{
-		GameClient::GetInstance()->Send(&packet);
-	}
+	void SendPacket(GameEnginePacketBase& packet);
 }
+
