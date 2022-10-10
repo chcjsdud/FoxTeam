@@ -64,10 +64,10 @@ void LoadingLevel::CheckThreadCreationInfoSettingEnd()
 	if (true == MonsterInfoManager::CreationPacketFlag && true == GameServer::GetInstance()->IsOpened())
 	{
 		// 패킷전송
+		bool IsConnect = false;
 		int PlayerCount = static_cast<int>(PlayerInfoManager::GetInstance()->GetPlayerList().size());
 		if (1 < PlayerCount)
 		{
-			bool IsConnect = false;
 			for (int PlayerNum = 0; PlayerNum < PlayerCount; ++PlayerNum)
 			{
 				// 서버만 생성하고 게임시작버튼클릭시 더미정보를 1개만들어내므로 더미정보를 제외한 클라이언트(게스트)연결된 게임시작시 생성패킷전송
@@ -77,18 +77,18 @@ void LoadingLevel::CheckThreadCreationInfoSettingEnd()
 					break;
 				}
 			}
+		}
 
-			if (false == IsConnect)
+		if (false == IsConnect)
+		{
+			int MonsterCount = MonsterInfoManager::GetInstance()->GetCurMonsterListSize();
+			for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
 			{
-				int MonsterCount = MonsterInfoManager::GetInstance()->GetCurMonsterListSize();
-				for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
-				{
-					CreationCommandPacket CommandPacket;
-					CommandPacket.SetTotMonsterCount(MonsterCount);
-					CommandPacket.SetCurMonsterIndex(MonsterNum);
-					CommandPacket.SetMonsterInfo(MonsterInfoManager::GetInstance()->GetAllMonsterListValue()[MonsterNum]);
-					GameServer::GetInstance()->Send(&CommandPacket);
-				}
+				CreationCommandPacket CommandPacket;
+				CommandPacket.SetTotMonsterCount(MonsterCount);
+				CommandPacket.SetCurMonsterIndex(MonsterNum);
+				CommandPacket.SetMonsterInfo(MonsterInfoManager::GetInstance()->GetAllMonsterListValue()[MonsterNum]);
+				GameServer::GetInstance()->Send(&CommandPacket);
 			}
 		}
 
