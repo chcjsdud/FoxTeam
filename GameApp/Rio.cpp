@@ -152,12 +152,17 @@ void Rio::onStartBasicAttacking(Character* _target)
 		float4 startPosition = transform_.GetWorldPosition();
 		startPosition += offset;
 
-		PacketCreateProjectile packetArrow;
-		packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, 1000.f, *target_);
-		FT::SendPacket(packetArrow);
-
-		packetArrow.SetWaitTime(doubleStrikeDelay);
-		FT::SendPacket(packetArrow);
+		{
+			PacketCreateProjectile packetArrow;
+			packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, 1000.f, *target_);
+			FT::SendPacket(packetArrow);
+		}
+		{
+			PacketCreateProjectile packetArrow;
+			packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, 1000.f, *target_);
+			packetArrow.SetWaitTime(doubleStrikeDelay);
+			FT::SendPacket(packetArrow);
+		}
 
 		if (GameServer::GetInstance()->IsOpened())
 		{
