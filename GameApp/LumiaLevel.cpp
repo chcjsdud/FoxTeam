@@ -174,8 +174,8 @@ void LumiaLevel::MonsterCreationCommand()
 		// 트랜스폼데이터 셋팅
 		NewMonster->InitalizeSpawnPosition(CurMonsterInfo.SpawnPosition_);
 
-		// 생성된 몬스터는 초기 Off상태로 리젠시간을 기다리게된다.
-		// -> 스폰대기상태로 전환
+		// 생성된 몬스터는 초기 렌더링 Off상태로 리젠시간을 기다리게된다.
+		// -> 첫등장상태로 전환
 
 
 		

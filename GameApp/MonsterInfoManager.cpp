@@ -428,24 +428,6 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 			}
 		}
 	}
-
-
-	// È®ÀÎ¿ë
-	for (int i = 0; i < static_cast<int>(AllMonsters_.size()); ++i)
-	{
-		for (int j = 0; j < static_cast<int>(AllMonsters_.size()); ++j)
-		{
-			if (i == j)
-			{
-				continue;
-			}
-
-			if (AllMonsters_[i].SpawnPosition_ == AllMonsters_[j].SpawnPosition_)
-			{
-				int a = 0;
-			}
-		}
-	}
 }
 
 #pragma region Logging & Conversion Function
