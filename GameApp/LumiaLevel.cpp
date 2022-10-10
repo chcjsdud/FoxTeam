@@ -118,14 +118,68 @@ void LumiaLevel::MonsterCreationCommand()
 	int AllMonsterCount = mm->GetCurMonsterListSize();
 	for (int MonsterNum = 0; MonsterNum < AllMonsterCount; ++MonsterNum)
 	{
+		Monsters* NewMonster = nullptr;
+
+		// 현재 몬스터 생성정보 Get
+		MonsterInfo CurMonsterInfo = mm->GetAllMonsterListRef()[MonsterNum];
+
+		// 현재 몬스터의 타입체크
+		MonsterType CurMonsterType = CurMonsterInfo.MonsterType_;
+		switch (CurMonsterType)
+		{
+			case MonsterType::WOLF:
+			{
+				//NewMonster = CreateActor<Wolf>();
+				break;
+			}
+			case MonsterType::BEAR:
+			{
+				//NewMonster = CreateActor<Bear>();
+				break;
+			}
+			case MonsterType::BAT:
+			{
+				//NewMonster = CreateActor<Bat>();
+				break;
+			}
+			case MonsterType::DOG:
+			{
+				//NewMonster = CreateActor<Dog>();
+				break;
+			}
+			case MonsterType::CHICKEN:
+			{
+				//NewMonster = CreateActor<Chicken>();
+				break;
+			}
+			case MonsterType::BOAR:
+			{
+				//NewMonster = CreateActor<Boar>();
+				break;
+			}
+		}
+
+		// 예외처리
+		if (nullptr == NewMonster)
+		{
+			//GameEngineDebug::OutPutDebugString("잘못된 타입의 몬스터생성을 시도했습니다!!!! 몬스터타입: " + std::to_string(static_cast<int>(CurMonsterType)) + " \n");
+			continue;
+		}
+
+		// 생성된 몬스터 공통정보 셋팅
+		NewMonster->SetMonsterIndex(CurMonsterInfo.Index_);
+		NewMonster->SetMonsterAreaType(CurMonsterInfo.RegionType_);
+
+		// 트랜스폼데이터 셋팅
+		NewMonster->InitalizeSpawnPosition(CurMonsterInfo.SpawnPosition_);
+
+		// 생성된 몬스터는 초기 Off상태로 리젠시간을 기다리게된다.
+		// -> 스폰대기상태로 전환
 
 
-
-
-
-
-
-
+		
+		// 관리목록 추가
+		MonsterActorList_.push_back(NewMonster);
 	}
 
 #ifdef _DEBUG
