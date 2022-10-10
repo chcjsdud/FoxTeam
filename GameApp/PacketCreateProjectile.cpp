@@ -40,7 +40,7 @@ void PacketCreateProjectile::MakeNonTargetArrow(Character& _owner, float _damage
 
 void PacketCreateProjectile::initPacketID()
 {
-    ePacketID::PacketCreateProjectile;
+    SetPacketID(ePacketID::PacketCreateProjectile);
 }
 
 void PacketCreateProjectile::userSerialize()
