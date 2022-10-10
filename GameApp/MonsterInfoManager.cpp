@@ -91,7 +91,6 @@ void MonsterInfoManager::LoadSpawnPointMeshByRegion()
 				continue;
 			}
 	
-
 			CurRefInfo.SpawnPointMesh_ = GameEngineFBXMeshManager::GetInst().Load(CurRefInfo.FullSpawnFilePath_);
 		}
 	};
@@ -328,6 +327,7 @@ void MonsterInfoManager::SaveCreationCountByRegion(RefInfoByRegion& _ResultInfo)
 void MonsterInfoManager::CreateBasicMonsterInfos()
 {
 	int CreationIndex = 0;
+	Location PrevRegionType = Location::NONE;
 
 	// 0-0. 현재맵에 배치(생성)하려는 몬스터 목록 작성시작!!!
 	for (int RegionNum = 0; RegionNum < static_cast<int>(Location::MAX); ++RegionNum)
@@ -387,7 +387,8 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 						RandomSpawnPos = CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs[RandomIndex].POSITION;
 
 						// 이미 지정된 위치에 다시 스폰하려할때 스폰좌표 재지정
-						if (DesignatedSpawnPos_.end() != DesignatedSpawnPos_.find(RandomSpawnPos))
+						if (DesignatedSpawnPos_.end() != DesignatedSpawnPos_.find(RandomSpawnPos) &&
+							PrevRegionType == CurRefInfo.RegionType_)
 						{
 							RandomIndex = Random.RandomInt(0, static_cast<int>(CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs.size()) - 1);
 							RandomSpawnPos = CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs[RandomIndex].POSITION;
@@ -404,7 +405,8 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 					RandomSpawnPos = CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs[RandomIndex].POSITION;
 
 					// 이미 지정된 위치에 다시 스폰하려할때 스폰좌표 재지정
-					if (DesignatedSpawnPos_.end() != DesignatedSpawnPos_.find(RandomSpawnPos))
+					if (DesignatedSpawnPos_.end() != DesignatedSpawnPos_.find(RandomSpawnPos) &&
+						PrevRegionType == CurRefInfo.RegionType_)
 					{
 						RandomIndex = Random.RandomInt(0, static_cast<int>(CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs.size()) - 1);
 						RandomSpawnPos = CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs[RandomIndex].POSITION;
@@ -415,11 +417,32 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 					RandomSpawnPos = float4::ZERO;
 				}
 
+				// 이전 지역정보 저장
+				PrevRegionType = CurRefInfo.RegionType_;
+
 				// 지정완료된 위치좌표 저장
 				DesignatedSpawnPos_.insert(RandomSpawnPos);
 
 				// 최종. 몬스터생성정보(패킷정보)목록에 추가
 				AllMonsters_.push_back(NewMonsterInfo);
+			}
+		}
+	}
+
+
+	// 확인용
+	for (int i = 0; i < static_cast<int>(AllMonsters_.size()); ++i)
+	{
+		for (int j = 0; j < static_cast<int>(AllMonsters_.size()); ++j)
+		{
+			if (i == j)
+			{
+				continue;
+			}
+
+			if (AllMonsters_[i].SpawnPosition_ == AllMonsters_[j].SpawnPosition_)
+			{
+				int a = 0;
 			}
 		}
 	}

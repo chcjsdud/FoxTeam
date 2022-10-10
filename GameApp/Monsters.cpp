@@ -7,51 +7,6 @@
 
 #include "LumiaLevel.h"
 
-void Monsters::InitalizeSpawnAreaType()
-{
-	// 생성가능한 지역목록을 먼저 등록해야 지역타입 결정이 된다.
-	if (true == StateInfo_.AppearAreaList_.empty())
-	{
-		GameEngineDebug::MsgBoxError("등록된 지역목록이 없습니다!!!!!");
-		return;
-	}
-
-	// 생성가능한 지역목록중 랜덤지역을 선택
-	GameEngineRandom RandomAreaType;
-	int RandomIndex = RandomAreaType.RandomInt(0, static_cast<int>(StateInfo_.AppearAreaList_.size()) - 1);
-
-	// 단, 생성가능한 지역목록의 최대치이거나 -1 값을 도출했다면 강제 0번째 지역으로 등록
-	if (static_cast<int>(StateInfo_.AppearAreaList_.size()) <= RandomIndex || -1 == RandomIndex)
-	{
-		AreaType_ = StateInfo_.AppearAreaList_[0];
-	}
-	else
-	{
-		AreaType_ = StateInfo_.AppearAreaList_[RandomIndex];
-	}
-
-	// 지역선택완료 후 해당 지역범위내에 생성이 가능한 좌표를 스폰위치로 설정
-	// -> 알아낼수있는방법 모색중...
-	float4 RandomSpawnPosition = float4(-2500.f, 0.0f, 10000.f); // 임시
-
-	// 액터의 위치 셋팅
-	GetTransform()->SetLocalPosition(RandomSpawnPosition);
-
-	// 현재이동목적지 = 스폰위치
-	Destination_ = RandomSpawnPosition;
-
-	// 해당 몬스터 둥지위치 == 최초 스폰위치
-	StateInfo_.NestPosition_ = RandomSpawnPosition;
-
-	// 현재 몬스터가 위치한 맵 지정
-	CurrentMap_ = GetLevelConvert<LumiaLevel>()->GetMap();
-	if (nullptr == CurrentMap_)
-	{
-		GameEngineDebug::MsgBoxError("현재레벨에 생성된 맵이 존재하지않습니다!!!!!");
-		return;
-	}
-}
-
 void Monsters::InitalizeSpawnPosition(const float4& _SpawnPosition)
 {
 	// 액터의 위치 셋팅

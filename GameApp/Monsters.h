@@ -54,7 +54,6 @@ public: // inline Set Function
 	}
 
 public: // Initalize Function
-	void InitalizeSpawnAreaType();											// 랜덤한 지역 선택 및 해당 지역의 랜덤한 위치를 스폰위치로 지정(-> 추후 지역별 좌표목록을 알아내는 방법이 결정되면 해당 함수로 사용)
 	void InitalizeSpawnPosition(const float4& _SpawnPosition);				// 인자로 수신한 _SpawnPosition을 해당 몬스터의 스폰위치로 지정(클라이언트전용)
 
 public: // public ChangeAnimation Function
@@ -145,7 +144,7 @@ private:
 
 public:
 	Monsters();
-	virtual ~Monsters();												// 해당 클래스는 모든 몬스터의 상위(부모) 클래스로 
+	virtual ~Monsters() = 0;												// 해당 클래스는 모든 몬스터의 상위(부모) 클래스로 
 																			// 반드시 상속받아서 객체화해야하기때문에 순수가상소멸자를 사용
 
 protected:
