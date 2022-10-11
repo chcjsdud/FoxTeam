@@ -9,47 +9,56 @@
 #include "LoadingLevel.h"
 #include "LumiaLevel.h"
 
-#include "LoadingEndPacket.h"
-
-#include "LoadingLevel_LoadPercent.h"
-
-void CreationCommandPacket::SetTotMonsterCount(int _Count)
-{
-    TotMonsterCount_ = _Count;
-}
-
-void CreationCommandPacket::SetMonsterInfo(MonsterInfo _MonsterInfo)
-{
-    MonsterInfo_ = _MonsterInfo;
-}
-
 void CreationCommandPacket::userSerialize()
 {
+    int sendIsFirst = 0;
+    if (true == IsFirst_)
+    {
+        sendIsFirst = 1;
+        serializer_ << sendIsFirst;
+    }
+    else
+    {
+        sendIsFirst = 0;
+        serializer_ << sendIsFirst;
+    }
+
     serializer_ << TotMonsterCount_;
-    serializer_ << MonsterInfo_.Index_;                                         // 생성인덱스(탐색용)
-    serializer_ << static_cast<int>(MonsterInfo_.RegionType_);                  // 생성지역(탐색용)
-    serializer_ << static_cast<int>(MonsterInfo_.MonsterType_);                 // 몬스터(야생동물) 타입
-    serializer_ << MonsterInfo_.IsGroup_;                                       // 그룹생성여부
-    serializer_ << MonsterInfo_.GroupCount_;                                    // 그룹생성시 생성되어야하는 몬스터(야생동물)수
-    serializer_ << MonsterInfo_.SpawnPosition_;                                 // 몬스터(야생동물) 스폰(둥지) 위치
+
+    // 몬스터상세정보
+    serializer_ << MonsterInfo_.Index_;
+    serializer_ << static_cast<int>(MonsterInfo_.RegionType_);
+    serializer_ << static_cast<int>(MonsterInfo_.MonsterType_);
+    serializer_ << MonsterInfo_.SpawnPosition_;
 }
 
 void CreationCommandPacket::userDeserialize()
 {
+    int rcvIsFirst = 0;
+    serializer_ >> rcvIsFirst;
+    if (1 == rcvIsFirst)
+    {
+        IsFirst_ = true;
+    }
+    else
+    {
+        IsFirst_ = false;
+    }
+    
     serializer_ >> TotMonsterCount_;
-    serializer_ >> MonsterInfo_.Index_;                                         // 생성인덱스(탐색용)
 
-    int RegionType = 0;
-    serializer_ >> RegionType;                                                  // 생성지역(탐색용)
-    MonsterInfo_.RegionType_ = static_cast<Location>(RegionType);
+    // 몬스터상세정보
+    serializer_ >> MonsterInfo_.Index_;
 
-    int Type = 0;
-    serializer_ >> Type;                                                        // 몬스터(야생동물) 타입
-    MonsterInfo_.MonsterType_ = static_cast<MonsterType>(Type);
+    int rcvRegionType = 0;
+    serializer_ >> rcvRegionType;
+    MonsterInfo_.RegionType_ = static_cast<Location>(rcvRegionType);
 
-    serializer_ >> MonsterInfo_.IsGroup_;                                       // 그룹생성여부
-    serializer_ >> MonsterInfo_.GroupCount_;                                    // 그룹생성시 생성되어야하는 몬스터(야생동물)수
-    serializer_ >> MonsterInfo_.SpawnPosition_;                                 // 몬스터(야생동물) 스폰(둥지) 위치
+    int rcvMonsterType = 0;
+    serializer_ >> rcvMonsterType;
+    MonsterInfo_.MonsterType_ = static_cast<MonsterType>(rcvMonsterType);
+
+    serializer_ << MonsterInfo_.SpawnPosition_;
 }
 
 void CreationCommandPacket::initPacketID()
@@ -69,26 +78,39 @@ void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _
     // 클라(게스트)에서만 수신
     if (false == _bServer)
     {
-        // 수신받은 몬스터 정보 셋팅 후
-        InfoManager->AddMonsterInfo(MonsterInfo_);
+        // 1. 최초 몬스터정보생성 셋팅일때
+        if (true == IsFirst_)
+        {
+            // 정보추가
+            InfoManager->AddMonsterInfo(MonsterInfo_);
 
-        // 221010 SJH 임시처리 : 패킷문제로 해당 패킷수신시 바로 생성으로 처리
-        LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
-        PlayerLevel->GuestCreateCommand();
+            // 모든정보추가완료시 강제생성명령 실행
+            if (TotMonsterCount_ == InfoManager->GetCurMonsterListSize())
+            {
+                // 파일저장
+                InfoManager->SaveMonsterInfoFile();
 
-        // 221010 SJH : 임시주석처리
-        //// 강제 생성 함수 호출(클라이언트 전용 함수) - 스레드
-        //// 단, 몬스터생성 총갯수를 모두 수신했을때 호출
-        //if (TotMonsterCount_ == InfoManager->GetCurMonsterListSize())
-        //{
-        //    LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
-        //    PlayerLevel->GuestCreateCommand();
-        //}
+                // 강제생성명령 실행
+                LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+                PlayerLevel->GuestCreateCommand();
+            }
+        }
+        // 2. 파일로드가 필요한 몬스터정보 셋팅일때
+        else
+        {
+            // 파일로드 시작 및 정보셋팅
+            InfoManager->LoadMonsterInfoFile();
+
+            // 로드하여 모든정보 셋팅완료시 강제생성명령 실행
+            LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
+            PlayerLevel->GuestCreateCommand();
+        }
     }
 }
 
 CreationCommandPacket::CreationCommandPacket()
-    : TotMonsterCount_(-1)
+    : IsFirst_(false)
+    , TotMonsterCount_(0)
     , MonsterInfo_{}
 {
 }

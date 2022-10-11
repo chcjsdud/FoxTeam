@@ -24,7 +24,8 @@ class MonsterInfoManager
 {
 public:
 	static MonsterInfoManager* GetInstance();
-	static bool CreationPacketFlag;
+	static bool FirstCreationPacketFlag;
+	static bool SecondCreationPacketFlag;
 
 public: // Inline Get Function
 	inline int GetCurMonsterListSize()
@@ -51,13 +52,21 @@ public: // Public MonsterBasicInfo Add & Set Function
 public: // 
 	bool CreatMonsterInfomation();															// 현재맵에 배치하려는 몬스터의 기본정보를 생성
 
+public: // 외부호출
+	void LoadMonsterInfoFile();																// 클라전용
+	void SaveMonsterInfoFile();																// 클라전용
+
 protected:
 
-private: // 
-	void LoadSpawnPointMeshByRegion();														// 지역별 네비메쉬 로드
+private: // 이미 등록된 몬스터정보 존재시 호출
+	void LoadMonsterInfoFile(const std::string& _FullPath);									// 지정된경로에 몬스터정보파일을 읽어들여 생성몬스터정보 셋팅
+
+private: // 최초 몬스터정보생성시 호출(몬스터정보파일 미존재)
+	void LoadSpawnPointMeshByRegion(const std::string& _FullPath);							// 지역별 네비메쉬 로드
 	void CreateReferenceInfomation(Location _Location);										// 지역별 몬스터개체수, ... 정보를 생성
 	void SaveCreationCountByRegion(RefInfoByRegion& _ResultInfo);							// 지역별 최대생성몬스터갯수 정보 저장 - 상수때려박은...
 	void CreateBasicMonsterInfos();															// 앞서 생성된 정보를 통해 생성하려는 몬스터 기본정보 생성
+	void SaveMonsterInfoFile(const std::string& _FullPath);									// 최초 생성한 몬스터정보목록 파일저장
 	
 private: // Logging & Conversion Function
 	std::string LoggingTypeToString(Location _Type);										// Type To String Conversion(Logging) - Korean(English)

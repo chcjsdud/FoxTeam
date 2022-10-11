@@ -10,7 +10,8 @@
 #include "GameClient.h"
 #include "CreationCommandPacket.h"
 
-bool MonsterInfoManager::CreationPacketFlag = false;
+bool MonsterInfoManager::FirstCreationPacketFlag = false;
+bool MonsterInfoManager::SecondCreationPacketFlag = false;
 
 MonsterInfoManager* MonsterInfoManager::GetInstance()
 {
@@ -30,13 +31,144 @@ void MonsterInfoManager::SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos)
 
 bool MonsterInfoManager::CreatMonsterInfomation()
 {
-	// 0. 지역별 레퍼런스 정보 생성 및 생성패킷정보 셋팅, 생성패킷전송
-	LoadSpawnPointMeshByRegion();
+	GameEngineDirectory SpawnMonsterInfoFilePath;
+	SpawnMonsterInfoFilePath.MoveParent("FoxTeam");
+	SpawnMonsterInfoFilePath.MoveChild("Resources");
+	SpawnMonsterInfoFilePath.MoveChild("SaveFiles");
+
+	std::string FullPath = SpawnMonsterInfoFilePath.PathToPlusFileName("SpawnMonsterList.save");
+
+	// 지정된 경로의 파일이 존재하는지 체크
+	std::filesystem::path FileSysFullPath = FullPath;
+	GameEngineFile SaveFile(FileSysFullPath);
+
+	// 조건1: 파일이존재한다면 파일읽은후 비어있는 생성패킷 전송
+	if (true == SaveFile.IsExist())
+	{
+		// 몬스터정보를 담은 파일로드 후 정보 셋팅후 비어있는 생성패킷전송
+		LoadMonsterInfoFile(FullPath);
+	}
+	// 조건2: 파일이 존재하지않다면 새로운 파일을 생성후 몬스터정보를 모두 담은 생성패킷전송
+	// -> 패킷전송시 무한로딩걸리는 경우발생!!!!!!!!!!!!!!!!!!!
+	else
+	{
+		// 지역별 레퍼런스 정보 생성 및 생성패킷정보 셋팅, 생성패킷전송
+		LoadSpawnPointMeshByRegion(FullPath);
+	}
 
 	return true;
 }
 
-void MonsterInfoManager::LoadSpawnPointMeshByRegion()
+void MonsterInfoManager::LoadMonsterInfoFile()
+{
+	// 파일로드 시작 및 정보셋팅
+	GameEngineDirectory SpawnMonsterInfoFilePath;
+	SpawnMonsterInfoFilePath.MoveParent("FoxTeam");
+	SpawnMonsterInfoFilePath.MoveChild("Resources");
+	SpawnMonsterInfoFilePath.MoveChild("SaveFiles");
+	std::string FullPath = SpawnMonsterInfoFilePath.PathToPlusFileName("SpawnMonsterList.save");
+
+	// 해당 경로의 파일 로드
+	GameEngineFile LoadFile(FullPath, "rb");
+
+	// 몬스터 총갯수
+	int TotMonsterCount = 0;
+	LoadFile.Read(TotMonsterCount);
+	for (int MonsterNum = 0; MonsterNum < TotMonsterCount; ++MonsterNum)
+	{
+		MonsterInfo NewMonsterInfo = {};
+
+		// 생성인덱스
+		LoadFile.Read(NewMonsterInfo.Index_);
+
+		// 지역타입
+		int ReadRegion = 0;
+		LoadFile.Read(ReadRegion);
+		NewMonsterInfo.RegionType_ = static_cast<Location>(ReadRegion);
+
+		// 몬스터타입
+		int ReadType = 0;
+		LoadFile.Read(ReadType);
+		NewMonsterInfo.MonsterType_ = static_cast<MonsterType>(ReadType);
+
+		// 스폰위치
+		LoadFile.Read(NewMonsterInfo.SpawnPosition_);
+
+		AllMonsters_.push_back(NewMonsterInfo);
+	}
+
+	LoadFile.Close();
+}
+
+void MonsterInfoManager::SaveMonsterInfoFile()
+{
+	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
+
+	// 파일로드 시작 및 정보셋팅
+	GameEngineDirectory SpawnMonsterInfoFilePath;
+	SpawnMonsterInfoFilePath.MoveParent("FoxTeam");
+	SpawnMonsterInfoFilePath.MoveChild("Resources");
+	SpawnMonsterInfoFilePath.MoveChild("SaveFiles");
+	std::string FullPath = SpawnMonsterInfoFilePath.PathToPlusFileName("SpawnMonsterList.save");
+
+	// 해당 경로의 파일 쓰기모드로 Open
+	GameEngineFile SaveFile(FullPath, "wb");
+
+	// 몬스터 총갯수
+	SaveFile.Write(mm->GetCurMonsterListSize());
+	for (int MonsterNum = 0; MonsterNum < mm->GetCurMonsterListSize(); ++MonsterNum)
+	{
+		MonsterInfo CurMonsterInfo = mm->GetAllMonsterListValue()[MonsterNum];
+
+		SaveFile.Write(CurMonsterInfo.Index_);
+		SaveFile.Write(static_cast<int>(CurMonsterInfo.RegionType_));
+		SaveFile.Write(static_cast<int>(CurMonsterInfo.MonsterType_));
+		SaveFile.Write(CurMonsterInfo.SpawnPosition_);
+	}
+
+	SaveFile.Close();
+}
+
+void MonsterInfoManager::LoadMonsterInfoFile(const std::string& _FullPath)
+{
+	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
+
+	// 해당 경로의 파일 로드
+	GameEngineFile LoadFile(_FullPath, "rb");
+	
+	// 몬스터 총갯수
+	int TotMonsterCount = 0;
+	LoadFile.Read(TotMonsterCount);
+	for (int MonsterNum = 0; MonsterNum < TotMonsterCount; ++MonsterNum)
+	{
+		MonsterInfo NewMonsterInfo = {};
+
+		// 생성인덱스
+		LoadFile.Read(NewMonsterInfo.Index_);
+
+		// 지역타입
+		int ReadRegion = 0;
+		LoadFile.Read(ReadRegion);
+		NewMonsterInfo.RegionType_ = static_cast<Location>(ReadRegion);
+
+		// 몬스터타입
+		int ReadType = 0;
+		LoadFile.Read(ReadType);
+		NewMonsterInfo.MonsterType_ = static_cast<MonsterType>(ReadType);
+
+		// 스폰위치
+		LoadFile.Read(NewMonsterInfo.SpawnPosition_);
+
+		AllMonsters_.push_back(NewMonsterInfo);
+	}
+
+	LoadFile.Close();
+
+	// Flag On
+	SecondCreationPacketFlag = true;
+}
+
+void MonsterInfoManager::LoadSpawnPointMeshByRegion(const std::string& _FullPath)
 {
 	int LocationCount = static_cast<int>(Location::MAX);
 	for (int LocationNum = 0; LocationNum < LocationCount; ++LocationNum)
@@ -104,6 +236,7 @@ void MonsterInfoManager::LoadSpawnPointMeshByRegion()
 		// 해당 스레드 종료까지 대기
 		Threads.join();
 
+		// 해당 스레드 종료 후처리
 		// 1. 현재맵의 지역별 몬스터개체수등 정보를 생성
 		int LocationCount = static_cast<int>(Location::MAX);
 		for (int LocationNum = 0; LocationNum < LocationCount; ++LocationNum)
@@ -115,11 +248,11 @@ void MonsterInfoManager::LoadSpawnPointMeshByRegion()
 		// 2. 참고정보를 토대로 몬스터 기본정보 생성
 		CreateBasicMonsterInfos();
 
-		// 3. 생성패킷 정보 저장
-		MonsterInfoManager::GetInstance()->SetMonsterInfos(AllMonsters_);
+		// 3. 몬스터정보 저장파일생성
+		SaveMonsterInfoFile(_FullPath);
 
 		// 종료후 생성패킷 전송가능 Flag On(서버에서 한번처리 후 다시 Off처리된다)
-		CreationPacketFlag = true;
+		FirstCreationPacketFlag = true;
 	}
 }
 
@@ -327,6 +460,8 @@ void MonsterInfoManager::SaveCreationCountByRegion(RefInfoByRegion& _ResultInfo)
 void MonsterInfoManager::CreateBasicMonsterInfos()
 {
 	int CreationIndex = 0;
+	bool GroupCheckFlag = false;
+	int GroupCount = 2;
 	Location PrevRegionType = Location::NONE;
 
 	// 0-0. 현재맵에 배치(생성)하려는 몬스터 목록 작성시작!!!
@@ -354,20 +489,17 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 				NewMonsterInfo.Index_ = CreationIndex++;										// 몬스터 생성 인덱스(탐색용)
 				NewMonsterInfo.RegionType_ = CurRefInfo.RegionType_;							// 몬스터 스폰 지역 타입
 				NewMonsterInfo.MonsterType_ = CurMonsterType;									// 몬스터 타입
-				NewMonsterInfo.IsGroup_ = 0;													// 그룹생성여부(1: 그룹으로생성, 0: 단독생성)
-				NewMonsterInfo.GroupCount_ = 0;													// 그룹생성일때 같은위치에 생성해야하는 야생동물수
 
 				// MonsterType::WOLF는 그룹생성
 				if (MonsterType::WOLF == CurMonsterType)
 				{
-					NewMonsterInfo.IsGroup_ = 1;
-					NewMonsterInfo.GroupCount_ = 2;
+					GroupCheckFlag = true;
 				}
 
 				// 스폰위치 랜덤지정
-				// 단, 그룹생성이 필요한 몬스터는 첫지정스폰위치에서 X좌표 or Z좌표가 +-10 범위내에 위치하도록 설정
+				// 단, 그룹생성이 필요한 몬스터는 첫지정스폰위치에서 X좌표 or Z좌표가 +10 범위내에 위치하도록 설정
 				int RandomIndex = Random.RandomInt(0, static_cast<int>(CurRefInfo.SpawnPointMesh_->GetAllMeshMap()[0].Vertexs.size()) - 1);
-				if (1 == NewMonsterInfo.IsGroup_)
+				if (true == GroupCheckFlag)
 				{
 					// 그룹생성 종료
 					if (true == IsGroup)
@@ -379,6 +511,7 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 						// Flag & Position 초기화
 						RandomSpawnPos = float4::ZERO;
 						IsGroup = false;
+						GroupCheckFlag = false;
 					}
 					// 그룹생성 시작
 					else
@@ -428,6 +561,28 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 			}
 		}
 	}
+}
+
+void MonsterInfoManager::SaveMonsterInfoFile(const std::string& _FullPath)
+{
+	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
+
+	// 해당 경로의 파일 쓰기모드로 Open
+	GameEngineFile SaveFile(_FullPath, "wb");
+
+	// 몬스터 총갯수
+	SaveFile.Write(mm->GetCurMonsterListSize());
+	for (int MonsterNum = 0; MonsterNum < mm->GetCurMonsterListSize(); ++MonsterNum)
+	{
+		MonsterInfo CurMonsterInfo = mm->GetAllMonsterListValue()[MonsterNum];
+
+		SaveFile.Write(CurMonsterInfo.Index_);
+		SaveFile.Write(static_cast<int>(CurMonsterInfo.RegionType_));
+		SaveFile.Write(static_cast<int>(CurMonsterInfo.MonsterType_));
+		SaveFile.Write(CurMonsterInfo.SpawnPosition_);
+	}
+
+	SaveFile.Close();
 }
 
 #pragma region Logging & Conversion Function

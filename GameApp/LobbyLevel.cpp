@@ -226,7 +226,6 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	if (true == UIController_->GetClientButton()->MouseCollisionCheck() && true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
 		clientSocket_->Initialize();
-		//clientSocket_->Connect("121.129.74.177");
 		clientSocket_->Connect("127.0.0.1");
 		//clientSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);				// 221010 SJH DEL
 		clientSocket_->AddPacketHandler(ePacketID::LobbyToLumiaPacket, new LobbyToLumiaPacket);

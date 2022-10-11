@@ -40,6 +40,9 @@ public:		//member Func
 	std::string FileName();
 
 public:
+	bool IsExist();											// 221011 SJH ADD : 파일존재여부 판단
+
+public:
 	void Write(const void* _Data, size_t _Size);
 
 

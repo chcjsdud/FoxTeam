@@ -8,9 +8,32 @@
 // 설명 : 클라이언트에게 리소스 로드 및 액터생성시작 명령을 내리는 패킷
 class CreationCommandPacket : public GameEnginePacketBase
 {
-public:
-	void SetTotMonsterCount(int _Count);
-	void SetMonsterInfo(MonsterInfo _MonsterInfo);
+public: // Inline Get Function
+public: // Inline Set Function
+	inline void SetFirstFlag(bool _IsFirst)
+	{
+		IsFirst_ = _IsFirst;
+	}
+
+	inline void FirstFlagOn()
+	{
+		IsFirst_ = true;
+	}
+
+	inline void FirstFlagOff()
+	{
+		IsFirst_ = false;
+	}
+
+	inline void SetTotMonsterCount(int _TotMonsterCount)
+	{
+		TotMonsterCount_ = _TotMonsterCount;
+	}
+
+	inline void SetMonsterInfo(MonsterInfo _MonsterInfo)
+	{
+		MonsterInfo_ = _MonsterInfo;
+	}
 
 protected:
 	virtual void userSerialize() override;
@@ -36,7 +59,8 @@ private:
 public:
 protected:
 private:
-	int TotMonsterCount_;										// 생성되는 몬스터 총갯수
-	MonsterInfo MonsterInfo_;									// 몬스터정보
+	bool IsFirst_;																			// 최초 몬스터정보생성여부
+	int TotMonsterCount_;																	// 총생성해야하는 몬스터수
+	MonsterInfo MonsterInfo_;																// 몬스터정보
 };
 

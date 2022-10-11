@@ -209,3 +209,8 @@ std::string GameEngineFile::FileName()
 {
 	return path_.filename().string();
 }
+
+bool GameEngineFile::IsExist()
+{
+	return std::filesystem::exists(path_);
+}

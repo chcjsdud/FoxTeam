@@ -60,8 +60,8 @@ void LoadingLevel::CreationCommand()
 
 void LoadingLevel::CheckThreadCreationInfoSettingEnd()
 {
-	// 몬스터생성정보가 모두 만들어지고, 서버라면 처리
-	if (true == MonsterInfoManager::CreationPacketFlag && true == GameServer::GetInstance()->IsOpened())
+	// 서버이며, 몬스터정보생성패킷전송 Flag On일때
+	if (true == GameServer::GetInstance()->IsOpened() && (true == MonsterInfoManager::FirstCreationPacketFlag || true == MonsterInfoManager::SecondCreationPacketFlag))
 	{
 		// 패킷전송
 		bool IsConnect = false;
@@ -81,25 +81,35 @@ void LoadingLevel::CheckThreadCreationInfoSettingEnd()
 
 		if (false == IsConnect)
 		{
-			// 221010 SJH 임시사용 : 패킷지연시간으로인해 임시 사용
-			int MonsterCount = MonsterInfoManager::GetInstance()->GetCurMonsterListSize();
-			CreationCommandPacket CommandPacket;
-			CommandPacket.SetTotMonsterCount(MonsterCount);
-			GameServer::GetInstance()->Send(&CommandPacket);
+			// 최초 몬스터정보 생성일때
+			// -> 패킷지연시간 해결필요!!!!!!!!!!!!!!!!!!
+			if (true == MonsterInfoManager::FirstCreationPacketFlag)
+			{
+				// 최초 몬스터정보생성일시 몬스터정보패킷생성
+				int TotCount = MonsterInfoManager::GetInstance()->GetCurMonsterListSize();
+				for (int MonsterNum = 0; MonsterNum < TotCount; ++MonsterNum)
+				{
+					CreationCommandPacket CommandPacket;
+					CommandPacket.FirstFlagOn();
+					CommandPacket.SetTotMonsterCount(TotCount);
+					CommandPacket.SetMonsterInfo(MonsterInfoManager::GetInstance()->GetAllMonsterListValue()[MonsterNum]);
+					GameServer::GetInstance()->Send(&CommandPacket);
+				}
 
-			// 221010 SJH 임시주석처리
-			//int MonsterCount = MonsterInfoManager::GetInstance()->GetCurMonsterListSize();
-			//for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
-			//{
-			//	CreationCommandPacket CommandPacket;
-			//	CommandPacket.SetTotMonsterCount(MonsterCount);
-			//	CommandPacket.SetMonsterInfo(MonsterInfoManager::GetInstance()->GetAllMonsterListValue()[MonsterNum]);
-			//	GameServer::GetInstance()->Send(&CommandPacket);
-			//}
+				// Flag Off
+				MonsterInfoManager::FirstCreationPacketFlag = false;
+			}
+			// 이전몬스터정보파일이 존재하는 생성일때
+			else if(true == MonsterInfoManager::SecondCreationPacketFlag)
+			{
+				CreationCommandPacket CommandPacket;
+				CommandPacket.FirstFlagOff();
+				GameServer::GetInstance()->Send(&CommandPacket);
+
+				// Flag Off
+				MonsterInfoManager::SecondCreationPacketFlag = false;
+			}
 		}
-
-		// Flag Off
-		MonsterInfoManager::CreationPacketFlag = false;
 	}
 }
 
