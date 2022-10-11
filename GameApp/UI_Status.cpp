@@ -28,6 +28,7 @@ void UI_Status::Start()
 
 	float4 MainStatus_BackgroundPos = { -410.0f, -315.0f, 0.0f };
 	float4 SubStatus_BackgroundPos = { -525.0f, -315.0f, 0.0f };
+	AttackValue_Pos = { -440.f, -290.f, -1.f };
 
 		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
@@ -49,8 +50,8 @@ void UI_Status::Start()
 		//to_string= 숫자를 string으로
 		int a = 1;
 		AttackValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		AttackValue_Renderer->TextSetting("굴림", to_string(a), 20);
-		AttackValue_Renderer->GetTransform()->SetLocalPosition({-415.f, -315.f, -1.f});
+		AttackValue_Renderer->TextSetting("HMKMRHD", to_string(a), 15);
+		AttackValue_Renderer->GetTransform()->SetLocalPosition(AttackValue_Pos);
 	}
 
 	{
@@ -77,6 +78,9 @@ void UI_Status::Update(float _Time)
 			SubStatusRenderer->Off();
 			AttackValue_Renderer->Off();
 			DefenseValue_Renderer->Off();
+			//AttackSpeedValue_Renderer->Off();
+			//MoveSpeedValue_Renderer->Off();
+			//CriticalValue_Renderer->Off();
 		}
 		else
 		{
@@ -84,6 +88,9 @@ void UI_Status::Update(float _Time)
 			SubStatusRenderer->On();
 			AttackValue_Renderer->On();
 			DefenseValue_Renderer->On();
+			//AttackSpeedValue_Renderer->On();
+			//MoveSpeedValue_Renderer->On();
+			//CriticalValue_Renderer->On();
 		}
 	}
 
@@ -102,5 +109,5 @@ void UI_Status::Update(float _Time)
 
 void UI_Status::SetStatus(CharacterStat* _Mystat)
 {
-	AttackValue_Renderer->TextSetting("굴림", to_string((int)(_Mystat->HP)), 20);
+	AttackValue_Renderer->TextSetting("HMKMRHD", to_string((int)(_Mystat->AttackPower)), 17);
 }

@@ -37,13 +37,19 @@ private:
 	//이현
 private:
 
-#pragma region 스테이터스 값 출력용 렌더러 모음
+#pragma region 스테이터스 값 출력용 렌더러+위치
 
 	GameEngineUIRenderer* AttackValue_Renderer;
 	GameEngineUIRenderer* DefenseValue_Renderer;
 	GameEngineUIRenderer* AttackSpeedValue_Renderer;
 	GameEngineUIRenderer* MoveSpeedValue_Renderer;
 	GameEngineUIRenderer* CriticalValue_Renderer;
+
+	float4 AttackValue_Pos;
+	float4 DefenseValue_Pos;
+	float4 AttackSpeedValue_Pos;
+	float4 MoveSpeedValue_Pos;
+	float4 CriticalValue_Pos;
 
 #pragma endregion 
 

@@ -171,6 +171,11 @@ void UI_Inventory::Update(float _Time)
 
 void UI_Inventory::EmptySlotReturn(ItemBase* _TargetSlot)
 {
+	if (_TargetSlot == nullptr)
+	{
+		return;
+	}
+
 	if (Slot0_Item == nullptr)
 	{
 		Slot0_Item = _TargetSlot->Copy();
@@ -432,11 +437,11 @@ void UI_Inventory::ItemRenderCheck()
 	}
 }
 
-void UI_Inventory::GetInventoryInfo(list<ItemBase*> _ItemList)
+void UI_Inventory::GetInventoryInfo(vector<ItemBase*> _ItemVector)
 {
-	list<ItemBase*>::iterator listiter = _ItemList.begin();
+	vector<ItemBase*>::iterator listiter = _ItemVector.begin();
 
-	for (listiter = _ItemList.begin(); listiter != _ItemList.end(); listiter++)
+	for (listiter = _ItemVector.begin(); listiter != _ItemVector.end(); listiter++)
 	{
 		PushItem(*listiter);
 	}

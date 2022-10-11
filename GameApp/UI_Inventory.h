@@ -29,7 +29,7 @@ public:
 
 	void EmptySlot();
 	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
-	void GetInventoryInfo(list<ItemBase*> _ItemList);
+	void GetInventoryInfo(vector<ItemBase*> _ItemVector);
 
 	//슬롯에 아이템이 들어있을때 이미지 렌더를 위한 함수
 	void ItemRenderCheck();
@@ -47,7 +47,7 @@ private:
 	void EmptySlotReturn(ItemBase* _TargetSlot);
 
 
-
+	//등급 적용 제대로 안되는중, 조합후 기존 아이템 삭제
 
 
 

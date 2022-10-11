@@ -209,7 +209,9 @@ void Character::getItem(int _index)
 		}
 
 		invenItem = Item;
-		uiController_->GetInventoryUI()->PushItem(Item);
+		//이건호 : 기존 UI를 비우고 인벤토리 벡터 전체를 받아오도록 설정
+		uiController_->GetInventoryUI()->EmptySlot();
+		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 		itemBoxmanager_->DeleteItemFromItemBox(_index);
 
 		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
@@ -251,7 +253,8 @@ void Character::getItem(const std::string& _itemName)
 		}
 
 		invenItem = item;
-		uiController_->GetInventoryUI()->PushItem(item);
+		uiController_->GetInventoryUI()->EmptySlot();
+		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 
 		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
 		std::list<ItemBase*>::iterator iterErase = allMyBuildItems_.end();
@@ -459,6 +462,8 @@ void Character::mixingItem()
 		}
 
 		invenItem = iter->second->Copy();
+		uiController_->GetInventoryUI()->EmptySlot();
+		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 		break;
 	}
 
