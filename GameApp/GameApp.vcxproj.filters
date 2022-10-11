@@ -202,9 +202,6 @@
     <ClCompile Include="StartPointSelectPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="Hyunwoo.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="CharMovementPacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClCompile>
@@ -303,6 +300,9 @@
     </ClCompile>
     <ClCompile Include="PacketSoundPlay.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Hyunwoo.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -482,6 +482,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\GameController">
       <UniqueIdentifier>{41127990-4ebb-463d-a1f2-118043585a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo">
+      <UniqueIdentifier>{e2cd578b-0743-4586-a0a8-3020ebc7125d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -689,9 +692,6 @@
     <ClInclude Include="StartPointSelectPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Hyunwoo.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="CharMovementPacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
@@ -790,6 +790,9 @@
     </ClInclude>
     <ClInclude Include="PacketSoundPlay.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Hyunwoo.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

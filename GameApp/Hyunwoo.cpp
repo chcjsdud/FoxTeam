@@ -11,6 +11,8 @@
 #include "LumiaMap.h"
 #include "Character.h"
 #include "CharCrowdControlPacket.h"
+#include "PacketSoundPlay.h"
+
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
 	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false)
@@ -46,10 +48,34 @@ void Hyunwoo::LoadResource()
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillR_loop.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillR_end.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_weaponskill.fbx"));
+
+	{
+		GameEngineDirectory dir;
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "Sound" / "Char" / "Hyunwoo";
+
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("wav");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineSoundManager::GetInstance()->CreateSound(file.FileName(), file.GetFullPath());
+		}
+	}
 }
 
 void Hyunwoo::ReleaseResource()
 {
+	{
+		GameEngineDirectory dir;
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "Sound" / "Char" / "Hyunwoo";
+
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("wav");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineSoundManager::GetInstance()->ReleaseSound(file.FileName());
+		}
+	}
+
 	GameEngineFBXMeshManager::GetInst().Delete("hyunwoo_run.fbx");
 
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_run.fbx");
@@ -73,7 +99,22 @@ void Hyunwoo::Start()
 	Character::Start();
 	initHyunwooCollision();
 	initHyunwooCustomState();
+
+
+	stat_.HPMax = 820.0f;
+	stat_.HP = 820.0f;
+	stat_.SPMax = 350.0f;
+	stat_.SP = 350.0f;
+	stat_.Defence = 28.0f;
+	stat_.AttackPower = 40.0f;
+	stat_.HPRegeneration = 1.8f;
+	stat_.SPRegeneration = 1.8f;
+
+	stat_.AttackSpeed = 0.86f;
 	stat_.AttackStartTime = 0.15f;
+	stat_.AttackEndTime = 0.4f;
+	stat_.MovementSpeed = 355.0f;
+	stat_.AttackRange = 280.f;
 }
 
 void Hyunwoo::Update(float _deltaTime)
@@ -225,7 +266,11 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 	if (0.3f <= timer_collision_Q && false == b_Qhit_)
 	{
 		// 여기서 피격 충돌 판정이 나옴
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill01_Hit.wav");
+		PacketSoundPlay packet;
+		packet.SetSound("hyunwoo_Skill01_Hit.wav", transform_.GetWorldPosition());
 
+		FT::SendPacket(packet);
 
 		auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
 
@@ -264,12 +309,23 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 void Hyunwoo::onStartWSkill()
 {
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill02_Activation.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("hyunwoo_Skill02_Activation.wav", transform_.GetWorldPosition());
+
+	FT::SendPacket(packet);
 }
 
 void Hyunwoo::onUpdateWSkill(float _deltaTime)
 {
 	// W 스킬은 일시적인 방어력 증강과
 	// 모든 군중 제어기 면역을 일시적으로 부여하는 스테이트입니다.
+
+
+
+	changeAnimationWait();
+	mainState_.ChangeState("NormalState", true);
+	normalState_.ChangeState("Watch", true);
 }
 
 void Hyunwoo::onStartESkill()
@@ -291,6 +347,12 @@ void Hyunwoo::onStartESkill()
 
 	curAnimationName_ = "SkillE_start";
 	renderer_->ChangeFBXAnimation("SkillE_start", true);
+
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill03_Slide.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("hyunwoo_Skill03_Slide.wav", transform_.GetWorldPosition());
+
+	FT::SendPacket(packet);
 }
 
 void Hyunwoo::onUpdateESkill(float _deltaTime)
@@ -350,6 +412,12 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 						CharCrowdControlPacket ccPacket;
 						ccPacket.SetTargetIndex(character->GetIndex());
 						ccPacket.SetWallSlam(0.2f, direction_ * 3000.f, 1.0f);
+
+						GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill03_Hit.wav");
+						PacketSoundPlay packet;
+						packet.SetSound("hyunwoo_Skill03_Hit.wav", transform_.GetWorldPosition());
+
+						FT::SendPacket(packet);
 
 						if (true == GameServer::GetInstance()->IsOpened())
 						{
@@ -423,6 +491,8 @@ void Hyunwoo::onStartDSkill()
 	}
 
 
+
+
 }
 
 void Hyunwoo::onUpdateDSkill(float _deltaTime)
@@ -445,7 +515,7 @@ void Hyunwoo::onUpdateDSkill(float _deltaTime)
 			float4 playerPosition = transform_.GetWorldPosition();
 			float distance = float4::Calc_Len3D(playerPosition, targetPosition);
 
-			if (distance > stat_.AttackRange)
+			if (distance > stat_.AttackRange + 90.f)
 			{	// 사거리 너무 멀 때
 				mainState_.ChangeState("NormalState", true);
 				normalState_.ChangeState("Chase", true);
@@ -506,6 +576,10 @@ void Hyunwoo::startCustomRSkill()
 	curAnimationName_ = "SkillR_start";
 	renderer_->ChangeFBXAnimation("SkillR_start", true);
 	collision_R->On();
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill04_Charging.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("hyunwoo_Skill04_Charging.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
 }
 
 void Hyunwoo::updateCustomRSkill(float _deltaTime)
@@ -547,6 +621,10 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 					if (nullptr != character)
 					{
 						character->Damage(500.0f);
+						GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill04_Hit.wav");
+						PacketSoundPlay packet;
+						packet.SetSound("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
+						FT::SendPacket(packet);
 					}
 				}
 			}

@@ -15,6 +15,7 @@
 #include "GameServer.h"
 #include "GameClient.h"
 #include "ItemBoxManager.h"
+#include "PacketSoundPlay.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -1059,6 +1060,7 @@ void Character::updateKnockback(float _deltaTime)
 
 void Character::startWallSlam()
 {
+
 }
 
 void Character::updateWallSlam(float _deltaTime)
@@ -1081,6 +1083,11 @@ void Character::updateWallSlam(float _deltaTime)
 	else
 	{
 		Stun(timerStun_);
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill03_Hit.wav");
+		PacketSoundPlay packet;
+		packet.SetSound("hyunwoo_Skill03_Hit.wav", transform_.GetWorldPosition());
+
+		FT::SendPacket(packet);
 	}
 }
 
