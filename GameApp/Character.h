@@ -46,6 +46,8 @@ public:
 	void Knockback(float _knockbackTime, float4 _knockbackSpeed);
 	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime);
 
+
+
 #pragma region GetterSetter
 public:
 	CharacterStat* GetStat() { return &stat_; }
@@ -62,6 +64,18 @@ public:
 	void SetCurrentNavMesh(NavMesh* _NaviMesh);
 	void SetStat(CharacterStat _status) { stat_ = _status; }
 	void SetIndex(int _index) { myIndex_ = _index; }
+
+	float GetCoolTimeQSkill() { return coolTimeQ_; }
+	float GetCoolTimeWSkill() { return coolTimeW_; }
+	float GetCoolTimeESkill() { return coolTimeE_; }
+	float GetCoolTimeRSkill() { return coolTimeR_; }
+	float GetCoolTimeDSkill() { return coolTimeD_; }
+
+	void SetCoolTimeQSkill(float _coolTime) { coolTimeQ_ = _coolTime; }
+	void SetCoolTimeWSkill(float _coolTime) { coolTimeW_ = _coolTime; }
+	void SetCoolTimeESkill(float _coolTime) { coolTimeE_ = _coolTime; }
+	void SetCoolTimeRSkill(float _coolTime) { coolTimeR_ = _coolTime; }
+	void SetCoolTimeDSkill(float _coolTime) { coolTimeD_ = _coolTime; }
 
 #pragma endregion
 
@@ -257,6 +271,12 @@ protected:
 	std::string curAnimationName_;
 	std::string overrideAnimationName_;
 	std::string overrideAnimationBoneName_;
+
+	float coolTimeQ_;
+	float coolTimeW_;
+	float coolTimeE_;
+	float coolTimeR_;
+	float coolTimeD_;
 
 	// Omni State
 	GameEngineFSM mainState_;

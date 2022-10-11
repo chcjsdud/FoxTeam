@@ -35,7 +35,11 @@ Character::Character()
 	, myIndex_(-1)
 	, uiController_(nullptr)
 	, overrideAnimationName_("")
-
+	, coolTimeQ_(0.0f)
+	, coolTimeW_(0.0f)
+	, coolTimeE_(0.0f)
+	, coolTimeR_(0.0f)
+	, coolTimeD_(0.0f)
 {
 }
 
