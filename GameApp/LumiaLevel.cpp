@@ -195,11 +195,10 @@ void LumiaLevel::MonsterCreationCommand()
 		// 트랜스폼데이터 셋팅
 		NewMonster->InitalizeSpawnPosition(CurMonsterInfo.SpawnPosition_);
 
-		// 생성된 몬스터는 초기 렌더링 Off상태로 리젠시간을 기다리게된다.
-		// -> 첫등장상태로 전환
+		// GameController에 의하여 첫등장전까지 Off 상태로 생성
+		// -> GameController가 첫등장명령을 내리면 On상태로 전환되며 Appear State를 실행
+		NewMonster->Off();
 
-
-		
 		// 관리목록 추가
 		MonsterActorList_.push_back(NewMonster);
 	}

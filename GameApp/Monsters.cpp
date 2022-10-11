@@ -51,10 +51,9 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 	{
 		case MonsterStateType::APPEAR:
 		{
-			MainState_ << "NORMAL";
 			NormalState_ << "APPEAR";
-			//MainRenderer_->ChangeFBXAnimation("APPEAR");
-			MainRenderer_->ChangeFBXAnimation("IDLE");
+			MainState_ << "NORMAL";
+			MainRenderer_->ChangeFBXAnimation("APPEAR");
 			break;
 		}
 		case MonsterStateType::REGEN:

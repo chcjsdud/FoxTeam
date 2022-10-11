@@ -35,15 +35,6 @@ void Wolf::InitalizeStateInfo()
 	StateInfo_.FirstAppearTime_ = 125.f;								// 첫등장 타임
 	StateInfo_.RegenTimeMax_ = 125.f;									// 리젠타임(고정)
 	StateInfo_.RegenTime_ = 125.f;										// 리젠타임(갱신) -> 0.0f이하일시 RegenTime_으로 초기화
-
-	// 출몰지역 등록
-	StateInfo_.AppearAreaList_.clear();
-	StateInfo_.AppearAreaList_.push_back(Location::ARCHERY_RANGE);		// 양궁장
-	StateInfo_.AppearAreaList_.push_back(Location::ALLEY);				// 골목길
-	StateInfo_.AppearAreaList_.push_back(Location::HOTEL);				// 호텔
-	StateInfo_.AppearAreaList_.push_back(Location::CEMETERY);			// 묘지
-	StateInfo_.AppearAreaList_.push_back(Location::FACTORY);			// 공장
-	StateInfo_.AppearAreaList_.push_back(Location::HOSPITAL);			// 병원
 }
 
 void Wolf::InitalizeResourceLoad()

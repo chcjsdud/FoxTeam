@@ -30,7 +30,6 @@ public: // 스킬스텟
 	float SkillCoolDown_;					// 스킬재사용시간
 
 public: // 젠스텟
-	std::vector<Location> AppearAreaList_;	// 출몰지역목록
 	float FirstAppearTime_;					// 첫등장 타임
 	float RegenTimeMax_;					// 리젠타임(고정)
 	float RegenTime_;						// 리젠타임(갱신) -> 0.0f이하일시 RegenTime_으로 초기화

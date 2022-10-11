@@ -480,6 +480,9 @@
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio">
       <UniqueIdentifier>{282fe2d7-3fcd-4313-a257-12bb60ee19c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\GameController">
+      <UniqueIdentifier>{41127990-4ebb-463d-a1f2-118043585a9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
