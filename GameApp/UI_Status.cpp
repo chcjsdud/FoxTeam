@@ -28,7 +28,10 @@ void UI_Status::Start()
 
 	float4 MainStatus_BackgroundPos = { -410.0f, -315.0f, 0.0f };
 	float4 SubStatus_BackgroundPos = { -525.0f, -315.0f, 0.0f };
-	AttackValue_Pos = { -440.f, -290.f, -1.f };
+
+	Value_XPivot = {55.0f, 0.0f, 0.0f, 0.0f};
+	Value_YPivot = {0.0f, -19.0f, 0.0f, 0.0f};
+	AttackValue_Pos = { -442.f, -279.f, -1.f };
 
 		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
@@ -48,16 +51,15 @@ void UI_Status::Start()
 
 	{
 		//to_string= 숫자를 string으로
-		int a = 1;
 		AttackValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		AttackValue_Renderer->TextSetting("HMKMRHD", to_string(a), 15);
+		AttackValue_Renderer->TextSetting("HMKMRHD", "a", 15);
 		AttackValue_Renderer->GetTransform()->SetLocalPosition(AttackValue_Pos);
 	}
 
 	{
 		DefenseValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		//DefenseValue_Renderer->TextSetting("KBIZ한마음고딕 M", "시험", 1, float4::WHITE);
-		DefenseValue_Renderer->GetTransform()->SetLocalPosition({ 100.0f, 100.0f, 0.0f, 0.0f });
+		DefenseValue_Renderer->TextSetting("HMKMRHD", "a", 15);
+		DefenseValue_Renderer->GetTransform()->SetLocalPosition(AttackValue_Pos + Value_XPivot);
 	}
 
 
@@ -109,5 +111,6 @@ void UI_Status::Update(float _Time)
 
 void UI_Status::SetStatus(CharacterStat* _Mystat)
 {
-	AttackValue_Renderer->TextSetting("HMKMRHD", to_string((int)(_Mystat->AttackPower)), 17);
+	AttackValue_Renderer->TextSetting("HMKMRHD", to_string((int)(_Mystat->AttackPower)), 12);
+	DefenseValue_Renderer->TextSetting("HMKMRHD", to_string((int)(_Mystat->Defence)), 12);
 }

@@ -46,12 +46,6 @@ private:
 	//자동으로 빈슬롯을 찾아서 ItemBase를 세팅해주는 함수
 	void EmptySlotReturn(ItemBase* _TargetSlot);
 
-
-	//등급 적용 제대로 안되는중, 조합후 기존 아이템 삭제
-
-
-
-
 private:
 	Player* Player_;
 

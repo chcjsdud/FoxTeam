@@ -45,6 +45,9 @@ private:
 	GameEngineUIRenderer* MoveSpeedValue_Renderer;
 	GameEngineUIRenderer* CriticalValue_Renderer;
 
+	float4 Value_XPivot;
+	float4 Value_YPivot;
+
 	float4 AttackValue_Pos;
 	float4 DefenseValue_Pos;
 	float4 AttackSpeedValue_Pos;
