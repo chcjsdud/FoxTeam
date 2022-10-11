@@ -336,3 +336,7 @@ void Rio::onUpdateDeath(float _deltaTime)
 {
 }
 
+void Rio::onUpdateCustomState(float _deltaTime)
+{
+}
+

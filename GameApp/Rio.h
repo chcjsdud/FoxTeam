@@ -57,10 +57,16 @@ protected:
 	virtual void onStartDeath() override;
 	virtual void onUpdateDeath(float _deltaTime) override;
 
+	virtual void onUpdateCustomState(float _deltaTime) override;
+
 private:
 
 
 private:
 	bool bLongBow_;
+
+
+	// Character을(를) 통해 상속됨
+
 
 };

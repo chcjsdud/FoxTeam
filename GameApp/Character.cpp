@@ -653,6 +653,7 @@ void Character::initState()
 	mainState_.CreateState(MakeStateWithEnd(Character, NormalState));
 	mainState_.CreateState(MakeState(Character, AttackState));
 	mainState_.CreateState(MakeState(Character, CrowdControlState));
+	mainState_.CreateState(MakeState(Character, CustomState));
 	mainState_.CreateState(MakeState(Character, DeathState));
 
 	normalState_.CreateState(MakeState(Character, Watch));
@@ -883,6 +884,15 @@ void Character::updateAttackState(float _deltaTime)
 		float Dist = currentNavFace_->YCheck(GetTransform());
 		transform_.SetWorldMove({ 0.0f, -Dist, 0.0f });
 	}
+}
+
+void Character::startCustomState()
+{
+}
+
+void Character::updateCustomState(float _deltaTime)
+{
+	onUpdateCustomState(_deltaTime);
 }
 
 void Character::startDeathState()

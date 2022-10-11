@@ -53,9 +53,10 @@ protected:
 	virtual void onStartDSkill() override;
 	virtual void onUpdateDSkill(float _deltaTime) override;
 
-
 	virtual void onStartDeath() override;
 	virtual void onUpdateDeath(float _deltaTime) override;
+
+	virtual void onUpdateCustomState(float _deltaTime) override;
 
 private:
 	float timer_collision_Q;
@@ -67,4 +68,7 @@ private:
 	float timer_Dash_E;		// 대쉬 지속시간
 	GameEngineCollision* collision_E;
 	bool b_Ehit_;
+
+	// 캐릭터의 고유한 상태를 처리하고 싶을 때 사용
+	GameEngineFSM customState_;
 };

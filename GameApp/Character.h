@@ -95,6 +95,9 @@ protected:
 	virtual void onStartDSkill() = 0;
 	virtual void onUpdateDSkill(float _deltaTime) = 0;
 
+	// 캐릭터 마다 고유한 FSM 스테이트를 update 하고 싶을 때 사용
+	virtual void onUpdateCustomState(float _deltaTime) = 0;
+
 	// Main(DeathState)
 	virtual void onStartDeath() = 0;
 	virtual void onUpdateDeath(float _deltaTime) = 0;
@@ -136,9 +139,9 @@ private:
 	//
 	//   계층도
 	//                    [Main]
-	//     ----------------  |  ---------------- ---------------
-	//     |                 |                 |				|
-	//  [Normal]            [CC]            [Attack]		 [Death]
+	//     ----------------  |  ---------------- ----------------------------
+	//     |                 |                 |				|           |
+	//  [Normal]            [CC]            [Attack]		 [Death]     [Custom]
 	// 
 #pragma region MainState
 	void startNormalState();
@@ -150,6 +153,10 @@ private:
 
 	void startAttackState();
 	void updateAttackState(float _deltaTime);
+
+	// 캐릭터의 고유한 FSM 스테이트를 update 해 준다.
+	void startCustomState();
+	void updateCustomState(float _deltaTime);
 
 	void startDeathState();
 	void updateDeathState(float _deltaTime);

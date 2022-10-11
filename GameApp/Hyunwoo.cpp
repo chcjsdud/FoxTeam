@@ -440,6 +440,11 @@ void Hyunwoo::onUpdateDeath(float _deltaTime)
 
 }
 
+void Hyunwoo::onUpdateCustomState(float _deltaTime)
+{
+	customState_.Update(_deltaTime);
+}
+
 void Hyunwoo::onStartBasicAttacking(Character* _target)
 {
 	target_->Damage(stat_.AttackPower);
