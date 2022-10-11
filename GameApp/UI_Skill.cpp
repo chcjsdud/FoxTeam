@@ -23,7 +23,7 @@ UI_Skill::~UI_Skill()
 void UI_Skill::Start()
 {
 	float4 Skill_IconSize = { 35.f,35.f };
-	float4 Passive_IconSize = { 31.f,31.f };
+	float4 Passive_IconSize = { 29.f,29.f };
 	
 	Skill_BackGroundPos = { -20.0f, -315.0f, 0.0f };
 	Icon_Q_Pos = { -123.0f, -300.0f, -1.0f };
@@ -31,6 +31,7 @@ void UI_Skill::Start()
 	Icon_E_Pos = { -36.0f, -300.0f, -1.0f };
 	Icon_R_Pos = { 7.0f, -300.0f, -1.0f };
 	Icon_Weapon_Pos = { 50.0f, -300.0f, -1.0f };
+	Icon_Passive_Pos = { 89.0f, -300.0f, -1.0f };
 
 	{
 		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
@@ -57,7 +58,8 @@ void UI_Skill::Start()
 		Icon_R->GetTransform()->SetLocalPosition(Icon_R_Pos);
 
 		Icon_Passive = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	
+		Icon_Passive->GetTransform()->SetLocalScaling(Passive_IconSize);
+		Icon_Passive->GetTransform()->SetLocalPosition(Icon_Passive_Pos);
 
 		Icon_Weapon = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		//Icon_Weapon->GetTransform()->SetLocalScaling(Skill_IconSize);
@@ -133,16 +135,19 @@ void UI_Skill::SetJobType(JobType _myjob)
 		Icon_W->SetImage("HyunWoo_W_Icon.png", "PointSmp");
 		Icon_E->SetImage("HyunWoo_E_Icon.png", "PointSmp");
 		Icon_R->SetImage("HyunWoo_R_Icon.png", "PointSmp");
+		Icon_Passive->SetImage("HyunWoo_Passive_Icon.png", "PointSmp");
 	}
 		break;
 	case JobType::JACKIE:
 		break;
 	case JobType::RIO:
 	{
-		//Icon_Q->SetImage("Rio_Q_Icon.png", "PointSmp");
-		//Icon_W->SetImage("Rio_W_Icon.png", "PointSmp");
-		//Icon_E->SetImage("Rio_E_Icon.png", "PointSmp");
-		//Icon_R->SetImage("Rio_R_Icon.png", "PointSmp");
+		//스킬아이콘 변경은 넣지 않기로 했음, 후일 쿨타임만 적용 예정
+		Icon_Q->SetImage("Rio_Q_Icon.png", "PointSmp");
+		Icon_W->SetImage("Rio_W_Icon.png", "PointSmp");
+		Icon_E->SetImage("Rio_E_Icon.png", "PointSmp");
+		Icon_R->SetImage("Rio_R_Icon.png", "PointSmp");
+		Icon_Passive->SetImage("Rio_Passive_Icon.png", "PointSmp");
 	}
 		break;
 	case JobType::AYA:

@@ -36,11 +36,6 @@ void PlayerUIController::SetJobType(JobType _MyJob)
 
 	charPicture_UI->SetJobType(MyJob);
 	skill_UI->SetJobType(MyJob);
-
-	if (MyJob == JobType::RIO)
-	{
-		Rio_bLongBow_ = false;
-	}
 }
 
 
@@ -62,13 +57,6 @@ void PlayerUIController::Update(float _DeltaTime)
 
 	//스테이터스를 상시 받아야함
 	status_UI->SetStatus(pm->GetMyPlayer().stat_);
-
-	pm->GetMainCharacter();
-
-	if (MyJob == JobType::RIO)
-	{
-		skill_UI->SetSkillType(MyJob, Rio_bLongBow_);
-	}
 
 }
 
