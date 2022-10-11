@@ -17,7 +17,7 @@ private:
 		// 이 상태가 끝났다.
 		std::function<void()> End_;
 
-		//float Time;
+		float Time_;
 
 		State(
 			std::string _Name,
@@ -29,7 +29,7 @@ private:
 			, Start_(_Start)
 			, Update_(_Update)
 			, End_(_End)
-			//, Time(0.0f)
+			, Time_(0.0f)
 		{
 
 		}
@@ -55,7 +55,7 @@ public:
 		return Current_->Name_ == _Name;
 	}
 
-	void Update(float _Time);
+	void Update(float _deltaTime);
 
 	State* GetCurrentState() 
 	{

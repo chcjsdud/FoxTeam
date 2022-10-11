@@ -17,7 +17,7 @@ GameEngineFSM::~GameEngineFSM()
 	}
 }
 
-void GameEngineFSM::Update(float _Time)
+void GameEngineFSM::Update(float _deltaTime)
 {
 	if (nullptr != Next_)
 	{
@@ -26,7 +26,7 @@ void GameEngineFSM::Update(float _Time)
 			Current_->End_();
 		}
 		Current_ = Next_;
-		//Current_->Time = 0.0f;
+		Current_->Time_ = 0.0f;
 
 		if (nullptr != Current_->Start_)
 		{
@@ -41,8 +41,8 @@ void GameEngineFSM::Update(float _Time)
 		return;
 	}
 
-	//Current_->Time += _Time;
-	Current_->Update_(_Time);
+	Current_->Time_ += _deltaTime;
+	Current_->Update_(_deltaTime);
 }
 
 std::string GameEngineFSM::GetCurrentStateName()

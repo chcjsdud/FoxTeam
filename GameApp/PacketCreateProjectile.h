@@ -21,6 +21,7 @@ public:
 	
 	void SetWaitTime(float _waitTime) { waitTime_ = _waitTime; }
 	void SetLifeTime(float _lifeTime) { lifeTime_ = _lifeTime; }
+	void SetScale(const float4& _scale) { scale_ = _scale; }
 
 protected:
 	virtual void initPacketID() override;
@@ -31,6 +32,7 @@ protected:
 
 private:
 	float4 position_;
+	float4 scale_;
 	float damage_;
 	float speed_;
 	float rotationY_;

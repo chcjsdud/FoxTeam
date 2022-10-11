@@ -67,7 +67,7 @@ public:
 		, OmniVamp(0.0f)
 		, AttackSpeed(0.77f)
 		, AttackStartTime(0.15f)
-		, AttackEndTime(0.5f)
+		, AttackEndTime(0.4f)
 		, MovementSpeed(346.f)
 		, CooldownReduction(0.0f)
 		, AttackRange(425.f)

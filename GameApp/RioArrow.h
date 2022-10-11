@@ -11,10 +11,8 @@ class RioArrow : public GameEngineActor
 public:
 	RioArrow(); 
 	~RioArrow();
-
 	RioArrow(const RioArrow& _other) = delete; 
 	RioArrow(RioArrow&& _other) = delete; 
-
 	RioArrow& operator=(const RioArrow& _other) = delete;
 	RioArrow& operator=(const RioArrow&& _other) = delete;
 
@@ -27,6 +25,7 @@ public:
 	void MakeNonTargetArrow(Character& _owner, float _damage, const float4& _position, float _rotationY, float _speed);
 	void SetWaitTime(float _waitTime) { waitTime_ = _waitTime; }
 	void SetLifeTime(float _lifeTime) { lifeTime_ = _lifeTime; }
+	void SetScale(const float4& _scale) { scale_ = _scale;  transform_.SetLocalScaling(scale_); }
 
 private:
 	void startWait();
@@ -48,6 +47,7 @@ private:
 	Character* owner_;
 	Character* target_;
 
+	float4 scale_;
 	float damage_;
 	float rotationY_;
 	float speed_;

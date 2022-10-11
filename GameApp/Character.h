@@ -65,17 +65,17 @@ public:
 	void SetStat(CharacterStat _status) { stat_ = _status; }
 	void SetIndex(int _index) { myIndex_ = _index; }
 
-	float GetCoolTimeQSkill() { return coolTimeQ_; }
-	float GetCoolTimeWSkill() { return coolTimeW_; }
-	float GetCoolTimeESkill() { return coolTimeE_; }
-	float GetCoolTimeRSkill() { return coolTimeR_; }
-	float GetCoolTimeDSkill() { return coolTimeD_; }
+	float GetCooltimeQSkill() { return coolTimeQ_; }
+	float GetCooltimeWSkill() { return coolTimeW_; }
+	float GetCooltimeESkill() { return coolTimeE_; }
+	float GetCooltimeRSkill() { return coolTimeR_; }
+	float GetCooltimeDSkill() { return coolTimeD_; }
 
-	void SetCoolTimeQSkill(float _coolTime) { coolTimeQ_ = _coolTime; }
-	void SetCoolTimeWSkill(float _coolTime) { coolTimeW_ = _coolTime; }
-	void SetCoolTimeESkill(float _coolTime) { coolTimeE_ = _coolTime; }
-	void SetCoolTimeRSkill(float _coolTime) { coolTimeR_ = _coolTime; }
-	void SetCoolTimeDSkill(float _coolTime) { coolTimeD_ = _coolTime; }
+	void SetCooltimeQSkill(float _coolTime) { coolTimeQ_ = _coolTime; }
+	void SetCooltimeWSkill(float _coolTime) { coolTimeW_ = _coolTime; }
+	void SetCooltimeESkill(float _coolTime) { coolTimeE_ = _coolTime; }
+	void SetCooltimeRSkill(float _coolTime) { coolTimeR_ = _coolTime; }
+	void SetCooltimeDSkill(float _coolTime) { coolTimeD_ = _coolTime; }
 
 #pragma endregion
 

@@ -60,13 +60,22 @@ protected:
 	virtual void onUpdateCustomState(float _deltaTime) override;
 
 private:
+	void startSkillEBegin();
+	void updateSkillEBegin(float _deltaTime);
 
+	void startSkillEShot();
+	void updateSkillEShot(float _deltaTime);
+
+	void startSkillEEnd();
+	void updateSkillEEnd(float _deltaTime);
 
 private:
+	GameEngineCollision* skillECollision_;
+	GameEngineFSM customState_;
 	bool bLongBow_;
 
+	bool bSkillEPassable_;
 
-	// Character을(를) 통해 상속됨
 
 
 };

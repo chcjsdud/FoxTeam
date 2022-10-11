@@ -11,6 +11,7 @@ PacketCreateProjectile::PacketCreateProjectile()
     , damage_(0.0f)
     , speed_(0.0f)
     , waitTime_(0.0f)
+    , scale_(float4(5.f, 150.f, 50.f))
 {
 
 }
@@ -53,6 +54,7 @@ void PacketCreateProjectile::userSerialize()
     serializer_ << rotationY_;
     serializer_ << waitTime_;
     serializer_ << lifeTime_;
+    serializer_ << scale_;
 }
 
 void PacketCreateProjectile::userDeserialize()
@@ -65,6 +67,7 @@ void PacketCreateProjectile::userDeserialize()
     serializer_ >> rotationY_;
     serializer_ >> waitTime_;
     serializer_ >> lifeTime_;
+    serializer_ >> scale_;
 }
 
 GameEnginePacketBase* PacketCreateProjectile::getUserObject()
@@ -111,12 +114,16 @@ void PacketCreateProjectile::execute(SOCKET _socketSender, GameEngineSocketInter
         {
             arrow->MakeNonTargetArrow(*list[ownerIndex_], damage_, position_, rotationY_, speed_);
             arrow->SetWaitTime(waitTime_);
+            arrow->SetLifeTime(lifeTime_);
+            arrow->SetScale(scale_);
             _network->Send(this);
         }
         else
         {
             arrow->MakeNonTargetArrow(*list[ownerIndex_], 0.0f, position_, rotationY_, speed_);
             arrow->SetWaitTime(waitTime_);
+            arrow->SetLifeTime(lifeTime_);
+            arrow->SetScale(scale_);
         }
     }
 

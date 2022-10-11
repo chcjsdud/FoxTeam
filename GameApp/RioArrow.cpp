@@ -17,6 +17,7 @@ RioArrow::RioArrow()
 	, waitTime_(0.0f)
 	, owner_(nullptr)
 	, lifeTime_(0.5f)
+	, scale_(float4(5.f, 150.f, 50.f))
 {
 
 }
@@ -33,7 +34,7 @@ void RioArrow::Start()
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
 	collision_->Off();
 
-	transform_.SetLocalScaling(float4(5.f, 150.f, 50.f));
+	transform_.SetLocalScaling(scale_);
 
 	state_.CreateState(MakeState(RioArrow, Chase));
 	state_.CreateState(MakeState(RioArrow, Fly));
