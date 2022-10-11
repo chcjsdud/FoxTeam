@@ -24,6 +24,7 @@
 #include "CreationCommandPacket.h"
 #include "LoadingEndPacket.h"
 #include "PacketCreateProjectile.h"
+#include "PacketSoundPlay.h"
 
 #include "LoadingLevel.h"
 
@@ -475,6 +476,7 @@ void LumiaLevel::AddSocketHandle()
 		server->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);
 		server->AddPacketHandler(ePacketID::CharCrowdControlPacket, new CharCrowdControlPacket);
 		server->AddPacketHandler(ePacketID::PacketCreateProjectile, new PacketCreateProjectile);
+		server->AddPacketHandler(ePacketID::PacketSoundPlay, new PacketSoundPlay);
 	}
 
 	if (true == client->IsConnected())
@@ -484,6 +486,7 @@ void LumiaLevel::AddSocketHandle()
 		client->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);
 		client->AddPacketHandler(ePacketID::CharCrowdControlPacket, new CharCrowdControlPacket);
 		client->AddPacketHandler(ePacketID::PacketCreateProjectile, new PacketCreateProjectile);
+		client->AddPacketHandler(ePacketID::PacketSoundPlay, new PacketSoundPlay);
 	}
 }
 

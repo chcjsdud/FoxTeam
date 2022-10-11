@@ -202,6 +202,9 @@
     <ClCompile Include="StartPointSelectPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
+    <ClCompile Include="Hyunwoo.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
+    </ClCompile>
     <ClCompile Include="CharMovementPacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClCompile>
@@ -298,8 +301,8 @@
     <ClCompile Include="Macro.cpp">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClCompile>
-    <ClCompile Include="Hyunwoo.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
+    <ClCompile Include="PacketSoundPlay.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -476,9 +479,6 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio">
       <UniqueIdentifier>{282fe2d7-3fcd-4313-a257-12bb60ee19c6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo">
-      <UniqueIdentifier>{157b2856-c0c8-49a7-8cde-b854e939026f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -686,6 +686,9 @@
     <ClInclude Include="StartPointSelectPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
+    <ClInclude Include="Hyunwoo.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
+    </ClInclude>
     <ClInclude Include="CharMovementPacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
@@ -782,8 +785,8 @@
     <ClInclude Include="PacketCreateProjectile.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Hyunwoo.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
+    <ClInclude Include="PacketSoundPlay.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

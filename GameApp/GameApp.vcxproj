@@ -305,6 +305,10 @@
     <ClCompile Include="Monster_CrowdControlState.cpp" />
     <ClCompile Include="Monster_MainState.cpp" />
     <ClCompile Include="Monster_NormalState.cpp" />
+    <ClCompile Include="PacketSoundPlay.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="PlayerUIController.cpp" />
     <ClCompile Include="MousePointer.cpp">
       <SubType>
@@ -590,6 +594,10 @@
     <ClInclude Include="MonsterInfoManager.h" />
     <ClInclude Include="Monsters.h" />
     <ClInclude Include="MonsterStateInfo.h" />
+    <ClInclude Include="PacketSoundPlay.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="PlayerUIController.h" />
     <ClInclude Include="MousePointer.h">
       <SubType>

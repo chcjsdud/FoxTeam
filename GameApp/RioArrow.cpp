@@ -5,6 +5,7 @@
 #include <GameEngine/GameEngineCollision.h>
 
 #include "Character.h"
+#include "PacketSoundPlay.h"
 
 RioArrow::RioArrow()
 	: renderer_(nullptr)
@@ -15,6 +16,7 @@ RioArrow::RioArrow()
 	, speed_(0.0f)
 	, waitTime_(0.0f)
 	, owner_(nullptr)
+	, lifeTime_(0.5f)
 {
 
 }
@@ -102,6 +104,9 @@ void RioArrow::updateWait(float _deltaTime)
 void RioArrow::startChase()
 {
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_NormalAttack_01.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("Rio_ShortBow_NormalAttack_01.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
 	collision_->On();
 }
 
@@ -133,6 +138,9 @@ void RioArrow::updateChase(float _deltaTime)
 		if (damage_ > 0.0f)
 		{
 			GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Hit_01.wav");
+			PacketSoundPlay packet;
+			packet.SetSound("Rio_ShortBow_Hit_01.wav", transform_.GetWorldPosition());
+			FT::SendPacket(packet);
 			target_->Damage(damage_);
 		}
 
@@ -167,6 +175,9 @@ void RioArrow::updateFly(float _deltaTime)
 			if (opponent != nullptr)
 			{
 				GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill02_Hit.wav");
+				PacketSoundPlay packet;
+				packet.SetSound("Rio_ShortBow_Skill02_Hit.wav", transform_.GetWorldPosition());
+				FT::SendPacket(packet);
 				opponent->Damage(damage_);
 				Release();
 				break;

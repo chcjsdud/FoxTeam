@@ -8,6 +8,7 @@
 #include <GameApp/LumiaLevel.h>
 #include "RioArrow.h"
 #include "PacketCreateProjectile.h"
+#include "PacketSoundPlay.h"
 
 Rio::Rio()
 	: Character()
@@ -228,6 +229,9 @@ void Rio::onStartQSkill()
 	//renderer_->OverrideFBXAnimation("SkillQ", "Bip001 L UpperArm");
 
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_Bow_Skill01_BowChange.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("Rio_Bow_Skill01_BowChange.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
 }
 
 void Rio::onUpdateQSkill(float _deltaTime)
@@ -263,6 +267,9 @@ void Rio::onStartWSkill()
 	else
 	{
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill02_Shot.wav");
+		PacketSoundPlay packet;
+		packet.SetSound("Rio_ShortBow_Skill02_Shot.wav", transform_.GetWorldPosition());
+		FT::SendPacket(packet);
 
 		float4 offset = { 20.f, 120.f, 30.f, 0.f };
 		offset = offset * transform_.GetTransformData().WorldWorld_;

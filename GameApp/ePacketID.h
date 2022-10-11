@@ -29,5 +29,7 @@ enum class ePacketID
 	CharStatPacket,
 	CharCrowdControlPacket,
 	PacketCreateProjectile,
+
+	PacketSoundPlay,
 	MAX
 };
