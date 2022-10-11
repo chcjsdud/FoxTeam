@@ -150,7 +150,7 @@ void LumiaLevel::MonsterCreationCommand()
 		{
 			case MonsterType::WOLF:
 			{
-				//NewMonster = CreateActor<Wolf>();
+				NewMonster = CreateActor<Wolf>();
 				break;
 			}
 			case MonsterType::BEAR:
@@ -675,6 +675,7 @@ void LumiaLevel::LevelStart()
 void LumiaLevel::LevelUpdate(float _DeltaTime)
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
 	// 서버 패킷 처리
 	if (true == GameServer::GetInstance()->IsOpened())
@@ -713,6 +714,14 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 		GetMainCameraActor()->GetTransform()->SetWorldPosition(playerPosition + float4(400.f, 1280.f, -600.f));
 		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 60.f, -35.f, 0.0f });
 	}
+
+	//// 221011 SJH TEST : 몬스터 확인을위해 몬스터 포커싱
+	//if (false == GetMainCameraActor()->IsFreeCameraMode() && 0 != static_cast<int>(MonsterActorList_.size()))
+	//{
+	//	float4 MonsterPosition = MonsterActorList_[0]->GetTransform()->GetWorldPosition();
+	//	GetMainCameraActor()->GetTransform()->SetWorldPosition(MonsterPosition + float4(0.0f, 1280.f, 0.f));
+	//	GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 60.f, -35.f, 0.0f });
+	//}
 
 	// Debug Window Update
 	DebugWindowUpdate();

@@ -87,8 +87,8 @@ void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _
             // 모든정보추가완료시 강제생성명령 실행
             if (TotMonsterCount_ == InfoManager->GetCurMonsterListSize())
             {
-                // 파일저장
-                InfoManager->SaveMonsterInfoFile();
+                // 파일저장(임시주석)
+                //InfoManager->SaveMonsterInfoFile();
 
                 // 강제생성명령 실행
                 LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
