@@ -25,6 +25,7 @@ ItemBase* ItemBase::Copy()
 	CopyItem->SetName(GetName());
 	CopyItem->type_ = type_;
 	CopyItem->renderer_ = renderer_;
+	CopyItem->tier_ = tier_;
 
 	return CopyItem;
 }
