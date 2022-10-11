@@ -676,7 +676,7 @@ void Character::initState()
 	attackState_.CreateState(MakeState(Character, QSkill));
 	attackState_.CreateState(MakeState(Character, WSkill));
 	attackState_.CreateState(MakeState(Character, ESkill));
-
+	attackState_.CreateState(MakeState(Character, RSkill));
 
 	crowdControlState_.CreateState(MakeState(Character, Stun));
 	crowdControlState_.CreateState(MakeState(Character, Knockback));
@@ -847,6 +847,13 @@ void Character::updateNormalState(float _deltaTime)
 		{
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("ESkill", true);
+			return;
+		}
+
+		if (true == GameEngineInput::GetInst().Down("R"))
+		{
+			mainState_.ChangeState("AttackState", true);
+			attackState_.ChangeState("RSkill", true);
 			return;
 		}
 	}

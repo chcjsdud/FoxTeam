@@ -29,6 +29,7 @@ protected:
 	// Character을(를) 통해 상속됨
 	virtual void initRendererAndAnimation() override;
 	void initHyunwooCollision();
+	void initHyunwooCustomState();
 
 
 	virtual void changeAnimationRun() override;
@@ -58,6 +59,12 @@ protected:
 
 	virtual void onUpdateCustomState(float _deltaTime) override;
 
+
+	// customstate
+	void startCustomRSkill();
+	void updateCustomRSkill(float _deltaTime);
+	void endCustomRSkill();
+
 private:
 	bool atkFlag_;
 
@@ -73,4 +80,10 @@ private:
 
 	// 캐릭터의 고유한 상태를 처리하고 싶을 때 사용
 	GameEngineFSM customState_;
+
+
+	bool b_Rhit_;
+	
+	GameEngineCollision* collision_R;
+	float collisionRRate_;
 };

@@ -12,7 +12,8 @@
 #include "Character.h"
 #include "CharCrowdControlPacket.h"
 Hyunwoo::Hyunwoo()
-	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false)
+	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
+	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f)
 {
 
 }
@@ -64,13 +65,14 @@ void Hyunwoo::ReleaseResource()
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_skillR_loop.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_skillR_end.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_weaponskill.fbx");
-
+	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_weaponskill.fbx");
 }
 
 void Hyunwoo::Start()
 {
 	Character::Start();
 	initHyunwooCollision();
+	initHyunwooCustomState();
 	stat_.AttackStartTime = 0.15f;
 }
 
@@ -88,9 +90,7 @@ void Hyunwoo::Update(float _deltaTime)
 
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
 		controlWindow->AddText("MPos : " + std::to_string(position.x) + ", " + std::to_string(position.z));
-
 	}
-
 }
 
 void Hyunwoo::initRendererAndAnimation()
@@ -116,14 +116,6 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("SkillR_end", "hyunwoo_skillR_end.fbx", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
-
-	//	tempRenderer_ = CreateTransformComponent<GameEngineRenderer>(GetTransform());
-	//	tempRenderer_->SetRenderingPipeLine("DebugBox");
-	//	tempRenderer_->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
-	//	tempRenderer_->GetTransform()->SetLocalScaling({ 10.f,10.f,10.f });
-	//
-	//	tempRenderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", float4::GREEN);
-
 }
 
 
@@ -143,6 +135,20 @@ void Hyunwoo::initHyunwooCollision()
 	collision_E->SetCollisionType(CollisionType::OBBBox3D);
 	collision_E->Off();
 
+	collision_R = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	collision_R->GetTransform()->SetLocalPosition({ 0.f,0.f,150.f });
+	collision_R->GetTransform()->SetLocalScaling({200.0f, 10.0f, 100.0f});
+	collision_R->SetCollisionGroup(eCollisionGroup::PlayerAttack);
+	collision_R->SetCollisionType(CollisionType::OBBBox3D);
+	collision_R->Off();
+
+}
+
+void Hyunwoo::initHyunwooCustomState()
+{
+	customState_.CreateState(MakeStateWithEnd(Hyunwoo, CustomRSkill));
+
+	customState_ << "CustomRSkill";
 }
 
 void Hyunwoo::changeAnimationRun()
@@ -233,37 +239,13 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 				if (nullptr != character)
 				{
-					// 여기에 들어왔다는 건 무언가에 대미지를 줬다는 뜻이다.
-					// 대미지 패킷 : Playerinfo 의 chracterstat 구조체에 있는 체력 값을 감산한다.
-					// 이는 역시 프레임마다 LumiaLevel 의 프로세스 패킷에서 실시간으로 감지한다.
-
-					// 충돌체에 감지된 대상에게 실제 대미지를 가하는 코드입니다.
 					character->Damage(300.0f);
-					//pm->GetPlayerList()[character->GetIndex()].stat_->HP -= 300.0f;
-
-
-
-					// 대미지가 차감된 Status 를 패킷으로 넘겨줍니다.
-					//CharStatPacket packet;
-					//packet.SetTargetIndex(character->GetIndex());
-					//packet.SetStat(*(character->GetStat()));
-
-					//if (true == GameServer::GetInstance()->IsOpened())
-					//{
-					//	GameServer::GetInstance()->Send(&packet);
-					//}
-					//else if (true == GameClient::GetInstance()->IsConnected())
-					//{
-					//	GameClient::GetInstance()->Send(&packet);
-					//}
 				}
 			}
 		}
 
 		b_Qhit_ = true;
 	}
-
-
 
 	// 델타타임에 걸맞게 
 	/*피해량:50/100/150/200/250(+공격력의 40%)(+스킬 증폭의 55%)
@@ -286,6 +268,8 @@ void Hyunwoo::onStartWSkill()
 
 void Hyunwoo::onUpdateWSkill(float _deltaTime)
 {
+	// W 스킬은 일시적인 방어력 증강과
+	// 모든 군중 제어기 면역을 일시적으로 부여하는 스테이트입니다.
 }
 
 void Hyunwoo::onStartESkill()
@@ -307,7 +291,6 @@ void Hyunwoo::onStartESkill()
 
 	curAnimationName_ = "SkillE_start";
 	renderer_->ChangeFBXAnimation("SkillE_start", true);
-
 }
 
 void Hyunwoo::onUpdateESkill(float _deltaTime)
@@ -323,11 +306,9 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 		renderer_->ChangeFBXAnimation("SkillE_loop", true);
 	}
 
-
 	float4 dashSpeed = direction_ * 1000.f * _deltaTime;
 	float4 nextMovePosition = GetTransform()->GetWorldPosition() + dashSpeed;
 	timer_Dash_E += _deltaTime;
-
 
 	float temp;
 	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
@@ -366,18 +347,9 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 					if (nullptr != character)
 					{
 						character->Damage(150.0f);
-						//character->WallSlam(0.2f, direction_ * 3000.f, 0.5f);
 						CharCrowdControlPacket ccPacket;
 						ccPacket.SetTargetIndex(character->GetIndex());
 						ccPacket.SetWallSlam(0.2f, direction_ * 3000.f, 1.0f);
-
-						//character->dirHyunwooE_ = direction_;
-						//character->mainState_.ChangeState("CrowdControlState", true);
-						//character->crowdControlState_.ChangeState("HyunwooE", true);
-
-						//CharStatPacket packet;
-						//packet.SetTargetIndex(character->GetIndex());
-						//packet.SetStat(*(character->GetStat()));
 
 						if (true == GameServer::GetInstance()->IsOpened())
 						{
@@ -394,7 +366,6 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 					}
 				}
 			}
-			
 		}
 
 		GetTransform()->SetWorldPosition(nextMovePosition);
@@ -405,10 +376,8 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 		collision_E->Off();
 		b_Ehit_ = false;
 
-
 		destination_ = GetTransform()->GetWorldPosition();
 		destinations_.clear();
-
 
 		changeAnimationWait();
 		mainState_.ChangeState("NormalState", true);
@@ -427,13 +396,13 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 	// 아이템 스탯 계산
 
 	// 공격력 방어력 이속 공격속도
-	
-	
-
 }
 
 void Hyunwoo::onStartRSkill()
 {
+	mainState_.ChangeState("CustomState", true);
+	customState_.ChangeState("CustomRSkill", true);
+
 }
 
 void Hyunwoo::onUpdateRSkill(float _deltaTime)
@@ -462,6 +431,91 @@ void Hyunwoo::onUpdateDeath(float _deltaTime)
 void Hyunwoo::onUpdateCustomState(float _deltaTime)
 {
 	customState_.Update(_deltaTime);
+}
+
+void Hyunwoo::startCustomRSkill()
+{
+	curAnimationName_ = "SkillR_start";
+	renderer_->ChangeFBXAnimation("SkillR_start", true);
+	collision_R->On();
+}
+
+void Hyunwoo::updateCustomRSkill(float _deltaTime)
+{
+	if (true == collision_R->IsUpdate())
+	{
+		GetLevel()->PushDebugRender(collision_R->GetTransform(), CollisionType::OBBBox3D, float4::RED);
+	}
+
+	if (curAnimationName_ == "SkillR_start" && renderer_->IsCurrentAnimationEnd())
+	{
+		curAnimationName_ = "SkillR_loop";
+		renderer_->ChangeFBXAnimation("SkillR_loop", true);
+	}
+
+	// 여기에 차징 대미지 증감 & 충돌체 크기 증감 코드 들어갈 예정
+	if (false == b_Rhit_)
+	{
+		collisionRRate_ += _deltaTime;
+		collision_R->GetTransform()->SetLocalPosition({ 0.f,0.f,150.f + collisionRRate_ * 50.0f });
+		collision_R->GetTransform()->SetLocalScaling({ 350.0f, 10.0f, 100.0f + collisionRRate_ * 100.0f });
+	}
+
+	if (true == GameEngineInput::GetInst().Down("R"))
+	{
+		if (false == b_Rhit_)
+		{
+			// 여기서 피격 충돌 판정이 나옴
+			auto collisionList = collision_R->GetCollisionList(eCollisionGroup::Player);
+
+			for (GameEngineCollision* col : collisionList)
+			{
+				GameEngineActor* actor = col->GetActor();
+				Character* character = nullptr;
+				if (nullptr != actor && actor != this)
+				{
+					character = dynamic_cast<Character*>(actor);
+
+					if (nullptr != character)
+					{
+						character->Damage(500.0f);
+					}
+				}
+			}
+			b_Rhit_ = true;
+
+		}
+
+		if (curAnimationName_ != "SkillR_end")
+		{
+			curAnimationName_ = "SkillR_end";
+			renderer_->ChangeFBXAnimation("SkillR_end", true);
+		}
+	}
+
+	if (curAnimationName_ == "SkillR_end" && true == renderer_->IsCurrentAnimationEnd())
+	{
+		b_Rhit_ = false;
+
+		changeAnimationWait();
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Watch", true);
+	}
+	/*피해량: 80/120/160(+공격력의 75%)(+스킬 증폭의 85%) ~ 480/720/960(+공격력의 225%)(+스킬 증폭의 255%)
+사정거리: 3m ~ 4.2m
+스테미너 소모: 150
+시전 시간: 1.2 ~ 3초
+쿨다운: 65/55/50초*/
+}
+
+void Hyunwoo::endCustomRSkill()
+{
+	b_Rhit_ = false;
+	collisionRRate_ = 0.0f;
+	collision_R->Off();
+	collision_R->GetTransform()->SetLocalScaling({ 350.0f, 10.0f, 100.0f + collisionRRate_ });
+
+
 }
 
 void Hyunwoo::onStartBasicAttacking(Character* _target)
