@@ -114,6 +114,9 @@ private:
 	std::vector<Character*> CharacterActorList_;							// 캐릭터 목록(실질적 데이터는 PlayerInfoManager에서 관리)
 	std::vector<Monsters*> MonsterActorList_;								// 몬스터 목록(실직적 데이터는 MonsterInfoManager에서 관리)
 
+	// Area, Position
+	std::map<std::string, std::vector<float4>> characterSpawnPoints_;
+
 private:
 	LumiaMap* CurMap_;														// 맵
 	ItemBoxManager* ItemBoxManager_;										// 아이템박스 매니저

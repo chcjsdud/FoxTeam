@@ -564,6 +564,21 @@ public:
 	}
 };
 
+// 노드 종류에 상관없이 정보를 가져오기 위한 클래스
+class FbxNodeData
+{
+public:
+	std::string name;
+	float4 translation;
+
+	FbxNodeData()
+		: name("")
+		, translation(float4::ZERO)
+	{};
+	~FbxNodeData()
+	{};
+};
+
 // 설명 :
 class FBXAnimation;
 class GameEngineStructuredBuffer;
@@ -616,6 +631,11 @@ public:
 		return AnimationBuffers[_Index];
 	}
 
+	std::vector<FbxNodeData>& GetAllNodeData()
+	{
+		return AllNodeData;
+	}
+
 	bool ImportBone();
 
 	void UserSave(const std::string& _Path);
@@ -637,6 +657,7 @@ private:
 	std::vector<std::map<std::string, Bone*>> AllFindMap;
 	std::vector<GameEngineStructuredBuffer*> AnimationBuffers;
 	std::vector<std::vector<FbxClusterData>> ClusterData;
+	std::vector<FbxNodeData> AllNodeData;
 
 
 	fbxsdk::FbxNode* RecursiveFindParentLodGroup(fbxsdk::FbxNode* parentNode);

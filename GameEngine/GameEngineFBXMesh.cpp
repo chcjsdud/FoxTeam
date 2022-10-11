@@ -156,6 +156,20 @@ fbxsdk::FbxNode* GameEngineFBXMesh::FindLODGroupNode(fbxsdk::FbxNode* NodeLodGro
 void GameEngineFBXMesh::MeshNodeCheck()
 {
 	int geometryCount = Scene->GetGeometryCount();
+
+	for (int i = 0; i < Scene->GetNodeCount(); i++)
+	{
+		fbxsdk::FbxNode* node = Scene->GetNode(i);
+
+		FbxNodeData nodeData;
+
+		nodeData.name = node->GetName();
+		fbxsdk::FbxDouble3 lTranslation = node->LclTranslation.Get();
+
+		nodeData.translation = float4((float)lTranslation[0], (float)lTranslation[1], (float)lTranslation[2]);
+		AllNodeData.push_back(nodeData);
+	}
+
 	for (int i = 0; i < geometryCount; i++)
 	{
 		// 노드중에서 기하구조를 가진녀석들을 뽑아내는것이고.
