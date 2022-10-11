@@ -86,4 +86,7 @@ private:
 	
 	GameEngineCollision* collision_R;
 	float collisionRRate_;
+
+
+	bool b_Dhit_;
 };

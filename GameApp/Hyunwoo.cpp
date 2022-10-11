@@ -13,7 +13,7 @@
 #include "CharCrowdControlPacket.h"
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
-	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f)
+	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false)
 {
 
 }
@@ -105,7 +105,7 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("Wait", "hyunwoo_wait.fbx", 0);
 	renderer_->CreateFBXAnimation("Death", "hyunwoo_death.fbx", 0, false);
 	renderer_->CreateFBXAnimation("Atk0", "hyunwoo_atk0.fbx", 0, false);
-	renderer_->CreateFBXAnimation("WeaponSkill", "hyunwoo_weaponskill.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillD", "hyunwoo_weaponskill.fbx", 0, false);
 	renderer_->CreateFBXAnimation("Atk1", "hyunwoo_atk1.fbx", 0, false);
 	renderer_->CreateFBXAnimation("SkillQ", "hyunwoo_skillQ.fbx", 0, false);
 	renderer_->CreateFBXAnimation("SkillE_start", "hyunwoo_skillE_start.fbx", 0, false);
@@ -411,10 +411,78 @@ void Hyunwoo::onUpdateRSkill(float _deltaTime)
 
 void Hyunwoo::onStartDSkill()
 {
+
+
+	// 여기서 마우스와 상대의 타겟팅 여부를 찾을 것.
+
+	if (mouse_ == nullptr)
+	{
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Watch", true);
+		return;
+	}
+
+
 }
 
 void Hyunwoo::onUpdateDSkill(float _deltaTime)
 {
+	bool result = false;
+	if (false == b_Dhit_)
+	{
+		GameEngineCollision* rayCol = mouse_->GetRayCollision();
+
+
+		float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
+
+		Character* otherCharacter = getMousePickedCharacter();
+		target_ = otherCharacter;
+
+		if (nullptr != otherCharacter && otherCharacter != this && false == b_Dhit_)
+		{
+			// 공격 처리
+			float4 targetPosition = target_->GetTransform()->GetWorldPosition();
+			float4 playerPosition = transform_.GetWorldPosition();
+			float distance = float4::Calc_Len3D(playerPosition, targetPosition);
+
+			if (distance > stat_.AttackRange)
+			{	// 사거리 너무 멀 때
+				mainState_.ChangeState("NormalState", true);
+				normalState_.ChangeState("Chase", true);
+				return;
+			}
+
+			curAnimationName_ = "SkillD";
+			renderer_->ChangeFBXAnimation("SkillD", true);
+			otherCharacter->Damage(150.0f);
+			// 
+
+			b_Dhit_ = true;
+			normalState_ << "Chase";
+			return;
+		}
+		else
+		{
+			target_ = nullptr;
+			result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
+
+			changeAnimationWait();
+			mainState_.ChangeState("NormalState", true);
+			normalState_.ChangeState("Watch", true);
+
+			return;
+		}
+
+	}
+
+	if ("SkillD" == curAnimationName_ && true == renderer_->IsCurrentAnimationEnd())
+	{
+		b_Dhit_ = false;
+
+		changeAnimationWait();
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Watch", true);
+	}
 }
 
 void Hyunwoo::onStartDeath()
@@ -514,8 +582,6 @@ void Hyunwoo::endCustomRSkill()
 	collisionRRate_ = 0.0f;
 	collision_R->Off();
 	collision_R->GetTransform()->SetLocalScaling({ 350.0f, 10.0f, 100.0f + collisionRRate_ });
-
-
 }
 
 void Hyunwoo::onStartBasicAttacking(Character* _target)

@@ -677,6 +677,7 @@ void Character::initState()
 	attackState_.CreateState(MakeState(Character, WSkill));
 	attackState_.CreateState(MakeState(Character, ESkill));
 	attackState_.CreateState(MakeState(Character, RSkill));
+	attackState_.CreateState(MakeState(Character, DSkill));
 
 	crowdControlState_.CreateState(MakeState(Character, Stun));
 	crowdControlState_.CreateState(MakeState(Character, Knockback));
@@ -854,6 +855,13 @@ void Character::updateNormalState(float _deltaTime)
 		{
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("RSkill", true);
+			return;
+		}
+
+		if (true == GameEngineInput::GetInst().Down("D"))
+		{
+			mainState_.ChangeState("AttackState", true);
+			attackState_.ChangeState("DSkill", true);
 			return;
 		}
 	}
@@ -1075,48 +1083,6 @@ void Character::updateWallSlam(float _deltaTime)
 		Stun(timerStun_);
 	}
 }
-
-//void Character::startHyunwooE()
-//{
-//	timerHyunwooE_ = 0.0f;
-//}
-//
-//void Character::updateHyunwooE(float _deltaTime)
-//{
-//	timerHyunwooE_ += _deltaTime;
-//
-//	float4 tempPos = GetTransform()->GetWorldPosition();
-//
-//	float4 knockBackDir = tempPos - dirHyunwooE_;
-//	knockBackDir.Normalize3D();
-//
-//	float4 knockBackSpeed = knockBackDir * 1000.f * _deltaTime;
-//	float4 nextMovePosition = GetTransform()->GetWorldPosition() + knockBackDir;
-//
-//	float temp;
-//	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
-//	{
-//		// º®²á
-//		timerHyunwooE_ = 0.0f;
-//		dirHyunwooE_ = float4::ZERO;
-//
-//		changeAnimationWait();
-//		mainState_.ChangeState("NormalState", true);
-//		normalState_.ChangeState("Watch", true);
-//	}
-//	else if (0.5f <= timerHyunwooE_)
-//	{
-//		timerHyunwooE_ = 0.0f;
-//		// ³Ë¹éÀÌ ³¡³µ´Ù.
-//		dirHyunwooE_ = float4::ZERO;
-//
-//		changeAnimationWait();
-//		mainState_.ChangeState("NormalState", true);
-//		normalState_.ChangeState("Watch", true);
-//		return;
-//	}
-//
-//}
 
 void Character::startBasicAttack()
 {

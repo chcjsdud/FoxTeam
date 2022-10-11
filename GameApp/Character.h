@@ -142,6 +142,7 @@ private:
 	void checkBuildItems();
 	void checkBuildItemsRecursive(ItemBase* _item);
 
+protected:
 	Character* getMousePickedCharacter();
 
 
