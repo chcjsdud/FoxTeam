@@ -29,6 +29,18 @@ void CreationCommandPacket::userSerialize()
     serializer_ << MonsterInfo_.Index_;
     serializer_ << static_cast<int>(MonsterInfo_.RegionType_);
     serializer_ << static_cast<int>(MonsterInfo_.MonsterType_);
+
+    int sendIsGroup = 0;
+    if (true == MonsterInfo_.IsGroup_)
+    {
+        sendIsGroup = 1;
+        serializer_ << sendIsGroup;
+    }
+    else
+    {
+        serializer_ << sendIsGroup;
+    }
+
     serializer_ << MonsterInfo_.SpawnPosition_;
 }
 
@@ -57,6 +69,17 @@ void CreationCommandPacket::userDeserialize()
     int rcvMonsterType = 0;
     serializer_ >> rcvMonsterType;
     MonsterInfo_.MonsterType_ = static_cast<MonsterType>(rcvMonsterType);
+
+    int rcvIsGroup = 0;
+    serializer_ >> rcvIsGroup;
+    if (1 == rcvIsGroup)
+    {
+        MonsterInfo_.IsGroup_ = true;
+    }
+    else
+    {
+        MonsterInfo_.IsGroup_ = false;
+    }
 
     serializer_ << MonsterInfo_.SpawnPosition_;
 }
@@ -87,9 +110,6 @@ void CreationCommandPacket::execute(SOCKET _sender, GameEngineSocketInterface* _
             // 모든정보추가완료시 강제생성명령 실행
             if (TotMonsterCount_ == InfoManager->GetCurMonsterListSize())
             {
-                // 파일저장(임시주석)
-                //InfoManager->SaveMonsterInfoFile();
-
                 // 강제생성명령 실행
                 LumiaLevel* PlayerLevel = reinterpret_cast<LumiaLevel*>(UserGame::LevelFind("LumiaLevel"));
                 PlayerLevel->GuestCreateCommand();

@@ -5,18 +5,15 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
 
+#include "MonsterInfoManager.h"
+
 #include "LumiaLevel.h"
+#include "LumiaMap.h"
+#include "NavMesh.h"
 
 void Monsters::InitalizeSpawnPosition(const float4& _SpawnPosition)
 {
-	// 액터의 위치 셋팅
-	GetTransform()->SetLocalPosition(_SpawnPosition);
-
-	// 현재이동목적지 = 스폰위치
-	Destination_ = _SpawnPosition;
-
-	// 해당 몬스터 둥지위치 == 최초 스폰위치
-	StateInfo_.NestPosition_ = _SpawnPosition;
+	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
 	// 현재 몬스터가 위치한 맵 지정
 	CurrentMap_ = GetLevelConvert<LumiaLevel>()->GetMap();
@@ -25,6 +22,26 @@ void Monsters::InitalizeSpawnPosition(const float4& _SpawnPosition)
 		GameEngineDebug::MsgBoxError("현재레벨에 생성된 맵이 존재하지않습니다!!!!!");
 		return;
 	}
+
+	// 액터의 위치 셋팅
+	float4 SpawnPos = _SpawnPosition;
+	SpawnPos *= CurrentMap_->GetNavMesh()->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
+	if (true == mm->GetAllMonsterListRef()[Index_].IsGroup_)
+	{
+		if (0 != Index_)
+		{
+			SpawnPos = mm->GetAllMonsterListRef()[Index_ - 1].SpawnPosition_;
+			SpawnPos *= CurrentMap_->GetNavMesh()->GetNaviRenderer()->GetTransform()->GetTransformData().WorldWorld_;
+			SpawnPos += float4(100.f, 0.f, 10.f);
+		}
+	}
+	GetTransform()->SetLocalPosition(SpawnPos);
+
+	// 현재이동목적지 = 스폰위치
+	Destination_ = SpawnPos;
+
+	// 해당 몬스터 둥지위치 == 최초 스폰위치
+	StateInfo_.NestPosition_ = SpawnPos;
 }
 
 void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
@@ -36,7 +53,8 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 		{
 			MainState_ << "NORMAL";
 			NormalState_ << "APPEAR";
-			MainRenderer_->ChangeFBXAnimation("APPEAR");
+			//MainRenderer_->ChangeFBXAnimation("APPEAR");
+			MainRenderer_->ChangeFBXAnimation("IDLE");
 			break;
 		}
 		case MonsterStateType::REGEN:

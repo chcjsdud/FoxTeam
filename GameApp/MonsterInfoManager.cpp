@@ -91,6 +91,18 @@ void MonsterInfoManager::LoadMonsterInfoFile()
 		LoadFile.Read(ReadType);
 		NewMonsterInfo.MonsterType_ = static_cast<MonsterType>(ReadType);
 
+		// 그룹여부
+		int ReadIsGroup = 0;
+		LoadFile.Read(ReadIsGroup);
+		if (1 == ReadIsGroup)
+		{
+			NewMonsterInfo.IsGroup_ = true;
+		}
+		else
+		{
+			NewMonsterInfo.IsGroup_ = false;
+		}
+
 		// 스폰위치
 		LoadFile.Read(NewMonsterInfo.SpawnPosition_);
 
@@ -98,35 +110,6 @@ void MonsterInfoManager::LoadMonsterInfoFile()
 	}
 
 	LoadFile.Close();
-}
-
-void MonsterInfoManager::SaveMonsterInfoFile()
-{
-	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
-
-	// 파일로드 시작 및 정보셋팅
-	GameEngineDirectory SpawnMonsterInfoFilePath;
-	SpawnMonsterInfoFilePath.MoveParent("FoxTeam");
-	SpawnMonsterInfoFilePath.MoveChild("Resources");
-	SpawnMonsterInfoFilePath.MoveChild("SaveFiles");
-	std::string FullPath = SpawnMonsterInfoFilePath.PathToPlusFileName("SpawnMonsterList.save");
-
-	// 해당 경로의 파일 쓰기모드로 Open
-	GameEngineFile SaveFile(FullPath, "wb");
-
-	// 몬스터 총갯수
-	SaveFile.Write(mm->GetCurMonsterListSize());
-	for (int MonsterNum = 0; MonsterNum < mm->GetCurMonsterListSize(); ++MonsterNum)
-	{
-		MonsterInfo CurMonsterInfo = mm->GetAllMonsterListValue()[MonsterNum];
-
-		SaveFile.Write(CurMonsterInfo.Index_);
-		SaveFile.Write(static_cast<int>(CurMonsterInfo.RegionType_));
-		SaveFile.Write(static_cast<int>(CurMonsterInfo.MonsterType_));
-		SaveFile.Write(CurMonsterInfo.SpawnPosition_);
-	}
-
-	SaveFile.Close();
 }
 
 void MonsterInfoManager::LoadMonsterInfoFile(const std::string& _FullPath)
@@ -155,6 +138,18 @@ void MonsterInfoManager::LoadMonsterInfoFile(const std::string& _FullPath)
 		int ReadType = 0;
 		LoadFile.Read(ReadType);
 		NewMonsterInfo.MonsterType_ = static_cast<MonsterType>(ReadType);
+
+		// 그룹생성Flag
+		int IsGroup = 0;
+		LoadFile.Read(IsGroup);
+		if (1 == IsGroup)
+		{
+			NewMonsterInfo.IsGroup_ = true;
+		}
+		else
+		{
+			NewMonsterInfo.IsGroup_ = false;
+		}
 
 		// 스폰위치
 		LoadFile.Read(NewMonsterInfo.SpawnPosition_);
@@ -505,8 +500,9 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 					if (true == IsGroup)
 					{
 						// 그룹생성에의한 스폰위치 지정
-						float4 GroupSpawnPos = float4(10.0f, 0.0f, 10.0f);
+						float4 GroupSpawnPos = float4(10.f, 0.0f, 10.f);
 						NewMonsterInfo.SpawnPosition_ = RandomSpawnPos + GroupSpawnPos;
+						NewMonsterInfo.IsGroup_ = true;
 
 						// Flag & Position 초기화
 						RandomSpawnPos = float4::ZERO;
@@ -529,6 +525,7 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 
 						// Group Creation Flag On & Spawn Position Setting
 						NewMonsterInfo.SpawnPosition_ = RandomSpawnPos;
+						NewMonsterInfo.IsGroup_ = false;
 						IsGroup = true;
 					}
 				}
@@ -547,6 +544,7 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 
 					// Spawn Position Setting
 					NewMonsterInfo.SpawnPosition_ = RandomSpawnPos;
+					NewMonsterInfo.IsGroup_ = false;
 					RandomSpawnPos = float4::ZERO;
 				}
 
@@ -579,6 +577,18 @@ void MonsterInfoManager::SaveMonsterInfoFile(const std::string& _FullPath)
 		SaveFile.Write(CurMonsterInfo.Index_);
 		SaveFile.Write(static_cast<int>(CurMonsterInfo.RegionType_));
 		SaveFile.Write(static_cast<int>(CurMonsterInfo.MonsterType_));
+
+		int IsGroup = 0;
+		if (true == CurMonsterInfo.IsGroup_)
+		{
+			IsGroup = 1;
+			SaveFile.Write(IsGroup);
+		}
+		else
+		{
+			SaveFile.Write(IsGroup);
+		}
+
 		SaveFile.Write(CurMonsterInfo.SpawnPosition_);
 	}
 

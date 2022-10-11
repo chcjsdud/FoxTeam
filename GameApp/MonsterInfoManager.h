@@ -54,7 +54,6 @@ public: //
 
 public: // 외부호출
 	void LoadMonsterInfoFile();																// 클라전용
-	void SaveMonsterInfoFile();																// 클라전용
 
 protected:
 

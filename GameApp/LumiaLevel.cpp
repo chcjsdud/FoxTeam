@@ -722,7 +722,7 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 	//if (false == GetMainCameraActor()->IsFreeCameraMode() && 0 != static_cast<int>(MonsterActorList_.size()))
 	//{
 	//	float4 MonsterPosition = MonsterActorList_[0]->GetTransform()->GetWorldPosition();
-	//	GetMainCameraActor()->GetTransform()->SetWorldPosition(MonsterPosition + float4(0.0f, 1280.f, 0.f));
+	//	GetMainCameraActor()->GetTransform()->SetWorldPosition(MonsterPosition + float4(400.f, 1280.f, -600.f));
 	//	GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 60.f, -35.f, 0.0f });
 	//}
 
