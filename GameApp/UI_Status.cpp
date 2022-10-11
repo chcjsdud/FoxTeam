@@ -62,6 +62,12 @@ void UI_Status::Start()
 		DefenseValue_Renderer->GetTransform()->SetLocalPosition(AttackValue_Pos + Value_XPivot);
 	}
 
+	{
+		AttackSpeedValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		AttackSpeedValue_Renderer->TextSetting("HMKMRHD", "a", 15);
+		AttackSpeedValue_Renderer->GetTransform()->SetLocalPosition(AttackValue_Pos + Value_YPivot);
+	}
+
 
 }
 
@@ -80,7 +86,7 @@ void UI_Status::Update(float _Time)
 			SubStatusRenderer->Off();
 			AttackValue_Renderer->Off();
 			DefenseValue_Renderer->Off();
-			//AttackSpeedValue_Renderer->Off();
+			AttackSpeedValue_Renderer->Off();
 			//MoveSpeedValue_Renderer->Off();
 			//CriticalValue_Renderer->Off();
 		}
@@ -90,7 +96,7 @@ void UI_Status::Update(float _Time)
 			SubStatusRenderer->On();
 			AttackValue_Renderer->On();
 			DefenseValue_Renderer->On();
-			//AttackSpeedValue_Renderer->On();
+			AttackSpeedValue_Renderer->On();
 			//MoveSpeedValue_Renderer->On();
 			//CriticalValue_Renderer->On();
 		}
@@ -111,6 +117,10 @@ void UI_Status::Update(float _Time)
 
 void UI_Status::SetStatus(CharacterStat* _Mystat)
 {
-	AttackValue_Renderer->TextSetting("HMKMRHD", to_string((int)(_Mystat->AttackPower)), 12);
-	DefenseValue_Renderer->TextSetting("HMKMRHD", to_string((int)(_Mystat->Defence)), 12);
+	UIStat = _Mystat;
+
+
+	AttackValue_Renderer->TextSetting("HMKMRHD", to_string((int)(UIStat->AttackPower)), 12);
+	DefenseValue_Renderer->TextSetting("HMKMRHD", to_string((int)(UIStat->Defence)), 12);
+	AttackSpeedValue_Renderer->TextSetting("HMKMRHD", to_string(UIStat->AttackSpeed), 12);
 }

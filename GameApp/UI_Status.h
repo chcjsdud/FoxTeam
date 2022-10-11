@@ -36,6 +36,7 @@ private:
 
 	//이현
 private:
+	CharacterStat* UIStat;
 
 #pragma region 스테이터스 값 출력용 렌더러+위치
 
