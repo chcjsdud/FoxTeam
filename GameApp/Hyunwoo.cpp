@@ -12,7 +12,7 @@
 #include "Character.h"
 #include "CharCrowdControlPacket.h"
 Hyunwoo::Hyunwoo()
-	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr)
+	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false)
 {
 
 }
@@ -44,6 +44,7 @@ void Hyunwoo::LoadResource()
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillR_start.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillR_loop.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_skillR_end.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("hyunwoo_weaponskill.fbx"));
 }
 
 void Hyunwoo::ReleaseResource()
@@ -62,6 +63,7 @@ void Hyunwoo::ReleaseResource()
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_skillR_start.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_skillR_loop.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_skillR_end.fbx");
+	GameEngineFBXAnimationManager::GetInst().Delete("hyunwoo_weaponskill.fbx");
 
 }
 
@@ -103,14 +105,15 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("Wait", "hyunwoo_wait.fbx", 0);
 	renderer_->CreateFBXAnimation("Death", "hyunwoo_death.fbx", 0, false);
 	renderer_->CreateFBXAnimation("Atk0", "hyunwoo_atk0.fbx", 0, false);
-	//renderer_->CreateFBXAnimation("Atk1", "hyunwoo_atk1.fbx", 0, false);
+	renderer_->CreateFBXAnimation("WeaponSkill", "hyunwoo_weaponskill.fbx", 0, false);
+	renderer_->CreateFBXAnimation("Atk1", "hyunwoo_atk1.fbx", 0, false);
 	renderer_->CreateFBXAnimation("SkillQ", "hyunwoo_skillQ.fbx", 0, false);
 	renderer_->CreateFBXAnimation("SkillE_start", "hyunwoo_skillE_start.fbx", 0, false);
 	renderer_->CreateFBXAnimation("SkillE_loop", "hyunwoo_skillE_loop.fbx", 0);
 	renderer_->CreateFBXAnimation("SkillE_end", "hyunwoo_skillE_end.fbx", 0, false);
-	//renderer_->CreateFBXAnimation("SkillR_start", "hyunwoo_skillR_start.fbx", 0, false);
-	//renderer_->CreateFBXAnimation("SkillR_loop", "hyunwoo_skillR_loop.fbx", 0);
-	//renderer_->CreateFBXAnimation("SkillR_end", "hyunwoo_skillR_end.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_start", "hyunwoo_skillR_start.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_loop", "hyunwoo_skillR_loop.fbx", 0);
+	renderer_->CreateFBXAnimation("SkillR_end", "hyunwoo_skillR_end.fbx", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
 
@@ -156,8 +159,20 @@ void Hyunwoo::changeAnimationWait()
 
 void Hyunwoo::changeAnimationBasicAttack()
 {
-	curAnimationName_ = "Atk0";
-	renderer_->ChangeFBXAnimation("Atk0", true);
+	if (false == atkFlag_)
+	{
+		curAnimationName_ = "Atk0";
+		renderer_->ChangeFBXAnimation("Atk0", true);
+		atkFlag_ = true;
+		return;
+	}
+	else
+	{
+		curAnimationName_ = "Atk1";
+		renderer_->ChangeFBXAnimation("Atk1", true);
+		atkFlag_ = false;
+		return;
+	}
 }
 
 void Hyunwoo::onStartQSkill()
@@ -354,7 +369,7 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 						//character->WallSlam(0.2f, direction_ * 3000.f, 0.5f);
 						CharCrowdControlPacket ccPacket;
 						ccPacket.SetTargetIndex(character->GetIndex());
-						ccPacket.SetWallSlam(0.2f, direction_ * 3000.f, 0.5f);
+						ccPacket.SetWallSlam(0.2f, direction_ * 3000.f, 1.0f);
 
 						//character->dirHyunwooE_ = direction_;
 						//character->mainState_.ChangeState("CrowdControlState", true);
@@ -408,8 +423,12 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 		기절 지속 시간: 1.5초
 		쿨다운: 18/17/16/15/14초  */
 
+	// 아이템 조합
+	// 아이템 스탯 계산
 
-
+	// 공격력 방어력 이속 공격속도
+	
+	
 
 }
 

@@ -629,6 +629,7 @@ void Character::WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _st
 	crowdControlState_ << "WallSlam";
 	timerKnockback_ = _knockbackTime;
 	knockbackSpeed_ = _knockbackSpeed;
+	timerStun_ = _stunTime;
 }
 
 void Character::initInput()

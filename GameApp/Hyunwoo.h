@@ -59,6 +59,8 @@ protected:
 	virtual void onUpdateCustomState(float _deltaTime) override;
 
 private:
+	bool atkFlag_;
+
 	float timer_collision_Q;
 	float timer_end_Q;
 	bool b_Qhit_;
