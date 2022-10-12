@@ -59,6 +59,15 @@ void GameEngineSoundPlayer::SetPaused(bool _bPause)
 
 void GameEngineSoundPlayer::SetVolume(float _volume)
 {
+	if (_volume < 0.f)
+	{
+		_volume = 0.0f;
+	}
+	else if (_volume > 1.0f)
+	{
+		_volume = 1.0f;
+	}
+
 	volume_ = _volume;
 	if (channel_ != nullptr)
 	{
