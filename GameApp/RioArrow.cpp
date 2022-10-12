@@ -18,6 +18,7 @@ RioArrow::RioArrow()
 	, owner_(nullptr)
 	, lifeTime_(0.5f)
 	, scale_(float4(5.f, 150.f, 50.f))
+	, bKnockback_(false)
 {
 
 }
@@ -153,6 +154,14 @@ void RioArrow::startFly()
 {
 	transform_.SetLocalRotationDegree({ 0.0f, rotationY_, 0.0f });
 	collision_->On();
+
+	if (bKnockback_)
+	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_Skill04_Projectile.wav");
+		PacketSoundPlay packet;
+		packet.SetSound("Rio_LongBow_Skill04_Projectile.wav", transform_.GetWorldPosition());
+		FT::SendPacket(packet);
+	}
 }
 
 void RioArrow::updateFly(float _deltaTime)
@@ -175,11 +184,24 @@ void RioArrow::updateFly(float _deltaTime)
 
 			if (opponent != nullptr)
 			{
-				GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill02_Hit.wav");
-				PacketSoundPlay packet;
-				packet.SetSound("Rio_ShortBow_Skill02_Hit.wav", transform_.GetWorldPosition());
-				FT::SendPacket(packet);
 				opponent->Damage(damage_);
+
+				if (bKnockback_)
+				{
+					GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_Skill04_Hit.wav");
+					PacketSoundPlay packet;
+					packet.SetSound("Rio_LongBow_Skill04_Hit.wav", transform_.GetWorldPosition());
+					FT::SendPacket(packet);
+					opponent->WallSlam(0.25f, transform_.GetWorldForwardVector() * 1000.f, 0.0f);
+				}
+				else
+				{
+					GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill02_Hit.wav");
+					PacketSoundPlay packet;
+					packet.SetSound("Rio_ShortBow_Skill02_Hit.wav", transform_.GetWorldPosition());
+					FT::SendPacket(packet);
+				}
+
 				Release();
 				break;
 			}

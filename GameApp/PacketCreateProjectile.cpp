@@ -12,6 +12,9 @@ PacketCreateProjectile::PacketCreateProjectile()
     , speed_(0.0f)
     , waitTime_(0.0f)
     , scale_(float4(5.f, 150.f, 50.f))
+    , bKnockback_(false)
+    , rotationY_(0.0f)
+    , lifeTime_(0.0f)
 {
 
 }
@@ -55,6 +58,7 @@ void PacketCreateProjectile::userSerialize()
     serializer_ << waitTime_;
     serializer_ << lifeTime_;
     serializer_ << scale_;
+    serializer_ << bKnockback_;
 }
 
 void PacketCreateProjectile::userDeserialize()
@@ -68,6 +72,7 @@ void PacketCreateProjectile::userDeserialize()
     serializer_ >> waitTime_;
     serializer_ >> lifeTime_;
     serializer_ >> scale_;
+    serializer_ >> bKnockback_;
 }
 
 GameEnginePacketBase* PacketCreateProjectile::getUserObject()
@@ -108,7 +113,7 @@ void PacketCreateProjectile::execute(SOCKET _socketSender, GameEngineSocketInter
             arrow->SetWaitTime(waitTime_);
         }
     }
-    else
+    else // 여긴 논 타게팅
     {
         if (_bServer)
         {
@@ -116,6 +121,7 @@ void PacketCreateProjectile::execute(SOCKET _socketSender, GameEngineSocketInter
             arrow->SetWaitTime(waitTime_);
             arrow->SetLifeTime(lifeTime_);
             arrow->SetScale(scale_);
+            arrow->SetKnockback(static_cast<bool>(bKnockback_));
             _network->Send(this);
         }
         else
@@ -124,6 +130,7 @@ void PacketCreateProjectile::execute(SOCKET _socketSender, GameEngineSocketInter
             arrow->SetWaitTime(waitTime_);
             arrow->SetLifeTime(lifeTime_);
             arrow->SetScale(scale_);
+            arrow->SetKnockback(static_cast<bool>(bKnockback_));
         }
     }
 

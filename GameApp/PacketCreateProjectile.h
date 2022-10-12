@@ -22,6 +22,7 @@ public:
 	void SetWaitTime(float _waitTime) { waitTime_ = _waitTime; }
 	void SetLifeTime(float _lifeTime) { lifeTime_ = _lifeTime; }
 	void SetScale(const float4& _scale) { scale_ = _scale; }
+	void SetKnockback(bool _knockback) { bKnockback_ = static_cast<int>(_knockback); }
 
 protected:
 	virtual void initPacketID() override;
@@ -40,5 +41,6 @@ private:
 	float lifeTime_;
 	int ownerIndex_;
 	int targetIndex_;
+	int bKnockback_;
 };
 

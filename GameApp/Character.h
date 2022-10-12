@@ -122,13 +122,14 @@ protected:
 	void inputProcess(float _deltaTime);
 	void moveProcess(float _deltaTime);
 
+	void setRotationTo(const float4& _destination, const float4 _startPosition);
+
 private:
 	void initInput();
 	void initState();
 
 private:
 	void moveTick(float _deltaTime, const float4& _startPosition);
-	void setRotationTo(const float4& _destination, const float4 _startPosition);
 
 	void checkCurrentNavFace();
 

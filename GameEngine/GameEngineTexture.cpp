@@ -224,11 +224,6 @@ void GameEngineTexture::PushCutIndex(const float4& _Size, const float4& _Pos)
 
 void GameEngineTexture::Cut(int _x, int _y) 
 {
-	// UV값은 무조건
-	// 1.0f 라고 봐야죠?
-	// 
-
-	// uv값으로서의 자름이 됩니다.
 	for (int y = 0; y < _y; y++)
 	{
 		float4 CurStart;

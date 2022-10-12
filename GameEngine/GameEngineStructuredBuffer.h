@@ -44,7 +44,7 @@ private:
 
 	std::vector<D3D11_SHADER_VARIABLE_DESC> VarInfos_;
 
-	ID3D11ShaderResourceView* SRV; // 그냥 쉐이더에 세팅할때죠?
+	ID3D11ShaderResourceView* SRV;
 
 	UINT DataSize;
 	UINT DataCount;

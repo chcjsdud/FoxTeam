@@ -16,6 +16,7 @@ Rio::Rio()
 	, bLongBow_(false)
 	, skillECollision_(nullptr)
 	, bSkillEPassable_(false)
+	, bShortRSkillExtra_(false)
 {
 
 }
@@ -89,10 +90,12 @@ void Rio::Start()
 	Character::Start();
 
 	skillECollision_ = CreateTransformComponent<GameEngineCollision>();
-	skillECollision_->SetCollisionType(CollisionType::Sphere3D);
+	skillECollision_->SetCollisionType(CollisionType::OBBBox3D);
 	skillECollision_->GetTransform()->SetLocalScaling(500.f);
 
-	
+	customState_.CreateState(MakeState(Rio, SkillEBegin));
+	customState_.CreateState(MakeState(Rio, SkillEShot));
+	customState_.CreateState(MakeState(Rio, SkillEEnd));
 }
 
 void Rio::Update(float _deltaTime)
@@ -125,8 +128,14 @@ void Rio::initRendererAndAnimation()
 
 	renderer_->CreateFBXAnimation("SkillE_Short", "Rio_Short_Skill_E.UserAnimation", 0, false);
 
-	//renderer_->CreateFBXAnimation("SkillW_Short", "Rio_Short_Skill_W.UserAnimation", 0, false);
-	//renderer_->CreateFBXAnimation("SkillW_Long", "Rio_Short_Skill_W.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Short_Start", "Rio_Short_Skill_R_Start.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Short_End", "Rio_Short_Skill_R_End.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Long", "Rio_Long_Skill_R.UserAnimation", 0, false);
+
+	renderer_->CreateFBXAnimation("SkillD_Short", "Rio_Short_Skill_D.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillD_Long", "Rio_Long_Skill_D.UserAnimation", 0, false);
+
+	renderer_->CreateFBXAnimation("Death", "Rio_Death.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait_Short");
 }
@@ -159,7 +168,6 @@ void Rio::changeAnimationBasicAttack()
 {
 	if (bLongBow_)
 	{
-		//GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_NormalAttack_01.wav");
 		ChangeAnimation("BasicAttack_Long", true);
 	}
 	else
@@ -243,6 +251,7 @@ void Rio::onStartQSkill()
 	FT::SendPacket(packet);
 
 	SetCooltimeQSkill(8.0f * stat_.CooldownReduction);
+	bShortRSkillExtra_ = false;
 }
 
 void Rio::onUpdateQSkill(float _deltaTime)
@@ -262,6 +271,10 @@ void Rio::onUpdateQSkill(float _deltaTime)
 
 void Rio::onStartWSkill()
 {
+	destination_ = transform_.GetWorldPosition();
+	destinations_.clear();
+	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
+	setRotationTo(mousePosition, transform_.GetWorldPosition());
 	if (bLongBow_)
 	{
 		ChangeAnimation("SkillW_Long", true);
@@ -352,16 +365,175 @@ void Rio::onStartESkill()
 
 void Rio::onUpdateESkill(float _deltaTime)
 {
-	mainState_ << "NormalState";
+	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
+	setRotationTo(mousePosition, transform_.GetWorldPosition());
+	mainState_ << "CustomState";
+	customState_ << "SkillEBegin";
 }
 
 void Rio::onStartRSkill()
 {
+	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
+	setRotationTo(mousePosition, transform_.GetWorldPosition());
+
+	if (bLongBow_)
+	{
+		ChangeAnimation("SkillR_Long");
+
+		{
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_SKill04_01.wav");
+			PacketSoundPlay packet;
+			packet.SetSound("Rio_LongBow_SKill04_01.wav", transform_.GetWorldPosition());
+			FT::SendPacket(packet);
+		}
+
+		float4 offset = { 20.f, 120.f, 30.f, 0.f };
+		offset = offset * transform_.GetTransformData().WorldWorld_;
+		float4 startPosition = transform_.GetWorldPosition();
+		startPosition += offset;
+
+		PacketCreateProjectile packetArrow;
+		packetArrow.MakeNonTargetArrow(*this, stat_.AttackPower * 6.0f, startPosition, transform_.GetWorldRotation().y, 700.f);
+		packetArrow.SetLifeTime(1.0f);
+		packetArrow.SetWaitTime(1.4f);
+		packetArrow.SetScale({ 100.f, 150.0f, 150.f });
+		packetArrow.SetKnockback(true);
+		FT::SendPacket(packetArrow);
+
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			RioArrow* arrow = level_->CreateActor<RioArrow>();
+			arrow->MakeNonTargetArrow(*this, stat_.AttackPower * 6.0f, startPosition, transform_.GetWorldRotation().y, 700.f);
+			arrow->SetLifeTime(1.0f);
+			arrow->SetWaitTime(1.4f);
+			arrow->SetScale({ 100.f, 150.0f, 150.f });
+			arrow->SetKnockback(true);
+		}
+	}
+	else
+	{
+		if (bShortRSkillExtra_)
+		{
+			ChangeAnimation("SkillR_Short_End");
+
+			float4 offset = { 20.f, 120.f, 30.f, 0.f };
+			offset = offset * transform_.GetTransformData().WorldWorld_;
+			float4 startPosition = transform_.GetWorldPosition();
+			startPosition += offset;
+
+			PacketCreateProjectile packetArrow;
+			packetArrow.MakeNonTargetArrow(*this, stat_.AttackPower * 3.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
+			packetArrow.SetLifeTime(0.5f);
+			packetArrow.SetWaitTime(0.3f);
+			packetArrow.SetScale({ 80.f, 150.0f, 100.f });
+			packetArrow.SetKnockback(true);
+			FT::SendPacket(packetArrow);
+
+			if (GameServer::GetInstance()->IsOpened())
+			{
+				RioArrow* arrow = level_->CreateActor<RioArrow>();
+				arrow->MakeNonTargetArrow(*this, stat_.AttackPower * 3.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
+				arrow->SetLifeTime(0.5f);
+				arrow->SetWaitTime(0.3f);
+				arrow->SetScale({ 80.f, 150.0f, 100.f });
+				arrow->SetKnockback(true);
+			}
+		}
+		else
+		{
+
+			ChangeAnimation("SkillR_Short_Start");
+
+			float4 offset = { 20.f, 120.f, 30.f, 0.f };
+			offset = offset * transform_.GetTransformData().WorldWorld_;
+			float4 startPosition = transform_.GetWorldPosition();
+			startPosition += offset;
+
+			for (int i = 0; i < 3; i++)
+			{
+				PacketCreateProjectile packetArrow;
+				packetArrow.MakeNonTargetArrow(*this, stat_.AttackPower, startPosition, transform_.GetWorldRotation().y, 1200.f);
+				packetArrow.SetLifeTime(0.5f);
+				packetArrow.SetWaitTime(0.4f + 0.1f * i);
+				packetArrow.SetScale({ 70.f, 150.0f, 100.f });
+				FT::SendPacket(packetArrow);
+
+				if (GameServer::GetInstance()->IsOpened())
+				{
+					RioArrow* arrow = level_->CreateActor<RioArrow>();
+					arrow->MakeNonTargetArrow(*this, stat_.AttackPower, startPosition, transform_.GetWorldRotation().y, 1200.f);
+					arrow->SetLifeTime(0.5f);
+					arrow->SetWaitTime(0.4f + 0.1f * i);
+					arrow->SetScale({ 70.f, 150.0f, 100.f });
+				}
+			}
+		}
+	}
+
+	skillRTime_ = -0.4f;
 }
 
 void Rio::onUpdateRSkill(float _deltaTime)
 {
-	mainState_ << "NormalState";
+	skillRTime_ += _deltaTime;
+	if (renderer_->IsCurrentAnimationEnd())
+	{
+		changeAnimationWait();
+		mainState_ << "NormalState";
+	}
+
+	if (attackState_.GetCurrentState()->Time_ < 0.0f)
+	{
+		return;
+	}
+
+	if (bLongBow_)
+	{
+		if (attackState_.GetCurrentState()->Time_ > 0.5f)
+		{
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_Skill04_02.wav");
+			PacketSoundPlay packet;
+			packet.SetSound("Rio_LongBow_Skill04_02.wav", transform_.GetWorldPosition());
+			FT::SendPacket(packet);
+
+			attackState_.GetCurrentState()->Time_ = -5.f;
+		}
+
+	}
+	else
+	{
+		if (bShortRSkillExtra_)
+		{
+			if (attackState_.GetCurrentState()->Time_ > 0.3f)
+			{
+				GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill04_02.wav");
+				PacketSoundPlay packet;
+				packet.SetSound("Rio_ShortBow_Skill04_02.wav", transform_.GetWorldPosition());
+				FT::SendPacket(packet);
+				attackState_.GetCurrentState()->Time_ = -5.f;
+				bShortRSkillExtra_ = false;
+			}
+		}
+		else
+		{
+			if (skillRTime_ > 0.12f)
+			{
+				GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill04_02.wav");
+				PacketSoundPlay packet;
+				packet.SetSound("Rio_ShortBow_Skill04_02.wav", transform_.GetWorldPosition());
+				FT::SendPacket(packet);
+				skillRTime_ = 0.0f;
+			}
+
+			if (attackState_.GetCurrentState()->Time_ > 0.8f)
+			{
+				attackState_.GetCurrentState()->Time_ = -5.f;
+				bShortRSkillExtra_ = true;
+			}
+		}
+	}
+
+
 }
 
 void Rio::onStartDSkill()
@@ -370,10 +542,12 @@ void Rio::onStartDSkill()
 
 void Rio::onUpdateDSkill(float _deltaTime)
 {
+	mainState_ << "NormalState";
 }
 
 void Rio::onStartDeath()
 {
+	ChangeAnimation("Death", true);
 }
 
 void Rio::onUpdateDeath(float _deltaTime)
@@ -387,25 +561,135 @@ void Rio::onUpdateCustomState(float _deltaTime)
 
 void Rio::startSkillEBegin()
 {
+	float height = 0.0f;
+	startPosition_ = transform_.GetWorldPosition();
+	landingPosition_ = transform_.GetWorldPosition();
+	landingPosition_ += transform_.GetWorldForwardVector() * 500.f;
+
+	float4 landingPosition = landingPosition_;
+	landingPosition.y += FT::Map::MAX_HEIGHT;
+
+	bSkillEPassable_ = currentMap_->GetNavMesh()->CheckIntersects(landingPosition, float4::DOWN, height);
+
+	ChangeAnimation("SkillE_Short");
+	skillETime_ = 0.0f;
 }
 
 void Rio::updateSkillEBegin(float _deltaTime)
 {
+	skillETime_ += _deltaTime;
+	if (customState_.GetCurrentState()->Time_ > 0.2f)
+	{
+		customState_ << "SkillEShot";
+	}
+
+	if (bSkillEPassable_)
+	{
+		transform_.SetWorldPosition(float4::Lerp(startPosition_, landingPosition_, skillETime_ / 0.5f));
+	}
 }
 
 void Rio::startSkillEShot()
 {
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_Bow_Skill03_Start.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("Rio_Bow_Skill03_Start.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
+
+	auto list = skillECollision_->GetCollisionList(eCollisionGroup::Player);
+
+
+
+	float doubleStrikeDelay = (stat_.AttackEndTime - stat_.AttackStartTime) / stat_.AttackSpeed / 2.0f;
+
+	//float4 offset = { 20.f, 120.f, 30.f, 0.f };
+	//offset = offset * transform_.GetTransformData().WorldWorld_;
+	float4 startPosition = transform_.GetWorldPosition();
+	startPosition.y += 300.f;
+	//startPosition += offset;
+
+	float arrowSpeed = 1500.f;
+
+	for (GameEngineCollision* col : list)
+	{
+		Character* c = dynamic_cast<Character*>(col->GetActor());
+		if (nullptr != c)
+		{
+			if (c == this)
+			{
+				continue;
+			}
+			{
+				PacketCreateProjectile packetArrow;
+				packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+				FT::SendPacket(packetArrow);
+			}
+			{
+				PacketCreateProjectile packetArrow;
+				packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+				packetArrow.SetWaitTime(doubleStrikeDelay);
+				FT::SendPacket(packetArrow);
+			}
+
+			if (GameServer::GetInstance()->IsOpened())
+			{
+				RioArrow* arrow = level_->CreateActor<RioArrow>();
+				arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+
+				arrow = level_->CreateActor<RioArrow>();
+				arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+				arrow->SetWaitTime(doubleStrikeDelay);
+			}
+		}
+
+	}
 }
 
 void Rio::updateSkillEShot(float _deltaTime)
 {
+	if (customState_.GetCurrentState()->Time_ > 0.2f)
+	{
+		customState_ << "SkillEEnd";
+	}
+
+	skillETime_ += _deltaTime;
+	if (bSkillEPassable_)
+	{
+
+		if (bSkillEPassable_)
+		{
+			transform_.SetWorldPosition(float4::Lerp(startPosition_, landingPosition_, skillETime_ / 0.5f));
+		}
+	}
 }
 
 void Rio::startSkillEEnd()
 {
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_Bow_Skill03_End.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("Rio_Bow_Skill03_End.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
 }
 
 void Rio::updateSkillEEnd(float _deltaTime)
 {
+	if (renderer_->IsCurrentAnimationEnd() || skillETime_ > 0.6f)
+	{
+		destination_ = transform_.GetWorldPosition();
+		destinations_.clear();
+		changeAnimationWait();
+		mainState_ << "NormalState";
+		return;
+	}
+
+
+	skillETime_ += _deltaTime;
+	if (bSkillEPassable_)
+	{
+		if (bSkillEPassable_)
+		{
+			transform_.SetWorldPosition(float4::Lerp(startPosition_, landingPosition_, skillETime_ / 0.5f));
+		}
+	}
 }
 

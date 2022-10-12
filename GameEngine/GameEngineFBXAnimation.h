@@ -218,26 +218,8 @@ protected:
 private:
 	bool CheckAnimation();
 
-	// 말그대로 애니메이션이 n개다.
-	// 1개밖에 안들어 있었다.
-	std::vector<FbxExAniData> AnimationDatas;
-	// 12개가 들어가 있겠죠?
 
-
-	//  매쉬 12 7      
+	std::vector<FbxExAniData> AnimationDatas;  
 	std::vector<std::vector<FbxExAniData>> MatrixData;
-	// 7개가 나왔는데.
-	// 그중에서 2개가 애니메이션이 가능한 매쉬라면
-
-	// 스윙 take001
-	// 어택
-	// 런
-
-	// 매쉬 됨
-	
-	// 내가 애니메이션이 가능한 매쉬정보.
-	// 7개중 2개    애니메이션 종류
-
-	// 매쉬 있음
 };
 

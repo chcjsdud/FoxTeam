@@ -34,7 +34,6 @@ void PostFade::Effect(float _DeltaTime)
 	float Inter = Data.CurTime / Data.Time;
 
 
-	// 맨처음이 가장 어두워야죠?
 	switch (Option)
 	{
 	case LIGHT:
@@ -59,8 +58,7 @@ void PostFade::Effect(float _DeltaTime)
 		break;
 	}
 
-	// 원본 카메라타겟을 변형해서
-	// result에 그리는 겁니다.
+	// 원본 카메라타겟을 변형해서 result에
 
 	Result_->Clear();
 	Result_->Setting();

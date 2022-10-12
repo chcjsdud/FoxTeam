@@ -75,7 +75,10 @@ private:
 	bool bLongBow_;
 
 	bool bSkillEPassable_;
+	float skillETime_;
+	float4 landingPosition_;
+	float4 startPosition_;
 
-
-
+	bool bShortRSkillExtra_;
+	float skillRTime_;
 };

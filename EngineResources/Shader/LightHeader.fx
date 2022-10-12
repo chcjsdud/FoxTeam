@@ -21,7 +21,6 @@ cbuffer LightsData : register(b11)
 
 float4 CalculateDirectionDiffuseLight(float4 _vViewNormal, LightData _Light)
 {
-    // 뷰 노말은 뷰 공간까지 왔죠?
     _vViewNormal = normalize(_vViewNormal); // N
     _Light.ViewNegLightDir = normalize(_Light.ViewNegLightDir); // L
     

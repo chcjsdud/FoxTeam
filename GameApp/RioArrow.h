@@ -23,9 +23,11 @@ public:
 public:
 	void MakeTargetArrow(Character& _owner, float _damage, const float4& _position, float _speed, Character& _target);
 	void MakeNonTargetArrow(Character& _owner, float _damage, const float4& _position, float _rotationY, float _speed);
+
 	void SetWaitTime(float _waitTime) { waitTime_ = _waitTime; }
 	void SetLifeTime(float _lifeTime) { lifeTime_ = _lifeTime; }
 	void SetScale(const float4& _scale) { scale_ = _scale;  transform_.SetLocalScaling(scale_); }
+	void SetKnockback(bool _knockback) { bKnockback_ = _knockback; }
 
 private:
 	void startWait();
@@ -54,5 +56,6 @@ private:
 
 	float waitTime_;
 	float lifeTime_;
+	bool bKnockback_;
 };
 

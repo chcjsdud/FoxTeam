@@ -627,8 +627,8 @@ void Character::Stun(float _stunTime)
 
 void Character::Knockback(float _knockbackTime, float4 _knockbackSpeed)
 {
-	mainState_ << "CrowdControlState";
-	crowdControlState_ << "Knockback";
+	mainState_.ChangeState("CrowdControlState", true);
+	crowdControlState_.ChangeState("Knockback", true);
 	timerKnockback_ = _knockbackTime;
 	knockbackSpeed_ = _knockbackSpeed;
 }
@@ -1037,6 +1037,8 @@ void Character::updateStun(float _deltaTime)
 	timerStun_ -= _deltaTime;
 	if (timerStun_ <= 0.0f)
 	{
+		destination_ = transform_.GetWorldPosition();
+		destinations_.clear();
 		mainState_ << "NormalState";
 		return;
 	}
@@ -1051,11 +1053,13 @@ void Character::updateKnockback(float _deltaTime)
 	timerKnockback_ -= _deltaTime;
 	if (timerKnockback_ <= 0.0f)
 	{
+		destination_ = transform_.GetWorldPosition();
+		destinations_.clear();
 		mainState_ << "NormalState";
 		return;
 	}
 
-	transform_.SetWorldPosition(knockbackSpeed_ * _deltaTime);
+	transform_.AddWorldPosition(knockbackSpeed_ * _deltaTime);
 }
 
 void Character::startWallSlam()
@@ -1068,6 +1072,8 @@ void Character::updateWallSlam(float _deltaTime)
 	timerKnockback_ -= _deltaTime;
 	if (timerKnockback_ <= 0.0f)
 	{
+		destination_ = transform_.GetWorldPosition();
+		destinations_.clear();
 		mainState_ << "NormalState";
 		return;
 	}
