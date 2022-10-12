@@ -76,7 +76,7 @@ private:
 	GameEngineUIRenderer* SPRegeneration_Renderer;
 
 
-	float4 VisionRange_Pos;
+	float4 SubStatBasicValue_Pos;
 	float4 AttackRange_Pos;
 	float4 BasicAttackDamageReduction_Pos;
 	float4 Tenacity_Pos;
