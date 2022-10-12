@@ -67,6 +67,8 @@ protected:
 
 private:
 	bool atkFlag_;
+	
+
 
 	float timer_collision_Q;
 	float timer_end_Q;

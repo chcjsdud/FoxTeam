@@ -211,15 +211,18 @@ void Hyunwoo::changeAnimationBasicAttack()
 		curAnimationName_ = "Atk0";
 		renderer_->ChangeFBXAnimation("Atk0", true);
 		atkFlag_ = true;
-		return;
 	}
 	else
 	{
 		curAnimationName_ = "Atk1";
 		renderer_->ChangeFBXAnimation("Atk1", true);
 		atkFlag_ = false;
-		return;
 	}
+
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("attackGlove_Normal01.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("attackGlove_Normal01.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
 }
 
 void Hyunwoo::onStartQSkill()
@@ -665,8 +668,18 @@ void Hyunwoo::endCustomRSkill()
 void Hyunwoo::onStartBasicAttacking(Character* _target)
 {
 	target_->Damage(stat_.AttackPower);
+
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("attackGlove_Normal_Hit_P.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("attackGlove_Normal_Hit_P.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
 }
 
 void Hyunwoo::onUpdateBasicAttacking(Character* _target, float _deltaTime)
 {
+
+
+
+
+
 }
