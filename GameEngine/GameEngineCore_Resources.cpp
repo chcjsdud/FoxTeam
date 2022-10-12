@@ -957,11 +957,11 @@ void GameEngineCore::EngineResourcesCreate()
 	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TextureTrans");
 		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
-		Pipe->SetVertexShader("DeferredCalLight_VS");
+		Pipe->SetVertexShader("TextureTrans_VS");
 		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		Pipe->SetRasterizer("EngineBaseRasterizerBack");
-		Pipe->SetPixelShader("DeferredCalLight_PS");
+		Pipe->SetPixelShader("TextureTrans_PS");
 		Pipe->SetOutputMergerBlend("Trans");
 	}
 

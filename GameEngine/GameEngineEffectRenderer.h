@@ -2,15 +2,15 @@
 #include "GameEngineRenderer.h"
 #include <GameEngineBase\GameEngineObjectNameBase.h>
 
-struct CorrectResultColor 
+struct CorrectEffectResultColor
 {
 	float4 vMulColor;
 	float4 vPlusColor;
 };
-// Ό³Έν :
+
 class GameEngineTexture;
 class GameEngineFolderTexture;
-class GameEngineImageRenderer : public GameEngineRenderer
+class GameEngineEffectRenderer : public GameEngineRenderer
 {
 private:
 	struct Animation2D : public GameEngineObjectNameBase
@@ -26,14 +26,14 @@ private:
 		int StartFrame_;
 		int EndFrame_;
 
-		GameEngineImageRenderer* Renderer;
+		GameEngineEffectRenderer* Renderer;
 
 		std::map<int, std::vector<std::function<void()>>> FrameCallBack_;
 		std::vector<std::function<void()>> EndCallBack_;
 		std::vector<std::function<void()>> StartCallBack_;
 
 	public:
-		void SetCurrentIndex(int _Index) 
+		void SetCurrentIndex(int _Index)
 		{
 			CurFrame_ = _Index;
 		}
@@ -50,14 +50,14 @@ private:
 
 public:
 	// constrcuter destructer
-	GameEngineImageRenderer();
-	~GameEngineImageRenderer();
+	GameEngineEffectRenderer();
+	~GameEngineEffectRenderer();
 
 	// delete Function
-	GameEngineImageRenderer(const GameEngineImageRenderer& _Other) = delete;
-	GameEngineImageRenderer(GameEngineImageRenderer&& _Other) noexcept = delete;
-	GameEngineImageRenderer& operator=(const GameEngineImageRenderer& _Other) = delete;
-	GameEngineImageRenderer& operator=(GameEngineImageRenderer&& _Other) noexcept = delete;
+	GameEngineEffectRenderer(const GameEngineEffectRenderer& _Other) = delete;
+	GameEngineEffectRenderer(GameEngineEffectRenderer&& _Other) noexcept = delete;
+	GameEngineEffectRenderer& operator=(const GameEngineEffectRenderer& _Other) = delete;
+	GameEngineEffectRenderer& operator=(GameEngineEffectRenderer&& _Other) noexcept = delete;
 
 	void SetImage(const std::string& _ImageName, const std::string& _Sampler = "");
 
@@ -146,7 +146,7 @@ private:
 	std::map<std::string, Animation2D*> AllAnimations_;
 	Animation2D* CurAnimation_;
 
-	CorrectResultColor CorrectResultColor_;
+	CorrectEffectResultColor CorrectResultColor_;
 	float4 CutData;
 	GameEngineTexture* CurTexture;
 	bool IsPlay_;

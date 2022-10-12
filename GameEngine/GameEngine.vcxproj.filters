@@ -130,6 +130,9 @@
     <Filter Include="Object\Component\Render\Widget\00.PorgressBar">
       <UniqueIdentifier>{6349d09d-4bbe-482b-8f91-bc5a97bf19ca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Component\Render\Widget\01.Effect">
+      <UniqueIdentifier>{792a1565-1e6f-4e3d-9abf-15dfd86584bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
@@ -413,6 +416,9 @@
     <ClInclude Include="FBXAnimation.h">
       <Filter>Object\Component\Render\Sub</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineEffectRenderer.h">
+      <Filter>Object\Component\Render\Widget\01.Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -678,6 +684,9 @@
     </ClCompile>
     <ClCompile Include="FBXAnimation.cpp">
       <Filter>Object\Component\Render\Sub</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineEffectRenderer.cpp">
+      <Filter>Object\Component\Render\Widget\01.Effect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

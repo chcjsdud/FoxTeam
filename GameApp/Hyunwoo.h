@@ -1,6 +1,11 @@
 #pragma once
 #include <GameEngine/GameEngineRenderer.h>
+#include <GameEngine/GameEngineImageRenderer.h>
+#include <GameEngine/GameEngineUIRenderer.h>
+#include <GameEngine/GameEngineRenderer.h>
+#include <GameEngine/GameEngineEffectRenderer.h>
 #include "Character.h"
+
 
 class Hyunwoo : public Character
 {
@@ -30,6 +35,7 @@ protected:
 	virtual void initRendererAndAnimation() override;
 	void initHyunwooCollision();
 	void initHyunwooCustomState();
+	void initEffectRenderer();
 
 
 	virtual void changeAnimationRun() override;
@@ -66,10 +72,10 @@ protected:
 	void endCustomRSkill();
 
 private:
+	GameEngineEffectRenderer* frontEffectRenderer_;
+
 	bool atkFlag_;
 	
-
-
 	float timer_collision_Q;
 	float timer_end_Q;
 	bool b_Qhit_;
@@ -88,7 +94,6 @@ private:
 	
 	GameEngineCollision* collision_R;
 	float collisionRRate_;
-
 
 	bool b_Dhit_;
 };

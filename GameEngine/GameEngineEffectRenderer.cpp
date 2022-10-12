@@ -1,25 +1,26 @@
 #include "PreCompile.h"
-#include "GameEngineImageRenderer.h"
+#include "GameEngineEffectRenderer.h"
+
 #include "GameEngineTextureManager.h"
 #include "GameEngineFolderTextureManager.h"
 #include "GameEngineFolderTexture.h"
 #include "GameEngineSamplerManager.h"
 
-void GameEngineImageRenderer::Animation2D::CallStart() 
+void GameEngineEffectRenderer::Animation2D::CallStart()
 {
 	for (auto& CallBack : StartCallBack_)
 	{
 		CallBack();
 	}
 }
-void GameEngineImageRenderer::Animation2D::CallEnd() 
+void GameEngineEffectRenderer::Animation2D::CallEnd()
 {
 	for (auto& CallBack : EndCallBack_)
 	{
 		CallBack();
 	}
 }
-void GameEngineImageRenderer::Animation2D::CallFrame() 
+void GameEngineEffectRenderer::Animation2D::CallFrame()
 {
 	for (auto& CallBack : FrameCallBack_)
 	{
@@ -40,14 +41,14 @@ void GameEngineImageRenderer::Animation2D::CallFrame()
 	}
 }
 
-void GameEngineImageRenderer::Animation2D::Reset() 
+void GameEngineEffectRenderer::Animation2D::Reset()
 {
 	IsEnd = false;
 	CurTime_ = InterTime_;
 	CurFrame_ = StartFrame_;
 }
 
-void GameEngineImageRenderer::Animation2D::FrameUpdate()
+void GameEngineEffectRenderer::Animation2D::FrameUpdate()
 {
 	if (CurTime_ <= 0.0f)
 	{
@@ -75,7 +76,7 @@ void GameEngineImageRenderer::Animation2D::FrameUpdate()
 
 }
 
-void GameEngineImageRenderer::Animation2D::ReverseFrameUpdate()
+void GameEngineEffectRenderer::Animation2D::ReverseFrameUpdate()
 {
 	if (CurTime_ <= 0.0f)
 	{
@@ -103,7 +104,7 @@ void GameEngineImageRenderer::Animation2D::ReverseFrameUpdate()
 
 }
 
-void GameEngineImageRenderer::Animation2D::Update(float _DeltaTime)
+void GameEngineEffectRenderer::Animation2D::Update(float _DeltaTime)
 {
 	if (true == Renderer->IsPlay_)
 	{
@@ -114,7 +115,7 @@ void GameEngineImageRenderer::Animation2D::Update(float _DeltaTime)
 	{
 		FrameUpdate();
 	}
-	else 
+	else
 	{
 		ReverseFrameUpdate();
 	}
@@ -125,25 +126,26 @@ void GameEngineImageRenderer::Animation2D::Update(float _DeltaTime)
 		Renderer->ShaderHelper.SettingTexture("Tex", AnimationTexture_);
 		Renderer->CurTexture = AnimationTexture_;
 		Renderer->SetIndex(CurFrame_);
-	} else 
+	}
+	else
 	{
-		Renderer->CutData = float4(0,0,1,1);
+		Renderer->CutData = float4(0, 0, 1, 1);
 		Renderer->ShaderHelper.SettingTexture("Tex", FolderTextures_->GetTextureIndex(CurFrame_));
 	}
 
-	
+
 
 }
 
 /// ///////////////////////////////////////////////////////////////////
 
-GameEngineImageRenderer::GameEngineImageRenderer() 
+GameEngineEffectRenderer::GameEngineEffectRenderer()
 	: CutData(0, 0, 1, 1)
 	, CurAnimation_(nullptr)
 {
 }
 
-GameEngineImageRenderer::~GameEngineImageRenderer() 
+GameEngineEffectRenderer::~GameEngineEffectRenderer()
 {
 	for (auto& Animation : AllAnimations_)
 	{
@@ -157,25 +159,32 @@ GameEngineImageRenderer::~GameEngineImageRenderer()
 	}
 }
 
-void GameEngineImageRenderer::Start()
+void GameEngineEffectRenderer::Start()
 {
 	GameEngineRenderer::Start();
-	SetRenderingPipeLine("TextureAtlas");
-}
-
-void GameEngineImageRenderer::SetRenderingPipeLineSettingNext()
-{
-	ShaderHelper.SettingConstantBufferLink("TextureAtlasData", CutData);
+	SetRenderingPipeLine("TextureTrans");
+	ShaderHelper.SettingConstantBufferLink("TextureTransAtlasData", CutData);
 
 	CorrectResultColor_.vMulColor = float4::ONE;
 	//CorrectResultColor_.vPlusColor = float4::ZERO;
-	CorrectResultColor_.vPlusColor = float4{0.0f, 0.0f, 0.0f, 0.0f};
+	CorrectResultColor_.vPlusColor = float4{ 0.0f, 0.0f, 0.0f, 0.0f };
 
-	ShaderHelper.SettingConstantBufferLink("TextureAtlasResultColor", CorrectResultColor_);
+	ShaderHelper.SettingConstantBufferLink("TextureTransAtlasResultColor", CorrectResultColor_);
+}
+
+void GameEngineEffectRenderer::SetRenderingPipeLineSettingNext()
+{
+	ShaderHelper.SettingConstantBufferLink("TextureTransAtlasData", CutData);
+
+	CorrectResultColor_.vMulColor = float4::ONE;
+	//CorrectResultColor_.vPlusColor = float4::ZERO;
+	CorrectResultColor_.vPlusColor = float4{ 0.0f, 0.0f, 0.0f, 0.0f };
+
+	ShaderHelper.SettingConstantBufferLink("TextureTransAtlasResultColor", CorrectResultColor_);
 }
 
 
-void GameEngineImageRenderer::SetManualConstantBuffer(const std::string& _atlasData, const std::string& _resultColor)
+void GameEngineEffectRenderer::SetManualConstantBuffer(const std::string& _atlasData, const std::string& _resultColor)
 {
 	ShaderHelper.SettingConstantBufferLink(_atlasData, CutData);
 
@@ -187,7 +196,7 @@ void GameEngineImageRenderer::SetManualConstantBuffer(const std::string& _atlasD
 }
 
 
-void GameEngineImageRenderer::SetIndex(const int Index) 
+void GameEngineEffectRenderer::SetIndex(const int Index)
 {
 	if (nullptr == CurTexture)
 	{
@@ -203,7 +212,7 @@ void GameEngineImageRenderer::SetIndex(const int Index)
 
 }
 
-void GameEngineImageRenderer::SetImage(const std::string& _ImageName, const std::string& _Sampler/* = ""*/)
+void GameEngineEffectRenderer::SetImage(const std::string& _ImageName, const std::string& _Sampler/* = ""*/)
 {
 	CurTexture = GameEngineTextureManager::GetInst().Find(_ImageName);
 
@@ -226,7 +235,7 @@ void GameEngineImageRenderer::SetImage(const std::string& _ImageName, const std:
 
 }
 
-void GameEngineImageRenderer::CreateAnimation(const std::string& _TextureName, const std::string& _Name, int _StartFrame, int _EndFrame, float _InterTime, bool _Loop /*= true*/)
+void GameEngineEffectRenderer::CreateAnimation(const std::string& _TextureName, const std::string& _Name, int _StartFrame, int _EndFrame, float _InterTime, bool _Loop /*= true*/)
 {
 	std::map<std::string, Animation2D*>::iterator FindIter = AllAnimations_.find(_Name);
 
@@ -260,7 +269,7 @@ void GameEngineImageRenderer::CreateAnimation(const std::string& _TextureName, c
 	AllAnimations_.insert(std::map<std::string, Animation2D*>::value_type(_Name, NewAnimation));
 }
 
-void GameEngineImageRenderer::CreateAnimationFolder(const std::string& _FolderTexName, const std::string& _Name, float _InterTime, bool _Loop /*= true*/)
+void GameEngineEffectRenderer::CreateAnimationFolder(const std::string& _FolderTexName, const std::string& _Name, float _InterTime, bool _Loop /*= true*/)
 {
 	std::map<std::string, Animation2D*>::iterator FindIter = AllAnimations_.find(_Name);
 
@@ -270,7 +279,7 @@ void GameEngineImageRenderer::CreateAnimationFolder(const std::string& _FolderTe
 	}
 
 	GameEngineFolderTexture* FolderTexture = GameEngineFolderTextureManager::GetInst().Find(_FolderTexName);
-	
+
 	if (nullptr == FolderTexture)
 	{
 		GameEngineDebug::MsgBoxError("존재하지 않는 폴더 텍스처를 세팅하려고 했습니다..");
@@ -294,7 +303,7 @@ void GameEngineImageRenderer::CreateAnimationFolder(const std::string& _FolderTe
 	AllAnimations_.insert(std::map<std::string, Animation2D*>::value_type(_Name, NewAnimation));
 }
 
-void GameEngineImageRenderer::SetChangeAnimation(const std::string& _Name, bool _IsForce /*= false*/)
+void GameEngineEffectRenderer::SetChangeAnimation(const std::string& _Name, bool _IsForce /*= false*/)
 {
 	std::map<std::string, Animation2D*>::iterator FindIter = AllAnimations_.find(_Name);
 
@@ -312,7 +321,7 @@ void GameEngineImageRenderer::SetChangeAnimation(const std::string& _Name, bool 
 	{
 		return;
 	}
-	
+
 	CurAnimation_ = FindIter->second;
 	if (nullptr == CurAnimation_->FolderTextures_)
 	{
@@ -328,7 +337,7 @@ void GameEngineImageRenderer::SetChangeAnimation(const std::string& _Name, bool 
 	AnimationPlay();
 }
 
-void GameEngineImageRenderer::Update(float _DeltaTime)
+void GameEngineEffectRenderer::Update(float _DeltaTime)
 {
 	if (nullptr == CurAnimation_)
 	{
@@ -338,7 +347,7 @@ void GameEngineImageRenderer::Update(float _DeltaTime)
 	CurAnimation_->Update(_DeltaTime);
 }
 
-void GameEngineImageRenderer::SetStartCallBack(const std::string& _Name, std::function<void()> _CallBack)
+void GameEngineEffectRenderer::SetStartCallBack(const std::string& _Name, std::function<void()> _CallBack)
 {
 	std::map<std::string, Animation2D*>::iterator FindIter = AllAnimations_.find(_Name);
 
@@ -354,7 +363,7 @@ void GameEngineImageRenderer::SetStartCallBack(const std::string& _Name, std::fu
 
 	FindIter->second->StartCallBack_.push_back(_CallBack);
 }
-void GameEngineImageRenderer::SetEndCallBack(const std::string& _Name, std::function<void()> _CallBack)
+void GameEngineEffectRenderer::SetEndCallBack(const std::string& _Name, std::function<void()> _CallBack)
 {
 	std::map<std::string, Animation2D*>::iterator FindIter = AllAnimations_.find(_Name);
 
@@ -370,7 +379,7 @@ void GameEngineImageRenderer::SetEndCallBack(const std::string& _Name, std::func
 
 	FindIter->second->EndCallBack_.push_back(_CallBack);
 }
-void GameEngineImageRenderer::SetFrameCallBack(const std::string& _Name, int _Index, std::function<void()> _CallBack)
+void GameEngineEffectRenderer::SetFrameCallBack(const std::string& _Name, int _Index, std::function<void()> _CallBack)
 {
 	std::map<std::string, Animation2D*>::iterator FindIter = AllAnimations_.find(_Name);
 
@@ -387,7 +396,7 @@ void GameEngineImageRenderer::SetFrameCallBack(const std::string& _Name, int _In
 	FindIter->second->FrameCallBack_[_Index].push_back(_CallBack);
 }
 
-bool GameEngineImageRenderer::CheckAnimation(const std::string& _Name)
+bool GameEngineEffectRenderer::CheckAnimation(const std::string& _Name)
 {
 	std::map<std::string, Animation2D*>::iterator FindIter = AllAnimations_.find(_Name);
 	if (AllAnimations_.end() == FindIter)
@@ -397,3 +406,4 @@ bool GameEngineImageRenderer::CheckAnimation(const std::string& _Name)
 
 	return true;
 }
+

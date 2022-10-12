@@ -40,6 +40,7 @@
     <FxCompile Include="EngineResources\Shader\TextureDeferredLight.fx" />
     <FxCompile Include="EngineResources\Shader\TextureDeferredLightAni.fx" />
     <FxCompile Include="EngineResources\Shader\TextureLight.fx" />
+    <FxCompile Include="EngineResources\Shader\TextureTrans.fx" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

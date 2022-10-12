@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngineCollision.h>
 #include "CharStatPacket.h"
 #include <GameEngine/GameEngineFBXRenderer.h>
+#include <GameEngine/GameEngineEffectRenderer.h>
 #include "GameServer.h"
 #include "GameClient.h"
 #include <GameEngine/GameEngineLevelControlWindow.h>
@@ -15,7 +16,7 @@
 
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
-	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false)
+	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), frontEffectRenderer_(nullptr)
 {
 
 }
@@ -60,6 +61,23 @@ void Hyunwoo::LoadResource()
 			GameEngineSoundManager::GetInstance()->CreateSound(file.FileName(), file.GetFullPath());
 		}
 	}
+
+
+	{
+		//GameEngineDirectory dir;
+		//dir.MoveParent("FoxTeam");
+		//dir / "Resources" / "Texture" / "PJW";
+		//
+		//std::vector<GameEngineFile> allFile = dir.GetAllFile("png");
+		//for (GameEngineFile& file : allFile)
+		//{
+		//	GameEngineTextureManager::GetInst().Load(file.GetFileName(), file.GetFullPath());
+		//}
+
+		GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_06.png");
+		hitBase->Cut(2, 2);
+
+	}
 }
 
 void Hyunwoo::ReleaseResource()
@@ -99,7 +117,7 @@ void Hyunwoo::Start()
 	Character::Start();
 	initHyunwooCollision();
 	initHyunwooCustomState();
-
+	initEffectRenderer();
 
 	stat_.HPMax = 820.0f;
 	stat_.HP = 820.0f;
@@ -190,6 +208,18 @@ void Hyunwoo::initHyunwooCustomState()
 	customState_.CreateState(MakeStateWithEnd(Hyunwoo, CustomRSkill));
 
 	customState_ << "CustomRSkill";
+}
+
+void Hyunwoo::initEffectRenderer()
+{
+	frontEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
+
+	frontEffectRenderer_->SetImage("FX_BI_Hit_06.png");
+	frontEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, stat_.AttackRange - 180.f });
+	frontEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
+	frontEffectRenderer_->GetTransform()->SetLocalScaling(frontEffectRenderer_->GetCurrentTexture()->GetTextureSize()/3);
+	frontEffectRenderer_->CreateAnimation("FX_BI_Hit_06.png", "FX_BI_Hit_06", 0, 3, 0.04f, false);
+	//frontEffectRenderer_->Off();
 }
 
 void Hyunwoo::changeAnimationRun()
@@ -673,13 +703,17 @@ void Hyunwoo::onStartBasicAttacking(Character* _target)
 	PacketSoundPlay packet;
 	packet.SetSound("attackGlove_Normal_Hit_P.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
+
+	frontEffectRenderer_->On();
+	frontEffectRenderer_->SetChangeAnimation("FX_BI_Hit_06", true);
+	frontEffectRenderer_->AnimationPlay();
 }
 
 void Hyunwoo::onUpdateBasicAttacking(Character* _target, float _deltaTime)
 {
-
-
-
-
+	if (true == frontEffectRenderer_->IsCurAnimationEnd())
+	{
+		frontEffectRenderer_->Off();
+	}
 
 }
