@@ -102,18 +102,20 @@ void LumiaMap::Start()
 	/*GameEngineDirectory MeshDir;
 	MeshDir.MoveParent("FoxTeam");
 	MeshDir / "Resources" / "Texture" / "Map";
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(MeshDir.PathToPlusFileName("Pond.fbx")))
+
+	std::string fileName = "Archery.fbx";
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(MeshDir.PathToPlusFileName(fileName)))
 	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName("Pond.fbx"));
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName(fileName));
 		Mesh->CreateRenderingBuffer();
 	}
 	{
 		GameEngineFBXRenderer* FBX = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-		FBX->SetFBXMesh("Pond.fbx", "TextureDeferredLight");
+		FBX->SetFBXMesh(fileName, "TextureDeferredLight");
 		FBX->GetTransform()->SetLocalScaling(100.0f);
-	}
+	}*/
 
-	int a = 0;*/
+	int a = 0;
 }
 
 void LumiaMap::Update(float _deltaTime)

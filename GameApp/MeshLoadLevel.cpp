@@ -63,7 +63,7 @@ void MeshLoadLevel::LevelStart()
 		GameEngineInput::GetInst().CreateKey("LevelControl", 'i');
 	}
 
-	/*GameEngineDirectory tempDir;
+	GameEngineDirectory tempDir;
 
 	tempDir.MoveParent("FoxTeam");
 	tempDir.MoveChild("Resources");
@@ -91,7 +91,7 @@ void MeshLoadLevel::LevelStart()
 		}
 	}
 
-	int a = 0;*/
+	int a = 0;
 }
 
 void MeshLoadLevel::LevelUpdate(float _DeltaTime)

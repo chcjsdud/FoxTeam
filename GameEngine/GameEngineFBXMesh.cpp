@@ -1050,6 +1050,11 @@ void GameEngineFBXMesh::CreateIndexBuffer()
 			Data.GameEngineIndexBuffers.push_back(std::vector<GameEngineIndexBuffer*>());
 			for (size_t j = 0; j < Data.Indexs[i].size(); j++)
 			{
+				if (0 == Data.Indexs[i][j].size())
+				{
+					continue;
+				}
+
 				GameEngineIndexBuffer* NewRes = new GameEngineIndexBuffer();
 				NewRes->Create(Data.Indexs[i][j], D3D11_USAGE::D3D11_USAGE_DEFAULT);
 				Data.GameEngineIndexBuffers[i].push_back(NewRes);
