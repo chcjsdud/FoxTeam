@@ -1,23 +1,25 @@
 #include "PreCompile.h"
 #include "Monsters.h"
 
+#include "Enums.h"
+
 void Monsters::StartAppearState()
 {
 	// 현재 상태 지정
 	CurStateType_ = MonsterStateType::APPEAR;
-
-	// 
 }
 
 void Monsters::UpdateAppearState(float _DeltaTime)
 {
-	// 첫등장 시간 체크
-
+	// 첫등장애니메이션 모션종료시 대기상태로 돌입
+	if ("APPEAR" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	{
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+	}
 }
 
 void Monsters::EndAppearState()
 {
-
 }
 
 void Monsters::StartRegenState()

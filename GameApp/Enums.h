@@ -1,5 +1,14 @@
 #pragma once
 
+// Day And Night Type
+enum class DayAndNightType
+{
+	NONE = -1,
+	DAY,
+	NIGHT,
+	MAX
+};
+
 // UI RenderOrder
 enum class RenderOrder
 {

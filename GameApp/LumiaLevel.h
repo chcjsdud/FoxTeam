@@ -38,10 +38,13 @@ public: // Inline Get Function
 	}
 
 public: // Inline Set Function
-
 public: // Public Function
 	void HostCreateCommand();												// Host 전용
 	void GuestCreateCommand();												// Guest 전용
+
+public: // Public Monster Related Function
+	void HostMonsterFirstAppear(MonsterType _MonsterType);					// 몬스터타입별 첫등장 일괄처리(Host 전용)
+	void GuestMonsterFirstAppear(MonsterType _MonsterType);					// 몬스터타입별 첫등장 일괄처리(Guest 전용)
 
 public: // Create MonsterInfo
 	void CreateMonsterInfo();												// Host 전용(현재 맵에 배치하려는 몬스터들을 미리 셋팅)
@@ -111,16 +114,19 @@ private:
 	LumiaLevel& operator=(const LumiaLevel&& _other) = delete;
 
 private:
-	std::vector<Character*> CharacterActorList_;							// 캐릭터 목록(실질적 데이터는 PlayerInfoManager에서 관리)
-	std::vector<Monsters*> MonsterActorList_;								// 몬스터 목록(실직적 데이터는 MonsterInfoManager에서 관리)
-
-	// Area, Position
-	std::map<std::string, std::vector<float4>> characterSpawnPoints_;
+	std::vector<Character*> CharacterActorList_;													// 캐릭터 목록
+	std::vector<Monsters*> MonsterActorList_;														// 몬스터 목록
 
 private:
-	LumiaMap* CurMap_;														// 맵
-	ItemBoxManager* ItemBoxManager_;										// 아이템박스 매니저
+	std::vector<Monsters*> MonsterActorByTypeList_[static_cast<int>(MonsterType::MAX)];				// 몬스터 목록(같은 타입의 몬스터를 일괄처리할때 편하도록 목록작성)
 
 private:
-	GameEngineLevelControlWindow* DebugAndControlWindow_;					// 디버그 & 강제레벨체인지 윈도우
+	std::map<std::string, std::vector<float4>> characterSpawnPoints_;								// Area, Position
+
+private:
+	LumiaMap* CurMap_;																				// 맵
+	ItemBoxManager* ItemBoxManager_;																// 아이템박스 매니저
+
+private:
+	GameEngineLevelControlWindow* DebugAndControlWindow_;											// 디버그 & 강제레벨체인지 윈도우
 };

@@ -1,7 +1,7 @@
 #pragma once
-#include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
 
+#include "IUnitBase.h"
 #include "MonsterStateInfo.h"
 
 // 분류 : 몬스터
@@ -12,7 +12,7 @@ class GameEngineCollision;
 class NavFace;
 class NavMesh;
 class LumiaMap;
-class Monsters : public GameEngineActor
+class Monsters : public IUnitBase
 {
 public: // Static Value
 	
@@ -52,6 +52,9 @@ public: // inline Set Function
 	{
 		AreaType_ = _AreaType;
 	}
+
+public:
+	int GetIndex() override;
 
 public: // Initalize Function
 	void InitalizeSpawnPosition(const float4& _SpawnPosition);				// 인자로 수신한 _SpawnPosition을 해당 몬스터의 스폰위치로 지정(클라이언트전용)

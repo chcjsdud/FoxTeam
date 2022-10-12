@@ -25,8 +25,12 @@
 #include "LoadingEndPacket.h"
 #include "PacketCreateProjectile.h"
 #include "PacketSoundPlay.h"
+#include "MonsterStateChangePacket.h"
 
 #include "LoadingLevel.h"
+
+//======================== Controller
+#include "GameTimeController.h"
 
 //======================== Map
 #include "LumiaMap.h"
@@ -94,6 +98,42 @@ void LumiaLevel::GuestCreateCommand()
 	);
 }
 
+void LumiaLevel::HostMonsterFirstAppear(MonsterType _MonsterType)
+{
+	// 예외처리
+	if (MonsterType::NONE == _MonsterType || MonsterType::MAX == _MonsterType)
+	{
+		GameEngineDebug::MsgBoxError("잘못된 타입의 몬스터를 등장시키려고 시도했습니다!!!!!");
+		return;
+	}
+
+	// 해당 몬스터타입의 몬스터는 일괄적으로 첫등장상태로 전환
+	int MonsterCount = static_cast<int>(MonsterActorByTypeList_[static_cast<int>(_MonsterType)].size());
+	for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
+	{
+		MonsterActorByTypeList_[static_cast<int>(_MonsterType)][MonsterNum]->On();
+		MonsterActorByTypeList_[static_cast<int>(_MonsterType)][MonsterNum]->ChangeAnimationAndState(MonsterStateType::APPEAR);
+	}
+}
+
+void LumiaLevel::GuestMonsterFirstAppear(MonsterType _MonsterType)
+{
+	// 예외처리
+	if (MonsterType::NONE == _MonsterType || MonsterType::MAX == _MonsterType)
+	{
+		GameEngineDebug::MsgBoxError("잘못된 타입의 몬스터를 등장시키려고 시도했습니다!!!!!");
+		return;
+	}
+
+	// 해당 몬스터타입의 몬스터는 일괄적으로 첫등장상태로 전환
+	int MonsterCount = static_cast<int>(MonsterActorByTypeList_[static_cast<int>(_MonsterType)].size());
+	for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
+	{
+		MonsterActorByTypeList_[static_cast<int>(_MonsterType)][MonsterNum]->On();
+		MonsterActorByTypeList_[static_cast<int>(_MonsterType)][MonsterNum]->ChangeAnimationAndState(MonsterStateType::APPEAR);
+	}
+}
+
 void LumiaLevel::CreateMonsterInfo()
 {
 	if (true == MonsterInfoManager::GetInstance()->CreatMonsterInfomation())
@@ -135,6 +175,7 @@ void LumiaLevel::MapCreationCommand()
 void LumiaLevel::MonsterCreationCommand()
 {
 	// 몬스터정보목록을 참고하여 몬스터 생성시작
+	GameTimeController* gm = GameTimeController::GetInstance();
 	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
 	int AllMonsterCount = mm->GetCurMonsterListSize();
@@ -201,6 +242,9 @@ void LumiaLevel::MonsterCreationCommand()
 
 		// 관리목록 추가
 		MonsterActorList_.push_back(NewMonster);
+
+		// 일괄처리용 몬스터목록에 추가
+		MonsterActorByTypeList_[static_cast<int>(CurMonsterType)].push_back(NewMonster);
 	}
 
 //#ifdef _DEBUG
@@ -476,6 +520,7 @@ void LumiaLevel::AddSocketHandle()
 		server->AddPacketHandler(ePacketID::CharCrowdControlPacket, new CharCrowdControlPacket);
 		server->AddPacketHandler(ePacketID::PacketCreateProjectile, new PacketCreateProjectile);
 		server->AddPacketHandler(ePacketID::PacketSoundPlay, new PacketSoundPlay);
+		server->AddPacketHandler(ePacketID::MonsterStatePacket, new MonsterStateChangePacket);
 	}
 
 	if (true == client->IsConnected())
@@ -486,6 +531,7 @@ void LumiaLevel::AddSocketHandle()
 		client->AddPacketHandler(ePacketID::CharCrowdControlPacket, new CharCrowdControlPacket);
 		client->AddPacketHandler(ePacketID::PacketCreateProjectile, new PacketCreateProjectile);
 		client->AddPacketHandler(ePacketID::PacketSoundPlay, new PacketSoundPlay);
+		client->AddPacketHandler(ePacketID::MonsterStatePacket, new MonsterStateChangePacket);
 	}
 }
 
@@ -629,8 +675,13 @@ void LumiaLevel::DebugWindowUpdate()
 {
 	if (nullptr != DebugAndControlWindow_ && nullptr != MousePointer::InGameMouse && 0 < static_cast<int>(CharacterActorList_.size()))
 	{
-
+		GameTimeController* gm = GameTimeController::GetInstance();
 		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
+		//// Game Time Debug Value
+		//tm CurrentTime = gm->GetCurrentGameTimeToMinute();
+		//DebugAndControlWindow_->AddText(std::to_string(CurrentTime.tm_min) + "분" + std::to_string(CurrentTime.tm_sec) + "초");
+
 		// InGameMouse Debug Value
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
 		DebugAndControlWindow_->AddText("X : " + std::to_string(position.x));
@@ -691,6 +742,13 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 		GameClient::GetInstance()->ProcessPacket();
 	}
 
+	// 게임진행컨트롤러(레벨업, 낮/밤전환, 몬스터첫등장, ... )
+	// 단, 서버일때만 처리하며 서버(호스트)가 현재게임을 제어(한곳에서 제어하기위해)
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		//GameTimeController::GetInstance()->Update(_DeltaTime);
+	}
+
 	// 캐릭터 상태 업데이트 패킷 전송처리
 	CharacterStateUpdatePacketSend();
 
@@ -747,6 +805,12 @@ void LumiaLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	// GameController Initalize
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		//GameTimeController::GetInstance()->Initialize();
+	}
+
 	// 220929 ADD SJH : 테스트용(추후삭제예정)
 	// 서버를 생성을 안했거나 클라이언트로 서버에 연결되지않은상태에서 LevelControlWindow에의해 강제로 레벨이동한 경우
 	if (false == GameServer::GetInstance()->IsOpened() && false == GameClient::GetInstance()->IsConnected())

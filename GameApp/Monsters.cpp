@@ -11,6 +11,11 @@
 #include "LumiaMap.h"
 #include "NavMesh.h"
 
+int Monsters::GetIndex()
+{
+	return Index_;
+}
+
 void Monsters::InitalizeSpawnPosition(const float4& _SpawnPosition)
 {
 	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
@@ -58,78 +63,78 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 		}
 		case MonsterStateType::REGEN:
 		{
-			MainState_ << "NORMAL";
 			NormalState_ << "REGEN";
+			MainState_ << "NORMAL";
 			MainRenderer_->ChangeFBXAnimation("REGEN");
 			break;
 		}
 		case MonsterStateType::IDLE:
 		{
-			MainState_ << "NORMAL";
 			NormalState_ << "IDLE";
+			MainState_ << "NORMAL";
 			MainRenderer_->ChangeFBXAnimation("IDLE");
 			break;
 		}
 		case MonsterStateType::RUN:
 		{
-			MainState_ << "NORMAL";
 			NormalState_ << "RUN";
+			MainState_ << "NORMAL";
 			MainRenderer_->ChangeFBXAnimation("RUN");
 			break;
 		}
 		case MonsterStateType::HOMINGINSTINCT:
 		{
-			MainState_ << "NORMAL";
 			NormalState_ << "HOMINGINSTINCT";
+			MainState_ << "NORMAL";
 			MainRenderer_->ChangeFBXAnimation("HOMINGINSTINCT");
 			break;
 		}
 		case MonsterStateType::CHASE:
 		{
-			MainState_ << "NORMAL";
 			NormalState_ << "CHASE";
+			MainState_ << "NORMAL";
 			MainRenderer_->ChangeFBXAnimation("CHASE");
 			break;
 		}
 		case MonsterStateType::HIT:
 		{
-			MainState_ << "CROWDCONTROL";
 			NormalState_ << "HIT";
+			MainState_ << "CROWDCONTROL";
 			MainRenderer_->ChangeFBXAnimation("HIT");
 			break;
 		}
 		case MonsterStateType::DEATH:
 		{
-			MainState_ << "CROWDCONTROL";
 			NormalState_ << "DEATH";
+			MainState_ << "CROWDCONTROL";
 			MainRenderer_->ChangeFBXAnimation("DEATH");
 			break;
 		}
 		case MonsterStateType::DEAD:
 		{
-			MainState_ << "CROWDCONTROL";
 			NormalState_ << "DEAD";
+			MainState_ << "CROWDCONTROL";
 			MainRenderer_->ChangeFBXAnimation("DEAD");
 			break;
 		}
 		case MonsterStateType::ATK01:
 		{
-			MainState_ << "ATTACK";
 			NormalState_ << "ATK01";
+			MainState_ << "ATTACK";
 			MainRenderer_->ChangeFBXAnimation("ATK01");
 			break;
 		}
 		case MonsterStateType::ATK02:
 		{
-			MainState_ << "ATTACK";
 			NormalState_ << "ATK02";
+			MainState_ << "ATTACK";
 			MainRenderer_->ChangeFBXAnimation("ATK02");
 			break;
 		}
 		case MonsterStateType::SKILLATTACK:
 		{
-			MainState_ << "ATTACK";
 			NormalState_ << "SKILLATTACK";
+			MainState_ << "ATTACK";
 			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
 			break;
 		}

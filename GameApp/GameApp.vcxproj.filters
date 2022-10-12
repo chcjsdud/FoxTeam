@@ -202,6 +202,9 @@
     <ClCompile Include="StartPointSelectPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
+    <ClCompile Include="Hyunwoo.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
+    </ClCompile>
     <ClCompile Include="CharMovementPacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClCompile>
@@ -301,8 +304,14 @@
     <ClCompile Include="PacketSoundPlay.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="Hyunwoo.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
+    <ClCompile Include="GameTimeController.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterStateChangePacket.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="IUnitBase.cpp">
+      <Filter>01.GameObject\01.BaseActor\Unit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -483,8 +492,8 @@
     <Filter Include="01.GameObject\03.Level\LumiaLevel\GameController">
       <UniqueIdentifier>{41127990-4ebb-463d-a1f2-118043585a9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo">
-      <UniqueIdentifier>{e2cd578b-0743-4586-a0a8-3020ebc7125d}</UniqueIdentifier>
+    <Filter Include="01.GameObject\01.BaseActor\Unit">
+      <UniqueIdentifier>{581c2fa8-4540-4fa1-b1cf-3baa938964f3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -692,6 +701,9 @@
     <ClInclude Include="StartPointSelectPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
+    <ClInclude Include="Hyunwoo.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
+    </ClInclude>
     <ClInclude Include="CharMovementPacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
@@ -791,8 +803,14 @@
     <ClInclude Include="PacketSoundPlay.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Hyunwoo.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
+    <ClInclude Include="GameTimeController.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterStateChangePacket.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="IUnitBase.h">
+      <Filter>01.GameObject\01.BaseActor\Unit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

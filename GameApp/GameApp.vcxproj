@@ -218,7 +218,9 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="CreateItemDB.cpp" />
+    <ClCompile Include="GameTimeController.cpp" />
     <ClCompile Include="Macro.cpp" />
+    <ClCompile Include="MonsterStateChangePacket.cpp" />
     <ClCompile Include="PacketCreateProjectile.cpp">
       <SubType>
       </SubType>
@@ -459,6 +461,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="IUnitBase.cpp" />
     <ClCompile Include="UseableItem.cpp" />
     <ClCompile Include="UserGame.cpp">
       <SubType>
@@ -507,6 +510,8 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameTimeController.h" />
+    <ClInclude Include="MonsterStateChangePacket.h" />
     <ClInclude Include="PacketCreateProjectile.h">
       <SubType>
       </SubType>
@@ -743,6 +748,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="IUnitBase.h" />
     <ClInclude Include="UseableItem.h" />
     <ClInclude Include="UserGame.h">
       <SubType>

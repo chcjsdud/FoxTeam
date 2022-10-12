@@ -3,6 +3,7 @@
 #include <GameEngine/PreCompile.h>
 
 #include <numeric>
+#include <ctime>
 
 #include <GameEngineBase/GameEngineDirectory.h>
 #include <GameEngineBase/GameEngineFile.h>

@@ -31,5 +31,7 @@ enum class ePacketID
 	PacketCreateProjectile,
 
 	PacketSoundPlay,
+	MonsterStatePacket,
+
 	MAX
 };

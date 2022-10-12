@@ -32,7 +32,6 @@ void Wolf::InitalizeStateInfo()
 	StateInfo_.SkillCoolDown_ = 0.5f;									// 스킬재사용시간
 
 	// 젠스텟
-	StateInfo_.FirstAppearTime_ = 125.f;								// 첫등장 타임
 	StateInfo_.RegenTimeMax_ = 125.f;									// 리젠타임(고정)
 	StateInfo_.RegenTime_ = 125.f;										// 리젠타임(갱신) -> 0.0f이하일시 RegenTime_으로 초기화
 }

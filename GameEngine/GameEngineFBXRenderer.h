@@ -73,6 +73,11 @@ public:
 		return ReturnNameList;
 	}
 
+	inline bool CheckCurrentAnimationEnd()						// 221012 SJH ADD : 현재 애니메이션 종료체크
+	{
+		return currentAnimation_->bEnd_;
+	}
+
 	const std::string GetCurAnimationName()
 	{
 		return currentAnimation_->AnimationName_;
