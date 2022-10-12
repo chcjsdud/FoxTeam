@@ -638,6 +638,23 @@ void GameEngineCore::EngineResourcesCreate()
 	{
 		D3D11_BLEND_DESC BlendInfo = { 0 };
 
+		BlendInfo.AlphaToCoverageEnable = true;
+		BlendInfo.IndependentBlendEnable = false;
+		BlendInfo.RenderTarget[0].BlendEnable = true;
+		BlendInfo.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+		BlendInfo.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		BlendInfo.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
+		BlendInfo.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
+		BlendInfo.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+		BlendInfo.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+		BlendInfo.RenderTarget[0].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+
+		GameEngineBlendManager::GetInst().Create("AlphaToCoverage", BlendInfo);
+	}
+
+	{
+		D3D11_BLEND_DESC BlendInfo = { 0 };
+
 		BlendInfo.AlphaToCoverageEnable = FALSE;
 		BlendInfo.IndependentBlendEnable = FALSE;
 		BlendInfo.RenderTarget[0].BlendEnable = true;
@@ -956,13 +973,13 @@ void GameEngineCore::EngineResourcesCreate()
 
 	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("TextureTrans");
-		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
 		Pipe->SetVertexShader("TextureTrans_VS");
-		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		Pipe->SetRasterizer("EngineBaseRasterizerNone");
 		Pipe->SetPixelShader("TextureTrans_PS");
-		Pipe->SetOutputMergerBlend("Trans");
+		Pipe->SetOutputMergerBlend("AlphaToCoverage");
 	}
 
 	{

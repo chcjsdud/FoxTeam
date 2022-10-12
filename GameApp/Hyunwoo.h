@@ -74,6 +74,9 @@ protected:
 private:
 	GameEngineEffectRenderer* frontEffectRenderer_;
 
+	GameEngineEffectRenderer* rearEffectRenderer_;
+
+
 	bool atkFlag_;
 	
 	float timer_collision_Q;

@@ -74,9 +74,10 @@ void Hyunwoo::LoadResource()
 		//	GameEngineTextureManager::GetInst().Load(file.GetFileName(), file.GetFullPath());
 		//}
 
-		GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_06.png");
+		GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_061.png");
 		hitBase->Cut(2, 2);
-
+		GameEngineTexture* rearBase = GameEngineTextureManager::GetInst().Find("FX_BI_WindDust_01SE.png");
+		rearBase->Cut(3, 8);
 	}
 }
 
@@ -214,12 +215,22 @@ void Hyunwoo::initEffectRenderer()
 {
 	frontEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 
-	frontEffectRenderer_->SetImage("FX_BI_Hit_06.png");
+	frontEffectRenderer_->SetImage("FX_BI_Hit_061.png");
 	frontEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, stat_.AttackRange - 180.f });
 	frontEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
 	frontEffectRenderer_->GetTransform()->SetLocalScaling(frontEffectRenderer_->GetCurrentTexture()->GetTextureSize()/3);
-	frontEffectRenderer_->CreateAnimation("FX_BI_Hit_06.png", "FX_BI_Hit_06", 0, 3, 0.04f, false);
-	//frontEffectRenderer_->Off();
+	frontEffectRenderer_->CreateAnimation("FX_BI_Hit_061.png", "FX_BI_Hit_061", 0, 3, 0.04f, false);
+	frontEffectRenderer_->Off();
+
+	rearEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
+
+	rearEffectRenderer_->SetImage("FX_BI_WindDust_01SE.png");
+	rearEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, -50.0f });
+	rearEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 0.f,90.f,0.f });
+	rearEffectRenderer_->GetTransform()->SetLocalScaling(frontEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
+	rearEffectRenderer_->CreateAnimation("FX_BI_WindDust_01SE.png", "FX_BI_WindDust_01SE", 0, 23, 0.02f, false);
+	rearEffectRenderer_->Off();
+
 }
 
 void Hyunwoo::changeAnimationRun()
@@ -265,6 +276,8 @@ void Hyunwoo::onStartQSkill()
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
 	collision_Q->On();
+
+
 }
 
 void Hyunwoo::onUpdateQSkill(float _deltaTime)
@@ -338,6 +351,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 	// 0.3초 쯤의 시전딜레이가 확인됨.
 	// 정확히 말하자면 즉발은 맞지만, 타격 이펙트가 생기는 부분은 0.3초 이후
 
+
 }
 
 void Hyunwoo::onStartWSkill()
@@ -386,6 +400,10 @@ void Hyunwoo::onStartESkill()
 	packet.SetSound("hyunwoo_Skill03_Slide.wav", transform_.GetWorldPosition());
 
 	FT::SendPacket(packet);
+
+	rearEffectRenderer_->On();
+	rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
+	rearEffectRenderer_->AnimationPlay();
 }
 
 void Hyunwoo::onUpdateESkill(float _deltaTime)
@@ -497,6 +515,10 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 	// 아이템 스탯 계산
 
 	// 공격력 방어력 이속 공격속도
+	if (true == rearEffectRenderer_->IsCurAnimationEnd())
+	{
+		rearEffectRenderer_->Off();
+	}
 }
 
 void Hyunwoo::onStartRSkill()
@@ -705,7 +727,7 @@ void Hyunwoo::onStartBasicAttacking(Character* _target)
 	FT::SendPacket(packet);
 
 	frontEffectRenderer_->On();
-	frontEffectRenderer_->SetChangeAnimation("FX_BI_Hit_06", true);
+	frontEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
 	frontEffectRenderer_->AnimationPlay();
 }
 
