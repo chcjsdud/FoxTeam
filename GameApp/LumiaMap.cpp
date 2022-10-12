@@ -103,7 +103,7 @@ void LumiaMap::Start()
 	MeshDir.MoveParent("FoxTeam");
 	MeshDir / "Resources" / "Texture" / "Map";
 
-	std::string fileName = "Archery.fbx";
+	std::string fileName = "School.fbx";
 	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(MeshDir.PathToPlusFileName(fileName)))
 	{
 		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName(fileName));
