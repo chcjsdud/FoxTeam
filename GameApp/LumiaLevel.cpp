@@ -26,6 +26,7 @@
 #include "PacketCreateProjectile.h"
 #include "PacketSoundPlay.h"
 #include "MonsterStateChangePacket.h"
+#include "GameTimeSyncPacket.h"
 
 #include "LoadingLevel.h"
 
@@ -521,6 +522,7 @@ void LumiaLevel::AddSocketHandle()
 		server->AddPacketHandler(ePacketID::PacketCreateProjectile, new PacketCreateProjectile);
 		server->AddPacketHandler(ePacketID::PacketSoundPlay, new PacketSoundPlay);
 		server->AddPacketHandler(ePacketID::MonsterStatePacket, new MonsterStateChangePacket);
+		server->AddPacketHandler(ePacketID::TimeSyncPacket, new GameTimeSyncPacket);
 	}
 
 	if (true == client->IsConnected())
@@ -532,6 +534,7 @@ void LumiaLevel::AddSocketHandle()
 		client->AddPacketHandler(ePacketID::PacketCreateProjectile, new PacketCreateProjectile);
 		client->AddPacketHandler(ePacketID::PacketSoundPlay, new PacketSoundPlay);
 		client->AddPacketHandler(ePacketID::MonsterStatePacket, new MonsterStateChangePacket);
+		client->AddPacketHandler(ePacketID::TimeSyncPacket, new GameTimeSyncPacket);
 	}
 }
 
@@ -573,13 +576,12 @@ void LumiaLevel::CameraAdjustment()
 
 void LumiaLevel::GameTimeUpdatePacketSend()
 {
-	GameServer* ServerSocket = GameServer::GetInstance();
-	GameClient* ClientSocket = GameClient::GetInstance();
-
 	// 게임진행시간 동기화를 위한 패킷전송(서버전용)
-
-
-
+	GameTimeSyncPacket SendPacket;
+	SendPacket.SetCurrentDay(GameTimeController::GetInstance()->GetCurrentDay());
+	SendPacket.SetDayAndNightType(GameTimeController::GetInstance()->GetCurrentDayType());
+	SendPacket.SetGameTime(GameTimeController::GetInstance()->GetCurrentGameTimeToSec());
+	GameServer::GetInstance()->Send(&SendPacket);
 }
 
 void LumiaLevel::CharacterStateUpdatePacketSend()
@@ -689,26 +691,24 @@ void LumiaLevel::DebugWindowUpdate()
 		GameTimeController* gm = GameTimeController::GetInstance();
 		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-		// Game Time Debug Value(서버일때)
-		if (true == GameServer::GetInstance()->IsOpened())
+		// Game Time Debug Value
+		
+		// 현재일차 낮/밤
+		int CurDay = gm->GetCurrentDay();
+		DayAndNightType CurType = gm->GetCurrentDayType();
+		if (DayAndNightType::DAY == CurType)
 		{
-			// 현재일차 낮/밤
-			int CurDay = gm->GetCurrentDay();
-			DayAndNightType CurType = gm->GetCurrentDayType();
-			if (DayAndNightType::DAY == CurType)
-			{
-				DebugAndControlWindow_->AddText(std::to_string(CurDay) + " DAY");
-			}
-			else if (DayAndNightType::NIGHT == CurType)
-			{
-				DebugAndControlWindow_->AddText(std::to_string(CurDay) + " NIGHT");
-			}
-
-			float CurrentTimeSec = gm->GetCurrentGameTimeToSec();
-			tm CurrentTimeMin = gm->GetCurrentGameTimeToMinute();
-			DebugAndControlWindow_->AddText(std::to_string(CurrentTimeMin.tm_min) + " MIN " + std::to_string(CurrentTimeMin.tm_sec) + " SEC");
-			DebugAndControlWindow_->AddText(std::to_string(CurrentTimeSec) + " SEC");
+			DebugAndControlWindow_->AddText(std::to_string(CurDay) + " DAY");
 		}
+		else if (DayAndNightType::NIGHT == CurType)
+		{
+			DebugAndControlWindow_->AddText(std::to_string(CurDay) + " NIGHT");
+		}
+
+		float CurrentTimeSec = gm->GetCurrentGameTimeToSec();
+		tm CurrentTimeMin = gm->GetCurrentGameTimeToMinute();
+		DebugAndControlWindow_->AddText(std::to_string(CurrentTimeMin.tm_min) + " MIN " + std::to_string(CurrentTimeMin.tm_sec) + " SEC");
+		DebugAndControlWindow_->AddText(std::to_string(CurrentTimeSec) + " SEC");
 
 		// InGameMouse Debug Value
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
@@ -775,7 +775,7 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
 		// 레벨업, 낮/밤전환, 몬스터첫등장을 위한 타임갱신
-		GameTimeController::GetInstance()->Update(_DeltaTime);
+		GameTimeController::GetInstance()->HostUpdate(_DeltaTime);
 
 		// 게임시간 실시간 패킷(서버-클라 동기화)
 		GameTimeUpdatePacketSend();
@@ -840,7 +840,7 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	// GameController Initalize
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
-		GameTimeController::GetInstance()->Initialize();
+		GameTimeController::GetInstance()->HostInitialize();
 	}
 
 	// 220929 ADD SJH : 테스트용(추후삭제예정)

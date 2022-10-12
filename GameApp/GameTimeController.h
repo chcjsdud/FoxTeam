@@ -45,9 +45,13 @@ public: // Public Get Function
 	float GetCurrentGameTimeToSec();														// 현재 게임시간을 초로 반환(그대로 반환)
 	
 public: // Public Set Function
-public: // Public Function
-	void Initialize();																		// Player Level Update()에서 해당함수를 호출: Controller Initialize
-	void Update(float _DeltaTime);															// Player Level Update()에서 해당함수를 호출: Controller Update
+
+public: // Public Function(Host)
+	void HostInitialize();																	// Player Level Update()에서 해당함수를 호출: Host Controller Initialize
+	void HostUpdate(float _DeltaTime);														// Player Level Update()에서 해당함수를 호출: Host Controller Update
+
+public: // Public Function(Guest)
+	void GuestUpdate(float _GameTime, DayAndNightType _Type, int _CurDay);					// GameTimeSyncPacket 수신시 호출 : Guest Controller Update
 
 protected: // Protected Function
 private: // Private Fcuntion

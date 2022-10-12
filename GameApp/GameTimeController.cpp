@@ -55,7 +55,7 @@ float GameTimeController::GetCurrentGameTimeToSec()
 	return CurGameTime_;
 }
 
-void GameTimeController::Initialize()
+void GameTimeController::HostInitialize()
 {
 	// 일차별 낮/밤 시간 초기화
 	CreateDailytimes();
@@ -67,7 +67,7 @@ void GameTimeController::Initialize()
 	CreateMonsterFirstAppearInfo();
 }
 
-void GameTimeController::Update(float _DeltaTime)
+void GameTimeController::HostUpdate(float _DeltaTime)
 {
 	// 레벨업관련 갱신
 
@@ -77,6 +77,13 @@ void GameTimeController::Update(float _DeltaTime)
 
 	// 게임진행에 따른 시간누적 및 낮/밤전환, 일차증가
 	CalcGameTime(_DeltaTime);
+}
+
+void GameTimeController::GuestUpdate(float _GameTime, DayAndNightType _Type, int _CurDay)
+{
+	CurDay_ = _CurDay;
+	CurDayOrNight_ = _Type;
+	CurGameTime_ = _GameTime;
 }
 
 void GameTimeController::CreateDailytimes()

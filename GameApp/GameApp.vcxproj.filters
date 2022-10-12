@@ -313,6 +313,9 @@
     <ClCompile Include="IUnitBase.cpp">
       <Filter>01.GameObject\01.BaseActor\Unit</Filter>
     </ClCompile>
+    <ClCompile Include="GameTimeSyncPacket.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -811,6 +814,9 @@
     </ClInclude>
     <ClInclude Include="IUnitBase.h">
       <Filter>01.GameObject\01.BaseActor\Unit</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimeSyncPacket.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
