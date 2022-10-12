@@ -31,43 +31,55 @@ void UI_Status::Start()
 
 	Value_XPivot = {55.0f, 0.0f, 0.0f, 0.0f};
 	Value_YPivot = {0.0f, -19.0f, 0.0f, 0.0f};
-	AttackValue_Pos = { -442.f, -279.f, -1.f };
 
-		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
-		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
+	BasicValue_Pos = { -442.f, -279.f, -1.f };
+	AttackSpeedValue_Pos = BasicValue_Pos + Value_YPivot;
+	CriticalValue_Pos = BasicValue_Pos + (Value_YPivot * 2.0f);
+	SkillDamageIncreaseValue_Pos = BasicValue_Pos + (Value_YPivot * 3.0f);
+
+	DefenseValue_Pos = BasicValue_Pos + Value_XPivot;
+	MoveSpeedValue_Pos = BasicValue_Pos + Value_YPivot + Value_XPivot;
+	CooldownValue_Pos = BasicValue_Pos + (Value_YPivot * 2.0f) + Value_XPivot;
+	SkillDamageReductionValue_Pos = BasicValue_Pos + (Value_YPivot * 3.0f) + Value_XPivot;
+
+
+	//렌더러 초기화 모음
 	{
 		MainStatusRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		MainStatusRenderer->SetImage("MainStatus_Background.png", "PointSmp");
 		MainStatusRenderer->GetTransform()->SetLocalPosition(MainStatus_BackgroundPos);
 		MainStatusRenderer->GetTransform()->SetLocalScaling(MainStatusRenderer->GetCurrentTexture()->GetTextureSize());
-	}
-
-	{
+		
 		SubStatusRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		SubStatusRenderer->SetImage("SubStatus_Background.png", "PointSmp");
 		SubStatusRenderer->GetTransform()->SetLocalPosition(SubStatus_BackgroundPos);
 		SubStatusRenderer->GetTransform()->SetLocalScaling(SubStatusRenderer->GetCurrentTexture()->GetTextureSize());
-	}
-
-	{
+		
 		//to_string= 숫자를 string으로
 		AttackValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		AttackValue_Renderer->TextSetting("HMKMRHD", "a", 15);
-		AttackValue_Renderer->GetTransform()->SetLocalPosition(AttackValue_Pos);
-	}
-
-	{
+		AttackValue_Renderer->GetTransform()->SetLocalPosition(BasicValue_Pos);
+		
 		DefenseValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		DefenseValue_Renderer->TextSetting("HMKMRHD", "a", 15);
-		DefenseValue_Renderer->GetTransform()->SetLocalPosition(AttackValue_Pos + Value_XPivot);
-	}
-
-	{
+		DefenseValue_Renderer->GetTransform()->SetLocalPosition(DefenseValue_Pos);
+		
 		AttackSpeedValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		AttackSpeedValue_Renderer->TextSetting("HMKMRHD", "a", 15);
-		AttackSpeedValue_Renderer->GetTransform()->SetLocalPosition(AttackValue_Pos + Value_YPivot);
-	}
+		AttackSpeedValue_Renderer->GetTransform()->SetLocalPosition(AttackSpeedValue_Pos);
+		
+		MoveSpeedValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		MoveSpeedValue_Renderer->GetTransform()->SetLocalPosition(MoveSpeedValue_Pos);
+		
+		CriticalValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		CriticalValue_Renderer->GetTransform()->SetLocalPosition(CriticalValue_Pos);
 
+		CooldownValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		CooldownValue_Renderer->GetTransform()->SetLocalPosition(CooldownValue_Pos);
+
+		SkillDamageIncreaseValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		SkillDamageIncreaseValue_Renderer->GetTransform()->SetLocalPosition(SkillDamageIncreaseValue_Pos);
+
+		SkillDamageReductionValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		SkillDamageReductionValue_Renderer->GetTransform()->SetLocalPosition(SkillDamageReductionValue_Pos);
+	}
 
 }
 
@@ -87,8 +99,11 @@ void UI_Status::Update(float _Time)
 			AttackValue_Renderer->Off();
 			DefenseValue_Renderer->Off();
 			AttackSpeedValue_Renderer->Off();
-			//MoveSpeedValue_Renderer->Off();
-			//CriticalValue_Renderer->Off();
+			MoveSpeedValue_Renderer->Off();
+			CriticalValue_Renderer->Off();
+			CooldownValue_Renderer->Off();
+			SkillDamageIncreaseValue_Renderer->Off();
+			SkillDamageReductionValue_Renderer->Off();
 		}
 		else
 		{
@@ -97,8 +112,11 @@ void UI_Status::Update(float _Time)
 			AttackValue_Renderer->On();
 			DefenseValue_Renderer->On();
 			AttackSpeedValue_Renderer->On();
-			//MoveSpeedValue_Renderer->On();
-			//CriticalValue_Renderer->On();
+			MoveSpeedValue_Renderer->On();
+			CriticalValue_Renderer->On();
+			CooldownValue_Renderer->On();
+			SkillDamageIncreaseValue_Renderer->On();
+			SkillDamageReductionValue_Renderer->On();
 		}
 	}
 
@@ -119,8 +137,74 @@ void UI_Status::SetStatus(CharacterStat* _Mystat)
 {
 	UIStat = _Mystat;
 
+	/*
+	float HPMax;
+	float HP;
+	float SPMax;
+	float SP;
+	float Defence; //적용
+
+	// 기본 공격
+	float AttackPower; //적용
+	float CriticalChance; //적용
+
+	// 공격 증폭
+	float BasicAttackAmplification; // 기본 공격 강화
+	float SkillDamageAmplification; //적용
+	float CriticalDamageAmplification; // 크리티컬 대미지 강화
+
+	// 저항
+	float BasicAttackDamageReduction; // 기본 공격 대미지 감소
+	float CriticalDamageReduction; // 크리티컬 대미지 감소
+	float SkillAttackDamageReduction; //적용
+	float TrapDamageReduction; // 함정 대미지 감소
+	float Tenacity; // 강인함
+
+	// 재생 및 흡혈
+	float HPRegeneration; // HP 재생
+	float SPRegeneration; // SP 재생
+	float LifeSteel; // 기본공격 흡혈
+	float OmniVamp; // 모든 피해 흡혈
+
+	// 속도
+	float AttackSpeed; //적용
+	float AttackStartTime; // 실질적으로 공격이 나가는 시간
+	float AttackEndTime; // 공격이 끝나는 시간
+	float MovementSpeed; //적용
+	float CooldownReduction; // 쿨타임 감소
+
+	// 거리
+	float AttackRange; // 기본 공격 거리
+	float VisionRange; // 시야
+	*/
+
+	//0.770000
+	//to_string은 6자리까지 표현되므로 소수점 2자리까지만 표기되게 설정
+	string AttackSpeed = to_string(UIStat->AttackSpeed);
+	AttackSpeed.erase(4, 7);
+
+	//크리티컬 확률, 쿨감 등은 뒤에 %가 붙음
+	string CriticalChance = to_string((int)(UIStat->CriticalChance));
+	CriticalChance += "%";
+
+	string CooldownChance = to_string((int)(UIStat->CooldownReduction));
+	CooldownChance += "%";
+
+	string SDIncrease = to_string((int)(UIStat->SkillDamageAmplification));
+	SDIncrease += "%";
+
+	string SDReduction = to_string((int)(UIStat->SkillAttackDamageReduction));
+	SDReduction += "%";
 
 	AttackValue_Renderer->TextSetting("HMKMRHD", to_string((int)(UIStat->AttackPower)), 12);
 	DefenseValue_Renderer->TextSetting("HMKMRHD", to_string((int)(UIStat->Defence)), 12);
-	AttackSpeedValue_Renderer->TextSetting("HMKMRHD", to_string(UIStat->AttackSpeed), 12);
+
+	AttackSpeedValue_Renderer->TextSetting("HMKMRHD", AttackSpeed, 12);
+	MoveSpeedValue_Renderer->TextSetting("HMKMRHD", to_string((int)(UIStat->MovementSpeed)), 12);
+
+	CriticalValue_Renderer->TextSetting("HMKMRHD", CriticalChance, 12);
+	CooldownValue_Renderer->TextSetting("HMKMRHD", CooldownChance, 12);
+
+	SkillDamageIncreaseValue_Renderer->TextSetting("HMKMRHD", SDIncrease, 12);
+	SkillDamageReductionValue_Renderer->TextSetting("HMKMRHD", SDReduction, 12);
 }

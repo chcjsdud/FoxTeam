@@ -45,15 +45,21 @@ private:
 	GameEngineUIRenderer* AttackSpeedValue_Renderer;
 	GameEngineUIRenderer* MoveSpeedValue_Renderer;
 	GameEngineUIRenderer* CriticalValue_Renderer;
+	GameEngineUIRenderer* CooldownValue_Renderer;
+	GameEngineUIRenderer* SkillDamageIncreaseValue_Renderer;
+	GameEngineUIRenderer* SkillDamageReductionValue_Renderer;
 
 	float4 Value_XPivot;
 	float4 Value_YPivot;
 
-	float4 AttackValue_Pos;
+	float4 BasicValue_Pos;
 	float4 DefenseValue_Pos;
 	float4 AttackSpeedValue_Pos;
 	float4 MoveSpeedValue_Pos;
 	float4 CriticalValue_Pos;
+	float4 CooldownValue_Pos;
+	float4 SkillDamageIncreaseValue_Pos;
+	float4 SkillDamageReductionValue_Pos;
 
 #pragma endregion 
 
