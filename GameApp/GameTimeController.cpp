@@ -69,14 +69,14 @@ void GameTimeController::Initialize()
 
 void GameTimeController::Update(float _DeltaTime)
 {
-	// 게임진행에 따른 시간누적 및 낮/밤전환, 일차증가
-	CalcGameTime(_DeltaTime);
-
 	// 레벨업관련 갱신
 
 
 	// 각 몬스터타입별 첫등장시간 체크 및 이벤트 등 처리
 	UpdateMonsterFirstAppearTime(_DeltaTime);
+
+	// 게임진행에 따른 시간누적 및 낮/밤전환, 일차증가
+	CalcGameTime(_DeltaTime);
 }
 
 void GameTimeController::CreateDailytimes()

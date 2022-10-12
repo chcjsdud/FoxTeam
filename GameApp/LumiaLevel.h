@@ -70,6 +70,9 @@ private: // Basic Initalize Function
 	void InitIMGUIWindow();													// LumiaLevel IMGUI Window Setting Function
 	void CameraAdjustment();												// LumiaLevel Main Camera Adjustment Function
 
+private: // GameTime Update Function
+	void GameTimeUpdatePacketSend();										// GameTime Update Packet Send Function
+
 private: // State Update Function
 	void CharacterStateUpdatePacketSend();									// Character State Update Packet Send Function
 	void CharactersTransformUpdate();										// Character ManagerList Transform Update Function

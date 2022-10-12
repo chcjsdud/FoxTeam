@@ -27,6 +27,16 @@ public: // Static Value & Function
 	static GameTimeController* GetInstance();
 
 public: // Inline Get Function
+	inline DayAndNightType GetCurrentDayType() const
+	{
+		return CurDayOrNight_;
+	}
+
+	inline int GetCurrentDay() const
+	{
+		return CurDay_;
+	}
+
 public: // Inline Set Function
 
 public: // Public Get Function

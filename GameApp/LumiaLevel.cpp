@@ -571,6 +571,17 @@ void LumiaLevel::CameraAdjustment()
 	GetMainCameraActor()->GetTransform()->SetWorldPosition({ 0.0f, 100.f, -200.f });
 }
 
+void LumiaLevel::GameTimeUpdatePacketSend()
+{
+	GameServer* ServerSocket = GameServer::GetInstance();
+	GameClient* ClientSocket = GameClient::GetInstance();
+
+	// 게임진행시간 동기화를 위한 패킷전송(서버전용)
+
+
+
+}
+
 void LumiaLevel::CharacterStateUpdatePacketSend()
 {
 	GameServer* ServerSocket = GameServer::GetInstance();
@@ -678,9 +689,26 @@ void LumiaLevel::DebugWindowUpdate()
 		GameTimeController* gm = GameTimeController::GetInstance();
 		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-		//// Game Time Debug Value
-		//tm CurrentTime = gm->GetCurrentGameTimeToMinute();
-		//DebugAndControlWindow_->AddText(std::to_string(CurrentTime.tm_min) + "분" + std::to_string(CurrentTime.tm_sec) + "초");
+		// Game Time Debug Value(서버일때)
+		if (true == GameServer::GetInstance()->IsOpened())
+		{
+			// 현재일차 낮/밤
+			int CurDay = gm->GetCurrentDay();
+			DayAndNightType CurType = gm->GetCurrentDayType();
+			if (DayAndNightType::DAY == CurType)
+			{
+				DebugAndControlWindow_->AddText(std::to_string(CurDay) + " DAY");
+			}
+			else if (DayAndNightType::NIGHT == CurType)
+			{
+				DebugAndControlWindow_->AddText(std::to_string(CurDay) + " NIGHT");
+			}
+
+			float CurrentTimeSec = gm->GetCurrentGameTimeToSec();
+			tm CurrentTimeMin = gm->GetCurrentGameTimeToMinute();
+			DebugAndControlWindow_->AddText(std::to_string(CurrentTimeMin.tm_min) + " MIN " + std::to_string(CurrentTimeMin.tm_sec) + " SEC");
+			DebugAndControlWindow_->AddText(std::to_string(CurrentTimeSec) + " SEC");
+		}
 
 		// InGameMouse Debug Value
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
@@ -746,7 +774,11 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 	// 단, 서버일때만 처리하며 서버(호스트)가 현재게임을 제어(한곳에서 제어하기위해)
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
-		//GameTimeController::GetInstance()->Update(_DeltaTime);
+		// 레벨업, 낮/밤전환, 몬스터첫등장을 위한 타임갱신
+		GameTimeController::GetInstance()->Update(_DeltaTime);
+
+		// 게임시간 실시간 패킷(서버-클라 동기화)
+		GameTimeUpdatePacketSend();
 	}
 
 	// 캐릭터 상태 업데이트 패킷 전송처리
@@ -808,7 +840,7 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	// GameController Initalize
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
-		//GameTimeController::GetInstance()->Initialize();
+		GameTimeController::GetInstance()->Initialize();
 	}
 
 	// 220929 ADD SJH : 테스트용(추후삭제예정)
