@@ -280,6 +280,7 @@ Monsters::Monsters()
 	, NormalState_()
 	, CrowdControlState_()
 	, AttackState_()
+	, CurTarget_(nullptr)
 	, CurStateBasicType_(MonsterStateBasicType::NONE)
 	, CurStateType_(MonsterStateType::NONE)
 {

@@ -12,6 +12,7 @@ class GameEngineCollision;
 class NavFace;
 class NavMesh;
 class LumiaMap;
+class Character;
 class Monsters : public IUnitBase
 {
 public: // Static Value
@@ -187,10 +188,11 @@ protected: // FSM State
 	GameEngineFSM CrowdControlState_;										// 군중제어상태(외부 Callback에의해 실행되는 상태)
 	GameEngineFSM AttackState_;												// 공격상태(일반공격, 스킬공격 상태를 관리 및 실행)
 	
+protected: // 타겟
+	Character* CurTarget_;													// 현재 몬스터의 타겟(피격시 타겟지정, 귀환상태(귀소본능 수치가 0.0f일때)에서 초기화)
+
 private: // 상태정보
 	MonsterStateBasicType CurStateBasicType_;								// 몬스터의 현재상태 기본타입(Normal, CrowdControl, Attack)
 	MonsterStateType CurStateType_;											// 몬스터의 현재상태 상세타입(Run, Idle, Hit, ...)
-
-private:
 };
 
