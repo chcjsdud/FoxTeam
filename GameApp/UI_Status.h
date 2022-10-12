@@ -34,12 +34,18 @@ private:
 	void Start() override;
 	void Update(float _Time) override;
 
-	//이현
+	//퍼센트 기호를 붙히고 뒤에 소수점을 떼주는 함수
+	void AttachPercent(float _Value, string& _Result);
+
 private:
 	CharacterStat* UIStat;
 
 #pragma region 스테이터스 값 출력용 렌더러+위치
 
+	float4 Value_XPivot;
+	float4 Value_YPivot;
+
+	//메인 스테이터스
 	GameEngineUIRenderer* AttackValue_Renderer;
 	GameEngineUIRenderer* DefenseValue_Renderer;
 	GameEngineUIRenderer* AttackSpeedValue_Renderer;
@@ -49,8 +55,6 @@ private:
 	GameEngineUIRenderer* SkillDamageIncreaseValue_Renderer;
 	GameEngineUIRenderer* SkillDamageReductionValue_Renderer;
 
-	float4 Value_XPivot;
-	float4 Value_YPivot;
 
 	float4 BasicValue_Pos;
 	float4 DefenseValue_Pos;
@@ -60,6 +64,26 @@ private:
 	float4 CooldownValue_Pos;
 	float4 SkillDamageIncreaseValue_Pos;
 	float4 SkillDamageReductionValue_Pos;
+
+	//서브 스테이터스
+	GameEngineUIRenderer* VisionRange_Renderer;
+	GameEngineUIRenderer* AttackRange_Renderer;
+	GameEngineUIRenderer* BasicAttackDamageReduction_Renderer;
+	GameEngineUIRenderer* Tenacity_Renderer;
+	GameEngineUIRenderer* DefPenetration_Renderer;
+	GameEngineUIRenderer* VampValue_Renderer;
+	GameEngineUIRenderer* HPRegeneration_Renderer;
+	GameEngineUIRenderer* SPRegeneration_Renderer;
+
+
+	float4 VisionRange_Pos;
+	float4 AttackRange_Pos;
+	float4 BasicAttackDamageReduction_Pos;
+	float4 Tenacity_Pos;
+	float4 DefPenetration_Pos;
+	float4 VampValue_Pos;
+	float4 HPRegeneration_Pos;
+	float4 SPRegeneration_Pos;
 
 #pragma endregion 
 

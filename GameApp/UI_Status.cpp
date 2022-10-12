@@ -55,7 +55,6 @@ void UI_Status::Start()
 		SubStatusRenderer->GetTransform()->SetLocalPosition(SubStatus_BackgroundPos);
 		SubStatusRenderer->GetTransform()->SetLocalScaling(SubStatusRenderer->GetCurrentTexture()->GetTextureSize());
 		
-		//to_string= 숫자를 string으로
 		AttackValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		AttackValue_Renderer->GetTransform()->SetLocalPosition(BasicValue_Pos);
 		
@@ -137,64 +136,29 @@ void UI_Status::SetStatus(CharacterStat* _Mystat)
 {
 	UIStat = _Mystat;
 
-	/*
-	float HPMax;
-	float HP;
-	float SPMax;
-	float SP;
-	float Defence; //적용
-
-	// 기본 공격
-	float AttackPower; //적용
-	float CriticalChance; //적용
-
-	// 공격 증폭
-	float BasicAttackAmplification; // 기본 공격 강화
-	float SkillDamageAmplification; //적용
-	float CriticalDamageAmplification; // 크리티컬 대미지 강화
-
-	// 저항
-	float BasicAttackDamageReduction; // 기본 공격 대미지 감소
-	float CriticalDamageReduction; // 크리티컬 대미지 감소
-	float SkillAttackDamageReduction; //적용
-	float TrapDamageReduction; // 함정 대미지 감소
-	float Tenacity; // 강인함
-
-	// 재생 및 흡혈
-	float HPRegeneration; // HP 재생
-	float SPRegeneration; // SP 재생
-	float LifeSteel; // 기본공격 흡혈
-	float OmniVamp; // 모든 피해 흡혈
-
-	// 속도
-	float AttackSpeed; //적용
-	float AttackStartTime; // 실질적으로 공격이 나가는 시간
-	float AttackEndTime; // 공격이 끝나는 시간
-	float MovementSpeed; //적용
-	float CooldownReduction; // 쿨타임 감소
-
-	// 거리
-	float AttackRange; // 기본 공격 거리
-	float VisionRange; // 시야
-	*/
-
 	//0.770000
 	//to_string은 6자리까지 표현되므로 소수점 2자리까지만 표기되게 설정
 	string AttackSpeed = to_string(UIStat->AttackSpeed);
 	AttackSpeed.erase(4, 7);
 
 	//크리티컬 확률, 쿨감 등은 뒤에 %가 붙음
-	string CriticalChance = to_string((int)(UIStat->CriticalChance));
-	CriticalChance += "%";
 
-	string CooldownChance = to_string((int)(UIStat->CooldownReduction));
-	CooldownChance += "%";
+	float CriticalChance = UIStat->CriticalChance;
+	string CriticalChance_String = to_string(CriticalChance);
+	AttachPercent(CriticalChance, CriticalChance_String);
 
-	string SDIncrease = to_string((int)(UIStat->SkillDamageAmplification));
-	SDIncrease += "%";
+	float CooldownChance = UIStat->CriticalChance;
+	string CooldownChance_String = to_string(UIStat->CooldownReduction);
+	AttachPercent(CriticalChance, CooldownChance_String);
 
-	string SDReduction = to_string((int)(UIStat->SkillAttackDamageReduction));
-	SDReduction += "%";
+	float SDIncrease = UIStat->SkillDamageAmplification;
+	string SDIncrease_String = to_string(UIStat->SkillDamageAmplification);
+	AttachPercent(SDIncrease, SDIncrease_String);
+
+	float SDReduction = UIStat->SkillDamageAmplification;
+	string SDReduction_String = to_string(UIStat->SkillAttackDamageReduction);
+	AttachPercent(SDReduction, SDReduction_String);
+
 
 	AttackValue_Renderer->TextSetting("HMKMRHD", to_string((int)(UIStat->AttackPower)), 12);
 	DefenseValue_Renderer->TextSetting("HMKMRHD", to_string((int)(UIStat->Defence)), 12);
@@ -202,9 +166,39 @@ void UI_Status::SetStatus(CharacterStat* _Mystat)
 	AttackSpeedValue_Renderer->TextSetting("HMKMRHD", AttackSpeed, 12);
 	MoveSpeedValue_Renderer->TextSetting("HMKMRHD", to_string((int)(UIStat->MovementSpeed)), 12);
 
-	CriticalValue_Renderer->TextSetting("HMKMRHD", CriticalChance, 12);
-	CooldownValue_Renderer->TextSetting("HMKMRHD", CooldownChance, 12);
+	CriticalValue_Renderer->TextSetting("HMKMRHD", CriticalChance_String, 12);
+	CooldownValue_Renderer->TextSetting("HMKMRHD", CooldownChance_String, 12);
 
-	SkillDamageIncreaseValue_Renderer->TextSetting("HMKMRHD", SDIncrease, 12);
-	SkillDamageReductionValue_Renderer->TextSetting("HMKMRHD", SDReduction, 12);
+	SkillDamageIncreaseValue_Renderer->TextSetting("HMKMRHD", SDIncrease_String, 12);
+	SkillDamageReductionValue_Renderer->TextSetting("HMKMRHD", SDReduction_String, 12);
+}
+
+void UI_Status::AttachPercent(float _Value, string& _Result)
+{
+	//퍼센트 계산을 위해서 100을 곱함
+	float value = _Value * 100.0f;
+
+
+	if (value >= 100.0f)
+	{
+		//100퍼
+		//100.000000
+		_Result.erase(3,10);
+	}
+	else if (value >= 10.0f && value < 100.0f)
+	{
+		//10~99퍼
+		//10.000000
+		_Result.erase(2, 9);
+	}
+	else if (value < 10.0f)
+	{
+		//0~9퍼
+		//0.000000
+		_Result.erase(1, 8);
+	}
+
+	_Result += "%";
+
+	return;
 }
