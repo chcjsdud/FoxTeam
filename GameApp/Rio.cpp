@@ -11,6 +11,7 @@
 #include "PacketCreateProjectile.h"
 #include "PacketSoundPlay.h"
 #include "eProjectileType.h"
+#include "RioDSkill.h"
 
 Rio::Rio()
 	: Character()
@@ -544,11 +545,53 @@ void Rio::onUpdateRSkill(float _deltaTime)
 
 void Rio::onStartDSkill()
 {
+	destination_ = transform_.GetWorldPosition();
+	destinations_.clear();
+	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
+	setRotationTo(mousePosition, transform_.GetWorldPosition());
+
+	if (bLongBow_)
+	{
+		ChangeAnimation("SkillD_Long", true);
+	}
+	else
+	{
+		ChangeAnimation("SkillD_Short", true);
+	}
+
+	FT::PlaySoundAndSendPacket("skillReadyBow_in.wav", transform_.GetWorldPosition());
+
+	PacketCreateProjectile packetArrow;
+	packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower * 5, mousePosition, transform_.GetWorldRotation().y, 1200.f);
+	packetArrow.SetType(eProjectileType::RioDSkill);
+	FT::SendPacket(packetArrow);
+
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		RioDSkill* skill = level_->CreateActor<RioDSkill>();
+		skill->SetOwner(this);
+		skill->GetTransform()->SetWorldPosition(mousePosition);
+		skill->SetDamage(stat_.AttackPower * 5);
+		skill->SetWaitTime(0.0f);
+	}
 }
 
 void Rio::onUpdateDSkill(float _deltaTime)
 {
-	mainState_ << "NormalState";
+	if (attackState_.GetCurrentState()->Time_ > 0.2f)
+	{
+		FT::PlaySoundAndSendPacket("attackBow_in_r1.wav", transform_.GetWorldPosition());
+
+
+
+		attackState_.GetCurrentState()->Time_ = -10.f;
+	}
+	
+	if (renderer_->IsCurrentAnimationEnd())
+	{
+		changeAnimationWait();
+		mainState_ << "NormalState";
+	}
 }
 
 void Rio::onStartDeath()

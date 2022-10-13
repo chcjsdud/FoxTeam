@@ -14,5 +14,6 @@
 namespace FT
 {
 	void SendPacket(GameEnginePacketBase& packet);
+	void PlaySoundAndSendPacket(const std::string& _name, const float4& _position);
 }
 

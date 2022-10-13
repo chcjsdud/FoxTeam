@@ -1032,6 +1032,7 @@ void Character::updateChase(float _deltaTime)
 
 void Character::startStun()
 {
+	changeAnimationWait();
 }
 
 void Character::updateStun(float _deltaTime)
@@ -1048,6 +1049,7 @@ void Character::updateStun(float _deltaTime)
 
 void Character::startKnockback()
 {
+	changeAnimationWait();
 }
 
 void Character::updateKnockback(float _deltaTime)
@@ -1066,7 +1068,7 @@ void Character::updateKnockback(float _deltaTime)
 
 void Character::startWallSlam()
 {
-
+	changeAnimationWait();
 }
 
 void Character::updateWallSlam(float _deltaTime)

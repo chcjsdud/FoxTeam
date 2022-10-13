@@ -377,6 +377,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="RioDSkill.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ServerTestLevel.cpp">
       <SubType>
       </SubType>
@@ -675,6 +679,10 @@
     </ClInclude>
     <ClInclude Include="ResultLevel.h" />
     <ClInclude Include="RioArrow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="RioDSkill.h">
       <SubType>
       </SubType>
     </ClInclude>

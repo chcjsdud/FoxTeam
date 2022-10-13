@@ -319,6 +319,9 @@
     <ClCompile Include="CharEffectPacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClCompile>
+    <ClCompile Include="RioDSkill.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -829,6 +832,9 @@
     </ClInclude>
     <ClInclude Include="eProjectileType.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="RioDSkill.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

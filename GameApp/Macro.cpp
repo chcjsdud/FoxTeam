@@ -1,4 +1,5 @@
 #include "Precompile.h"
+#include "PacketSoundPlay.h"
 
 void FT::SendPacket(GameEnginePacketBase& packet)
 {
@@ -10,4 +11,12 @@ void FT::SendPacket(GameEnginePacketBase& packet)
 	{
 		GameClient::GetInstance()->Send(&packet);
 	}
+}
+
+void FT::PlaySoundAndSendPacket(const std::string& _name, const float4& _position)
+{
+	GameEngineSoundManager::GetInstance()->PlaySoundByName(_name);
+	PacketSoundPlay packet;
+	packet.SetSound(_name, _position);
+	FT::SendPacket(packet);
 }

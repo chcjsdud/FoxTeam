@@ -5,6 +5,7 @@
 #include <GameEngine/GameEngineCore.h>
 #include "LumiaLevel.h"
 #include "Character.h"
+#include "RioDSkill.h"
 
 PacketCreateProjectile::PacketCreateProjectile()
     : ownerIndex_(-1)
@@ -263,4 +264,20 @@ void PacketCreateProjectile::rioRSkillLong(LumiaLevel* _level, GameEngineSocketI
 
 void PacketCreateProjectile::rioDSkill(LumiaLevel* _level, GameEngineSocketInterface* _network, bool _bServer)
 {
+    std::vector<Character*> list = _level->GetCharacterActorList();
+    RioDSkill* arrow = _level->CreateActor<RioDSkill>();
+
+    if (_bServer)
+    {
+        arrow->SetOwner(list[ownerIndex_]);
+        arrow->SetWaitTime(waitTime_);
+        arrow->SetDamage(damage_);
+        _network->Send(this);
+    }
+    else
+    {
+        arrow->SetOwner(list[ownerIndex_]);
+        arrow->SetWaitTime(waitTime_);
+        arrow->SetDamage(0.0f);
+    }
 }
