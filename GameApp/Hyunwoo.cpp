@@ -562,7 +562,7 @@ void Hyunwoo::onUpdateDSkill(float _deltaTime)
 
 		float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
 
-		Character* otherCharacter = getMousePickedCharacter();
+		IUnit* otherCharacter = getMousePickedCharacter();
 		target_ = otherCharacter;
 
 		if (nullptr != otherCharacter && otherCharacter != this && false == b_Dhit_)
@@ -739,7 +739,7 @@ void Hyunwoo::endCustomRSkill()
 	collision_R->GetTransform()->SetLocalScaling({ 350.0f, 10.0f, 100.0f + collisionRRate_ });
 }
 
-void Hyunwoo::onStartBasicAttacking(Character* _target)
+void Hyunwoo::onStartBasicAttacking(IUnit* _target)
 {
 	target_->Damage(stat_.AttackPower);
 
@@ -763,7 +763,7 @@ void Hyunwoo::onStartBasicAttacking(Character* _target)
 	// 여기 이펙트 패킷 하나
 }
 
-void Hyunwoo::onUpdateBasicAttacking(Character* _target, float _deltaTime)
+void Hyunwoo::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 {
 	if (true == frontEffectRenderer_->IsCurAnimationEnd())
 	{

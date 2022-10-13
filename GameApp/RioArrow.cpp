@@ -54,7 +54,7 @@ void RioArrow::Update(float _deltaTime)
 	state_.Update(_deltaTime);
 }
 
-void RioArrow::MakeTargetArrow(Character& _owner, float _damage, const float4& _position, float _speed, Character& _target)
+void RioArrow::MakeTargetArrow(IUnit& _owner, float _damage, const float4& _position, float _speed, IUnit& _target)
 {
 	owner_ = &_owner;
 	target_ = &_target;
@@ -70,7 +70,7 @@ void RioArrow::MakeTargetArrow(Character& _owner, float _damage, const float4& _
 	setRotationTo(destination, transform_.GetWorldPosition());
 }
 
-void RioArrow::MakeNonTargetArrow(Character& _owner, float _damage, const float4& _position, float _rotationY, float _speed)
+void RioArrow::MakeNonTargetArrow(IUnit& _owner, float _damage, const float4& _position, float _rotationY, float _speed)
 {
 	owner_ = &_owner;
 	target_ = nullptr;
@@ -191,8 +191,8 @@ void RioArrow::updateFly(float _deltaTime)
 					GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_Skill04_Hit.wav");
 					PacketSoundPlay packet;
 					packet.SetSound("Rio_LongBow_Skill04_Hit.wav", transform_.GetWorldPosition());
-					FT::SendPacket(packet);
 					opponent->WallSlam(0.25f, transform_.GetWorldForwardVector() * 1000.f, 0.0f);
+					FT::SendPacket(packet);
 				}
 				else
 				{

@@ -310,7 +310,7 @@
     <ClCompile Include="MonsterStateChangePacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="IUnitBase.cpp">
+    <ClCompile Include="IUnit.cpp">
       <Filter>01.GameObject\01.BaseActor\Unit</Filter>
     </ClCompile>
     <ClCompile Include="GameTimeSyncPacket.cpp">
@@ -500,6 +500,9 @@
     </Filter>
     <Filter Include="01.GameObject\01.BaseActor\Unit">
       <UniqueIdentifier>{581c2fa8-4540-4fa1-b1cf-3baa938964f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Packet\Enum">
+      <UniqueIdentifier>{11eb97b2-eb8d-4670-9994-7494496ce340}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -788,9 +791,6 @@
     <ClInclude Include="CharCrowdControlPacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="eCrowdControlType.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
-    </ClInclude>
     <ClInclude Include="Character.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character</Filter>
     </ClInclude>
@@ -815,7 +815,7 @@
     <ClInclude Include="MonsterStateChangePacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="IUnitBase.h">
+    <ClInclude Include="IUnit.h">
       <Filter>01.GameObject\01.BaseActor\Unit</Filter>
     </ClInclude>
     <ClInclude Include="GameTimeSyncPacket.h">
@@ -823,6 +823,12 @@
     </ClInclude>
     <ClInclude Include="CharEffectPacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="eCrowdControlType.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet\Enum</Filter>
+    </ClInclude>
+    <ClInclude Include="eProjectileType.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet\Enum</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

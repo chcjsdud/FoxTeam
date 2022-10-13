@@ -466,7 +466,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="IUnitBase.cpp" />
+    <ClCompile Include="IUnit.cpp" />
     <ClCompile Include="UseableItem.cpp" />
     <ClCompile Include="UserGame.cpp">
       <SubType>
@@ -519,6 +519,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="eProjectileType.h" />
     <ClInclude Include="GameTimeController.h" />
     <ClInclude Include="GameTimeSyncPacket.h" />
     <ClInclude Include="MonsterStateChangePacket.h" />
@@ -758,7 +759,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="IUnitBase.h" />
+    <ClInclude Include="IUnit.h" />
     <ClInclude Include="UseableItem.h" />
     <ClInclude Include="UserGame.h">
       <SubType>

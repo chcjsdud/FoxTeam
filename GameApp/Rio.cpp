@@ -10,6 +10,7 @@
 #include "RioArrow.h"
 #include "PacketCreateProjectile.h"
 #include "PacketSoundPlay.h"
+#include "eProjectileType.h"
 
 Rio::Rio()
 	: Character()
@@ -176,7 +177,7 @@ void Rio::changeAnimationBasicAttack()
 	}
 }
 
-void Rio::onStartBasicAttacking(Character* _target)
+void Rio::onStartBasicAttacking(IUnit* _target)
 {
 	if (bLongBow_)
 	{
@@ -201,13 +202,15 @@ void Rio::onStartBasicAttacking(Character* _target)
 
 		{
 			PacketCreateProjectile packetArrow;
-			packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
+			packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
+			packetArrow.SetType(eProjectileType::RioTargetArrow);
 			FT::SendPacket(packetArrow);
 		}
 		{
 			PacketCreateProjectile packetArrow;
-			packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
+			packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
 			packetArrow.SetWaitTime(doubleStrikeDelay);
+			packetArrow.SetType(eProjectileType::RioTargetArrow);
 			FT::SendPacket(packetArrow);
 		}
 
@@ -224,7 +227,7 @@ void Rio::onStartBasicAttacking(Character* _target)
 
 }
 
-void Rio::onUpdateBasicAttacking(Character* _target, float _deltaTime)
+void Rio::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 {
 }
 
@@ -297,10 +300,11 @@ void Rio::onStartWSkill()
 		startPosition += offset;
 
 		PacketCreateProjectile packetArrow;
-		packetArrow.MakeNonTargetArrow(*this, stat_.AttackPower * 2.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
+		packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower * 2.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
 		packetArrow.SetLifeTime(0.7f);
 		packetArrow.SetWaitTime(0.25f);
 		packetArrow.SetScale({ 70.f, 150.0f, 100.f });
+		packetArrow.SetType(eProjectileType::RioWSkillLong);
 		FT::SendPacket(packetArrow);
 
 		if (GameServer::GetInstance()->IsOpened())
@@ -328,9 +332,10 @@ void Rio::onStartWSkill()
 		{
 
 			PacketCreateProjectile packetArrow;
-			packetArrow.MakeNonTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, transform_.GetWorldRotation().y - 10.f + 5 * i, 1000.f);
+			packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, transform_.GetWorldRotation().y - 10.f + 5 * i, 1000.f);
 			packetArrow.SetWaitTime(0.05f * i);
 			packetArrow.SetLifeTime(0.7f);
+			packetArrow.SetType(eProjectileType::RioWSkillLong);
 			FT::SendPacket(packetArrow);
 
 		}
@@ -393,11 +398,11 @@ void Rio::onStartRSkill()
 		startPosition += offset;
 
 		PacketCreateProjectile packetArrow;
-		packetArrow.MakeNonTargetArrow(*this, stat_.AttackPower * 6.0f, startPosition, transform_.GetWorldRotation().y, 700.f);
+		packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower * 6.0f, startPosition, transform_.GetWorldRotation().y, 700.f);
 		packetArrow.SetLifeTime(1.0f);
 		packetArrow.SetWaitTime(1.4f);
 		packetArrow.SetScale({ 100.f, 150.0f, 150.f });
-		packetArrow.SetKnockback(true);
+		packetArrow.SetType(eProjectileType::RioRSkillLong);
 		FT::SendPacket(packetArrow);
 
 		if (GameServer::GetInstance()->IsOpened())
@@ -422,11 +427,11 @@ void Rio::onStartRSkill()
 			startPosition += offset;
 
 			PacketCreateProjectile packetArrow;
-			packetArrow.MakeNonTargetArrow(*this, stat_.AttackPower * 3.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
+			packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower * 3.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
 			packetArrow.SetLifeTime(0.5f);
 			packetArrow.SetWaitTime(0.3f);
 			packetArrow.SetScale({ 80.f, 150.0f, 100.f });
-			packetArrow.SetKnockback(true);
+			packetArrow.SetType(eProjectileType::RioRSkillShortImpact);
 			FT::SendPacket(packetArrow);
 
 			if (GameServer::GetInstance()->IsOpened())
@@ -452,10 +457,11 @@ void Rio::onStartRSkill()
 			for (int i = 0; i < 3; i++)
 			{
 				PacketCreateProjectile packetArrow;
-				packetArrow.MakeNonTargetArrow(*this, stat_.AttackPower, startPosition, transform_.GetWorldRotation().y, 1200.f);
+				packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower, startPosition, transform_.GetWorldRotation().y, 1200.f);
 				packetArrow.SetLifeTime(0.5f);
 				packetArrow.SetWaitTime(0.4f + 0.1f * i);
 				packetArrow.SetScale({ 70.f, 150.0f, 100.f });
+				packetArrow.SetType(eProjectileType::RioRSkillShort);
 				FT::SendPacket(packetArrow);
 
 				if (GameServer::GetInstance()->IsOpened())
@@ -625,13 +631,15 @@ void Rio::startSkillEShot()
 			}
 			{
 				PacketCreateProjectile packetArrow;
-				packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+				packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+				packetArrow.SetType(eProjectileType::RioTargetArrow);
 				FT::SendPacket(packetArrow);
 			}
 			{
 				PacketCreateProjectile packetArrow;
-				packetArrow.MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+				packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
 				packetArrow.SetWaitTime(doubleStrikeDelay);
+				packetArrow.SetType(eProjectileType::RioTargetArrow);
 				FT::SendPacket(packetArrow);
 			}
 

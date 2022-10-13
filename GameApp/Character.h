@@ -4,6 +4,7 @@
 
 #include "NavMesh.h"
 #include "CharacterStat.h"
+#include "IUnit.h"
 
 struct CombineItem;
 struct QueueItem;
@@ -15,7 +16,7 @@ class LumiaMap;
 class ItemBase;
 class EquipmentItem;
 class PlayerUIController;
-class Character : public GameEngineActor
+class Character : public IUnit
 {
 public:
 	Character();
@@ -25,8 +26,12 @@ public:
 	Character& operator=(const Character& _other) = delete;
 	Character& operator=(const Character&& _other) = delete;
 
+public:
 	void Start() override;
 	void Update(float _DeltaTime) override;
+
+	int GetIndex() override;
+	void Damage(float _amount) override;
 
 public:
 	void InitSpawnPoint(const float4& _position);
@@ -41,7 +46,6 @@ public:
 	void ChangeAnimation(const std::string& _animationName, bool _bForce = false);
 	void ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect);
 
-	void Damage(float _amount);
 	void Stun(float _stunTime);
 	void Knockback(float _knockbackTime, float4 _knockbackSpeed);
 	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime);
@@ -56,7 +60,6 @@ public:
 	std::string GetOverrideAnimationName() { return overrideAnimationName_; }
 	std::string GetOverrideAnimationBoneName() { return overrideAnimationBoneName_; }
 	NavFace* GetCurrentNavFace() { return currentNavFace_; }
-	int GetIndex() { return myIndex_; }
 	std::vector<ItemBase*> GetInventory() { return inventory_; }
 
 	void SetDirection(float4 _dir) { direction_ = _dir; }
@@ -91,8 +94,8 @@ protected:
 	virtual void changeAnimationBasicAttack() = 0;
 
 	// Main(AttackState)
-	virtual void onStartBasicAttacking(Character* _target) = 0;
-	virtual void onUpdateBasicAttacking(Character* _target, float _deltaTime) = 0;
+	virtual void onStartBasicAttacking(IUnit* _target) = 0;
+	virtual void onUpdateBasicAttacking(IUnit* _target, float _deltaTime) = 0;
 
 	virtual void onStartQSkill() = 0;
 	virtual void onUpdateQSkill(float _deltaTime) = 0;
@@ -127,6 +130,7 @@ protected:
 	void moveProcess(float _deltaTime);
 
 	void setRotationTo(const float4& _destination, const float4 _startPosition);
+	IUnit* getMousePickedCharacter();
 
 private:
 	void initInput();
@@ -147,8 +151,6 @@ private:
 	void checkBuildItems();
 	void checkBuildItemsRecursive(ItemBase* _item);
 
-protected:
-	Character* getMousePickedCharacter();
 
 
 	//------------------------------------------------------------------------------------------------------------------
@@ -298,7 +300,7 @@ protected:
 	GameEngineFSM attackState_;
 
 	// АјАн
-	Character* target_;
+	IUnit* target_;
 
 	GameEngineFSM deathState_;
 

@@ -173,6 +173,8 @@ void Character::Update(float _DeltaTime)
 
 }
 
+int Character::GetIndex() { return myIndex_; }
+
 void Character::checkCurrentNavFace()
 {
 	if (nullptr != currentNavFace_)
@@ -513,17 +515,17 @@ void Character::checkBuildItemsRecursive(ItemBase* _item)
 	}
 }
 
-Character* Character::getMousePickedCharacter()
+IUnit* Character::getMousePickedCharacter()
 {
 	GameEngineCollision* mousePickedCollision = mouse_->GetRayCollision()->GetCollision(eCollisionGroup::Player);
 	GameEngineActor* mousePickedActor = nullptr;
-	Character* mousePickedCharacter = nullptr;
+	IUnit* mousePickedCharacter = nullptr;
 	if (nullptr != mousePickedCollision)
 	{
 		mousePickedActor = mousePickedCollision->GetActor();
 		if (nullptr != mousePickedActor)
 		{
-			return mousePickedCharacter = dynamic_cast<Character*>(mousePickedActor);
+			return mousePickedCharacter = dynamic_cast<IUnit*>(mousePickedActor);
 		}
 	}
 
@@ -714,7 +716,7 @@ void Character::inputProcess(float _deltaTime)
 	if (GameEngineInput::Press("LButton") || GameEngineInput::Down("LButton"))
 	{
 
-		Character* otherCharacter = getMousePickedCharacter();
+		IUnit* otherCharacter = getMousePickedCharacter();
 		if (nullptr != otherCharacter && otherCharacter != this)
 		{
 			// 공격 처리
@@ -1117,7 +1119,7 @@ void Character::updateBasicAttack(float _deltaTime)
 		if (GameEngineInput::Press("LButton") || GameEngineInput::Down("LButton"))
 		{
 
-			Character* otherCharacter = getMousePickedCharacter();
+			IUnit* otherCharacter = getMousePickedCharacter();
 
 			if (target_ != otherCharacter)
 			{

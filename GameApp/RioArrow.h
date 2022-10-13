@@ -2,6 +2,7 @@
 
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+#include "IUnit.h"
 
 class GameEngineFBXRenderer;
 class GameEngineCollision;
@@ -21,8 +22,8 @@ public:
 	virtual void Update(float _deltaTime);
 
 public:
-	void MakeTargetArrow(Character& _owner, float _damage, const float4& _position, float _speed, Character& _target);
-	void MakeNonTargetArrow(Character& _owner, float _damage, const float4& _position, float _rotationY, float _speed);
+	void MakeTargetArrow(IUnit& _owner, float _damage, const float4& _position, float _speed, IUnit& _target);
+	void MakeNonTargetArrow(IUnit& _owner, float _damage, const float4& _position, float _rotationY, float _speed);
 
 	void SetWaitTime(float _waitTime) { waitTime_ = _waitTime; }
 	void SetLifeTime(float _lifeTime) { lifeTime_ = _lifeTime; }
@@ -46,8 +47,8 @@ private:
 	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* collision_;
 
-	Character* owner_;
-	Character* target_;
+	IUnit* owner_;
+	IUnit* target_;
 
 	float4 scale_;
 	float damage_;
