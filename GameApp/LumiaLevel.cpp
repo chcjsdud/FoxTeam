@@ -22,6 +22,7 @@
 #include "CharStatPacket.h"
 #include "CharCrowdControlPacket.h"
 #include "CreationCommandPacket.h"
+#include "CharEffectPacket.h"
 #include "LoadingEndPacket.h"
 #include "PacketCreateProjectile.h"
 #include "PacketSoundPlay.h"
@@ -523,6 +524,7 @@ void LumiaLevel::AddSocketHandle()
 		server->AddPacketHandler(ePacketID::PacketSoundPlay, new PacketSoundPlay);
 		server->AddPacketHandler(ePacketID::MonsterStatePacket, new MonsterStateChangePacket);
 		server->AddPacketHandler(ePacketID::TimeSyncPacket, new GameTimeSyncPacket);
+		server->AddPacketHandler(ePacketID::CharEffectPacket, new CharEffectPacket);
 	}
 
 	if (true == client->IsConnected())
@@ -535,6 +537,7 @@ void LumiaLevel::AddSocketHandle()
 		client->AddPacketHandler(ePacketID::PacketSoundPlay, new PacketSoundPlay);
 		client->AddPacketHandler(ePacketID::MonsterStatePacket, new MonsterStateChangePacket);
 		client->AddPacketHandler(ePacketID::TimeSyncPacket, new GameTimeSyncPacket);
+		client->AddPacketHandler(ePacketID::CharEffectPacket, new CharEffectPacket);
 	}
 }
 

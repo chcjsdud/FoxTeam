@@ -559,6 +559,10 @@ void Rio::onUpdateCustomState(float _deltaTime)
 	customState_.Update(_deltaTime);
 }
 
+void Rio::onPlayEffect(const std::string& _effectName)
+{
+}
+
 void Rio::startSkillEBegin()
 {
 	float height = 0.0f;

@@ -1220,3 +1220,8 @@ void Character::updatePlayerDeath(float _deltaTime)
 {
 	onUpdateDeath(_deltaTime);
 }
+
+void Character::PlayEffect(const std::string& _effectName)
+{
+	onPlayEffect(_effectName);
+}

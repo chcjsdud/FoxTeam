@@ -13,10 +13,8 @@ public:
 	CharEffectPacket& operator=(const CharEffectPacket& _other) = delete; // default Copy operator 디폴트 대입 연산자
 	CharEffectPacket& operator=(const CharEffectPacket&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
 
-public:
 	void SetTargetIndex(int _index);
 	void SetAnimationName(const std::string& _animation);
-	void SetOverrideAnimation(const std::string& _overrideAnimationName, const std::string& _boneNameToAffect);
 
 protected:
 	virtual void userSerialize() override;

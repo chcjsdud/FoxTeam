@@ -13,6 +13,7 @@
 #include "Character.h"
 #include "CharCrowdControlPacket.h"
 #include "PacketSoundPlay.h"
+#include "CharEffectPacket.h"
 
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
@@ -264,6 +265,7 @@ void Hyunwoo::changeAnimationBasicAttack()
 	PacketSoundPlay packet;
 	packet.SetSound("attackGlove_Normal01.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
+
 }
 
 void Hyunwoo::onStartQSkill()
@@ -626,6 +628,26 @@ void Hyunwoo::onUpdateCustomState(float _deltaTime)
 	customState_.Update(_deltaTime);
 }
 
+
+
+void Hyunwoo::onPlayEffect(const std::string& _effectName)
+{
+	// 상대방에게서 보내 진 이펙트 패킷이 execute 되면
+	// 최종적으로 그 이펙트명이 해당 타겟 인덱스 캐릭터의 인자로 들어와 이 함수로 들어 옵니다.
+	
+	if ("BasicAttack" == _effectName)
+	{
+		frontEffectRenderer_->On();
+		frontEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
+		frontEffectRenderer_->AnimationPlay();
+		return;
+	}
+
+}
+
+
+
+
 void Hyunwoo::startCustomRSkill()
 {
 	curAnimationName_ = "SkillR_start";
@@ -726,9 +748,19 @@ void Hyunwoo::onStartBasicAttacking(Character* _target)
 	packet.SetSound("attackGlove_Normal_Hit_P.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
 
+
+
 	frontEffectRenderer_->On();
 	frontEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
 	frontEffectRenderer_->AnimationPlay();
+
+	
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("BasicAttack");
+	FT::SendPacket(pack);
+	// 여기 이펙트 패킷 하나
 }
 
 void Hyunwoo::onUpdateBasicAttacking(Character* _target, float _deltaTime)

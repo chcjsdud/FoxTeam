@@ -28,6 +28,7 @@ enum class ePacketID
 	CharAnimationPacket,
 	CharStatPacket,
 	CharCrowdControlPacket,
+	CharEffectPacket,
 	PacketCreateProjectile,
 
 	PacketSoundPlay,

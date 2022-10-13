@@ -116,7 +116,11 @@ protected:
 	virtual void onStartDeath() = 0;
 	virtual void onUpdateDeath(float _deltaTime) = 0;
 
+	virtual void onPlayEffect(const std::string& _effectName) = 0;
+
 #pragma endregion
+
+
 
 protected:
 	void inputProcess(float _deltaTime);
@@ -243,6 +247,11 @@ protected:
 	void updatePlayerDeath(float _deltaTime);
 #pragma endregion
 
+
+public:
+#pragma region EffectPlay
+	void PlayEffect(const std::string& _effectName);
+#pragma endregion
 	//------------------------------------------------------------------------------------------------------------------
 
 protected:

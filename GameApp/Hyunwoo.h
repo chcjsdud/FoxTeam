@@ -66,6 +66,8 @@ protected:
 	virtual void onUpdateCustomState(float _deltaTime) override;
 
 
+	virtual void onPlayEffect(const std::string& _effectName);
+
 	// customstate
 	void startCustomRSkill();
 	void updateCustomRSkill(float _deltaTime);

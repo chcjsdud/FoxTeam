@@ -344,6 +344,16 @@ void GameEngineEffectRenderer::Update(float _DeltaTime)
 		return;
 	}
 
+	if (true == CurAnimation_->IsEnd)
+	{
+		CurAnimation_->Renderer->Off();
+		return;
+	}
+	else
+	{
+		CurAnimation_->Renderer->On();
+	}
+
 	CurAnimation_->Update(_DeltaTime);
 }
 
