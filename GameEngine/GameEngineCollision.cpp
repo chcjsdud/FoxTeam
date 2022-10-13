@@ -57,6 +57,11 @@ void GameEngineCollision::Init()
 
 	CollisionCheckFunction[static_cast<int>(CollisionType::Sphere3D)][static_cast<int>(CollisionType::Ray)]
 		= std::bind(&GameEngineCollision::SphereToRay, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::Sphere3D)][static_cast<int>(CollisionType::OBBBox3D)]
+		= std::bind(&GameEngineCollision::SphereToOBB, std::placeholders::_1, std::placeholders::_2);
+	CollisionCheckFunction[static_cast<int>(CollisionType::OBBBox3D)][static_cast<int>(CollisionType::Sphere3D)]
+		= std::bind(&GameEngineCollision::OBBToSphere, std::placeholders::_1, std::placeholders::_2);
 }
 
 
@@ -159,6 +164,19 @@ bool GameEngineCollision::RayToSphere(GameEngineTransform* _left, GameEngineTran
 bool GameEngineCollision::SphereToRay(GameEngineTransform* _left, GameEngineTransform* _right)
 {
 	return RayToSphere(_right, _left);
+}
+
+bool GameEngineCollision::SphereToOBB(GameEngineTransform* _left, GameEngineTransform* _right)
+{
+	DirectX::BoundingOrientedBox left = _left->GetOBB();
+	DirectX::BoundingSphere right = _right->GetSphere();
+
+	return left.Intersects(right);
+}
+
+bool GameEngineCollision::OBBToSphere(GameEngineTransform* _left, GameEngineTransform* _right)
+{
+	return SphereToOBB(_right, _left);
 }
 
 //===================================================== SJH
