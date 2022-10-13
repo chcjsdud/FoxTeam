@@ -78,6 +78,10 @@ private: // Private Update Function
 	void CheckMonsterStateInfo(float _DeltaTime);							// 상태정보 체크(상태별 강제상태전환 체크)
 	void CheckAllCollision(float _DeltaTime);								// 충돌체 충돌체크
 
+private: // Collision Related Function
+	void CheckBodyCollision(float _DeltaTime);								// 몸체충돌(피격판정)
+	void CheckAttackCollision(float _DeltaTime);							// 공격체충돌(공격판정)
+
 private: // FSM State Function
 	//==================================== Main State
 	void StartNormalState();												// 일반상태 시작

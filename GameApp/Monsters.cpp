@@ -193,21 +193,30 @@ void Monsters::CheckMonsterStateInfo(float _DeltaTime)
 void Monsters::CheckAllCollision(float _DeltaTime)
 {
 	// 몸체 충돌체 충돌체크
+	CheckBodyCollision(_DeltaTime);
+
+	// 공격 충돌체 충돌체크
+	CheckAttackCollision(_DeltaTime);
+}
+
+void Monsters::CheckBodyCollision(float _DeltaTime)
+{
+	// 몸체 충돌체 충돌체크
 	if (nullptr != BodyCollider_ && true == BodyCollider_->IsUpdate())
 	{
 #ifdef _DEBUG
 		GetLevel()->PushDebugRender(BodyCollider_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
 #endif // _DEBUG
 
-		// 플레이어 그룹과의 충돌
-		GameEngineCollision* HitCollider = BodyCollider_->GetCollision(static_cast<int>(eCollisionGroup::Player));
+		// 플레이어공격체 그룹과의 충돌
+		GameEngineCollision* HitCollider = BodyCollider_->GetCollision(static_cast<int>(eCollisionGroup::PlayerAttack));
 		if (nullptr != HitCollider)
 		{
 			// 타겟지정
 			TargetCollider_ = HitCollider;
 
 			// 피격상태 전환
-
+			ChangeAnimationAndState(MonsterStateType::HIT);
 		}
 
 		// 마우스 그룹과의 충돌
@@ -215,9 +224,14 @@ void Monsters::CheckAllCollision(float _DeltaTime)
 		{
 			// 현재 사망중 OR 사망상태라면 View ItemBox
 
+
+
 		}
 	}
+}
 
+void Monsters::CheckAttackCollision(float _DeltaTime)
+{
 	// 공격 충돌체 충돌체크
 	if (nullptr != AtkCollider_ && true == AtkCollider_->IsUpdate())
 	{
@@ -229,6 +243,9 @@ void Monsters::CheckAllCollision(float _DeltaTime)
 		if (true == AtkCollider_->Collision(static_cast<int>(eCollisionGroup::Player)))
 		{
 			// 플레이어 공격
+
+
+
 
 		}
 	}
