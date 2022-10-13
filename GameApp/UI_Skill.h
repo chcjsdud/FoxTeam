@@ -23,8 +23,6 @@ public:
 public:
 	void SetJobType(JobType _myjob);
 
-	void SetSkillType(JobType _myjob, bool _Skilltype);
-
 protected:
 	GameEngineUIRenderer* BackGroundRenderer;
 	//리소스가 많아지면 맵을 사용할 예정

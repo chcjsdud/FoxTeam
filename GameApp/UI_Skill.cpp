@@ -122,12 +122,40 @@ void UI_Skill::SetJobType(JobType _myjob)
 	case JobType::NONE:
 		break;
 	case JobType::YUKI:
+	{
+		Icon_Q->SetImage("Yuki_Q_Icon.png", "PointSmp");
+		Icon_W->SetImage("Yuki_W_Icon.png", "PointSmp");
+		Icon_E->SetImage("Yuki_E_Icon.png", "PointSmp");
+		Icon_R->SetImage("Yuki_R_Icon.png", "PointSmp");
+		Icon_Passive->SetImage("Yuki_Passive_Icon.png", "PointSmp");
+	}
 		break;
 	case JobType::FIORA:
+	{
+		Icon_Q->SetImage("Fiora_Q_Icon.png", "PointSmp");
+		Icon_W->SetImage("Fiora_W_Icon.png", "PointSmp");
+		Icon_E->SetImage("Fiora_E_Icon.png", "PointSmp");
+		Icon_R->SetImage("Fiora_R_Icon.png", "PointSmp");
+		Icon_Passive->SetImage("Fiora_Passive_Icon.png", "PointSmp");
+	}
 		break;
 	case JobType::ZAHIR:
+	{
+		Icon_Q->SetImage("Zahir_Q_Icon.png", "PointSmp");
+		Icon_W->SetImage("Zahir_W_Icon.png", "PointSmp");
+		Icon_E->SetImage("Zahir_E_Icon.png", "PointSmp");
+		Icon_R->SetImage("Zahir_R_Icon.png", "PointSmp");
+		Icon_Passive->SetImage("Zahir_Passive_Icon.png", "PointSmp");
+	}
 		break;
 	case JobType::NADINE:
+	{
+		Icon_Q->SetImage("Nadine_Q_Icon.png", "PointSmp");
+		Icon_W->SetImage("Nadine_W_Icon.png", "PointSmp");
+		Icon_E->SetImage("Nadine_E_Icon.png", "PointSmp");
+		Icon_R->SetImage("Nadine_R_Icon.png", "PointSmp");
+		Icon_Passive->SetImage("Nadine_Passive_Icon.png", "PointSmp");
+	}
 		break;
 	case JobType::HYUNWOO:
 	{
@@ -139,6 +167,13 @@ void UI_Skill::SetJobType(JobType _myjob)
 	}
 		break;
 	case JobType::JACKIE:
+	{
+		Icon_Q->SetImage("Jackie_Q_Icon.png", "PointSmp");
+		Icon_W->SetImage("Jackie_W_Icon.png", "PointSmp");
+		Icon_E->SetImage("Jackie_E_Icon.png", "PointSmp");
+		Icon_R->SetImage("Jackie_R_Icon.png", "PointSmp");
+		Icon_Passive->SetImage("Jackie_Passive_Icon.png", "PointSmp");
+	}
 		break;
 	case JobType::RIO:
 	{
@@ -151,6 +186,13 @@ void UI_Skill::SetJobType(JobType _myjob)
 	}
 		break;
 	case JobType::AYA:
+	{
+		Icon_Q->SetImage("Aya_Q_Icon.png", "PointSmp");
+		Icon_W->SetImage("Aya_W_Icon.png", "PointSmp");
+		Icon_E->SetImage("Aya_E_Icon.png", "PointSmp");
+		Icon_R->SetImage("Aya_R_Icon.png", "PointSmp");
+		Icon_Passive->SetImage("Aya_Passive_Icon.png", "PointSmp");
+	}
 		break;
 	case JobType::DUMMY:
 		break;
@@ -159,9 +201,4 @@ void UI_Skill::SetJobType(JobType _myjob)
 	default:
 		break;
 	}
-}
-
-void UI_Skill::SetSkillType(JobType _myjob, bool _Skilltype)
-{
-	
 }
