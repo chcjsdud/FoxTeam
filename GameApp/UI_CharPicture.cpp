@@ -27,22 +27,28 @@ void UI_CharPicture::SetJobType(JobType _myjob)
 	case JobType::NONE:
 		break;
 	case JobType::YUKI:
+		CharRenderer->SetImage("Char_UI_Yuki.png", "PointSmp");
 		break;
 	case JobType::FIORA:
+		CharRenderer->SetImage("Char_UI_Fiora.png", "PointSmp");
 		break;
 	case JobType::ZAHIR:
+		CharRenderer->SetImage("Char_UI_Zahir.png", "PointSmp");
 		break;
 	case JobType::NADINE:
+		CharRenderer->SetImage("Char_UI_Nadine.png", "PointSmp");
 		break;
 	case JobType::HYUNWOO:
 		CharRenderer->SetImage("Char_UI_Hyunwoo.png", "PointSmp");
 		break;
 	case JobType::JACKIE:
+		CharRenderer->SetImage("Char_UI_Jackie.png", "PointSmp");
 		break;
 	case JobType::RIO:
 		CharRenderer->SetImage("Char_UI_Rio.png", "PointSmp");
 		break;
 	case JobType::AYA:
+		CharRenderer->SetImage("Char_UI_Aya.png", "PointSmp");
 		break;
 	case JobType::DUMMY:
 		break;
