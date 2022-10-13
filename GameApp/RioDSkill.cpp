@@ -98,7 +98,7 @@ void RioDSkill::updateFall(float _deltaTime)
 		Release();
 	}
 
-	if (state_.GetCurrentState()->Time_ > 0.7f)
+	if (state_.GetCurrentState()->Time_ > 0.07f)
 	{
 		FT::PlaySoundAndSendPacket("Rio_ShortBow_Hit_01.wav", transform_.GetWorldPosition());
 		state_.GetCurrentState()->Time_ = 0.0f;
