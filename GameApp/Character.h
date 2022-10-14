@@ -92,6 +92,8 @@ protected:
 	virtual void changeAnimationRun() = 0;
 	virtual void changeAnimationWait() = 0;
 	virtual void changeAnimationBasicAttack() = 0;
+	virtual void changeAnimationCooking() {}
+	virtual void changeAnimationCraft() {}
 
 	// Main(AttackState)
 	virtual void onStartBasicAttacking(IUnit* _target) = 0;
@@ -200,6 +202,12 @@ private:
 
 	void startChase();
 	void updateChase(float _deltaTime);
+
+	void startCraft();
+	void updateCraft(float _deltaTime);
+
+	void startCooking();
+	void updateCooking(float _deltaTime);
 #pragma endregion
 
 

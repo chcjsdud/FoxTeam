@@ -1030,6 +1030,22 @@ void Character::updateChase(float _deltaTime)
 
 }
 
+void Character::startCraft()
+{
+}
+
+void Character::updateCraft(float _deltaTime)
+{
+}
+
+void Character::startCooking()
+{
+}
+
+void Character::updateCooking(float _deltaTime)
+{
+}
+
 void Character::startStun()
 {
 	changeAnimationWait();
