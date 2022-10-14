@@ -24,6 +24,7 @@ void TestLevel::LevelStart()
 	GameEngineInput::GetInst().CreateKey("Z", 'Z');
 	GameEngineInput::GetInst().CreateKey("X", 'X');
 	GameEngineInput::GetInst().CreateKey("C", 'C');
+	GameEngineInput::GetInst().CreateKey("V", 'V');
 }
 
 void TestLevel::LevelUpdate(float _DeltaTime)
@@ -45,8 +46,17 @@ void TestLevel::LevelUpdate(float _DeltaTime)
 
 	if (GameEngineInput::Press("Z"))
 	{
-		rio_->ChangeAnimation(std::string("Wait_Short"));
+		if (rio_->IsLongBow())
+		{
+			rio_->ChangeAnimation(std::string("Wait_Long"));
+		}
+		else
+		{
+			rio_->ChangeAnimation(std::string("Wait_Short"));
+
+		}
 	}
+
 }
 
 void TestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
