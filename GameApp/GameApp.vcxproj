@@ -471,6 +471,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="IUnit.cpp" />
+    <ClCompile Include="UI_Time.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UseableItem.cpp" />
     <ClCompile Include="UserGame.cpp">
       <SubType>
@@ -768,6 +772,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="IUnit.h" />
+    <ClInclude Include="UI_Time.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UseableItem.h" />
     <ClInclude Include="UserGame.h">
       <SubType>

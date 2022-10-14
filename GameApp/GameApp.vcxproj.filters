@@ -322,6 +322,9 @@
     <ClCompile Include="RioDSkill.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Time.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -835,6 +838,9 @@
     </ClInclude>
     <ClInclude Include="RioDSkill.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Time.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
