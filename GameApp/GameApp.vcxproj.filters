@@ -202,9 +202,6 @@
     <ClCompile Include="StartPointSelectPacket.cpp">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClCompile>
-    <ClCompile Include="Hyunwoo.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="CharMovementPacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClCompile>
@@ -324,6 +321,12 @@
     </ClCompile>
     <ClCompile Include="UI_Time.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Hyunwoo.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
+    </ClCompile>
+    <ClCompile Include="HyunwooQEffect.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -509,6 +512,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Packet\Enum">
       <UniqueIdentifier>{11eb97b2-eb8d-4670-9994-7494496ce340}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo">
+      <UniqueIdentifier>{6a2ff16f-c540-46d5-9fd6-3b6fbba18d6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -716,9 +722,6 @@
     <ClInclude Include="StartPointSelectPacket.h">
       <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
     </ClInclude>
-    <ClInclude Include="Hyunwoo.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="CharMovementPacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
@@ -841,6 +844,12 @@
     </ClInclude>
     <ClInclude Include="UI_Time.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Hyunwoo.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
+    </ClInclude>
+    <ClInclude Include="HyunwooQEffect.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

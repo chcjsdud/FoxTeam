@@ -63,6 +63,8 @@ public:
 
 	void SetIndex(const int Index);
 
+
+
 	void CreateAnimation(const std::string& _TextureName, const std::string& _Name, int _StartFrame, int _EndFrame, float _InterTime, bool _Loop = true);
 
 	void CreateAnimationFolder(const std::string& _FolderTexName, const std::string& _Name, float _InterTime, bool _Loop = true);
@@ -120,6 +122,11 @@ public:
 	inline void SetAlpha(float _Value)
 	{
 		CorrectResultColor_.vMulColor.a = _Value;
+	}
+
+	inline float GetAlpha()
+	{
+		return CorrectResultColor_.vMulColor.a;
 	}
 
 	inline void SetPlusColor(float4 _Color)

@@ -162,6 +162,7 @@ GameEngineEffectRenderer::~GameEngineEffectRenderer()
 void GameEngineEffectRenderer::Start()
 {
 	GameEngineRenderer::Start();
+
 	SetRenderingPipeLine("TextureTrans");
 	ShaderHelper.SettingConstantBufferLink("TextureTransAtlasData", CutData);
 

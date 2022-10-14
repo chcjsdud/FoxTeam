@@ -55,16 +55,17 @@ float4 TextureTrans_PS(VertexOut _in) : SV_Target0
 {
     float4 Color = (Tex.Sample(Smp, _in.Texcoord.xy) * vMulColor);
 
-    //if (1.0f > Color.a)
-    //{
-    //    // 출력안하고 정지
-    //    clip(-1);
-    //}
-    if (0.3529f >= Color.r && 0.3529f >= Color.g && 0.3529f >= Color.b)
+    if (0.0f == Color.a)
     {
         // 출력안하고 정지
         clip(-1);
     }
+   
+    //if (0.3529f >= Color.r && 0.3529f >= Color.g && 0.3529f >= Color.b)
+    //{
+    //    // 출력안하고 정지
+    //    clip(-1);
+    //}
 
     Color += vPlusColor;
 

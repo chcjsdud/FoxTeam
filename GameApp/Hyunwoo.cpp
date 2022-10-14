@@ -14,10 +14,12 @@
 #include "CharCrowdControlPacket.h"
 #include "PacketSoundPlay.h"
 #include "CharEffectPacket.h"
+#include "HyunwooQEffect.h"
+#include "HyunwooEffect.h"
 
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
-	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), frontEffectRenderer_(nullptr)
+	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), basicAttackEffectRenderer_(nullptr), QGroundCrackEffectRenderer_(nullptr), qEffect_(nullptr)
 {
 
 }
@@ -77,8 +79,10 @@ void Hyunwoo::LoadResource()
 
 		GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_061.png");
 		hitBase->Cut(2, 2);
-		GameEngineTexture* rearBase = GameEngineTextureManager::GetInst().Find("FX_BI_WindDust_01SE.png");
+		GameEngineTexture* rearBase = GameEngineTextureManager::GetInst().Find("FX_BI_WindDust_01SE1.png");
 		rearBase->Cut(3, 8);
+
+
 	}
 }
 
@@ -214,25 +218,38 @@ void Hyunwoo::initHyunwooCustomState()
 
 void Hyunwoo::initEffectRenderer()
 {
-	frontEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
+	basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 
-	frontEffectRenderer_->SetImage("FX_BI_Hit_061.png");
-	frontEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, stat_.AttackRange - 180.f });
-	frontEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	frontEffectRenderer_->GetTransform()->SetLocalScaling(frontEffectRenderer_->GetCurrentTexture()->GetTextureSize()/3);
-	frontEffectRenderer_->CreateAnimation("FX_BI_Hit_061.png", "FX_BI_Hit_061", 0, 3, 0.04f, false);
-	frontEffectRenderer_->Off();
+	basicAttackEffectRenderer_->SetImage("FX_BI_Hit_061.png");
+	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, stat_.AttackRange - 180.f });
+	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
+	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
+	basicAttackEffectRenderer_->CreateAnimation("FX_BI_Hit_061.png", "FX_BI_Hit_061", 0, 3, 0.04f, false);
+	basicAttackEffectRenderer_->Off();
+
+
+	QGroundCrackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
+	QGroundCrackEffectRenderer_->SetImage("FX_BI_GroundBomb_01.png");
+	QGroundCrackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 100.0f });
+	QGroundCrackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
+	QGroundCrackEffectRenderer_->GetTransform()->SetLocalScaling(QGroundCrackEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
+	QGroundCrackEffectRenderer_->Off();
 
 	rearEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 
-	rearEffectRenderer_->SetImage("FX_BI_WindDust_01SE.png");
-	rearEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, -50.0f });
+	rearEffectRenderer_->SetImage("FX_BI_WindDust_01SE1.png", "PointSmp");
+	rearEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, -180.0f });
 	rearEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 0.f,90.f,0.f });
-	rearEffectRenderer_->GetTransform()->SetLocalScaling(frontEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
-	rearEffectRenderer_->CreateAnimation("FX_BI_WindDust_01SE.png", "FX_BI_WindDust_01SE", 0, 23, 0.02f, false);
+	rearEffectRenderer_->GetTransform()->SetLocalScaling(rearEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
+	rearEffectRenderer_->CreateAnimation("FX_BI_WindDust_01SE1.png", "FX_BI_WindDust_01SE", 0, 23, 0.02f, false);
 	rearEffectRenderer_->Off();
 
+
+	qEffect_ = GetLevel()->CreateActor<HyunwooQEffect>();
+	qEffect_->SetParent(this);
+
 }
+
 
 void Hyunwoo::changeAnimationRun()
 {
@@ -279,7 +296,9 @@ void Hyunwoo::onStartQSkill()
 
 	collision_Q->On();
 
-
+	rearEffectRenderer_->On();
+	rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
+	rearEffectRenderer_->AnimationPlay();
 }
 
 void Hyunwoo::onUpdateQSkill(float _deltaTime)
@@ -319,6 +338,16 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 		packet.SetSound("hyunwoo_Skill01_Hit.wav", transform_.GetWorldPosition());
 
 		FT::SendPacket(packet);
+
+		float4 wp = GetTransform()->GetWorldPosition();
+		qEffect_->GetTransform()->SetLocalPosition(wp);
+		qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		qEffect_->PlayAwake();
+
+		CharEffectPacket pack;
+		pack.SetTargetIndex(myIndex_);
+		pack.SetAnimationName("SkillQ");
+		FT::SendPacket(pack);
 
 		auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
 
@@ -406,6 +435,11 @@ void Hyunwoo::onStartESkill()
 	rearEffectRenderer_->On();
 	rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
 	rearEffectRenderer_->AnimationPlay();
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillE");
+	FT::SendPacket(pack);
 }
 
 void Hyunwoo::onUpdateESkill(float _deltaTime)
@@ -637,11 +671,29 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName)
 	
 	if ("BasicAttack" == _effectName)
 	{
-		frontEffectRenderer_->On();
-		frontEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
-		frontEffectRenderer_->AnimationPlay();
+		basicAttackEffectRenderer_->On();
+		basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
+		basicAttackEffectRenderer_->AnimationPlay();
 		return;
 	}
+
+	if ("SkillQ" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		qEffect_->GetTransform()->SetLocalPosition(wp);
+		qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		qEffect_->PlayAwake();
+		return;
+	}
+
+	if ("SkillE" == _effectName)
+	{
+		rearEffectRenderer_->On();
+		rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
+		rearEffectRenderer_->AnimationPlay();
+		return;
+	}
+
 
 }
 
@@ -750,9 +802,9 @@ void Hyunwoo::onStartBasicAttacking(IUnit* _target)
 
 
 
-	frontEffectRenderer_->On();
-	frontEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
-	frontEffectRenderer_->AnimationPlay();
+	basicAttackEffectRenderer_->On();
+	basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
+	basicAttackEffectRenderer_->AnimationPlay();
 
 	
 
@@ -765,9 +817,9 @@ void Hyunwoo::onStartBasicAttacking(IUnit* _target)
 
 void Hyunwoo::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 {
-	if (true == frontEffectRenderer_->IsCurAnimationEnd())
+	if (true == basicAttackEffectRenderer_->IsCurAnimationEnd())
 	{
-		frontEffectRenderer_->Off();
+		basicAttackEffectRenderer_->Off();
 	}
 
 }

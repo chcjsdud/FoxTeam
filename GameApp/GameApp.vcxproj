@@ -224,6 +224,10 @@
     <ClCompile Include="CreateItemDB.cpp" />
     <ClCompile Include="GameTimeController.cpp" />
     <ClCompile Include="GameTimeSyncPacket.cpp" />
+    <ClCompile Include="HyunwooQEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Macro.cpp" />
     <ClCompile Include="MonsterStateChangePacket.cpp" />
     <ClCompile Include="PacketCreateProjectile.cpp">
@@ -530,6 +534,10 @@
     <ClInclude Include="eProjectileType.h" />
     <ClInclude Include="GameTimeController.h" />
     <ClInclude Include="GameTimeSyncPacket.h" />
+    <ClInclude Include="HyunwooQEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MonsterStateChangePacket.h" />
     <ClInclude Include="PacketCreateProjectile.h">
       <SubType>

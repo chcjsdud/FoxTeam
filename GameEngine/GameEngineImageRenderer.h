@@ -120,6 +120,12 @@ public:
 	inline void SetAlpha(float _Value)
 	{
 		CorrectResultColor_.vMulColor.a = _Value;
+
+	}
+
+	inline float GetAlpha()
+	{
+		return CorrectResultColor_.vMulColor.a;
 	}
 
 	inline void SetPlusColor(float4 _Color)

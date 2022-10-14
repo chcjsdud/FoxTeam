@@ -716,8 +716,11 @@ void LumiaLevel::DebugWindowUpdate()
 
 		// InGameMouse Debug Value
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
-		DebugAndControlWindow_->AddText("X : " + std::to_string(position.x));
-		DebugAndControlWindow_->AddText("Z : " + std::to_string(position.z));
+		DebugAndControlWindow_->AddText("MouseX : " + std::to_string(GameEngineInput::GetInst().GetMousePos().x));
+		DebugAndControlWindow_->AddText("MouseY : " + std::to_string(GameEngineInput::GetInst().GetMousePos().y));
+
+		DebugAndControlWindow_->AddText("RayCastX : " + std::to_string(position.x));
+		DebugAndControlWindow_->AddText("RayCastZ : " + std::to_string(position.z));
 
 		// Player Debug Value
 		float4 playerPosition = CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetWorldPosition();

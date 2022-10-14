@@ -7,6 +7,7 @@
 #include "Character.h"
 
 
+class HyunwooQEffect;
 class Hyunwoo : public Character
 {
 public:
@@ -74,7 +75,12 @@ protected:
 	void endCustomRSkill();
 
 private:
-	GameEngineEffectRenderer* frontEffectRenderer_;
+	HyunwooQEffect* qEffect_;
+	
+	GameEngineEffectRenderer* basicAttackEffectRenderer_;
+	
+	GameEngineEffectRenderer* QGroundCrackEffectRenderer_;
+
 
 	GameEngineEffectRenderer* rearEffectRenderer_;
 

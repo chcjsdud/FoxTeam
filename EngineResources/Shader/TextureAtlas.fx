@@ -61,7 +61,7 @@ float4 TextureAtlas_PS(VertexOut _in) : SV_Target0
         clip(-1);
     }
 
-    Color += vPlusColor;
+  // Color += vPlusColor;
 
     return Color;
 }
