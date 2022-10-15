@@ -1,6 +1,13 @@
 #include "PreCompile.h"
 #include "GameEngineSoundPlayer.h"
 
+GameEngineSoundPlayer::GameEngineSoundPlayer()
+	: sound_(nullptr)
+	, channel_(nullptr)
+	, volume_(1.0f)
+{
+}
+
 GameEngineSoundPlayer::GameEngineSoundPlayer(const std::string& _soundName)
 	: sound_(nullptr)
 	, channel_(nullptr)

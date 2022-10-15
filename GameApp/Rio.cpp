@@ -137,6 +137,9 @@ void Rio::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("SkillD_Short", "Rio_Short_Skill_D.UserAnimation", 0, false);
 	renderer_->CreateFBXAnimation("SkillD_Long", "Rio_Long_Skill_D.UserAnimation", 0, false);
 
+	renderer_->CreateFBXAnimation("Rio_CraftFood", "Rio_CraftFood.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Rio_CraftMetal", "Rio_CraftMetal.UserAnimation", 0, false);
+
 	renderer_->CreateFBXAnimation("Death", "Rio_Death.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait_Short");
@@ -176,6 +179,16 @@ void Rio::changeAnimationBasicAttack()
 	{
 		ChangeAnimation("BasicAttack_Short", true);
 	}
+}
+
+void Rio::changeAnimationCraft()
+{
+	ChangeAnimation("Rio_CraftMetal");
+}
+
+void Rio::changeAnimationCook()
+{
+	ChangeAnimation("Rio_CraftFood");
 }
 
 void Rio::onStartBasicAttacking(IUnit* _target)

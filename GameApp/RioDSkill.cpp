@@ -34,7 +34,7 @@ void RioDSkill::Start()
 
 void RioDSkill::Update(float _deltaTime)
 {
-	level_->PushDebugRender(collision_->GetTransform(), CollisionType::Sphere3D);
+	level_->PushDebugRender(collision_->GetTransform(), CollisionType::CirCle);
 
 	state_.Update(_deltaTime);
 }

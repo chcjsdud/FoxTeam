@@ -6,7 +6,7 @@ class GameEngineSoundPlayer
 {
 public:
 	// SoundManager 에 로드된 사운드만 재생할 수 있습니다.
-	// 사운드 플레이어는 비어있는 사운드를 허용하지 않습니다.
+	GameEngineSoundPlayer();
 	GameEngineSoundPlayer(const std::string& _soundName);
 	~GameEngineSoundPlayer();
 	GameEngineSoundPlayer(const GameEngineSoundPlayer& _other) = delete;

@@ -4,7 +4,7 @@
 #include "UserGame_Resources_Shader.h"
 #include <GameEngine\GameEngineFontManager.h>
 
-void TextureLoading(GameEngineDirectory Dir) 
+void TextureLoading(GameEngineDirectory Dir)
 {
 	std::vector<GameEngineFile> AllFile = Dir.GetAllFile();
 
@@ -83,8 +83,33 @@ void UserGame::ResourcesLoad()
 		}
 	}
 
+	{
+		GameEngineDirectory SoundDir;
+		SoundDir.MoveParent("FoxTeam");
+		SoundDir / "Resources" / "Sound" / "SFX";
+
+		std::vector<GameEngineFile> AllFile = SoundDir.GetAllFile("wav");
+
+		for (size_t i = 0; i < AllFile.size(); i++)
+		{
+			GameEngineSoundManager::GetInstance()->CreateSound(AllFile[i].FileName(), AllFile[i].GetFullPath());
+		}
+	}
+
+	{
+		GameEngineDirectory SoundDir;
+		SoundDir.MoveParent("FoxTeam");
+		SoundDir / "Resources" / "Sound" / "Bgm";
+
+		std::vector<GameEngineFile> AllFile = SoundDir.GetAllFile("wav");
+
+		for (size_t i = 0; i < AllFile.size(); i++)
+		{
+			GameEngineSoundManager::GetInstance()->CreateSound(AllFile[i].FileName(), AllFile[i].GetFullPath());
+		}
+	}
+
+
 	AppShaderLoad();
-
-
 
 }

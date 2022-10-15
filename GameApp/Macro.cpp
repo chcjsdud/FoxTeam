@@ -1,5 +1,8 @@
 #include "Precompile.h"
 #include "PacketSoundPlay.h"
+#include <GameEngineBase/GameEngineSoundPlayer.h>
+
+std::unique_ptr<GameEngineSoundPlayer> FT::BGMPlayer = std::make_unique<GameEngineSoundPlayer>();
 
 void FT::SendPacket(GameEnginePacketBase& packet)
 {

@@ -13,6 +13,7 @@
 
 namespace FT
 {
+	extern std::unique_ptr<GameEngineSoundPlayer> BGMPlayer;
 	void SendPacket(GameEnginePacketBase& packet);
 	void PlaySoundAndSendPacket(const std::string& _name, const float4& _position);
 }

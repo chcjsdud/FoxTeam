@@ -34,6 +34,7 @@
 
 #include <GameEngine/GameEngineGUI.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
+#include <GameEngineBase/GameEngineSoundPlayer.h>
 
 LobbyLevel::LobbyLevel()
 	: playerCount_(0)
@@ -118,11 +119,14 @@ void LobbyLevel::LevelUpdate(float _DeltaTime)
 
 void LobbyLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
-
+	FT::BGMPlayer->Stop();
 }
 
 void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	FT::BGMPlayer->ChangeSound("BSER_BGM_StrategyMap.wav");
+	FT::BGMPlayer->Play();
+
 	// 인게임 마우스 생성 - 220927 EIDT SJH
 	if (nullptr == MousePointer::InGameMouse)
 	{

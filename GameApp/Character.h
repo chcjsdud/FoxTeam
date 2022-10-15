@@ -92,7 +92,7 @@ protected:
 	virtual void changeAnimationRun() = 0;
 	virtual void changeAnimationWait() = 0;
 	virtual void changeAnimationBasicAttack() = 0;
-	virtual void changeAnimationCooking() {}
+	virtual void changeAnimationCook() {}
 	virtual void changeAnimationCraft() {}
 
 	// Main(AttackState)
@@ -203,11 +203,14 @@ private:
 	void startChase();
 	void updateChase(float _deltaTime);
 
+	void startMixItem();
+	void updateMixItem(float _deltaTime);
+
 	void startCraft();
 	void updateCraft(float _deltaTime);
 
-	void startCooking();
-	void updateCooking(float _deltaTime);
+	void startCook();
+	void updateCook(float _deltaTime);
 #pragma endregion
 
 

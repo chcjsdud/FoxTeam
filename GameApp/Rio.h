@@ -35,6 +35,8 @@ protected:
 	virtual void changeAnimationWait() override;
 	virtual void changeAnimationRun() override;
 	virtual void changeAnimationBasicAttack() override;
+	virtual void changeAnimationCraft() override;
+	virtual void changeAnimationCook() override;
 
 	virtual void onStartBasicAttacking(IUnit* _target) override;
 	virtual void onUpdateBasicAttacking(IUnit* _target, float _deltaTime) override;

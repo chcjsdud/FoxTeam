@@ -1,6 +1,8 @@
 #include "Precompile.h"
 #include "TitleLevel.h"
 
+#include <GameEngineBase/GameEngineSoundPlayer.h>
+
 #include "TitleIDInput.h"
 #include "UI_TestMouse.h"
 #include "TitleUIController.h"
@@ -54,6 +56,7 @@ void TitleLevel::LevelUpdate(float _DeltaTime)
 void TitleLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 {
 	UIController_->GetTitlePrologueBG()->SetAlpha(1.0f);
+	FT::BGMPlayer->Stop();
 }
 
 void TitleLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
@@ -62,11 +65,12 @@ void TitleLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	UI_TestMouse* Mouse = CreateActor<UI_TestMouse>();
 	UIController_ = CreateActor<TitleUIController>();
 
+	FT::BGMPlayer->ChangeSound("BGM_Lobby.wav");
+	FT::BGMPlayer->Play();
 }
 
 void TitleLevel::StartBooting()
 {
-
 }
 
 void TitleLevel::UpdateBooting(float _DeltaTime)

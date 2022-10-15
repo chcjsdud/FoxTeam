@@ -149,12 +149,7 @@ void Character::Update(float _DeltaTime)
 	checkCurrentNavFace();
 	checkItemBox();
 
-	if (true == GameEngineInput::Down("Mixing"))
-	{
-		// 큐에 들어있는 조합을 실행
-		// Mixing State 따로 만들 예정
-		mixingItem();
-	}
+
 
 	attackCooldown_ += _DeltaTime;
 
@@ -678,6 +673,9 @@ void Character::initState()
 	normalState_.CreateState(MakeState(Character, Stop));
 	normalState_.CreateState(MakeState(Character, Run));
 	normalState_.CreateState(MakeState(Character, Chase));
+	normalState_.CreateState(MakeState(Character, MixItem));
+	normalState_.CreateState(MakeState(Character, Craft));
+	normalState_.CreateState(MakeState(Character, Cook));
 
 	attackState_.CreateState(MakeState(Character, BasicAttack));
 	attackState_.CreateState(MakeState(Character, BasicAttacking));
@@ -872,7 +870,18 @@ void Character::updateNormalState(float _deltaTime)
 			attackState_.ChangeState("DSkill", true);
 			return;
 		}
+
+		if (true == GameEngineInput::Down("Mixing"))
+		{
+			// 큐에 들어있는 조합을 실행
+			// Mixing State 따로 만들 예정
+			//mixingItem();
+			normalState_ << "MixItem";
+			return;
+		}
 	}
+
+
 
 	// Normal State 업데이트
 	normalState_.Update(_deltaTime);
@@ -1035,20 +1044,76 @@ void Character::updateChase(float _deltaTime)
 
 }
 
+void Character::startMixItem()
+{
+
+}
+
+void Character::updateMixItem(float _deltaTime)
+{
+	if (queueItemMixing_.empty())
+	{
+		normalState_ << "Watch";
+		return;
+	}
+
+	QueueItem item = queueItemMixing_.front();
+	ItemType itemType = item.CI_.left_->GetItemType();
+
+	if (itemType == ItemType::USEABLE)
+	{
+		normalState_ << "Cook";
+	}
+	else
+	{
+		normalState_ << "Craft";
+	}
+}
+
 void Character::startCraft()
 {
+	changeAnimationCraft();
+	FT::PlaySoundAndSendPacket("chracter_Craft_Tool.wav", transform_.GetWorldPosition());
 }
 
 void Character::updateCraft(float _deltaTime)
 {
+	if (renderer_->IsCurrentAnimationEnd())
+	{
+		mixingItem();
+		normalState_ << "Watch";
+		return;
+	}
+
+	if (normalState_.GetTime() > 8.0f)
+	{
+		mixingItem();
+		normalState_ << "Watch";
+		return;
+	}
 }
 
-void Character::startCooking()
+void Character::startCook()
 {
+	changeAnimationCook();
+	FT::PlaySoundAndSendPacket("chracter_Craft_Food.wav", transform_.GetWorldPosition());
 }
 
-void Character::updateCooking(float _deltaTime)
+void Character::updateCook(float _deltaTime)
 {
+	if (renderer_->IsCurrentAnimationEnd())
+	{
+		mixingItem();
+		normalState_ << "Watch";
+		return;
+	}
+
+	if (normalState_.GetTime() > 6.0f)
+	{
+		mixingItem();
+		normalState_ << "Watch";
+		return;
+	}
 }
 
 void Character::startStun()

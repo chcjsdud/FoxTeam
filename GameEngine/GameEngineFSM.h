@@ -62,6 +62,8 @@ public:
 		return Current_;
 	}
 
+	float GetTime() { return Current_->Time_; }
+
 	std::string GetCurrentStateName();
 
 	void operator<<(const std::string& _stateName);
