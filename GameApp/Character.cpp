@@ -610,6 +610,11 @@ void Character::ChangeOverrideAnimation(const std::string& _animationName, const
 
 void Character::Damage(float _amount)
 {
+	if (0.0f >= _amount)
+	{
+		return;
+	}
+
 	stat_.HP -= _amount;
 
 	CharStatPacket packet;
