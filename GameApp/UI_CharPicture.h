@@ -21,10 +21,6 @@ public:
 	bool UIOn;
 
 public:
-	void SetPlayer(Player* _Player)
-	{
-		Player_ = _Player;
-	}
 		
 	void SetJobType(JobType _myjob);
 
@@ -37,11 +33,6 @@ protected:
 private:
 	void Start() override;
 	void Update(float _Time) override;
-
-	//ÀÌÇö
-private:
-	Player* Player_;
-
 	
 };
 

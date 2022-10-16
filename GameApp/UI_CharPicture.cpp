@@ -85,13 +85,6 @@ void UI_CharPicture::Start()
 		CharRenderer->GetTransform()->SetLocalScaling(CharRenderer->GetCurrentTexture()->GetTextureSize());
 	}
 
-	//이현, Player 예제 함수
-	//int HP = Player_->PlayerGetHP();
-	//float Stmina = Player_->PlayerGetStamina();
-	//Player_->PlayerSetHP(10);
-	//Player_->PlayerSetStamina(100.f);
-
-
 }
 
 void UI_CharPicture::Update(float _Time)

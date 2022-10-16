@@ -10,6 +10,7 @@
 #include "UI_Inventory.h"
 #include "UI_Skill.h"
 #include "UI_Status.h"
+#include "UI_Time.h"
 
 
 class PlayerUIController : public GameEngineActor
@@ -66,15 +67,9 @@ private:
 	UI_Inventory* inventory_UI;
 	UI_Skill* skill_UI;
 	UI_Status* status_UI;
-	
+	UI_Time* time_UI;
+
 	JobType MyJob;
 
-	bool Rio_bLongBow_;
-
-	/*
-	1. 쿨타임공유후 아이콘변경
-	2. 캐릭터.cpp가 아이콘을 결정하고 UI컨트롤러한테 넣어줌
-
-	*/
 };
 

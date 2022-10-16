@@ -5,7 +5,7 @@
 
 
 PlayerUIController::PlayerUIController()
-	: Rio_bLongBow_(false), MyJob(JobType::HYUNWOO)
+	: MyJob(JobType::HYUNWOO)
 {
 
 }
@@ -27,6 +27,7 @@ void PlayerUIController::InitUI()
 	inventory_UI = GetLevel()->CreateActor<UI_Inventory>();
 	skill_UI = GetLevel()->CreateActor<UI_Skill>();
 	status_UI = GetLevel()->CreateActor<UI_Status>();
+	time_UI = GetLevel()->CreateActor<UI_Time>();
 }
 
 
