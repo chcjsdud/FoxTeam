@@ -12,8 +12,6 @@ struct DailyTime
 struct MonsterFirstAppearInfo
 {
 	bool IsAppear_;					// 첫등장완료 Flag(true: 첫등장완료)
-	DayAndNightType DayType_;		// 첫등장이 낮인지 밤인지 판단
-	int AppearDay_;					// 첫등장일차
 	float AppearTime_;				// 첫등장시간(젠시간)
 };
 

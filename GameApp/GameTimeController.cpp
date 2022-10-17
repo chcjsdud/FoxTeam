@@ -155,38 +155,26 @@ void GameTimeController::CreateMonsterFirstAppearInfo()
 
 	// WOLF(´Á´ë): 1ÀÏÂ÷ ³· 00:40
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].DayType_ = DayAndNightType::DAY;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].AppearDay_ = 1;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].AppearTime_ = 40.0f;
 
 	// BEAR(°õ): 1ÀÏÂ÷ ¹ã 02:20
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].DayType_ = DayAndNightType::NIGHT;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].AppearDay_ = 1;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].AppearTime_ = 140.0f;
 
 	// BAT(¹ÚÁã): 1ÀÏÂ÷ ³· 01:40
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].DayType_ = DayAndNightType::DAY;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].AppearDay_ = 1;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].AppearTime_ = 100.0f;
 
 	// DOG(µé°³): 1ÀÏÂ÷ ³· 00:40
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].DayType_ = DayAndNightType::DAY;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].AppearDay_ = 1;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].AppearTime_ = 40.0f;
 
 	// CHICKEN(´ß): °ÔÀÓ½ÃÀÛ°úµ¿½Ã¿¡ µîÀå
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].DayType_ = DayAndNightType::NONE;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].AppearDay_ = 0;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].AppearTime_ = 0.0f;
 
 	// BOAR(¸äµÅÁö): 1ÀÏÂ÷ ³· 01:40
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].DayType_ = DayAndNightType::DAY;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].AppearDay_ = 1;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].AppearTime_ = 100.0f;
 }
 
