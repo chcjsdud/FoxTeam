@@ -11,13 +11,15 @@ void Monsters::StartHitState()
 {
 	// 현재 상태 지정
 	CurStateType_ = MonsterStateType::HIT;
-
-	// 
 }
 
 void Monsters::UpdateHitState(float _DeltaTime)
 {
-
+	// 모션 종료시 대기상태 돌입
+	if ("HIT" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	{
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+	}
 }
 
 void Monsters::EndHitState()

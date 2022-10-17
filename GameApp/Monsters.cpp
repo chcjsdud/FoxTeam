@@ -72,9 +72,13 @@ void Monsters::Damage(float _Amount, GameEngineActor* _Target)
 	}
 
 	// 현재 API의 몬스터를 피격한 타겟을 지정
-	Character* CurTarget = dynamic_cast<Character*>(_Target);
-	CurTarget_ = CurTarget;
-	CurTargetIndex_ = CurTarget->GetIndex();
+	// 단, 이미 타겟이 지정되어있다면 타겟변경없이 처리
+	if (nullptr == CurTarget_)
+	{
+		Character* CurTarget = dynamic_cast<Character*>(_Target);
+		CurTarget_ = CurTarget;
+		CurTargetIndex_ = CurTarget->GetIndex();
+	}
 
 	// 0.0f이하가 아니라면 단순 피격처리
 	// 현재 API의 몬스터를 피격상태로 전환
@@ -257,42 +261,42 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 		}
 		case MonsterStateType::HIT:
 		{
-			NormalState_ << "HIT";
+			CrowdControlState_ << "HIT";
 			MainState_ << "CROWDCONTROL";
 			MainRenderer_->ChangeFBXAnimation("HIT");
 			break;
 		}
 		case MonsterStateType::DEATH:
 		{
-			NormalState_ << "DEATH";
+			CrowdControlState_ << "DEATH";
 			MainState_ << "CROWDCONTROL";
 			MainRenderer_->ChangeFBXAnimation("DEATH");
 			break;
 		}
 		case MonsterStateType::DEAD:
 		{
-			NormalState_ << "DEAD";
+			CrowdControlState_ << "DEAD";
 			MainState_ << "CROWDCONTROL";
 			MainRenderer_->ChangeFBXAnimation("DEAD");
 			break;
 		}
 		case MonsterStateType::ATK01:
 		{
-			NormalState_ << "ATK01";
+			AttackState_ << "ATK01";
 			MainState_ << "ATTACK";
 			MainRenderer_->ChangeFBXAnimation("ATK01");
 			break;
 		}
 		case MonsterStateType::ATK02:
 		{
-			NormalState_ << "ATK02";
+			AttackState_ << "ATK02";
 			MainState_ << "ATTACK";
 			MainRenderer_->ChangeFBXAnimation("ATK02");
 			break;
 		}
 		case MonsterStateType::SKILLATTACK:
 		{
-			NormalState_ << "SKILLATTACK";
+			AttackState_ << "SKILLATTACK";
 			MainState_ << "ATTACK";
 			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
 			break;

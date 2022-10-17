@@ -18,6 +18,8 @@
 #include "HyunwooEffect.h"
 #include "HyunwooREffect.h"
 
+#include "Monsters.h"
+
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
 	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), basicAttackEffectRenderer_(nullptr), QGroundCrackEffectRenderer_(nullptr), qEffect_(nullptr),
@@ -369,6 +371,23 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 				}
 			}
 		}
+
+		//// 221017 SJH ADD : 테스트용 몬스터
+		//auto MonsterColList = collision_Q->GetCollisionList(eCollisionGroup::Monster);
+		//for (GameEngineCollision* col : MonsterColList)
+		//{
+		//	GameEngineActor* actor = col->GetActor();
+		//	Monsters* Monster = nullptr;
+		//	if (nullptr != actor && actor != this)
+		//	{
+		//		Monster = dynamic_cast<Monsters*>(actor);
+
+		//		if (nullptr != Monster)
+		//		{
+		//			Monster->Damage(500.0f, this);
+		//		}
+		//	}
+		//}
 
 		b_Qhit_ = true;
 	}
