@@ -328,6 +328,9 @@
     <ClCompile Include="HyunwooQEffect.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClCompile>
+    <ClCompile Include="HyunwooREffect.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -849,6 +852,9 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClInclude>
     <ClInclude Include="HyunwooQEffect.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
+    </ClInclude>
+    <ClInclude Include="HyunwooREffect.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClInclude>
   </ItemGroup>

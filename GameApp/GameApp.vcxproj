@@ -228,6 +228,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="HyunwooREffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Macro.cpp" />
     <ClCompile Include="MonsterStateChangePacket.cpp" />
     <ClCompile Include="PacketCreateProjectile.cpp">
@@ -535,6 +539,10 @@
     <ClInclude Include="GameTimeController.h" />
     <ClInclude Include="GameTimeSyncPacket.h" />
     <ClInclude Include="HyunwooQEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="HyunwooREffect.h">
       <SubType>
       </SubType>
     </ClInclude>

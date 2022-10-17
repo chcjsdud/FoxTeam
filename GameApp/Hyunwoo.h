@@ -8,6 +8,7 @@
 
 
 class HyunwooQEffect;
+class HyunwooREffect;
 class Hyunwoo : public Character
 {
 public:
@@ -76,6 +77,7 @@ protected:
 
 private:
 	HyunwooQEffect* qEffect_;
+	HyunwooREffect* rEffect_;
 	
 	GameEngineEffectRenderer* basicAttackEffectRenderer_;
 	

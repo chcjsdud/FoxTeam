@@ -16,10 +16,12 @@
 #include "CharEffectPacket.h"
 #include "HyunwooQEffect.h"
 #include "HyunwooEffect.h"
+#include "HyunwooREffect.h"
 
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
-	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), basicAttackEffectRenderer_(nullptr), QGroundCrackEffectRenderer_(nullptr), qEffect_(nullptr)
+	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), basicAttackEffectRenderer_(nullptr), QGroundCrackEffectRenderer_(nullptr), qEffect_(nullptr),
+	rEffect_(nullptr)
 {
 
 }
@@ -139,6 +141,9 @@ void Hyunwoo::Start()
 	stat_.AttackEndTime = 0.4f;
 	stat_.MovementSpeed = 355.0f;
 	stat_.AttackRange = 280.f;
+
+	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
+	hitBase->Cut(3, 3);
 }
 
 void Hyunwoo::Update(float _deltaTime)
@@ -248,6 +253,8 @@ void Hyunwoo::initEffectRenderer()
 	qEffect_ = GetLevel()->CreateActor<HyunwooQEffect>();
 	qEffect_->SetParent(this);
 
+	rEffect_ = GetLevel()->CreateActor<HyunwooREffect>();
+	rEffect_->SetParent(this);
 }
 
 
@@ -570,8 +577,6 @@ void Hyunwoo::onUpdateRSkill(float _deltaTime)
 
 void Hyunwoo::onStartDSkill()
 {
-
-
 	// 여기서 마우스와 상대의 타겟팅 여부를 찾을 것.
 
 	if (mouse_ == nullptr)
@@ -580,10 +585,6 @@ void Hyunwoo::onStartDSkill()
 		normalState_.ChangeState("Watch", true);
 		return;
 	}
-
-
-
-
 }
 
 void Hyunwoo::onUpdateDSkill(float _deltaTime)
@@ -644,6 +645,8 @@ void Hyunwoo::onUpdateDSkill(float _deltaTime)
 		mainState_.ChangeState("NormalState", true);
 		normalState_.ChangeState("Watch", true);
 	}
+
+
 }
 
 void Hyunwoo::onStartDeath()
@@ -694,11 +697,26 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName)
 		return;
 	}
 
+	if ("SkillR_awaken" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		rEffect_->GetTransform()->SetLocalPosition(wp);
+		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		rEffect_->PlayAwake();
 
+
+		return;
+	}
+
+	if ("SkillR_explode" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		rEffect_->GetTransform()->SetLocalPosition(wp);
+		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		rEffect_->PlayExplode();
+		return;
+	}
 }
-
-
-
 
 void Hyunwoo::startCustomRSkill()
 {
@@ -709,6 +727,16 @@ void Hyunwoo::startCustomRSkill()
 	PacketSoundPlay packet;
 	packet.SetSound("hyunwoo_Skill04_Charging.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
+
+	float4 wp = GetTransform()->GetWorldPosition();
+	rEffect_->GetTransform()->SetLocalPosition(wp);
+	rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+	rEffect_->PlayAwake();
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillR_awaken");
+	FT::SendPacket(pack);
 }
 
 void Hyunwoo::updateCustomRSkill(float _deltaTime)
@@ -734,6 +762,20 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 
 	if (true == GameEngineInput::GetInst().Down("R"))
 	{
+		rEffect_->PlayExplode();
+		CharEffectPacket pack;
+		pack.SetTargetIndex(myIndex_);
+		pack.SetAnimationName("SkillR_explode");
+		FT::SendPacket(pack);
+
+		GameEngineSoundManager::GetInstance()->StopSound();
+
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill04_Hit.wav");
+
+		PacketSoundPlay packet;
+		packet.SetSound("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
+		FT::SendPacket(packet);
+
 		if (false == b_Rhit_)
 		{
 			// 여기서 피격 충돌 판정이 나옴
@@ -749,15 +791,15 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 
 					if (nullptr != character)
 					{
-						character->Damage(500.0f);
-						GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill04_Hit.wav");
-						PacketSoundPlay packet;
-						packet.SetSound("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
-						FT::SendPacket(packet);
+						
+
+						character->Damage(300.0f);
+
 					}
 				}
 			}
 			b_Rhit_ = true;
+
 
 		}
 
@@ -765,13 +807,13 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 		{
 			curAnimationName_ = "SkillR_end";
 			renderer_->ChangeFBXAnimation("SkillR_end", true);
+
 		}
 	}
 
 	if (curAnimationName_ == "SkillR_end" && true == renderer_->IsCurrentAnimationEnd())
 	{
 		b_Rhit_ = false;
-
 		changeAnimationWait();
 		mainState_.ChangeState("NormalState", true);
 		normalState_.ChangeState("Watch", true);

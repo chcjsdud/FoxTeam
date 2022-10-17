@@ -27,8 +27,8 @@ void HyunwooQEffect::PlayAwake()
 void HyunwooQEffect::Start()
 {
 
-	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
-	hitBase->Cut(3,3);
+	//GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
+	//hitBase->Cut(3,3);
 
 	groundCrackRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
 	groundCrackRenderer_->SetImage("FX_BI_GroundBomb_01.png", "PointSmp");
