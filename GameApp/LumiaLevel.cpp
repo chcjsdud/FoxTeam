@@ -369,7 +369,7 @@ void LumiaLevel::CharacterCreationCommand()
 		}
 
 		//// 221017 SJH ADD : 몬스터 테스트용으로 플레이어 필요
-		//if (1 == CharacterActorList_.size())
+		//if (1 == CharacterActorList_.size() || 2 == CharacterActorList_.size())
 		//{
 		//	Monsters* ZeroMonster = MonsterActorList_[0];
 
