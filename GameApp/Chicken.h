@@ -1,9 +1,9 @@
 #pragma once
 #include "Monsters.h"
 
-// 분류 : 
+// 분류 : 몬스터
 // 용도 : 
-// 설명 : 
+// 설명 : 닭(몬스터)의 고유 기능을 제공
 class Chicken : public Monsters
 {
 public:

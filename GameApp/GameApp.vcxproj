@@ -185,6 +185,14 @@
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="Bear.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="Boar.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharAnimationPacket.cpp">
       <SubType>
@@ -224,6 +232,10 @@
     </ClCompile>
     <ClCompile Include="Chicken.cpp" />
     <ClCompile Include="CreateItemDB.cpp" />
+    <ClCompile Include="Dog.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameTimeController.cpp" />
     <ClCompile Include="GameTimeSyncPacket.cpp" />
     <ClCompile Include="HyunwooQEffect.cpp">
@@ -496,10 +508,22 @@
     </ClCompile>
     <ClCompile Include="UserGame_Resources_Shader.cpp" />
     <ClCompile Include="CharacterStat.cpp" />
+    <ClCompile Include="Weekline.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Wolf.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bat.h" />
+    <ClInclude Include="Bear.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="Boar.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="CharAnimationPacket.h">
@@ -539,6 +563,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Chicken.h" />
+    <ClInclude Include="Dog.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="eProjectileType.h" />
     <ClInclude Include="GameTimeController.h" />
     <ClInclude Include="GameTimeSyncPacket.h" />
@@ -802,6 +830,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="UserGame_Resources_Shader.h" />
+    <ClInclude Include="Weekline.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Wolf.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

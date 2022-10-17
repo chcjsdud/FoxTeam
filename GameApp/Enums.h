@@ -61,6 +61,7 @@ enum class MonsterType
 	DOG,						// µÈ∞≥
 	CHICKEN,					// ¥ﬂ
 	BOAR,						// ∏‰µ≈¡ˆ
+	WEEKLINE,					// Dr.¿ß≈¨∂Û¿Œ
 	MAX
 };
 

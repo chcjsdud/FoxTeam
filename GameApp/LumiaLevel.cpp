@@ -49,10 +49,10 @@
 #include "Wolf.h"
 #include "Bat.h"
 #include "Chicken.h"
-//#include "Bear.h"
-//#include "Boar.h"
-//#include "Dog.h"
-//#include "Weekline.h"
+#include "Bear.h"
+#include "Boar.h"
+#include "Dog.h"
+#include "Weekline.h"
 
 const char* enum_str[static_cast<int>(Location::MAX)] = {
 		"DOCK",				// 항구
@@ -222,34 +222,39 @@ void LumiaLevel::MonsterCreationCommand()
 		MonsterType CurMonsterType = CurMonsterInfo.MonsterType_;
 		switch (CurMonsterType)
 		{
-			case MonsterType::WOLF:
+			case MonsterType::WOLF:					// 늑대
 			{
-				//NewMonster = CreateActor<Wolf>();				// ---
+				NewMonster = CreateActor<Wolf>();
 				break;
 			}
-			case MonsterType::BEAR:
+			case MonsterType::BEAR:					// 곰
 			{
-				//NewMonster = CreateActor<Bear>();
+				NewMonster = CreateActor<Bear>();
 				break;
 			}
-			case MonsterType::BAT:
+			case MonsterType::BAT:					// 박쥐
 			{
-				//NewMonster = CreateActor<Bat>();				// ---
+				NewMonster = CreateActor<Bat>();
 				break;
 			}
-			case MonsterType::DOG:
+			case MonsterType::DOG:					// 들개
 			{
-				//NewMonster = CreateActor<Dog>();
+				NewMonster = CreateActor<Dog>();
 				break;
 			}
-			case MonsterType::CHICKEN:
+			case MonsterType::CHICKEN:				// 닭
 			{
 				NewMonster = CreateActor<Chicken>();
 				break;
 			}
-			case MonsterType::BOAR:
+			case MonsterType::BOAR:					// 멧돼지
 			{
-				//NewMonster = CreateActor<Boar>();
+				NewMonster = CreateActor<Boar>();
+				break;
+			}
+			case MonsterType::WEEKLINE:				// Dr.위클라인
+			{
+				GameEngineDebug::OutPutDebugString("구현하지못한 몬스터타입(Dr.위클라인)입니다!!!!");
 				break;
 			}
 		}
