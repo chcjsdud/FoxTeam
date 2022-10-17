@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="CharAnimationPacket.cpp">
       <SubType>
@@ -221,6 +222,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="Chicken.cpp" />
     <ClCompile Include="CreateItemDB.cpp" />
     <ClCompile Include="GameTimeController.cpp" />
     <ClCompile Include="GameTimeSyncPacket.cpp" />
@@ -497,6 +499,7 @@
     <ClCompile Include="Wolf.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="CharacterStat.h" />
     <ClInclude Include="CharAnimationPacket.h">
@@ -535,6 +538,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="Chicken.h" />
     <ClInclude Include="eProjectileType.h" />
     <ClInclude Include="GameTimeController.h" />
     <ClInclude Include="GameTimeSyncPacket.h" />

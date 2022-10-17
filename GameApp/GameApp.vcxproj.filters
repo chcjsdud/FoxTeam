@@ -331,6 +331,12 @@
     <ClCompile Include="HyunwooREffect.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Monsters\02.Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="Chicken.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Monsters\03.Chicken</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -518,6 +524,12 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo">
       <UniqueIdentifier>{6a2ff16f-c540-46d5-9fd6-3b6fbba18d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monsters\02.Bat">
+      <UniqueIdentifier>{c681239d-8611-4fa4-8436-dc3eecfffb7b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monsters\03.Chicken">
+      <UniqueIdentifier>{e23964cf-6628-48d6-956a-ec7ac4b1af12}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -856,6 +868,12 @@
     </ClInclude>
     <ClInclude Include="HyunwooREffect.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Monsters\02.Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="Chicken.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Monsters\03.Chicken</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

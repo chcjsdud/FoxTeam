@@ -1,5 +1,14 @@
 #pragma once
 
+// Unit Type
+enum class UnitType
+{
+	NONE = -1,
+	CHARACTER,
+	MONSTER,
+	MAX
+};
+
 // Day And Night Type
 enum class DayAndNightType
 {

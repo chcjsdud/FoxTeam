@@ -42,6 +42,8 @@ Character::Character()
 	, coolTimeR_(0.0f)
 	, coolTimeD_(0.0f)
 {
+	// 유닛타입 = 캐릭터
+	UnitType_ = UnitType::CHARACTER;
 }
 
 Character::~Character()

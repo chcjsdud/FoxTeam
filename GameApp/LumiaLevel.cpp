@@ -47,6 +47,8 @@
 //======================== Monsters
 #include "Monsters.h"
 #include "Wolf.h"
+#include "Bat.h"
+#include "Chicken.h"
 
 const char* enum_str[static_cast<int>(Location::MAX)] = {
 		"DOCK",				// 항구
@@ -67,6 +69,30 @@ const char* enum_str[static_cast<int>(Location::MAX)] = {
 		"RESERCH_CENTRE",	// 연구소
 		"ESCAPE_DOCK",		// 오래된 선창
 };
+
+Character* LumiaLevel::GetSpecificCharacter(int _Index)
+{
+	// 특정 인덱스의 캐릭터 객체포인터 Get
+	if (_Index >= static_cast<int>(CharacterActorList_.size()) || 0 > _Index)
+	{
+		GameEngineDebug::MsgBoxError("잘못된 인덱스의 캐릭터를 조회하려시도했습니다!!!");
+		return nullptr;
+	}
+
+	return CharacterActorList_[_Index];
+}
+
+Monsters* LumiaLevel::GetSpecificMonster(int _Index)
+{
+	// 특정 인덱스의 몬스터 객체포인터 Get
+	if (_Index >= static_cast<int>(MonsterActorList_.size()) || 0 > _Index)
+	{
+		GameEngineDebug::MsgBoxError("잘못된 인덱스의 몬스터를 조회하려시도했습니다!!!");
+		return nullptr;
+	}
+
+	return MonsterActorList_[_Index];
+}
 
 void LumiaLevel::HostCreateCommand()
 {
@@ -100,7 +126,7 @@ void LumiaLevel::GuestCreateCommand()
 	);
 }
 
-void LumiaLevel::HostMonsterFirstAppear(MonsterType _MonsterType)
+void LumiaLevel::HostMonsterFirstAppearBatchProcessing(MonsterType _MonsterType)
 {
 	// 예외처리
 	if (MonsterType::NONE == _MonsterType || MonsterType::MAX == _MonsterType)
@@ -118,7 +144,7 @@ void LumiaLevel::HostMonsterFirstAppear(MonsterType _MonsterType)
 	}
 }
 
-void LumiaLevel::GuestMonsterFirstAppear(MonsterType _MonsterType)
+void LumiaLevel::GuestMonsterFirstAppearBatchProcessing(MonsterType _MonsterType)
 {
 	// 예외처리
 	if (MonsterType::NONE == _MonsterType || MonsterType::MAX == _MonsterType)
@@ -194,7 +220,7 @@ void LumiaLevel::MonsterCreationCommand()
 		{
 			case MonsterType::WOLF:
 			{
-				NewMonster = CreateActor<Wolf>();
+				//NewMonster = CreateActor<Wolf>();				// ---
 				break;
 			}
 			case MonsterType::BEAR:
@@ -204,7 +230,7 @@ void LumiaLevel::MonsterCreationCommand()
 			}
 			case MonsterType::BAT:
 			{
-				//NewMonster = CreateActor<Bat>();
+				//NewMonster = CreateActor<Bat>();				// ---
 				break;
 			}
 			case MonsterType::DOG:
@@ -214,7 +240,7 @@ void LumiaLevel::MonsterCreationCommand()
 			}
 			case MonsterType::CHICKEN:
 			{
-				//NewMonster = CreateActor<Chicken>();
+				NewMonster = CreateActor<Chicken>();
 				break;
 			}
 			case MonsterType::BOAR:
@@ -273,41 +299,41 @@ void LumiaLevel::CharacterCreationCommand()
 		Character* NewCharacter = nullptr;
 		switch (CurCharacterType)
 		{
-		case JobType::YUKI:
-		{
-			//NewCharacter = CreateActor<Yuki>();
-			break;
-		}
-		case JobType::FIORA:
-		{
-			//NewCharacter = CreateActor<Fiora>();
-			break;
-		}
-		case JobType::HYUNWOO:
-		{
-			NewCharacter = CreateActor<Hyunwoo>();
-			break;
-		}
-		case JobType::AYA:
-		{
-			//NewCharacter = CreateActor<Aya>();
-			break;
-		}
-		case JobType::RIO:
-		{
-			NewCharacter = CreateActor<Rio>();
-			break;
-		}
-		case JobType::JACKIE:
-		{
-			//NewCharacter = CreateActor<Jackie>();
-			break;
-		}
-		case JobType::DUMMY:
-		{
-			NewCharacter = CreateActor<Rio>();
-			break;
-		}
+			case JobType::YUKI:
+			{
+				//NewCharacter = CreateActor<Yuki>();
+				break;
+			}
+			case JobType::FIORA:
+			{
+				//NewCharacter = CreateActor<Fiora>();
+				break;
+			}
+			case JobType::HYUNWOO:
+			{
+				NewCharacter = CreateActor<Hyunwoo>();
+				break;
+			}
+			case JobType::AYA:
+			{
+				//NewCharacter = CreateActor<Aya>();
+				break;
+			}
+			case JobType::RIO:
+			{
+				NewCharacter = CreateActor<Rio>();
+				break;
+			}
+			case JobType::JACKIE:
+			{
+				//NewCharacter = CreateActor<Jackie>();
+				break;
+			}
+			case JobType::DUMMY:
+			{
+				NewCharacter = CreateActor<Rio>();
+				break;
+			}
 		}
 
 		// 예외처리
@@ -332,6 +358,15 @@ void LumiaLevel::CharacterCreationCommand()
 			CharacterActorList_[PlayerNum]->Focus();
 			PlayerInfoManager::GetInstance()->SetMainCharacter(NewCharacter);
 		}
+
+		//// 221017 SJH ADD : 몬스터 테스트용으로 플레이어 필요
+		//if (1 == CharacterActorList_.size())
+		//{
+		//	Monsters* ZeroMonster = MonsterActorList_[0];
+
+		//	float4 ForcePos = ZeroMonster->GetTransform()->GetWorldPosition();
+		//	NewCharacter->GetTransform()->SetWorldPosition(ForcePos);
+		//}
 	}
 
 //#ifdef _DEBUG
@@ -379,7 +414,7 @@ void LumiaLevel::MapResourceLoad()
 					characterSpawnPoints_.insert(std::pair(areaName, vecTrans));
 				}
 			}
-			
+
 		}
 	}
 
@@ -696,7 +731,7 @@ void LumiaLevel::DebugWindowUpdate()
 		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
 		// Game Time Debug Value
-		
+
 		// 현재일차 낮/밤
 		int CurDay = gm->GetCurrentDay();
 		DayAndNightType CurType = gm->GetCurrentDayType();
@@ -737,9 +772,14 @@ void LumiaLevel::DebugWindowUpdate()
 		}
 
 		// Monster Debug Value
+		//int MonsterCount = static_cast<int>(MonsterActorList_.size());
+		//for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
+		//{
+		//	float MonsterHP = MonsterActorList_[MonsterNum]->GetMonsterStateInfo().HP_;
+		//	DebugAndControlWindow_->AddText("Monster" + std::to_string(MonsterNum) + " curHP: " + std::to_string(MonsterHP));
+		//}
 
-
-
+		DebugAndControlWindow_->AddText("Monster" + std::to_string(0) + " curHP: " + std::to_string(MonsterActorList_[0]->GetMonsterStateInfo().HP_));
 	}
 }
 

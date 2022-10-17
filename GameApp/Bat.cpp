@@ -1,14 +1,14 @@
-#include "Precompile.h"
-#include "Wolf.h"
+#include "PreCompile.h"
+#include "Bat.h"
 
 #include <GameEngine/GameEngineCollision.h>
 
-bool Wolf::ResourceLoadFlag = false;
+bool Bat::ResourceLoadFlag = false;
 
-void Wolf::InitalizeStateInfo()
+void Bat::InitalizeStateInfo()
 {
 	// 기본정보
-	Type_ = MonsterType::WOLF;											// 몬스터타입
+	Type_ = MonsterType::BAT;											// 몬스터타입
 
 	// 기본스텟
 	StateInfo_.HPMax_ = 100.0f;											// 최대체력
@@ -36,7 +36,7 @@ void Wolf::InitalizeStateInfo()
 	StateInfo_.RegenTime_ = 125.f;										// 리젠타임(갱신) -> 0.0f이하일시 RegenTime_으로 초기화
 }
 
-void Wolf::InitalizeResourceLoad()
+void Bat::InitalizeResourceLoad()
 {
 	// 리소스 로드는 한번만 처리
 	if (false == ResourceLoadFlag)
@@ -44,54 +44,53 @@ void Wolf::InitalizeResourceLoad()
 		// BaseMesh Resource Load & (Create Vertex & Index Buffer)
 		GameEngineDirectory MeshDir;
 		MeshDir.MoveParent("FoxTeam");
-		MeshDir / "Resources" / "FBX" / "Monster" / "Wolf";
+		MeshDir / "Resources" / "FBX" / "Monster" / "Bat";
 
-		GameEngineFBXMesh* Basemesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_BaseMesh.fbx"));
+		GameEngineFBXMesh* Basemesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_BaseMesh.fbx"));
 		Basemesh->CreateRenderingBuffer();
 
 		// Animation Resource Load
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_appear.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_wait.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_run.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_death.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_atk01.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_atk02.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_skill.fbx"));
+		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_appear.fbx"));
+		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_wait.fbx"));
+		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_run.fbx"));
+		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_death.fbx"));
+		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_atk01.fbx"));
+		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_atk02.fbx"));
 
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
 	}
 }
 
-void Wolf::InitalizeRenderAndAnimation()
+void Bat::InitalizeRenderAndAnimation()
 {
 	// 렌더러 셋팅
 	MainRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	MainRenderer_->SetFBXMesh("Wolf_BaseMesh.fbx", "TextureDeferredLightAni");
+	MainRenderer_->SetFBXMesh("Bat_BaseMesh.fbx", "TextureDeferredLightAni");
 
 	MainRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	// 애니메이션 생성
-	MainRenderer_->CreateFBXAnimation("APPEAR", "Wolf_appear.fbx", 0, false);			// 첫등장상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("REGEN", "Wolf_appear.fbx", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
-	MainRenderer_->CreateFBXAnimation("IDLE", "Wolf_wait.fbx", 0);						// 대기상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("RUN", "Wolf_run.fbx", 0);						// 이동상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Wolf_run.fbx", 0);				// 귀환상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("CHASE", "Wolf_run.fbx", 0);						// 추적상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("HIT", "Wolf_wait.fbx", 0);						// 피격상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEATH", "Wolf_death.fbx", 0, false);				// 사망중상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEAD", "Wolf_death.fbx", 0, false);				// 사망(리젠대기)상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("ATK01", "Wolf_atk01.fbx", 0, false);				// 일반공격01상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("ATK02", "Wolf_atk02.fbx", 0, false);				// 일반공격02상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("SKILLATTACK", "Wolf_skill.fbx", 0, false);		// 스킬공격상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("APPEAR", "Bat_appear.fbx", 0, false);			// 첫등장상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("REGEN", "Bat_appear.fbx", 0, false);				// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
+	MainRenderer_->CreateFBXAnimation("IDLE", "Bat_wait.fbx", 0);						// 대기상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("RUN", "Bat_run.fbx", 0);							// 이동상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Bat_run.fbx", 0);				// 귀환상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("CHASE", "Bat_run.fbx", 0);						// 추적상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HIT", "Bat_wait.fbx", 0);						// 피격상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEATH", "Bat_death.fbx", 0, false);				// 사망중상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEAD", "Bat_death.fbx", 0, false);				// 사망(리젠대기)상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK01", "Bat_atk01.fbx", 0, false);				// 일반공격01상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK02", "Bat_atk02.fbx", 0, false);				// 일반공격02상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("SKILLATTACK", "Bat_skill.fbx", 0, false);		// 스킬공격상태의 애니메이션(사용안함)
 	MainRenderer_->ChangeFBXAnimation("IDLE");
 
 	// 기본상태 셋팅
 	ChangeAnimationAndState(MonsterStateType::APPEAR);
 }
 
-void Wolf::InitalizeCollider()
+void Bat::InitalizeCollider()
 {
 	// 기본: 몸체 충돌체 생성
 	BodyCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
@@ -109,11 +108,10 @@ void Wolf::InitalizeCollider()
 	//AtkCollider_->Off();
 }
 
-Wolf::Wolf()
+Bat::Bat()
 {
-
 }
 
-Wolf::~Wolf()
+Bat::~Bat()
 {
 }

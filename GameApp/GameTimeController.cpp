@@ -158,7 +158,7 @@ void GameTimeController::CreateMonsterFirstAppearInfo()
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].DayType_ = DayAndNightType::DAY;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].AppearDay_ = 1;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].AppearTime_ = 40.0f;
-	
+
 	// BEAR(곰): 1일차 밤 02:20
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_ = false;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].DayType_ = DayAndNightType::NIGHT;
@@ -170,13 +170,13 @@ void GameTimeController::CreateMonsterFirstAppearInfo()
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].DayType_ = DayAndNightType::DAY;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].AppearDay_ = 1;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].AppearTime_ = 100.0f;
-	
+
 	// DOG(들개): 1일차 낮 00:40
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].IsAppear_ = false;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].DayType_ = DayAndNightType::DAY;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].AppearDay_ = 1;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].AppearTime_ = 40.0f;
-	
+
 	// CHICKEN(닭): 게임시작과동시에 등장
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_ = false;
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].DayType_ = DayAndNightType::NONE;
@@ -298,12 +298,14 @@ void GameTimeController::FirstAppearMonsters(MonsterType _MonsterType)
 
 	// 루미아레벨로 다운캐스팅 후 해당 몬스터타입 첫등장처리
 	LumiaLevel* PlayLevel = dynamic_cast<LumiaLevel*>(CurLevel);
-	PlayLevel->HostMonsterFirstAppear(_MonsterType);
+	PlayLevel->HostMonsterFirstAppearBatchProcessing(_MonsterType);
 
 	// 몬스터 첫등장상태 일괄변환 패킷전송
 	MonsterStateChangePacket ChangeAppearStatePacket;
+	ChangeAppearStatePacket.SetIndex(-1);
 	ChangeAppearStatePacket.SetMonsterType(_MonsterType);
 	ChangeAppearStatePacket.SetMonsterStateType(MonsterStateType::APPEAR);
+	ChangeAppearStatePacket.SetTargetIndex(-1);
 	GameServer::GetInstance()->Send(&ChangeAppearStatePacket);
 
 	// 모든 몬스터가 첫등장완료시 AllMonsterAppearEnd_ Flag On

@@ -38,13 +38,21 @@ public: // Inline Get Function
 	}
 
 public: // Inline Set Function
+
+public: // Public Get Function
+	Character* GetSpecificCharacter(int _Index);							// 특정 캐릭터 Get
+	Monsters* GetSpecificMonster(int _Index);								// 특정 몬스터 Get
+
 public: // Public Function
 	void HostCreateCommand();												// Host 전용
 	void GuestCreateCommand();												// Guest 전용
 
-public: // Public Monster Related Function
-	void HostMonsterFirstAppear(MonsterType _MonsterType);					// 몬스터타입별 첫등장 일괄처리(Host 전용)
-	void GuestMonsterFirstAppear(MonsterType _MonsterType);					// 몬스터타입별 첫등장 일괄처리(Guest 전용)
+public: // Public Monster Batch Processing Related Function(몬스터일괄처리관련)
+	void HostMonsterFirstAppearBatchProcessing(MonsterType _MonsterType);	// 몬스터타입별 첫등장 일괄처리(Host 전용)
+	void GuestMonsterFirstAppearBatchProcessing(MonsterType _MonsterType);	// 몬스터타입별 첫등장 일괄처리(Guest 전용)
+
+public: // Public Monster Specific Processing Related Function(특정몬스터처리관련)
+
 
 public: // Create MonsterInfo
 	void CreateMonsterInfo();												// Host 전용(현재 맵에 배치하려는 몬스터들을 미리 셋팅)

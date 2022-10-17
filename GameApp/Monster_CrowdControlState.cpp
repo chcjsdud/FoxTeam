@@ -1,6 +1,12 @@
 #include "PreCompile.h"
 #include "Monsters.h"
 
+#include <GameEngine/GameEngineCollision.h>
+
+#include "GameServer.h"
+#include "GameClient.h"
+#include "MonsterStateChangePacket.h"
+
 void Monsters::StartHitState()
 {
 	// 현재 상태 지정
@@ -22,16 +28,15 @@ void Monsters::StartDeathState()
 {
 	// 현재 상태 지정
 	CurStateType_ = MonsterStateType::DEATH;
-
-	// 
 }
 
 void Monsters::UpdateDeathState(float _DeltaTime)
 {
 	// 현재 애니메이션이 종료되면 리젠대기(사망)상태로 전환
-
-
-
+	if ("DEATH" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	{
+		ChangeAnimationAndState(MonsterStateType::DEAD);
+	}
 }
 
 void Monsters::EndDeathState()
@@ -43,8 +48,9 @@ void Monsters::StartDeadState()
 	// 현재 상태 지정
 	CurStateType_ = MonsterStateType::DEAD;
 
-	// 
-
+	// 메인렌더러 렌더링 Off, 충돌체 Off
+	MainRenderer_->Off();
+	BodyCollider_->Off();
 }
 
 void Monsters::UpdateDeadState(float _DeltaTime)
@@ -54,11 +60,23 @@ void Monsters::UpdateDeadState(float _DeltaTime)
 	if (0.0f >= RegenTime)
 	{
 		// 리젠상태로 전환
-		NormalState_ << "REGEN";
-		MainState_ << "NORMAL";
-		
-		// 리젠시간 초기화
-		StateInfo_.RegenTime_ = StateInfo_.RegenTimeMax_;
+		ChangeAnimationAndState(MonsterStateType::REGEN);
+
+		// 상태전환 패킷전송
+		MonsterStateChangePacket Packet;
+		Packet.SetIndex(Index_);
+		Packet.SetMonsterType(Type_);
+		Packet.SetMonsterStateType(MonsterStateType::REGEN);
+		Packet.SetMonsterStatInfo(StateInfo_);
+		Packet.SetTargetIndex(-1);
+		if (true == GameServer::GetInstance()->IsOpened())
+		{
+			GameServer::GetInstance()->Send(&Packet);
+		}
+		else if (true == GameClient::GetInstance()->IsConnected())
+		{
+			GameClient::GetInstance()->Send(&Packet);
+		}
 	}
 }
 
