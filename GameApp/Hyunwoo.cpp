@@ -186,6 +186,7 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("SkillR_end", "hyunwoo_skillR_end.fbx", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
+
 }
 
 
@@ -302,10 +303,6 @@ void Hyunwoo::onStartQSkill()
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
 	collision_Q->On();
-
-	rearEffectRenderer_->On();
-	rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
-	rearEffectRenderer_->AnimationPlay();
 }
 
 void Hyunwoo::onUpdateQSkill(float _deltaTime)
@@ -714,6 +711,10 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName)
 		rEffect_->GetTransform()->SetLocalPosition(wp);
 		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 		rEffect_->PlayExplode();
+
+		rearEffectRenderer_->On();
+		rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
+		rearEffectRenderer_->AnimationPlay();
 		return;
 	}
 }
@@ -775,6 +776,10 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 		PacketSoundPlay packet;
 		packet.SetSound("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
 		FT::SendPacket(packet);
+
+		rearEffectRenderer_->On();
+		rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
+		rearEffectRenderer_->AnimationPlay();
 
 		if (false == b_Rhit_)
 		{
