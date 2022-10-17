@@ -28,7 +28,7 @@ void UI_Skill::Start()
 	Skill_BackGroundPos = { -20.0f, -315.0f, 0.0f };
 	Icon_Q_Pos = { -123.0f, -300.0f, -1.0f };
 	Icon_W_Pos = { -80.0f, -300.0f, -1.0f };
-	Icon_E_Pos = { -36.0f, -300.0f, -1.0f };
+	Icon_E_Pos = { -37.0f, -300.0f, -1.0f };
 	Icon_R_Pos = { 7.0f, -300.0f, -1.0f };
 	Icon_Weapon_Pos = { 50.0f, -300.0f, -1.0f };
 	Icon_Passive_Pos = { 89.0f, -300.0f, -1.0f };

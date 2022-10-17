@@ -25,16 +25,26 @@ UI_Time::~UI_Time()
 void UI_Time::Start()
 {
 
-	float4 UI_Pos = { 0.0f, 336.0f, 1.0f };
+	UI_Pos = { 0.0f, 336.0f, 1.0f };
+	Day_Pos = { -40.0f, 329.0f, 0.0f };
+	Time_Pos = {-10.0f, 343.0f, 0.0f};
 
 	{
 		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		BackGroundRenderer->SetImage("Time_UI_Bg.png", "PointSmp");
+		BackGroundRenderer->SetImage("UI_TimeBg.png", "PointSmp");
 		BackGroundRenderer->GetTransform()->SetLocalPosition(UI_Pos);
-		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize() * 0.8f);
+		//BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize() * 0.8f);
+		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
+
+		DayNightRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
+		DayNightRenderer->GetTransform()->SetLocalPosition(Day_Pos);
+		DayNightRenderer->GetTransform()->SetLocalScaling(DayNightRenderer->GetCurrentTexture()->GetTextureSize());
+
+		TimeRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		TimeRenderer->GetTransform()->SetLocalPosition(Time_Pos);
 	}
 
-	GameTimeController::GetInstance()->GetCurrentDayType();
 
 }
 
@@ -50,10 +60,14 @@ void UI_Time::Update(float _Time)
 		if (false == UIOn)
 		{
 			BackGroundRenderer->Off();
+			DayNightRenderer->Off();
+			TimeRenderer->Off();
 		}
 		else
 		{
 			BackGroundRenderer->On();
+			DayNightRenderer->On();
+			TimeRenderer->On();
 		}
 	}
 
@@ -68,5 +82,37 @@ void UI_Time::Update(float _Time)
 			UIOn = true;
 		}
 	}
+
+	DayAndNightType SunMoon = GameTimeController::GetInstance()->GetCurrentDayType();
+
+	switch (SunMoon)
+	{
+	case DayAndNightType::NONE:
+		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
+		break;
+	case DayAndNightType::DAY:
+		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
+		break;
+	case DayAndNightType::NIGHT:
+		DayNightRenderer->SetImage("UI_Moon.png", "PointSmp");
+		break;
+	case DayAndNightType::MAX:
+		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
+		break;
+	default:
+		break;
+	}
+	
+	TimeSetting();
+	
+}
+
+void UI_Time::TimeSetting()
+{
+	tm InGameTime = GameTimeController::GetInstance()->GetCurrentGameTimeToHour();
+	int Minute = InGameTime.tm_min;
+	int Second = InGameTime.tm_sec;
+	string Time = to_string(Minute) + ":" + to_string(Second);
+	TimeRenderer->TextSetting("HMKMRHD", Time, 20);
 }
 

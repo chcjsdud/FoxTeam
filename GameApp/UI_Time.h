@@ -22,6 +22,8 @@ public:
 
 protected:
 	GameEngineUIRenderer* BackGroundRenderer;
+	GameEngineUIRenderer* DayNightRenderer;
+	GameEngineUIRenderer* TimeRenderer;
 	float Time;
 
 
@@ -29,5 +31,10 @@ private:
 	void Start() override;
 	void Update(float _Time) override;
 
+	void TimeSetting();
+
+	float4 UI_Pos;
+	float4 Day_Pos;
+	float4 Time_Pos;
 };
 
