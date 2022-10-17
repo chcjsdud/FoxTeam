@@ -49,6 +49,10 @@
 #include "Wolf.h"
 #include "Bat.h"
 #include "Chicken.h"
+//#include "Bear.h"
+//#include "Boar.h"
+//#include "Dog.h"
+//#include "Weekline.h"
 
 const char* enum_str[static_cast<int>(Location::MAX)] = {
 		"DOCK",				// Ç×±¸

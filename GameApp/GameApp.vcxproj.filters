@@ -531,6 +531,18 @@
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monsters\03.Chicken">
       <UniqueIdentifier>{e23964cf-6628-48d6-956a-ec7ac4b1af12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monsters\04.Bear">
+      <UniqueIdentifier>{20df218c-2fa7-41c8-95c8-529bc5a192d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monsters\05.Boar">
+      <UniqueIdentifier>{62c8b77d-ee22-410e-93da-97c72f2d2673}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monsters\06.Dog">
+      <UniqueIdentifier>{dea5f50c-706a-4522-a70a-1101dce9f8a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monsters\07.Weekline">
+      <UniqueIdentifier>{496c1ff8-d476-404d-8e1a-19f6e612fa00}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
