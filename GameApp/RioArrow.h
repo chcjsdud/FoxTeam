@@ -3,6 +3,7 @@
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
 #include "IUnit.h"
+#include <GameEngine/GameEngineEffectRenderer.h>
 
 class GameEngineFBXRenderer;
 class GameEngineCollision;
@@ -45,6 +46,7 @@ private:
 private:
 	GameEngineFSM state_;
 	GameEngineFBXRenderer* renderer_;
+	GameEngineEffectRenderer* effect_;
 	GameEngineCollision* collision_;
 
 	IUnit* owner_;

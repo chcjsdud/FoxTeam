@@ -63,7 +63,7 @@ GameEngineTexture* GameEngineTextureManager::Load(const std::string& _Path)
 
 GameEngineTexture* GameEngineTextureManager::Load(const std::string& _Name, const std::string& _Path)
 {
-	GameEngineTexture* FindRes = Find(_Name);
+	GameEngineTexture* FindRes = Find(GameEngineString::toupper(_Name));
 
 	if (nullptr != FindRes)
 	{
@@ -75,7 +75,7 @@ GameEngineTexture* GameEngineTextureManager::Load(const std::string& _Name, cons
 	NewRes->Load(_Path);
 	{
 		std::lock_guard Lock(ManagerLock);
-		ResourcesMap.insert(std::map<std::string, GameEngineTexture*>::value_type(_Name, NewRes));
+		ResourcesMap.insert(std::map<std::string, GameEngineTexture*>::value_type(GameEngineString::toupper(_Name), NewRes));
 	}
 	return NewRes;
 }

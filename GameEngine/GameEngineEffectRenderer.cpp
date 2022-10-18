@@ -161,7 +161,8 @@ GameEngineEffectRenderer::~GameEngineEffectRenderer()
 
 void GameEngineEffectRenderer::Start()
 {
-	GameEngineRenderer::Start();
+	// 반투명 개체 취급
+	GetLevel()->GetMainCamera()->PushRenderer(9999, this);
 
 	SetRenderingPipeLine("TextureTrans");
 	ShaderHelper.SettingConstantBufferLink("TextureTransAtlasData", CutData);
@@ -215,7 +216,7 @@ void GameEngineEffectRenderer::SetIndex(const int Index)
 
 void GameEngineEffectRenderer::SetImage(const std::string& _ImageName, const std::string& _Sampler/* = ""*/)
 {
-	CurTexture = GameEngineTextureManager::GetInst().Find(_ImageName);
+	CurTexture = GameEngineTextureManager::GetInst().Find(GameEngineString::toupper(_ImageName));
 
 	if (nullptr == CurTexture)
 	{

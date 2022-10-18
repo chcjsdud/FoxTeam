@@ -31,9 +31,9 @@ SamplerState Smp : register(s0);
 float4 DeferredMerge_PS(VertexOut _In) : SV_Target0
 {
     float4 vDiffuseColor = (DiffuseTex.Sample(Smp, _In.Texcoord.xy));
-    float4 DiffuseLightColor = (DiffuseLight.Sample(Smp, _In.Texcoord.xy));;
-    float4 SpacularLightColor = (SpacularLight.Sample(Smp, _In.Texcoord.xy));;
-    float4 AmbientLightColor = (AmbientLight.Sample(Smp, _In.Texcoord.xy));;
+    float4 DiffuseLightColor = (DiffuseLight.Sample(Smp, _In.Texcoord.xy));
+    float4 SpacularLightColor = (SpacularLight.Sample(Smp, _In.Texcoord.xy));
+    float4 AmbientLightColor = (AmbientLight.Sample(Smp, _In.Texcoord.xy));
     
     if (0 == vDiffuseColor.a)
     {

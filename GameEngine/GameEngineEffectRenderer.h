@@ -147,6 +147,7 @@ public:
 protected:
 	void SetRenderingPipeLineSettingNext() override;
 
+	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
@@ -157,7 +158,5 @@ private:
 	float4 CutData;
 	GameEngineTexture* CurTexture;
 	bool IsPlay_;
-
-	void Start() override;
 };
 

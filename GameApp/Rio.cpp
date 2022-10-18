@@ -58,6 +58,19 @@ void Rio::LoadResource()
 			GameEngineSoundManager::GetInstance()->CreateSound(file.FileName(), file.GetFullPath());
 		}
 	}
+
+	{
+		GameEngineDirectory dir;
+
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "Texture" / "Rio";
+
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("png");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineTextureManager::GetInst().Load(file.FileName(), file.GetFullPath());
+		}
+	}
 }
 
 void Rio::ReleaseResource()
@@ -143,6 +156,7 @@ void Rio::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("Death", "Rio_Death.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait_Short");
+
 }
 
 void Rio::changeAnimationWait()
