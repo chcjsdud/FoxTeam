@@ -152,6 +152,12 @@ void Monsters::rcvDamage(MonsterStateInfo _rcvStatInfo, int _TargetIndex)
 
 void Monsters::rcvDeath(MonsterStateInfo _rcvStatInfo)
 {
+	// 이미상 사망중 or 사망상태라면 무시
+	if (MonsterStateType::DEAD == CurStateType_ || MonsterStateType::DEATH == CurStateType_)
+	{
+		return;
+	}
+
 	// 상태정보 갱신
 	StateInfo_ = _rcvStatInfo;
 

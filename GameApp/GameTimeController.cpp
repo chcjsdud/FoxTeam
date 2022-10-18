@@ -171,7 +171,7 @@ void GameTimeController::CreateMonsterFirstAppearInfo()
 
 	// CHICKEN(닭): 게임시작과동시에 등장
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].AppearTime_ = 0.0f;
+	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].AppearTime_ = 1.0f;
 
 	// BOAR(멧돼지): 1일차 낮 01:40
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].IsAppear_ = false;
@@ -184,14 +184,18 @@ void GameTimeController::UpdateMonsterFirstAppearTime(float _DeltaTime)
 	if (false == AllMonsterAppearEnd_)
 	{
 		// 0일차 게임시작일때
-		// CHICKEN(닭): 게임시작과동시에 등장
+		// CHICKEN(닭): 게임시작과동시에 등장(서버-클라 동기화 처리로인해 1.0초의 딜레이를 부여)
 		if (false == MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_)
 		{
-			// 게임시작과 현재맵에 배치된 닭(몬스터)에게 등장모션을 실행하라는 명령을 전달
-			FirstAppearMonsters(MonsterType::CHICKEN);
+			MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].AppearTime_ -= _DeltaTime;
+			if (0.0f >= MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].AppearTime_)
+			{
+				// 게임시작과 현재맵에 배치된 닭(몬스터)에게 등장모션을 실행하라는 명령을 전달
+				FirstAppearMonsters(MonsterType::CHICKEN);
 
-			// 등장완료로 인한 Flag On
-			MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_ = true;
+				// 등장완료로 인한 Flag On
+				MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_ = true;
+			}
 		}
 
 		// 1일차 낮일때

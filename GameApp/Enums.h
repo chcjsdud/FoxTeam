@@ -61,7 +61,7 @@ enum class MonsterType
 	DOG,						// 들개
 	CHICKEN,					// 닭
 	BOAR,						// 멧돼지
-	WEEKLINE,					// Dr.위클라인
+	//WEEKLINE,					// Dr.위클라인
 	MAX
 };
 

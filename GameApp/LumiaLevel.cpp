@@ -254,11 +254,11 @@ void LumiaLevel::MonsterCreationCommand()
 				NewMonster = CreateActor<Boar>();
 				break;
 			}
-			case MonsterType::WEEKLINE:				// Dr.위클라인
-			{
-				GameEngineDebug::OutPutDebugString("구현하지못한 몬스터타입(Dr.위클라인)입니다!!!!");
-				break;
-			}
+			//case MonsterType::WEEKLINE:				// Dr.위클라인
+			//{
+			//	GameEngineDebug::OutPutDebugString("구현하지못한 몬스터타입(Dr.위클라인)입니다!!!!");
+			//	break;
+			//}
 		}
 
 		// 예외처리

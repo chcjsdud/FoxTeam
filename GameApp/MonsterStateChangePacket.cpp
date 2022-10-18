@@ -125,6 +125,8 @@ void MonsterStateChangePacket::execute(SOCKET _sender, GameEngineSocketInterface
 			return;
 		}
 
+		int Index = CurMonster->GetIndex();									// 몬스터인덱스(확인용)
+
 		switch (StateType_)
 		{
 			case MonsterStateType::ATK01: // 공격01상태전환 ---

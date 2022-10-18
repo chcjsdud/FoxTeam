@@ -8,7 +8,7 @@ bool Weekline::ResourceLoadFlag = false;
 void Weekline::InitalizeStateInfo()
 {
 	// 기본정보
-	Type_ = MonsterType::WEEKLINE;										// 몬스터타입
+	//Type_ = MonsterType::WEEKLINE;										// 몬스터타입
 
 	// 기본스텟
 	StateInfo_.HPMax_ = 100.0f;											// 최대체력
