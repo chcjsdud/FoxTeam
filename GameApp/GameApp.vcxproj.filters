@@ -349,6 +349,9 @@
     <ClCompile Include="Weekline.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Monsters\07.Weekline</Filter>
     </ClCompile>
+    <ClCompile Include="MonsterDebugWindow.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Monsters\00.Base\99.IMGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -554,6 +557,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monsters\07.Weekline">
       <UniqueIdentifier>{496c1ff8-d476-404d-8e1a-19f6e612fa00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Monsters\00.Base\99.IMGUI">
+      <UniqueIdentifier>{d3850157-39c2-4bde-badf-773fe43d29ef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -910,6 +916,9 @@
     </ClInclude>
     <ClInclude Include="Weekline.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Monsters\07.Weekline</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterDebugWindow.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Monsters\00.Base\99.IMGUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

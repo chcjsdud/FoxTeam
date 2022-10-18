@@ -14,6 +14,7 @@ class NavMesh;
 class Character;
 class Monsters;
 class GameEngineLevelControlWindow;
+class MonsterDebugWindow;
 class LumiaLevel : public GameEngineLevel
 {
 public: // Inline Get Function
@@ -90,6 +91,9 @@ private: // State Update Function
 private: // Debug Function
 	void DebugWindowUpdate();												// Debug Window Update Function
 
+private: // Check Level Related InputKey
+	void CheckLevelRelatedInputKey();										// Check InputKey
+
 #pragma region 테스트용함수(추후삭제예정)
 	// LevelControlWindow에의해 강제 레벨이동한경우 사용하는 함수
 	// 서버 생성이 없이 해당 레벨로 체인지한경우
@@ -139,5 +143,6 @@ private:
 	ItemBoxManager* ItemBoxManager_;																// 아이템박스 매니저
 
 private:
-	GameEngineLevelControlWindow* DebugAndControlWindow_;											// 디버그 & 강제레벨체인지 윈도우
+	GameEngineLevelControlWindow* DebugAndControlWindow_;											// 레벨관련 디버그 & 강제레벨체인지 윈도우
+	MonsterDebugWindow* MonsterDebugWindow_;														// 몬스터관련 디버그 윈도우
 };

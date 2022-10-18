@@ -468,6 +468,11 @@ void Monsters::HomingInstinctValueUpdate(float _DeltaTime)
 	}
 }
 
+void Monsters::DebugWindowUpdate()
+{
+	// LevelControl
+}
+
 void Monsters::Start()
 {
 	// √ ±‚»≠

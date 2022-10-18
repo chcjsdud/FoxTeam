@@ -8,6 +8,7 @@
 #include <GameEngine/GameEngineFBXMesh.h>
 
 #include "ItemBoxWindow.h"
+#include "MonsterDebugWindow.h"
 
 #include "Enums.h"
 #include "ePacketID.h"
@@ -29,6 +30,7 @@
 #include "MonsterStateChangePacket.h"
 #include "GameTimeSyncPacket.h"
 
+//======================== Level
 #include "LoadingLevel.h"
 
 //======================== Controller
@@ -552,6 +554,12 @@ void LumiaLevel::CreateLevelInput()
 	{
 		GameEngineInput::GetInst().CreateKey("3", '3');
 	}
+
+	// Monster Related Key
+	if (false == GameEngineInput::GetInst().IsKey("MonsterDebugWindowOnOrOff"))
+	{
+		GameEngineInput::GetInst().CreateKey("MonsterDebugWindowOnOrOff", VK_LCONTROL);
+	}
 }
 
 void LumiaLevel::AddSocketHandle()
@@ -602,7 +610,6 @@ void LumiaLevel::InitIMGUIWindow()
 
 	DebugAndControlWindow_ = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
 
-
 	ItemBoxWindow* Window = nullptr;
 	if (nullptr == GameEngineGUI::GetInst()->FindGUIWindow("ItemBoxWindow"))
 	{
@@ -612,6 +619,14 @@ void LumiaLevel::InitIMGUIWindow()
 	if (nullptr != Window && nullptr != ItemBoxManager_)
 	{
 		Window->ItemBoxManager_ = ItemBoxManager_;
+	}
+
+	// 221018 SJH ADD : 몬스터 정보확인용 디버그 생성
+	MonsterDebugWindow_ = GameEngineGUI::GetInst()->FindGUIWindowConvert<MonsterDebugWindow>("MonsterDebugWindow");
+	if (nullptr == MonsterDebugWindow_)
+	{
+		MonsterDebugWindow_ = GameEngineGUI::GetInst()->CreateGUIWindow<MonsterDebugWindow>("MonsterDebugWindow");
+		MonsterDebugWindow_->OnOffChange();
 	}
 }
 
@@ -725,15 +740,16 @@ void LumiaLevel::MonsterStateUpdatePacketSend()
 
 void LumiaLevel::MonstersTransformUpdate()
 {
-
-
 	// ...
+
+
 
 
 }
 
 void LumiaLevel::DebugWindowUpdate()
 {
+	// DebugAndControlWindow
 	if (nullptr != DebugAndControlWindow_ && nullptr != MousePointer::InGameMouse && 0 < static_cast<int>(CharacterActorList_.size()))
 	{
 		GameTimeController* gm = GameTimeController::GetInstance();
@@ -779,16 +795,174 @@ void LumiaLevel::DebugWindowUpdate()
 			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->HP));
 			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
 		}
+	}
 
-		// Monster Debug Value
-		//int MonsterCount = static_cast<int>(MonsterActorList_.size());
-		//for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
-		//{
-		//	float MonsterHP = MonsterActorList_[MonsterNum]->GetMonsterStateInfo().HP_;
-		//	DebugAndControlWindow_->AddText("Monster" + std::to_string(MonsterNum) + " curHP: " + std::to_string(MonsterHP));
-		//}
+	// MonsterDebugWindow
+	if (nullptr != MonsterDebugWindow_ && 0 < static_cast<int>(MonsterActorList_.size()) && 0 < static_cast<int>(CharacterActorList_.size()))
+	{
+		int MonsterCount = static_cast<int>(MonsterActorList_.size());
+		for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
+		{
+			// 몬스터명(몬스터번호 + 타입 + 위치)
+			int Index = MonsterActorList_[MonsterNum]->GetIndex();
+			float4 CurPos = MonsterActorList_[MonsterNum]->GetTransform()->GetWorldPosition();
+			MonsterType Type = MonsterActorList_[MonsterNum]->GetMonsterType();
+			switch (Type)
+			{
+				case MonsterType::WOLF:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(WOLF) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + + ">");
+					break;
+				}
+				case MonsterType::BEAR:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(BEAR) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+				case MonsterType::BAT:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(BAT) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+				case MonsterType::DOG:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(DOG) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+				case MonsterType::CHICKEN:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(CHICKEN) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+				case MonsterType::BOAR:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(BOAR) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+			}
 
-		DebugAndControlWindow_->AddText("Monster" + std::to_string(0) + " curHP: " + std::to_string(MonsterActorList_[0]->GetMonsterStateInfo().HP_));
+			// 현재체력
+			float CurHp = MonsterActorList_[MonsterNum]->GetMonsterStateInfo().HP_;
+			MonsterDebugWindow_->AddText("HP: " + std::to_string(CurHp));
+
+			// 현재상태
+			MonsterStateBasicType CurMainState = MonsterActorList_[MonsterNum]->GetMonsterBasicStateType();
+			switch (CurMainState)
+			{
+				case MonsterStateBasicType::NONE:
+				{
+					MonsterDebugWindow_->AddText("MainState: NONE");
+					break;
+				}
+				case MonsterStateBasicType::NORMAL:
+				{
+					MonsterDebugWindow_->AddText("MainState: NORMAL");
+					break;
+				}
+				case MonsterStateBasicType::CROWDCONTROL:
+				{
+					MonsterDebugWindow_->AddText("MainState: CROWDCONTROL");
+					break;
+				}
+				case MonsterStateBasicType::ATTACK:
+				{
+					MonsterDebugWindow_->AddText("MainState: ATTACK");
+					break;
+				}
+			}
+
+			MonsterStateType CurDetailState = MonsterActorList_[MonsterNum]->GetMonsterDetailStateType();
+			switch (CurDetailState)
+			{
+				case MonsterStateType::NONE:
+				{
+					MonsterDebugWindow_->AddText("DetailState: NONE");
+					break;
+				}
+				case MonsterStateType::APPEAR:
+				{
+					MonsterDebugWindow_->AddText("DetailState: APPEAR");
+					break;
+				}
+				case MonsterStateType::REGEN:
+				{
+					MonsterDebugWindow_->AddText("DetailState: REGEN");
+					break;
+				}
+				case MonsterStateType::IDLE:
+				{
+					MonsterDebugWindow_->AddText("DetailState: IDLE");
+					break;
+				}
+				case MonsterStateType::RUN:
+				{
+					MonsterDebugWindow_->AddText("DetailState: RUN");
+					break;
+				}
+				case MonsterStateType::HOMINGINSTINCT:
+				{
+					MonsterDebugWindow_->AddText("DetailState: HOMINGINSTINCT");
+					break;
+				}
+				case MonsterStateType::CHASE:
+				{
+					MonsterDebugWindow_->AddText("DetailState: CHASE");
+					break;
+				}
+				case MonsterStateType::HIT:
+				{
+					MonsterDebugWindow_->AddText("DetailState: HIT");
+					break;
+				}
+				case MonsterStateType::DEATH:
+				{
+					MonsterDebugWindow_->AddText("DetailState: DEATH");
+					break;
+				}
+				case MonsterStateType::DEAD:
+				{
+					MonsterDebugWindow_->AddText("DetailState: DEAD");
+					break;
+				}
+				case MonsterStateType::ATK01:
+				{
+					MonsterDebugWindow_->AddText("DetailState: ATK01");
+					break;
+				}
+				case MonsterStateType::ATK02:
+				{
+					MonsterDebugWindow_->AddText("DetailState: ATK02");
+					break;
+				}
+				case MonsterStateType::SKILLATTACK:
+				{
+					MonsterDebugWindow_->AddText("DetailState: SKILLATTACK");
+					break;
+				}
+			}
+			
+			// 타겟
+			int TargetIndex = MonsterActorList_[MonsterNum]->GetTargetIndex();
+			if (-1 != TargetIndex && TargetIndex < static_cast<int>(CharacterActorList_.size()))
+			{
+				MonsterDebugWindow_->AddText("CurTarget: Character" + std::to_string(CharacterActorList_[TargetIndex]->GetIndex()));
+			}
+			else if(-1 == TargetIndex)
+			{
+				MonsterDebugWindow_->AddText("CurTarget: NoneTarget");
+			}
+
+			// 개행
+			MonsterDebugWindow_->AddText("");
+		}
+	}
+}
+
+void LumiaLevel::CheckLevelRelatedInputKey()
+{
+	if (true == GameEngineInput::GetInst().Down("MonsterDebugWindowOnOrOff") && nullptr != MonsterDebugWindow_)
+	{
+		MonsterDebugWindow_->OnOffChange();
 	}
 }
 
@@ -796,6 +970,7 @@ LumiaLevel::LumiaLevel()
 	: CurMap_(nullptr)
 	, ItemBoxManager_(nullptr)
 	, DebugAndControlWindow_(nullptr)
+	, MonsterDebugWindow_(nullptr)
 {
 }
 
@@ -873,6 +1048,9 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 
 	// Debug Window Update
 	DebugWindowUpdate();
+
+	// Check Level Related InputKey
+	CheckLevelRelatedInputKey();
 }
 
 void LumiaLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)

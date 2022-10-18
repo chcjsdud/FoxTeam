@@ -41,6 +41,7 @@ void UserGame::Initialize()
 {
 	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
 	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
+	
 
 	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
 	LevelCreate<TitleLevel>("TitleLevel");

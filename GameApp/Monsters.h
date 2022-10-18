@@ -18,29 +18,34 @@ class Monsters : public IUnit
 public: // Static Value
 	
 public: // inline Get Function
-	inline MonsterStateBasicType GetMonsterBasicStateType()
+	inline MonsterStateBasicType GetMonsterBasicStateType() const
 	{
 		return CurStateBasicType_;
 	}
 
-	inline MonsterStateType GetMonsterDetailStateType()
+	inline MonsterStateType GetMonsterDetailStateType() const
 	{
 		return CurStateType_;
 	}
 
-	inline MonsterStateInfo GetMonsterStateInfo()
+	inline MonsterStateInfo GetMonsterStateInfo() const
 	{
 		return StateInfo_;
 	}
 
-	inline Location GetMonsterAreaType()
+	inline Location GetMonsterAreaType() const
 	{
 		return AreaType_;
 	}
 
-	inline MonsterType GetMonsterType()
+	inline MonsterType GetMonsterType() const
 	{
 		return Type_;
+	}
+
+	inline int GetTargetIndex() const
+	{
+		return CurTargetIndex_;
 	}
 
 public: // inline Set Function
@@ -158,6 +163,9 @@ private: // FSM State Function
 	void StartSkillAttackState();											// 스킬공격상태 시작
 	void UpdateSkillAttackState(float _DeltaTime);							// 스킬공격상태 갱신
 	void EndSkillAttackState();												// 스킬공격상태 종료
+
+private: // Private DebugWindow Update Function
+	void DebugWindowUpdate();												// 몬스터 기본정보 표시용(IMGUI)
 
 private:
 	void Start() override;

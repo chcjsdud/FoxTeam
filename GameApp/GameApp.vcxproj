@@ -247,6 +247,7 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Macro.cpp" />
+    <ClCompile Include="MonsterDebugWindow.cpp" />
     <ClCompile Include="MonsterStateChangePacket.cpp" />
     <ClCompile Include="PacketCreateProjectile.cpp">
       <SubType>
@@ -578,6 +579,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="MonsterDebugWindow.h" />
     <ClInclude Include="MonsterStateChangePacket.h" />
     <ClInclude Include="PacketCreateProjectile.h">
       <SubType>
