@@ -237,14 +237,14 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 		{
 			NormalState_ << "APPEAR";
 			MainState_ << "NORMAL";
-			MainRenderer_->ChangeFBXAnimation("APPEAR");
+			MainRenderer_->ChangeFBXAnimation("APPEAR", true);
 			break;
 		}
 		case MonsterStateType::REGEN:
 		{
 			NormalState_ << "REGEN";
 			MainState_ << "NORMAL";
-			MainRenderer_->ChangeFBXAnimation("REGEN");
+			MainRenderer_->ChangeFBXAnimation("REGEN", true);
 			break;
 		}
 		case MonsterStateType::IDLE:
@@ -272,35 +272,35 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 		{
 			CrowdControlState_ << "HIT";
 			MainState_ << "CROWDCONTROL";
-			MainRenderer_->ChangeFBXAnimation("HIT");
+			MainRenderer_->ChangeFBXAnimation("HIT", true);
 			break;
 		}
 		case MonsterStateType::DEATH:
 		{
 			CrowdControlState_ << "DEATH";
 			MainState_ << "CROWDCONTROL";
-			MainRenderer_->ChangeFBXAnimation("DEATH");
+			MainRenderer_->ChangeFBXAnimation("DEATH", true);
 			break;
 		}
 		case MonsterStateType::DEAD:
 		{
 			CrowdControlState_ << "DEAD";
 			MainState_ << "CROWDCONTROL";
-			MainRenderer_->ChangeFBXAnimation("DEAD");
+			//MainRenderer_->ChangeFBXAnimation("DEAD");
 			break;
 		}
 		case MonsterStateType::ATK01:
 		{
 			AttackState_ << "ATK01";
 			MainState_ << "ATTACK";
-			MainRenderer_->ChangeFBXAnimation("ATK01");
+			MainRenderer_->ChangeFBXAnimation("ATK01", true);
 			break;
 		}
 		case MonsterStateType::ATK02:
 		{
 			AttackState_ << "ATK02";
 			MainState_ << "ATTACK";
-			MainRenderer_->ChangeFBXAnimation("ATK02");
+			MainRenderer_->ChangeFBXAnimation("ATK02", true);
 			break;
 		}
 		case MonsterStateType::SKILLATTACK:
@@ -383,24 +383,21 @@ void Monsters::CheckBodyCollision(float _DeltaTime)
 	// 몸체 충돌체 충돌체크
 	if (nullptr != BodyCollider_ && true == BodyCollider_->IsUpdate())
 	{
-//#ifdef _DEBUG
-		GetLevel()->PushDebugRender(BodyCollider_->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
-//#endif // _DEBUG
-
-		// 마우스 그룹과의 충돌
-		// 단, 몬스터 완전사망상태이며 피격판정무시상태라면 충돌체크하며, 해당 충돌시 드랍된아이템을 표시
-		if (MonsterStateType::DEAD == CurStateType_ && true == GetHitOffFlag_)
+		if (false == GetHitOffFlag_)
 		{
-			if (true == BodyCollider_->Collision(static_cast<int>(eCollisionGroup::MousePointer)) && true == GameEngineInput::GetInst().Down("LButton"))
-			{
-				// ItemBox View
-
-
-
-
-
-			}
+			GetLevel()->PushDebugRender(BodyCollider_->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
 		}
+
+		// 221018 SJH : 임시주석처리
+		//// 마우스 그룹과의 충돌
+		//// 단, 몬스터 완전사망상태이며 피격판정무시상태라면 충돌체크하며, 해당 충돌시 드랍된아이템을 표시
+		//if (MonsterStateType::DEAD == CurStateType_ && true == GetHitOffFlag_)
+		//{
+		//	if (true == BodyCollider_->Collision(static_cast<int>(eCollisionGroup::MousePointer)) && true == GameEngineInput::GetInst().Down("LButton"))
+		//	{
+		//		// ItemBox View
+		//	}
+		//}
 	}
 }
 

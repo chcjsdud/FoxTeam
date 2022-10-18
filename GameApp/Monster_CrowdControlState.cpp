@@ -66,22 +66,7 @@ void Monsters::UpdateDeadState(float _DeltaTime)
 		// 리젠상태로 전환
 		ChangeAnimationAndState(MonsterStateType::REGEN);
 
-		// 상태전환 패킷전송
-		MonsterStateChangePacket Packet;
-		Packet.SetIndex(Index_);
-		Packet.SetMonsterType(Type_);
-		Packet.SetMonsterStateType(MonsterStateType::REGEN);
-		Packet.SetMonsterStatInfo(StateInfo_);
-		Packet.SetTargetIndex(-1);
-		if (true == GameServer::GetInstance()->IsOpened())
-		{
-			GameServer::GetInstance()->Send(&Packet);
-		}
-		else if (true == GameClient::GetInstance()->IsConnected())
-		{
-			GameClient::GetInstance()->Send(&Packet);
-		}
-
+		// 리젠시간 초기화
 		StateInfo_.RegenTime_ = StateInfo_.RegenTimeMax_;
 	}
 }
@@ -91,7 +76,4 @@ void Monsters::EndDeadState()
 	// MainRenderer Off
 	// -> 잠시 Off
 	MainRenderer_->Off();
-
-	// 피격판정무시 Flag Off
-	GetHitOffFlag_ = false;
 }

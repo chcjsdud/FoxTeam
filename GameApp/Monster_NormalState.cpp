@@ -44,6 +44,9 @@ void Monsters::StartRegenState()
 	// 초기스폰위치로 셋팅 후 재등장을 위한 준비
 	GetTransform()->SetLocalPosition(StateInfo_.NestPosition_);
 	MainRenderer_->On();
+
+	// 피격판정무시 Flag Off
+	GetHitOffFlag_ = false;
 }
 
 void Monsters::UpdateRegenState(float _DeltaTime)
