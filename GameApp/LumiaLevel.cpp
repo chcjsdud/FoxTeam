@@ -375,7 +375,8 @@ void LumiaLevel::CharacterCreationCommand()
 		//{
 		//	Monsters* ZeroMonster = MonsterActorByTypeList_[static_cast<int>(MonsterType::CHICKEN)][0];
 		//	float4 ForcePos = ZeroMonster->GetTransform()->GetWorldPosition();
-		//	NewCharacter->GetTransform()->SetWorldPosition(ForcePos);
+		//	NewCharacter->InitSpawnPoint(ForcePos);
+		//	PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = ForcePos;
 		//}
 	}
 

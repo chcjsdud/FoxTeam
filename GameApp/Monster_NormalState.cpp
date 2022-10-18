@@ -106,7 +106,6 @@ void Monsters::UpdateChaseState(float _DeltaTime)
 
 
 
-		// 타겟 추적중 귀소본능수치 계속하여 감소
 	}
 }
 
@@ -128,7 +127,7 @@ void Monsters::StartHomingInstinctState()
 	}
 
 	// 귀환중 피격무시
-	BodyCollider_->Off();
+	GetHitOffFlag_ = true;
 }
 
 void Monsters::UpdateHomingInstinctState(float _DeltaTime)
@@ -145,5 +144,5 @@ void Monsters::UpdateHomingInstinctState(float _DeltaTime)
 void Monsters::EndHomingInstinctState()
 {
 	// 귀환완료시 피격상태 체크를 위해 충돌체 다시 On
-	BodyCollider_->On();
+	GetHitOffFlag_ = false;
 }

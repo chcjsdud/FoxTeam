@@ -384,7 +384,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 		//		if (nullptr != Monster)
 		//		{
-		//			Monster->Damage(500.0f, this);
+		//			Monster->Damage(10.0f, this);
 		//		}
 		//	}
 		//}
