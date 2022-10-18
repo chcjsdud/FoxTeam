@@ -12,6 +12,10 @@
 #include "UI_Status.h"
 #include "UI_Time.h"
 
+// 221018 박종원
+// 죽거나 마지막 생존자일 때 표시되는 UI
+#include "UI_WinLose.h"
+
 
 class PlayerUIController : public GameEngineActor
 {
@@ -52,6 +56,11 @@ public:
 		return status_UI;
 	}
 
+	UI_WinLose* GetWinLoseUI()
+	{
+		return winLose_UI;
+	}
+
 	void SetJobType(JobType _MyJob);
 
 public:
@@ -68,6 +77,9 @@ private:
 	UI_Skill* skill_UI;
 	UI_Status* status_UI;
 	UI_Time* time_UI;
+
+	UI_WinLose* winLose_UI;
+	bool winLoseFlag_;
 
 	JobType MyJob;
 

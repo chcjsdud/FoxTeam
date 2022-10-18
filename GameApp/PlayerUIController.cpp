@@ -5,7 +5,7 @@
 
 
 PlayerUIController::PlayerUIController()
-	: MyJob(JobType::HYUNWOO)
+	: MyJob(JobType::HYUNWOO), winLoseFlag_(false)
 {
 
 }
@@ -28,6 +28,7 @@ void PlayerUIController::InitUI()
 	skill_UI = GetLevel()->CreateActor<UI_Skill>();
 	status_UI = GetLevel()->CreateActor<UI_Status>();
 	time_UI = GetLevel()->CreateActor<UI_Time>();
+	winLose_UI = GetLevel()->CreateActor<UI_WinLose>();
 }
 
 

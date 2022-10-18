@@ -52,6 +52,9 @@ public:
 	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime);
 
 
+	bool IsDead() { return isPlayerDead_; }
+
+
 
 #pragma region GetterSetter
 public:

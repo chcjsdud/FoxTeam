@@ -978,6 +978,9 @@ void LumiaLevel::LevelStart()
 {
 	// Create LumiaLevel Input
 	CreateLevelInput();
+
+
+
 }
 
 void LumiaLevel::LevelUpdate(float _DeltaTime)

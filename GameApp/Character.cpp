@@ -130,6 +130,13 @@ void Character::Update(float _DeltaTime)
 		mainState_.ChangeState("DeathState", true);
 		deathState_.ChangeState("PlayerDeath", true);
 		isPlayerDead_ = true;
+
+		if (bFocused_)
+		{
+			uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
+			uiController_->GetWinLoseUI()->Activate();
+		}
+
 		return;
 	}
 
