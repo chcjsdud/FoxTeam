@@ -75,12 +75,13 @@ void Weekline::InitalizeRenderAndAnimation()
 	//MainRenderer_->CreateFBXAnimation("APPEAR", "Weekline_appear.fbx", 0, false);			// 첫등장상태의 애니메이션
 	//MainRenderer_->CreateFBXAnimation("REGEN", "Weekline_appear.fbx", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
 	//MainRenderer_->CreateFBXAnimation("IDLE", "Weekline_wait.fbx", 0);						// 대기상태의 애니메이션
-	//MainRenderer_->CreateFBXAnimation("RUN", "Weekline_run.fbx", 0);						// 이동상태의 애니메이션
-	//MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Weekline_run.fbx", 0);				// 귀환상태의 애니메이션
 	//MainRenderer_->CreateFBXAnimation("CHASE", "Weekline_run.fbx", 0);						// 추적상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Weekline_run.fbx", 0);				// 귀환상태의 애니메이션
+	// 
 	//MainRenderer_->CreateFBXAnimation("HIT", "Weekline_wait.fbx", 0);						// 피격상태의 애니메이션
 	//MainRenderer_->CreateFBXAnimation("DEATH", "Weekline_death.fbx", 0, false);				// 사망중상태의 애니메이션
 	//MainRenderer_->CreateFBXAnimation("DEAD", "Weekline_death.fbx", 0, false);				// 사망(리젠대기)상태의 애니메이션
+	// 
 	//MainRenderer_->CreateFBXAnimation("ATK01", "Weekline_atk01.fbx", 0, false);				// 일반공격01상태의 애니메이션
 	//MainRenderer_->CreateFBXAnimation("ATK02", "Weekline_atk02.fbx", 0, false);				// 일반공격02상태의 애니메이션
 	//MainRenderer_->ChangeFBXAnimation("IDLE");

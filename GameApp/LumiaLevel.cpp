@@ -895,11 +895,6 @@ void LumiaLevel::DebugWindowUpdate()
 					MonsterDebugWindow_->AddText("DetailState: IDLE");
 					break;
 				}
-				case MonsterStateType::RUN:
-				{
-					MonsterDebugWindow_->AddText("DetailState: RUN");
-					break;
-				}
 				case MonsterStateType::HOMINGINSTINCT:
 				{
 					MonsterDebugWindow_->AddText("DetailState: HOMINGINSTINCT");

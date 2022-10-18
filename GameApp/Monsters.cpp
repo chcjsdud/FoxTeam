@@ -33,12 +33,22 @@ void Monsters::Damage(float _Amount, GameEngineActor* _Target)
 	// 예외처리
 	if (0.0f >= _Amount)
 	{
+		GameEngineDebug::OutPutDebugString("해당 몬스터를 공격하는 데미지가 잘못된 값으로 설정되었습니다!!!!\n");
+		GameEngineDebug::OutPutDebugString("수신 데미지: " + std::to_string(_Amount) + "\n");
 		return;
 	}
 
 	// 예외처리
 	if (nullptr == _Target)
 	{
+		GameEngineDebug::OutPutDebugString("해당 몬스터의 타겟을 지정할수없습니다!!!!\n");
+		return;
+	}
+
+	// 예외처리
+	if (true == GetHitOffFlag_)
+	{
+		GameEngineDebug::OutPutDebugString("해당 몬스터는 이미 사망상태로 공격대상이 아닙니다!!!!\n");
 		return;
 	}
 
@@ -238,13 +248,6 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 			MainRenderer_->ChangeFBXAnimation("IDLE");
 			break;
 		}
-		case MonsterStateType::RUN:
-		{
-			NormalState_ << "RUN";
-			MainState_ << "NORMAL";
-			MainRenderer_->ChangeFBXAnimation("RUN");
-			break;
-		}
 		case MonsterStateType::HOMINGINSTINCT:
 		{
 			NormalState_ << "HOMINGINSTINCT";
@@ -318,16 +321,18 @@ void Monsters::InitalizeFSMState()
 #pragma endregion
 
 #pragma region NormalState
+	// 첫등장, 리젠, 대기, 추적, 귀화
 	NormalState_.CreateState("APPEAR", std::bind(&Monsters::UpdateAppearState, this, std::placeholders::_1), std::bind(&Monsters::StartAppearState, this), std::bind(&Monsters::EndAppearState, this));
 	NormalState_.CreateState("REGEN", std::bind(&Monsters::UpdateRegenState, this, std::placeholders::_1), std::bind(&Monsters::StartRegenState, this), std::bind(&Monsters::EndRegenState, this));
 	NormalState_.CreateState("IDLE", std::bind(&Monsters::UpdateIdleState, this, std::placeholders::_1), std::bind(&Monsters::StartIdleState, this), std::bind(&Monsters::EndIdleState, this));
-	NormalState_.CreateState("RUN", std::bind(&Monsters::UpdateRunState, this, std::placeholders::_1), std::bind(&Monsters::StartRunState, this), std::bind(&Monsters::EndRunState, this));
+	NormalState_.CreateState("CHASE", std::bind(&Monsters::UpdateChaseState, this, std::placeholders::_1), std::bind(&Monsters::StartChaseState, this), std::bind(&Monsters::EndChaseState, this));
 	NormalState_.CreateState("HOMINGINSTINCT", std::bind(&Monsters::UpdateHomingInstinctState, this, std::placeholders::_1), std::bind(&Monsters::StartHomingInstinctState, this), std::bind(&Monsters::EndHomingInstinctState, this));
 
 	NormalState_.ChangeState("APPEAR");
 #pragma endregion
 
 #pragma region CrowdControlState
+	// 피격, 사망중, 완전사망
 	CrowdControlState_.CreateState("HIT", std::bind(&Monsters::UpdateHitState, this, std::placeholders::_1), std::bind(&Monsters::StartHitState, this), std::bind(&Monsters::EndHitState, this));
 	CrowdControlState_.CreateState("DEATH", std::bind(&Monsters::UpdateDeathState, this, std::placeholders::_1), std::bind(&Monsters::StartDeathState, this), std::bind(&Monsters::EndDeathState, this));
 	CrowdControlState_.CreateState("DEAD", std::bind(&Monsters::UpdateDeadState, this, std::placeholders::_1), std::bind(&Monsters::StartDeadState, this), std::bind(&Monsters::EndDeadState, this));
@@ -336,6 +341,7 @@ void Monsters::InitalizeFSMState()
 #pragma endregion
 
 #pragma region AttackState
+	// 공격1, 공격2, 스킬(예외존재)
 	AttackState_.CreateState("ATK01", std::bind(&Monsters::UpdateAttack01State, this, std::placeholders::_1), std::bind(&Monsters::StartAttack01State, this), std::bind(&Monsters::EndAttack01State, this));
 	AttackState_.CreateState("ATK02", std::bind(&Monsters::UpdateAttack02State, this, std::placeholders::_1), std::bind(&Monsters::StartAttack02State, this), std::bind(&Monsters::EndAttack02State, this));
 	AttackState_.CreateState("SKILLATTACK", std::bind(&Monsters::UpdateSkillAttackState, this, std::placeholders::_1), std::bind(&Monsters::StartSkillAttackState, this), std::bind(&Monsters::EndSkillAttackState, this));
@@ -372,30 +378,12 @@ void Monsters::CheckBodyCollision(float _DeltaTime)
 	if (nullptr != BodyCollider_ && true == BodyCollider_->IsUpdate())
 	{
 //#ifdef _DEBUG
-		GetLevel()->PushDebugRender(BodyCollider_->GetTransform(), CollisionType::OBBBox3D, float4::RED);
+		GetLevel()->PushDebugRender(BodyCollider_->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
 //#endif // _DEBUG
 
-		//// 221017 SJH DEL : 타겟지정 가상함수처리로 변경
-		//// 사망중상태가 아니면서 사망상태가 아닐때 지정된 타겟이 없는경우
-		//if (nullptr == CurTarget_ && (MonsterStateType::DEAD != CurStateType_ && MonsterStateType::DEATH != CurStateType_))
-		//{
-		//	// 타겟추적을 위해 최초 나를 공격한대상을 타겟으로 지정
-		//	GameEngineCollision* HitCollider = BodyCollider_->GetCollision(static_cast<int>(eCollisionGroup::PlayerAttack));
-		//	if (nullptr != HitCollider)
-		//	{
-		//		GameEngineActor* TargetActor = HitCollider->GetActor();
-		//		if (nullptr != TargetActor)
-		//		{
-		//			// 타겟지정 및 타겟의 인덱스 저장
-		//			CurTarget_ = dynamic_cast<Character*>(TargetActor);
-		//			CurTargetIndex_ = CurTarget_->GetIndex();
-		//		}
-		//	}
-		//}
-
 		// 마우스 그룹과의 충돌
-		// 단, 몬스터 완전사망상태일때만 충돌체크 -> 클릭시 ItemBox View
-		if (MonsterStateType::DEAD == CurStateType_)
+		// 단, 몬스터 완전사망상태이며 피격판정무시상태라면 충돌체크하며, 해당 충돌시 드랍된아이템을 표시
+		if (MonsterStateType::DEAD == CurStateType_ && true == GetHitOffFlag_)
 		{
 			if (true == BodyCollider_->Collision(static_cast<int>(eCollisionGroup::MousePointer)) && true == GameEngineInput::GetInst().Down("LButton"))
 			{
@@ -520,7 +508,9 @@ Monsters::Monsters()
 	, CurTarget_(nullptr)
 	, CurTargetIndex_(-1)
 	, CurStateBasicType_(MonsterStateBasicType::NONE)
+	, PrevStateType_(MonsterStateType::NONE)
 	, CurStateType_(MonsterStateType::NONE)
+	, GetHitOffFlag_(false)
 {
 	// 유닛타입 = 몬스터
 	UnitType_ = UnitType::MONSTER;

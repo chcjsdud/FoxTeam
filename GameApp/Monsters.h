@@ -114,11 +114,11 @@ private: // FSM State Function
 	void EndAttackState();													// 공격상태 종료
 
 	//==================================== Normal State
-	void StartAppearState();												// 첫등장상태 시작
+	void StartAppearState();												// 첫등장상태 시작(최초 패킷수신시(서버는 즉시실행))
 	void UpdateAppearState(float _DeltaTime);								// 첫등장상태 갱신
 	void EndAppearState();													// 첫등장상태 종료
 
-	void StartRegenState();													// 리젠상태 시작
+	void StartRegenState();													// 리젠상태 시작(정보초기화)
 	void UpdateRegenState(float _DeltaTime);								// 리젠상태 갱신
 	void EndRegenState();													// 리젠상태 종료
 
@@ -126,24 +126,20 @@ private: // FSM State Function
 	void UpdateIdleState(float _DeltaTime);									// 대기상태 갱신
 	void EndIdleState();													// 대기상태 종료
 
-	void StartRunState();													// 이동상태 시작
-	void UpdateRunState(float _DeltaTime);									// 이동상태 갱신
-	void EndRunState();														// 이동상태 종료
-
-	void StartHomingInstinctState();										// 귀소본능상태 시작
+	void StartHomingInstinctState();										// 귀소본능상태 시작(타겟해제)
 	void UpdateHomingInstinctState(float _DeltaTime);						// 귀소본능상태 갱신
 	void EndHomingInstinctState();											// 귀소본능상태 종료
 
-	void StartChaseState();													// 타겟추적상태 시작
+	void StartChaseState();													// 타겟추적상태 시작(타겟존재)
 	void UpdateChaseState(float _DeltaTime);								// 타겟추적상태 갱신
 	void EndChaseState();													// 타겟추적상태 종료
 
 	//==================================== CrowdControl State
-	void StartHitState();													// 피격상태 시작
+	void StartHitState();													// 피격상태 시작(타겟최초지정)
 	void UpdateHitState(float _DeltaTime);									// 피격상태 갱신
 	void EndHitState();														// 피격상태 종료
 
-	void StartDeathState();													// 사망중상태 시작
+	void StartDeathState();													// 사망중상태 시작(피격충돌체off, 마우스충돌체on)
 	void UpdateDeathState(float _DeltaTime);								// 사망중상태 갱신
 	void EndDeathState();													// 사망중상태 종료
 
@@ -188,8 +184,8 @@ public:
 protected: // 컴포넌트
 	GameEngineFBXRenderer* MainRenderer_;									// 메인 렌더러
 	GameEngineFBXRenderer* EffectRenderer_;									// 이펙트 렌더러
-	GameEngineCollision* BodyCollider_;										// 몸체 충돌체(메인 -> 보통 몬스터는 해당 충돌체로 공격박스, 히트박스를 모두 사용)
-	GameEngineCollision* AtkCollider_;										// 공격 충돌체(서브 -> 공격 충돌체가 분리되어 필요한 몬스터가 생성)
+	GameEngineCollision* BodyCollider_;										// 몸체 충돌체(메인 -> 피격충돌체, 사망시 드랍아이템목록표시충돌체)
+	GameEngineCollision* AtkCollider_;										// 공격 충돌체(서브 -> 공격충돌체)
 
 protected: // 생성정보(탐색용)
 	int Index_;																// 생성 인덱스
@@ -217,6 +213,10 @@ protected: // 타겟
 
 protected: // 상태정보
 	MonsterStateBasicType CurStateBasicType_;								// 몬스터의 현재상태 기본타입(Normal, CrowdControl, Attack)
+	MonsterStateType PrevStateType_;										// 몬스터의 현재상태의 바로직전의 상태
 	MonsterStateType CurStateType_;											// 몬스터의 현재상태 상세타입(Run, Idle, Hit, ...)
+
+protected: // 기타
+	bool GetHitOffFlag_;													// 몬스터사망시 피격판정무시 Flag(사망시 On)
 };
 

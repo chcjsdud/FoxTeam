@@ -8,6 +8,7 @@
 void Monsters::StartAppearState()
 {
 	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::APPEAR;
 }
 
@@ -27,6 +28,7 @@ void Monsters::EndAppearState()
 void Monsters::StartRegenState()
 {
 	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::REGEN;
 
 	// 스텟 초기정보로 초기화
@@ -42,7 +44,6 @@ void Monsters::StartRegenState()
 	// 초기스폰위치로 셋팅 후 재등장을 위한 준비
 	GetTransform()->SetLocalPosition(StateInfo_.NestPosition_);
 	MainRenderer_->On();
-	BodyCollider_->On();
 }
 
 void Monsters::UpdateRegenState(float _DeltaTime)
@@ -61,6 +62,7 @@ void Monsters::EndRegenState()
 void Monsters::StartIdleState()
 {
 	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::IDLE;
 }
 
@@ -74,60 +76,10 @@ void Monsters::EndIdleState()
 {
 }
 
-void Monsters::StartRunState()
-{
-	// 현재 상태 지정
-	CurStateType_ = MonsterStateType::RUN;
-
-	// 
-}
-
-void Monsters::UpdateRunState(float _DeltaTime)
-{
-
-}
-
-void Monsters::EndRunState()
-{
-
-}
-
-void Monsters::StartHomingInstinctState()
-{
-	// 현재 상태 지정
-	CurStateType_ = MonsterStateType::HOMINGINSTINCT;
-
-	// 예외처리
-	if (nullptr != CurTarget_)
-	{
-		CurTarget_ = nullptr;
-		CurTargetIndex_ = -1;
-	}
-
-	// 귀환중 피격무시
-	BodyCollider_->Off();
-}
-
-void Monsters::UpdateHomingInstinctState(float _DeltaTime)
-{
-	// 둥지위치로 이동
-	// -> 건물무시???? 플레이어의 시야범위밖이면 워프???
-
-
-
-	// 둥지이동 위치 도달시 대기상태 돌입
-
-}
-
-void Monsters::EndHomingInstinctState()
-{
-	// 귀환완료시 피격상태 체크를 위해 충돌체 다시 On
-	BodyCollider_->On();
-}
-
 void Monsters::StartChaseState()
 {
 	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::CHASE;
 
 	// 예외처리
@@ -157,4 +109,38 @@ void Monsters::UpdateChaseState(float _DeltaTime)
 
 void Monsters::EndChaseState()
 {
+}
+
+void Monsters::StartHomingInstinctState()
+{
+	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
+	CurStateType_ = MonsterStateType::HOMINGINSTINCT;
+
+	// 예외처리
+	if (nullptr != CurTarget_)
+	{
+		CurTarget_ = nullptr;
+		CurTargetIndex_ = -1;
+	}
+
+	// 귀환중 피격무시
+	BodyCollider_->Off();
+}
+
+void Monsters::UpdateHomingInstinctState(float _DeltaTime)
+{
+	// 둥지위치로 이동
+	// -> 건물무시???? 플레이어의 시야범위밖이면 워프???
+
+
+
+	// 둥지이동 위치 도달시 대기상태 돌입
+
+}
+
+void Monsters::EndHomingInstinctState()
+{
+	// 귀환완료시 피격상태 체크를 위해 충돌체 다시 On
+	BodyCollider_->On();
 }

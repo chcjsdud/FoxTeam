@@ -76,12 +76,13 @@ void Wolf::InitalizeRenderAndAnimation()
 	MainRenderer_->CreateFBXAnimation("APPEAR", "Wolf_appear.fbx", 0, false);			// 첫등장상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("REGEN", "Wolf_appear.fbx", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
 	MainRenderer_->CreateFBXAnimation("IDLE", "Wolf_wait.fbx", 0);						// 대기상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("RUN", "Wolf_run.fbx", 0);						// 이동상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Wolf_run.fbx", 0);				// 귀환상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("CHASE", "Wolf_run.fbx", 0);						// 추적상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Wolf_run.fbx", 0);				// 귀환상태의 애니메이션
+
 	MainRenderer_->CreateFBXAnimation("HIT", "Wolf_wait.fbx", 0);						// 피격상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("DEATH", "Wolf_death.fbx", 0, false);				// 사망중상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("DEAD", "Wolf_death.fbx", 0, false);				// 사망(리젠대기)상태의 애니메이션
+
 	MainRenderer_->CreateFBXAnimation("ATK01", "Wolf_atk01.fbx", 0, false);				// 일반공격01상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("ATK02", "Wolf_atk02.fbx", 0, false);				// 일반공격02상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("SKILLATTACK", "Wolf_skill.fbx", 0, false);		// 스킬공격상태의 애니메이션

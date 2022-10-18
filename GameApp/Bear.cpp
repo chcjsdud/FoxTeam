@@ -76,12 +76,13 @@ void Bear::InitalizeRenderAndAnimation()
 	MainRenderer_->CreateFBXAnimation("APPEAR", "Bear_appear.fbx", 0, false);			// 첫등장상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("REGEN", "Bear_appear.fbx", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
 	MainRenderer_->CreateFBXAnimation("IDLE", "Bear_wait.fbx", 0);						// 대기상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("RUN", "Bear_run.fbx", 0);						// 이동상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Bear_run.fbx", 0);				// 귀환상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("CHASE", "Bear_run.fbx", 0);						// 추적상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Bear_run.fbx", 0);				// 귀환상태의 애니메이션
+
 	MainRenderer_->CreateFBXAnimation("HIT", "Bear_wait.fbx", 0);						// 피격상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("DEATH", "Bear_death.fbx", 0, false);				// 사망중상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("DEAD", "Bear_death.fbx", 0, false);				// 사망(리젠대기)상태의 애니메이션
+
 	MainRenderer_->CreateFBXAnimation("ATK01", "Bear_atk01.fbx", 0, false);				// 일반공격01상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("ATK02", "Bear_atk02.fbx", 0, false);				// 일반공격02상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("SKILLATTACK", "Bear_skill.fbx", 0, false);		// 스킬공격상태의 애니메이션

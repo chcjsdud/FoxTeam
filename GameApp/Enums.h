@@ -82,7 +82,6 @@ enum class MonsterStateType
 	APPEAR,						// 첫등장상태
 	REGEN,						// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)
 	IDLE,						// 대기상태
-	RUN,						// 이동상태
 	HOMINGINSTINCT,				// 귀환상태
 	CHASE,						// 추적상태
 	HIT,						// 피격상태

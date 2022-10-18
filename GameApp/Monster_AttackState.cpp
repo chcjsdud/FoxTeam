@@ -4,6 +4,7 @@
 void Monsters::StartAttack01State()
 {
 	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::ATK01;
 
 	// 
@@ -22,6 +23,7 @@ void Monsters::EndAttack01State()
 void Monsters::StartAttack02State()
 {
 	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::ATK02;
 
 	// 
@@ -40,6 +42,7 @@ void Monsters::EndAttack02State()
 void Monsters::StartSkillAttackState()
 {
 	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::SKILLATTACK;
 
 	// 
