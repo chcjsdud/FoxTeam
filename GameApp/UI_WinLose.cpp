@@ -120,12 +120,12 @@ void UI_WinLose::Start()
 	winLoseTextRenderer_->Off();
 
 
-	textRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	textRenderer_->SetImage("rankPanel.png", "PointSmp");
-	textRenderer_->GetTransform()->SetLocalScaling(textRenderer_->GetCurrentTexture()->GetTextureSize());
-	textRenderer_->GetTransform()->SetLocalPosition({ 0.0f,-220.0f,0.0f });
-	textRenderer_->SetAlpha(0.0f);
-	textRenderer_->Off();
+	rankPanelRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	rankPanelRenderer_->SetImage("rankPanel.png", "PointSmp");
+	rankPanelRenderer_->GetTransform()->SetLocalScaling(rankPanelRenderer_->GetCurrentTexture()->GetTextureSize());
+	rankPanelRenderer_->GetTransform()->SetLocalPosition({ 0.0f,-220.0f,0.0f });
+	rankPanelRenderer_->SetAlpha(0.0f);
+	rankPanelRenderer_->Off();
 
 	textRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	textRenderer_->SetTextColor(float4::WHITE);
