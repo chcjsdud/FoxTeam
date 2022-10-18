@@ -364,6 +364,7 @@ void LumiaLevel::CharacterCreationCommand()
 		CharacterActorList_.emplace_back(NewCharacter);
 
 		// 현재 호스트 or 게스트의 메인 캐릭터 포커싱
+		// 단, 서버생성->캐릭터선택->게임시작시 더미타입의 캐릭터를 생성하므로 더미타입의 캐릭터가 메인캐릭터로 지정되는 현상을 제외한다.
 		if (PlayerNum == pm->GetMyNumber() && JobType::DUMMY != CurCharacterType)
 		{
 			CharacterActorList_[PlayerNum]->Focus();
