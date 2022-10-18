@@ -489,6 +489,7 @@ void LumiaLevel::CreateBasicActor()
 
 void LumiaLevel::CreateLevelInput()
 {
+	// Character Related Key
 	if (false == GameEngineInput::GetInst().IsKey("A"))
 	{
 		GameEngineInput::GetInst().CreateKey("A", 'A');
@@ -539,7 +540,7 @@ void LumiaLevel::CreateLevelInput()
 		GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
 	}
 
-	// Test Key
+	// ItemBox Related Key
 	if (false == GameEngineInput::GetInst().IsKey("1"))
 	{
 		GameEngineInput::GetInst().CreateKey("1", '1');

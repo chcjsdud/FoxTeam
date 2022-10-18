@@ -69,7 +69,6 @@ void Dog::InitalizeRenderAndAnimation()
 	MainRenderer_->SetFBXMesh("Dog_BaseMesh.fbx", "TextureDeferredLightAni");
 
 	MainRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
-	MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	// 애니메이션 생성
 	MainRenderer_->CreateFBXAnimation("APPEAR", "Dog_appear.fbx", 0, false);			// 첫등장상태의 애니메이션

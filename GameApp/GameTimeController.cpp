@@ -183,16 +183,6 @@ void GameTimeController::UpdateMonsterFirstAppearTime(float _DeltaTime)
 	// 각 몬스터 타입별 첫등장조건, 첫등장시간에 따른 첫등장상태전환 처리
 	if (false == AllMonsterAppearEnd_)
 	{
-		//// 221017 SJH ADD : 테스트용
-		//if (false == MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_)
-		//{
-		//	// 게임시작과 현재맵에 배치된 닭(몬스터)에게 등장모션을 실행하라는 명령을 전달
-		//	FirstAppearMonsters(MonsterType::BEAR);
-
-		//	// 등장완료로 인한 Flag On
-		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_ = true;
-		//}
-
 		// 0일차 게임시작일때
 		// CHICKEN(닭): 게임시작과동시에 등장
 		if (false == MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_)
@@ -281,6 +271,24 @@ void GameTimeController::UpdateMonsterFirstAppearTime(float _DeltaTime)
 				}
 			}
 		}
+
+#pragma region 테스트용
+		//if (MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].IsAppear_ == false)
+		//{
+		//	FirstAppearMonsters(MonsterType::WOLF);
+		//	FirstAppearMonsters(MonsterType::BEAR);
+		//	FirstAppearMonsters(MonsterType::BAT);
+		//	FirstAppearMonsters(MonsterType::DOG);
+		//	FirstAppearMonsters(MonsterType::CHICKEN);
+		//	FirstAppearMonsters(MonsterType::BOAR);
+		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].IsAppear_ = true;
+		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_ = true;
+		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].IsAppear_ = true;
+		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].IsAppear_ = true;
+		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_ = true;
+		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].IsAppear_ = true;
+		//}
+#pragma endregion
 	}
 }
 

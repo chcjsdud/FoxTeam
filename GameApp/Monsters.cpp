@@ -482,7 +482,7 @@ void Monsters::Start()
 	InitalizeRenderAndAnimation();			// Initalize Renderer And Animation Setting
 	InitalizeCollider();					// Initalize Collider
 
-	// 
+	// ...
 }
 
 void Monsters::Update(float _deltaTime)
