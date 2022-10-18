@@ -364,7 +364,7 @@ void LumiaLevel::CharacterCreationCommand()
 		CharacterActorList_.emplace_back(NewCharacter);
 
 		// 현재 호스트 or 게스트의 메인 캐릭터 포커싱
-		if (PlayerNum == pm->GetMyNumber())
+		if (PlayerNum == pm->GetMyNumber() && JobType::DUMMY != CurCharacterType)
 		{
 			CharacterActorList_[PlayerNum]->Focus();
 			PlayerInfoManager::GetInstance()->SetMainCharacter(NewCharacter);
