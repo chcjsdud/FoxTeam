@@ -133,7 +133,25 @@ void Character::Update(float _DeltaTime)
 
 		if (bFocused_)
 		{
+			// 총 플레이어 중 몇 위인가?
+			int myRank = pm->GetPlayerList().size();
+
+			for (int i = 0; i < pm->GetPlayerList().size(); i++)
+			{
+				if (i == myIndex_)
+				{
+					continue;
+				}
+
+				if (pm->GetPlayerList()[i].stat_->HP <= 0.0f)
+				{
+					myRank--;
+				}
+
+			}
+
 			uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
+			uiController_->GetWinLoseUI()->SetText(std::to_string(myRank)+ " \/ " + std::to_string(pm->GetPlayerList().size()));
 			uiController_->GetWinLoseUI()->Activate();
 		}
 

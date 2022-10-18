@@ -39,8 +39,16 @@ protected:
 private:
 	GameEngineUIRenderer* portraitRenderer_;
 	GameEngineUIRenderer* backRenderer_;
+
+	GameEngineUIRenderer* winLosePanelRenderer_;
 	GameEngineUIRenderer* winLoseTextRenderer_;
+
+	GameEngineUIRenderer* rankPanelRenderer_;
 	GameEngineUIRenderer* textRenderer_;
+	
+	GameEngineUIRenderer* bloodStainRenderer_;
+	GameEngineUIRenderer* bloodStainRendererUp_;
+
 
 	bool isActivated_;
 	float appearTimer_;
