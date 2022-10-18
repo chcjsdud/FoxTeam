@@ -342,7 +342,7 @@ void LumiaLevel::CharacterCreationCommand()
 			}
 			case JobType::DUMMY:
 			{
-				//NewCharacter = CreateActor<Rio>();
+				NewCharacter = CreateActor<Rio>();
 				break;
 			}
 		}
