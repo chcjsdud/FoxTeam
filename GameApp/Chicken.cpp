@@ -49,13 +49,19 @@ void Chicken::InitalizeResourceLoad()
 		GameEngineFBXMesh* Basemesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_BaseMesh.fbx"));
 		Basemesh->CreateRenderingBuffer();
 
+		std::vector<GameEngineFile> allFile = MeshDir.GetAllFile("UserAnimation");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
+		}
+
 		// Animation Resource Load
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_appear.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_wait.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_run.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_death.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_atk01.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_atk02.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_appear.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_wait.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_run.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_death.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_atk01.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Chicken_atk02.fbx"));
 
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
@@ -72,18 +78,18 @@ void Chicken::InitalizeRenderAndAnimation()
 	MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	// 애니메이션 생성
-	MainRenderer_->CreateFBXAnimation("APPEAR", "Chicken_appear.fbx", 0, false);		// 첫등장상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("REGEN", "Chicken_appear.fbx", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
-	MainRenderer_->CreateFBXAnimation("IDLE", "Chicken_wait.fbx", 0);					// 대기상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("CHASE", "Chicken_run.fbx", 0);					// 추적상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Chicken_run.fbx", 0);			// 귀환상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("APPEAR", "Chicken_appear.UserAnimation", 0, false);		// 첫등장상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("REGEN", "Chicken_appear.UserAnimation", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
+	MainRenderer_->CreateFBXAnimation("IDLE", "Chicken_wait.UserAnimation", 0);					// 대기상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("CHASE", "Chicken_run.UserAnimation", 0);					// 추적상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Chicken_run.UserAnimation", 0);			// 귀환상태의 애니메이션
 
-	MainRenderer_->CreateFBXAnimation("HIT", "Chicken_wait.fbx", 0);					// 피격상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEATH", "Chicken_death.fbx", 0, false);			// 사망중상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEAD", "Chicken_death.fbx", 0, false);			// 사망(리젠대기)상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HIT", "Chicken_wait.UserAnimation", 0);					// 피격상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEATH", "Chicken_death.UserAnimation", 0, false);			// 사망중상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEAD", "Chicken_death.UserAnimation", 0, false);			// 사망(리젠대기)상태의 애니메이션
 
-	MainRenderer_->CreateFBXAnimation("ATK01", "Chicken_atk01.fbx", 0, false);			// 일반공격01상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("ATK02", "Chicken_atk02.fbx", 0, false);			// 일반공격02상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK01", "Chicken_atk01.UserAnimation", 0, false);			// 일반공격01상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK02", "Chicken_atk02.UserAnimation", 0, false);			// 일반공격02상태의 애니메이션
 	MainRenderer_->ChangeFBXAnimation("IDLE");
 
 	// 기본상태 셋팅

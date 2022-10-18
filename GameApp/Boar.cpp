@@ -49,15 +49,21 @@ void Boar::InitalizeResourceLoad()
 		GameEngineFBXMesh* Basemesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_BaseMesh.fbx"));
 		Basemesh->CreateRenderingBuffer();
 
+		std::vector<GameEngineFile> allFile = MeshDir.GetAllFile("UserAnimation");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
+		}
+
 		// Animation Resource Load
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_appear.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_wait.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_run.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_death.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_atk01.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_atk02.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_skill_assault.fbx"));		// 로드만함 구현은 추후 생각좀...
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_skill_ready.fbx"));			// 로드만함 구현은 추후 생각좀...
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_appear.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_wait.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_run.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_death.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_atk01.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_atk02.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_skill_assault.fbx"));		// 로드만함 구현은 추후 생각좀...
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_skill_ready.fbx"));			// 로드만함 구현은 추후 생각좀...
 
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
@@ -74,18 +80,18 @@ void Boar::InitalizeRenderAndAnimation()
 	MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	// 애니메이션 생성
-	MainRenderer_->CreateFBXAnimation("APPEAR", "Boar_appear.fbx", 0, false);			// 첫등장상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("REGEN", "Boar_appear.fbx", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
-	MainRenderer_->CreateFBXAnimation("IDLE", "Boar_wait.fbx", 0);						// 대기상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("CHASE", "Boar_run.fbx", 0);						// 추적상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Boar_run.fbx", 0);				// 귀환상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("APPEAR", "Boar_appear.UserAnimation", 0, false);			// 첫등장상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("REGEN", "Boar_appear.UserAnimation", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
+	MainRenderer_->CreateFBXAnimation("IDLE", "Boar_wait.UserAnimation", 0);						// 대기상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("CHASE", "Boar_run.UserAnimation", 0);						// 추적상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Boar_run.UserAnimation", 0);				// 귀환상태의 애니메이션
 
-	MainRenderer_->CreateFBXAnimation("HIT", "Boar_wait.fbx", 0);						// 피격상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEATH", "Boar_death.fbx", 0, false);				// 사망중상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEAD", "Boar_death.fbx", 0, false);				// 사망(리젠대기)상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HIT", "Boar_wait.UserAnimation", 0);						// 피격상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEATH", "Boar_death.UserAnimation", 0, false);				// 사망중상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEAD", "Boar_death.UserAnimation", 0, false);				// 사망(리젠대기)상태의 애니메이션
 
-	MainRenderer_->CreateFBXAnimation("ATK01", "Boar_atk01.fbx", 0, false);				// 일반공격01상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("ATK02", "Boar_atk02.fbx", 0, false);				// 일반공격02상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK01", "Boar_atk01.UserAnimation", 0, false);				// 일반공격01상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK02", "Boar_atk02.UserAnimation", 0, false);				// 일반공격02상태의 애니메이션
 	MainRenderer_->ChangeFBXAnimation("IDLE");
 
 	// 기본상태 셋팅

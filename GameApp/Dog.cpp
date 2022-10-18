@@ -49,13 +49,19 @@ void Dog::InitalizeResourceLoad()
 		GameEngineFBXMesh* Basemesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_BaseMesh.fbx"));
 		Basemesh->CreateRenderingBuffer();
 
+		std::vector<GameEngineFile> allFile = MeshDir.GetAllFile("UserAnimation");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
+		}
+
 		// Animation Resource Load
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_appear.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_wait.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_run.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_death.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_atk01.fbx"));
-		GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_atk02.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_appear.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_wait.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_run.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_death.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_atk01.fbx"));
+		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Dog_atk02.fbx"));
 
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
@@ -71,18 +77,18 @@ void Dog::InitalizeRenderAndAnimation()
 	MainRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 
 	// 애니메이션 생성
-	MainRenderer_->CreateFBXAnimation("APPEAR", "Dog_appear.fbx", 0, false);			// 첫등장상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("REGEN", "Dog_appear.fbx", 0, false);				// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
-	MainRenderer_->CreateFBXAnimation("IDLE", "Dog_wait.fbx", 0);						// 대기상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("CHASE", "Dog_run.fbx", 0);						// 추적상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Dog_run.fbx", 0);				// 귀환상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("APPEAR", "Dog_appear.UserAnimation", 0, false);			// 첫등장상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("REGEN", "Dog_appear.UserAnimation", 0, false);				// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
+	MainRenderer_->CreateFBXAnimation("IDLE", "Dog_wait.UserAnimation", 0);						// 대기상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("CHASE", "Dog_run.UserAnimation", 0);						// 추적상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Dog_run.UserAnimation", 0);				// 귀환상태의 애니메이션
 
-	MainRenderer_->CreateFBXAnimation("HIT", "Dog_wait.fbx", 0);						// 피격상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEATH", "Dog_death.fbx", 0, false);				// 사망중상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEAD", "Dog_death.fbx", 0, false);				// 사망(리젠대기)상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HIT", "Dog_wait.UserAnimation", 0);						// 피격상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEATH", "Dog_death.UserAnimation", 0, false);				// 사망중상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEAD", "Dog_death.UserAnimation", 0, false);				// 사망(리젠대기)상태의 애니메이션
 
-	MainRenderer_->CreateFBXAnimation("ATK01", "Dog_atk01.fbx", 0, false);				// 일반공격01상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("ATK02", "Dog_atk02.fbx", 0, false);				// 일반공격02상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK01", "Dog_atk01.UserAnimation", 0, false);				// 일반공격01상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK02", "Dog_atk02.UserAnimation", 0, false);				// 일반공격02상태의 애니메이션
 	MainRenderer_->ChangeFBXAnimation("IDLE");
 
 	// 기본상태 셋팅
