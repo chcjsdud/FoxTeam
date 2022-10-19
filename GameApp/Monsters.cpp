@@ -222,7 +222,7 @@ void Monsters::InitalizeSpawnPosition(const float4& _SpawnPosition)
 	GetTransform()->SetLocalPosition(SpawnPos);
 
 	// 현재이동목적지 = 스폰위치
-	Destination_ = SpawnPos;
+	MoveTarget_ = SpawnPos;
 
 	// 해당 몬스터 둥지위치 == 최초 스폰위치
 	StateInfo_.NestPosition_ = SpawnPos;
@@ -459,9 +459,24 @@ void Monsters::HomingInstinctValueUpdate(float _DeltaTime)
 	}
 }
 
+void Monsters::StartMove(const float4& _Position)
+{
+}
+
+void Monsters::UpdateMove(const float4& _Position)
+{
+}
+
+void Monsters::EndMove()
+{
+}
+
 void Monsters::DebugWindowUpdate()
 {
-	// LevelControl
+	// MonsterDebugWindow
+
+
+
 }
 
 void Monsters::Start()
@@ -503,7 +518,7 @@ Monsters::Monsters()
 	, CurrentNavMesh_(nullptr)
 	, CurrentMap_(nullptr)
 	, StateInfo_{}
-	, Destination_(float4::ZERO)
+	, MoveTarget_(float4::ZERO)
 	, MainState_()
 	, NormalState_()
 	, CrowdControlState_()

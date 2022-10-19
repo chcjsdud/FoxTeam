@@ -99,6 +99,11 @@ private: // Collision Related Function
 private: // Homing Instinct Value Reduction Update Function
 	void HomingInstinctValueUpdate(float _DeltaTime);						// 귀소본능 수치 갱신
 
+private: // Private Function
+	void StartMove(const float4& _Position);								// 이동시작
+	void UpdateMove(const float4& _Position);								// 이동중
+	void EndMove();															// 이동종료
+
 private: // FSM State Function
 	//==================================== Main State
 	void StartNormalState();												// 일반상태 시작
@@ -199,7 +204,8 @@ protected: // 맵 및 길찾기
 	
 protected: // 상태정보(갱신용)
 	MonsterStateInfo StateInfo_;											// 몬스터의 상태정보
-	float4 Destination_;													// 이동목적지
+	float4 MoveTarget_;														// 이동목적지
+	std::vector<float4> MovePath_;											// 현재 이동경로
 
 protected: // FSM State
 	GameEngineFSM MainState_;												// 메인상태(기본: NormalState 실행)

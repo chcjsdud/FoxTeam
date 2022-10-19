@@ -180,16 +180,16 @@ void LumiaLevel::HostAllCreationCommand()
 {
 	// Host(서버) 생성관련 명령
 	MapCreationCommand();
-	MonsterCreationCommand();
 	CharacterCreationCommand();
+	MonsterCreationCommand();
 }
 
 void LumiaLevel::GuestAllCreationCommand()
 {
 	// Guest(클라이언트) 생성관련 명령
 	MapCreationCommand();
-	MonsterCreationCommand();
 	CharacterCreationCommand();
+	MonsterCreationCommand();
 }
 
 void LumiaLevel::MapCreationCommand()
@@ -344,7 +344,7 @@ void LumiaLevel::CharacterCreationCommand()
 			}
 			case JobType::DUMMY:
 			{
-				NewCharacter = CreateActor<Rio>();
+				NewCharacter = CreateActor<Hyunwoo>();
 				break;
 			}
 		}
