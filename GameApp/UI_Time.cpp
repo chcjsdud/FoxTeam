@@ -25,15 +25,16 @@ UI_Time::~UI_Time()
 void UI_Time::Start()
 {
 
-	UI_Pos = { 0.0f, 336.0f, 1.0f };
-	Day_Pos = { -40.0f, 329.0f, 0.0f };
-	Time_Pos = { -10.0f, 343.0f, 0.0f };
-	Clock_Pos = { -30.f, 300.f, 0.0f };
-	ClockTime_Pos = { -10.f, 315.f, 0.0f };
+	//UI_Pos = { 0.0f, 336.0f, 1.0f };
+	UI_Pos = { 0.0f, 326.0f, 1.0f };
+	Day_Pos = { -35.0f, 330.0f, 0.0f };
+	Time_Pos = { -10.0f, 344.0f, 0.0f };
+	Clock_Pos = { -30.f, 303.f, 0.0f };
+	ClockTime_Pos = { -10.f, 318.f, 0.0f };
 
 	{
 		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		BackGroundRenderer->SetImage("UI_TimeBg.png", "PointSmp");
+		BackGroundRenderer->SetImage("UI_TimeBg_Test.png", "PointSmp");
 		BackGroundRenderer->GetTransform()->SetLocalPosition(UI_Pos);
 		//BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize() * 0.8f);
 		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
