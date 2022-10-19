@@ -10,6 +10,10 @@ class NavMesh;
 class LumiaMap : public GameEngineActor
 {
 public:
+	// 플레이어 거리 기준
+	const float RENDER_RANGE = 1200.f;
+
+public:
 	LumiaMap();
 	~LumiaMap();
 	LumiaMap(const LumiaMap& _other) = delete;
@@ -24,24 +28,16 @@ public:
 public:
 	std::vector<float4> FindPath(const float4& _startPosition, const float4& _endPosition);
 
-	NavMesh* GetNavMesh()
-	{
-		return navMesh_;
-	}
+	void UpdateAStarNodeVertexInfo();
 
-private:
+	NavMesh* GetNavMesh() { return navMesh_; }
+
+protected:
 	void makeAStarNode(float _intervalX, float _intervalZ);
 	void checkASterNodeObstacle();
 	void setAllItem();
 
-public:
-	void updateAStarNodeVertexInfo();
-
-public:
-	// 플레이어 거리 기준
-	const float RENDER_RANGE = 1200.f;
-
-private:
+protected:
 	// A*
 	std::vector<std::vector<AStarNode>> allNodes_;
 	std::vector<GameEngineVertex> tileVertices_;

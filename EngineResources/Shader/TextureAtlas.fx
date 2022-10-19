@@ -21,6 +21,11 @@ cbuffer TextureAtlasData : register(b1)
     float2 TextureCutDataSize;
 };
 
+cbuffer DeferredOutPut
+{
+    float4 a;
+};
+
 
 VertexOut TextureAtlas_VS(VertexIn _in)
 {
@@ -55,7 +60,7 @@ float4 TextureAtlas_PS(VertexOut _in) : SV_Target0
 {
     float4 Color = (Tex.Sample(Smp, _in.Texcoord.xy) * vMulColor);
 
-    if (0.0f == Color.a)
+    if (0.0f >= Color.a)
     {
         // 출력안하고 정지
         clip(-1);

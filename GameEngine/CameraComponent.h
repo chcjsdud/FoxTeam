@@ -69,6 +69,9 @@ private:
 
 	void NextLevelMoveRenderer(CameraComponent* _NextCamera, GameEngineActor* _Actor);
 
+	void RenderForward(float _DeltaTime);
+	void RenderDeffered(float _DeltaTime);
+
 public:
 	inline const LightsData& GetLightData() const
 	{

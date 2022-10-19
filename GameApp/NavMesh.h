@@ -17,7 +17,7 @@ public:
 	{
 
 	}
-private:
+
 	float4 Vertex[3];
 	int Index;
 	std::vector<UINT> Link;

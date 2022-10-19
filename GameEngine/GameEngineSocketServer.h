@@ -42,6 +42,7 @@ public:
 
 public:
 	bool IsOpened() { return bOpen_; }
+	void TestOpen() { bOpen_ = true; } // TODO : delete it
 	//0830 ╧за╬©Ь
 	//size_t GetServerPlayerListSize() { return serverPlayerList_.size(); }
 	//std::vector<PlayerInfo> GetServerPlayerList() { return serverPlayerList_; }

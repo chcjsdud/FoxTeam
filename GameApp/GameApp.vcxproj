@@ -232,6 +232,14 @@
     </ClCompile>
     <ClCompile Include="Chicken.cpp" />
     <ClCompile Include="CreateItemDB.cpp" />
+    <ClCompile Include="TestLevelBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="TestMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UI_WinLose.cpp">
       <SubType>
       </SubType>
@@ -568,6 +576,14 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Chicken.h" />
+    <ClInclude Include="TestLevelBox.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="TestMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UI_WinLose.h">
       <SubType>
       </SubType>

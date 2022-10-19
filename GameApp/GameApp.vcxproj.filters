@@ -355,6 +355,12 @@
     <ClCompile Include="UI_WinLose.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
+    <ClCompile Include="TestLevelBox.cpp">
+      <Filter>01.GameObject\03.Level\TestLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="TestMap.cpp">
+      <Filter>01.GameObject\03.Level\TestLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -925,6 +931,12 @@
     </ClInclude>
     <ClInclude Include="UI_WinLose.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevelBox.h">
+      <Filter>01.GameObject\03.Level\TestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="TestMap.h">
+      <Filter>01.GameObject\03.Level\TestLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

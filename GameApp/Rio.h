@@ -25,6 +25,8 @@ public:
 
 public:
 	bool IsLongBow() { return bLongBow_; }
+	void SetMouse(MousePointer* _mouse) { mouse_ = _mouse; }
+	void SetMap(LumiaMap* _map) { currentMap_ = _map; }
 
 protected:
 	void Start() override;

@@ -125,7 +125,7 @@ void LoadingLevel::CheckThreadLoadingEnd()
 
 			// A* 노드(타일)정보 갱신
 			// -> 주스레드와 로딩스레드가 Context에 동시접근을 막기위해 Public으로 변경하여 외부에서 호출
-			LumiaLv->GetMap()->updateAStarNodeVertexInfo();
+			LumiaLv->GetMap()->UpdateAStarNodeVertexInfo();
 
 			// 클라이언트(게스트)의 모든 로딩완료시 로딩완료 패킷 전송
 			PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
@@ -148,7 +148,7 @@ void LoadingLevel::CheckThreadLoadingEnd()
 
 			// A* 노드(타일)정보 갱신
 			// -> 주스레드와 로딩스레드가 Context에 동시접근을 막기위해 Public으로 변경하여 외부에서 호출
-			LumiaLv->GetMap()->updateAStarNodeVertexInfo();
+			LumiaLv->GetMap()->UpdateAStarNodeVertexInfo();
 
 			// 서버(호스트)로딩상태 갱신
 			PlayerInfoManager* pm = PlayerInfoManager::GetInstance();

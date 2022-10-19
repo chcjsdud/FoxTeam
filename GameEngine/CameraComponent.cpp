@@ -104,79 +104,14 @@ void CameraComponent::Render(float _DeltaTime)
 		++LightIndex;
 	}
 
-	CameraForwardTarget_->Clear();
-	CameraForwardTarget_->Setting();
-
-	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
-	{
-		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
-
-		// 같은 그룹내에 존재하는 렌더러를 Z값에 따라서 오름차순 정렬
-		// => 겹쳐서 그려야하는 렌더러들을 z값에따라 오름차순하여 블렌딩작업하도록하기 위하여 렌더링 전에 정렬
-		Renderers.sort(ZSort);
-
-		for (GameEngineRendererBase* Renderer : Renderers)
-		{
-			if (false == Renderer->IsUpdate())
-			{
-				continue;
-			}
-
-			Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
-			Renderer->GetTransform()->GetTransformData().View_ = View;
-
-			// 렌더링 전에 최종행렬을 계산
-			Renderer->GetTransform()->GetTransformData().WVPCalculation();
-
-			Renderer->Render(_DeltaTime, false);
-
-			// Renderer->ForwardRender(_DeltaTime);
-			// Renderer->DeferredRender(_DeltaTime);
-		}
-	}
-
-	//// 포워드로 그린애들
-	CameraDeferredGBufferTarget->Clear(false);
-	CameraDeferredGBufferTarget->Setting();
+	RenderDeffered(_DeltaTime);
+	RenderForward(_DeltaTime);
 
 
-	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
-	{
-		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
-
-		// 같은 그룹내에 존재하는 렌더러를 Z값에 따라서 오름차순 정렬
-		// => 겹쳐서 그려야하는 렌더러들을 z값에따라 오름차순하여 블렌딩작업하도록하기 위하여 렌더링 전에 정렬
-		Renderers.sort(ZSort);
-
-		for (GameEngineRendererBase* Renderer : Renderers)
-		{
-			if (false == Renderer->IsUpdate())
-			{
-				continue;
-			}
-
-			Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
-			Renderer->GetTransform()->GetTransformData().View_ = View;
-
-			// 렌더링 전에 최종행렬을 계산
-			Renderer->GetTransform()->GetTransformData().WVPCalculation();
-
-			Renderer->Render(_DeltaTime, true);
-
-			// Renderer->ForwardRender(_DeltaTime);
-			// Renderer->DeferredRender(_DeltaTime);
-		}
-	}
-
-	CalLightEffect.Effect(_DeltaTime); // 빛계산하고 
-	DeferredMergeEffect.Effect(_DeltaTime); // 그걸 합쳐요
-
-
-
-	ClearCameraTarget();
-
-	CameraBufferTarget_->Merge(CameraForwardTarget_);
+	CameraBufferTarget_->Clear();
 	CameraBufferTarget_->Merge(CameraDeferredTarget_);
+	CameraBufferTarget_->Merge(CameraForwardTarget_);
+
 
 	GameEngineStructuredBufferSetting::ResetLastSetting();
 }
@@ -275,6 +210,74 @@ void CameraComponent::NextLevelMoveRenderer(CameraComponent* _NextCamera, GameEn
 
 		}
 	}
+}
+
+void CameraComponent::RenderForward(float _DeltaTime)
+{
+	float4x4 View = GetTransform()->GetTransformData().View_;
+	float4x4 Projection = GetTransform()->GetTransformData().Projection_;
+
+	CameraForwardTarget_->Clear(false);
+	CameraForwardTarget_->Setting();
+
+	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
+	{
+		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
+
+		Renderers.sort(ZSort);
+
+		for (GameEngineRendererBase* Renderer : Renderers)
+		{
+			if (false == Renderer->IsUpdate())
+			{
+				continue;
+			}
+
+			Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
+			Renderer->GetTransform()->GetTransformData().View_ = View;
+
+			Renderer->GetTransform()->GetTransformData().WVPCalculation();
+
+			Renderer->Render(_DeltaTime, false);
+
+		}
+	}
+
+}
+
+void CameraComponent::RenderDeffered(float _DeltaTime)
+{
+	float4x4 View = GetTransform()->GetTransformData().View_;
+	float4x4 Projection = GetTransform()->GetTransformData().Projection_;
+
+	CameraDeferredGBufferTarget->Clear();
+	CameraDeferredGBufferTarget->Setting();
+
+
+	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
+	{
+		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
+
+		Renderers.sort(ZSort);
+
+		for (GameEngineRendererBase* Renderer : Renderers)
+		{
+			if (false == Renderer->IsUpdate())
+			{
+				continue;
+			}
+
+			Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
+			Renderer->GetTransform()->GetTransformData().View_ = View;
+			Renderer->GetTransform()->GetTransformData().WVPCalculation();
+
+			Renderer->Render(_DeltaTime, true);
+		}
+	}
+
+	CalLightEffect.Effect(_DeltaTime);
+	DeferredMergeEffect.Effect(_DeltaTime);
+
 }
 
 void CameraComponent::CameraZoomReset()

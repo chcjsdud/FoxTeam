@@ -49,7 +49,7 @@ void LumiaMap::Start()
 
 	for (UINT i = 0; i < navMeshRenderer_->GetRenderSetCount(); i++)
 	{
-		navMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+		navMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Black.png");
 		navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 		//navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
 	}
@@ -65,7 +65,7 @@ void LumiaMap::Start()
 
 	makeAStarNode(200.f, 200.f);
 	checkASterNodeObstacle();
-	//updateAStarNodeVertexInfo();
+	//UpdateAStarNodeVertexInfo();
 
 	GameEngineDirectory tempDir;
 
@@ -497,7 +497,7 @@ void LumiaMap::checkASterNodeObstacle()
 	GameEngineDebug::OutPutDebugString("checkAStarNodeObstacle time elapsed : " + std::to_string(elapsedTime) + "\n");
 }
 
-void LumiaMap::updateAStarNodeVertexInfo()
+void LumiaMap::UpdateAStarNodeVertexInfo()
 {
 	ID3D11DeviceContext* dc = GameEngineDevice::GetContext();
 

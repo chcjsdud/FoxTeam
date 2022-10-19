@@ -40,10 +40,10 @@ void Rio::LoadResource()
 		mesh->CreateRenderingBuffer();
 
 
-		std::vector<GameEngineFile> allFile = dir.GetAllFile("fbx");
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 		for (GameEngineFile& file : allFile)
 		{
-			GameEngineFBXAnimationManager::GetInst().Load(file.GetFullPath());
+			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
 		}
 	}
 
@@ -91,7 +91,7 @@ void Rio::ReleaseResource()
 	dir.MoveParent("FoxTeam");
 	dir / "Resources" / "FBX" / "Character" / "Rio";
 
-	std::vector<GameEngineFile> allFile = dir.GetAllFile("fbx");
+	std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 	for (GameEngineFile& file : allFile)
 	{
 		GameEngineFBXAnimationManager::GetInst().Delete(file.GetFileName());
@@ -126,34 +126,34 @@ void Rio::initRendererAndAnimation()
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	renderer_->CreateFBXAnimation("Run_Short", "Rio_Short_Run.fbx", 0);
-	renderer_->CreateFBXAnimation("Run_Long", "Rio_Long_Run.fbx", 0);
+	renderer_->CreateFBXAnimation("Run_Short", "Rio_Short_Run.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("Run_Long", "Rio_Long_Run.UserAnimation", 0);
 
-	renderer_->CreateFBXAnimation("Wait_Short", "Rio_Short_Wait.fbx", 0);
-	renderer_->CreateFBXAnimation("Wait_Long", "Rio_Long_Wait.fbx", 0);
+	renderer_->CreateFBXAnimation("Wait_Short", "Rio_Short_Wait.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("Wait_Long", "Rio_Long_Wait.UserAnimation", 0);
 
-	renderer_->CreateFBXAnimation("BasicAttack_Short", "Rio_Short_Attack.fbx", 0, false);
-	renderer_->CreateFBXAnimation("BasicAttack_Long", "Rio_Long_Attack.fbx", 0, false);
+	renderer_->CreateFBXAnimation("BasicAttack_Short", "Rio_Short_Attack.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("BasicAttack_Long", "Rio_Long_Attack.UserAnimation", 0, false);
 
-	renderer_->CreateFBXAnimation("SkillQ_Short", "Rio_Short_Skill_Q.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillQ_Long", "Rio_Long_Skill_Q.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillQ_Short", "Rio_Short_Skill_Q.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillQ_Long", "Rio_Long_Skill_Q.UserAnimation", 0, false);
 
-	renderer_->CreateFBXAnimation("SkillW_Short", "Rio_Short_Skill_W.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillW_Long", "Rio_Long_Skill_W.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillW_Short", "Rio_Short_Skill_W.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillW_Long", "Rio_Long_Skill_W.UserAnimation", 0, false);
 
-	renderer_->CreateFBXAnimation("SkillE_Short", "Rio_Short_Skill_E.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillE_Short", "Rio_Short_Skill_E.UserAnimation", 0, false);
 
-	renderer_->CreateFBXAnimation("SkillR_Short_Start", "Rio_Short_Skill_R_Start.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillR_Short_End", "Rio_Short_Skill_R_End.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillR_Long", "Rio_Long_Skill_R.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Short_Start", "Rio_Short_Skill_R_Start.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Short_End", "Rio_Short_Skill_R_End.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Long", "Rio_Long_Skill_R.UserAnimation", 0, false);
 
-	renderer_->CreateFBXAnimation("SkillD_Short", "Rio_Short_Skill_D.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillD_Long", "Rio_Long_Skill_D.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillD_Short", "Rio_Short_Skill_D.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillD_Long", "Rio_Long_Skill_D.UserAnimation", 0, false);
 
-	renderer_->CreateFBXAnimation("Rio_CraftFood", "Rio_CraftFood.fbx", 0, false);
-	renderer_->CreateFBXAnimation("Rio_CraftMetal", "Rio_CraftMetal.fbx", 0, false);
+	renderer_->CreateFBXAnimation("Rio_CraftFood", "Rio_CraftFood.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Rio_CraftMetal", "Rio_CraftMetal.UserAnimation", 0, false);
 
-	renderer_->CreateFBXAnimation("Death", "Rio_Death.fbx", 0, false);
+	renderer_->CreateFBXAnimation("Death", "Rio_Death.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait_Short");
 
@@ -307,6 +307,13 @@ void Rio::onUpdateQSkill(float _deltaTime)
 
 void Rio::onStartWSkill()
 {
+	if (mouse_ == nullptr)
+	{
+		changeAnimationWait();
+		mainState_ << "NormalState";
+		return;
+	}
+
 	destination_ = transform_.GetWorldPosition();
 	destinations_.clear();
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
@@ -403,6 +410,12 @@ void Rio::onStartESkill()
 
 void Rio::onUpdateESkill(float _deltaTime)
 {
+	if (mouse_ == nullptr)
+	{
+		changeAnimationWait();
+		mainState_ << "NormalState";
+		return;
+	}
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
 	setRotationTo(mousePosition, transform_.GetWorldPosition());
 	mainState_ << "CustomState";
@@ -411,6 +424,12 @@ void Rio::onUpdateESkill(float _deltaTime)
 
 void Rio::onStartRSkill()
 {
+	if (mouse_ == nullptr)
+	{
+		changeAnimationWait();
+		mainState_ << "NormalState";
+		return;
+	}
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
 	setRotationTo(mousePosition, transform_.GetWorldPosition());
 
@@ -577,6 +596,13 @@ void Rio::onUpdateRSkill(float _deltaTime)
 
 void Rio::onStartDSkill()
 {
+	if (mouse_ == nullptr)
+	{
+		changeAnimationWait();
+		mainState_ << "NormalState";
+		return;
+	}
+
 	destination_ = transform_.GetWorldPosition();
 	destinations_.clear();
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);

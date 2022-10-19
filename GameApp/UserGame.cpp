@@ -39,18 +39,18 @@ UserGame::UserGame(UserGame&& _other) noexcept
 
 void UserGame::Initialize()
 {
-	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
+	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
 	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 	
 
 	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
+	LevelCreate<TestLevel>("TestLevel");
 	LevelCreate<TitleLevel>("TitleLevel");
 	LevelCreate<LobbyLevel>("LobbyLevel");
 	LevelCreate<LoadingLevel>("LoadingLevel");
 	LevelCreate<LumiaLevel>("LumiaLevel");
-	LevelCreate<TestLevel>("TestLevel");
 
-	LevelChange("TitleLevel");
+	LevelChange("TestLevel");
 	return;
 }
 

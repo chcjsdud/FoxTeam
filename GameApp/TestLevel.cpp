@@ -7,6 +7,9 @@
 #include "Rio.h"
 
 #include "TestOBB.h"
+#include "TestLevelBox.h"
+#include "MousePointer.h"
+#include "TestMap.h"
 
 TestLevel::TestLevel()
 	: rio_(nullptr)
@@ -57,6 +60,13 @@ void TestLevel::LevelUpdate(float _DeltaTime)
 		}
 	}
 
+	if (false == GetMainCameraActor()->IsFreeCameraMode())
+	{
+		float4 playerPosition = rio_->GetTransform()->GetWorldPosition();
+		GetMainCameraActor()->GetTransform()->SetWorldPosition(playerPosition + float4(200.f, 640.f, -300.f));
+		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 60.f, -35.f, 0.0f });
+	}
+
 }
 
 void TestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
@@ -77,9 +87,23 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	rio_->Focus();
 	//CreateActor<TestOBB>();
 
+	TestLevelBox* box = nullptr;
+	//box = CreateActor<TestLevelBox>();
+	box = CreateActor<TestLevelBox>();
+	//box->GetTransform()->SetLocalScaling({ 1000.f, 1000.f });
+	box->GetTransform()->SetWorldPosition({ 0.f, 100.f });
+
+
+	mouse_ = CreateActor<MousePointer>();
+	map_ = CreateActor<TestMap>();
+	rio_->SetMouse(mouse_);
+	rio_->SetMap(map_);
+
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();
 	light->GetLight()->SetDiffusePower(1.0f);
 	light->GetLight()->SetAmbientPower(10.0f);
 	light->GetLight()->SetSpacularLightPow(10.0f);
+
+	GameServer::GetInstance()->TestOpen();
 }
