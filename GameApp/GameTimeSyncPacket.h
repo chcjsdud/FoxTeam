@@ -23,6 +23,11 @@ public: // Inline Set Function
 		GameTime_ = _GameTime;
 	}
 
+	inline void SetRemainTime(float _DayAndNightTime)
+	{
+		DayAndNightTime_ = _DayAndNightTime;
+	}
+
 public: // Public Function
 protected:
 	virtual void userSerialize() override;
@@ -50,6 +55,7 @@ protected:
 private:
 	int Day_;																		// 일차
 	DayAndNightType Type_;															// 현재 타입(낮/밤)
-	float GameTime_;																// 게임진행시간
+	float GameTime_;																// 총 게임진행시간
+	float DayAndNightTime_;															// 낮/밤 전환시까지 남은시간
 };
 

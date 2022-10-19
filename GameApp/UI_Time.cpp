@@ -109,7 +109,7 @@ void UI_Time::Update(float _Time)
 
 void UI_Time::TimeSetting()
 {
-	tm InGameTime = GameTimeController::GetInstance()->GetCurrentGameTimeToHour();
+	tm InGameTime = GameTimeController::GetInstance()->GetTotalGameTimeToHour();
 	int Minute = InGameTime.tm_min;
 	int Second = InGameTime.tm_sec;
 	string Time = to_string(Minute) + ":" + to_string(Second);

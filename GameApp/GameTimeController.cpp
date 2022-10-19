@@ -14,7 +14,7 @@ GameTimeController* GameTimeController::GetInstance()
 	return &instance;
 }
 
-tm GameTimeController::GetCurrentGameTimeToMinute()
+tm GameTimeController::GetTotalGameTimeToMinute()
 {
 	// 소수점자리빼버리고 분/초로 반환
 	int CurMin = 0;
@@ -30,7 +30,7 @@ tm GameTimeController::GetCurrentGameTimeToMinute()
 	return ReturnGameTime;
 }
 
-tm GameTimeController::GetCurrentGameTimeToHour()
+tm GameTimeController::GetTotalGameTimeToHour()
 {
 	// 소수점자리빼버리고 시/분/초로 반환
 	int CurHour = 0;
@@ -50,9 +50,50 @@ tm GameTimeController::GetCurrentGameTimeToHour()
 	return ReturnGameTime;
 }
 
-float GameTimeController::GetCurrentGameTimeToSec()
+float GameTimeController::GetTotalGameTimeToSec()
 {
 	return CurGameTime_;
+}
+
+tm GameTimeController::GetRemainTimeToMinute()
+{
+	// 소수점자리빼버리고 분/초로 반환
+	int CurMin = 0;
+	int CurSec = 0;
+	int CurTimeToInt = static_cast<int>(DayAndNightTime_);
+	CurMin = CurTimeToInt / 60;							// 초/60 = 분
+	CurSec = CurTimeToInt % 60;							// 초%60 = 초
+
+	tm ReturnGameTime = {};
+	ReturnGameTime.tm_min = CurMin;
+	ReturnGameTime.tm_sec = CurSec;
+
+	return ReturnGameTime;
+}
+
+tm GameTimeController::GetRemainTimeToHour()
+{
+	// 소수점자리빼버리고 시/분/초로 반환
+	int CurHour = 0;
+	int CurMin = 0;
+	int CurSec = 0;
+	int CurTimeToInt = static_cast<int>(DayAndNightTime_);
+	CurMin = CurTimeToInt / 60;							// 초/60 = 분
+	CurHour = CurMin / 60;								// 분/60 = 시
+	CurSec = CurTimeToInt % 60;							// 시/분/초이므로 초%60 = 초
+	CurMin = CurMin % 60;								// 시/분/초이므로 분%60 = 분
+
+	tm ReturnGameTime = {};
+	ReturnGameTime.tm_hour = CurHour;
+	ReturnGameTime.tm_min = CurMin;
+	ReturnGameTime.tm_sec = CurSec;
+
+	return ReturnGameTime;
+}
+
+float GameTimeController::GetRemainTimeToSec()
+{
+	return DayAndNightTime_;
 }
 
 void GameTimeController::HostInitialize()
@@ -79,11 +120,12 @@ void GameTimeController::HostUpdate(float _DeltaTime)
 	CalcGameTime(_DeltaTime);
 }
 
-void GameTimeController::GuestUpdate(float _GameTime, DayAndNightType _Type, int _CurDay)
+void GameTimeController::GuestUpdate(float _GameTime, DayAndNightType _Type, int _CurDay, float _DayAndNightTime)
 {
 	CurDay_ = _CurDay;
 	CurDayOrNight_ = _Type;
 	CurGameTime_ = _GameTime;
+	DayAndNightTime_ = _DayAndNightTime;
 }
 
 void GameTimeController::CreateDailytimes()
@@ -117,7 +159,7 @@ void GameTimeController::CreateDailytimes()
 
 void GameTimeController::CalcGameTime(float _DeltaTime)
 {
-	// DeltaTime 누적
+	// DeltaTime 누적(총 게임진행시간)
 	CurGameTime_ += _DeltaTime;
 
 	// 현재일차에 따라 낮과밤전환 및 일차증가

@@ -643,11 +643,14 @@ void LumiaLevel::CameraAdjustment()
 
 void LumiaLevel::GameTimeUpdatePacketSend()
 {
+	GameTimeController* gm = GameTimeController::GetInstance();
+
 	// 게임진행시간 동기화를 위한 패킷전송(서버전용)
 	GameTimeSyncPacket SendPacket;
-	SendPacket.SetCurrentDay(GameTimeController::GetInstance()->GetCurrentDay());
-	SendPacket.SetDayAndNightType(GameTimeController::GetInstance()->GetCurrentDayType());
-	SendPacket.SetGameTime(GameTimeController::GetInstance()->GetCurrentGameTimeToSec());
+	SendPacket.SetCurrentDay(gm->GetCurrentDay());
+	SendPacket.SetDayAndNightType(gm->GetCurrentDayType());
+	SendPacket.SetGameTime(gm->GetTotalGameTimeToSec());
+	SendPacket.SetRemainTime(gm->GetRemainTimeToSec());
 	GameServer::GetInstance()->Send(&SendPacket);
 }
 
@@ -773,10 +776,12 @@ void LumiaLevel::DebugWindowUpdate()
 			DebugAndControlWindow_->AddText(std::to_string(CurDay) + " NIGHT");
 		}
 
-		float CurrentTimeSec = gm->GetCurrentGameTimeToSec();
-		tm CurrentTimeMin = gm->GetCurrentGameTimeToMinute();
+		float CurrentTimeSec = gm->GetTotalGameTimeToSec();
+		tm CurrentTimeMin = gm->GetTotalGameTimeToMinute();
+		float RemainTime = gm->GetRemainTimeToSec();
 		DebugAndControlWindow_->AddText(std::to_string(CurrentTimeMin.tm_min) + " MIN " + std::to_string(CurrentTimeMin.tm_sec) + " SEC");
 		DebugAndControlWindow_->AddText(std::to_string(CurrentTimeSec) + " SEC");
+		DebugAndControlWindow_->AddText(std::to_string(RemainTime) + "RemainTime");
 
 		// InGameMouse Debug Value
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);

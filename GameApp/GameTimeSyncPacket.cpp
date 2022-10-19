@@ -11,6 +11,7 @@ void GameTimeSyncPacket::userSerialize()
 	serializer_ << Day_;
 	serializer_ << static_cast<int>(Type_);
 	serializer_ << GameTime_;
+	serializer_ << DayAndNightTime_;
 }
 
 void GameTimeSyncPacket::userDeserialize()
@@ -22,6 +23,7 @@ void GameTimeSyncPacket::userDeserialize()
 	Type_ = static_cast<DayAndNightType>(rcvType);
 
 	serializer_ >> GameTime_;
+	serializer_ >> DayAndNightTime_;
 }
 
 void GameTimeSyncPacket::initPacketID()
@@ -40,7 +42,7 @@ void GameTimeSyncPacket::execute(SOCKET _sender, GameEngineSocketInterface* _net
 	if (false == _bServer)
 	{
 		GameTimeController* gm = GameTimeController::GetInstance();
-		gm->GuestUpdate(GameTime_, Type_, Day_);
+		gm->GuestUpdate(GameTime_, Type_, Day_, DayAndNightTime_);
 	}
 }
 
@@ -48,6 +50,7 @@ GameTimeSyncPacket::GameTimeSyncPacket()
 	: Day_(0)
 	, Type_(DayAndNightType::NONE)
 	, GameTime_(0.0f)
+	, DayAndNightTime_(0.0f)
 {
 }
 
