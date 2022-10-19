@@ -27,7 +27,9 @@ void UI_Time::Start()
 
 	UI_Pos = { 0.0f, 336.0f, 1.0f };
 	Day_Pos = { -40.0f, 329.0f, 0.0f };
-	Time_Pos = {-10.0f, 343.0f, 0.0f};
+	Time_Pos = { -10.0f, 343.0f, 0.0f };
+	Clock_Pos = { -30.f, 300.f, 0.0f };
+	ClockTime_Pos = { -10.f, 315.f, 0.0f };
 
 	{
 		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
@@ -43,6 +45,16 @@ void UI_Time::Start()
 
 		TimeRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		TimeRenderer->GetTransform()->SetLocalPosition(Time_Pos);
+	}
+
+	{
+		NightChangeClockRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		NightChangeClockRenderer->SetImage("UI_Clock.png", "PointSmp");
+		NightChangeClockRenderer->GetTransform()->SetLocalPosition(Clock_Pos);
+		NightChangeClockRenderer->GetTransform()->SetLocalScaling({ 21.f,21.f });
+
+		NightChangeTimeRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		NightChangeTimeRenderer->GetTransform()->SetLocalPosition(ClockTime_Pos);
 	}
 
 
@@ -62,12 +74,16 @@ void UI_Time::Update(float _Time)
 			BackGroundRenderer->Off();
 			DayNightRenderer->Off();
 			TimeRenderer->Off();
+			NightChangeClockRenderer->Off();
+			NightChangeTimeRenderer->Off();
 		}
 		else
 		{
 			BackGroundRenderer->On();
 			DayNightRenderer->On();
 			TimeRenderer->On();
+			NightChangeClockRenderer->On();
+			NightChangeTimeRenderer->On();
 		}
 	}
 
@@ -102,17 +118,29 @@ void UI_Time::Update(float _Time)
 	default:
 		break;
 	}
-	
+
 	TimeSetting();
-	
+
 }
 
 void UI_Time::TimeSetting()
 {
-	tm InGameTime = GameTimeController::GetInstance()->GetTotalGameTimeToHour();
-	int Minute = InGameTime.tm_min;
-	int Second = InGameTime.tm_sec;
-	string Time = to_string(Minute) + ":" + to_string(Second);
-	TimeRenderer->TextSetting("HMKMRHD", Time, 20);
+	{
+		tm InGameTime = GameTimeController::GetInstance()->GetTotalGameTimeToHour();
+		int Minute = InGameTime.tm_min;
+		int Second = InGameTime.tm_sec;
+		string Time = to_string(Minute) + ":" + to_string(Second);
+		TimeRenderer->TextSetting("HMKMRHD", Time, 20);
+	}
+
+	{
+		float NightChangeTime = GameTimeController::GetInstance()->GetRemainTimeToSec();
+		tm ClockTime = GameTimeController::GetInstance()->GetRemainTimeToMinute();
+		int Minute = ClockTime.tm_min;
+		int Second = ClockTime.tm_sec;
+	//	string Time = to_string(Minute) + ":" + to_string(Second);
+		string Time = to_string(static_cast<int>(NightChangeTime));
+		NightChangeTimeRenderer->TextSetting("HMKMRHD", Time, 20);
+	}
 }
 
