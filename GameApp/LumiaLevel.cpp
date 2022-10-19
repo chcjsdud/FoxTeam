@@ -286,6 +286,14 @@ void LumiaLevel::MonsterCreationCommand()
 		MonsterActorByTypeList_[static_cast<int>(CurMonsterType)].push_back(NewMonster);
 	}
 
+	//// 221017 SJH ADD : 몬스터 테스트용으로 플레이어 필요
+	//Monsters* ZeroMonster = MonsterActorByTypeList_[static_cast<int>(MonsterType::CHICKEN)][0];
+	//float4 ForcePos = ZeroMonster->GetTransform()->GetWorldPosition();
+	//CharacterActorList_[0]->InitSpawnPoint(ForcePos);
+	//PlayerInfoManager::GetInstance()->GetPlayerList()[0].curPos_ = ForcePos;
+	////CharacterActorList_[1]->InitSpawnPoint(ForcePos);
+	////PlayerInfoManager::GetInstance()->GetPlayerList()[1].curPos_ = ForcePos;
+
 //#ifdef _DEBUG
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 몬스터생성을 완료했습니다\n");
@@ -372,15 +380,6 @@ void LumiaLevel::CharacterCreationCommand()
 			CharacterActorList_[PlayerNum]->Focus();
 			PlayerInfoManager::GetInstance()->SetMainCharacter(NewCharacter);
 		}
-
-		//// 221017 SJH ADD : 몬스터 테스트용으로 플레이어 필요
-		//if (1 == CharacterActorList_.size() || 2 == CharacterActorList_.size())
-		//{
-		//	Monsters* ZeroMonster = MonsterActorByTypeList_[static_cast<int>(MonsterType::CHICKEN)][0];
-		//	float4 ForcePos = ZeroMonster->GetTransform()->GetWorldPosition();
-		//	NewCharacter->InitSpawnPoint(ForcePos);
-		//	PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = ForcePos;
-		//}
 	}
 
 //#ifdef _DEBUG

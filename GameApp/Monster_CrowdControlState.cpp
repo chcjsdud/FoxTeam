@@ -16,28 +16,8 @@ void Monsters::StartHitState()
 
 void Monsters::UpdateHitState(float _DeltaTime)
 {
-	// 모션 종료시
-	if ("HIT" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
-	{
-		// 타겟이 존재할때
-		if (nullptr != CurTarget_)
-		{
-			// 타겟이 공격범위내 존재하면 공격상태로 전환
-
-
-
-			// 타겟이 공격범위내 존재하지않다면 추적상태로 전환
-
-
-
-		}
-		// 타겟이 존재하지않을때
-		else
-		{
-			// 타겟이 없다면 대기상태 돌입
-			ChangeAnimationAndState(MonsterStateType::IDLE);
-		}
-	}
+	// 모션 종료시(피격모션이 따로 없으므로 바로 대기상태로 전환
+	ChangeAnimationAndState(MonsterStateType::IDLE);
 }
 
 void Monsters::EndHitState()

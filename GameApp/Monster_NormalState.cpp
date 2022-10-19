@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngineCollision.h>
 
 #include "Enums.h"
+#include "Character.h"
 
 void Monsters::StartAppearState()
 {
@@ -71,8 +72,27 @@ void Monsters::StartIdleState()
 
 void Monsters::UpdateIdleState(float _DeltaTime)
 {
-	// ...
+	// 타겟지정 유무 판단
+	if (nullptr != CurTarget_)
+	{
+		// 타겟이 존재할때 타겟과 나의 거리 측정
+		float4 TargetPosition = CurTarget_->GetTransform()->GetWorldPosition();
+		float4 MyPosition = transform_.GetWorldPosition();
+		float Dist = (TargetPosition - MyPosition).Len3D();
 
+		// 거리가 공격범위내에 일때 공격상태로 변경
+		if (Dist <= StateInfo_.AttackRange_)
+		{
+			ChangeAnimationAndState(MonsterStateType::ATK01);
+			//ChangeAnimationAndState(MonsterStateType::ATK02);
+			//ChangeAnimationAndState(MonsterStateType::SKILLATTACK);
+		}
+		// 거리가 공격범위를 벗어나있다면 추적상태로 변경
+		else
+		{
+			ChangeAnimationAndState(MonsterStateType::CHASE);
+		}
+	}
 }
 
 void Monsters::EndIdleState()
@@ -91,22 +111,15 @@ void Monsters::StartChaseState()
 	{
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}
+
+	// 이동시작
+	StartMove(CurTarget_->GetTransform()->GetWorldPosition());
 }
 
 void Monsters::UpdateChaseState(float _DeltaTime)
 {
-	// 타겟이 존재하면
-	if (nullptr != CurTarget_)
-	{
-		// 타겟 추적시작
-
-
-
-		// 타겟 추적중 공격범위내 타겟이 진입시 공격상태 전환
-
-
-
-	}
+	// 이동갱신
+	UpdateMove(_DeltaTime);
 }
 
 void Monsters::EndChaseState()
@@ -128,17 +141,14 @@ void Monsters::StartHomingInstinctState()
 
 	// 귀환중 피격무시
 	GetHitOffFlag_ = true;
+
+	// 이동시작
+	StartMove(StateInfo_.NestPosition_);
 }
 
 void Monsters::UpdateHomingInstinctState(float _DeltaTime)
 {
-	// 둥지위치로 이동
-	// -> 건물무시???? 플레이어의 시야범위밖이면 워프???
-
-
-
-	// 둥지이동 위치 도달시 대기상태 돌입
-
+	UpdateMove(_DeltaTime);
 }
 
 void Monsters::EndHomingInstinctState()

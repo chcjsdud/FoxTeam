@@ -112,20 +112,17 @@ void MonsterStateChangePacket::execute(SOCKET _sender, GameEngineSocketInterface
 				break;
 			}
 		}
-
-		return;
 	}
 	// 아니라면 특정인덱스를 가지는 몬스터의 처리
 	else if(-1 != Index_)
 	{
+		// 해당 상태로 전환
 		Monsters* CurMonster = PlayLevel->GetSpecificMonster(Index_);
 		if (nullptr == CurMonster)
 		{
 			GameEngineDebug::MsgBoxError("여기들어오면 이상한거임!!!!");
 			return;
 		}
-
-		int Index = CurMonster->GetIndex();									// 몬스터인덱스(확인용)
 
 		switch (StateType_)
 		{
@@ -160,12 +157,13 @@ void MonsterStateChangePacket::execute(SOCKET _sender, GameEngineSocketInterface
 				break;
 			}
 		}
-	}
 
-	// 동기화처리를 위해 서버라면 다른 클라이언트에게 전달
-	if (true == _bServer)
-	{
-		_network->Send(this);
+		// 서버일때
+		if (true == _bServer)
+		{
+			// 동기화 패킷 처리
+			_network->Send(this);
+		}
 	}
 }
 

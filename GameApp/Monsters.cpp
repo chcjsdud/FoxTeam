@@ -60,7 +60,12 @@ void Monsters::Damage(float _Amount, GameEngineActor* _Target)
 		StateInfo_.HP_ = 0.0f;
 
 		// 사망중상태로 전환
-		ChangeAnimationAndState(MonsterStateType::DEATH);
+		// 단, 서버이면 상태전환 후 패킷 송신
+		//     클라이면 패킷 송신 후 서버로부터 패킷수신시 상태전환
+		if (true == GameServer::GetInstance()->IsOpened())
+		{
+			ChangeAnimationAndState(MonsterStateType::DEATH);
+		}
 
 		// 현재 API의 몬스터 상태전환 패킷전송(동기화처리)
 		MonsterStateChangePacket ChangePacket;
@@ -92,7 +97,10 @@ void Monsters::Damage(float _Amount, GameEngineActor* _Target)
 
 	// 0.0f이하가 아니라면 단순 피격처리
 	// 현재 API의 몬스터를 피격상태로 전환
-	ChangeAnimationAndState(MonsterStateType::HIT);
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		ChangeAnimationAndState(MonsterStateType::HIT);
+	}
 
 	// 현재 API의 몬스터 상태전환 패킷전송(동기화처리)
 	MonsterStateChangePacket ChangePacket;
@@ -461,14 +469,96 @@ void Monsters::HomingInstinctValueUpdate(float _DeltaTime)
 
 void Monsters::StartMove(const float4& _Position)
 {
+	// 이동경로 Get
+	if (nullptr == CurrentMap_)
+	{
+		GameEngineDebug::MsgBoxError("현재 맵이 지정되어있지않습니다!!!!!!!");
+		return;
+	}
+
+	MovePath_.clear();
+	MovePath_ = CurrentMap_->FindPath(GetTransform()->GetWorldPosition(), _Position);
+	if (true == MovePath_.empty())
+	{
+		GameEngineDebug::OutPutDebugString("이동경로 생성에 실패하였습니다.");
+		return;
+	}
+
+	// 현재 이동경로의 이동목적지를 설정
+	MoveTarget_ = MovePath_.back();
+	MovePath_.pop_back();
 }
 
-void Monsters::UpdateMove(const float4& _Position)
+void Monsters::UpdateMove(float _DeltaTime)
 {
+	// 현재 이동목적지 - 몬스터위치의 거리 측정
+	float4 MyPosition = transform_.GetWorldPosition();
+	MyPosition.y = MoveTarget_.y;
+	if ((MoveTarget_ - MyPosition).Len3D() > 10.0f)
+	{
+		// 이동처리
+		MoveProcessing(_DeltaTime, MyPosition);
+	}
+	else
+	{
+		// 남아있는 경로가 존재할때 새로운 목적지 설정
+		if (false == MovePath_.empty())
+		{
+			MoveTarget_ = MovePath_.back();
+			MovePath_.pop_back();
+		}
+		// 남아있는 경로가 존재하지않을때 이동종료
+		else
+		{
+			EndMove();
+		}
+	}
 }
 
 void Monsters::EndMove()
 {
+	// 경로관련 초기화
+	MoveTarget_ = float4::ZERO;
+	MovePath_.clear();
+
+	// 대기상태 돌입
+	ChangeAnimationAndState(MonsterStateType::IDLE);
+}
+
+void Monsters::MoveProcessing(float _DeltaTime, const float4& _Position)
+{
+	// 이동방향 계산 및 회전
+	CalcMoveDir(_Position);
+
+	// 이동위치 계산
+	float4 MoveSpeed = MoveDir_ * StateInfo_.MoveSpeed_ * _DeltaTime;
+	float4 NextMovePos = _Position + MoveSpeed;
+
+	// 이동가능체크 후 이동가능하다면 이동처리
+	float Dist = 0.0f;
+	if (true == CurrentMap_->GetNavMesh()->CheckIntersects(NextMovePos + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, Dist))
+	{
+		NextMovePos.y = FT::Map::MAX_HEIGHT - Dist;
+		GetTransform()->SetWorldPosition(NextMovePos);
+	}
+	else
+	{
+		MoveTarget_ = _Position;
+	}
+}
+
+void Monsters::CalcMoveDir(const float4& _Position)
+{
+	// 이동방향 계산 및 단위행렬화
+	MoveDir_ = MoveTarget_ - _Position;
+	MoveDir_.Normalize3D();
+
+	// 회전처리
+	float4 Cross = float4::Cross3D(MoveDir_, { 0.0f, 0.0f, 1.0f });
+	Cross.Normalize3D();
+
+	float Angle = float4::DegreeDot3DToACosAngle(MoveDir_, {0.0f, 0.0f, 1.0f});
+	GetTransform()->SetLocalRotationDegree({ 0.0f, Angle * -Cross.y, 0.0f });
 }
 
 void Monsters::DebugWindowUpdate()
