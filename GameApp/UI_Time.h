@@ -27,6 +27,8 @@ protected:
 
 	GameEngineUIRenderer* NightChangeClockRenderer;
 	GameEngineUIRenderer* NightChangeTimeRenderer;
+
+	GameEngineUIRenderer* DayCountRenderer;
 	float Time;
 
 
@@ -42,5 +44,7 @@ private:
 
 	float4 Clock_Pos;
 	float4 ClockTime_Pos;
+
+	float4 DayCount_Pos;
 };
 

@@ -25,12 +25,12 @@ UI_Time::~UI_Time()
 void UI_Time::Start()
 {
 
-	//UI_Pos = { 0.0f, 336.0f, 1.0f };
 	UI_Pos = { 0.0f, 326.0f, 1.0f };
 	Day_Pos = { -35.0f, 330.0f, 0.0f };
 	Time_Pos = { -10.0f, 344.0f, 0.0f };
 	Clock_Pos = { -30.f, 303.f, 0.0f };
 	ClockTime_Pos = { -10.f, 318.f, 0.0f };
+	DayCount_Pos = { -20.f, 361.f, 0.0f };
 
 	{
 		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
@@ -58,6 +58,10 @@ void UI_Time::Start()
 		NightChangeTimeRenderer->GetTransform()->SetLocalPosition(ClockTime_Pos);
 	}
 
+	{
+		DayCountRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		DayCountRenderer->GetTransform()->SetLocalPosition(DayCount_Pos);
+	}
 
 }
 
@@ -77,6 +81,7 @@ void UI_Time::Update(float _Time)
 			TimeRenderer->Off();
 			NightChangeClockRenderer->Off();
 			NightChangeTimeRenderer->Off();
+			DayCountRenderer->Off();
 		}
 		else
 		{
@@ -85,6 +90,7 @@ void UI_Time::Update(float _Time)
 			TimeRenderer->On();
 			NightChangeClockRenderer->On();
 			NightChangeTimeRenderer->On();
+			DayCountRenderer->On();
 		}
 	}
 
@@ -142,6 +148,12 @@ void UI_Time::TimeSetting()
 	//	string Time = to_string(Minute) + ":" + to_string(Second);
 		string Time = to_string(static_cast<int>(NightChangeTime));
 		NightChangeTimeRenderer->TextSetting("HMKMRHD", Time, 20);
+	}
+
+	{
+		int DayCount = GameTimeController::GetInstance()->GetCurrentDay();
+		string DayCountString = to_string(DayCount) + "ÀÏ Â÷";
+		DayCountRenderer->TextSetting("HMKMRHD", DayCountString, 15);
 	}
 }
 
