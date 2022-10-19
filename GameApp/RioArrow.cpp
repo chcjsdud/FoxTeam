@@ -30,18 +30,18 @@ RioArrow::~RioArrow()
 
 void RioArrow::Start()
 {
-	effect_ = CreateTransformComponent<GameEngineEffectRenderer>();
-	effect_->SetImage("FX_BI_TX_RioShootFire.png", "LinearSmp");
-	effect_->GetTransform()->SetLocalRotationDegree({ 90.f,90.f,0.f });
-	effect_->GetTransform()->SetLocalScaling(effect_->GetCurrentTexture()->GetTextureSize() / 2);
-	effect_->SetAlpha(0.5f);
+	//effect_ = CreateTransformComponent<GameEngineEffectRenderer>();
+	//effect_->SetImage("FX_BI_TX_RioShootFire.png", "LinearSmp");
+	//effect_->GetTransform()->SetLocalRotationDegree({ 90.f,90.f,0.f });
+	//effect_->GetTransform()->SetLocalScaling(effect_->GetCurrentTexture()->GetTextureSize() / 2);
+	//effect_->SetAlpha(0.5f);
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->SetCollisionGroup(eCollisionGroup::Projectile);
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
 	collision_->Off();
 
-	collision_->GetTransform()->SetLocalScaling(scale_);
+	GetTransform()->SetLocalScaling(scale_);
 
 	state_.CreateState(MakeState(RioArrow, Chase));
 	state_.CreateState(MakeState(RioArrow, Fly));
