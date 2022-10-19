@@ -123,14 +123,15 @@ void Character::Update(float _DeltaTime)
 	if (0.0f >= stat_.HP)
 	{
 		collision_->Off();
-		if (true == isPlayerDead_)
-		{
-			mainState_.Update(_DeltaTime);
-			return;
-		}
+		changeDeathAnimation();
+		//if (true == isPlayerDead_)
+		//{
+		//	mainState_.Update(_DeltaTime);
+		//	return;
+		//}
 		
-		mainState_.ChangeState("DeathState", true);
-		deathState_.ChangeState("PlayerDeath", true);
+		//mainState_.ChangeState("DeathState", true);
+		//deathState_.ChangeState("PlayerDeath", true);
 		isPlayerDead_ = true;
 		level->SubtractSurvivorCount();
 

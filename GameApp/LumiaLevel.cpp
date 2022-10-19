@@ -719,6 +719,12 @@ void LumiaLevel::CharactersTransformUpdate()
 				continue;
 			}
 
+			// 1019 ╧за╬©Ь
+			if (i == pm->GetPlayerList().size())
+			{
+				return;
+			}
+
 			PlayerInfo& currentInfo = pm->GetPlayerList()[i];
 
 			CharacterActorList_[i]->GetTransform()->SetLocalPosition(currentInfo.curPos_);

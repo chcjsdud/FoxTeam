@@ -207,7 +207,7 @@ void Rio::changeAnimationCook()
 
 void Rio::changeDeathAnimation()
 {
-	ChangeAnimation("Death", true);
+	ChangeAnimation("Death", false);
 }
 
 void Rio::onStartBasicAttacking(IUnit* _target)
