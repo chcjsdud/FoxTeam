@@ -61,7 +61,7 @@ public: // inline Set Function
 
 public: // Public Pure Virtual Function
 	int GetIndex() override;												// 인덱스 Get
-	void Damage(float _Amount) override;									// 이걸로 호출하지마!!!! 몬스터는 타겟이 필요하다고!!!!!
+	//void Damage(float _Amount) override;									// 이걸로 호출하지마!!!! 몬스터는 타겟이 필요하다고!!!!!
 	void Damage(float _Amount, GameEngineActor* _Target) override;			// 외부에서 호출하며 해당 몬스터에 데미지줄때 호출되는 함수
 
 public: // 패킷수신시 호출되는 함수들

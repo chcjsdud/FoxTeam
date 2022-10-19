@@ -87,7 +87,7 @@ void RioDSkill::startFall()
 			continue;
 		}
 
-		unit->Damage(damage_);
+		unit->Damage(damage_, owner_);
 	}
 }
 

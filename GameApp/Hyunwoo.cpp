@@ -373,7 +373,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 				if (nullptr != character)
 				{
-					character->Damage(300.0f);
+					character->Damage(300.0f, this);
 				}
 			}
 		}
@@ -524,7 +524,7 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 
 					if (nullptr != character)
 					{
-						character->Damage(150.0f);
+						character->Damage(150.0f, this);
 						CharCrowdControlPacket ccPacket;
 						ccPacket.SetTargetIndex(character->GetIndex());
 						ccPacket.SetWallSlam(0.2f, direction_ * 3000.f, 1.0f);
@@ -638,7 +638,7 @@ void Hyunwoo::onUpdateDSkill(float _deltaTime)
 
 			curAnimationName_ = "SkillD";
 			renderer_->ChangeFBXAnimation("SkillD", true);
-			otherCharacter->Damage(150.0f);
+			otherCharacter->Damage(150.0f, this);
 			// 
 
 			b_Dhit_ = true;
@@ -822,7 +822,7 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 					{
 						
 
-						character->Damage(300.0f);
+						character->Damage(300.0f, this);
 
 					}
 				}
@@ -864,7 +864,7 @@ void Hyunwoo::endCustomRSkill()
 
 void Hyunwoo::onStartBasicAttacking(IUnit* _target)
 {
-	target_->Damage(stat_.AttackPower);
+	target_->Damage(stat_.AttackPower, this);
 
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("attackGlove_Normal_Hit_P.wav");
 	PacketSoundPlay packet;

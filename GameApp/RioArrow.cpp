@@ -149,7 +149,7 @@ void RioArrow::updateChase(float _deltaTime)
 			PacketSoundPlay packet;
 			packet.SetSound("Rio_ShortBow_Hit_01.wav", transform_.GetWorldPosition());
 			FT::SendPacket(packet);
-			target_->Damage(damage_);
+			target_->Damage(damage_, owner_);
 		}
 
 		Release();
@@ -190,7 +190,7 @@ void RioArrow::updateFly(float _deltaTime)
 
 			if (opponent != nullptr)
 			{
-				opponent->Damage(damage_);
+				opponent->Damage(damage_, owner_);
 
 				if (bKnockback_)
 				{

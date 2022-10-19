@@ -21,12 +21,12 @@ int Monsters::GetIndex()
 	return Index_;
 }
 
-void Monsters::Damage(float _Amount)
-{
-	// 몬스터는 얘로 데미지 호출불가!!!
-	GameEngineDebug::MsgBox("현재 몬스터가 타겟을 모릅니다!!! 타겟을 알려주세요!!!!");
-	return;
-}
+//void Monsters::Damage(float _Amount)
+//{
+//	// 몬스터는 얘로 데미지 호출불가!!!
+//	GameEngineDebug::MsgBox("현재 몬스터가 타겟을 모릅니다!!! 타겟을 알려주세요!!!!");
+//	return;
+//}
 
 void Monsters::Damage(float _Amount, GameEngineActor* _Target)
 {
@@ -620,8 +620,6 @@ Monsters::Monsters()
 	, CurStateType_(MonsterStateType::NONE)
 	, GetHitOffFlag_(false)
 {
-	// 유닛타입 = 몬스터
-	UnitType_ = UnitType::MONSTER;
 }
 
 Monsters::~Monsters()

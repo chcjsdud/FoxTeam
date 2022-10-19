@@ -42,8 +42,6 @@ Character::Character()
 	, coolTimeR_(0.0f)
 	, coolTimeD_(0.0f)
 {
-	// 유닛타입 = 캐릭터
-	UnitType_ = UnitType::CHARACTER;
 }
 
 Character::~Character()
@@ -588,6 +586,20 @@ IUnit* Character::getMousePickedCharacter()
 		}
 	}
 
+	{
+		GameEngineCollision* mousePickedCollision = mouse_->GetRayCollision()->GetCollision(eCollisionGroup::Monster);
+		GameEngineActor* mousePickedActor = nullptr;
+		IUnit* mousePickedMonster = nullptr;
+		if (nullptr != mousePickedCollision)
+		{
+			mousePickedActor = mousePickedCollision->GetActor();
+			if (nullptr != mousePickedActor)
+			{
+				return mousePickedMonster = dynamic_cast<IUnit*>(mousePickedActor);
+			}
+		}
+	}
+
 	return nullptr;
 }
 
@@ -667,14 +679,14 @@ void Character::ChangeOverrideAnimation(const std::string& _animationName, const
 	renderer_->OverrideFBXAnimation(_animationName, _boneNameToAffect);
 }
 
-void Character::Damage(float _amount)
+void Character::Damage(float _Amount, GameEngineActor* _Target)
 {
-	if (0.0f >= _amount)
+	if (0.0f >= _Amount)
 	{
 		return;
 	}
 
-	stat_.HP -= _amount;
+	stat_.HP -= _Amount;
 
 	CharStatPacket packet;
 	packet.SetStat(stat_);

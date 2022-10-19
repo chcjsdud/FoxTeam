@@ -31,8 +31,8 @@ public:
 	void Update(float _DeltaTime) override;
 
 	int GetIndex() override;
-	void Damage(float _amount) override;
-	void Damage(float _Amount, GameEngineActor* _Target) override {}
+	//void Damage(float _amount) override;
+	void Damage(float _Amount, GameEngineActor* _Target) override;
 
 public:
 	void InitSpawnPoint(const float4& _position);
