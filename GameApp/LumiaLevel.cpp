@@ -693,19 +693,12 @@ void LumiaLevel::CharacterStateUpdatePacketSend()
 			ClientSocket->Send(&AnimPacket);
 		}
 
-		// 캐릭터 상태갱신 패킷
-		CharStatPacket StatePacket;
-		StatePacket.SetTargetIndex(pm->GetMyNumber());
-		StatePacket.SetStat(*(pm->GetMyPlayer().stat_));
+		//// 캐릭터 상태갱신 패킷
+		//CharStatPacket StatePacket;
+		//StatePacket.SetTargetIndex(pm->GetMyNumber());
+		//StatePacket.SetStat(*(pm->GetMyPlayer().stat_));
 
-		if (true == ServerSocket->IsOpened())
-		{
-			ServerSocket->Send(&StatePacket);
-		}
-		else if (true == ClientSocket->IsConnected())
-		{
-			ClientSocket->Send(&StatePacket);
-		}
+		//FT::SendPacket(StatePacket);
 
 		// ...
 	}
