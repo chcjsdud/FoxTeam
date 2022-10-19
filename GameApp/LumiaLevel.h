@@ -59,6 +59,10 @@ public: // Create MonsterInfo
 	void CreateMonsterInfo();												// Host 전용(현재 맵에 배치하려는 몬스터들을 미리 셋팅)
 	// 몬스터가 스폰되는 지역과 위치가 해당 함수에서 모두 결정난다.
 
+public: // 1019 승리판정용 카운터 접근
+	void SubtractSurvivorCount() { SurvivorCount_--; }
+	int GetSurvivorCount() { return SurvivorCount_; }
+
 private: // Command
 	void HostAllCreationCommand();											// Host 전용
 	void GuestAllCreationCommand();											// Guest 전용
@@ -93,6 +97,7 @@ private: // Debug Function
 
 private: // Check Level Related InputKey
 	void CheckLevelRelatedInputKey();										// Check InputKey
+
 
 #pragma region 테스트용함수(추후삭제예정)
 	// LevelControlWindow에의해 강제 레벨이동한경우 사용하는 함수
@@ -145,4 +150,7 @@ private:
 private:
 	GameEngineLevelControlWindow* DebugAndControlWindow_;											// 레벨관련 디버그 & 강제레벨체인지 윈도우
 	MonsterDebugWindow* MonsterDebugWindow_;														// 몬스터관련 디버그 윈도우
+
+private:
+	int SurvivorCount_;																				// 플레이어 죽음 카운트 (인원수-1 일 시 최후 생존자 캐릭터 승리 판정)
 };

@@ -25,6 +25,12 @@ public:
 		isActivated_ = true;
 	}
 
+	void SetWinner();
+
+public:
+	bool MouseCollisionCheck();
+
+	void SetImageByIndex(int _index);
 
 protected:
 	void Start() override;
@@ -35,6 +41,10 @@ protected:
 
 	void startAppear();
 	void updateAppear(float _DeltaTime);
+
+	void startStandBy();
+	void updateStandBy(float _DeltaTime);
+
 
 private:
 	GameEngineUIRenderer* portraitRenderer_;
@@ -49,11 +59,14 @@ private:
 	GameEngineUIRenderer* bloodStainRenderer_;
 	GameEngineUIRenderer* bloodStainRendererUp_;
 
+	GameEngineUIRenderer* exitBtnRenderer_;
+	GameEngineCollision* exitBtnCollision_;
 
 	bool isActivated_;
 	float appearTimer_;
 	bool isAllAppeared_;
 	float TIME_APPEAR_DEFAULT = 3.0f;
+	bool isWinner_;
 
 	GameEngineFSM UIstate_;
 };

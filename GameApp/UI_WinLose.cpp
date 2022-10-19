@@ -3,9 +3,10 @@
 
 #include "Enums.h"
 #include <GameEngine/GameEngineUIRenderer.h>
+#include <GameEngine/GameEngineCollision.h>
 
 UI_WinLose::UI_WinLose() // default constructer µðÆúÆ® »ý¼ºÀÚ
-	: portraitRenderer_(nullptr), backRenderer_(nullptr), textRenderer_(nullptr), appearTimer_(0.0f), isAllAppeared_(false), isActivated_(false), bloodStainRendererUp_(nullptr), bloodStainRenderer_(nullptr)
+	: portraitRenderer_(nullptr), backRenderer_(nullptr), textRenderer_(nullptr), appearTimer_(0.0f), isAllAppeared_(false), isActivated_(false), bloodStainRendererUp_(nullptr), bloodStainRenderer_(nullptr), isWinner_(false)
 {
 
 }
@@ -76,6 +77,32 @@ void UI_WinLose::SetText(const std::string& _text)
 	textRenderer_->TextSetting("±¼¸²", _text, 20, FW1_CENTER);
 }
 
+void UI_WinLose::SetWinner()
+{
+	winLosePanelRenderer_->SetImage("winPanel.png", "PointSmp");
+	isWinner_ = true;
+}
+
+bool UI_WinLose::MouseCollisionCheck()
+{
+	return exitBtnCollision_->Collision(static_cast<int>(eCollisionGroup::MousePointer));;
+}
+
+void UI_WinLose::SetImageByIndex(int _index)
+{
+	switch (_index)
+	{
+	case 0:
+		exitBtnRenderer_->SetImage("Btn_Accept_Out.png", "PointSmp");
+		break;
+	case 1:
+		exitBtnRenderer_->SetImage("Btn_Accept_OutClick.png", "PointSmp");
+		break;
+	default:
+		break;
+	}
+}
+
 void UI_WinLose::Start()
 {
 	portraitRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
@@ -114,7 +141,7 @@ void UI_WinLose::Start()
 
 	winLoseTextRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	winLoseTextRenderer_->SetTextColor(float4::WHITE);
-	winLoseTextRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 220.0f, 0.0f });
+	winLoseTextRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 250.0f, 0.0f });
 	winLoseTextRenderer_->TextSetting("±¼¸²", "½ÇÇè Á¾·á", 40, FW1_CENTER);
 	winLoseTextRenderer_->SetAlpha(0.0f);
 	winLoseTextRenderer_->Off();
@@ -123,20 +150,32 @@ void UI_WinLose::Start()
 	rankPanelRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	rankPanelRenderer_->SetImage("rankPanel.png", "PointSmp");
 	rankPanelRenderer_->GetTransform()->SetLocalScaling(rankPanelRenderer_->GetCurrentTexture()->GetTextureSize());
-	rankPanelRenderer_->GetTransform()->SetLocalPosition({ 0.0f,-220.0f,0.0f });
+	rankPanelRenderer_->GetTransform()->SetLocalPosition({ 0.0f,-240.0f,0.0f });
 	rankPanelRenderer_->SetAlpha(0.0f);
 	rankPanelRenderer_->Off();
 
 	textRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	textRenderer_->SetTextColor(float4::WHITE);
-	textRenderer_->TextSetting("±¼¸²", " ", 30, FW1_CENTER);
+	textRenderer_->TextSetting("±¼¸²", " ", 40, FW1_CENTER);
 	textRenderer_->GetTransform()->SetLocalPosition({ 0.0f,-220.0f,0.0f });
 	textRenderer_->SetAlpha(0.0f);
 	textRenderer_->Off();
 
+	exitBtnRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	exitBtnRenderer_->SetImage("Btn_Accept_Out.png", "PointSmp");
+	exitBtnRenderer_->GetTransform()->SetLocalScaling(exitBtnRenderer_->GetCurrentTexture()->GetTextureSize());
+	exitBtnRenderer_->GetTransform()->SetLocalPosition({ 500.0f, -300.0f, 0.0f });
+	exitBtnRenderer_->SetAlpha(0.0f);
+	exitBtnRenderer_->Off();
+
+	exitBtnCollision_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	exitBtnCollision_->GetTransform()->SetLocalPosition(exitBtnRenderer_->GetTransform()->GetLocalPosition());
+	exitBtnCollision_->GetTransform()->SetLocalScaling(exitBtnRenderer_->GetTransform()->GetLocalScaling());
+	exitBtnCollision_->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 
 	UIstate_.CreateState(MakeState(UI_WinLose, NoAppear));
 	UIstate_.CreateState(MakeState(UI_WinLose, Appear));
+	UIstate_.CreateState(MakeState(UI_WinLose, StandBy));
 
 	UIstate_ << "NoAppear";
 }
@@ -168,10 +207,17 @@ void UI_WinLose::startAppear()
 	backRenderer_->On();
 	winLoseTextRenderer_->On();
 	textRenderer_->On();
-	bloodStainRenderer_->On();
-	bloodStainRendererUp_->On();
+
+	if (false == isWinner_)
+	{
+		bloodStainRenderer_->On();
+		bloodStainRendererUp_->On();
+	}
+
+
 	winLosePanelRenderer_->On();
 	rankPanelRenderer_->On();
+	exitBtnRenderer_->On();
 }
 
 void UI_WinLose::updateAppear(float _DeltaTime)
@@ -183,6 +229,7 @@ void UI_WinLose::updateAppear(float _DeltaTime)
 	float adjustedRatio = appearTimer_ / TIME_APPEAR_DEFAULT;
 	if (adjustedRatio >= 1.0f)
 	{
+		UIstate_.ChangeState("StandBy", true);
 		return;
 	}
 
@@ -195,5 +242,30 @@ void UI_WinLose::updateAppear(float _DeltaTime)
 	bloodStainRendererUp_->SetAlpha(adjustedRatio);
 	winLosePanelRenderer_->SetAlpha(adjustedRatio);
 	rankPanelRenderer_->SetAlpha(adjustedRatio);
+	exitBtnRenderer_->SetAlpha(adjustedRatio);
+}
+
+void UI_WinLose::startStandBy()
+{
+
+}
+
+void UI_WinLose::updateStandBy(float _DeltaTime)
+{
+	if (true == MouseCollisionCheck())
+	{
+
+		int tmp = 0;
+
+		if (true == GameEngineInput::GetInst().Press("LBUTTON"))
+		{
+			SetImageByIndex(1);
+		}
+		else if (true == GameEngineInput::GetInst().Up("LBUTTON"))
+		{
+			SetImageByIndex(0);
+		}
+	}
+
 }
 

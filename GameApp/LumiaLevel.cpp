@@ -302,6 +302,8 @@ void LumiaLevel::CharacterCreationCommand()
 
 	// 캐릭터 생성
 	int PlayerCount = static_cast<int>(pm->GetPlayerList().size());
+	SurvivorCount_ = PlayerCount;
+
 	for (int PlayerNum = 0; PlayerNum < PlayerCount; ++PlayerNum)
 	{
 		// 캐릭터 타입별
