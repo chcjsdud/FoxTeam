@@ -205,6 +205,11 @@ void Rio::changeAnimationCook()
 	ChangeAnimation("Rio_CraftFood");
 }
 
+void Rio::changeDeathAnimation()
+{
+	ChangeAnimation("Death", true);
+}
+
 void Rio::onStartBasicAttacking(IUnit* _target)
 {
 	if (bLongBow_)
@@ -623,7 +628,7 @@ void Rio::onUpdateDSkill(float _deltaTime)
 
 void Rio::onStartDeath()
 {
-	ChangeAnimation("Death", true);
+
 }
 
 void Rio::onUpdateDeath(float _deltaTime)

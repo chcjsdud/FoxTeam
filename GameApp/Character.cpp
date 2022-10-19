@@ -128,7 +128,7 @@ void Character::Update(float _DeltaTime)
 			mainState_.Update(_DeltaTime);
 			return;
 		}
-
+		
 		mainState_.ChangeState("DeathState", true);
 		deathState_.ChangeState("PlayerDeath", true);
 		isPlayerDead_ = true;
@@ -997,7 +997,7 @@ void Character::updateCustomState(float _deltaTime)
 
 void Character::startDeathState()
 {
-
+	changeDeathAnimation();
 }
 
 void Character::updateDeathState(float _deltaTime)

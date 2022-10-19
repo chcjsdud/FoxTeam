@@ -295,6 +295,12 @@ void Hyunwoo::changeAnimationBasicAttack()
 
 }
 
+void Hyunwoo::changeDeathAnimation()
+{
+	curAnimationName_ = "Death";
+	renderer_->ChangeFBXAnimation("Death", true);
+}
+
 void Hyunwoo::onStartQSkill()
 {
 	timer_collision_Q = 0.0f;
@@ -667,8 +673,7 @@ void Hyunwoo::onUpdateDSkill(float _deltaTime)
 
 void Hyunwoo::onStartDeath()
 {
-	curAnimationName_ = "Death";
-	renderer_->ChangeFBXAnimation("Death", true);
+
 }
 
 void Hyunwoo::onUpdateDeath(float _deltaTime)

@@ -43,6 +43,7 @@ protected:
 	virtual void changeAnimationRun() override;
 	virtual void changeAnimationWait() override;
 	virtual void changeAnimationBasicAttack() override;
+	virtual void changeDeathAnimation() override;
 
 	virtual void onStartBasicAttacking(IUnit* _target) override;
 	virtual void onUpdateBasicAttacking(IUnit* _target, float _deltaTime) override;

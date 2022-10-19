@@ -98,6 +98,7 @@ protected:
 	virtual void changeAnimationBasicAttack() = 0;
 	virtual void changeAnimationCook() {}
 	virtual void changeAnimationCraft() {}
+	virtual void changeDeathAnimation() = 0;
 
 	// Main(AttackState)
 	virtual void onStartBasicAttacking(IUnit* _target) = 0;
