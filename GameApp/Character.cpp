@@ -122,6 +122,7 @@ void Character::Update(float _DeltaTime)
 	// Á×À½ ÆÇÁ¤
 	if (0.0f >= stat_.HP)
 	{
+		collision_->Off();
 		if (true == isPlayerDead_)
 		{
 			mainState_.Update(_DeltaTime);
