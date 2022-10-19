@@ -1360,6 +1360,7 @@ void Character::updateDSkill(float _deltaTime)
 
 void Character::startPlayerDeath()
 {
+	collision_->Off();
 	onStartDeath();
 }
 
