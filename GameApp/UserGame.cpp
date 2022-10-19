@@ -50,7 +50,7 @@ void UserGame::Initialize()
 	LevelCreate<LoadingLevel>("LoadingLevel");
 	LevelCreate<LumiaLevel>("LumiaLevel");
 
-	LevelChange("TestLevel");
+	LevelChange("TitleLevel");
 	return;
 }
 
