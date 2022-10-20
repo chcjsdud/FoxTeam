@@ -304,9 +304,6 @@
     <ClCompile Include="GameTimeController.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>
     </ClCompile>
-    <ClCompile Include="MonsterStateChangePacket.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
-    </ClCompile>
     <ClCompile Include="IUnit.cpp">
       <Filter>01.GameObject\01.BaseActor\Unit</Filter>
     </ClCompile>
@@ -368,7 +365,10 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="MonsterDamagePacket.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet\Monster</Filter>
+    </ClCompile>
+    <ClCompile Include="MonsterStateChangePacket.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet\Monster</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -887,9 +887,6 @@
     <ClInclude Include="GameTimeController.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>
     </ClInclude>
-    <ClInclude Include="MonsterStateChangePacket.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
-    </ClInclude>
     <ClInclude Include="IUnit.h">
       <Filter>01.GameObject\01.BaseActor\Unit</Filter>
     </ClInclude>
@@ -957,7 +954,10 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="MonsterDamagePacket.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="MonsterStateChangePacket.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet\Monster</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
