@@ -15,6 +15,9 @@ protected:
 	void InitalizeRenderAndAnimation() override;
 	void InitalizeCollider() override;
 
+protected:
+	void SkillAttackProcessing() override;
+
 private:
 
 public:

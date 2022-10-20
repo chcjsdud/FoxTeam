@@ -15,7 +15,7 @@ void Boar::InitalizeStateInfo()
 	StateInfo_.LevelMax_ = 12;											// 최대 레벨
 	StateInfo_.HomingInstinctValueMax_ = 100.0f;						// 최대 귀소본능 수치
 	StateInfo_.RegenTimeMax_ = 195.0f;									// 리젠타임
-	StateInfo_.SkillCoolDownMax_ = 10.0f;								// 최대 스킬쿨타임
+	StateInfo_.SkillCoolDownMax_ = 7.0f;								// 최대 스킬쿨타임
 
 	//====================================== 레벨당 증가량(고정)
 	StateInfo_.OffencePowerIncrement_ = 23;								// 레벨당 공격력 증가량
@@ -41,7 +41,7 @@ void Boar::InitalizeStateInfo()
 
 	//====================================== 스킬관련
 	StateInfo_.IsSkill_ = 1;											// 스킬여부(0: 스킬없음)
-	StateInfo_.SkillCoolDown_ = 0.5f;									// 스킬재사용시간
+	StateInfo_.SkillCoolDown_ = 7.0f;									// 스킬재사용시간
 
 	//====================================== 아이템관련
 	StateInfo_.DropItems_[ItemName::MEAT] = 40.0f;
@@ -73,16 +73,6 @@ void Boar::InitalizeResourceLoad()
 		{
 			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
 		}
-
-		// Animation Resource Load
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_appear.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_wait.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_run.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_death.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_atk01.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_atk02.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_skill_assault.fbx"));		// 로드만함 구현은 추후 생각좀...
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_skill_ready.fbx"));			// 로드만함 구현은 추후 생각좀...
 
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
@@ -127,12 +117,33 @@ void Boar::InitalizeCollider()
 	BodyCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
 
 	// 추가: 공격 충돌체 생성(옵션)
-	//AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	//AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
-	//AtkCollider_->SetCollisionType(CollisionType::AABBBox3D);
-	//AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
-	//AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
-	//AtkCollider_->Off();
+	AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
+	AtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
+	AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
+	AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	AtkCollider_->Off();
+}
+
+void Boar::SkillAttackProcessing()
+{
+	// 돌진 : 일직선으로 돌격하며 적을 밀어내며 피해를 입힘
+	//		  단, 적이 벽에 부딪혔다면 기절
+	// 피해량 - 기본(150) + 공격력의 300%
+	// 사정거리 - 5m
+	// 시전시간 - 1.5초
+	// 쿨다운 - 7초
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+
+	}
+
+	// 모션종료시 
+	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	{
+		// 모션종료시 대기상태 전환
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+	}
 }
 
 Boar::Boar()

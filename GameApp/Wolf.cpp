@@ -74,15 +74,6 @@ void Wolf::InitalizeResourceLoad()
 			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
 		}
 
-		// Animation Resource Load
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_appear.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_wait.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_run.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_death.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_atk01.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_atk02.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Wolf_skill.fbx"));
-
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
 	}
@@ -127,12 +118,30 @@ void Wolf::InitalizeCollider()
 	BodyCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
 
 	// 추가: 공격 충돌체 생성(옵션)
-	//AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	//AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
-	//AtkCollider_->SetCollisionType(CollisionType::AABBBox3D);
-	//AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
-	//AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
-	//AtkCollider_->Off();
+	AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
+	AtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
+	AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
+	AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	AtkCollider_->Off();
+}
+
+void Wolf::SkillAttackProcessing()
+{
+	// 충돌체 Off상태에서 시전
+	// 소집: 반경 20m의 늑대들을 불러모아서 함께 적을 공격합니다.
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		// 
+
+	}
+
+	// 모션종료시 
+	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	{
+		// 모션종료시 대기상태 전환
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+	}
 }
 
 Wolf::Wolf()

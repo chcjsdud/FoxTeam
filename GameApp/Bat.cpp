@@ -74,14 +74,6 @@ void Bat::InitalizeResourceLoad()
 			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
 		}
 
-		// Animation Resource Load
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_appear.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_wait.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_run.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_death.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_atk01.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bat_atk02.fbx"));
-
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
 	}
@@ -126,12 +118,22 @@ void Bat::InitalizeCollider()
 	BodyCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
 
 	// 추가: 공격 충돌체 생성(옵션)
-	//AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	//AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
-	//AtkCollider_->SetCollisionType(CollisionType::AABBBox3D);
-	//AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
-	//AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
-	//AtkCollider_->Off();
+	AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
+	AtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
+	AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
+	AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	AtkCollider_->Off();
+}
+
+void Bat::SkillAttackProcessing()
+{
+	// 스킬없으므로 스킬공격모션 종료시 대기상태로 전환
+	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	{
+		// 모션종료시 대기상태 전환
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+	}
 }
 
 Bat::Bat()

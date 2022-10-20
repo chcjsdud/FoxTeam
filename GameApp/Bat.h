@@ -15,8 +15,10 @@ protected:
 	void InitalizeRenderAndAnimation() override;
 	void InitalizeCollider() override;
 
-private:
+protected:
+	void SkillAttackProcessing() override;
 
+private:
 public:
 	Bat();
 	~Bat();

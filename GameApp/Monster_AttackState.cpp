@@ -59,16 +59,13 @@ void Monsters::StartSkillAttackState()
 
 	// 공격중 Flag On
 	IsAttack_ = true;
-	AtkCollider_->On();
+	//AtkCollider_->On(); // 스킬공격의 경우 공격가능 타이밍이 몬스터 타입마다 다르므로 SkillAttackProcessing() 내부에서 충돌체 on타이밍 적용
 }
 
 void Monsters::UpdateSkillAttackState(float _DeltaTime)
 {
-	// 스킬공격모션 종료시 대기상태로 전환
-	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
-	{
-		ChangeAnimationAndState(MonsterStateType::IDLE);
-	}
+	// 몬스터 타입별 스킬공격이 다르므로 순수가상함수로 생성된 함수 실행
+	SkillAttackProcessing();
 }
 
 void Monsters::EndSkillAttackState()

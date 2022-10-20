@@ -119,10 +119,23 @@ void Weekline::InitalizeCollider()
 	// 추가: 공격 충돌체 생성(옵션)
 	//AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	//AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
-	//AtkCollider_->SetCollisionType(CollisionType::AABBBox3D);
+	//AtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
 	//AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
 	//AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
 	//AtkCollider_->Off();
+}
+
+void Weekline::SkillAttackProcessing()
+{
+	// ???
+
+
+	// 스킬공격모션 종료시 대기상태로 전환
+	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	{
+		// 모션종료시 대기상태 전환
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+	}
 }
 
 Weekline::Weekline()

@@ -641,18 +641,34 @@ void Monsters::AttackProcessing()
 			StateInfo_.SkillCoolDown_ = StateInfo_.SkillCoolDownMax_;
 
 			// 스킬상태 전환
-			//ChangeAnimationAndState(MonsterStateType::SKILLATTACK);
+			ChangeAnimationAndState(MonsterStateType::SKILLATTACK);
 		}
 		else															// 스킬시전쿨타임중이므로 일반공격
 		{
-			ChangeAnimationAndState(MonsterStateType::ATK01);
-			//ChangeAnimationAndState(MonsterStateType::ATK02);
+			if (MonsterStateType::ATK01 == PrevAttackType_)
+			{
+				ChangeAnimationAndState(MonsterStateType::ATK02);
+				PrevAttackType_ = MonsterStateType::ATK02;
+			}
+			else if (MonsterStateType::ATK01 == PrevAttackType_)
+			{
+				ChangeAnimationAndState(MonsterStateType::ATK01);
+				PrevAttackType_ = MonsterStateType::ATK01;
+			}
 		}
 	}
 	else									// 일반공격만 가능한 경우
 	{
-		ChangeAnimationAndState(MonsterStateType::ATK01);
-		//ChangeAnimationAndState(MonsterStateType::ATK02);
+		if (MonsterStateType::ATK01 == PrevAttackType_)
+		{
+			ChangeAnimationAndState(MonsterStateType::ATK02);
+			PrevAttackType_ = MonsterStateType::ATK02;
+		}
+		else if (MonsterStateType::ATK01 == PrevAttackType_)
+		{
+			ChangeAnimationAndState(MonsterStateType::ATK01);
+			PrevAttackType_ = MonsterStateType::ATK01;
+		}
 	}
 }
 
@@ -713,6 +729,7 @@ Monsters::Monsters()
 	, CurStateType_(MonsterStateType::NONE)
 	, IsDeath_(false)
 	, IsAttack_(false)
+	, PrevAttackType_(MonsterStateType::ATK02)
 {
 }
 

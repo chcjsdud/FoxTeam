@@ -89,6 +89,9 @@ protected: // Protected Pure Virtual Function
 	virtual void InitalizeRenderAndAnimation() = 0;							// 렌더러 & 애니메이션 생성
 	virtual void InitalizeCollider() = 0;									// 충돌체 생성
 
+protected: // Protected SkillAttack Pure Virtual Function
+	virtual void SkillAttackProcessing() = 0;								// 몬스터 타입별 스킬공격
+
 private: // Private Initalize Function
 	void InitalizeFSMState();												// FSM 상태 생성(공통)
 
@@ -239,5 +242,6 @@ protected: // 상태정보
 protected: // 기타
 	bool IsDeath_;															// 몬스터사망시 피격판정무시 Flag(사망시 On)
 	bool IsAttack_;															// ATK01, ATK02, SKILLATTACK 상태시 활성화
+	MonsterStateType PrevAttackType_;										// 이전공격 타입(일반공격)
 };
 

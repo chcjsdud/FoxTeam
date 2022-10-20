@@ -41,7 +41,7 @@ void Bear::InitalizeStateInfo()
 
 	//====================================== 스킬관련
 	StateInfo_.IsSkill_ = 1;											// 스킬여부(0: 스킬없음)
-	StateInfo_.SkillCoolDown_ = 0.5f;									// 스킬재사용시간
+	StateInfo_.SkillCoolDown_ = 10.0f;									// 스킬재사용시간
 
 	//====================================== 아이템관련
 	StateInfo_.DropItems_[ItemName::MEAT] = 40.0f;
@@ -73,15 +73,6 @@ void Bear::InitalizeResourceLoad()
 		{
 			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
 		}
-
-		// Animation Resource Load
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bear_appear.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bear_wait.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bear_run.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bear_death.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bear_atk01.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bear_atk02.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Bear_skill.fbx"));
 
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
@@ -127,12 +118,32 @@ void Bear::InitalizeCollider()
 	BodyCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
 
 	// 추가: 공격 충돌체 생성(옵션)
-	//AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	//AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
-	//AtkCollider_->SetCollisionType(CollisionType::AABBBox3D);
-	//AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
-	//AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
-	//AtkCollider_->Off();
+	AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
+	AtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
+	AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
+	AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	AtkCollider_->Off();
+}
+
+void Bear::SkillAttackProcessing()
+{
+	// 지면강타 : 주변범위에 피해를 입히고 1초간 기절
+	// 피해량 - 기본(170) + 공격력의 40%
+	// 사정거리 - 4m
+	// 시전시간 - 0.5초
+	// 쿨다운 - 10초
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+
+	}
+
+	// 모션종료시 
+	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	{
+		// 모션종료시 대기상태 전환
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+	}
 }
 
 Bear::Bear()
