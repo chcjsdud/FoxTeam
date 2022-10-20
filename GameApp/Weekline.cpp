@@ -7,33 +7,52 @@ bool Weekline::ResourceLoadFlag = false;
 
 void Weekline::InitalizeStateInfo()
 {
-	// 기본정보
+	//// 기본정보
 	//Type_ = MonsterType::WEEKLINE;										// 몬스터타입
 
-	// 기본스텟
-	StateInfo_.HPMax_ = 100.0f;											// 최대체력
-	StateInfo_.HP_ = 100.0f;											// 현재체력
-	StateInfo_.HPRegenPercent_ = 0.5f;									// 체력회복량(% 수치)
-	StateInfo_.SPMax_ = 100.0f;											// 최대마력
-	StateInfo_.SP_ = 100.0f;											// 현재마력
-	StateInfo_.SPRegenPercent_ = 0.5f;									// 마력회복량(% 수치)
-	StateInfo_.Defence_ = 100.0f;										// 방어력
+	////====================================== 스텟의 최대치(고정)
+	//StateInfo_.LevelMin_ = 1;											// 시작 레벨(리젠시 해당 데이터로 레벨초기화)
+	//StateInfo_.LevelMax_ = 17;											// 최대 레벨
+	//StateInfo_.HomingInstinctValueMax_ = 100.0f;						// 최대 귀소본능 수치
+	//StateInfo_.RegenTimeMax_ = 180.0f;									// 리젠타임
+	//StateInfo_.SkillCoolDownMax_ = 10.0f;								// 최대 스킬쿨타임
 
-	// 상세스텟
-	StateInfo_.NestPosition_ = float4::ZERO;							// 둥지위치(= 스폰위치)
-	StateInfo_.HomingInstinctValueMax_ = 100.0f;						// 최대 귀소본능 수치
-	StateInfo_.HomingInstinctValue_ = 100.0f;							// 귀소본능 수치(0.0f보다 작거나같아지면 몬스터는 스폰위치로 이동하면 체력을 회복 -> 타겟이 DetectRange_에 벗어난 시간에 따라 감소)
-	StateInfo_.AttackRange_ = 100.0f;									// 공격 시야거리
-	StateInfo_.DetectRange_ = 300.0f;									// 감지 시야거리
-	StateInfo_.AttackSpeed_ = 0.5f;										// 공격 속도
-	StateInfo_.MoveSpeed_ = 100.0f;										// 이동 속도
+	////====================================== 레벨당 증가량(고정)
+	//StateInfo_.OffencePowerIncrement_ = 18;								// 레벨당 공격력 증가량
+	//StateInfo_.DefenseIncrement_ = 4;									// 레벨당 방어력 증가량
+	//StateInfo_.MoveSpeedIncrement_ = 0.06f;								// 레벨당 이동속도 증가량
+	//StateInfo_.HPIncrement_ = 82.0f;									// 레벨당 레벨당 체력 증가량
 
-	// 스킬스텟
-	StateInfo_.SkillCoolDown_ = 0.5f;									// 스킬재사용시간
+	////====================================== 기본스텟(고정)
+	//StateInfo_.NestPosition_ = float4::ZERO;							// 둥지위치(= 스폰위치)
+	//StateInfo_.AttackSpeed_ = 0.9f;										// 공격속도
+	//StateInfo_.AttackRange_ = 100.0f;									// 공격 시야거리
+	//StateInfo_.DetectRange_ = 300.0f;									// 감지 시야거리
 
-	// 젠스텟
-	StateInfo_.RegenTimeMax_ = 600.f;									// 리젠타임(고정)
-	StateInfo_.RegenTime_ = 600.f;										// 리젠타임(갱신) -> 0.0f이하일시 RegenTime_으로 초기화
+	////====================================== 기본스텟(갱신) - 초기: 3레벨기준 스텟
+	//StateInfo_.Level_ = 3;												// 레벨(늦게 생성된 몬스터(야생동물)일수록 레벨이 높게 설정) - 생성과 동시에 지정(지정없이 생성된 몬스터의 경우 기본 1레벨고정)
+	//StateInfo_.OffencePower_ = 36;										// 공격력
+	//StateInfo_.Defense_ = 29;											// 방어력
+	//StateInfo_.HPMax_ = 564.0f;											// 최대 체력(레벨당 변화)
+	//StateInfo_.HP_ = 564.0f;											// 현재체력
+	//StateInfo_.MoveSpeed_ = 2.9f;										// 이동속도
+	//StateInfo_.HomingInstinctValue_ = 100.0f;							// 귀소본능 수치(0.0f보다 작거나같아지면 몬스터는 스폰위치로 이동하면 체력을 회복 -> 타겟이 DetectRange_에 벗어난 시간에 따라 감소)
+	//StateInfo_.RegenTime_ = 180.0f;										// 리젠타임(갱신) -> 0.0f이하일시 RegenTime_으로 초기화
+
+	////====================================== 스킬관련
+	//StateInfo_.IsSkill_ = 0;											// 스킬여부(0: 스킬없음)
+	//StateInfo_.SkillCoolDown_ = 0.5f;									// 스킬재사용시간
+
+	////====================================== 아이템관련
+	//StateInfo_.DropItems_[ItemName::MEAT] = 40.0f;
+	//StateInfo_.DropItems_[ItemName::LEATHER] = 60.0f;
+
+	//if (true == GameServer::GetInstance()->IsOpened())					// 서버이면 아이템정보 수집
+	//{
+	//	// 일단 고정
+	//	StateInfo_.CurDropItems_.push_back(ItemName::MEAT);
+	//	StateInfo_.CurDropItems_.push_back(ItemName::LEATHER);
+	//}
 }
 
 void Weekline::InitalizeResourceLoad()
@@ -49,13 +68,11 @@ void Weekline::InitalizeResourceLoad()
 		//GameEngineFBXMesh* Basemesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName("Weekline_BaseMesh.fbx"));
 		//Basemesh->CreateRenderingBuffer();
 
-		//// Animation Resource Load
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Weekline_appear.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Weekline_wait.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Weekline_run.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Weekline_death.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Weekline_atk01.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(MeshDir.PathToPlusFileName("Weekline_atk02.fbx"));
+		//std::vector<GameEngineFile> allFile = MeshDir.GetAllFile("UserAnimation");
+		//for (GameEngineFile& file : allFile)
+		//{
+		//	GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
+		//}
 
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
@@ -72,18 +89,18 @@ void Weekline::InitalizeRenderAndAnimation()
 	//MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	//// 애니메이션 생성
-	//MainRenderer_->CreateFBXAnimation("APPEAR", "Weekline_appear.fbx", 0, false);			// 첫등장상태의 애니메이션
-	//MainRenderer_->CreateFBXAnimation("REGEN", "Weekline_appear.fbx", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
-	//MainRenderer_->CreateFBXAnimation("IDLE", "Weekline_wait.fbx", 0);						// 대기상태의 애니메이션
-	//MainRenderer_->CreateFBXAnimation("CHASE", "Weekline_run.fbx", 0);						// 추적상태의 애니메이션
-	//MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Weekline_run.fbx", 0);				// 귀환상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("APPEAR", "Weekline_appear.UserAnimation", 0, false);			// 첫등장상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("REGEN", "Weekline_appear.UserAnimation", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("IDLE", "Weekline_wait.UserAnimation", 0);						// 대기상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("CHASE", "Weekline_run.UserAnimation", 0);						// 추적상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Weekline_run.UserAnimation", 0);				// 귀환상태의 애니메이션
 	// 
-	//MainRenderer_->CreateFBXAnimation("HIT", "Weekline_wait.fbx", 0);						// 피격상태의 애니메이션
-	//MainRenderer_->CreateFBXAnimation("DEATH", "Weekline_death.fbx", 0, false);				// 사망중상태의 애니메이션
-	//MainRenderer_->CreateFBXAnimation("DEAD", "Weekline_death.fbx", 0, false);				// 사망(리젠대기)상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("HIT", "Weekline_wait.UserAnimation", 0);						// 피격상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("DEATH", "Weekline_death.UserAnimation", 0, false);				// 사망중상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("DEAD", "Weekline_death.UserAnimation", 0, false);				// 사망(리젠대기)상태의 애니메이션
 	// 
-	//MainRenderer_->CreateFBXAnimation("ATK01", "Weekline_atk01.fbx", 0, false);				// 일반공격01상태의 애니메이션
-	//MainRenderer_->CreateFBXAnimation("ATK02", "Weekline_atk02.fbx", 0, false);				// 일반공격02상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("ATK01", "Weekline_atk01.UserAnimation", 0, false);				// 일반공격01상태의 애니메이션
+	//MainRenderer_->CreateFBXAnimation("ATK02", "Weekline_atk02.UserAnimation", 0, false);				// 일반공격02상태의 애니메이션
 	//MainRenderer_->ChangeFBXAnimation("IDLE");
 
 	//// 기본상태 셋팅

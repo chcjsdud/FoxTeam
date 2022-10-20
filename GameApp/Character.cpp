@@ -665,7 +665,7 @@ void Character::ChangeOverrideAnimation(const std::string& _animationName, const
 	renderer_->OverrideFBXAnimation(_animationName, _boneNameToAffect);
 }
 
-void Character::Damage(float _Amount, GameEngineActor* _Target)
+void Character::Damage(float _Amount, IUnit* _Target)
 {
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 

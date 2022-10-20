@@ -10,30 +10,49 @@ void Bat::InitalizeStateInfo()
 	// 기본정보
 	Type_ = MonsterType::BAT;											// 몬스터타입
 
-	// 기본스텟
-	StateInfo_.HPMax_ = 100.0f;											// 최대체력
-	StateInfo_.HP_ = 100.0f;											// 현재체력
-	StateInfo_.HPRegenPercent_ = 0.5f;									// 체력회복량(% 수치)
-	StateInfo_.SPMax_ = 100.0f;											// 최대마력
-	StateInfo_.SP_ = 100.0f;											// 현재마력
-	StateInfo_.SPRegenPercent_ = 0.5f;									// 마력회복량(% 수치)
-	StateInfo_.Defence_ = 100.0f;										// 방어력
-
-	// 상세스텟
-	StateInfo_.NestPosition_ = float4::ZERO;							// 둥지위치(= 스폰위치)
+	//====================================== 스텟의 최대치(고정)
+	StateInfo_.LevelMin_ = 1;											// 시작 레벨(리젠시 해당 데이터로 레벨초기화)
+	StateInfo_.LevelMax_ = 11;											// 최대 레벨
 	StateInfo_.HomingInstinctValueMax_ = 100.0f;						// 최대 귀소본능 수치
-	StateInfo_.HomingInstinctValue_ = 100.0f;							// 귀소본능 수치(0.0f보다 작거나같아지면 몬스터는 스폰위치로 이동하면 체력을 회복 -> 타겟이 DetectRange_에 벗어난 시간에 따라 감소)
+	StateInfo_.RegenTimeMax_ = 195.0f;									// 리젠타임
+	StateInfo_.SkillCoolDownMax_ = 10.0f;								// 최대 스킬쿨타임
+
+	//====================================== 레벨당 증가량(고정)
+	StateInfo_.OffencePowerIncrement_ = 27;								// 레벨당 공격력 증가량
+	StateInfo_.DefenseIncrement_ = 5;									// 레벨당 방어력 증가량
+	StateInfo_.MoveSpeedIncrement_ = 0.04f;								// 레벨당 이동속도 증가량
+	StateInfo_.HPIncrement_ = 114.0f;									// 레벨당 레벨당 체력 증가량
+
+	//====================================== 기본스텟(고정)
+	StateInfo_.NestPosition_ = float4::ZERO;							// 둥지위치(= 스폰위치)
+	StateInfo_.AttackSpeed_ = 0.6f;										// 공격속도
 	StateInfo_.AttackRange_ = 100.0f;									// 공격 시야거리
 	StateInfo_.DetectRange_ = 300.0f;									// 감지 시야거리
-	StateInfo_.AttackSpeed_ = 0.5f;										// 공격 속도
-	StateInfo_.MoveSpeed_ = 100.0f;										// 이동 속도
 
-	// 스킬스텟
+	//====================================== 기본스텟(갱신) - 초기: 1레벨기준 스텟
+	StateInfo_.Level_ = 1;												// 레벨(늦게 생성된 몬스터(야생동물)일수록 레벨이 높게 설정) - 생성과 동시에 지정(지정없이 생성된 몬스터의 경우 기본 1레벨고정)
+	StateInfo_.OffencePower_ = 38;										// 공격력
+	StateInfo_.Defense_ = 24;											// 방어력
+	StateInfo_.HPMax_ = 360.0f;											// 최대 체력(레벨당 변화)
+	StateInfo_.HP_ = 360.0f;											// 현재체력
+	StateInfo_.MoveSpeed_ = 3.5f;										// 이동속도
+	StateInfo_.HomingInstinctValue_ = 100.0f;							// 귀소본능 수치(0.0f보다 작거나같아지면 몬스터는 스폰위치로 이동하면 체력을 회복 -> 타겟이 DetectRange_에 벗어난 시간에 따라 감소)
+	StateInfo_.RegenTime_ = 195.0f;										// 리젠타임(갱신) -> 0.0f이하일시 RegenTime_으로 초기화
+
+	//====================================== 스킬관련
+	StateInfo_.IsSkill_ = 0;											// 스킬여부(0: 스킬없음)
 	StateInfo_.SkillCoolDown_ = 0.5f;									// 스킬재사용시간
 
-	// 젠스텟
-	StateInfo_.RegenTimeMax_ = 125.f;									// 리젠타임(고정)
-	StateInfo_.RegenTime_ = 125.f;										// 리젠타임(갱신) -> 0.0f이하일시 RegenTime_으로 초기화
+	//====================================== 아이템관련
+	StateInfo_.DropItems_[ItemName::MEAT] = 40.0f;
+	StateInfo_.DropItems_[ItemName::LEATHER] = 60.0f;
+
+	if (true == GameServer::GetInstance()->IsOpened())					// 서버이면 아이템정보 수집
+	{
+		// 일단 고정
+		StateInfo_.CurDropItems_.push_back(ItemName::MEAT);
+		StateInfo_.CurDropItems_.push_back(ItemName::LEATHER);
+	}
 }
 
 void Bat::InitalizeResourceLoad()

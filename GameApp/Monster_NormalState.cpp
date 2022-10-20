@@ -33,21 +33,17 @@ void Monsters::StartRegenState()
 	CurStateType_ = MonsterStateType::REGEN;
 
 	// 스텟 초기정보로 초기화
-	StateInfo_.HP_ = StateInfo_.HPMax_;
-	StateInfo_.SP_ = StateInfo_.SPMax_;
-	StateInfo_.HomingInstinctValue_ = StateInfo_.HomingInstinctValueMax_;
-	StateInfo_.RegenTime_ = StateInfo_.RegenTimeMax_;
-
-	// 타겟정보 초기화
-	CurTarget_ = nullptr;
-	CurTargetIndex_ = -1;
+	StateInfo_.Level_ = StateInfo_.LevelMin_;								// 시작레벨로 초기화
+	StateInfo_.HP_ = StateInfo_.HPMax_;										// 현재 최대체력으로 초기화
+	StateInfo_.HomingInstinctValue_ = StateInfo_.HomingInstinctValueMax_;	// 최대 귀소본능수치로 초기화
+	StateInfo_.RegenTime_ = StateInfo_.RegenTimeMax_;						// 최대 리젠시간으로 초기화
 
 	// 초기스폰위치로 셋팅 후 재등장을 위한 준비
-	GetTransform()->SetLocalPosition(StateInfo_.NestPosition_);
+	GetTransform()->SetWorldPosition(StateInfo_.NestPosition_);
 	MainRenderer_->On();
 
-	// 피격판정무시 Flag Off
-	GetHitOffFlag_ = false;
+	// 사망 Flag Off
+	IsDeath_ = false;
 }
 
 void Monsters::UpdateRegenState(float _DeltaTime)
@@ -83,16 +79,19 @@ void Monsters::UpdateIdleState(float _DeltaTime)
 		// 거리가 공격범위내에 일때 공격상태로 변경
 		if (Dist <= StateInfo_.AttackRange_)
 		{
-			ChangeAnimationAndState(MonsterStateType::ATK01);
-			//ChangeAnimationAndState(MonsterStateType::ATK02);
-			//ChangeAnimationAndState(MonsterStateType::SKILLATTACK);
+			// 공격처리
+			AttackProcessing();
 		}
 		// 거리가 공격범위를 벗어나있다면 추적상태로 변경
 		else
 		{
+			// 추적상태전환
 			ChangeAnimationAndState(MonsterStateType::CHASE);
 		}
 	}
+
+	// 타겟지정까지 대기
+
 }
 
 void Monsters::EndIdleState()
@@ -104,13 +103,6 @@ void Monsters::StartChaseState()
 	// 현재 상태 지정
 	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::CHASE;
-
-	// 예외처리
-	// -> 타겟없으면 대기상태 재돌입
-	if (nullptr == CurTarget_)
-	{
-		ChangeAnimationAndState(MonsterStateType::IDLE);
-	}
 
 	// 이동시작
 	StartMove(CurTarget_->GetTransform()->GetWorldPosition());
@@ -140,7 +132,7 @@ void Monsters::StartHomingInstinctState()
 	}
 
 	// 귀환중 피격무시
-	GetHitOffFlag_ = true;
+	IsDeath_ = true;
 
 	// 이동시작
 	StartMove(StateInfo_.NestPosition_);
@@ -153,6 +145,6 @@ void Monsters::UpdateHomingInstinctState(float _DeltaTime)
 
 void Monsters::EndHomingInstinctState()
 {
-	// 귀환완료시 피격상태 체크를 위해 충돌체 다시 On
-	GetHitOffFlag_ = false;
+	// 귀환완료시 피격상태 체크를 위해 충돌체크 On
+	IsDeath_ = false;
 }

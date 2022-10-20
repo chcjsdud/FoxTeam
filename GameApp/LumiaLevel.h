@@ -38,6 +38,11 @@ public: // Inline Get Function
 		return CharacterActorList_;
 	}
 
+	inline std::vector<Monsters*> GetMonsterActorList() const
+	{
+		return MonsterActorList_;
+	}
+
 public: // Inline Set Function
 
 public: // Public Get Function

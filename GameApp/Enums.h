@@ -185,3 +185,12 @@ enum class EquipmentType
 	ACCESSORY,
 	MAX
 };
+
+enum class ItemName							// 221020 SJH ADD : 몬스터드랍아이템확률정의로 임시(추후 협의필요)
+{
+	NONE = -1,
+	MEAT,			// 고기(음식)
+	LEATHER,		// 가죽(재료)
+
+	MAX
+};

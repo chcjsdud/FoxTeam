@@ -21,14 +21,7 @@ int Monsters::GetIndex()
 	return Index_;
 }
 
-//void Monsters::Damage(float _Amount)
-//{
-//	// 몬스터는 얘로 데미지 호출불가!!!
-//	GameEngineDebug::MsgBox("현재 몬스터가 타겟을 모릅니다!!! 타겟을 알려주세요!!!!");
-//	return;
-//}
-
-void Monsters::Damage(float _Amount, GameEngineActor* _Target)
+void Monsters::Damage(float _Amount, IUnit* _Target)
 {
 	// 예외처리
 	if (0.0f >= _Amount)
@@ -46,7 +39,7 @@ void Monsters::Damage(float _Amount, GameEngineActor* _Target)
 	}
 
 	// 예외처리
-	if (true == GetHitOffFlag_)
+	if (true == IsDeath_)
 	{
 		GameEngineDebug::OutPutDebugString("해당 몬스터는 이미 사망상태로 공격대상이 아닙니다!!!!\n");
 		return;
@@ -122,21 +115,25 @@ void Monsters::Damage(float _Amount, GameEngineActor* _Target)
 void Monsters::rcvAttack01(MonsterStateInfo _rcvStatInfo)
 {
 	// 상태정보 갱신
-	StateInfo_ = _rcvStatInfo;
+	UpdateSpecialStat(_rcvStatInfo);
 
+	// 일반공격01 상태 전환
+	ChangeAnimationAndState(MonsterStateType::ATK01);
 }
 
 void Monsters::rcvAttack02(MonsterStateInfo _rcvStatInfo)
 {
 	// 상태정보 갱신
-	StateInfo_ = _rcvStatInfo;
+	UpdateSpecialStat(_rcvStatInfo);
 
+	// 일반공격02 상태 전환
+	ChangeAnimationAndState(MonsterStateType::ATK02);
 }
 
 void Monsters::rcvDamage(MonsterStateInfo _rcvStatInfo, int _TargetIndex)
 {
 	// 상태정보 갱신
-	StateInfo_ = _rcvStatInfo;
+	UpdateSpecialStat(_rcvStatInfo);
 
 	if (-1 == _TargetIndex)
 	{
@@ -167,10 +164,25 @@ void Monsters::rcvDeath(MonsterStateInfo _rcvStatInfo)
 	}
 
 	// 상태정보 갱신
-	StateInfo_ = _rcvStatInfo;
+	UpdateSpecialStat(_rcvStatInfo);
 
 	// 사망중상태로 전환
 	ChangeAnimationAndState(MonsterStateType::DEATH);
+}
+
+void Monsters::rcvDead(MonsterStateInfo _rcvStatInfo)
+{
+	// 이미상 사망중 or 사망상태라면 무시
+	if (MonsterStateType::DEAD == CurStateType_ || MonsterStateType::DEATH == CurStateType_)
+	{
+		return;
+	}
+
+	// 상태정보 갱신
+	UpdateSpecialStat(_rcvStatInfo);
+
+	// 사망중상태로 전환
+	ChangeAnimationAndState(MonsterStateType::DEAD);
 }
 
 void Monsters::rcvRegen(MonsterStateInfo _rcvStatInfo)
@@ -182,7 +194,7 @@ void Monsters::rcvRegen(MonsterStateInfo _rcvStatInfo)
 	}
 
 	// 상태정보 갱신
-	StateInfo_ = _rcvStatInfo;
+	UpdateSpecialStat(_rcvStatInfo);
 
 	// 리젠상태로 전환
 	ChangeAnimationAndState(MonsterStateType::REGEN);
@@ -197,7 +209,7 @@ void Monsters::rcvHomingInstinct(MonsterStateInfo _rcvStatInfo)
 	}
 
 	// 상태정보 갱신
-	StateInfo_ = _rcvStatInfo;
+	UpdateSpecialStat(_rcvStatInfo);
 
 	// 리젠상태로 전환
 	ChangeAnimationAndState(MonsterStateType::HOMINGINSTINCT);
@@ -325,6 +337,26 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 	}
 }
 
+void Monsters::UpdateSpecialStat(MonsterStateInfo _UpdateStat)
+{
+	// 갱신용 스텟만을 수신하여 갱신
+	StateInfo_.Level_ = _UpdateStat.Level_;
+	StateInfo_.OffencePower_ = _UpdateStat.OffencePower_;
+	StateInfo_.Defense_ = _UpdateStat.Defense_;
+	StateInfo_.HPMax_ = _UpdateStat.HPMax_;
+	StateInfo_.HP_ = _UpdateStat.HP_;
+	StateInfo_.MoveSpeed_ = _UpdateStat.MoveSpeed_;
+	StateInfo_.HomingInstinctValue_ = _UpdateStat.HomingInstinctValue_;
+	StateInfo_.RegenTime_ = _UpdateStat.RegenTime_;
+	StateInfo_.SkillCoolDown_ = _UpdateStat.SkillCoolDown_;
+}
+
+void Monsters::UpdateAllStat(MonsterStateInfo _UpdateStat)
+{
+	// 전체 스텟을 수신하여 갱신
+	StateInfo_ = _UpdateStat;
+}
+
 void Monsters::InitalizeFSMState()
 {
 #pragma region MainState
@@ -371,9 +403,10 @@ void Monsters::CheckMonsterStateInfo(float _DeltaTime)
 	// 1. 귀소본능수치 갱신
 	HomingInstinctValueUpdate(_DeltaTime);
 
-	// 2. ...
+	// 2. 스킬쿨타임 갱신
+	UpdateSkillCoolDown(_DeltaTime);
 
-
+	// 3. ...
 
 }
 
@@ -391,7 +424,7 @@ void Monsters::CheckBodyCollision(float _DeltaTime)
 	// 몸체 충돌체 충돌체크
 	if (nullptr != BodyCollider_ && true == BodyCollider_->IsUpdate())
 	{
-		if (false == GetHitOffFlag_)
+		if (false == IsDeath_)
 		{
 			GetLevel()->PushDebugRender(BodyCollider_->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
 		}
@@ -399,7 +432,7 @@ void Monsters::CheckBodyCollision(float _DeltaTime)
 		// 221018 SJH : 임시주석처리
 		//// 마우스 그룹과의 충돌
 		//// 단, 몬스터 완전사망상태이며 피격판정무시상태라면 충돌체크하며, 해당 충돌시 드랍된아이템을 표시
-		//if (MonsterStateType::DEAD == CurStateType_ && true == GetHitOffFlag_)
+		//if (MonsterStateType::DEAD == CurStateType_ && true == IsDeath_)
 		//{
 		//	if (true == BodyCollider_->Collision(static_cast<int>(eCollisionGroup::MousePointer)) && true == GameEngineInput::GetInst().Down("LButton"))
 		//	{
@@ -415,17 +448,33 @@ void Monsters::CheckAttackCollision(float _DeltaTime)
 	if (nullptr != AtkCollider_ && true == AtkCollider_->IsUpdate())
 	{
 #ifdef _DEBUG
-		GetLevel()->PushDebugRender(AtkCollider_->GetTransform(), CollisionType::AABBBox3D, float4::RED);
+		GetLevel()->PushDebugRender(AtkCollider_->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
 #endif // _DEBUG
 
 		// 플레이어 그룹과의 충돌
-		if (true == AtkCollider_->Collision(static_cast<int>(eCollisionGroup::Player)))
+		if (true == AtkCollider_->Collision(static_cast<int>(eCollisionGroup::Player)) && true == IsAttack_)
 		{
-			// 플레이어 공격
+			if (nullptr != CurTarget_)
+			{
+				// 현재 타겟으로 지정된 플레이어에게 데미지를 입힘
+				CurTarget_->Damage(static_cast<float>(StateInfo_.OffencePower_), this);
 
-
-
-
+				// 공격완료로 공격상태 Flag Off
+				IsAttack_ = false;
+				AtkCollider_->Off();
+			}
+			else
+			{
+				// 타겟이 없으므로 공격상태 Flag Off
+				IsAttack_ = false;
+				AtkCollider_->Off();
+			}
+		}
+		// 충돌하지않았다면 공격상태 바로 Off
+		else
+		{
+			IsAttack_ = false;
+			AtkCollider_->Off();
 		}
 	}
 }
@@ -463,6 +512,19 @@ void Monsters::HomingInstinctValueUpdate(float _DeltaTime)
 			{
 				GameClient::GetInstance()->Send(&Packet);
 			}
+		}
+	}
+}
+
+void Monsters::UpdateSkillCoolDown(float _DeltaTime)
+{
+	// 단, 해당 몬스터가 스킬공격이 있을때만 쿨타임 갱신
+	if (1 == StateInfo_.IsSkill_)
+	{
+		StateInfo_.SkillCoolDown_ -= _DeltaTime;
+		if (0.0f >= StateInfo_.SkillCoolDown_ && MonsterStateType::SKILLATTACK != CurStateType_)
+		{
+			StateInfo_.SkillCoolDown_ = 0.0f;
 		}
 	}
 }
@@ -531,7 +593,7 @@ void Monsters::MoveProcessing(float _DeltaTime, const float4& _Position)
 	CalcMoveDir(_Position);
 
 	// 이동위치 계산
-	float4 MoveSpeed = MoveDir_ * StateInfo_.MoveSpeed_ * _DeltaTime;
+	float4 MoveSpeed = MoveDir_ * StateInfo_.MoveSpeed_ * _DeltaTime * 100.0f;		// 이동속도 기본계수가 너무 작기때문에 *100을 해서 높인다
 	float4 NextMovePos = _Position + MoveSpeed;
 
 	// 이동가능체크 후 이동가능하다면 이동처리
@@ -559,6 +621,32 @@ void Monsters::CalcMoveDir(const float4& _Position)
 
 	float Angle = float4::DegreeDot3DToACosAngle(MoveDir_, {0.0f, 0.0f, 1.0f});
 	GetTransform()->SetLocalRotationDegree({ 0.0f, Angle * -Cross.y, 0.0f });
+}
+
+void Monsters::AttackProcessing()
+{
+	// 스킬쿨이 우선순위
+	if (1 == StateInfo_.IsSkill_)										// 스킬공격이 있는경우
+	{
+		if (0.0f >= StateInfo_.SkillCoolDown_)							// Update(float _DeltaTime)에서 감소중
+		{
+			// 쿨타임 초기화
+			StateInfo_.SkillCoolDown_ = StateInfo_.SkillCoolDownMax_;
+
+			// 스킬상태 전환
+			//ChangeAnimationAndState(MonsterStateType::SKILLATTACK);
+		}
+		else															// 스킬시전쿨타임중이므로 일반공격
+		{
+			ChangeAnimationAndState(MonsterStateType::ATK01);
+			//ChangeAnimationAndState(MonsterStateType::ATK02);
+		}
+	}
+	else									// 일반공격만 가능한 경우
+	{
+		ChangeAnimationAndState(MonsterStateType::ATK01);
+		//ChangeAnimationAndState(MonsterStateType::ATK02);
+	}
 }
 
 void Monsters::DebugWindowUpdate()
@@ -591,9 +679,6 @@ void Monsters::Update(float _deltaTime)
 
 	// Main State Update
 	MainState_.Update(_deltaTime);
-
-	// ...
-
 }
 
 Monsters::Monsters()
@@ -608,6 +693,7 @@ Monsters::Monsters()
 	, CurrentNavMesh_(nullptr)
 	, CurrentMap_(nullptr)
 	, StateInfo_{}
+	, MoveDir_(float4::ZERO)
 	, MoveTarget_(float4::ZERO)
 	, MainState_()
 	, NormalState_()
@@ -618,7 +704,8 @@ Monsters::Monsters()
 	, CurStateBasicType_(MonsterStateBasicType::NONE)
 	, PrevStateType_(MonsterStateType::NONE)
 	, CurStateType_(MonsterStateType::NONE)
-	, GetHitOffFlag_(false)
+	, IsDeath_(false)
+	, IsAttack_(false)
 {
 }
 

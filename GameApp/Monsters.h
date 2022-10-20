@@ -61,14 +61,14 @@ public: // inline Set Function
 
 public: // Public Pure Virtual Function
 	int GetIndex() override;												// 인덱스 Get
-	//void Damage(float _Amount) override;									// 이걸로 호출하지마!!!! 몬스터는 타겟이 필요하다고!!!!!
-	void Damage(float _Amount, GameEngineActor* _Target) override;			// 외부에서 호출하며 해당 몬스터에 데미지줄때 호출되는 함수
+	void Damage(float _Amount, IUnit* _Target) override;					// 외부에서 호출하며 해당 몬스터에 데미지줄때 호출되는 함수
 
 public: // 패킷수신시 호출되는 함수들
 	void rcvAttack01(MonsterStateInfo _rcvStatInfo);						// 패킷수신으로 공격 처리(동기화처리)
 	void rcvAttack02(MonsterStateInfo _rcvStatInfo);						// 패킷수신으로 공격 처리(동기화처리)
 	void rcvDamage(MonsterStateInfo _rcvStatInfo, int _TargetIndex);		// 패킷수신으로 데미지 처리(동기화처리)
 	void rcvDeath(MonsterStateInfo _rcvStatInfo);							// 패킷수신으로 사망중처리(동기화처리)
+	void rcvDead(MonsterStateInfo _rcvStatInfo);							// 패킷수신으로 완전사망처리(동기화처리)
 	void rcvRegen(MonsterStateInfo _rcvStatInfo);							// 패킷수신으로 재등장처리(동기화처리)
 	void rcvHomingInstinct(MonsterStateInfo _rcvStatInfo);					// 패킷수신으로 귀환처리(동기화처리)
 
@@ -77,6 +77,10 @@ public: // Initalize Function
 
 public: // public ChangeAnimation Function
 	void ChangeAnimationAndState(MonsterStateType _StateType);				// 몬스터상태타입으로 애니메이션 및 상태 전환
+
+public: // Public About Stat Update Function
+	void UpdateSpecialStat(MonsterStateInfo _UpdateStat);					// 특정 스텟을 수신하여 갱신
+	void UpdateAllStat(MonsterStateInfo _UpdateStat);						// 전체 스텟을 수신하여 갱신
 
 public:
 protected: // Protected Pure Virtual Function
@@ -96,8 +100,9 @@ private: // Collision Related Function
 	void CheckBodyCollision(float _DeltaTime);								// 몸체충돌(피격판정)
 	void CheckAttackCollision(float _DeltaTime);							// 공격체충돌(공격판정)
 
-private: // Homing Instinct Value Reduction Update Function
+private: // GlobalTime or Global Value Update Function
 	void HomingInstinctValueUpdate(float _DeltaTime);						// 귀소본능 수치 갱신
+	void UpdateSkillCoolDown(float _DeltaTime);								// 스킬쿨타임 갱신
 
 private: // Private Move Related Function
 	void StartMove(const float4& _Position);								// 이동시작
@@ -105,6 +110,12 @@ private: // Private Move Related Function
 	void EndMove();															// 이동종료
 	void MoveProcessing(float _DeltaTime, const float4& _Position);			// 실질적인 이동처리
 	void CalcMoveDir(const float4& _Position);								// 이동방향 설정 및 이동방향에 맞게 렌더러 회전
+
+private: // Private Attack Related Function
+	void AttackProcessing();												// 실질적인 공격처리
+
+private: // Private Reget StatReset Function
+	//void InitalizeRegenStat();												// 
 
 private: // FSM State Function
 	//==================================== Main State
@@ -226,6 +237,7 @@ protected: // 상태정보
 	MonsterStateType CurStateType_;											// 몬스터의 현재상태 상세타입(Run, Idle, Hit, ...)
 
 protected: // 기타
-	bool GetHitOffFlag_;													// 몬스터사망시 피격판정무시 Flag(사망시 On)
+	bool IsDeath_;															// 몬스터사망시 피격판정무시 Flag(사망시 On)
+	bool IsAttack_;															// ATK01, ATK02, SKILLATTACK 상태시 활성화
 };
 

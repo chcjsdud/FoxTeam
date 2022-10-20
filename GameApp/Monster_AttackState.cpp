@@ -1,11 +1,17 @@
 #include "PreCompile.h"
 #include "Monsters.h"
 
+#include <GameEngine/GameEngineCollision.h>
+
 void Monsters::StartAttack01State()
 {
 	// 현재 상태 지정
 	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::ATK01;
+
+	// 공격중 Flag On
+	IsAttack_ = true;
+	AtkCollider_->On();
 }
 
 void Monsters::UpdateAttack01State(float _DeltaTime)
@@ -26,6 +32,10 @@ void Monsters::StartAttack02State()
 	// 현재 상태 지정
 	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::ATK02;
+
+	// 공격중 Flag On
+	IsAttack_ = true;
+	AtkCollider_->On();
 }
 
 void Monsters::UpdateAttack02State(float _DeltaTime)
@@ -46,6 +56,10 @@ void Monsters::StartSkillAttackState()
 	// 현재 상태 지정
 	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::SKILLATTACK;
+
+	// 공격중 Flag On
+	IsAttack_ = true;
+	AtkCollider_->On();
 }
 
 void Monsters::UpdateSkillAttackState(float _DeltaTime)

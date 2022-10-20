@@ -18,24 +18,47 @@ void MonsterStateChangePacket::userSerialize()
 	serializer_ << static_cast<int>(StateType_);
 
 	// Monster Stat Update Related
-	serializer_ << StatInfo_.Level_;
-	serializer_ << StatInfo_.HPMax_;
-	serializer_ << StatInfo_.HP_;
-	serializer_ << StatInfo_.HPRegenPercent_;
-	serializer_ << StatInfo_.SPMax_;
-	serializer_ << StatInfo_.SP_;
-	serializer_ << StatInfo_.SPRegenPercent_;
-	serializer_ << StatInfo_.Defence_;
-	serializer_ << StatInfo_.NestPosition_;
+	//====================================== 스텟의 최대치(고정)
+	serializer_ << StatInfo_.LevelMin_;
+	serializer_ << StatInfo_.LevelMax_;
 	serializer_ << StatInfo_.HomingInstinctValueMax_;
-	serializer_ << StatInfo_.HomingInstinctValue_;
+	serializer_ << StatInfo_.RegenTimeMax_;
+	serializer_ << StatInfo_.SkillCoolDownMax_;
+
+	//====================================== 레벨당 증가량(고정)
+	serializer_ << StatInfo_.OffencePowerIncrement_;
+	serializer_ << StatInfo_.DefenseIncrement_;
+	serializer_ << StatInfo_.MoveSpeedIncrement_;
+	serializer_ << StatInfo_.HPIncrement_;
+
+	//====================================== 기본스텟(고정)
+	serializer_ << StatInfo_.NestPosition_;
+	serializer_ << StatInfo_.AttackSpeed_;
 	serializer_ << StatInfo_.AttackRange_;
 	serializer_ << StatInfo_.DetectRange_;
-	serializer_ << StatInfo_.AttackSpeed_;
+
+	//====================================== 기본스텟(갱신)
+	serializer_ << StatInfo_.Level_;
+	serializer_ << StatInfo_.OffencePower_;
+	serializer_ << StatInfo_.Defense_;
+	serializer_ << StatInfo_.HPMax_;
+	serializer_ << StatInfo_.HP_;
 	serializer_ << StatInfo_.MoveSpeed_;
-	serializer_ << StatInfo_.SkillCoolDown_;
-	serializer_ << StatInfo_.RegenTimeMax_;
+	serializer_ << StatInfo_.HomingInstinctValue_;
 	serializer_ << StatInfo_.RegenTime_;
+
+	//====================================== 스킬관련
+	serializer_ << StatInfo_.IsSkill_;
+	serializer_ << StatInfo_.SkillCoolDown_;
+
+	//====================================== 아이템관련
+	int DropItemCount = static_cast<int>(StatInfo_.CurDropItems_.size());
+	serializer_ << DropItemCount;
+	for (int ItemNum = 0; ItemNum < DropItemCount; ++ItemNum)
+	{
+		int ItemNameType = static_cast<int>(StatInfo_.CurDropItems_[ItemNum]);
+		serializer_ << ItemNameType;
+	}
 
 	// Target(Character) Related
 	serializer_ << TargetIndex_;
@@ -55,24 +78,48 @@ void MonsterStateChangePacket::userDeserialize()
 	StateType_ = static_cast<MonsterStateType>(rcvStateType);
 
 	// Monster Stat Update Related
-	serializer_ >> StatInfo_.Level_;
-	serializer_ >> StatInfo_.HPMax_;
-	serializer_ >> StatInfo_.HP_;
-	serializer_ >> StatInfo_.HPRegenPercent_;
-	serializer_ >> StatInfo_.SPMax_;
-	serializer_ >> StatInfo_.SP_;
-	serializer_ >> StatInfo_.SPRegenPercent_;
-	serializer_ >> StatInfo_.Defence_;
-	serializer_ >> StatInfo_.NestPosition_;
+	//====================================== 스텟의 최대치(고정)
+	serializer_ >> StatInfo_.LevelMin_;
+	serializer_ >> StatInfo_.LevelMax_;
 	serializer_ >> StatInfo_.HomingInstinctValueMax_;
-	serializer_ >> StatInfo_.HomingInstinctValue_;
+	serializer_ >> StatInfo_.RegenTimeMax_;
+	serializer_ >> StatInfo_.SkillCoolDownMax_;
+
+	//====================================== 레벨당 증가량(고정)
+	serializer_ >> StatInfo_.OffencePowerIncrement_;
+	serializer_ >> StatInfo_.DefenseIncrement_;
+	serializer_ >> StatInfo_.MoveSpeedIncrement_;
+	serializer_ >> StatInfo_.HPIncrement_;
+
+	//====================================== 기본스텟(고정)
+	serializer_ >> StatInfo_.NestPosition_;
+	serializer_ >> StatInfo_.AttackSpeed_;
 	serializer_ >> StatInfo_.AttackRange_;
 	serializer_ >> StatInfo_.DetectRange_;
-	serializer_ >> StatInfo_.AttackSpeed_;
+
+	//====================================== 기본스텟(갱신)
+	serializer_ >> StatInfo_.Level_;
+	serializer_ >> StatInfo_.OffencePower_;
+	serializer_ >> StatInfo_.Defense_;
+	serializer_ >> StatInfo_.HPMax_;
+	serializer_ >> StatInfo_.HP_;
 	serializer_ >> StatInfo_.MoveSpeed_;
-	serializer_ >> StatInfo_.SkillCoolDown_;
-	serializer_ >> StatInfo_.RegenTimeMax_;
+	serializer_ >> StatInfo_.HomingInstinctValue_;
 	serializer_ >> StatInfo_.RegenTime_;
+
+	//====================================== 스킬관련
+	serializer_ >> StatInfo_.IsSkill_;
+	serializer_ >> StatInfo_.SkillCoolDown_;
+
+	//====================================== 아이템관련
+	int DropItemCount = 0;
+	serializer_ >> DropItemCount;
+	for (int ItemNum = 0; ItemNum < DropItemCount; ++ItemNum)
+	{
+		int ItemNameType = -1;
+		serializer_ >> ItemNameType;
+		StatInfo_.CurDropItems_.push_back(static_cast<ItemName>(ItemNameType));
+	}
 
 	// Target(Character) Related
 	serializer_ >> TargetIndex_;
@@ -116,6 +163,13 @@ void MonsterStateChangePacket::execute(SOCKET _sender, GameEngineSocketInterface
 	// 아니라면 특정인덱스를 가지는 몬스터의 처리
 	else if(-1 != Index_)
 	{
+		// 예외처리
+		if (Index_ >= static_cast<int>(PlayLevel->GetMonsterActorList().size()))
+		{
+			GameEngineDebug::MsgBoxError("잘못된 몬스터의 상태전환을 시도하였습니다!!!!!");
+			return;
+		}
+
 		// 해당 상태로 전환
 		Monsters* CurMonster = PlayLevel->GetSpecificMonster(Index_);
 		if (nullptr == CurMonster)
@@ -126,12 +180,12 @@ void MonsterStateChangePacket::execute(SOCKET _sender, GameEngineSocketInterface
 
 		switch (StateType_)
 		{
-			case MonsterStateType::ATK01: // 공격01상태전환 ---
+			case MonsterStateType::ATK01: // 공격01상태전환
 			{
 				CurMonster->rcvAttack01(StatInfo_);
 				break;
 			}
-			case MonsterStateType::ATK02: // 공격02상태전환 ---
+			case MonsterStateType::ATK02: // 공격02상태전환
 			{
 				CurMonster->rcvAttack02(StatInfo_);
 				break;
@@ -146,12 +200,17 @@ void MonsterStateChangePacket::execute(SOCKET _sender, GameEngineSocketInterface
 				CurMonster->rcvDeath(StatInfo_);
 				break;
 			}
+			case MonsterStateType::DEAD: // 완전사망상태전환
+			{
+				CurMonster->rcvDead(StatInfo_);
+				break;
+			}
 			case MonsterStateType::REGEN: // 리젠상태전환
 			{
 				CurMonster->rcvRegen(StatInfo_);
 				break;
 			}
-			case MonsterStateType::HOMINGINSTINCT: // 귀환상태전환 ---
+			case MonsterStateType::HOMINGINSTINCT: // 귀환상태전환
 			{
 				CurMonster->rcvHomingInstinct(StatInfo_);
 				break;
