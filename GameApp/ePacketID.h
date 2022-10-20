@@ -35,6 +35,7 @@ enum class ePacketID
 	PacketSoundPlay,
 	MonsterStatePacket,
 	TimeSyncPacket,
+	MonsterDamagePacket,
 
 	MAX
 };

@@ -48,6 +48,11 @@ public: // inline Get Function
 		return CurTargetIndex_;
 	}
 
+	inline Character* GetCurTarget() const
+	{
+		return CurTarget_;
+	}
+
 public: // inline Set Function
 	inline void SetMonsterIndex(int _Index)
 	{
@@ -71,6 +76,7 @@ public: // 패킷수신시 호출되는 함수들
 	void rcvDead(MonsterStateInfo _rcvStatInfo);							// 패킷수신으로 완전사망처리(동기화처리)
 	void rcvRegen(MonsterStateInfo _rcvStatInfo);							// 패킷수신으로 재등장처리(동기화처리)
 	void rcvHomingInstinct(MonsterStateInfo _rcvStatInfo);					// 패킷수신으로 귀환처리(동기화처리)
+	void rcvDamage();														// 패킷수신으로 데미지처리(동기화처리)
 
 public: // Initalize Function
 	void InitalizeSpawnPosition(const float4& _SpawnPosition);				// 인자로 수신한 _SpawnPosition을 해당 몬스터의 스폰위치로 지정(클라이언트전용)

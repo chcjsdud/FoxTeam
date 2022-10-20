@@ -9,6 +9,7 @@
 #include "GameServer.h"
 #include "GameClient.h"
 #include "MonsterStateChangePacket.h"
+#include "MonsterDamagePacket.h"
 
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
@@ -220,6 +221,16 @@ void Monsters::rcvHomingInstinct(MonsterStateInfo _rcvStatInfo)
 
 	// 리젠상태로 전환
 	ChangeAnimationAndState(MonsterStateType::HOMINGINSTINCT);
+}
+
+void Monsters::rcvDamage()
+{
+	// 타겟에 데미지를 입힘
+	// 단, 현재 타겟이 지정되어있을때만 가능
+	if (nullptr != CurTarget_)
+	{
+		CurTarget_->Damage(static_cast<float>(StateInfo_.OffencePower_), this);
+	}
 }
 
 void Monsters::InitalizeSpawnPosition(const float4& _SpawnPosition)
@@ -459,30 +470,79 @@ void Monsters::CheckAttackCollision(float _DeltaTime)
 #endif // _DEBUG
 
 		// 플레이어 그룹과의 충돌
-		if (true == AtkCollider_->Collision(static_cast<int>(eCollisionGroup::Player)) && true == IsAttack_)
+		std::list<GameEngineCollision*> CollisionList;
+		if (true == IsAttack_)
 		{
-			if (nullptr != CurTarget_)
-			{
-				// 현재 타겟으로 지정된 플레이어에게 데미지를 입힘
-				CurTarget_->Damage(static_cast<float>(StateInfo_.OffencePower_), this);
+			CollisionList = AtkCollider_->GetCollisionList(static_cast<int>(eCollisionGroup::Player));
 
-				// 공격완료로 공격상태 Flag Off
-				IsAttack_ = false;
-				AtkCollider_->Off();
-			}
-			else
+			for (GameEngineCollision* Col : CollisionList)
 			{
-				// 타겟이 없으므로 공격상태 Flag Off
-				IsAttack_ = false;
-				AtkCollider_->Off();
+				if (nullptr != CurTarget_)
+				{
+					// 서버라면 즉시 데미지를 입히고
+					// 클라라면 데미지 패킷을 송신하고 패킷수신시 데미지를 입힌다
+					if (true == GameServer::GetInstance()->IsOpened())
+					{
+						CurTarget_->Damage(static_cast<float>(StateInfo_.OffencePower_), this);
+					}
+
+					// 패킷전송
+					MonsterDamagePacket DamagePacket;
+					DamagePacket.SetIndex(Index_);
+					FT::SendPacket(DamagePacket);
+
+					// 공격완료로 공격상태 Flag Off
+					IsAttack_ = false;
+					AtkCollider_->Off();
+				}
+				else
+				{
+					// 타겟이 없으므로 공격상태 Flag Off
+					IsAttack_ = false;
+					AtkCollider_->Off();
+				}
 			}
 		}
-		// 충돌하지않았다면 공격상태 바로 Off
-		else
+
+		if (true == CollisionList.empty())
 		{
 			IsAttack_ = false;
 			AtkCollider_->Off();
 		}
+
+		//if (true == AtkCollider_->Collision(static_cast<int>(eCollisionGroup::Player)) && true == IsAttack_)
+		//{
+		//	if (nullptr != CurTarget_)
+		//	{
+		//		// 서버라면 즉시 데미지를 입히고
+		//		// 클라라면 데미지 패킷을 송신하고 패킷수신시 데미지를 입힌다
+		//		if (true == GameServer::GetInstance()->IsOpened())
+		//		{
+		//			CurTarget_->Damage(static_cast<float>(StateInfo_.OffencePower_), this);
+		//		}
+
+		//		// 패킷전송
+		//		MonsterDamagePacket DamagePacket;
+		//		DamagePacket.SetIndex(Index_);
+		//		FT::SendPacket(DamagePacket);
+
+		//		// 공격완료로 공격상태 Flag Off
+		//		IsAttack_ = false;
+		//		AtkCollider_->Off();
+		//	}
+		//	else
+		//	{
+		//		// 타겟이 없으므로 공격상태 Flag Off
+		//		IsAttack_ = false;
+		//		AtkCollider_->Off();
+		//	}
+		//}
+		//// 충돌하지않았다면 공격상태 바로 Off
+		//else
+		//{
+		//	IsAttack_ = false;
+		//	AtkCollider_->Off();
+		//}
 	}
 }
 

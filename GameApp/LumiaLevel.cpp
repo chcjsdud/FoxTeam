@@ -585,6 +585,7 @@ void LumiaLevel::AddSocketHandle()
 		server->AddPacketHandler(ePacketID::TimeSyncPacket, new GameTimeSyncPacket);
 		server->AddPacketHandler(ePacketID::CharEffectPacket, new CharEffectPacket);
 		server->AddPacketHandler(ePacketID::CharDeathPacket, new CharDeathPacket);
+		server->AddPacketHandler(ePacketID::MonsterDamagePacket, new MonsterStateChangePacket);
 	}
 
 	if (true == client->IsConnected())
@@ -599,6 +600,7 @@ void LumiaLevel::AddSocketHandle()
 		client->AddPacketHandler(ePacketID::TimeSyncPacket, new GameTimeSyncPacket);
 		client->AddPacketHandler(ePacketID::CharEffectPacket, new CharEffectPacket);
 		client->AddPacketHandler(ePacketID::CharDeathPacket, new CharDeathPacket);
+		client->AddPacketHandler(ePacketID::MonsterDamagePacket, new MonsterStateChangePacket);
 	}
 }
 
