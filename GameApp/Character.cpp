@@ -63,6 +63,11 @@ void Character::SetCharacterDeath()
 	deathState_.ChangeState("PlayerDeath", true);
 }
 
+void Character::SetFraggerIndex(int _index)
+{
+	fraggerIndex_ = _index;
+}
+
 void Character::Start()
 {
 	initRendererAndAnimation();
@@ -127,26 +132,7 @@ void Character::Update(float _DeltaTime)
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 	
 
-	if (stat_.HP <= 0.f && false == isPlayerDead_)
-	{
-		if (GameServer::GetInstance()->IsOpened())
-		{
-			this->SetCharacterDeath();
 
-			CharDeathPacket deathpacket;
-			deathpacket.SetTargetIndex(myIndex_);
-
-			FT::SendPacket(deathpacket);
-
-		}
-		else if (GameClient::GetInstance()->IsConnected())
-		{
-			CharDeathPacket deathpacket;
-			deathpacket.SetTargetIndex(myIndex_);
-
-			FT::SendPacket(deathpacket);
-		}
-	}
 	// 승리 판정
 	//if (1 >= level->GetSurvivorCount() && true == bFocused_)
 	//{
@@ -675,6 +661,58 @@ void Character::Damage(float _Amount, IUnit* _Target)
 	}
 
 	stat_.HP -= _Amount;
+
+	if (stat_.HP <= 0.f && false == isPlayerDead_)
+	{
+
+
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			this->SetCharacterDeath();
+
+			CharDeathPacket deathpacket;
+			deathpacket.SetTargetIndex(myIndex_);
+
+			if (_Target->UnitType_ == UnitType::CHARACTER)
+			{
+				Character* charTmp = dynamic_cast<Character*>(_Target);
+				int tmpIndex = charTmp->GetIndex();
+				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
+				deathpacket.SetFraggerIndex(tmpIndex);
+			}
+			else if (_Target->UnitType_ == UnitType::MONSTER)
+			{
+				// animal
+				deathpacket.SetFraggerType(static_cast<int>(UnitType::MONSTER));
+				deathpacket.SetFraggerIndex(-2);
+			}
+
+			FT::SendPacket(deathpacket);
+
+		}
+		else if (GameClient::GetInstance()->IsConnected())
+		{
+			CharDeathPacket deathpacket;
+			deathpacket.SetTargetIndex(myIndex_);
+
+			if (_Target->UnitType_ == UnitType::CHARACTER)
+			{
+				Character* charTmp = dynamic_cast<Character*>(_Target);
+				int tmpIndex = charTmp->GetIndex();
+				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
+				deathpacket.SetFraggerIndex(tmpIndex);
+			}
+			else if (_Target->UnitType_ == UnitType::MONSTER)
+			{
+				// animal
+				deathpacket.SetFraggerType(static_cast<int>(UnitType::MONSTER));
+				deathpacket.SetFraggerIndex(-2);
+			}
+
+			FT::SendPacket(deathpacket);
+		}
+	}
+
 
 	CharStatPacket packet;
 	packet.SetStat(stat_);
@@ -1402,7 +1440,20 @@ void Character::startPlayerDeath()
 	if (bFocused_)
 	{
 		uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
-		uiController_->GetWinLoseUI()->SetText(std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
+
+		if (fraggerIndex_ == -1)
+		{
+			uiController_->GetWinLoseUI()->SetText("플레이어가 자살했습니다." + std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
+		}
+		else if (-2 == fraggerIndex_)
+		{
+			uiController_->GetWinLoseUI()->SetText("플레이어가 몬스터에게 살해당했습니다." + std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
+		}
+		else
+		{
+			uiController_->GetWinLoseUI()->SetText(pm->GetPlayerList()[fraggerIndex_].playerNickname_ + " 에게 살해당했습니다.\n" + std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
+		}
+		
 		uiController_->GetWinLoseUI()->Activate();
 	}
 

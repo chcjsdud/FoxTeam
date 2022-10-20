@@ -74,6 +74,7 @@ public:
 
 
 	void SetCharacterDeath();
+	void SetFraggerIndex(int _index);
 
 	float GetCooltimeQSkill() { return coolTimeQ_; }
 	float GetCooltimeWSkill() { return coolTimeW_; }
@@ -347,7 +348,7 @@ protected:
 
 	// 플레이어 죽음 판정
 	bool isPlayerDead_;
-
+	int fraggerIndex_; // 나를 죽인 사람의 인덱스
 
 	// 1004 이건호 : UI컨트롤러 멤버변수화
 	PlayerUIController* uiController_;

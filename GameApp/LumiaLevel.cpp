@@ -334,6 +334,7 @@ void LumiaLevel::CharacterCreationCommand()
 			case JobType::HYUNWOO:
 			{
 				NewCharacter = CreateActor<Hyunwoo>();
+
 				break;
 			}
 			case JobType::AYA:
@@ -371,6 +372,7 @@ void LumiaLevel::CharacterCreationCommand()
 		NewCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
 		//NewCharacter->InitSpawnPoint({ 1200.f, 0.0f, -5630.f });
 		NewCharacter->SetIndex(PlayerNum);
+		NewCharacter->UnitType_ = UnitType::CHARACTER;
 		// 관리목록에 추가
 		CharacterActorList_.emplace_back(NewCharacter);
 

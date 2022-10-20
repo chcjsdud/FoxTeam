@@ -27,14 +27,28 @@ void CharDeathPacket::SetTargetIndex(int _index)
 	targetIndex_ = _index;
 }
 
+void CharDeathPacket::SetFraggerType(int _index)
+{
+	fraggerType_ = _index;
+}
+
+void CharDeathPacket::SetFraggerIndex(int _index)
+{
+	fraggerIndex_ = _index;
+}
+
 void CharDeathPacket::userSerialize()
 {
 	serializer_ << targetIndex_;
+	serializer_ << fraggerType_;
+	serializer_ << fraggerIndex_;
 }
 
 void CharDeathPacket::userDeserialize()
 {
 	serializer_ >> targetIndex_;
+	serializer_ >> fraggerType_;
+	serializer_ >> fraggerIndex_;
 }
 
 void CharDeathPacket::initPacketID()
@@ -60,7 +74,7 @@ void CharDeathPacket::execute(SOCKET _sender, GameEngineSocketInterface* _networ
 
 	Character* targetChar = level->GetCharacterActorList()[targetIndex_];
 
-	
+	targetChar->SetFraggerIndex(fraggerIndex_);
 	targetChar->SetCharacterDeath();
 
 

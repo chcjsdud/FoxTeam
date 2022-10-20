@@ -16,6 +16,8 @@ public:
 
 public:
 	void SetTargetIndex(int _index);
+	void SetFraggerType(int _index);
+	void SetFraggerIndex(int _index);
 
 protected:
 	virtual void userSerialize() override;
@@ -26,5 +28,7 @@ protected:
 
 private:
 	int targetIndex_;
+	int fraggerType_;
+	int fraggerIndex_;
 };
 
