@@ -45,6 +45,13 @@ void Monsters::Damage(float _Amount, IUnit* _Target)
 		return;
 	}
 
+	// 예외처리
+	if (UnitType::MONSTER == _Target->UnitType_)
+	{
+		GameEngineDebug::OutPutDebugString("같은 몬스터가 나를 공격했으므로 무시합니다!!!!!!\n");
+		return;
+	}
+
 	// 현재 API의 몬스터의 체력감소
 	StateInfo_.HP_ -= _Amount;
 	if (0.0f >= StateInfo_.HP_)
@@ -158,7 +165,7 @@ void Monsters::rcvDamage(MonsterStateInfo _rcvStatInfo, int _TargetIndex)
 void Monsters::rcvDeath(MonsterStateInfo _rcvStatInfo)
 {
 	// 이미상 사망중 or 사망상태라면 무시
-	if (MonsterStateType::DEAD == CurStateType_ || MonsterStateType::DEATH == CurStateType_)
+	if (MonsterStateType::DEATH == CurStateType_)
 	{
 		return;
 	}
@@ -173,7 +180,7 @@ void Monsters::rcvDeath(MonsterStateInfo _rcvStatInfo)
 void Monsters::rcvDead(MonsterStateInfo _rcvStatInfo)
 {
 	// 이미상 사망중 or 사망상태라면 무시
-	if (MonsterStateType::DEAD == CurStateType_ || MonsterStateType::DEATH == CurStateType_)
+	if (MonsterStateType::DEAD == CurStateType_)
 	{
 		return;
 	}
