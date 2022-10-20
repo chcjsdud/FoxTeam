@@ -58,8 +58,7 @@ void Character::SetCurrentNavMesh(NavMesh* _NavMesh)
 
 void Character::SetCharacterDeath()
 {
-	collision_->Off();
-	changeDeathAnimation();
+	isPlayerDead_ = true;
 	mainState_.ChangeState("DeathState", true);
 	deathState_.ChangeState("PlayerDeath", true);
 }
@@ -127,6 +126,27 @@ void Character::Update(float _DeltaTime)
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 	
+
+	if (stat_.HP <= 0.f && false == isPlayerDead_)
+	{
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			this->SetCharacterDeath();
+
+			CharDeathPacket deathpacket;
+			deathpacket.SetTargetIndex(myIndex_);
+
+			FT::SendPacket(deathpacket);
+
+		}
+		else if (GameClient::GetInstance()->IsConnected())
+		{
+			CharDeathPacket deathpacket;
+			deathpacket.SetTargetIndex(myIndex_);
+
+			FT::SendPacket(deathpacket);
+		}
+	}
 	// 승리 판정
 	//if (1 >= level->GetSurvivorCount() && true == bFocused_)
 	//{
@@ -153,13 +173,17 @@ void Character::Update(float _DeltaTime)
 	//	uiController_->GetWinLoseUI()->Activate();
 	//}
 
-
+	if (true == isPlayerDead_)
+	{
+		collision_->Off();
+	}
 
 	if (nullptr != collision_ &&
 		collision_->IsUpdate())
 	{
 		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::OBBBox3D, float4::RED);
 	}
+
 
 	if (false == bFocused_)
 	{
@@ -652,27 +676,6 @@ void Character::Damage(float _Amount, GameEngineActor* _Target)
 
 	stat_.HP -= _Amount;
 
-	if (stat_.HP <= 0.f)
-	{
-		if (GameServer::GetInstance()->IsOpened())
-		{
-			this->SetCharacterDeath();
-		
-			CharDeathPacket deathpacket;
-			deathpacket.SetTargetIndex(myIndex_);
-			
-			FT::SendPacket(deathpacket);
-
-		}
-		else if (GameClient::GetInstance()->IsConnected())
-		{
-			CharDeathPacket deathpacket;
-			deathpacket.SetTargetIndex(myIndex_);
-
-			FT::SendPacket(deathpacket);
-		}
-	}
-
 	CharStatPacket packet;
 	packet.SetStat(stat_);
 	packet.SetTargetIndex(GetIndex());
@@ -749,8 +752,8 @@ void Character::initState()
 	crowdControlState_.CreateState(MakeState(Character, Stun));
 	crowdControlState_.CreateState(MakeState(Character, Knockback));
 	crowdControlState_.CreateState(MakeState(Character, WallSlam));
-	//crowdControlState_.CreateState(MakeState(Character, HyunwooE));
 
+	deathState_.CreateState(MakeState(Character, PlayerAlive));
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
 
 
@@ -759,11 +762,9 @@ void Character::initState()
 
 	normalState_ << "Watch";
 
-	//crowdControlState_ << "HyunwooE";
-
 	crowdControlState_ << "Stun";
 
-	deathState_ << "PlayerDeath";
+	deathState_ << "PlayerAlive";
 }
 
 
@@ -1362,46 +1363,83 @@ void Character::updateDSkill(float _deltaTime)
 	onUpdateDSkill(_deltaTime);
 }
 
+void Character::startPlayerAlive()
+{
+	//  MainState::Death 의 아무 것도 안 하는 서브 스테이트입니다.
+	// 이후 죽을 때만 PlayerDeathState 로 체인지 됩니다.
+}
+
+void Character::updatePlayerAlive(float _deltaTime)
+{
+	return;
+}
+
 void Character::startPlayerDeath()
 {
+	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
+	stat_.HP = 0.0f;
+	collision_->Off();
+
+	level->SubtractSurvivorCount();
+	// 총 플레이어 중 몇 위인가?
+	int myRank = pm->GetPlayerList().size();
+
+	for (int i = 0; i < pm->GetPlayerList().size(); i++)
+	{
+		if (i == myIndex_)
+		{
+			continue;
+		}
+
+		if (pm->GetPlayerList()[i].stat_->HP <= 0.0f)
+		{
+			myRank--;
+		}
+	}
+
+	if (bFocused_)
+	{
+		uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
+		uiController_->GetWinLoseUI()->SetText(std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
+		uiController_->GetWinLoseUI()->Activate();
+	}
+
+
 	onStartDeath();
 }
 
 void Character::updatePlayerDeath(float _deltaTime)
 {
-		LumiaLevel* level = GetLevelConvert<LumiaLevel>();
-		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-
-		// 죽음 판정
-		stat_.HP = 0.0f;
-		collision_->Off();
-
-
-		if (false == isPlayerDead_ && bFocused_)
-		{
-			level->SubtractSurvivorCount();
-			// 총 플레이어 중 몇 위인가?
-			int myRank = pm->GetPlayerList().size();
-
-			for (int i = 0; i < pm->GetPlayerList().size(); i++)
-			{
-				if (i == myIndex_)
-				{
-					continue;
-				}
-
-				if (pm->GetPlayerList()[i].stat_->HP <= 0.0f)
-				{
-					myRank--;
-				}
-
-			}
-
-			uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
-			uiController_->GetWinLoseUI()->SetText(std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
-			uiController_->GetWinLoseUI()->Activate();
-		}
-		isPlayerDead_ = true;
+		//LumiaLevel* level = GetLevelConvert<LumiaLevel>();
+		//PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+		//
+		//if (false == isPlayerDead_ && bFocused_)
+		//{
+		//	level->SubtractSurvivorCount();
+		//	// 총 플레이어 중 몇 위인가?
+		//	int myRank = pm->GetPlayerList().size();
+		//
+		//	for (int i = 0; i < pm->GetPlayerList().size(); i++)
+		//	{
+		//		if (i == myIndex_)
+		//		{
+		//			continue;
+		//		}
+		//
+		//		if (pm->GetPlayerList()[i].stat_->HP <= 0.0f)
+		//		{
+		//			myRank--;
+		//		}
+		//
+		//	}
+		//
+		//	uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
+		//	uiController_->GetWinLoseUI()->SetText(std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
+		//	uiController_->GetWinLoseUI()->Activate();
+		//}
+		//isPlayerDead_ = true;
 
 	onUpdateDeath(_deltaTime);
 }

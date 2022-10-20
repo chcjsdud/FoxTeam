@@ -209,7 +209,7 @@ void Rio::changeAnimationCook()
 
 void Rio::changeDeathAnimation()
 {
-	ChangeAnimation("Death", false);
+	ChangeAnimation("Death", true);
 }
 
 void Rio::onStartBasicAttacking(IUnit* _target)
@@ -656,7 +656,7 @@ void Rio::onUpdateDSkill(float _deltaTime)
 
 void Rio::onStartDeath()
 {
-
+	changeDeathAnimation();
 }
 
 void Rio::onUpdateDeath(float _deltaTime)

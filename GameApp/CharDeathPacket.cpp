@@ -60,6 +60,7 @@ void CharDeathPacket::execute(SOCKET _sender, GameEngineSocketInterface* _networ
 
 	Character* targetChar = level->GetCharacterActorList()[targetIndex_];
 
+	
 	targetChar->SetCharacterDeath();
 
 

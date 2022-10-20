@@ -674,7 +674,7 @@ void Hyunwoo::onUpdateDSkill(float _deltaTime)
 
 void Hyunwoo::onStartDeath()
 {
-
+	changeDeathAnimation();
 }
 
 void Hyunwoo::onUpdateDeath(float _deltaTime)

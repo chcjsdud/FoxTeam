@@ -97,6 +97,11 @@ void CharCrowdControlPacket::execute(SOCKET _socketSender, GameEngineSocketInter
 		return;
 	}
 
+	if (character->IsDead())
+	{
+		return;
+	}
+
 	switch (static_cast<eCrowdControlType>(type_))
 	{
 	case eCrowdControlType::Stun:

@@ -264,6 +264,9 @@ private:
 #pragma endregion
 
 #pragma region DeathState
+	void startPlayerAlive();
+	void updatePlayerAlive(float _deltaTime);
+
 	void startPlayerDeath();
 	void updatePlayerDeath(float _deltaTime);
 #pragma endregion
