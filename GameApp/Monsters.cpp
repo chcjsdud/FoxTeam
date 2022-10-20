@@ -645,29 +645,29 @@ void Monsters::AttackProcessing()
 		}
 		else															// 스킬시전쿨타임중이므로 일반공격
 		{
-			if (MonsterStateType::ATK01 == PrevAttackType_)
+			GameEngineRandom Rand;
+			int NormalAtkType = Rand.RandomInt(static_cast<int>(MonsterStateType::ATK01), static_cast<int>(MonsterStateType::ATK02));
+			if (MonsterStateType::ATK01 == static_cast<MonsterStateType>(NormalAtkType))
 			{
 				ChangeAnimationAndState(MonsterStateType::ATK02);
-				PrevAttackType_ = MonsterStateType::ATK02;
 			}
-			else if (MonsterStateType::ATK01 == PrevAttackType_)
+			else
 			{
 				ChangeAnimationAndState(MonsterStateType::ATK01);
-				PrevAttackType_ = MonsterStateType::ATK01;
 			}
 		}
 	}
 	else									// 일반공격만 가능한 경우
 	{
-		if (MonsterStateType::ATK01 == PrevAttackType_)
+		GameEngineRandom Rand;
+		int NormalAtkType = Rand.RandomInt(static_cast<int>(MonsterStateType::ATK01), static_cast<int>(MonsterStateType::ATK02));
+		if (MonsterStateType::ATK01 == static_cast<MonsterStateType>(NormalAtkType))
 		{
 			ChangeAnimationAndState(MonsterStateType::ATK02);
-			PrevAttackType_ = MonsterStateType::ATK02;
 		}
-		else if (MonsterStateType::ATK01 == PrevAttackType_)
+		else
 		{
 			ChangeAnimationAndState(MonsterStateType::ATK01);
-			PrevAttackType_ = MonsterStateType::ATK01;
 		}
 	}
 }
@@ -729,7 +729,6 @@ Monsters::Monsters()
 	, CurStateType_(MonsterStateType::NONE)
 	, IsDeath_(false)
 	, IsAttack_(false)
-	, PrevAttackType_(MonsterStateType::ATK02)
 {
 }
 

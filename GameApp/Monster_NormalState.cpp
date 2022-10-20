@@ -71,6 +71,14 @@ void Monsters::UpdateIdleState(float _DeltaTime)
 	// 타겟지정 유무 판단
 	if (nullptr != CurTarget_)
 	{
+		// 현재 타겟이 사망했다면
+		if (true == CurTarget_->IsDead())
+		{
+			// 즉시 둥지로 귀환하기위해 귀소본능수치를 0.0f로 초기화하고 리턴
+			StateInfo_.HomingInstinctValue_ = 0.0f;
+			return;
+		}
+
 		// 타겟이 존재할때 타겟과 나의 거리 측정
 		float4 TargetPosition = CurTarget_->GetTransform()->GetWorldPosition();
 		float4 MyPosition = transform_.GetWorldPosition();
