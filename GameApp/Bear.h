@@ -34,5 +34,7 @@ private:
 public:
 protected:
 private:
+	float SkillAtk_Range_;								// 스킬공격 사정거리
+	float SkillAtk_CastTime_;							// 스킬공격 시전시간
 };
 

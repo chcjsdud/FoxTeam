@@ -101,6 +101,7 @@ void Boar::InitalizeRenderAndAnimation()
 
 	MainRenderer_->CreateFBXAnimation("ATK01", "Boar_atk01.UserAnimation", 0, false);				// 일반공격01상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("ATK02", "Boar_atk02.UserAnimation", 0, false);				// 일반공격02상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("SKILLATTACK", "Boar_skill_ready.UserAnimation", 0, false);		// 스킬공격상태의 애니메이션
 	MainRenderer_->ChangeFBXAnimation("IDLE");
 
 	// 기본상태 셋팅
@@ -133,10 +134,10 @@ void Boar::SkillAttackProcessing()
 	// 사정거리 - 5m
 	// 시전시간 - 1.5초
 	// 쿨다운 - 7초
-	if (true == GameServer::GetInstance()->IsOpened())
-	{
+	// 1m == 100.0f로 계산
 
-	}
+
+
 
 	// 모션종료시 
 	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
@@ -147,6 +148,8 @@ void Boar::SkillAttackProcessing()
 }
 
 Boar::Boar()
+	: SkillAtk_Range_(500.0f)
+	, SkillAtk_CastTime_(1.5f)
 {
 }
 

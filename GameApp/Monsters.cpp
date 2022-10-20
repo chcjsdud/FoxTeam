@@ -654,6 +654,18 @@ void Monsters::CalcMoveDir(const float4& _Position)
 
 	float Angle = float4::DegreeDot3DToACosAngle(MoveDir_, {0.0f, 0.0f, 1.0f});
 	GetTransform()->SetLocalRotationDegree({ 0.0f, Angle * -Cross.y, 0.0f });
+
+	// 예외사항
+	// 1. Dog(들개)인경우 렌더러를 회전안하므로 방향설정후 렌더러를 회전시켜 제대로 세운다
+	if (MonsterType::DOG == Type_)
+	{
+		MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+	}
+	// 2. Bear(곰)인경우 렌더러의 피벗이 맞지않으므로 재조정
+	else if (MonsterType::BEAR == Type_)
+	{
+		// ... 
+	}
 }
 
 void Monsters::AttackProcessing()

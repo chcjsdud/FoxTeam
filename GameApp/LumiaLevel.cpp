@@ -101,6 +101,11 @@ Monsters* LumiaLevel::GetSpecificMonster(int _Index)
 	return MonsterActorList_[_Index];
 }
 
+std::vector<Monsters*>& LumiaLevel::GetMonsterTypeList(MonsterType _MonsterType)
+{
+	return MonsterActorByTypeList_[static_cast<int>(_MonsterType)];
+}
+
 void LumiaLevel::HostCreateCommand()
 {
 	// 서버(호스트) 스레드 작업할당
@@ -288,7 +293,7 @@ void LumiaLevel::MonsterCreationCommand()
 	}
 
 	//// 221017 SJH ADD : 몬스터 테스트용으로 플레이어 필요
-	//Monsters* ZeroMonster = MonsterActorByTypeList_[static_cast<int>(MonsterType::CHICKEN)][0];
+	//Monsters* ZeroMonster = MonsterActorByTypeList_[static_cast<int>(MonsterType::BOAR)][0];
 	//float4 ForcePos = ZeroMonster->GetTransform()->GetWorldPosition();
 	//CharacterActorList_[0]->InitSpawnPoint(ForcePos);
 	//PlayerInfoManager::GetInstance()->GetPlayerList()[0].curPos_ = ForcePos;

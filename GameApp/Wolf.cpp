@@ -3,7 +3,21 @@
 
 #include <GameEngine/GameEngineCollision.h>
 
+#include "LumiaLevel.h"
+#include "Character.h"
+
 bool Wolf::ResourceLoadFlag = false;
+
+void Wolf::MusterSkill(Character* _Target)
+{
+	// 해당 스킬을 시전한 몬스터가 타겟으로 지정한 타겟을 나의 타겟으로 지정하여 추적 및 공격 시작
+	// 단, 이미 지정된 타겟이 존재한다면 무시
+	if (nullptr == CurTarget_)
+	{
+		CurTarget_ = _Target;
+		CurTargetIndex_ = _Target->GetIndex();
+	}
+}
 
 void Wolf::InitalizeStateInfo()
 {
@@ -128,23 +142,55 @@ void Wolf::InitalizeCollider()
 
 void Wolf::SkillAttackProcessing()
 {
-	// 충돌체 Off상태에서 시전
-	// 소집: 반경 20m의 늑대들을 불러모아서 함께 적을 공격합니다.
-	if (true == GameServer::GetInstance()->IsOpened())
+	if (false == SkillAtk_)
 	{
-		// 
+		IsAttack_ = true;
+		AtkCollider_->On();
 
+		// 충돌체 Off상태에서 시전
+		// 소집: 반경 20m의 늑대들을 불러모아서 함께 적을 공격(즉시시전)
+		// 1m == 100.0f로 계산
+		std::vector<Monsters*>& WolfList = GetLevelConvert<LumiaLevel>()->GetMonsterTypeList(MonsterType::WOLF);
+		if (true == WolfList.empty())
+		{
+			// 주변에 늑대가 존재하지않으므로 처리없음....
+			GameEngineDebug::OutPutDebugString("늑대가 소집스킬을 시전했으나 주변 20m에 늑대가 존재하지않습니다!!!!\n");
+		}
+		else
+		{
+			int WolfCount = static_cast<int>(WolfList.size());
+			for (int WolfNum = 0; WolfNum < WolfCount; ++WolfNum)
+			{
+				// 나와의 거리 측정하여 스킬사정거리내에 존재하는 늑대를 소집
+				float4 MyPosition = GetTransform()->GetWorldPosition();
+				float4 MusterWolfPosition = WolfList[WolfNum]->GetTransform()->GetWorldPosition();
+				if ((MusterWolfPosition - MyPosition).Len3D() <= SkillAtk_Range_)
+				{
+					Monsters* CheckMonster = WolfList[WolfNum];
+					Wolf* CheckWolf = dynamic_cast<Wolf*>(CheckMonster);
+					CheckWolf->MusterSkill(CurTarget_);
+				}
+			}
+		}
+
+		SkillAtk_ = true;
 	}
 
 	// 모션종료시 
 	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
 	{
+		// 스킬공격 끝
+		SkillAtk_ = false;
+
 		// 모션종료시 대기상태 전환
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}
 }
 
 Wolf::Wolf()
+	: SkillAtk_(false)
+	, SkillAtk_Range_(2000.0f)
+	, SkillAtk_CastTime_(0.0f)
 {
 
 }

@@ -133,10 +133,8 @@ void Bear::SkillAttackProcessing()
 	// 사정거리 - 4m
 	// 시전시간 - 0.5초
 	// 쿨다운 - 10초
-	if (true == GameServer::GetInstance()->IsOpened())
-	{
+	// 1m == 100.0f로 계산
 
-	}
 
 	// 모션종료시 
 	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
@@ -147,6 +145,8 @@ void Bear::SkillAttackProcessing()
 }
 
 Bear::Bear()
+	: SkillAtk_Range_(400.0f)
+	, SkillAtk_CastTime_(0.5f)
 {
 }
 

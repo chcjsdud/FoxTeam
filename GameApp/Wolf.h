@@ -9,6 +9,9 @@ class Wolf : public Monsters
 public:
 	static bool ResourceLoadFlag;
 
+public:
+	void MusterSkill(Character* _Target);								// 소집스킬발동
+
 protected:
 	void InitalizeStateInfo() override;
 	void InitalizeResourceLoad() override;
@@ -34,5 +37,8 @@ private:
 public:
 protected:
 private:
+	bool SkillAtk_;										// 스킬시전완료 Flag
+	float SkillAtk_Range_;								// 스킬공격 사정거리
+	float SkillAtk_CastTime_;							// 스킬공격 시전시간
 };
 

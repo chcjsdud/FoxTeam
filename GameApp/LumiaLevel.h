@@ -48,6 +48,7 @@ public: // Inline Set Function
 public: // Public Get Function
 	Character* GetSpecificCharacter(int _Index);							// 특정 캐릭터 Get
 	Monsters* GetSpecificMonster(int _Index);								// 특정 몬스터 Get
+	std::vector<Monsters*>& GetMonsterTypeList(MonsterType _MonsterType);	// 특정 몬스터타입의 몬스터목록 Get
 
 public: // Public Function
 	void HostCreateCommand();												// Host 전용
