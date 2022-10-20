@@ -730,6 +730,8 @@ Monsters::Monsters()
 	, IsDeath_(false)
 	, IsAttack_(false)
 {
+	// 생성과 동시에 유닛타입 결정
+	UnitType_ = UnitType::MONSTER;
 }
 
 Monsters::~Monsters()

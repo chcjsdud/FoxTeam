@@ -43,6 +43,8 @@ Character::Character()
 	, coolTimeR_(0.0f)
 	, coolTimeD_(0.0f)
 {
+	// 생성과 동시에 유닛타입 결정
+	UnitType_ = UnitType::CHARACTER;
 }
 
 Character::~Character()
