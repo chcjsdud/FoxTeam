@@ -61,6 +61,10 @@ void Character::SetCurrentNavMesh(NavMesh* _NavMesh)
 void Character::SetCharacterDeath()
 {
 	isPlayerDead_ = true;
+
+	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
+	level->SubtractSurvivorCount();
+
 	mainState_.ChangeState("DeathState", true);
 	deathState_.ChangeState("PlayerDeath", true);
 }
@@ -134,35 +138,6 @@ void Character::Update(float _DeltaTime)
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 	
 
-
-
-
-	// 승리 판정
-	//if (1 >= level->GetSurvivorCount() && true == bFocused_)
-	//{
-	//	// 총 플레이어 중 몇 위인가?
-	//	int myRank = pm->GetPlayerList().size();
-	//
-	//	for (int i = 0; i < pm->GetPlayerList().size(); i++)
-	//	{
-	//		if (i == myIndex_)
-	//		{
-	//			continue;
-	//		}
-	//
-	//		if (pm->GetPlayerList()[i].stat_->HP <= 0.0f)
-	//		{
-	//			myRank--;
-	//		}
-	//
-	//	}
-	//
-	//	uiController_->GetWinLoseUI()->SetWinner();
-	//	uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), true);
-	//	uiController_->GetWinLoseUI()->SetText("승리자 : " + pm->GetMyPlayer().playerNickname_ + "\n마지막까지 생존하였습니다.");
-	//	uiController_->GetWinLoseUI()->Activate();
-	//}
-
 	if (true == isPlayerDead_)
 	{
 		collision_->Off();
@@ -184,6 +159,8 @@ void Character::Update(float _DeltaTime)
 		return;
 	}
 
+	// 이 밑에서부터는 Focued 된 내 캐릭터에만 해당되는 행위들이다.
+
 	if (stat_.HP <= (stat_.HPMax * 0.33f))
 	{
 		uiController_->GetBloodBackground()->Draw(true);
@@ -196,6 +173,12 @@ void Character::Update(float _DeltaTime)
 	else
 	{
 		uiController_->GetBloodBackground()->Draw(false);
+	}
+
+	if (1 >= level->GetSurvivorCount() && false == isPlayerDead_)
+	{
+		mainState_.ChangeState("DeathState", true);
+		deathState_.ChangeState("PlayerWinner", true);
 	}
 
 	checkCurrentNavFace();
@@ -811,7 +794,7 @@ void Character::initState()
 
 	deathState_.CreateState(MakeState(Character, PlayerAlive));
 	deathState_.CreateState(MakeState(Character, PlayerDeath));
-
+	deathState_.CreateState(MakeState(Character, PlayerWinner));
 
 
 	mainState_ << "NormalState";
@@ -1481,36 +1464,26 @@ void Character::startPlayerDeath()
 
 void Character::updatePlayerDeath(float _deltaTime)
 {
-		//LumiaLevel* level = GetLevelConvert<LumiaLevel>();
-		//PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-		//
-		//if (false == isPlayerDead_ && bFocused_)
-		//{
-		//	level->SubtractSurvivorCount();
-		//	// 총 플레이어 중 몇 위인가?
-		//	int myRank = pm->GetPlayerList().size();
-		//
-		//	for (int i = 0; i < pm->GetPlayerList().size(); i++)
-		//	{
-		//		if (i == myIndex_)
-		//		{
-		//			continue;
-		//		}
-		//
-		//		if (pm->GetPlayerList()[i].stat_->HP <= 0.0f)
-		//		{
-		//			myRank--;
-		//		}
-		//
-		//	}
-		//
-		//	uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
-		//	uiController_->GetWinLoseUI()->SetText(std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
-		//	uiController_->GetWinLoseUI()->Activate();
-		//}
-		//isPlayerDead_ = true;
 
 	onUpdateDeath(_deltaTime);
+}
+
+void Character::startPlayerWinner()
+{
+
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
+
+	int myRank = pm->GetPlayerList().size();
+
+	uiController_->GetWinLoseUI()->SetWinner();
+	uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), true);
+	uiController_->GetWinLoseUI()->SetText("승리자 : " + pm->GetMyPlayer().playerNickname_ + "\n마지막까지 생존하였습니다.");
+	uiController_->GetWinLoseUI()->Activate();
+}
+
+void Character::updatePlayerWinner(float _deltaTime)
+{
 }
 
 void Character::PlayEffect(const std::string& _effectName)

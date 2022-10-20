@@ -270,6 +270,9 @@ private:
 
 	void startPlayerDeath();
 	void updatePlayerDeath(float _deltaTime);
+
+	void startPlayerWinner();
+	void updatePlayerWinner(float _deltaTime);
 #pragma endregion
 
 

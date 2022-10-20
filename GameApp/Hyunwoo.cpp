@@ -196,7 +196,7 @@ void Hyunwoo::initHyunwooCollision()
 {
 	collision_Q = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	collision_Q->GetTransform()->SetLocalPosition({ 0.f,0.f,300.f });
-	collision_Q->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
+	collision_Q->GetTransform()->SetLocalScaling({ 450.0f, 10.0f, 300.0f });
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_Q->SetCollisionType(CollisionType::OBBBox3D);
 	collision_Q->Off();
@@ -311,7 +311,6 @@ void Hyunwoo::onStartQSkill()
 	curAnimationName_ = "SkillQ";
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
-	collision_Q->On();
 }
 
 void Hyunwoo::onUpdateQSkill(float _deltaTime)
@@ -346,6 +345,8 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 	if (0.3f <= timer_collision_Q && false == b_Qhit_)
 	{
 		// 여기서 피격 충돌 판정이 나옴
+		collision_Q->On();
+
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill01_Hit.wav");
 		PacketSoundPlay packet;
 		packet.SetSound("hyunwoo_Skill01_Hit.wav", transform_.GetWorldPosition());
