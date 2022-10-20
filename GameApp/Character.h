@@ -72,6 +72,9 @@ public:
 	void SetStat(CharacterStat _status) { stat_ = _status; }
 	void SetIndex(int _index) { myIndex_ = _index; }
 
+
+	void SetCharacterDeath();
+
 	float GetCooltimeQSkill() { return coolTimeQ_; }
 	float GetCooltimeWSkill() { return coolTimeW_; }
 	float GetCooltimeESkill() { return coolTimeE_; }

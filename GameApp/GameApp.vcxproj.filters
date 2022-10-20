@@ -361,6 +361,9 @@
     <ClCompile Include="TestMap.cpp">
       <Filter>01.GameObject\03.Level\TestLevel</Filter>
     </ClCompile>
+    <ClCompile Include="CharDeathPacket.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -937,6 +940,9 @@
     </ClInclude>
     <ClInclude Include="TestMap.h">
       <Filter>01.GameObject\03.Level\TestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="CharDeathPacket.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

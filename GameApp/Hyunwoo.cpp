@@ -297,8 +297,9 @@ void Hyunwoo::changeAnimationBasicAttack()
 
 void Hyunwoo::changeDeathAnimation()
 {
-	curAnimationName_ = "Death";
-	renderer_->ChangeFBXAnimation("Death", true);
+	ChangeAnimation("Death", true);
+	//curAnimationName_ = "Death";
+	//renderer_->ChangeFBXAnimation("Death", true);
 }
 
 void Hyunwoo::onStartQSkill()

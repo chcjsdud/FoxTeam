@@ -30,6 +30,7 @@ enum class ePacketID
 	CharCrowdControlPacket,
 	CharEffectPacket,
 	PacketCreateProjectile,
+	CharDeathPacket,
 
 	PacketSoundPlay,
 	MonsterStatePacket,

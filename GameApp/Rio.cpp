@@ -111,6 +111,8 @@ void Rio::Start()
 	customState_.CreateState(MakeState(Rio, SkillEBegin));
 	customState_.CreateState(MakeState(Rio, SkillEShot));
 	customState_.CreateState(MakeState(Rio, SkillEEnd));
+
+	stat_.AttackPower = 300.0f;
 }
 
 void Rio::Update(float _deltaTime)
