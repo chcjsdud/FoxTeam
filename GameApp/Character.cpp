@@ -645,7 +645,7 @@ void Character::Damage(float _Amount, GameEngineActor* _Target)
 {
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 
-	if (0.0f >= _amount)
+	if (0.0f >= _Amount)
 	{
 		return;
 	}
