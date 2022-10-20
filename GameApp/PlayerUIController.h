@@ -10,6 +10,7 @@
 #include "UI_Inventory.h"
 #include "UI_Skill.h"
 #include "UI_Status.h"
+#include "UI_BloodBackground.h"
 #include "UI_Time.h"
 
 // 221018 ╧за╬©Ь
@@ -61,6 +62,11 @@ public:
 		return winLose_UI;
 	}
 
+	UI_BloodBackground* GetBloodBackground()
+	{
+		return blood_UI;
+	}
+
 	void SetJobType(JobType _MyJob);
 
 public:
@@ -77,7 +83,7 @@ private:
 	UI_Skill* skill_UI;
 	UI_Status* status_UI;
 	UI_Time* time_UI;
-
+	UI_BloodBackground* blood_UI;
 	UI_WinLose* winLose_UI;
 	bool winLoseFlag_;
 

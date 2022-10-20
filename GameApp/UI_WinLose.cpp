@@ -105,18 +105,19 @@ void UI_WinLose::SetImageByIndex(int _index)
 
 void UI_WinLose::Start()
 {
-	portraitRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	portraitRenderer_->SetImage("Death_CharFull_Hyunwoo.png", "PointSmp");
-	//	portraitRenderer_->GetTransform()->SetLocalPosition();
-	portraitRenderer_->GetTransform()->SetLocalScaling(portraitRenderer_->GetCurrentTexture()->GetTextureSize());
-	portraitRenderer_->SetAlpha(0.0f);
-	portraitRenderer_->Off();
 
 	backRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	backRenderer_->SetImage("Img_Result_PortraitBg.png", "PointSmp");
 	backRenderer_->GetTransform()->SetLocalScaling(backRenderer_->GetCurrentTexture()->GetTextureSize() * 2);
 	backRenderer_->SetAlpha(0.0f);
 	backRenderer_->Off();
+
+	portraitRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	portraitRenderer_->SetImage("Death_CharFull_Hyunwoo.png", "PointSmp");
+	//	portraitRenderer_->GetTransform()->SetLocalPosition();
+	portraitRenderer_->GetTransform()->SetLocalScaling(portraitRenderer_->GetCurrentTexture()->GetTextureSize());
+	portraitRenderer_->SetAlpha(0.0f);
+	portraitRenderer_->Off();
 
 	bloodStainRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	bloodStainRenderer_->GetTransform()->SetLocalPosition({ -550.0f, -250.0f, 0.0f });

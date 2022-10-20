@@ -5,7 +5,7 @@
 
 
 PlayerUIController::PlayerUIController()
-	: MyJob(JobType::HYUNWOO), winLoseFlag_(false)
+	: MyJob(JobType::HYUNWOO), winLoseFlag_(false), blood_UI(nullptr)
 {
 
 }
@@ -22,6 +22,7 @@ PlayerUIController::PlayerUIController(PlayerUIController&& _other) noexcept  //
 
 void PlayerUIController::InitUI()
 {
+	blood_UI = GetLevel()->CreateActor<UI_BloodBackground>();
 	charPicture_UI = GetLevel()->CreateActor<UI_CharPicture>();
 	equip_UI = GetLevel()->CreateActor<UI_Equip>();
 	inventory_UI = GetLevel()->CreateActor<UI_Inventory>();

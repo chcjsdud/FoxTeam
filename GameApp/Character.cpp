@@ -135,6 +135,8 @@ void Character::Update(float _DeltaTime)
 	
 
 
+
+
 	// ½Â¸® ÆÇÁ¤
 	//if (1 >= level->GetSurvivorCount() && true == bFocused_)
 	//{
@@ -180,6 +182,20 @@ void Character::Update(float _DeltaTime)
 
 
 		return;
+	}
+
+	if (stat_.HP <= (stat_.HPMax * 0.33f))
+	{
+		uiController_->GetBloodBackground()->Draw(true);
+
+		if (true == isPlayerDead_)
+		{
+			uiController_->GetBloodBackground()->PlayerDead();
+		}
+	}
+	else
+	{
+		uiController_->GetBloodBackground()->Draw(false);
 	}
 
 	checkCurrentNavFace();

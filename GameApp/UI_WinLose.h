@@ -2,6 +2,7 @@
 #include <GameEngine/GameEngineUIRenderer.h>
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+#include <GameEngine/GameEngineEffectRenderer.h>
 // 분류 : 
 // 용도 : 
 // 설명 : bFocused 가 true 인 캐릭터의 죽음 여부를 체크해서 모든 컨트롤 주도권을 제어 후, 결과창으로 가는 버튼을 띄워 줍니다.
