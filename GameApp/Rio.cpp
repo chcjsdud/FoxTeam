@@ -19,6 +19,10 @@ Rio::Rio()
 	, skillECollision_(nullptr)
 	, bSkillEPassable_(false)
 	, bShortRSkillExtra_(false)
+	, shortBow_(nullptr)
+	, longBow_(nullptr)
+	, skillETime_(0.0f)
+	, skillRTime_(0.0f)
 {
 
 }
@@ -39,6 +43,10 @@ void Rio::LoadResource()
 		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Short_Run.fbx"));
 		mesh->CreateRenderingBuffer();
 
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Short_Idle.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Short_Idle.fbx"));
 
 		std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 		for (GameEngineFile& file : allFile)
@@ -97,6 +105,7 @@ void Rio::ReleaseResource()
 		GameEngineFBXAnimationManager::GetInst().Delete(file.GetFileName());
 	}
 
+	GameEngineFBXMeshManager::GetInst().Delete("Rio_Bow_Short_Idle.fbx");
 	GameEngineFBXMeshManager::GetInst().Delete("Rio_Short_Run.fbx");
 }
 
@@ -159,6 +168,17 @@ void Rio::initRendererAndAnimation()
 
 	renderer_->ChangeFBXAnimation("Wait_Short");
 
+	renderer_->GetRenderSet(1).isRender = false;
+
+	shortBow_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	shortBow_->SetFBXMesh("Rio_Bow_Short_Idle.fbx", "TextureDeferredLightAni");
+	shortBow_->GetTransform()->SetLocalScaling(100.f);
+	shortBow_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
+
+	//shortBow_->SetParentBoneIndex(renderer_, 52);
+	shortBow_->SetParentBoneName(renderer_, "Bip001 L Finger1");
+	shortBow_->CreateFBXAnimation("ShortBow_Idle", "Rio_Bow_Short_Idle.fbx");
+	shortBow_->ChangeFBXAnimation("ShortBow_Idle");
 }
 
 void Rio::changeAnimationWait()

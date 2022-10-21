@@ -51,6 +51,11 @@ public:
 	RenderSet& GetRenderSet(unsigned int _Index) { return RenderSets[_Index]; }
 	std::vector<RenderSet>& GetAllRenderSet() { return RenderSets; }
 
+	float4x4 GetCurrentAffine(int _boneIndex, int _renderSetIndex = 0);
+
+	void SetParentBoneIndex(GameEngineFBXRenderer* _fbxRenderer, int _boneIndex);
+	void SetParentBoneName(GameEngineFBXRenderer* _fbxRenderer, const std::string& _boneNameToAffect);
+	void ClearParentBone();
 
 protected:
 	void Start() override;
@@ -69,6 +74,7 @@ private:
 
 	std::unordered_map<int, int> overrideBoneIndexCache_;
 
-
+	GameEngineFBXRenderer* parentBoneRenderer_;
+	int parentBoneIndex_;
 };
 

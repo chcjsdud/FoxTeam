@@ -23,6 +23,8 @@ GameEngineFBXRenderer::GameEngineFBXRenderer()
 	, overrideAnimation_(nullptr)
 	, FBXMesh(nullptr)
 	, overrideBoneIndex_(-1)
+	, parentBoneIndex_(-1)
+	, parentBoneRenderer_(nullptr)
 {
 }
 
@@ -235,6 +237,53 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Value, std::string _P
 		// FbxMeshSet& StartMesh = AllMeshSet[i];
 
 	}
+}
+
+float4x4 GameEngineFBXRenderer::GetCurrentAffine(int _boneIndex, int _renderSetIndex)
+{
+	if (currentAnimation_ == nullptr)
+	{
+		return float4x4();
+	}
+	return currentAnimation_->GetAffine(_boneIndex, _renderSetIndex);
+}
+
+void GameEngineFBXRenderer::SetParentBoneIndex(GameEngineFBXRenderer* _fbxRenderer, int _boneIndex)
+{
+	parentBoneRenderer_ = _fbxRenderer;
+	parentBoneIndex_ = _boneIndex;
+}
+
+void GameEngineFBXRenderer::SetParentBoneName(GameEngineFBXRenderer* _fbxRenderer, const std::string& _boneNameToAffect)
+{
+	parentBoneRenderer_ = _fbxRenderer;
+
+
+	std::vector<Bone>& bones = _fbxRenderer->FBXMesh->GetAllBones();
+	int boneCount = static_cast<int>(bones.size());
+
+	parentBoneIndex_ = -1;
+	for (int i = 0; i < boneCount; i++)
+	{
+		if (bones[i].Name == _boneNameToAffect)
+		{
+			parentBoneIndex_ = i;
+			break;
+		}
+	}
+
+	if (parentBoneIndex_ == -1)
+	{
+		GameEngineDebug::MsgBoxError("적용시킬 본이 없습니다.");
+		return;
+	}
+
+}
+
+void GameEngineFBXRenderer::ClearParentBone()
+{
+	parentBoneRenderer_ = nullptr;
+	parentBoneIndex_ = -1;
 }
 
 void GameEngineFBXRenderer::Start()

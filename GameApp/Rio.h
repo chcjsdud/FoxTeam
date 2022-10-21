@@ -77,6 +77,8 @@ private:
 	void updateSkillEEnd(float _deltaTime);
 
 private:
+	GameEngineFBXRenderer* shortBow_;
+	GameEngineFBXRenderer* longBow_;
 	GameEngineCollision* skillECollision_;
 	GameEngineFSM customState_;
 	bool bLongBow_;

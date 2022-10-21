@@ -87,36 +87,31 @@ void FBXAnimation::Update(float _DeltaTime)
 			}
 
 
-			// 로컬 스케일
 			float4 LerpScale = float4::Lerp(CurData.S, NextData.S, CurFrameTime);
-			// 로컬 쿼터니온
 			float4 SLerpQ = float4::SLerp(CurData.Q, NextData.Q, CurFrameTime);
-			// 로컬 포지션
 			float4 LerpPos = float4::Lerp(CurData.T, NextData.T, CurFrameTime);
 
-			// 
 
-
-			size_t Size = sizeof(float4x4);
-			// 자신의 원본행렬과 곱해준다 큰 의미는 없다.
-
-			float4x4 Mat = float4x4::Affine(LerpScale, SLerpQ, LerpPos);
-
-			//ParentRenderer->BoneData[i].Pos = LerpPos;
-			//ParentRenderer->BoneData[i].Q = SLerpQ;
-			//ParentRenderer->BoneData[i].Scale = LerpScale;
-
-			//FrameBoneData[i].AniScaleMat = float4x4::Affine(LerpScale, float4::QIden, float4::ZERO);
-			//FrameBoneData[i].AniRotMat = float4x4::Affine(float4::ONE, SLerpQ, float4::NONE);
-			//FrameBoneData[i].AniPosMat = float4x4::Affine(float4::ONE, float4::QIden, LerpPos);
-
-			// FrameBoneData[i].AniWorldMat = float4x4::Affine(LerpScale, SLerpQ, LerpPos);
-
-
-			// 로컬에서의 애니메이션된 행렬
-			Render.BoneData[i] = BoneData->BonePos.Offset * float4x4::Affine(LerpScale, SLerpQ, LerpPos);
-
-			// ParentRenderer->BoneData[i].Transpose();
+			if (ParentRenderer->parentBoneRenderer_ != nullptr)
+			{
+				float4x4 mat;
+				if (ParentRenderer->parentBoneRenderer_->overrideAnimation_ != nullptr)
+				{
+					mat = ParentRenderer->parentBoneRenderer_->overrideAnimation_->GetAffine(ParentRenderer->parentBoneIndex_);
+				}
+				else
+				{
+					mat = ParentRenderer->parentBoneRenderer_->GetCurrentAffine(ParentRenderer->parentBoneIndex_);
+				}
+				
+				
+				float4x4 mat2 = float4x4::Affine(LerpScale, SLerpQ, LerpPos);
+				Render.BoneData[i] = BoneData->BonePos.Offset * mat2 * mat;
+			}
+			else
+			{
+				Render.BoneData[i] = BoneData->BonePos.Offset * float4x4::Affine(LerpScale, SLerpQ, LerpPos);
+			}
 		}
 	}
 }
@@ -254,4 +249,37 @@ void FBXAnimation::ResetFrame()
 	CurFrameTime = 0.0f;
 	End = PixAniData->TimeEndCount;
 	bEnd_ = false;
+}
+
+float4x4 FBXAnimation::GetAffine(int _boneIndex, int _renderSetIndex)
+{
+	RenderSet& Render = ParentRenderer->RenderSets[_renderSetIndex];
+	Bone* BoneData = ParentRenderer->FBXMesh->FindBone(Render.Index, _boneIndex);
+
+	if (true == PixAniData->AniFrameData[Render.Index][_boneIndex].BoneMatData.empty())
+	{
+		Render.BoneData[_boneIndex] = float4x4::Affine(BoneData->BonePos.GlobalScale, BoneData->BonePos.GlobalRotation, BoneData->BonePos.GlobalTranslation);
+		return float4x4();
+	}
+
+	int NextFrame = CurFrame + 1;
+
+	if (NextFrame >= End)
+	{
+		NextFrame = 0;
+	}
+
+	FbxExBoneFrameData& CurData = PixAniData->AniFrameData[Render.Index][_boneIndex].BoneMatData[CurFrame];
+	FbxExBoneFrameData& NextData = PixAniData->AniFrameData[Render.Index][_boneIndex].BoneMatData[NextFrame];
+
+	if (CurData.FrameMat == NextData.FrameMat)
+	{
+		return float4x4();
+	}
+
+	float4 LerpScale = float4::Lerp(CurData.S, NextData.S, CurFrameTime);
+	float4 SLerpQ = float4::SLerp(CurData.Q, NextData.Q, CurFrameTime);
+	float4 LerpPos = float4::Lerp(CurData.T, NextData.T, CurFrameTime);
+
+	return float4x4::Affine(LerpScale, SLerpQ, LerpPos);
 }

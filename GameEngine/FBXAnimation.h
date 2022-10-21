@@ -27,4 +27,6 @@ public:
 	void Update(float _DeltaTime);
 	void UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnimation);
 	void ResetFrame();
+
+	float4x4 GetAffine(int _boneIndex, int _renderSetIndex = 0);
 };
