@@ -126,7 +126,7 @@ void Boar::InitalizeCollider()
 	AtkCollider_->Off();
 }
 
-void Boar::SkillAttackProcessing()
+void Boar::SkillAttackProcessing(float _DeltaTime)
 {
 	// 돌진 : 일직선으로 돌격하며 적을 밀어내며 피해를 입힘
 	//		  단, 적이 벽에 부딪혔다면 기절

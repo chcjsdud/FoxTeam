@@ -124,7 +124,7 @@ void Dog::InitalizeCollider()
 	AtkCollider_->Off();
 }
 
-void Dog::SkillAttackProcessing()
+void Dog::SkillAttackProcessing(float _DeltaTime)
 {
 	// 스킬없으므로 스킬공격모션 종료시 대기상태로 전환
 	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())

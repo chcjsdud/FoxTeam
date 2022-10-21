@@ -125,7 +125,7 @@ void Weekline::InitalizeCollider()
 	//AtkCollider_->Off();
 }
 
-void Weekline::SkillAttackProcessing()
+void Weekline::SkillAttackProcessing(float _DeltaTime)
 {
 	// ???
 

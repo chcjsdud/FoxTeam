@@ -61,7 +61,7 @@ void Monsters::StartSkillAttackState()
 void Monsters::UpdateSkillAttackState(float _DeltaTime)
 {
 	// 몬스터 타입별 스킬공격이 다르므로 순수가상함수로 생성된 함수 실행
-	SkillAttackProcessing();
+	SkillAttackProcessing(_DeltaTime);
 }
 
 void Monsters::EndSkillAttackState()

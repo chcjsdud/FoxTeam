@@ -19,7 +19,7 @@ protected:
 	void InitalizeCollider() override;
 
 protected:
-	void SkillAttackProcessing() override;
+	void SkillAttackProcessing(float _DeltaTime) override;
 
 private:
 public:

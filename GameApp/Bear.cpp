@@ -128,7 +128,7 @@ void Bear::InitalizeCollider()
 	AtkCollider_->Off();
 }
 
-void Bear::SkillAttackProcessing()
+void Bear::SkillAttackProcessing(float _DeltaTime)
 {
 	// 지면강타 : 주변범위에 피해를 입히고 1초간 기절
 	// 피해량 - 기본(170) + 공격력의 40%
@@ -137,6 +137,12 @@ void Bear::SkillAttackProcessing()
 	// 쿨다운 - 10초
 	// 1m == 100.0f로 계산
 
+
+
+
+
+	//IsAttack_ = true;
+	//AtkCollider_->On();
 
 	// 모션종료시 
 	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())

@@ -140,7 +140,7 @@ void Wolf::InitalizeCollider()
 	AtkCollider_->Off();
 }
 
-void Wolf::SkillAttackProcessing()
+void Wolf::SkillAttackProcessing(float _DeltaTime)
 {
 	if (false == SkillAtk_)
 	{

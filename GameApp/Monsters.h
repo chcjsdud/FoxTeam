@@ -96,7 +96,7 @@ protected: // Protected Pure Virtual Function
 	virtual void InitalizeCollider() = 0;									// 충돌체 생성
 
 protected: // Protected SkillAttack Pure Virtual Function
-	virtual void SkillAttackProcessing() = 0;								// 몬스터 타입별 스킬공격
+	virtual void SkillAttackProcessing(float _DeltaTime) = 0;				// 몬스터 타입별 스킬공격
 
 private: // Private Initalize Function
 	void InitalizeFSMState();												// FSM 상태 생성(공통)
