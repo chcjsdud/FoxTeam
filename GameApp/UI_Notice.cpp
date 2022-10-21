@@ -25,42 +25,23 @@ UI_Notice::~UI_Notice()
 void UI_Notice::Start()
 {
 
-	UI_Pos = { 0.0f, 326.0f, 1.0f };
-	Day_Pos = { -35.0f, 330.0f, 0.0f };
-	Time_Pos = { -10.0f, 344.0f, 0.0f };
-	Clock_Pos = { -30.f, 303.f, 0.0f };
-	ClockTime_Pos = { -10.f, 318.f, 0.0f };
-	DayCount_Pos = { -20.f, 361.f, 0.0f };
+	UI_Pos = { 0.0f, 170.0f, 0.0f };
+	Font_Pos = { 0.0f, 170.0f, -1.0f };
+	BasicAlpha = 0.4f;
 
 	{
 		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		BackGroundRenderer->SetImage("UI_TimeBg_Test.png", "PointSmp");
+		BackGroundRenderer->SetImage("UI_HalfAlphaRect.png", "PointSmp");
 		BackGroundRenderer->GetTransform()->SetLocalPosition(UI_Pos);
-		//BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize() * 0.8f);
-		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
-
-		DayNightRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
-		DayNightRenderer->GetTransform()->SetLocalPosition(Day_Pos);
-		DayNightRenderer->GetTransform()->SetLocalScaling(DayNightRenderer->GetCurrentTexture()->GetTextureSize());
-
-		TimeRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		TimeRenderer->GetTransform()->SetLocalPosition(Time_Pos);
+		BackGroundRenderer->GetTransform()->SetLocalScaling(float4{ 620.0f, 30.0f });
+		BackGroundRenderer->SetAlpha(BasicAlpha);
 	}
 
-	{
-		NightChangeClockRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		NightChangeClockRenderer->SetImage("UI_Clock.png", "PointSmp");
-		NightChangeClockRenderer->GetTransform()->SetLocalPosition(Clock_Pos);
-		NightChangeClockRenderer->GetTransform()->SetLocalScaling({ 21.f,21.f });
-
-		NightChangeTimeRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		NightChangeTimeRenderer->GetTransform()->SetLocalPosition(ClockTime_Pos);
-	}
 
 	{
-		DayCountRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		DayCountRenderer->GetTransform()->SetLocalPosition(DayCount_Pos);
+		//폰트출력용
+		FontRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		FontRenderer->GetTransform()->SetLocalPosition(UI_Pos);
 	}
 
 }
@@ -77,20 +58,13 @@ void UI_Notice::Update(float _Time)
 		if (false == UIOn)
 		{
 			BackGroundRenderer->Off();
-			DayNightRenderer->Off();
-			TimeRenderer->Off();
-			NightChangeClockRenderer->Off();
-			NightChangeTimeRenderer->Off();
-			DayCountRenderer->Off();
+			FontRenderer->Off();
 		}
 		else
 		{
 			BackGroundRenderer->On();
-			DayNightRenderer->On();
-			TimeRenderer->On();
-			NightChangeClockRenderer->On();
-			NightChangeTimeRenderer->On();
-			DayCountRenderer->On();
+			FontRenderer->On();
+			FontRenderer->TextSetting("HMKMRHD", "Test", 12);
 		}
 	}
 
@@ -106,25 +80,6 @@ void UI_Notice::Update(float _Time)
 		}
 	}
 
-	DayAndNightType SunMoon = GameTimeController::GetInstance()->GetCurrentDayType();
-
-	switch (SunMoon)
-	{
-	case DayAndNightType::NONE:
-		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
-		break;
-	case DayAndNightType::DAY:
-		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
-		break;
-	case DayAndNightType::NIGHT:
-		DayNightRenderer->SetImage("UI_Moon.png", "PointSmp");
-		break;
-	case DayAndNightType::MAX:
-		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
-		break;
-	default:
-		break;
-	}
 
 }
 

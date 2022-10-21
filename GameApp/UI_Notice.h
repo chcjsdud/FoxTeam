@@ -22,14 +22,9 @@ public:
 
 protected:
 	GameEngineUIRenderer* BackGroundRenderer;
-	GameEngineUIRenderer* DayNightRenderer;
-	GameEngineUIRenderer* TimeRenderer;
-
-	GameEngineUIRenderer* NightChangeClockRenderer;
-	GameEngineUIRenderer* NightChangeTimeRenderer;
-
-	GameEngineUIRenderer* DayCountRenderer;
+	GameEngineUIRenderer* FontRenderer;
 	float Time;
+	float BasicAlpha;
 
 
 private:
@@ -37,12 +32,7 @@ private:
 	void Update(float _Time) override;
 
 	float4 UI_Pos;
-	float4 Day_Pos;
-	float4 Time_Pos;
+	float4 Font_Pos;
 
-	float4 Clock_Pos;
-	float4 ClockTime_Pos;
-
-	float4 DayCount_Pos;
 };
 

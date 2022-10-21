@@ -10,8 +10,10 @@
 #include "UI_Inventory.h"
 #include "UI_Skill.h"
 #include "UI_Status.h"
-#include "UI_BloodBackground.h"
 #include "UI_Time.h"
+#include "UI_Notice.h"
+
+#include "UI_BloodBackground.h"
 
 // 221018 박종원
 // 죽거나 마지막 생존자일 때 표시되는 UI
@@ -83,6 +85,8 @@ private:
 	UI_Skill* skill_UI;
 	UI_Status* status_UI;
 	UI_Time* time_UI;
+	UI_Notice* notice_UI;
+
 	UI_BloodBackground* blood_UI;
 	UI_WinLose* winLose_UI;
 	bool winLoseFlag_;

@@ -29,6 +29,7 @@ void PlayerUIController::InitUI()
 	skill_UI = GetLevel()->CreateActor<UI_Skill>();
 	status_UI = GetLevel()->CreateActor<UI_Status>();
 	time_UI = GetLevel()->CreateActor<UI_Time>();
+	notice_UI = GetLevel()->CreateActor<UI_Notice>();
 	winLose_UI = GetLevel()->CreateActor<UI_WinLose>();
 }
 
