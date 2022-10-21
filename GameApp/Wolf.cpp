@@ -144,6 +144,8 @@ void Wolf::SkillAttackProcessing(float _DeltaTime)
 {
 	if (false == SkillAtk_)
 	{
+		// 애니메이션 실행 및 Flag On, Attack Collider On
+		MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
 		IsAttack_ = true;
 		AtkCollider_->On();
 

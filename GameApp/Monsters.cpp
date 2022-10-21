@@ -344,7 +344,6 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 		{
 			AttackState_ << "SKILLATTACK";
 			MainState_ << "ATTACK";
-			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
 			break;
 		}
 		case MonsterStateType::MAX:

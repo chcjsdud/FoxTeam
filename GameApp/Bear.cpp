@@ -3,6 +3,9 @@
 
 #include <GameEngine/GameEngineCollision.h>
 
+#include "LumiaLevel.h"
+#include "Character.h"
+
 bool Bear::ResourceLoadFlag = false;
 
 void Bear::InitalizeStateInfo()
@@ -136,25 +139,76 @@ void Bear::SkillAttackProcessing(float _DeltaTime)
 	// 시전시간 - 0.5초
 	// 쿨다운 - 10초
 	// 1m == 100.0f로 계산
-
-
-
-
-
-	//IsAttack_ = true;
-	//AtkCollider_->On();
-
-	// 모션종료시 
-	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	if (false == SkillAtk_)
 	{
-		// 모션종료시 대기상태 전환
-		ChangeAnimationAndState(MonsterStateType::IDLE);
+		SkillAtk_CastTime_ -= _DeltaTime;
+		if (0.0f >= SkillAtk_CastTime_)
+		{
+			// 스킬공격 애니메이션 실행
+			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
+
+			// 스킬공격처리를 위한 준비
+			SkillAtk_ = true;
+
+			// 공격충돌체와의 플레이어의 피격충돌체와 충돌체크를 위해 On
+			IsAttack_ = true;
+			AtkCollider_->On();
+
+			// 사정거리범위내 검사
+			LumiaLevel* CurLevel = GetLevelConvert<LumiaLevel>();
+			if (nullptr == CurLevel)
+			{
+				GameEngineDebug::MsgBoxError("루미아 레벨을 찾을수없습니다!!!!!!!!!");
+				return;
+			}
+
+			// 현재 타겟을 포함하여 현재 게임에 생성된 모든 캐릭터와의 거리를 측정하여 사정거리내에 존재하는 캐릭터에게 모두 스턴
+			int CharacterCount = static_cast<int>(CurLevel->GetCharacterActorList().size());
+			for (int CharacterNum = 0; CharacterNum < CharacterCount; ++CharacterNum)
+			{
+				Character* CheckCharacter = CurLevel->GetCharacterActorList()[CharacterNum];
+
+				float4 MyPosition = GetTransform()->GetWorldPosition();
+				float4 CheckCharacterPosition = CheckCharacter->GetTransform()->GetWorldPosition();
+				if ((CheckCharacterPosition - MyPosition).Len3D() <= SkillAtk_Range_)
+				{
+					// 스턴
+					CheckCharacter->Stun(SkillAtk_StunTime_);
+
+					// 데미지
+					float CurDamage = SkillAtk_FixedDamage_ + (static_cast<float>(StateInfo_.OffencePower_) * 0.4f);
+					CheckCharacter->Damage(CurDamage, this);
+				}
+			}
+
+			// 시전시간 초기화
+			SkillAtk_CastTime_ = SkillAtk_CastTimeMax_;
+		}
+	}
+
+	if (true == SkillAtk_)
+	{
+		// 모션종료시 
+		if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+		{
+			// 스킬공격 끝
+			SkillAtk_ = false;
+			IsAttack_ = false;
+			AtkCollider_->Off();
+
+			// 대기상태로 전환
+			ChangeAnimationAndState(MonsterStateType::IDLE);
+		}
 	}
 }
 
 Bear::Bear()
-	: SkillAtk_Range_(400.0f)
+	: SkillAtk_(false)
+	, SkillAtk_Range_(400.0f)
+	, SkillAtk_CastTimeMax_(0.5f)
 	, SkillAtk_CastTime_(0.5f)
+	, SkillAtk_StunTime_(1.0f)
+	, SkillAtk_FixedDamage_(170.0f)
 {
 }
 
