@@ -126,7 +126,5 @@ void UI_Notice::Update(float _Time)
 		break;
 	}
 
-	TimeSetting();
-
 }
 
