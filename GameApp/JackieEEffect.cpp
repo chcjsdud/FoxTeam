@@ -42,7 +42,7 @@ void JackieEEffect::Start()
 
 	impactRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
 	impactRenderer_->SetImage("FX_BI_Dust_03b.png", "PointSmp");
-	impactRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, 0.0f });
+	impactRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	impactRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
 	impactRenderer_->GetTransform()->SetLocalScaling(impactRenderer_->GetCurrentTexture()->GetTextureSize() * 2);
 	impactRenderer_->CreateAnimation("FX_BI_Dust_03b.png", "FX_BI_Dust_03b", 0, 35, 0.02f, false);

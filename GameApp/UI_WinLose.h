@@ -68,7 +68,7 @@ private:
 	bool isActivated_;
 	float appearTimer_;
 	bool isAllAppeared_;
-	float TIME_APPEAR_DEFAULT = 3.0f;
+	float TIME_APPEAR_DEFAULT = 1.5f;
 	bool isWinner_;
 
 	GameEngineFSM UIstate_;

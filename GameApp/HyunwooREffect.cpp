@@ -35,22 +35,24 @@ void HyunwooREffect::SetSleepMandatory()
 
 void HyunwooREffect::Start()
 {
-	//GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
-	//hitBase->Cut(3, 3);
+	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_William_Skill04_ExpLine2X3.png");
+	hitBase->Cut(2, 3);
 	
 	hitBoxRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
-	hitBoxRenderer_->SetImage("FX_BI_Jan_Skill01_01_Range_1.png", "PointSmp");
+	hitBoxRenderer_->SetImage("FX_BI_Jan_Skill01_01_Range_add.png", "PointSmp");
 	hitBoxRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 150.0f });
 	hitBoxRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	hitBoxRenderer_->GetTransform()->SetLocalScaling({350.0f, 10.0f, 150.0f});
-
+	hitBoxRenderer_->GetTransform()->SetLocalScaling({350.0f, 10.0f, 0.0f});
+	hitBoxRenderer_->SetAlpha(1.0f);
+	
 	impactRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
-	impactRenderer_->SetImage("FX_BI_Hit_05.png", "PointSmp");
-	impactRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 30.0f, 300.0f });
-	impactRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	impactRenderer_->GetTransform()->SetLocalScaling(impactRenderer_->GetCurrentTexture()->GetTextureSize());
-	impactRenderer_->CreateAnimation("FX_BI_Hit_05.png", "FX_BI_Hit_05", 0, 8, 0.04f, false);
-	impactRenderer_->SetChangeAnimation("FX_BI_Hit_05", true);
+	impactRenderer_->SetImage("FX_BI_William_Skill04_ExpLine2X3.png", "PointSmp");
+	impactRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 30.0f, 480.0f });
+	impactRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,-90.f,0.f });
+	impactRenderer_->GetTransform()->SetLocalScaling(impactRenderer_->GetCurrentTexture()->GetTextureSize() * 3);
+	impactRenderer_->CreateAnimation("FX_BI_William_Skill04_ExpLine2X3.png", "FX_BI_William_Skill04_ExpLine2X3", 0, 5, 0.03f, false);
+	impactRenderer_->SetChangeAnimation("FX_BI_William_Skill04_ExpLine2X3", true);
+	impactRenderer_->SetAlpha(0.85f);
 
 	renderState_.CreateState(MakeState(HyunwooREffect, Sleeping));
 	renderState_.CreateState(MakeState(HyunwooREffect, Awaken));
@@ -66,8 +68,9 @@ void HyunwooREffect::Update(float _deltaTime)
 
 void HyunwooREffect::startAwaken()
 {
-	hitBoxRenderer_->SetAlpha(1.0f);
 	timer_ = 0.0f;
+	hitBoxRenderer_->On();
+	hitBoxRenderer_->GetTransform()->SetLocalScaling({ 650.0f, 150.0f, 0.0f });
 }
 
 void HyunwooREffect::updateAwaken(float _deltaTime)
@@ -77,27 +80,24 @@ void HyunwooREffect::updateAwaken(float _deltaTime)
 	//	renderState_ << "Explode";
 	//	return;
 	//}
-
 	timer_ += _deltaTime;
 
+	hitBoxRenderer_->SetAlpha(1.0f);
 	hitBoxRenderer_->GetTransform()->SetLocalPosition({ 0.f,10.f,150.f + (timer_ * 50.0f) });
-	hitBoxRenderer_->GetTransform()->SetLocalScaling({ 350.0f, 150.0f + (timer_ * 100.0f), 10.0f });
+	hitBoxRenderer_->GetTransform()->SetLocalScaling({ 650.0f, 150.0f + (timer_ * 100.0f), 0.0f });
 }
 
 void HyunwooREffect::startExplode()
 {
-	hitBoxRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 150.0f });
-	hitBoxRenderer_->GetTransform()->SetLocalScaling(hitBoxRenderer_->GetCurrentTexture()->GetTextureSize());
-
-
-	impactRenderer_->SetAlpha(1.0f);
-	impactRenderer_->SetChangeAnimation("FX_BI_Hit_05", true);
+	hitBoxRenderer_->Off();
+	impactRenderer_->SetAlpha(0.85f);
+	impactRenderer_->SetChangeAnimation("FX_BI_William_Skill04_ExpLine2X3", true);
 	impactRenderer_->AnimationPlay();
 }
 
 void HyunwooREffect::updateExplode(float _deltaTime)
 {
-
+	impactRenderer_->SetAlpha(0.95f);
 	if (true == impactRenderer_->IsCurAnimationEnd())
 	{
 		renderState_ << "Sleeping";

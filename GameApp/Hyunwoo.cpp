@@ -144,8 +144,7 @@ void Hyunwoo::Start()
 	stat_.MovementSpeed = 355.0f;
 	stat_.AttackRange = 280.f;
 
-	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
-	hitBase->Cut(3, 3);
+
 }
 
 void Hyunwoo::Update(float _deltaTime)
@@ -226,13 +225,16 @@ void Hyunwoo::initHyunwooCustomState()
 
 void Hyunwoo::initEffectRenderer()
 {
+	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_08.png");
+	hitBase->Cut(3, 3);
+
 	basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 
-	basicAttackEffectRenderer_->SetImage("FX_BI_Hit_061.png");
-	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, stat_.AttackRange - 180.f });
+	basicAttackEffectRenderer_->SetImage("FX_BI_Hit_08.png");
+	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f,  stat_.AttackRange - 180.f });
 	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
 	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
-	basicAttackEffectRenderer_->CreateAnimation("FX_BI_Hit_061.png", "FX_BI_Hit_061", 0, 3, 0.04f, false);
+	basicAttackEffectRenderer_->CreateAnimation("FX_BI_Hit_08.png", "FX_BI_Hit_08", 0, 8, 0.03f, false);
 	basicAttackEffectRenderer_->Off();
 
 
@@ -697,9 +699,12 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName)
 	
 	if ("BasicAttack" == _effectName)
 	{
+		float4 wp = GetTransform()->GetWorldPosition();
 		basicAttackEffectRenderer_->On();
-		basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
+		basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({wp.x, wp.y + 50.f, wp.z});
+		basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_08", true);
 		basicAttackEffectRenderer_->AnimationPlay();
+
 		return;
 	}
 
@@ -874,12 +879,13 @@ void Hyunwoo::onStartBasicAttacking(IUnit* _target)
 	FT::SendPacket(packet);
 
 
+	float4 wp = target_->GetTransform()->GetWorldPosition();
 
 	basicAttackEffectRenderer_->On();
-	basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
+	basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_08", true);
+	//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
 	basicAttackEffectRenderer_->AnimationPlay();
 
-	
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
