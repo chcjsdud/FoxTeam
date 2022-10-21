@@ -16,10 +16,10 @@
 #include "CharEffectPacket.h"
 
 Jackie::Jackie() // default constructer 디폴트 생성자
-	: isChainSaw_(false), atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(0), collision_Q(nullptr),
+	: atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(0), collision_Q(nullptr),
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
 	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr),
-	isW_(false), timer_W(0.0f)
+	isW_(false), timer_W(0.0f), bSkillEPassable_(false), eStartPosition_(float4::ZERO), eLandingPosition_(float4::ZERO)
 {
 
 }
@@ -63,30 +63,30 @@ void Jackie::LoadResource()
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_skillW.fbx"));
 
 	{
-		//GameEngineDirectory dir;
-		//dir.MoveParent("FoxTeam");
-		//dir / "Resources" / "Sound" / "Char" / "Hyunwoo";
-		//
-		//std::vector<GameEngineFile> allFile = dir.GetAllFile("wav");
-		//for (GameEngineFile& file : allFile)
-		//{
-		//	GameEngineSoundManager::GetInstance()->CreateSound(file.FileName(), file.GetFullPath());
-		//}
+		GameEngineDirectory dir;
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "Sound" / "Char" / "Jackie";
+		
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("wav");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineSoundManager::GetInstance()->CreateSound(file.FileName(), file.GetFullPath());
+		}
 	}
 }
 
 void Jackie::ReleaseResource()
 {
 	{
-		//GameEngineDirectory dir;
-		//dir.MoveParent("FoxTeam");
-		//dir / "Resources" / "Sound" / "Char" / "Hyunwoo";
-		//
-		//std::vector<GameEngineFile> allFile = dir.GetAllFile("wav");
-		//for (GameEngineFile& file : allFile)
-		//{
-		//	GameEngineSoundManager::GetInstance()->ReleaseSound(file.FileName());
-		//}
+		GameEngineDirectory dir;
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "Sound" / "Char" / "Jackie";
+		
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("wav");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineSoundManager::GetInstance()->ReleaseSound(file.FileName());
+		}
 	}
 
 	GameEngineFBXMeshManager::GetInst().Delete("Jackie_run.fbx");
@@ -136,9 +136,7 @@ void Jackie::Start()
 	//GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
 	//hitBase->Cut(3, 3);
 
-	customState_.CreateState(MakeState(Jackie, SkillEBegin));
-	customState_.CreateState(MakeState(Jackie, SkillEShot));
-	customState_.CreateState(MakeState(Jackie, SkillEEnd));
+
 }
 
 void Jackie::Update(float _deltaTime)
@@ -154,6 +152,18 @@ void Jackie::Update(float _deltaTime)
 			timer_W = 0.0f;
 			isW_ = false;
 			stat_.MovementSpeed -= 100.0f;
+		}
+	}
+
+	if (true == isR_)
+	{
+		timer_R -= _deltaTime;
+
+		if (0.0f >= timer_R)
+		{
+			timer_R = 0.0f;
+			isR_ = false;
+
 		}
 	}
 }
@@ -177,13 +187,13 @@ void Jackie::initRendererAndAnimation()
 
 	renderer_->CreateFBXAnimation("SkillW", "Jackie_skillW.fbx", 0);
 
-	//renderer_->CreateFBXAnimation("SkillR_wait", "Jackie_R_wait.fbx", 0);
-	//renderer_->CreateFBXAnimation("SkillR_run", "Jackie_R_run.fbx", 0);
-	//renderer_->CreateFBXAnimation("R_Atk0", "Jackie_R_atk1.fbx", 0, false);
-	//renderer_->CreateFBXAnimation("R_Atk1", "Jackie_R_atk2.fbx", 0, false);
-	//renderer_->CreateFBXAnimation("R_SkillQ", "Jackie_R_skillQ.fbx", 0, false);
-	//renderer_->CreateFBXAnimation("R_SkillW", "Jackie_R_skillW.fbx", 0);
-	//renderer_->CreateFBXAnimation("R_SkillE", "Jackie_R_skillE.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_wait", "Jackie_R_wait.fbx", 0);
+	renderer_->CreateFBXAnimation("SkillR_run", "Jackie_R_run.fbx", 0);
+	renderer_->CreateFBXAnimation("R_Atk0", "Jackie_R_atk1.fbx", 0, false);
+	renderer_->CreateFBXAnimation("R_Atk1", "Jackie_R_atk2.fbx", 0, false);
+	renderer_->CreateFBXAnimation("R_SkillQ", "Jackie_R_skillQ.fbx", 0, false);
+	renderer_->CreateFBXAnimation("R_SkillW", "Jackie_R_skillW.fbx", 0);
+	renderer_->CreateFBXAnimation("R_SkillE", "Jackie_R_skillE.fbx", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
 }
@@ -196,45 +206,56 @@ void Jackie::initJackieCollision()
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_Q->SetCollisionType(CollisionType::OBBBox3D);
 	collision_Q->Off();
-	
+
 	collision_E = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	collision_E->GetTransform()->SetLocalScaling({ 450.0f, 10.0f, 450.0f });
+	collision_E->SetCollisionType(CollisionType::Sphere3D);
 	collision_E->SetCollisionGroup(eCollisionGroup::PlayerAttack);
-	collision_E->SetCollisionType(CollisionType::OBBBox3D);
+	collision_E->GetTransform()->SetLocalScaling(250.0f);
 	collision_E->Off();
 }
 
 void Jackie::initJackieCustomState()
 {
+	customState_.CreateState(MakeState(Jackie, SkillEBegin));
+	customState_.CreateState(MakeState(Jackie, SkillEShot));
+	customState_.CreateState(MakeState(Jackie, SkillEEnd));
 }
 
 void Jackie::initEffectRenderer()
 {
 	basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 
-	basicAttackEffectRenderer_->SetImage("FX_BI_Hit_061.png");
+	basicAttackEffectRenderer_->SetImage("FX_BI_SELine_10.png", "PointSmp");
 	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, stat_.AttackRange - 180.f });
 	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
-	basicAttackEffectRenderer_->CreateAnimation("FX_BI_Hit_061.png", "FX_BI_Hit_061", 0, 3, 0.04f, false);
+	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 2);
+	basicAttackEffectRenderer_->CreateAnimation("FX_BI_SELine_10.png", "FX_BI_SELine_10", 0, 8, 0.02f, false);
 	basicAttackEffectRenderer_->Off(); 
-
-	//skillQEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
-	//
-	//skillQEffectRenderer_->SetImage("FX_BI_Jan_Skill02_Range_BG.png", "PointSmp");
-	//skillQEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, this->GetTransform()->GetWorldPosition().y + 20.0f, collision_Q->GetTransform()->GetWorldPosition().z});
-	//skillQEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	//skillQEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize());
-	//skillQEffectRenderer_->SetAlpha(0.7f);
-	//skillQEffectRenderer_->Off();
 
 	qEffect_ = GetLevel()->CreateActor<JackieQEffect>();
 	qEffect_->SetParent(this);
+
+	eEffect_ = GetLevel()->CreateActor<JackieEEffect>();
+	eEffect_->SetParent(this);
 
 }
 
 void Jackie::changeAnimationRun()
 {
+	if (true == isR_)
+	{
+		if (true == isW_)
+		{
+			curAnimationName_ = "R_SkillW";
+			renderer_->ChangeFBXAnimation("R_SkillW");
+			return;
+		}
+
+		curAnimationName_ = "SkillR_run";
+		renderer_->ChangeFBXAnimation("SkillR_run");
+		return;
+	}
+
 	if (true == isW_)
 	{
 		curAnimationName_ = "SkillW";
@@ -248,29 +269,65 @@ void Jackie::changeAnimationRun()
 
 void Jackie::changeAnimationWait()
 {
+	if (true == isR_)
+	{
+		curAnimationName_ = "SkillR_wait";
+		renderer_->ChangeFBXAnimation("SkillR_wait");
+		return;
+	}
+
 	curAnimationName_ = "Wait";
 	renderer_->ChangeFBXAnimation("Wait");
 }
 
 void Jackie::changeAnimationBasicAttack()
 {
-	if (false == atkFlag_)
+	if (true == isR_)
 	{
-		curAnimationName_ = "Atk0";
-		renderer_->ChangeFBXAnimation("Atk0", true);
-		atkFlag_ = true;
+		if (false == atkFlag_)
+		{
+			curAnimationName_ = "R_Atk0";
+			renderer_->ChangeFBXAnimation("R_Atk0", true);
+			atkFlag_ = true;
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Attack_v1.wav");
+			PacketSoundPlay packet;
+			packet.SetSound("jackie_ChainSaw_Attack_v1.wav", transform_.GetWorldPosition());
+			FT::SendPacket(packet);
+		}
+		else
+		{
+			curAnimationName_ = "R_Atk1";
+			renderer_->ChangeFBXAnimation("R_Atk1", true);
+			atkFlag_ = false;
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Attack_v2.wav");
+			PacketSoundPlay packet;
+			packet.SetSound("jackie_ChainSaw_Attack_v2.wav", transform_.GetWorldPosition());
+			FT::SendPacket(packet);
+		}
 	}
 	else
 	{
-		curAnimationName_ = "Atk1";
-		renderer_->ChangeFBXAnimation("Atk1", true);
-		atkFlag_ = false;
+		if (false == atkFlag_)
+		{
+			curAnimationName_ = "Atk0";
+			renderer_->ChangeFBXAnimation("Atk0", true);
+			atkFlag_ = true;
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("attackAxe_r1.wav");
+			PacketSoundPlay packet;
+			packet.SetSound("attackAxe_r1.wav", transform_.GetWorldPosition());
+			FT::SendPacket(packet);
+		}
+		else
+		{
+			curAnimationName_ = "Atk1";
+			renderer_->ChangeFBXAnimation("Atk1", true);
+			atkFlag_ = false;
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("attackTwoHandSword_r2.wav");
+			PacketSoundPlay packet;
+			packet.SetSound("attackTwoHandSword_r2.wav", transform_.GetWorldPosition());
+			FT::SendPacket(packet);
+		}
 	}
-
-	//GameEngineSoundManager::GetInstance()->PlaySoundByName("attackGlove_Normal01.wav");
-	//PacketSoundPlay packet;
-	//packet.SetSound("attackGlove_Normal01.wav", transform_.GetWorldPosition());
-	//FT::SendPacket(packet);
 }
 
 void Jackie::changeDeathAnimation()
@@ -296,15 +353,25 @@ void Jackie::onStartBasicAttacking(IUnit* _target)
 	
 	}
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("attackGlove_Normal_Hit_P.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("attackGlove_Normal_Hit_P.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	if (true == isR_)
+	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
+		PacketSoundPlay packet;
+		packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
+		FT::SendPacket(packet);
+	}
+	else
+	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
+		PacketSoundPlay packet;
+		packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
+		FT::SendPacket(packet);
+	}
 
 
 
 	basicAttackEffectRenderer_->On();
-	basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_061", true);
+	basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_SELine_10", true);
 	basicAttackEffectRenderer_->AnimationPlay();
 
 
@@ -383,20 +450,13 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 		return;
 	}
 
-	if (0.1f <= timer_collision_Q && 0 == b_Qhit_)
+	if (0 == b_Qhit_)
 	{
 		collision_Q->On();
-
-		//GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill01_Hit.wav");
-		//PacketSoundPlay packet;
-		//packet.SetSound("hyunwoo_Skill01_Hit.wav", transform_.GetWorldPosition());
-
-		//FT::SendPacket(packet);
-
-		//float4 wp = GetTransform()->GetWorldPosition();
-		//qEffect_->GetTransform()->SetLocalPosition(wp);
-		//qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
-		//qEffect_->PlayAwake();
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("wskill_Axe_attack.wav");
+		PacketSoundPlay packet;
+		packet.SetSound("wskill_Axe_attack.wav", transform_.GetWorldPosition());
+		FT::SendPacket(packet);
 
 		//CharEffectPacket pack;
 		//pack.SetTargetIndex(myIndex_);
@@ -415,6 +475,22 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 
 				if (nullptr != character)
 				{
+					if (true == isR_)
+					{
+						GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
+						PacketSoundPlay packet;
+						packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
+						FT::SendPacket(packet);
+					}
+					else
+					{
+						GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
+						PacketSoundPlay packet;
+						packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
+						FT::SendPacket(packet);
+					}
+				
+
 					character->Damage(150.0f, this);
 				}
 			}
@@ -423,15 +499,15 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 		b_Qhit_++;
 	}
 
-	if (0.3f <= timer_collision_Q && 1 == b_Qhit_)
+	if (0.2f <= timer_collision_Q && 1 == b_Qhit_)
 	{
 		collision_Q->On();
 
-		//GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill01_Hit.wav");
-		//PacketSoundPlay packet;
-		//packet.SetSound("hyunwoo_Skill01_Hit.wav", transform_.GetWorldPosition());
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("wskill_Axe_attack.wav");
+		PacketSoundPlay packet;
+		packet.SetSound("wskill_Axe_attack.wav", transform_.GetWorldPosition());
+		FT::SendPacket(packet);
 
-		//FT::SendPacket(packet);
 
 		//float4 wp = GetTransform()->GetWorldPosition();
 		//qEffect_->GetTransform()->SetLocalPosition(wp);
@@ -455,6 +531,20 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 
 				if (nullptr != character)
 				{
+					if (true == isR_)
+					{
+						GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
+						PacketSoundPlay packet;
+						packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
+						FT::SendPacket(packet);
+					}
+					else
+					{
+						GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
+						PacketSoundPlay packet;
+						packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
+						FT::SendPacket(packet);
+					}
 					character->Damage(150.0f, this);
 				}
 			}
@@ -468,6 +558,11 @@ void Jackie::onStartWSkill()
 {
 	isW_ = true;
 	timer_W = 3.0f;
+
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill02_Activation.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("jackie_Skill02_Activation.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
 }
 
 void Jackie::onUpdateWSkill(float _deltaTime)
@@ -484,15 +579,35 @@ void Jackie::onStartESkill()
 
 void Jackie::onUpdateESkill(float _deltaTime)
 {
+	if (mouse_ == nullptr)
+	{
+		changeAnimationWait();
+		mainState_ << "NormalState";
+		return;
+	}
+
+	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
+	setRotationTo(mousePosition, transform_.GetWorldPosition());
+	mainState_ << "CustomState";
+	customState_ << "SkillEBegin";
 }
 
 void Jackie::onStartRSkill()
 {
-	isChainSaw_ = true;
+	isR_ = true;
+	timer_R = 12.0f;
+
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill04_Activation_v1.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("jackie_Skill04_Activation_v1.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
 }
 
 void Jackie::onUpdateRSkill(float _deltaTime)
 {
+	changeAnimationWait();
+	mainState_.ChangeState("NormalState", true);
+	normalState_.ChangeState("Watch", true);
 }
 
 void Jackie::onStartDSkill()
@@ -514,10 +629,19 @@ void Jackie::onUpdateDeath(float _deltaTime)
 
 void Jackie::onUpdateCustomState(float _deltaTime)
 {
+	customState_.Update(_deltaTime);
 }
 
 void Jackie::onPlayEffect(const std::string& _effectName)
 {
+	if ("BasicAttack" == _effectName)
+	{
+		basicAttackEffectRenderer_->On();
+		basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_SELine_10", true);
+		basicAttackEffectRenderer_->AnimationPlay();
+		return;
+	}
+
 	if ("SkillQ" == _effectName)
 	{
 		float4 wp = GetTransform()->GetWorldPosition();
@@ -532,10 +656,49 @@ void Jackie::onPlayEffect(const std::string& _effectName)
 
 void Jackie::startSkillEBegin()
 {
+	b_Ehit_ = false;
+	float height = 0.0f;
+
+	eStartPosition_ = GetTransform()->GetWorldPosition();
+	eLandingPosition_ = GetTransform()->GetWorldPosition();
+	eLandingPosition_ += GetTransform()->GetWorldForwardVector() * 500.f;
+
+	float4 landingPosition = eLandingPosition_;
+	landingPosition.y += FT::Map::MAX_HEIGHT;
+
+	bSkillEPassable_ = currentMap_->GetNavMesh()->CheckIntersects(landingPosition, float4::DOWN, height);
+
+	if (true == isR_)
+	{
+		curAnimationName_ = "R_SkillE";
+		ChangeAnimation("R_SkillE", true);
+	}
+	else
+	{
+		curAnimationName_ = "SkillE";
+		ChangeAnimation("SkillE", true);
+	}
+
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill03_Jumping.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("jackie_Skill03_Jumping.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
+
+	skillETime_ = 0.0f;
 }
 
 void Jackie::updateSkillEBegin(float _deltaTime)
 {
+	skillETime_ += _deltaTime;
+	if (customState_.GetCurrentState()->Time_ > 0.2f)
+	{
+		customState_ << "SkillEShot";
+	}
+
+	if (bSkillEPassable_)
+	{
+		transform_.SetWorldPosition(float4::Lerp(eStartPosition_, eLandingPosition_, skillETime_ / 0.5f));
+	}
 }
 
 void Jackie::startSkillEShot()
@@ -544,13 +707,81 @@ void Jackie::startSkillEShot()
 
 void Jackie::updateSkillEShot(float _deltaTime)
 {
+	if (customState_.GetCurrentState()->Time_ > 0.2f)
+	{
+		eEffect_->GetTransform()->SetLocalPosition(eLandingPosition_);
+		eEffect_->On();
+		eEffect_->PlayAwake();
+		customState_ << "SkillEEnd";
+	}
+
+	skillETime_ += _deltaTime;
+	if (bSkillEPassable_)
+	{
+
+		if (bSkillEPassable_)
+		{
+			transform_.SetWorldPosition(float4::Lerp(eStartPosition_, eLandingPosition_, skillETime_ / 0.5f));
+		}
+	}
 }
 
 void Jackie::startSkillEEnd()
 {
+	collision_E->On();
+
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill03_Bump.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("jackie_Skill03_Bump.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
+
 }
 
 void Jackie::updateSkillEEnd(float _deltaTime)
 {
+
+
+	if (false == b_Ehit_)
+	{
+		auto collisionList = collision_E->GetCollisionList(eCollisionGroup::Player);
+
+		for (GameEngineCollision* col : collisionList)
+		{
+			GameEngineActor* actor = col->GetActor();
+			Character* character = nullptr;
+			if (nullptr != actor && actor != this)
+			{
+				character = dynamic_cast<Character*>(actor);
+
+				if (nullptr != character)
+				{
+					character->Damage(120.0f, this);
+				}
+			}
+		}
+
+		b_Ehit_ = true;
+	}
+
+
+	if (renderer_->IsCurrentAnimationEnd() || skillETime_ > 0.6f)
+	{
+		destination_ = transform_.GetWorldPosition();
+		destinations_.clear();
+		changeAnimationWait();
+		b_Ehit_ = false;
+		mainState_ << "NormalState";
+		return;
+	}
+
+
+	skillETime_ += _deltaTime;
+	if (bSkillEPassable_)
+	{
+		if (bSkillEPassable_)
+		{
+			transform_.SetWorldPosition(float4::Lerp(eStartPosition_, eLandingPosition_, skillETime_ / 0.5f));
+		}
+	}
 }
 

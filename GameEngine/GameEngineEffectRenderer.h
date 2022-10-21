@@ -121,9 +121,9 @@ public:
 
 	inline void SetColor(float4 _RGB)
 	{
-		CorrectResultColor_.vMulColor.r = _RGB.x;
-		CorrectResultColor_.vMulColor.g = _RGB.y;
-		CorrectResultColor_.vMulColor.b = _RGB.z;
+		CorrectResultColor_.vMulColor.r = _RGB.r;
+		CorrectResultColor_.vMulColor.g = _RGB.g;
+		CorrectResultColor_.vMulColor.b = _RGB.b;
 	}
 
 	inline void SetAlpha(float _Value)

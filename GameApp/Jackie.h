@@ -7,6 +7,7 @@
 #include <GameEngine/GameEngineFSM.h>
 #include "Character.h"
 #include "JackieQEffect.h"
+#include "JackieEEffect.h"
 // 용도 : 
 // 설명 : 
 class Jackie : public Character
@@ -83,7 +84,6 @@ protected:
 
 private:
 	GameEngineFSM customState_;
-	bool isChainSaw_;
 
 	bool atkFlag_;
 
@@ -100,10 +100,18 @@ private:
 	float timer_end_E;
 	bool b_Ehit_;
 	GameEngineCollision* collision_E;
+	float4 eStartPosition_;
+	float4 eLandingPosition_;
+	bool bSkillEPassable_;
+	float skillETime_;
 
 	GameEngineEffectRenderer* basicAttackEffectRenderer_;
 	GameEngineEffectRenderer* skillQEffectRenderer_;
 
 	JackieQEffect* qEffect_;
+	JackieEEffect* eEffect_;
+
+	float timer_R;
+	bool isR_;
 };
 
