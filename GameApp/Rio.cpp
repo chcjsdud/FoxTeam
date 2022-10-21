@@ -197,7 +197,7 @@ void Rio::initRendererAndAnimation()
 	longBow_->CreateFBXAnimation("LongBow_Idle", "Rio_Bow_Long_Idle.fbx");
 	longBow_->ChangeFBXAnimation("LongBow_Idle");
 
-	longBow_->GetRenderSet(1).isRender = false;
+	longBow_->GetRenderSet(0).isRender = false;
 	longBow_->Off();
 }
 
