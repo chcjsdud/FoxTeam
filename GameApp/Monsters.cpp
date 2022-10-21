@@ -464,9 +464,9 @@ void Monsters::CheckAttackCollision(float _DeltaTime)
 	// 공격 충돌체 충돌체크
 	if (nullptr != AtkCollider_ && true == AtkCollider_->IsUpdate())
 	{
-#ifdef _DEBUG
-		GetLevel()->PushDebugRender(AtkCollider_->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
-#endif // _DEBUG
+//#ifdef _DEBUG
+		GetLevel()->PushDebugRender(AtkCollider_->GetTransform(), CollisionType::OBBBox3D, float4::RED);
+//#endif // _DEBUG
 
 		// 플레이어 그룹과의 충돌
 		std::list<GameEngineCollision*> CollisionList;

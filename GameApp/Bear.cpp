@@ -85,22 +85,24 @@ void Bear::InitalizeRenderAndAnimation()
 	MainRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	MainRenderer_->SetFBXMesh("Bear_BaseMesh.fbx", "TextureDeferredLightAni");
 
+	PivotPos_ = float4(-380.0f, 0.0f);
+	MainRenderer_->GetTransform()->SetLocalPosition(PivotPos_);									// 기존의 메쉬자체가 피벗이 액터의 원점을 벗어나있으므로 조정
 	MainRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
-	MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
+	MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 
 	// 애니메이션 생성
 	MainRenderer_->CreateFBXAnimation("APPEAR", "Bear_appear.UserAnimation", 0, false);			// 첫등장상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("REGEN", "Bear_appear.UserAnimation", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
-	MainRenderer_->CreateFBXAnimation("IDLE", "Bear_wait.UserAnimation", 0);						// 대기상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("CHASE", "Bear_run.UserAnimation", 0);						// 추적상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Bear_run.UserAnimation", 0);				// 귀환상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("IDLE", "Bear_wait.UserAnimation", 0);					// 대기상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("CHASE", "Bear_run.UserAnimation", 0);					// 추적상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Bear_run.UserAnimation", 0);			// 귀환상태의 애니메이션
 
 	MainRenderer_->CreateFBXAnimation("HIT", "Bear_wait.UserAnimation", 0);						// 피격상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEATH", "Bear_death.UserAnimation", 0, false);				// 사망중상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEAD", "Bear_death.UserAnimation", 0, false);				// 사망(리젠대기)상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEATH", "Bear_death.UserAnimation", 0, false);			// 사망중상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEAD", "Bear_death.UserAnimation", 0, false);			// 사망(리젠대기)상태의 애니메이션
 
-	MainRenderer_->CreateFBXAnimation("ATK01", "Bear_atk01.UserAnimation", 0, false);				// 일반공격01상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("ATK02", "Bear_atk02.UserAnimation", 0, false);				// 일반공격02상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK01", "Bear_atk01.UserAnimation", 0, false);			// 일반공격01상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK02", "Bear_atk02.UserAnimation", 0, false);			// 일반공격02상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("SKILLATTACK", "Bear_skill.UserAnimation", 0, false);		// 스킬공격상태의 애니메이션
 	MainRenderer_->ChangeFBXAnimation("IDLE");
 
@@ -115,14 +117,14 @@ void Bear::InitalizeCollider()
 	BodyCollider_->SetCollisionGroup(eCollisionGroup::Monster);
 	BodyCollider_->SetCollisionType(CollisionType::OBBBox3D);
 	BodyCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
-	BodyCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	BodyCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition() - PivotPos_);			// 피벗 적용
 
 	// 추가: 공격 충돌체 생성(옵션)
 	AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
 	AtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
 	AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
-	AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition() - PivotPos_);			// 피벗 적용
 	AtkCollider_->Off();
 }
 
