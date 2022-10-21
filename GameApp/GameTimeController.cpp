@@ -319,20 +319,24 @@ void GameTimeController::UpdateMonsterFirstAppearTime(float _DeltaTime)
 		}
 
 #pragma region 테스트용
-		//if (MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_ == false)
+		//TestTime_ -= _DeltaTime;
+		//if (0.0f >= TestTime_)
 		//{
-		//	FirstAppearMonsters(MonsterType::WOLF);
-		//	FirstAppearMonsters(MonsterType::BEAR);
-		//	FirstAppearMonsters(MonsterType::BAT);
-		//	FirstAppearMonsters(MonsterType::DOG);
-		//	FirstAppearMonsters(MonsterType::CHICKEN);
-		//	FirstAppearMonsters(MonsterType::BOAR);
-		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].IsAppear_ = true;
-		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_ = true;
-		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].IsAppear_ = true;
-		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].IsAppear_ = true;
-		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_ = true;
-		//	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].IsAppear_ = true;
+		//	if (MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_ == false)
+		//	{
+		//		FirstAppearMonsters(MonsterType::WOLF);
+		//		FirstAppearMonsters(MonsterType::BEAR);
+		//		FirstAppearMonsters(MonsterType::BAT);
+		//		FirstAppearMonsters(MonsterType::DOG);
+		//		FirstAppearMonsters(MonsterType::CHICKEN);
+		//		FirstAppearMonsters(MonsterType::BOAR);
+		//		MonsterFirstAppearList_[static_cast<int>(MonsterType::WOLF)].IsAppear_ = true;
+		//		MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_ = true;
+		//		MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].IsAppear_ = true;
+		//		MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].IsAppear_ = true;
+		//		MonsterFirstAppearList_[static_cast<int>(MonsterType::CHICKEN)].IsAppear_ = true;
+		//		MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].IsAppear_ = true;
+		//	}
 		//}
 #pragma endregion
 	}
@@ -380,6 +384,7 @@ GameTimeController::GameTimeController()
 	, CurDayOrNight_(DayAndNightType::DAY)
 	, AllMonsterAppearEnd_(false)
 	, MonsterFirstAppearList_{}
+	, TestTime_(1.0f)
 {
 }
 

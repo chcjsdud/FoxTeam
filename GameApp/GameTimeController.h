@@ -95,5 +95,8 @@ private: // 게임시간 관련
 private: // 몬스터첫등장 관련
 	bool AllMonsterAppearEnd_;																			// 모든 몬스터타입에 관련하여 첫등장 상태 전환완료시 On(true: 모든몬스터첫등장완료)
 	MonsterFirstAppearInfo MonsterFirstAppearList_[static_cast<int>(MonsterType::MAX)];					// 몬스터 최초 등장관리(첫등장에만 관여하며 이후 몬스터사망 후 리젠은 각각의 몬스터에서 제어)
+
+private: // 테스트용
+	float TestTime_;
 };
 

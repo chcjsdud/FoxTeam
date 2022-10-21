@@ -138,16 +138,22 @@ void Wolf::InitalizeCollider()
 	AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
 	AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
 	AtkCollider_->Off();
+
+	//// 추가: 스킬공격 충돌체 생성(옵션)
+	//SkillAtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	//SkillAtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
+	//SkillAtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
+	//SkillAtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
+	//SkillAtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	//SkillAtkCollider_->Off();
 }
 
 void Wolf::SkillAttackProcessing(float _DeltaTime)
 {
 	if (false == SkillAtk_)
 	{
-		// 애니메이션 실행 및 Flag On, Attack Collider On
+		// 애니메이션 실행
 		MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
-		IsAttack_ = true;
-		AtkCollider_->On();
 
 		// 충돌체 Off상태에서 시전
 		// 소집: 반경 20m의 늑대들을 불러모아서 함께 적을 공격(즉시시전)

@@ -34,7 +34,12 @@ private:
 public:
 protected:
 private:
+	bool SkillAtk_;										// 스킬공격 처리
 	float SkillAtk_Range_;								// 스킬공격 사정거리
-	float SkillAtk_CastTime_;							// 스킬공격 시전시간
+	float SkillAtk_CastTimeMax_;						// 스킬공격 시전시간 최대치(고정)
+	float SkillAtk_CastTime_;							// 스킬공격 시전시간(갱신)
+	float SkillAtk_FixedDamage_;						// 스킬공격 고정데미지(고정)
+
+	
 };
 

@@ -3,6 +3,13 @@
 
 #include <GameEngine/GameEngineCollision.h>
 
+#include "GameServer.h"
+#include "GameClient.h"
+#include "CharCrowdControlPacket.h"
+
+#include "LumiaLevel.h"
+#include "Character.h"
+
 bool Boar::ResourceLoadFlag = false;
 
 void Boar::InitalizeStateInfo()
@@ -135,21 +142,72 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 	// 시전시간 - 1.5초
 	// 쿨다운 - 7초
 	// 1m == 100.0f로 계산
+	
+	//if (false == SkillAtk_)
+	//{
+	//	// 현재 타겟이 스킬사정거리내 진입했으며 스킬시전시간을 모두 소모했다면 스킬공격 시작
+	//	SkillAtk_CastTime_ -= _DeltaTime;
+	//	if (0.0f >= SkillAtk_CastTime_)
+	//	{
+	//		float4 MyPosition = GetTransform()->GetWorldPosition();
+	//		float4 TargetPosition = CurTarget_->GetTransform()->GetWorldPosition();
+	//		if ((TargetPosition - MyPosition).Len3D() <= SkillAtk_Range_)
+	//		{
+	//			// 스킬공격 애니메이션 실행
+	//			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
+
+	//			// 스킬공격처리를 위한 준비
+	//			SkillAtk_ = true;
+
+	//			// 공격충돌체와의 플레이어의 피격충돌체와 충돌체크를 위해 On
+	//			IsAttack_ = true;
+	//			AtkCollider_->On();
+
+	//			// 타겟 넉백 방향 계산
+	//			float4 KnockbackDir = TargetPosition - MyPosition;
+
+	//			// 타겟 넉백 패킷전송
+	//			CharCrowdControlPacket ccPacket;
+	//			ccPacket.SetTargetIndex(CurTarget_->GetIndex());
+	//			ccPacket.SetWallSlam(0.2f, KnockbackDir * 3000.f, 1.0f);
+	//			FT::SendPacket(ccPacket);
+
+	//			// 사운드?
+	//			//GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill03_Hit.wav");
+	//			//PacketSoundPlay packet;
+	//			//packet.SetSound("hyunwoo_Skill03_Hit.wav", transform_.GetWorldPosition());
+	//			//FT::SendPacket(packet);
 
 
+	//			CurTarget_->Knockback();
 
+	//			// 타겟 데미지
+	//			float CurDmage = SkillAtk_FixedDamage_ + (static_cast<float>(StateInfo_.OffencePower_) * 3.0f);
+	//			CurTarget_->Damage(CurDmage, this);
+	//		}
+
+	//		// 스킬시전시간 초기화
+	//		SkillAtk_CastTime_ = SkillAtk_CastTimeMax_;
+	//	}
+	//}
 
 	// 모션종료시 
 	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
 	{
+		// 스킬공격완료
+		SkillAtk_ = false;
+
 		// 모션종료시 대기상태 전환
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}
 }
 
 Boar::Boar()
-	: SkillAtk_Range_(500.0f)
+	: SkillAtk_(false)
+	, SkillAtk_Range_(500.0f)
+	, SkillAtk_CastTimeMax_(1.5f)
 	, SkillAtk_CastTime_(1.5f)
+	, SkillAtk_FixedDamage_(150.0f)
 {
 }
 

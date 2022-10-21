@@ -129,6 +129,14 @@ void Bear::InitalizeCollider()
 	AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
 	AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition() - PivotPos_);			// 피벗 적용
 	AtkCollider_->Off();
+
+	// 추가: 스킬공격 충돌체 생성(옵션)
+	SkillAtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	SkillAtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
+	SkillAtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
+	SkillAtkCollider_->GetTransform()->SetLocalScaling({ 400.0f, 400.0f, 400.0f });												// 사정거리 - 4m = 400.0f로 측정
+	SkillAtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition() - PivotPos_);			// 피벗 적용
+	SkillAtkCollider_->Off();
 }
 
 void Bear::SkillAttackProcessing(float _DeltaTime)
@@ -150,34 +158,28 @@ void Bear::SkillAttackProcessing(float _DeltaTime)
 			// 스킬공격처리를 위한 준비
 			SkillAtk_ = true;
 
-			// 공격충돌체와의 플레이어의 피격충돌체와 충돌체크를 위해 On
-			IsAttack_ = true;
-			AtkCollider_->On();
+			// 스킬공격충돌체 On
+			SkillAtkCollider_->On();
 
-			// 사정거리범위내 검사
-			LumiaLevel* CurLevel = GetLevelConvert<LumiaLevel>();
-			if (nullptr == CurLevel)
+			// 스킬공격충돌체와 충돌한 모든 캐릭터 검사
+			std::list<GameEngineCollision*> SkillAtkList = AtkCollider_->GetCollisionList(static_cast<int>(eCollisionGroup::Player));
+			if (true == SkillAtkList.empty())
 			{
-				GameEngineDebug::MsgBoxError("루미아 레벨을 찾을수없습니다!!!!!!!!!");
-				return;
+				GameEngineDebug::OutPutDebugString("스킬을 시전했으나 충돌한 캐릭터가 존재하지않습니다!!!!\n");
 			}
-
-			// 현재 타겟을 포함하여 현재 게임에 생성된 모든 캐릭터와의 거리를 측정하여 사정거리내에 존재하는 캐릭터에게 모두 스턴
-			int CharacterCount = static_cast<int>(CurLevel->GetCharacterActorList().size());
-			for (int CharacterNum = 0; CharacterNum < CharacterCount; ++CharacterNum)
+			else
 			{
-				Character* CheckCharacter = CurLevel->GetCharacterActorList()[CharacterNum];
-
-				float4 MyPosition = GetTransform()->GetWorldPosition();
-				float4 CheckCharacterPosition = CheckCharacter->GetTransform()->GetWorldPosition();
-				if ((CheckCharacterPosition - MyPosition).Len3D() <= SkillAtk_Range_)
+				// 충돌한 캐릭터에게 모두 스턴 및 데미지 전달
+				for (auto& AtkTarget : SkillAtkList)
 				{
+					Character* AtkCharacter = dynamic_cast<Character*>(AtkTarget->GetActor());
+
 					// 스턴
-					CheckCharacter->Stun(SkillAtk_StunTime_);
+					AtkCharacter->Stun(SkillAtk_StunTime_);
 
 					// 데미지
 					float CurDamage = SkillAtk_FixedDamage_ + (static_cast<float>(StateInfo_.OffencePower_) * 0.4f);
-					CheckCharacter->Damage(CurDamage, this);
+					AtkCharacter->Damage(CurDamage, this);
 				}
 			}
 
@@ -193,8 +195,7 @@ void Bear::SkillAttackProcessing(float _DeltaTime)
 		{
 			// 스킬공격 끝
 			SkillAtk_ = false;
-			IsAttack_ = false;
-			AtkCollider_->Off();
+			SkillAtkCollider_->Off();
 
 			// 대기상태로 전환
 			ChangeAnimationAndState(MonsterStateType::IDLE);

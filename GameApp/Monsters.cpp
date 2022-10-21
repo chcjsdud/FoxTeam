@@ -431,8 +431,11 @@ void Monsters::CheckAllCollision(float _DeltaTime)
 	// 몸체 충돌체 충돌체크
 	CheckBodyCollision(_DeltaTime);
 
-	// 공격 충돌체 충돌체크
+	// 일반공격 충돌체 충돌체크
 	CheckAttackCollision(_DeltaTime);
+
+	// 스킬공격 충돌체 충돌체크
+	CheckSkillAttackCollision(_DeltaTime);
 }
 
 void Monsters::CheckBodyCollision(float _DeltaTime)
@@ -460,7 +463,7 @@ void Monsters::CheckBodyCollision(float _DeltaTime)
 
 void Monsters::CheckAttackCollision(float _DeltaTime)
 {
-	// 공격 충돌체 충돌체크
+	// 일반공격 충돌체 충돌체크
 	if (nullptr != AtkCollider_ && true == AtkCollider_->IsUpdate())
 	{
 //#ifdef _DEBUG
@@ -507,6 +510,20 @@ void Monsters::CheckAttackCollision(float _DeltaTime)
 			IsAttack_ = false;
 			AtkCollider_->Off();
 		}
+	}
+}
+
+void Monsters::CheckSkillAttackCollision(float _DeltaTime)
+{
+	// 스킬공격 충돌체 충돌체크
+	if (nullptr != SkillAtkCollider_ && true == SkillAtkCollider_->IsUpdate())
+	{
+//#ifdef _DEBUG
+		GetLevel()->PushDebugRender(SkillAtkCollider_->GetTransform(), CollisionType::OBBBox3D, float4::GREEN);
+//#endif // _DEBUG
+
+		// 스킬공격충돌체는 각각 몬스터의 스킬공격처리에서 체크
+
 	}
 }
 
@@ -745,6 +762,7 @@ Monsters::Monsters()
 	, EffectRenderer_(nullptr)
 	, BodyCollider_(nullptr)
 	, AtkCollider_(nullptr)
+	, SkillAtkCollider_(nullptr)
 	, Index_(-1)
 	, Type_(MonsterType::NONE)
 	, AreaType_(Location::NONE)
