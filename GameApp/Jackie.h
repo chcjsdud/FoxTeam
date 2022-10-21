@@ -4,7 +4,9 @@
 #include <GameEngine/GameEngineUIRenderer.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineEffectRenderer.h>
+#include <GameEngine/GameEngineFSM.h>
 #include "Character.h"
+#include "JackieQEffect.h"
 // 용도 : 
 // 설명 : 
 class Jackie : public Character
@@ -68,12 +70,26 @@ protected:
 
 	virtual void onPlayEffect(const std::string& _effectName);
 
+
+	// customstate
+	void startSkillEBegin();
+	void updateSkillEBegin(float _deltaTime);
+
+	void startSkillEShot();
+	void updateSkillEShot(float _deltaTime);
+
+	void startSkillEEnd();
+	void updateSkillEEnd(float _deltaTime);
+
 private:
+	GameEngineFSM customState_;
+	bool isChainSaw_;
+
 	bool atkFlag_;
 
 	float timer_collision_Q;
 	float timer_end_Q;
-	bool b_Qhit_;
+	int b_Qhit_;
 	GameEngineCollision* collision_Q;
 
 
@@ -83,5 +99,8 @@ private:
 	GameEngineCollision* collision_E;
 
 	GameEngineEffectRenderer* basicAttackEffectRenderer_;
+	GameEngineEffectRenderer* skillQEffectRenderer_;
+
+	JackieQEffect* qEffect_;
 };
 

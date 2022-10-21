@@ -177,11 +177,11 @@ void Character::Update(float _DeltaTime)
 			uiController_->GetBloodBackground()->Draw(false);
 		}
 
-		if (1 >= level->GetSurvivorCount() && false == isPlayerDead_)
-		{
-			mainState_.ChangeState("DeathState", true);
-			deathState_.ChangeState("PlayerWinner", true);
-		}
+	if (1 >= level->GetSurvivorCount() && false == isPlayerDead_)
+	{
+		uiController_->GetBloodBackground()->Draw(false);
+		mainState_.ChangeState("DeathState", true);
+		deathState_.ChangeState("PlayerWinner", true);
 	}
 
 	checkCurrentNavFace();
@@ -1483,6 +1483,8 @@ void Character::startPlayerWinner()
 	uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), true);
 	uiController_->GetWinLoseUI()->SetText("승리자 : " + pm->GetMyPlayer().playerNickname_ + "\n마지막까지 생존하였습니다.");
 	uiController_->GetWinLoseUI()->Activate();
+
+	changeAnimationWait();
 }
 
 void Character::updatePlayerWinner(float _deltaTime)

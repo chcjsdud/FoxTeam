@@ -376,6 +376,9 @@
     <ClCompile Include="UI_Notice.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
+    <ClCompile Include="JackieQEffect.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Jackie</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -973,6 +976,9 @@
     </ClInclude>
     <ClInclude Include="UI_Notice.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="JackieQEffect.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Jackie</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

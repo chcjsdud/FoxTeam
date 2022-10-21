@@ -240,6 +240,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="JackieQEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MonsterDamagePacket.cpp" />
     <ClCompile Include="TestLevelBox.cpp">
       <SubType>
@@ -595,6 +599,10 @@
     </ClInclude>
     <ClInclude Include="Chicken.h" />
     <ClInclude Include="Jackie.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="JackieQEffect.h">
       <SubType>
       </SubType>
     </ClInclude>

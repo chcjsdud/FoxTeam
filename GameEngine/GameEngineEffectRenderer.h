@@ -119,6 +119,13 @@ public:
 		return CurAnimation_->IsEnd;
 	}
 
+	inline void SetColor(float4 _RGB)
+	{
+		CorrectResultColor_.vMulColor.r = _RGB.x;
+		CorrectResultColor_.vMulColor.g = _RGB.y;
+		CorrectResultColor_.vMulColor.b = _RGB.z;
+	}
+
 	inline void SetAlpha(float _Value)
 	{
 		CorrectResultColor_.vMulColor.a = _Value;

@@ -16,9 +16,9 @@
 #include "CharEffectPacket.h"
 
 Jackie::Jackie() // default constructer 디폴트 생성자
-	: atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(false), collision_Q(nullptr),
+	: isChainSaw_(false), atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(0), collision_Q(nullptr),
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
-	basicAttackEffectRenderer_(nullptr)
+	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr)
 {
 
 }
@@ -53,6 +53,7 @@ void Jackie::LoadResource()
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_skillE.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_weaponSkill.fbx"));
 
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_wait.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_atk1.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_atk2.fbx"));
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_run.fbx"));
@@ -99,6 +100,8 @@ void Jackie::ReleaseResource()
 	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_skillE.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_weaponSkill.fbx");
 
+
+	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_wait.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_atk1.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_atk2.fbx");
 	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_run.fbx");
@@ -131,6 +134,10 @@ void Jackie::Start()
 
 	//GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
 	//hitBase->Cut(3, 3);
+
+	customState_.CreateState(MakeState(Jackie, SkillEBegin));
+	customState_.CreateState(MakeState(Jackie, SkillEShot));
+	customState_.CreateState(MakeState(Jackie, SkillEEnd));
 }
 
 void Jackie::Update(float _deltaTime)
@@ -172,7 +179,7 @@ void Jackie::initJackieCollision()
 {
 	collision_Q = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	collision_Q->GetTransform()->SetLocalPosition({ 0.f,0.f,300.f });
-	collision_Q->GetTransform()->SetLocalScaling({ 450.0f, 10.0f, 300.0f });
+	collision_Q->GetTransform()->SetLocalScaling({ 450.0f, 10.0f, 230.0f });
 	collision_Q->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_Q->SetCollisionType(CollisionType::OBBBox3D);
 	collision_Q->Off();
@@ -197,7 +204,20 @@ void Jackie::initEffectRenderer()
 	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
 	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
 	basicAttackEffectRenderer_->CreateAnimation("FX_BI_Hit_061.png", "FX_BI_Hit_061", 0, 3, 0.04f, false);
-	basicAttackEffectRenderer_->Off();
+	basicAttackEffectRenderer_->Off(); 
+
+	//skillQEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
+	//
+	//skillQEffectRenderer_->SetImage("FX_BI_Jan_Skill02_Range_BG.png", "PointSmp");
+	//skillQEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, this->GetTransform()->GetWorldPosition().y + 20.0f, collision_Q->GetTransform()->GetWorldPosition().z});
+	//skillQEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
+	//skillQEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize());
+	//skillQEffectRenderer_->SetAlpha(0.7f);
+	//skillQEffectRenderer_->Off();
+
+	qEffect_ = GetLevel()->CreateActor<JackieQEffect>();
+	qEffect_->SetParent(this);
+
 }
 
 void Jackie::changeAnimationRun()
@@ -278,6 +298,25 @@ void Jackie::onStartQSkill()
 
 	curAnimationName_ = "SkillQ";
 	renderer_->ChangeFBXAnimation("SkillQ", true);
+
+	float4 wp = GetTransform()->GetWorldPosition();
+	float4 wr = GetTransform()->GetLocalRotation();
+	qEffect_->GetTransform()->SetLocalPosition(wp);
+	qEffect_->GetTransform()->SetLocalRotationDegree(wr);
+	qEffect_->PlayAwake();
+
+	//float4 wp = GetTransform()->GetWorldPosition();
+	//qEffect_->GetTransform()->SetLocalPosition(wp);
+	//qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+	//qEffect_->PlayAwake();
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillQ");
+	FT::SendPacket(pack);
+	//skillQEffectRenderer_->On();
+	//skillQEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, this->GetTransform()->GetWorldPosition().y + 30.0f, collision_Q->GetTransform()->GetLocalPosition().z});
+	//skillQEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, GetTransform()->GetWorldRotation().z - 90.0f });
 }
 
 void Jackie::onUpdateQSkill(float _deltaTime)
@@ -297,19 +336,20 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 		collision_Q->Off();
 	}
 
-	if (1.05f <= timer_end_Q)
+	if (0.8f <= timer_end_Q)
 	{
 		// 모든 카운터 초기화
 		timer_collision_Q = 0.0f;
 		timer_end_Q = 0.0f;
-		b_Qhit_ = false;
+		b_Qhit_ = 0;
 		changeAnimationWait();
+		//skillQEffectRenderer_->Off();
 		mainState_.ChangeState("NormalState", true);
 		normalState_.ChangeState("Watch", true);
 		return;
 	}
 
-	if (0.1f <= timer_collision_Q && false == b_Qhit_)
+	if (0.1f <= timer_collision_Q && 0 == b_Qhit_)
 	{
 		collision_Q->On();
 
@@ -341,12 +381,52 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 
 				if (nullptr != character)
 				{
-					character->Damage(300.0f, this);
+					character->Damage(150.0f, this);
 				}
 			}
 		}
 
-		b_Qhit_ = true;
+		b_Qhit_++;
+	}
+
+	if (0.3f <= timer_collision_Q && 1 == b_Qhit_)
+	{
+		collision_Q->On();
+
+		//GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill01_Hit.wav");
+		//PacketSoundPlay packet;
+		//packet.SetSound("hyunwoo_Skill01_Hit.wav", transform_.GetWorldPosition());
+
+		//FT::SendPacket(packet);
+
+		//float4 wp = GetTransform()->GetWorldPosition();
+		//qEffect_->GetTransform()->SetLocalPosition(wp);
+		//qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		//qEffect_->PlayAwake();
+
+		//CharEffectPacket pack;
+		//pack.SetTargetIndex(myIndex_);
+		//pack.SetAnimationName("SkillQ");
+		//FT::SendPacket(pack);
+
+		auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
+
+		for (GameEngineCollision* col : collisionList)
+		{
+			GameEngineActor* actor = col->GetActor();
+			Character* character = nullptr;
+			if (nullptr != actor && actor != this)
+			{
+				character = dynamic_cast<Character*>(actor);
+
+				if (nullptr != character)
+				{
+					character->Damage(150.0f, this);
+				}
+			}
+		}
+
+		b_Qhit_++;
 	}
 }
 
@@ -372,6 +452,7 @@ void Jackie::onUpdateESkill(float _deltaTime)
 
 void Jackie::onStartRSkill()
 {
+	isChainSaw_ = true;
 }
 
 void Jackie::onUpdateRSkill(float _deltaTime)
@@ -400,6 +481,40 @@ void Jackie::onUpdateCustomState(float _deltaTime)
 }
 
 void Jackie::onPlayEffect(const std::string& _effectName)
+{
+	if ("SkillQ" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		float4 wr = GetTransform()->GetLocalRotation();
+		qEffect_->GetTransform()->SetLocalPosition(wp);
+		qEffect_->GetTransform()->SetLocalRotationDegree(wr);
+		qEffect_->PlayAwake();
+		return;
+	}
+
+}
+
+void Jackie::startSkillEBegin()
+{
+}
+
+void Jackie::updateSkillEBegin(float _deltaTime)
+{
+}
+
+void Jackie::startSkillEShot()
+{
+}
+
+void Jackie::updateSkillEShot(float _deltaTime)
+{
+}
+
+void Jackie::startSkillEEnd()
+{
+}
+
+void Jackie::updateSkillEEnd(float _deltaTime)
 {
 }
 
