@@ -25,6 +25,7 @@ GameEngineFBXRenderer::GameEngineFBXRenderer()
 	, overrideBoneIndex_(-1)
 	, parentBoneIndex_(-1)
 	, parentBoneRenderer_(nullptr)
+	, customOffest_(0.0f, 0.0f, 0.0f, 0.0f)
 {
 }
 

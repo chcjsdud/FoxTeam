@@ -180,8 +180,9 @@ void Rio::initRendererAndAnimation()
 	shortBow_->GetTransform()->SetLocalScaling(100.f);
 	shortBow_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 
-	//shortBow_->SetParentBoneIndex(renderer_, 52);
 	shortBow_->SetParentBoneName(renderer_, "Bip001 L Finger2");
+	shortBow_->SetCustomOffset({ 0.0f, 0.0f, -0.1f });
+
 	shortBow_->CreateFBXAnimation("ShortBow_Idle", "Rio_Bow_Short_Idle.fbx");
 	shortBow_->ChangeFBXAnimation("ShortBow_Idle");
 
@@ -191,6 +192,8 @@ void Rio::initRendererAndAnimation()
 	longBow_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 
 	longBow_->SetParentBoneName(renderer_, "Bip001 L Finger2");
+	longBow_->SetCustomOffset({ 0.015f, 0.45f, -0.12f });
+
 	longBow_->CreateFBXAnimation("LongBow_Idle", "Rio_Bow_Long_Idle.fbx");
 	longBow_->ChangeFBXAnimation("LongBow_Idle");
 

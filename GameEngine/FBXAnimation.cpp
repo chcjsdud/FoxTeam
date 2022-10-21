@@ -107,6 +107,9 @@ void FBXAnimation::Update(float _DeltaTime)
 				
 				float4x4 mat2 = float4x4::Affine(LerpScale, SLerpQ, LerpPos);
 				Render.BoneData[i] = BoneData->BonePos.Offset * mat2 * mat;
+				Render.BoneData[i].vw += Render.BoneData[i].vx * ParentRenderer->customOffest_.x;
+				Render.BoneData[i].vw += Render.BoneData[i].vy * ParentRenderer->customOffest_.y;
+				Render.BoneData[i].vw += Render.BoneData[i].vz * ParentRenderer->customOffest_.z;
 			}
 			else
 			{

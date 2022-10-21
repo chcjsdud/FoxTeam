@@ -55,6 +55,7 @@ public:
 
 	void SetParentBoneIndex(GameEngineFBXRenderer* _fbxRenderer, int _boneIndex);
 	void SetParentBoneName(GameEngineFBXRenderer* _fbxRenderer, const std::string& _boneNameToAffect);
+	void SetCustomOffset(const float4& _customOffset) { customOffest_ = _customOffset; }
 	void ClearParentBone();
 
 protected:
@@ -76,5 +77,6 @@ private:
 
 	GameEngineFBXRenderer* parentBoneRenderer_;
 	int parentBoneIndex_;
+	float4 customOffest_;
 };
 
