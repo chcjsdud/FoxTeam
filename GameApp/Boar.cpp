@@ -11,6 +11,7 @@
 #include "LumiaMap.h"
 #include "Character.h"
 
+//================================================================================= Boar
 bool Boar::ResourceLoadFlag = false;
 
 void Boar::InitalizeStateInfo()
@@ -89,14 +90,14 @@ void Boar::InitalizeResourceLoad()
 
 void Boar::InitalizeRenderAndAnimation()
 {
-	// 렌더러 셋팅
+	//============================= 메인렌더러 셋팅
 	MainRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	MainRenderer_->SetFBXMesh("Boar_BaseMesh.fbx", "TextureDeferredLightAni");
 
 	MainRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	// 애니메이션 생성
+	//============================= 메인렌더러 애니메이션 생성
 	MainRenderer_->CreateFBXAnimation("APPEAR", "Boar_appear.UserAnimation", 0, false);					// 첫등장상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("REGEN", "Boar_appear.UserAnimation", 0, false);					// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
 	MainRenderer_->CreateFBXAnimation("IDLE", "Boar_wait.UserAnimation", 0);							// 대기상태의 애니메이션
@@ -114,8 +115,12 @@ void Boar::InitalizeRenderAndAnimation()
 
 	MainRenderer_->ChangeFBXAnimation("IDLE");
 
-	// 기본상태 셋팅
+	//============================= 기본상태 셋팅
 	ChangeAnimationAndState(MonsterStateType::APPEAR);
+
+	//============================= 스킬공격 공격박스렌더러
+	SkillAtk_HitRnage_ = new BoarHitRange();
+	SkillAtk_HitRnage_->InitalizeHitRnage();
 }
 
 void Boar::InitalizeCollider()
@@ -164,11 +169,9 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 		// 스킬공격준비완료, 스킬공격시작
 	if (false == SkillAtkReady_ && true == SkillAtk_)
 	{
-		// 스킬공격 시작했으므로 이펙트렌더러 Off
-
-
-
-
+		// 221021 SJH : 임시주석처리(히트박스렌더러 제작중)
+		//// 스킬공격 시작했으므로 이펙트렌더러 Off
+		//SkillAtk_HitRnage_->SkillAttackRangeOff();
 
 		// 타겟위치까지 돌진하며 타겟과 충돌시 타겟에게 넉백, 데미지를 입히고 스킬공격성공으로 대기상태로 전환
 		// 충돌실패시 스킬공격실패로 대기상태로 전환
@@ -184,12 +187,12 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 				if (AtkCharacter->GetIndex() == CurTargetIndex_)
 				{
 					// 넉백(적이 벽에 부딪혔다면 기절)
-					AtkCharacter->WallSlam(0.2f, SkillAtk_DetectTargetDir_ * 3000.f, 0.5f);
+					AtkCharacter->WallSlam(0.1f, SkillAtk_DetectTargetDir_ * SkillAtk_RushSpeed_, 1.0f);
 
 					// 넉백 패킷전송
 					CharCrowdControlPacket ccPacket;
 					ccPacket.SetTargetIndex(AtkCharacter->GetIndex());
-					ccPacket.SetWallSlam(0.2f, SkillAtk_DetectTargetDir_ * 3000.f, 0.5f);
+					ccPacket.SetWallSlam(0.1f, SkillAtk_DetectTargetDir_ * SkillAtk_RushSpeed_, 1.0f);
 					FT::SendPacket(ccPacket);
 
 					// 데미지(기본(150) + 공격력의 300%)
@@ -291,9 +294,10 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 			SkillAtkCollider_->On();
 			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
 
-			// 스킬공격 이펙트렌더러 On
-
-
+			// 221021 SJH : 임시주석처리(히트박스렌더러 제작중)
+			//// 스킬공격 이펙트렌더러 On
+			//float Length = (SkillAtk_DetectTargetPos_ - GetTransform()->GetWorldPosition()).Len3D();
+			//SkillAtk_HitRnage_->SkillAttackRangeOn(Length, SkillAtk_DetectTargetDir_);
 		}
 	}
 }
@@ -308,9 +312,155 @@ Boar::Boar()
 	, SkillAtk_RushSpeed_(400.0f)
 	, SkillAtk_DetectTargetPos_(float4::ZERO)
 	, SkillAtk_DetectTargetDir_(float4::ZERO)
+	, SkillAtk_HitRnage_(nullptr)
 {
 }
 
 Boar::~Boar()
+{
+	if (nullptr != SkillAtk_HitRnage_)
+	{
+		delete SkillAtk_HitRnage_;
+		SkillAtk_HitRnage_ = nullptr;
+	}
+}
+
+//================================================================================= Boar HitRange
+bool BoarHitRange::HitRangeMeshLoad = false;
+
+void BoarHitRange::InitalizeHitRnage()
+{
+	// 메쉬 로드
+	LoadHitRangeMesh();
+
+	// 렌더러 셋팅
+	CreateHitRangeRenderer();
+}
+
+void BoarHitRange::SkillAttackRangeOn(float _Length, const float4& _Dir)
+{
+	//=========================== 히트박스 범위를 On
+	PrevHitRangeLength_ = CurHitRnageLength_;
+	CurHitRnageLength_ = _Length;
+
+	// 1. 히트박스 범위의 길이에 따른 생성해야하는 화살표 갯수 계산
+	PrevArrowCount_ = CurArrowCount_;
+	CalcHitRangeArrowCount(CurHitRnageLength_);
+
+	// 2. 이전에 생성했던 화살표 갯수보다 크다면 차이나는 갯수만큼 생성
+	//    이전에 생성했던 화살표 갯수보다 작다면 차이나는 갯수만큼 off
+	//    이전에 생성했던 화살표 갯수와 같다면 모두 On
+	if (CurArrowCount_ > PrevArrowCount_)
+	{
+		int MulCount = CurArrowCount_ - PrevArrowCount_;
+		for (int NewNum = 0; NewNum < MulCount; ++NewNum)
+		{
+			//GameEngineFBXRenderer* NewArrow;
+
+
+
+			//Arrows_.push_back(NewArrow);
+		}
+
+		for (auto& Arrow : Arrows_)
+		{
+			//Arrow->On();
+		}
+	}
+	else if (CurArrowCount_ < PrevArrowCount_)
+	{
+		int StartNum = 0;
+		int MulCount = PrevArrowCount_ - CurArrowCount_;
+		for (int OffNum = StartNum; OffNum < MulCount; ++OffNum)
+		{
+			Arrows_[OffNum]->Off();
+		}
+	}
+	else if(CurArrowCount_ == PrevArrowCount_)
+	{
+		Frame_->On();
+		Bottom_->On();
+
+		int ArrowCount = static_cast<int>(Arrows_.size());
+		for (int ArrowNum = 0; ArrowNum < ArrowCount; ++ArrowNum)
+		{
+			Arrows_[ArrowNum]->On();
+		}
+
+		On();
+	}
+}
+
+void BoarHitRange::SkillAttackRangeOff()
+{
+	// 모두 Off 처리
+	Frame_->Off();
+	Bottom_->Off();
+
+	int ArrowCount = static_cast<int>(Arrows_.size());
+	for (int ArrowNum = 0; ArrowNum < ArrowCount; ++ArrowNum)
+	{
+		Arrows_[ArrowNum]->Off();
+	}
+
+	Off();
+}
+
+void BoarHitRange::CalcHitRangeArrowCount(float _Length)
+{
+	// 길이에 따른 화살표 갯수 계산
+	int CurClacCount = 0;
+
+
+
+
+	CurArrowCount_ = CurClacCount;
+}
+
+void BoarHitRange::UpdateHitRangeArrow()
+{
+}
+
+void BoarHitRange::LoadHitRangeMesh()
+{
+	// 메쉬로드를 한번만하기위하여 Flag Check
+	if (false == HitRangeMeshLoad)
+	{
+		// HitRangeFrame Mesh
+
+
+		// HitRangeBottom Mesh
+
+
+		// HitRangeArrow Mesh
+
+
+
+		// LoadEnd Flag On
+		HitRangeMeshLoad = true;
+	}
+}
+
+void BoarHitRange::CreateHitRangeRenderer()
+{
+	// HitRangeFrame Mesh
+
+
+	// HitRangeBottom Mesh
+
+
+}
+
+BoarHitRange::BoarHitRange()
+	: Frame_(nullptr)
+	, Bottom_(nullptr)
+	, PrevHitRangeLength_(0.0f)
+	, PrevArrowCount_(0)
+	, CurHitRnageLength_(0.0f)
+	, CurArrowCount_(0)
+{
+}
+
+BoarHitRange::~BoarHitRange()
 {
 }
