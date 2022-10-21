@@ -162,14 +162,14 @@ void Bear::SkillAttackProcessing(float _DeltaTime)
 			SkillAtkCollider_->On();
 
 			// 스킬공격충돌체와 충돌한 모든 캐릭터 검사
-			std::list<GameEngineCollision*> SkillAtkList = AtkCollider_->GetCollisionList(static_cast<int>(eCollisionGroup::Player));
+			std::list<GameEngineCollision*> SkillAtkList = SkillAtkCollider_->GetCollisionList(static_cast<int>(eCollisionGroup::Player));
 			if (true == SkillAtkList.empty())
 			{
 				GameEngineDebug::OutPutDebugString("스킬을 시전했으나 충돌한 캐릭터가 존재하지않습니다!!!!\n");
 			}
 			else
 			{
-				// 충돌한 캐릭터에게 모두 스턴 및 데미지 전달
+				// 충돌한 모든 캐릭터에게 스턴 및 데미지 전달
 				for (auto& AtkTarget : SkillAtkList)
 				{
 					Character* AtkCharacter = dynamic_cast<Character*>(AtkTarget->GetActor());

@@ -213,8 +213,9 @@ protected: // 컴포넌트
 	GameEngineFBXRenderer* MainRenderer_;									// 메인 렌더러
 	GameEngineFBXRenderer* EffectRenderer_;									// 이펙트 렌더러
 	GameEngineCollision* BodyCollider_;										// 몸체 충돌체(메인 -> 피격충돌체, 사망시 드랍아이템목록표시충돌체)
-	GameEngineCollision* AtkCollider_;										// 일반공격 충돌체(서브 -> 공격충돌체)
-	GameEngineCollision* SkillAtkCollider_;									// 스킬공격 충돌체(서브 -> 공격충돌체)
+	GameEngineCollision* AtkCollider_;										// 일반공격 충돌체(서브 -> 일반공격충돌체)
+	GameEngineCollision* SkillAtkReadyCollider_;							// 스킬공격준비 충돌체(서브 -> 스킬공격감지(준비))
+	GameEngineCollision* SkillAtkCollider_;									// 스킬공격 충돌체(서브 -> 스킬공격충돌체)
 
 protected: // 생성정보(탐색용)
 	int Index_;																// 생성 인덱스

@@ -515,11 +515,22 @@ void Monsters::CheckAttackCollision(float _DeltaTime)
 
 void Monsters::CheckSkillAttackCollision(float _DeltaTime)
 {
+	// 스킬공격준비 충돌체 충돌체크
+	if (nullptr != SkillAtkReadyCollider_ && true == SkillAtkReadyCollider_->IsUpdate())
+	{
+//#ifdef _DEBUG
+		GetLevel()->PushDebugRender(SkillAtkReadyCollider_->GetTransform(), CollisionType::OBBBox3D, float4::GREEN);
+//#endif
+
+		// 스킬공격준비충돌체는 각각 몬스터의 스킬공격처리에서 체크
+
+	}
+
 	// 스킬공격 충돌체 충돌체크
 	if (nullptr != SkillAtkCollider_ && true == SkillAtkCollider_->IsUpdate())
 	{
 //#ifdef _DEBUG
-		GetLevel()->PushDebugRender(SkillAtkCollider_->GetTransform(), CollisionType::OBBBox3D, float4::GREEN);
+		GetLevel()->PushDebugRender(SkillAtkCollider_->GetTransform(), CollisionType::OBBBox3D, float4::RED);
 //#endif // _DEBUG
 
 		// 스킬공격충돌체는 각각 몬스터의 스킬공격처리에서 체크
@@ -676,11 +687,6 @@ void Monsters::CalcMoveDir(const float4& _Position)
 	{
 		MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 	}
-	// 2. Bear(곰)인경우 렌더러의 피벗이 맞지않으므로 재조정
-	else if (MonsterType::BEAR == Type_)
-	{
-		// ... 
-	}
 }
 
 void Monsters::AttackProcessing()
@@ -762,6 +768,7 @@ Monsters::Monsters()
 	, EffectRenderer_(nullptr)
 	, BodyCollider_(nullptr)
 	, AtkCollider_(nullptr)
+	, SkillAtkReadyCollider_(nullptr)
 	, SkillAtkCollider_(nullptr)
 	, Index_(-1)
 	, Type_(MonsterType::NONE)

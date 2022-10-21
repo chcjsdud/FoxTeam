@@ -34,12 +34,16 @@ private:
 public:
 protected:
 private:
+	bool SkillAtkReady_;								// 스킬공격준비 처리
 	bool SkillAtk_;										// 스킬공격 처리
 	float SkillAtk_Range_;								// 스킬공격 사정거리
 	float SkillAtk_CastTimeMax_;						// 스킬공격 시전시간 최대치(고정)
 	float SkillAtk_CastTime_;							// 스킬공격 시전시간(갱신)
 	float SkillAtk_FixedDamage_;						// 스킬공격 고정데미지(고정)
+	float SkillAtk_RushSpeed_;							// 스킬공격 돌진속도(고정)
 
-	
+private:
+	float4 SkillAtk_DetectTargetPos_;					// 최초 스킬준비시 감지된 타겟의 위치
+	float4 SkillAtk_DetectTargetDir_;					// 최초 스킬준비시 감지된 타겟을 향한 방향
 };
 

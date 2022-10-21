@@ -8,6 +8,7 @@
 #include "CharCrowdControlPacket.h"
 
 #include "LumiaLevel.h"
+#include "LumiaMap.h"
 #include "Character.h"
 
 bool Boar::ResourceLoadFlag = false;
@@ -96,19 +97,21 @@ void Boar::InitalizeRenderAndAnimation()
 	MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
 	// 애니메이션 생성
-	MainRenderer_->CreateFBXAnimation("APPEAR", "Boar_appear.UserAnimation", 0, false);			// 첫등장상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("REGEN", "Boar_appear.UserAnimation", 0, false);			// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
-	MainRenderer_->CreateFBXAnimation("IDLE", "Boar_wait.UserAnimation", 0);						// 대기상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("CHASE", "Boar_run.UserAnimation", 0);						// 추적상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Boar_run.UserAnimation", 0);				// 귀환상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("APPEAR", "Boar_appear.UserAnimation", 0, false);					// 첫등장상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("REGEN", "Boar_appear.UserAnimation", 0, false);					// 리젠상태(몬스터 사망 후 리젠타임에 의해 리젠한 상태)의 애니메이션
+	MainRenderer_->CreateFBXAnimation("IDLE", "Boar_wait.UserAnimation", 0);							// 대기상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("CHASE", "Boar_run.UserAnimation", 0);							// 추적상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HOMINGINSTINCT", "Boar_run.UserAnimation", 0);					// 귀환상태의 애니메이션
 
-	MainRenderer_->CreateFBXAnimation("HIT", "Boar_wait.UserAnimation", 0);						// 피격상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEATH", "Boar_death.UserAnimation", 0, false);				// 사망중상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("DEAD", "Boar_death.UserAnimation", 0, false);				// 사망(리젠대기)상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("HIT", "Boar_wait.UserAnimation", 0);								// 피격상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEATH", "Boar_death.UserAnimation", 0, false);					// 사망중상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("DEAD", "Boar_death.UserAnimation", 0, false);					// 사망(리젠대기)상태의 애니메이션
 
-	MainRenderer_->CreateFBXAnimation("ATK01", "Boar_atk01.UserAnimation", 0, false);				// 일반공격01상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("ATK02", "Boar_atk02.UserAnimation", 0, false);				// 일반공격02상태의 애니메이션
-	MainRenderer_->CreateFBXAnimation("SKILLATTACK", "Boar_skill_ready.UserAnimation", 0, false);		// 스킬공격상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK01", "Boar_atk01.UserAnimation", 0, false);					// 일반공격01상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("ATK02", "Boar_atk02.UserAnimation", 0, false);					// 일반공격02상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("SKILLATTACKREADY", "Boar_skill_ready.UserAnimation", 0, false);	// 스킬시전준비상태의 애니메이션
+	MainRenderer_->CreateFBXAnimation("SKILLATTACK", "Boar_skill_assault.UserAnimation", 0);			// 스킬시전중상태의 애니메이션(루프실행 : 타겟과 충돌할때까지 실행해야하기때문에)
+
 	MainRenderer_->ChangeFBXAnimation("IDLE");
 
 	// 기본상태 셋팅
@@ -124,13 +127,29 @@ void Boar::InitalizeCollider()
 	BodyCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
 	BodyCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
 
-	// 추가: 공격 충돌체 생성(옵션)
+	// 추가: 일반공격 충돌체 생성(옵션)
 	AtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	AtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
 	AtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
 	AtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
 	AtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
 	AtkCollider_->Off();
+
+	// 추가: 스킬공격개시 충돌체 생성(옵션)
+	SkillAtkReadyCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	SkillAtkReadyCollider_->SetCollisionGroup(eCollisionGroup::MonsterSight);
+	SkillAtkReadyCollider_->SetCollisionType(CollisionType::OBBBox3D);
+	SkillAtkReadyCollider_->GetTransform()->SetLocalScaling({ 500.0f, 500.0f, 500.0f });
+	SkillAtkReadyCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	SkillAtkReadyCollider_->Off();
+
+	// 추가: 스킬공격 충돌체 생성(옵션)
+	SkillAtkCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	SkillAtkCollider_->SetCollisionGroup(eCollisionGroup::MonsterAttack);
+	SkillAtkCollider_->SetCollisionType(CollisionType::OBBBox3D);
+	SkillAtkCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
+	SkillAtkCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	SkillAtkCollider_->Off();
 }
 
 void Boar::SkillAttackProcessing(float _DeltaTime)
@@ -142,72 +161,153 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 	// 시전시간 - 1.5초
 	// 쿨다운 - 7초
 	// 1m == 100.0f로 계산
-	
-	//if (false == SkillAtk_)
-	//{
-	//	// 현재 타겟이 스킬사정거리내 진입했으며 스킬시전시간을 모두 소모했다면 스킬공격 시작
-	//	SkillAtk_CastTime_ -= _DeltaTime;
-	//	if (0.0f >= SkillAtk_CastTime_)
-	//	{
-	//		float4 MyPosition = GetTransform()->GetWorldPosition();
-	//		float4 TargetPosition = CurTarget_->GetTransform()->GetWorldPosition();
-	//		if ((TargetPosition - MyPosition).Len3D() <= SkillAtk_Range_)
-	//		{
-	//			// 스킬공격 애니메이션 실행
-	//			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
-
-	//			// 스킬공격처리를 위한 준비
-	//			SkillAtk_ = true;
-
-	//			// 공격충돌체와의 플레이어의 피격충돌체와 충돌체크를 위해 On
-	//			IsAttack_ = true;
-	//			AtkCollider_->On();
-
-	//			// 타겟 넉백 방향 계산
-	//			float4 KnockbackDir = TargetPosition - MyPosition;
-
-	//			// 타겟 넉백 패킷전송
-	//			CharCrowdControlPacket ccPacket;
-	//			ccPacket.SetTargetIndex(CurTarget_->GetIndex());
-	//			ccPacket.SetWallSlam(0.2f, KnockbackDir * 3000.f, 1.0f);
-	//			FT::SendPacket(ccPacket);
-
-	//			// 사운드?
-	//			//GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill03_Hit.wav");
-	//			//PacketSoundPlay packet;
-	//			//packet.SetSound("hyunwoo_Skill03_Hit.wav", transform_.GetWorldPosition());
-	//			//FT::SendPacket(packet);
-
-
-	//			CurTarget_->Knockback();
-
-	//			// 타겟 데미지
-	//			float CurDmage = SkillAtk_FixedDamage_ + (static_cast<float>(StateInfo_.OffencePower_) * 3.0f);
-	//			CurTarget_->Damage(CurDmage, this);
-	//		}
-
-	//		// 스킬시전시간 초기화
-	//		SkillAtk_CastTime_ = SkillAtk_CastTimeMax_;
-	//	}
-	//}
-
-	// 모션종료시 
-	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+		// 스킬공격준비완료, 스킬공격시작
+	if (false == SkillAtkReady_ && true == SkillAtk_)
 	{
-		// 스킬공격완료
-		SkillAtk_ = false;
+		// 스킬공격 시작했으므로 이펙트렌더러 Off
 
-		// 모션종료시 대기상태 전환
-		ChangeAnimationAndState(MonsterStateType::IDLE);
+
+
+
+
+		// 타겟위치까지 돌진하며 타겟과 충돌시 타겟에게 넉백, 데미지를 입히고 스킬공격성공으로 대기상태로 전환
+		// 충돌실패시 스킬공격실패로 대기상태로 전환
+
+		// 충돌체크
+		std::list<GameEngineCollision*> SkillAtkList = SkillAtkCollider_->GetCollisionList(static_cast<int>(eCollisionGroup::Player));
+		if (false == SkillAtkList.empty())
+		{
+			// 충돌한 캐릭터들 중 타겟이 존재하면 넉백 및 데미지
+			for (auto& AtkTarget : SkillAtkList)
+			{
+				Character* AtkCharacter = dynamic_cast<Character*>(AtkTarget->GetActor());
+				if (AtkCharacter->GetIndex() == CurTargetIndex_)
+				{
+					// 넉백
+					AtkCharacter->Knockback(0.2f, SkillAtk_DetectTargetDir_ * 3000.f);
+
+					// 넉백 패킷전송
+					CharCrowdControlPacket ccPacket;
+					ccPacket.SetTargetIndex(AtkCharacter->GetIndex());
+					ccPacket.SetKnockback(0.2f, SkillAtk_DetectTargetDir_ * 3000.f);
+					FT::SendPacket(ccPacket);
+
+					// 데미지(기본(150) + 공격력의 300%)
+					float CurDamage = SkillAtk_FixedDamage_ + (static_cast<float>(StateInfo_.OffencePower_) * 3.0f);
+					AtkCharacter->Damage(CurDamage, this);
+
+					//======================== 스킬공격완료
+					// 스킬공격준비 초기화
+					SkillAtkReady_ = false;
+					SkillAtkReadyCollider_->Off();
+
+					// 스킬공격 초기화
+					SkillAtk_ = false;
+					SkillAtkCollider_->Off();
+
+					// 모션종료시 대기상태 전환
+					ChangeAnimationAndState(MonsterStateType::IDLE);
+
+					return;
+				}
+			}
+		}
+
+		// 충돌하지않았다면 돌진 or 돌진완료체크
+		if ((SkillAtk_DetectTargetPos_ - GetTransform()->GetWorldPosition()).Len3D() > 3.0f)
+		{
+			// 돌진중
+			float4 MoveSpeed = SkillAtk_DetectTargetDir_ * SkillAtk_RushSpeed_ * _DeltaTime;
+			float4 NextMovePos = GetTransform()->GetWorldPosition() + MoveSpeed;
+			float Dist = 0.0f;
+			if (true == CurrentMap_->GetNavMesh()->CheckIntersects(NextMovePos + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, Dist))
+			{
+				//NextMovePos.y = FT::Map::MAX_HEIGHT - Dist;
+				GetTransform()->SetWorldPosition(NextMovePos);
+			}
+		}
+		else
+		{
+			// 돌진완료 -> 스킬공격실패
+			
+			// 스킬공격을 위한 준비데이터 초기화
+			SkillAtk_DetectTargetPos_ = float4::ZERO;
+			SkillAtk_DetectTargetDir_ = float4::ZERO;
+
+			// 스킬공격준비 초기화
+			SkillAtkReady_ = false;
+			SkillAtkReadyCollider_->Off();
+
+			// 스킬공격 초기화
+			SkillAtk_ = false;
+			SkillAtkCollider_->Off();
+
+			// 모션종료시 대기상태 전환
+			ChangeAnimationAndState(MonsterStateType::IDLE);
+			return;
+		}
+	}
+
+	// 스킬공격 준비시작
+	if (false == SkillAtkReady_ && false == SkillAtk_)
+	{
+		// 시전시간 감소
+		SkillAtk_CastTime_ -= _DeltaTime;
+		if (0.0f >= SkillAtk_CastTime_)
+		{
+			//================== 스킬공격준비처리 시작
+			SkillAtkReady_ = true;
+			SkillAtkReadyCollider_->On();
+			MainRenderer_->ChangeFBXAnimation("SKILLATTACKREADY");				// 스킬시전준비애니메이션 실행
+			
+			// 현재 타겟을 향한 나의 방향 및 타겟의 위치가 결정
+			float4 MyPosition = GetTransform()->GetWorldPosition();
+			float4 TargetPosition = CurTarget_->GetTransform()->GetWorldPosition();
+			SkillAtk_DetectTargetPos_ = TargetPosition;
+			SkillAtk_DetectTargetDir_ = (TargetPosition - MyPosition).NormalizeReturn3D();
+
+			// 나의 방향을 타겟을 향한 방향으로 회전
+			float4 Cross = float4::Cross3D(SkillAtk_DetectTargetDir_, { 0.0f, 0.0f, 1.0f });
+			Cross.Normalize3D();
+			float Angle = float4::DegreeDot3DToACosAngle(SkillAtk_DetectTargetDir_, { 0.0f, 0.0f, 1.0f });
+			GetTransform()->SetLocalRotationDegree({ 0.0f, Angle * -Cross.y, 0.0f });
+
+			// 시전시간 초기화
+			SkillAtk_CastTime_ = SkillAtk_CastTimeMax_;
+		}
+	}
+
+	// 스킬공격준비완료
+	if (true == SkillAtkReady_ && false == SkillAtk_)
+	{
+		if ("SKILLATTACKREADY" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+		{
+			// 스킬공격준비 Flag 해제 및 충돌체 Off
+			SkillAtkReady_ = false;
+			SkillAtkReadyCollider_->Off();
+
+			// 스킬공격이 가능하므로 스킬공격상태를 만들면서
+			SkillAtk_ = true;
+			SkillAtkCollider_->On();
+			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
+
+			// 스킬공격 이펙트렌더러 On
+
+
+		}
 	}
 }
 
 Boar::Boar()
-	: SkillAtk_(false)
+	: SkillAtkReady_(false)
+	, SkillAtk_(false)
 	, SkillAtk_Range_(500.0f)
 	, SkillAtk_CastTimeMax_(1.5f)
 	, SkillAtk_CastTime_(1.5f)
 	, SkillAtk_FixedDamage_(150.0f)
+	, SkillAtk_RushSpeed_(400.0f)
+	, SkillAtk_DetectTargetPos_(float4::ZERO)
+	, SkillAtk_DetectTargetDir_(float4::ZERO)
 {
 }
 
