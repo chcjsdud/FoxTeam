@@ -48,6 +48,11 @@ void Rio::LoadResource()
 
 		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Short_Idle.fbx"));
 
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Long_Idle.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Long_Idle.fbx"));
+
 		std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 		for (GameEngineFile& file : allFile)
 		{
@@ -173,12 +178,23 @@ void Rio::initRendererAndAnimation()
 	shortBow_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	shortBow_->SetFBXMesh("Rio_Bow_Short_Idle.fbx", "TextureDeferredLightAni");
 	shortBow_->GetTransform()->SetLocalScaling(100.f);
-	shortBow_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
+	shortBow_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 
 	//shortBow_->SetParentBoneIndex(renderer_, 52);
-	shortBow_->SetParentBoneName(renderer_, "Bip001 L Finger1");
+	shortBow_->SetParentBoneName(renderer_, "Bip001 L Finger2");
 	shortBow_->CreateFBXAnimation("ShortBow_Idle", "Rio_Bow_Short_Idle.fbx");
 	shortBow_->ChangeFBXAnimation("ShortBow_Idle");
+
+	longBow_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	longBow_->SetFBXMesh("Rio_Bow_Long_Idle.fbx", "TextureDeferredLightAni");
+	longBow_->GetTransform()->SetLocalScaling(100.f);
+	longBow_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+
+	longBow_->SetParentBoneName(renderer_, "Bip001 L Finger2");
+	longBow_->CreateFBXAnimation("LongBow_Idle", "Rio_Bow_Long_Idle.fbx");
+	longBow_->ChangeFBXAnimation("LongBow_Idle");
+
+	longBow_->Off();
 }
 
 void Rio::changeAnimationWait()
@@ -319,6 +335,17 @@ void Rio::onUpdateQSkill(float _deltaTime)
 	if (renderer_->IsOverrideAnimationEnd())
 	{
 		bLongBow_ = !bLongBow_;
+
+		if (bLongBow_)
+		{
+			longBow_->On();
+			shortBow_->Off();
+		}
+		else
+		{
+			longBow_->Off();
+			shortBow_->On();
+		}
 
 		overrideAnimationName_ = "";
 		overrideAnimationBoneName_ = "";
@@ -666,7 +693,7 @@ void Rio::onUpdateDSkill(float _deltaTime)
 
 		attackState_.GetCurrentState()->Time_ = -10.f;
 	}
-	
+
 	if (renderer_->IsCurrentAnimationEnd())
 	{
 		changeAnimationWait();
