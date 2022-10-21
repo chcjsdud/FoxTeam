@@ -93,6 +93,9 @@ private:
 	GameEngineCollision* collision_Q;
 
 
+	float timer_W;
+	bool isW_;
+
 	float timer_collision_E;
 	float timer_end_E;
 	bool b_Ehit_;

@@ -18,7 +18,8 @@
 Jackie::Jackie() // default constructer 디폴트 생성자
 	: isChainSaw_(false), atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(0), collision_Q(nullptr),
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
-	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr)
+	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr),
+	isW_(false), timer_W(0.0f)
 {
 
 }
@@ -143,6 +144,18 @@ void Jackie::Start()
 void Jackie::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
+
+	if (true == isW_)
+	{
+		timer_W -= _deltaTime;
+
+		if (0.0f >= timer_W)
+		{
+			timer_W = 0.0f;
+			isW_ = false;
+			stat_.MovementSpeed -= 100.0f;
+		}
+	}
 }
 
 void Jackie::initRendererAndAnimation()
@@ -222,6 +235,13 @@ void Jackie::initEffectRenderer()
 
 void Jackie::changeAnimationRun()
 {
+	if (true == isW_)
+	{
+		curAnimationName_ = "SkillW";
+		renderer_->ChangeFBXAnimation("SkillW");
+		return;
+	}
+
 	curAnimationName_ = "Run";
 	renderer_->ChangeFBXAnimation("Run");
 }
@@ -261,6 +281,20 @@ void Jackie::changeDeathAnimation()
 void Jackie::onStartBasicAttacking(IUnit* _target)
 {
 	target_->Damage(stat_.AttackPower, this);
+
+	if (true == isW_ && stat_.HP < stat_.HPMax)
+	{
+		float tmp = stat_.HPMax - stat_.HP;
+		if (tmp < 50.0f)
+		{
+			stat_.HP += tmp;
+		}
+		else
+		{
+			stat_.HP += 50.0f;
+		}
+	
+	}
 
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("attackGlove_Normal_Hit_P.wav");
 	PacketSoundPlay packet;
@@ -432,7 +466,8 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 
 void Jackie::onStartWSkill()
 {
-
+	isW_ = true;
+	timer_W = 3.0f;
 }
 
 void Jackie::onUpdateWSkill(float _deltaTime)
@@ -440,6 +475,7 @@ void Jackie::onUpdateWSkill(float _deltaTime)
 	changeAnimationWait();
 	mainState_.ChangeState("NormalState", true);
 	normalState_.ChangeState("Watch", true);
+	stat_.MovementSpeed += 100.0f;
 }
 
 void Jackie::onStartESkill()
