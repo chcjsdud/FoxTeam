@@ -17,7 +17,7 @@ void Monsters::StartAttack01State()
 void Monsters::UpdateAttack01State(float _DeltaTime)
 {
 	// 공격모션 종료시 대기상태로 전환
-	if ("ATK01" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	if ("ATK01" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->IsCurrentAnimationEnd())
 	{
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}
@@ -41,7 +41,7 @@ void Monsters::StartAttack02State()
 void Monsters::UpdateAttack02State(float _DeltaTime)
 {
 	// 공격모션 종료시 대기상태로 전환
-	if ("ATK02" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	if ("ATK02" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->IsCurrentAnimationEnd())
 	{
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}

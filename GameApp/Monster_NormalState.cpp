@@ -16,7 +16,7 @@ void Monsters::StartAppearState()
 void Monsters::UpdateAppearState(float _DeltaTime)
 {
 	// 첫등장애니메이션 모션종료시 대기상태로 돌입
-	if ("APPEAR" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	if ("APPEAR" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->IsCurrentAnimationEnd())
 	{
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}
@@ -49,7 +49,7 @@ void Monsters::StartRegenState()
 void Monsters::UpdateRegenState(float _DeltaTime)
 {
 	// 리젠완료시 대기상태 돌입
-	if ("REGEN" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	if ("REGEN" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->IsCurrentAnimationEnd())
 	{
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}

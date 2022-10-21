@@ -470,3 +470,15 @@ bool GameEngineFBXRenderer::CheckMeshToPointCollision(const float4& _Position,
 
 	return false;
 }
+
+inline std::vector<std::string> GameEngineFBXRenderer::GetAnimationNameList()
+{
+	std::vector<std::string> ReturnNameList;
+
+	for (auto AnimName : Animations)
+	{
+		ReturnNameList.push_back(AnimName.first);
+	}
+
+	return ReturnNameList;
+}

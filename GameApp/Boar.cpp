@@ -283,7 +283,7 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 	// 스킬공격준비완료
 	if (true == SkillAtkReady_ && false == SkillAtk_)
 	{
-		if ("SKILLATTACKREADY" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+		if ("SKILLATTACKREADY" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->IsCurrentAnimationEnd())
 		{
 			// 스킬공격준비 Flag 해제 및 충돌체 Off
 			SkillAtkReady_ = false;

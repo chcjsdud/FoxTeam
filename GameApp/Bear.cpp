@@ -201,7 +201,7 @@ void Bear::SkillAttackProcessing(float _DeltaTime)
 	if (true == SkillAtk_)
 	{
 		// 모션종료시 
-		if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+		if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->IsCurrentAnimationEnd())
 		{
 			// 스킬공격 끝
 			SkillAtk_ = false;

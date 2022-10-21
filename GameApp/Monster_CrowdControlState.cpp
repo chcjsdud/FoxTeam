@@ -41,7 +41,7 @@ void Monsters::StartDeathState()
 void Monsters::UpdateDeathState(float _DeltaTime)
 {
 	// 현재 애니메이션이 종료되면 리젠대기(사망)상태로 전환
-	if ("DEATH" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->CheckCurrentAnimationEnd())
+	if ("DEATH" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->IsCurrentAnimationEnd())
 	{
 		// 서버라면 상태 전환 후 패킷전송
 		// 클라라면 패킷전송 후 패킷수신시 상태전환
