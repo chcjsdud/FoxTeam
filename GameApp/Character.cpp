@@ -161,24 +161,27 @@ void Character::Update(float _DeltaTime)
 
 	// 이 밑에서부터는 Focued 된 내 캐릭터에만 해당되는 행위들이다.
 
-	if (stat_.HP <= (stat_.HPMax * 0.33f))
+	if (uiController_ != nullptr)
 	{
-		uiController_->GetBloodBackground()->Draw(true);
-
-		if (true == isPlayerDead_)
+		if (stat_.HP <= (stat_.HPMax * 0.33f))
 		{
-			uiController_->GetBloodBackground()->PlayerDead();
-		}
-	}
-	else
-	{
-		uiController_->GetBloodBackground()->Draw(false);
-	}
+			uiController_->GetBloodBackground()->Draw(true);
 
-	if (1 >= level->GetSurvivorCount() && false == isPlayerDead_)
-	{
-		mainState_.ChangeState("DeathState", true);
-		deathState_.ChangeState("PlayerWinner", true);
+			if (true == isPlayerDead_)
+			{
+				uiController_->GetBloodBackground()->PlayerDead();
+			}
+		}
+		else
+		{
+			uiController_->GetBloodBackground()->Draw(false);
+		}
+
+		if (1 >= level->GetSurvivorCount() && false == isPlayerDead_)
+		{
+			mainState_.ChangeState("DeathState", true);
+			deathState_.ChangeState("PlayerWinner", true);
+		}
 	}
 
 	checkCurrentNavFace();
