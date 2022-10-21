@@ -3,6 +3,10 @@
 
 #include <GameEngine/GameEngineCollision.h>
 
+#include "GameServer.h"
+#include "GameClient.h"
+#include "CharCrowdControlPacket.h"
+
 #include "LumiaLevel.h"
 #include "Character.h"
 
@@ -176,6 +180,12 @@ void Bear::SkillAttackProcessing(float _DeltaTime)
 
 					// 스턴
 					AtkCharacter->Stun(SkillAtk_StunTime_);
+
+					// 스턴패킷전송
+					CharCrowdControlPacket ccPacket;
+					ccPacket.SetTargetIndex(AtkCharacter->GetIndex());
+					ccPacket.SetStun(SkillAtk_StunTime_);
+					FT::SendPacket(ccPacket);
 
 					// 데미지
 					float CurDamage = SkillAtk_FixedDamage_ + (static_cast<float>(StateInfo_.OffencePower_) * 0.4f);
