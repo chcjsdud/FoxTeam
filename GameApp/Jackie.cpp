@@ -616,6 +616,9 @@ void Jackie::onStartDSkill()
 
 void Jackie::onUpdateDSkill(float _deltaTime)
 {
+	changeAnimationWait();
+	mainState_.ChangeState("NormalState", true);
+	normalState_.ChangeState("Watch", true);
 }
 
 void Jackie::onStartDeath()
