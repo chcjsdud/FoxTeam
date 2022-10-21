@@ -177,33 +177,33 @@ void Character::Update(float _DeltaTime)
 			uiController_->GetBloodBackground()->Draw(false);
 		}
 
-	if (1 >= level->GetSurvivorCount() && false == isPlayerDead_)
-	{
-		uiController_->GetBloodBackground()->Draw(false);
-		mainState_.ChangeState("DeathState", true);
-		deathState_.ChangeState("PlayerWinner", true);
+		if (1 >= level->GetSurvivorCount() && false == isPlayerDead_)
+		{
+			uiController_->GetBloodBackground()->Draw(false);
+			mainState_.ChangeState("DeathState", true);
+			deathState_.ChangeState("PlayerWinner", true);
+		}
+
+		checkCurrentNavFace();
+		checkItemBox();
+
+
+
+		attackCooldown_ += _DeltaTime;
+
+		mainState_.Update(_DeltaTime);
+
+		GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+		if (nullptr != controlWindow)
+		{
+			controlWindow->AddText("MainState : " + mainState_.GetCurrentStateName());
+			controlWindow->AddText("NormalState : " + normalState_.GetCurrentStateName());
+			controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
+			controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
+		}
+
+
 	}
-
-	checkCurrentNavFace();
-	checkItemBox();
-
-
-
-	attackCooldown_ += _DeltaTime;
-
-	mainState_.Update(_DeltaTime);
-
-	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
-	if (nullptr != controlWindow)
-	{
-		controlWindow->AddText("MainState : " + mainState_.GetCurrentStateName());
-		controlWindow->AddText("NormalState : " + normalState_.GetCurrentStateName());
-		controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
-		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
-	}
-
-
-
 }
 
 int Character::GetIndex() { return myIndex_; }
