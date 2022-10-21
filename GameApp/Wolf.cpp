@@ -164,7 +164,7 @@ void Wolf::SkillAttackProcessing()
 				// 나와의 거리 측정하여 스킬사정거리내에 존재하는 늑대를 소집
 				float4 MyPosition = GetTransform()->GetWorldPosition();
 				float4 MusterWolfPosition = WolfList[WolfNum]->GetTransform()->GetWorldPosition();
-				if ((MusterWolfPosition - MyPosition).Len3D() <= SkillAtk_Range_)
+				if ((MusterWolfPosition - MyPosition).Len3D() <= SkillAtk_Range_ && WolfList[WolfNum]->GetIndex() != Index_)
 				{
 					Monsters* CheckMonster = WolfList[WolfNum];
 					Wolf* CheckWolf = dynamic_cast<Wolf*>(CheckMonster);

@@ -324,7 +324,6 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 		{
 			CrowdControlState_ << "DEAD";
 			MainState_ << "CROWDCONTROL";
-			//MainRenderer_->ChangeFBXAnimation("DEAD");
 			break;
 		}
 		case MonsterStateType::ATK01:

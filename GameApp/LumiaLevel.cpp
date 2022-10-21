@@ -293,12 +293,12 @@ void LumiaLevel::MonsterCreationCommand()
 	}
 
 	//// 221017 SJH ADD : 몬스터 테스트용으로 플레이어 필요
-	//Monsters* ZeroMonster = MonsterActorByTypeList_[static_cast<int>(MonsterType::BOAR)][0];
+	//Monsters* ZeroMonster = MonsterActorByTypeList_[static_cast<int>(MonsterType::WOLF)][2];
 	//float4 ForcePos = ZeroMonster->GetTransform()->GetWorldPosition();
 	//CharacterActorList_[0]->InitSpawnPoint(ForcePos);
 	//PlayerInfoManager::GetInstance()->GetPlayerList()[0].curPos_ = ForcePos;
-	////CharacterActorList_[1]->InitSpawnPoint(ForcePos);
-	////PlayerInfoManager::GetInstance()->GetPlayerList()[1].curPos_ = ForcePos;
+	//CharacterActorList_[1]->InitSpawnPoint(ForcePos);
+	//PlayerInfoManager::GetInstance()->GetPlayerList()[1].curPos_ = ForcePos;
 
 //#ifdef _DEBUG
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
