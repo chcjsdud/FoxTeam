@@ -6,7 +6,8 @@
 #include <GameEngine/GameEngineCollision.h>
 
 UI_WinLose::UI_WinLose() // default constructer 디폴트 생성자
-	: portraitRenderer_(nullptr), backRenderer_(nullptr), textRenderer_(nullptr), appearTimer_(0.0f), isAllAppeared_(false), isActivated_(false), bloodStainRendererUp_(nullptr), bloodStainRenderer_(nullptr), isWinner_(false)
+	: portraitRenderer_(nullptr), backRenderer_(nullptr), textRenderer_(nullptr), appearTimer_(0.0f), isAllAppeared_(false), isActivated_(false), 
+	bloodStainRendererUp_(nullptr), bloodStainRenderer_(nullptr), isWinner_(false), deathCheckRenderer_(nullptr)
 {
 
 }
@@ -125,6 +126,17 @@ void UI_WinLose::Start()
 	portraitRenderer_->SetAlpha(0.0f);
 	portraitRenderer_->Off();
 
+
+	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("deathcheck.png");
+	hitBase->Cut(4, 2);
+	deathCheckRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	deathCheckRenderer_->SetImage("FX_BI_Dust_03b.png", "PointSmp");
+	deathCheckRenderer_->GetTransform()->SetLocalScaling(deathCheckRenderer_->GetCurrentTexture()->GetTextureSize());
+	deathCheckRenderer_->CreateAnimation("deathcheck.png", "deathcheck", 0, 7, 0.03f, false);
+	deathCheckRenderer_->SetChangeAnimation("deathcheck", true);
+	deathCheckRenderer_->Off();
+
+
 	bloodStainRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	bloodStainRenderer_->GetTransform()->SetLocalPosition({ -550.0f, -250.0f, 0.0f });
 	bloodStainRenderer_->SetImage("FX_UI_Bloodstain.png", "PointSmp");
@@ -236,6 +248,12 @@ void UI_WinLose::updateAppear(float _DeltaTime)
 	float adjustedRatio = appearTimer_ / TIME_APPEAR_DEFAULT;
 	if (adjustedRatio >= 1.0f)
 	{
+		if (false == isWinner_)
+		{
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("Bernice_Skill02_Attack.wav");
+			deathCheckRenderer_->On();
+			deathCheckRenderer_->SetChangeAnimation("deathcheck", true);
+		}
 		UIstate_.ChangeState("StandBy", true);
 		return;
 	}

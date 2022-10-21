@@ -51,6 +51,8 @@ private:
 	GameEngineUIRenderer* portraitRenderer_;
 	GameEngineUIRenderer* backRenderer_;
 
+	GameEngineUIRenderer* deathCheckRenderer_;
+
 	GameEngineUIRenderer* winLosePanelRenderer_;
 	GameEngineUIRenderer* winLoseTextRenderer_;
 
