@@ -183,13 +183,13 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 				Character* AtkCharacter = dynamic_cast<Character*>(AtkTarget->GetActor());
 				if (AtkCharacter->GetIndex() == CurTargetIndex_)
 				{
-					// 넉백
-					AtkCharacter->Knockback(0.2f, SkillAtk_DetectTargetDir_ * 3000.f);
+					// 넉백(적이 벽에 부딪혔다면 기절)
+					AtkCharacter->WallSlam(0.2f, SkillAtk_DetectTargetDir_ * 3000.f, 0.5f);
 
 					// 넉백 패킷전송
 					CharCrowdControlPacket ccPacket;
 					ccPacket.SetTargetIndex(AtkCharacter->GetIndex());
-					ccPacket.SetKnockback(0.2f, SkillAtk_DetectTargetDir_ * 3000.f);
+					ccPacket.SetWallSlam(0.2f, SkillAtk_DetectTargetDir_ * 3000.f, 0.5f);
 					FT::SendPacket(ccPacket);
 
 					// 데미지(기본(150) + 공격력의 300%)
