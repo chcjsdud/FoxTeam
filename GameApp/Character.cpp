@@ -136,7 +136,7 @@ void Character::Update(float _DeltaTime)
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
-	
+
 
 	if (true == isPlayerDead_)
 	{
@@ -183,28 +183,29 @@ void Character::Update(float _DeltaTime)
 			mainState_.ChangeState("DeathState", true);
 			deathState_.ChangeState("PlayerWinner", true);
 		}
-
-		checkCurrentNavFace();
-		checkItemBox();
-
-
-
-		attackCooldown_ += _DeltaTime;
-
-		mainState_.Update(_DeltaTime);
-
-		GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
-		if (nullptr != controlWindow)
-		{
-			controlWindow->AddText("MainState : " + mainState_.GetCurrentStateName());
-			controlWindow->AddText("NormalState : " + normalState_.GetCurrentStateName());
-			controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
-			controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
-		}
-
-
 	}
+
+	checkCurrentNavFace();
+	checkItemBox();
+
+
+
+	attackCooldown_ += _DeltaTime;
+
+	mainState_.Update(_DeltaTime);
+
+	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	if (nullptr != controlWindow)
+	{
+		controlWindow->AddText("MainState : " + mainState_.GetCurrentStateName());
+		controlWindow->AddText("NormalState : " + normalState_.GetCurrentStateName());
+		controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
+		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
+	}
+
+
 }
+
 
 int Character::GetIndex() { return myIndex_; }
 
@@ -1457,7 +1458,7 @@ void Character::startPlayerDeath()
 		{
 			uiController_->GetWinLoseUI()->SetText(pm->GetPlayerList()[fraggerIndex_].playerNickname_ + " 에게 살해당했습니다.\n" + std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
 		}
-		
+
 		uiController_->GetWinLoseUI()->Activate();
 	}
 
