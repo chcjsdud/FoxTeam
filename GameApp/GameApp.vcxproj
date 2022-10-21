@@ -236,6 +236,10 @@
     </ClCompile>
     <ClCompile Include="Chicken.cpp" />
     <ClCompile Include="CreateItemDB.cpp" />
+    <ClCompile Include="Jackie.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="MonsterDamagePacket.cpp" />
     <ClCompile Include="TestLevelBox.cpp">
       <SubType>
@@ -589,6 +593,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Chicken.h" />
+    <ClInclude Include="Jackie.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="MonsterDamagePacket.h" />
     <ClInclude Include="TestLevelBox.h">
       <SubType>
