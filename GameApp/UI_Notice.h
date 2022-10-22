@@ -18,14 +18,16 @@ public:
 	UI_Notice& operator=(const UI_Notice& _Other) = delete;
 	UI_Notice& operator=(UI_Notice&& _Other) noexcept = delete;
 
-	bool UIOn;
+private:
+	static UI_Notice* Inst;
 
-protected:
-	GameEngineUIRenderer* BackGroundRenderer;
-	GameEngineUIRenderer* FontRenderer;
-	float Time;
-	float BasicAlpha;
+public:
+	static UI_Notice& GetInst()
+	{
+		return *Inst;
+	}
 
+	void UISwitch();
 
 private:
 	void Start() override;
@@ -33,6 +35,15 @@ private:
 
 	float4 UI_Pos;
 	float4 Font_Pos;
+
+
+
+	GameEngineUIRenderer* BackGroundRenderer;
+	GameEngineUIRenderer* FontRenderer;
+	float Time;
+	float BasicAlpha;
+
+	bool UIOn;
 
 };
 

@@ -4,6 +4,8 @@
 #include "GameEngine/GameEngineInput.h"
 #include "GameTimeController.h"
 
+UI_Notice* UI_Notice::Inst = new UI_Notice();
+
 UI_Notice::UI_Notice()
 	: Time(1.0f), UIOn(false)
 {
@@ -37,13 +39,13 @@ void UI_Notice::Start()
 		BackGroundRenderer->SetAlpha(BasicAlpha);
 	}
 
-
 	{
 		//폰트출력용
 		FontRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		FontRenderer->GetTransform()->SetLocalPosition(UI_Pos);
 	}
 
+	Inst = this;
 }
 
 void UI_Notice::Update(float _Time)
@@ -68,18 +70,29 @@ void UI_Notice::Update(float _Time)
 		}
 	}
 
-	if (true == GameEngineInput::GetInst().Down("Esc"))
-	{
-		if (UIOn == true)
-		{
-			UIOn = false;
-		}
-		else
-		{
-			UIOn = true;
-		}
-	}
+	//if (true == GameEngineInput::GetInst().Down("Esc"))
+	//{
+	//	if (UIOn == true)
+	//	{
+	//		UIOn = false;
+	//	}
+	//	else
+	//	{
+	//		UIOn = true;
+	//	}
+	//}
 
 
 }
 
+void UI_Notice::UISwitch()
+{
+	if (UIOn == true)
+	{
+		UIOn = false;
+	}
+	else
+	{
+		UIOn = true;
+	}
+}
