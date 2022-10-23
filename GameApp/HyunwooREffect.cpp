@@ -38,7 +38,7 @@ void HyunwooREffect::Start()
 	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_William_Skill04_ExpLine2X3.png");
 	hitBase->Cut(2, 3);
 	
-	hitBoxRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
+	hitBoxRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();	
 	hitBoxRenderer_->SetImage("FX_BI_Jan_Skill01_01_Range_add.png", "PointSmp");
 	hitBoxRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 150.0f });
 	hitBoxRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });

@@ -17,6 +17,7 @@
 #include "TitleLevel.h"
 #include "LoadingLevel.h"
 #include "TestLevel.h"
+#include "EndingLevel.h"
 
 std::atomic<int> UserGame::LoadingFolder = 0;
 bool UserGame::IsServer_ = false;
@@ -49,7 +50,7 @@ void UserGame::Initialize()
 	LevelCreate<LobbyLevel>("LobbyLevel");
 	LevelCreate<LoadingLevel>("LoadingLevel");
 	LevelCreate<LumiaLevel>("LumiaLevel");
-
+	LevelCreate<EndingLevel>("EndingLevel");
 	LevelChange("TitleLevel");
 	return;
 }
