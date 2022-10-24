@@ -31,6 +31,10 @@
     <ClInclude Include="DeferredMerge.h" />
     <ClInclude Include="EngineVertex.h" />
     <ClInclude Include="FBXAnimation.h" />
+    <ClInclude Include="GameEngineBoneComponent.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="GameEngineDebugRenderData.h">
       <SubType>
       </SubType>
@@ -315,6 +319,10 @@
     <ClCompile Include="DeferredMerge.cpp" />
     <ClCompile Include="EngineVertex.cpp" />
     <ClCompile Include="FBXAnimation.cpp" />
+    <ClCompile Include="GameEngineBoneComponent.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="GameEngineCore_Resources.cpp" />
     <ClCompile Include="GameEngineDebugRenderData.cpp">
       <SubType>

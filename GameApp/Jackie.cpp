@@ -206,7 +206,7 @@ void Jackie::initRendererAndAnimation()
 	renderer_->ChangeFBXAnimation("Wait");
 
 	axeRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	axeRenderer_->SetFBXMesh("Weapon_Axe_01_.fbx", "TextureDeferredLight");
+	axeRenderer_->SetFBXMesh("Weapon_Axe_01.fbx", "TextureDeferredLight");
 
 	axeRenderer_->GetTransform()->SetLocalScaling(100.f);
 	axeRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });

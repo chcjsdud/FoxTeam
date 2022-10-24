@@ -215,9 +215,6 @@
     <ClInclude Include="GameEngineComponent.h">
       <Filter>Object\Component</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineTransformComponent.h">
-      <Filter>Object\Component</Filter>
-    </ClInclude>
     <ClInclude Include="CameraComponent.h">
       <Filter>Object\Component\Camera</Filter>
     </ClInclude>
@@ -419,6 +416,12 @@
     <ClInclude Include="GameEngineEffectRenderer.h">
       <Filter>Object\Component\Render\Widget\01.Effect</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineTransformComponent.h">
+      <Filter>Object\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEngineBoneComponent.h">
+      <Filter>Object\Component\Transform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -502,9 +505,6 @@
       <Filter>Object\Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="GameEngineComponent.cpp">
-      <Filter>Object\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="GameEngineTransformComponent.cpp">
       <Filter>Object\Component</Filter>
     </ClCompile>
     <ClCompile Include="CameraComponent.cpp">
@@ -687,6 +687,12 @@
     </ClCompile>
     <ClCompile Include="GameEngineEffectRenderer.cpp">
       <Filter>Object\Component\Render\Widget\01.Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineTransformComponent.cpp">
+      <Filter>Object\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineBoneComponent.cpp">
+      <Filter>Object\Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
