@@ -353,3 +353,6 @@ ThirdParty/
 imgui.ini
 GameApp/imgui.ini
 *.ini
+Resources/FBX/UserMesh/Map/Trees.UserMesh
+Resources/FBX/UserMesh/Map/Grass.UserMesh
+Resources/FBX/UserMesh/Map/Alley.UserMesh
