@@ -77,11 +77,25 @@ void Boar::InitalizeResourceLoad()
 		GameEngineFBXMesh* Basemesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName("Boar_BaseMesh.fbx"));
 		Basemesh->CreateRenderingBuffer();
 
+		// UserAnimation Resource Load
 		std::vector<GameEngineFile> allFile = MeshDir.GetAllFile("UserAnimation");
 		for (GameEngineFile& file : allFile)
 		{
 			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
 		}
+
+		// HitBoxRange Mesh Load
+		GameEngineDirectory HitBoxMeshDir;
+		HitBoxMeshDir.MoveParent("FoxTeam");
+		HitBoxMeshDir / "Resources" / "FBX" / "Monster" / "Boar" / "HitBoxRange";
+
+		// HitRangeFrame Mesh
+		GameEngineFBXMesh* HitBoxFrame = GameEngineFBXMeshManager::GetInst().Load(HitBoxMeshDir.PathToPlusFileName("Boar_SkillAtk_HitRange_Frame.fbx"));
+		HitBoxFrame->CreateRenderingBuffer();
+
+		// HitRangeBottom Mesh
+		GameEngineFBXMesh* HitBoxBottom = GameEngineFBXMeshManager::GetInst().Load(HitBoxMeshDir.PathToPlusFileName("Boar_SkillAtk_HitRange_Bottom.fbx"));
+		HitBoxBottom->CreateRenderingBuffer();
 
 		// Monster Resource Load Flag On
 		ResourceLoadFlag = true;
@@ -93,7 +107,6 @@ void Boar::InitalizeRenderAndAnimation()
 	//============================= 메인렌더러 셋팅
 	MainRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	MainRenderer_->SetFBXMesh("Boar_BaseMesh.fbx", "TextureDeferredLightAni");
-
 	MainRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
@@ -118,9 +131,29 @@ void Boar::InitalizeRenderAndAnimation()
 	//============================= 기본상태 셋팅
 	ChangeAnimationAndState(MonsterStateType::APPEAR);
 
-	//============================= 스킬공격 공격박스렌더러
-	SkillAtk_HitRnage_ = new BoarHitRange();
-	SkillAtk_HitRnage_->InitalizeHitRnage();
+	//============================= HitBoxRange Renderer
+	HitBox_Frame_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	HitBox_Frame_->SetFBXMesh("Boar_SkillAtk_HitRange_Frame.fbx", "TextureDeferredLight");
+	HitBox_Frame_->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
+	HitBox_Frame_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+
+	for (UINT i = 0; i < HitBox_Frame_->GetRenderSetCount(); i++)
+	{
+		HitBox_Frame_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+		HitBox_Frame_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
+	}
+	HitBox_Frame_->Off();
+
+	HitBox_Bottom_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	HitBox_Bottom_->SetFBXMesh("Boar_SkillAtk_HitRange_Bottom.fbx", "TextureDeferredLight");
+	HitBox_Bottom_->GetTransform()->SetLocalScaling({ 10.0f, 10.0f, 10.0f });
+	HitBox_Bottom_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+	for (UINT i = 0; i < HitBox_Bottom_->GetRenderSetCount(); i++)
+	{
+		HitBox_Bottom_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
+		HitBox_Bottom_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
+	}
+	HitBox_Bottom_->Off();
 }
 
 void Boar::InitalizeCollider()
@@ -166,12 +199,11 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 	// 시전시간 - 1.5초
 	// 쿨다운 - 7초
 	// 1m == 100.0f로 계산
-		// 스킬공격준비완료, 스킬공격시작
+	// 스킬공격준비완료, 스킬공격시작
 	if (false == SkillAtkReady_ && true == SkillAtk_)
 	{
-		// 221021 SJH : 임시주석처리(히트박스렌더러 제작중)
-		//// 스킬공격 시작했으므로 이펙트렌더러 Off
-		//SkillAtk_HitRnage_->SkillAttackRangeOff();
+		// 스킬공격 시작했으므로 이펙트렌더러 Off
+		HitBoxRangeOff();
 
 		// 타겟위치까지 돌진하며 타겟과 충돌시 타겟에게 넉백, 데미지를 입히고 스킬공격성공으로 대기상태로 전환
 		// 충돌실패시 스킬공격실패로 대기상태로 전환
@@ -217,7 +249,7 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 		}
 
 		// 충돌하지않았다면 돌진 or 돌진완료체크
-		if ((SkillAtk_DetectTargetPos_ - GetTransform()->GetWorldPosition()).Len3D() > 3.0f)
+		if ((SkillAtk_DetectTargetPos_ - GetTransform()->GetWorldPosition()).Len3D() > 10.0f)
 		{
 			// 돌진중
 			float4 MoveSpeed = SkillAtk_DetectTargetDir_ * SkillAtk_RushSpeed_ * _DeltaTime;
@@ -225,7 +257,7 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 			float Dist = 0.0f;
 			if (true == CurrentMap_->GetNavMesh()->CheckIntersects(NextMovePos + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, Dist))
 			{
-				//NextMovePos.y = FT::Map::MAX_HEIGHT - Dist;
+				NextMovePos.y = FT::Map::MAX_HEIGHT - Dist;
 				GetTransform()->SetWorldPosition(NextMovePos);
 			}
 		}
@@ -275,6 +307,9 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 			float Angle = float4::DegreeDot3DToACosAngle(SkillAtk_DetectTargetDir_, { 0.0f, 0.0f, 1.0f });
 			GetTransform()->SetLocalRotationDegree({ 0.0f, Angle * -Cross.y, 0.0f });
 
+			// 스킬공격 이펙트렌더러 On
+			HitBoxRangeOn();
+
 			// 시전시간 초기화
 			SkillAtk_CastTime_ = SkillAtk_CastTimeMax_;
 		}
@@ -293,13 +328,22 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 			SkillAtk_ = true;
 			SkillAtkCollider_->On();
 			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
-
-			// 221021 SJH : 임시주석처리(히트박스렌더러 제작중)
-			//// 스킬공격 이펙트렌더러 On
-			//float Length = (SkillAtk_DetectTargetPos_ - GetTransform()->GetWorldPosition()).Len3D();
-			//SkillAtk_HitRnage_->SkillAttackRangeOn(Length, SkillAtk_DetectTargetDir_);
 		}
 	}
+}
+
+void Boar::HitBoxRangeOn()
+{
+	// Renderer On
+	HitBox_Frame_->On();
+	HitBox_Bottom_->On();
+}
+
+void Boar::HitBoxRangeOff()
+{
+	// Renderer Off
+	HitBox_Frame_->Off();
+	HitBox_Bottom_->Off();
 }
 
 Boar::Boar()
@@ -312,155 +356,11 @@ Boar::Boar()
 	, SkillAtk_RushSpeed_(400.0f)
 	, SkillAtk_DetectTargetPos_(float4::ZERO)
 	, SkillAtk_DetectTargetDir_(float4::ZERO)
-	, SkillAtk_HitRnage_(nullptr)
+	, HitBox_Frame_(nullptr)
+	, HitBox_Bottom_(nullptr)
 {
 }
 
 Boar::~Boar()
-{
-	if (nullptr != SkillAtk_HitRnage_)
-	{
-		delete SkillAtk_HitRnage_;
-		SkillAtk_HitRnage_ = nullptr;
-	}
-}
-
-//================================================================================= Boar HitRange
-bool BoarHitRange::HitRangeMeshLoad = false;
-
-void BoarHitRange::InitalizeHitRnage()
-{
-	// 메쉬 로드
-	LoadHitRangeMesh();
-
-	// 렌더러 셋팅
-	CreateHitRangeRenderer();
-}
-
-void BoarHitRange::SkillAttackRangeOn(float _Length, const float4& _Dir)
-{
-	//=========================== 히트박스 범위를 On
-	PrevHitRangeLength_ = CurHitRnageLength_;
-	CurHitRnageLength_ = _Length;
-
-	// 1. 히트박스 범위의 길이에 따른 생성해야하는 화살표 갯수 계산
-	PrevArrowCount_ = CurArrowCount_;
-	CalcHitRangeArrowCount(CurHitRnageLength_);
-
-	// 2. 이전에 생성했던 화살표 갯수보다 크다면 차이나는 갯수만큼 생성
-	//    이전에 생성했던 화살표 갯수보다 작다면 차이나는 갯수만큼 off
-	//    이전에 생성했던 화살표 갯수와 같다면 모두 On
-	if (CurArrowCount_ > PrevArrowCount_)
-	{
-		int MulCount = CurArrowCount_ - PrevArrowCount_;
-		for (int NewNum = 0; NewNum < MulCount; ++NewNum)
-		{
-			//GameEngineFBXRenderer* NewArrow;
-
-
-
-			//Arrows_.push_back(NewArrow);
-		}
-
-		for (auto& Arrow : Arrows_)
-		{
-			//Arrow->On();
-		}
-	}
-	else if (CurArrowCount_ < PrevArrowCount_)
-	{
-		int StartNum = 0;
-		int MulCount = PrevArrowCount_ - CurArrowCount_;
-		for (int OffNum = StartNum; OffNum < MulCount; ++OffNum)
-		{
-			Arrows_[OffNum]->Off();
-		}
-	}
-	else if(CurArrowCount_ == PrevArrowCount_)
-	{
-		Frame_->On();
-		Bottom_->On();
-
-		int ArrowCount = static_cast<int>(Arrows_.size());
-		for (int ArrowNum = 0; ArrowNum < ArrowCount; ++ArrowNum)
-		{
-			Arrows_[ArrowNum]->On();
-		}
-
-		On();
-	}
-}
-
-void BoarHitRange::SkillAttackRangeOff()
-{
-	// 모두 Off 처리
-	Frame_->Off();
-	Bottom_->Off();
-
-	int ArrowCount = static_cast<int>(Arrows_.size());
-	for (int ArrowNum = 0; ArrowNum < ArrowCount; ++ArrowNum)
-	{
-		Arrows_[ArrowNum]->Off();
-	}
-
-	Off();
-}
-
-void BoarHitRange::CalcHitRangeArrowCount(float _Length)
-{
-	// 길이에 따른 화살표 갯수 계산
-	int CurClacCount = 0;
-
-
-
-
-	CurArrowCount_ = CurClacCount;
-}
-
-void BoarHitRange::UpdateHitRangeArrow()
-{
-}
-
-void BoarHitRange::LoadHitRangeMesh()
-{
-	// 메쉬로드를 한번만하기위하여 Flag Check
-	if (false == HitRangeMeshLoad)
-	{
-		// HitRangeFrame Mesh
-
-
-		// HitRangeBottom Mesh
-
-
-		// HitRangeArrow Mesh
-
-
-
-		// LoadEnd Flag On
-		HitRangeMeshLoad = true;
-	}
-}
-
-void BoarHitRange::CreateHitRangeRenderer()
-{
-	// HitRangeFrame Mesh
-
-
-	// HitRangeBottom Mesh
-
-
-}
-
-BoarHitRange::BoarHitRange()
-	: Frame_(nullptr)
-	, Bottom_(nullptr)
-	, PrevHitRangeLength_(0.0f)
-	, PrevArrowCount_(0)
-	, CurHitRnageLength_(0.0f)
-	, CurArrowCount_(0)
-{
-}
-
-BoarHitRange::~BoarHitRange()
 {
 }
