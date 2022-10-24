@@ -8,6 +8,7 @@ class Player;
 class UI_Notice : public GameEngineActor
 {
 public:
+
 	// constrcuter destructer
 	UI_Notice();
 	~UI_Notice();
@@ -18,16 +19,11 @@ public:
 	UI_Notice& operator=(const UI_Notice& _Other) = delete;
 	UI_Notice& operator=(UI_Notice&& _Other) noexcept = delete;
 
-private:
-	static UI_Notice* Inst;
-
 public:
-	static UI_Notice& GetInst()
-	{
-		return *Inst;
-	}
 
 	void UISwitch();
+	void SetText(string _Text, float _Time);
+	void TimeCount(float _Time);
 
 private:
 	void Start() override;
@@ -40,7 +36,8 @@ private:
 
 	GameEngineUIRenderer* BackGroundRenderer;
 	GameEngineUIRenderer* FontRenderer;
-	float Time;
+	float FadeWaitTime;
+	float FadeTime;
 	float BasicAlpha;
 
 	bool UIOn;

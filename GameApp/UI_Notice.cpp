@@ -4,23 +4,15 @@
 #include "GameEngine/GameEngineInput.h"
 #include "GameTimeController.h"
 
-UI_Notice* UI_Notice::Inst = new UI_Notice();
+
 
 UI_Notice::UI_Notice()
-	: Time(1.0f), UIOn(false)
+	: FadeWaitTime(0.0f), FadeTime(0.0f), UIOn(false)
 {
 }
 
 UI_Notice::~UI_Notice()
 {
-	//for (auto& UIRenderer : UIRendererMap)
-	//{
-	//	if (true)
-	//	{
-	//		delete UIRenderer.second;
-	//		UIRenderer.second = nullptr;
-	//	}
-	//}
 }
 
 
@@ -43,17 +35,17 @@ void UI_Notice::Start()
 		//폰트출력용
 		FontRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		FontRenderer->GetTransform()->SetLocalPosition(UI_Pos);
+		FontRenderer->TextSetting("HMKMRHD", "Test", 12, FW1_CENTER);
 	}
 
-	Inst = this;
+	BackGroundRenderer->Off();
+	FontRenderer->Off();
 }
 
 void UI_Notice::Update(float _Time)
 {
-	if (0.0f >= (Time -= _Time))
-	{
-		//TopRenderer->SetAlpha(Time);
-	}
+	
+	TimeCount(_Time);
 
 	//UI 온오프 체크
 	{
@@ -61,27 +53,37 @@ void UI_Notice::Update(float _Time)
 		{
 			BackGroundRenderer->Off();
 			FontRenderer->Off();
+			//BackGroundRenderer->On();
+			//FontRenderer->On();
 		}
 		else
 		{
 			BackGroundRenderer->On();
 			FontRenderer->On();
-			FontRenderer->TextSetting("HMKMRHD", "Test", 12);
+			FontRenderer->TextSetting("HMKMRHD", "Test", 12, FW1_CENTER);
 		}
 	}
 
-	//if (true == GameEngineInput::GetInst().Down("Esc"))
-	//{
-	//	if (UIOn == true)
-	//	{
-	//		UIOn = false;
-	//	}
-	//	else
-	//	{
-	//		UIOn = true;
-	//	}
-	//}
+	if (true == GameEngineInput::GetInst().Down("Esc"))
+	{
+		if (UIOn == true)
+		{
+			UIOn = false;
+		}
+		else
+		{
+			UIOn = true;
+		}
+	}
 
+	//if (FadeWaitTime >= 0.0f)
+	//{
+	//	BackGroundRenderer->SetAlpha(Time);
+	//}
+	//else
+	//{
+	//	BackGroundRenderer->Off();
+	//}
 
 }
 
@@ -95,4 +97,38 @@ void UI_Notice::UISwitch()
 	{
 		UIOn = true;
 	}
+}
+
+void UI_Notice::SetText(string _Text, float _Time)
+{
+	FadeWaitTime = (_Time - 2.0f);
+
+	BackGroundRenderer->On();
+	FontRenderer->On();
+
+
+	FontRenderer->TextSetting("HMKMRHD", _Text, 12, FW1_CENTER);
+}
+
+void UI_Notice::TimeCount(float _Time)
+{
+
+	if (FadeWaitTime > 0.0f)
+	{
+		FadeWaitTime -= _Time;
+	}
+	else if (FadeWaitTime <= 0.0f)
+	{
+		if (FadeTime <= 0.0f)
+		{
+			FadeTime = 0.0f;
+		}
+		else
+		{
+			//FadeTime은 2초
+			FadeTime -= (_Time * 0.5f);
+		}
+	}
+
+	
 }
