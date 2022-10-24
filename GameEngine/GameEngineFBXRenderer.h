@@ -52,6 +52,7 @@ public:
 	std::vector<RenderSet>& GetAllRenderSet() { return RenderSets; }
 
 	float4x4 GetCurrentAffine(int _boneIndex, int _renderSetIndex = 0);
+	float4x4 GetParentAffine();
 
 	void SetParentBoneIndex(GameEngineFBXRenderer* _fbxRenderer, int _boneIndex);
 	void SetParentBoneName(GameEngineFBXRenderer* _fbxRenderer, const std::string& _boneNameToAffect);

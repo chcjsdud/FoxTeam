@@ -5,6 +5,7 @@
 #include <GameEngine/SKySphereActor.h>
 #include <GameEngine/LightActor.h>
 #include "Rio.h"
+#include "Jackie.h"
 
 #include "TestOBB.h"
 #include "TestLevelBox.h"
@@ -82,9 +83,10 @@ void TestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
 	Rio::LoadResource();
+	Jackie::LoadResource();
 
 	rio_ = CreateActor<Rio>();
-	rio_->Focus();
+	//rio_->Focus();
 	//CreateActor<TestOBB>();
 
 	TestLevelBox* box = nullptr;
@@ -98,6 +100,11 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	map_ = CreateActor<TestMap>();
 	rio_->SetMouse(mouse_);
 	rio_->SetMap(map_);
+
+	jackie_ = CreateActor<Jackie>();
+	jackie_->Focus();
+	jackie_->SetMouse(mouse_);
+	jackie_->SetMap(map_);
 
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();

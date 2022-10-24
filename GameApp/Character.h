@@ -71,7 +71,8 @@ public:
 	void SetCurrentNavMesh(NavMesh* _NaviMesh);
 	void SetStat(CharacterStat _status) { stat_ = _status; }
 	void SetIndex(int _index) { myIndex_ = _index; }
-
+	void SetMouse(MousePointer* _mouse) { mouse_ = _mouse; }
+	void SetMap(LumiaMap* _map) { currentMap_ = _map; }
 
 	void SetCharacterDeath();
 	void SetFraggerIndex(int _index);

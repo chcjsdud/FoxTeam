@@ -113,5 +113,7 @@ private:
 
 	float timer_R;
 	bool isR_;
+
+	GameEngineFBXRenderer* axeRenderer_;
 };
 

@@ -249,6 +249,15 @@ float4x4 GameEngineFBXRenderer::GetCurrentAffine(int _boneIndex, int _renderSetI
 	return currentAnimation_->GetAffine(_boneIndex, _renderSetIndex);
 }
 
+float4x4 GameEngineFBXRenderer::GetParentAffine()
+{
+	if (parentBoneRenderer_ == nullptr)
+	{
+		return float4x4();
+	}
+	return parentBoneRenderer_->GetCurrentAffine(parentBoneIndex_);
+}
+
 void GameEngineFBXRenderer::SetParentBoneIndex(GameEngineFBXRenderer* _fbxRenderer, int _boneIndex)
 {
 	parentBoneRenderer_ = _fbxRenderer;

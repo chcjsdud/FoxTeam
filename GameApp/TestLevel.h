@@ -3,6 +3,7 @@
 #include <GameEngine/GameEngineLevel.h>
 
 class Rio;
+class Jackie;
 class MousePointer;
 class LumiaMap;
 class TestLevel : public GameEngineLevel
@@ -25,6 +26,7 @@ public:
 
 private:
 	Rio* rio_;
+	Jackie* jackie_;
 	MousePointer* mouse_;
 	LumiaMap* map_;
 };
