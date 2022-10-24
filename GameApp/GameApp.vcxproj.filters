@@ -385,6 +385,9 @@
     <ClCompile Include="EndingUIController.cpp">
       <Filter>01.GameObject\03.Level\EndingLevel</Filter>
     </ClCompile>
+    <ClCompile Include="UI_FOW.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -991,6 +994,9 @@
     </ClInclude>
     <ClInclude Include="EndingUIController.h">
       <Filter>01.GameObject\03.Level\EndingLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_FOW.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

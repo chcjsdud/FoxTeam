@@ -22,6 +22,7 @@ PlayerUIController::PlayerUIController(PlayerUIController&& _other) noexcept  //
 
 void PlayerUIController::InitUI()
 {
+	FOW_UI = GetLevel()->CreateActor<UI_FOW>();
 	blood_UI = GetLevel()->CreateActor<UI_BloodBackground>();
 	charPicture_UI = GetLevel()->CreateActor<UI_CharPicture>();
 	equip_UI = GetLevel()->CreateActor<UI_Equip>();

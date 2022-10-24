@@ -65,6 +65,7 @@ public:
 	std::string GetOverrideAnimationBoneName() { return overrideAnimationBoneName_; }
 	NavFace* GetCurrentNavFace() { return currentNavFace_; }
 	std::vector<ItemBase*> GetInventory() { return inventory_; }
+	PlayerUIController* GetUIController() { return uiController_; }
 
 	void SetDirection(float4 _dir) { direction_ = _dir; }
 	void SetCurrentNavFace(NavFace* _Navi) { currentNavFace_ = _Navi; }

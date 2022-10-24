@@ -12,7 +12,7 @@
 #include "UI_Status.h"
 #include "UI_Time.h"
 #include "UI_Notice.h"
-
+#include "UI_FOW.h"
 #include "UI_BloodBackground.h"
 
 // 221018 ╧за╬©Ь
@@ -69,6 +69,11 @@ public:
 		return blood_UI;
 	}
 
+	UI_FOW* GetFOW()
+	{
+		return FOW_UI;
+	}
+
 	void SetJobType(JobType _MyJob);
 
 public:
@@ -86,6 +91,7 @@ private:
 	UI_Status* status_UI;
 	UI_Time* time_UI;
 	UI_Notice* notice_UI;
+	UI_FOW* FOW_UI;
 
 	UI_BloodBackground* blood_UI;
 	UI_WinLose* winLose_UI;

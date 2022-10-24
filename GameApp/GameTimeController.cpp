@@ -6,7 +6,9 @@
 #include "GameServer.h"
 #include "MonsterStateChangePacket.h"
 
+#include "PlayerInfoManager.h"
 #include "LumiaLevel.h"
+#include "PlayerUIController.h"
 
 GameTimeController* GameTimeController::GetInstance()
 {
@@ -133,16 +135,25 @@ void GameTimeController::CreateDailytimes()
 	// 4일 낮/밤시간 정의
 	// -> 4일마다 반복
 	DailyTime OneDay = {};
-	OneDay.DayTime_ = 170.0f;
-	OneDay.NightTime_ = 140.0f;
+	//OneDay.DayTime_ = 170.0f;
+	//OneDay.NightTime_ = 140.0f;
+
+	OneDay.DayTime_ = 10.0f;
+	OneDay.NightTime_ = 10.0f;
 
 	DailyTime TwoDay = {};
-	TwoDay.DayTime_ = 140.0f;
-	TwoDay.NightTime_ = 140.0f;
+	//TwoDay.DayTime_ = 140.0f;
+	//TwoDay.NightTime_ = 140.0f;
+
+	TwoDay.DayTime_ = 10.0f;
+	TwoDay.NightTime_ = 10.0f;
 
 	DailyTime ThreeDay = {};
-	ThreeDay.DayTime_ = 125.0f;
-	ThreeDay.NightTime_ = 125.0f;
+	//ThreeDay.DayTime_ = 125.0f;
+	//ThreeDay.NightTime_ = 125.0f;
+
+	ThreeDay.DayTime_ = 10.0f;
+	ThreeDay.NightTime_ = 10.0f;
 
 	DailyTime FourDay = {};
 	FourDay.DayTime_ = 110.0f;
@@ -169,8 +180,22 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 		int DayAndNightIndex = CurDay_ % 4;
 		if (DayAndNightType::DAY == CurDayOrNight_)			// 현재 낮일때
 		{
+
+			// 루미아레벨로 다운캐스팅 후 해당 몬스터타입 첫등장처리
+
+
 			// 전환되었으므로 타입을 밤으로 설정
 			CurDayOrNight_ = DayAndNightType::NIGHT;
+
+			//밤 FOW 설정
+			GameEngineLevel* CurLevel = GameEngineCore::CurrentLevel();
+			if (nullptr == CurLevel)
+			{
+				GameEngineDebug::MsgBoxError("현재 게임의 현재레벨을 찾을수 없습니다!!!!");
+				return;
+			}
+			LumiaLevel* PlayLevel = dynamic_cast<LumiaLevel*>(CurLevel);
+			PlayLevel->GetCharacterActorList()[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetUIController()->GetFOW()->SetFOW(true);
 
 			// 현재 밤일때 전환시간을 현재전환시간으로 설정
 			DayAndNightTime_ = Dailytimes_[DayAndNightIndex].NightTime_;
@@ -182,6 +207,16 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 
 			// 현재 낮일때 전환시간을 현재전환시간으로 설정
 			DayAndNightTime_ = Dailytimes_[DayAndNightIndex].DayTime_;
+
+			//낮 FOW 설정
+			GameEngineLevel* CurLevel = GameEngineCore::CurrentLevel();
+			if (nullptr == CurLevel)
+			{
+				GameEngineDebug::MsgBoxError("현재 게임의 현재레벨을 찾을수 없습니다!!!!");
+				return;
+			}
+			LumiaLevel* PlayLevel = dynamic_cast<LumiaLevel*>(CurLevel);
+			PlayLevel->GetCharacterActorList()[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetUIController()->GetFOW()->SetFOW(false);
 
 			// 밤->낮으로 전환되었으므로 현재일차를 이전일차에 저장후 증가
 			PrevDay_ = CurDay_;
