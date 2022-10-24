@@ -18,7 +18,7 @@
 Jackie::Jackie() // default constructer 디폴트 생성자
 	: atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(0), collision_Q(nullptr),
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
-	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr), axeRenderer_(nullptr),
+	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr), sawRenderer_(nullptr),
 	isW_(false), timer_W(0.0f), bSkillEPassable_(false), eStartPosition_(float4::ZERO), eLandingPosition_(float4::ZERO)
 {
 
@@ -44,26 +44,34 @@ void Jackie::LoadResource()
 	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Jackie_run.fbx"));
 	mesh->CreateRenderingBuffer();
 
-	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Axe_01.fbx"));
+	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Special_Jackie_01.fbx"));
 	mesh->CreateRenderingBuffer();
 
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_run.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_wait.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_death.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_atk1.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_atk2.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_skillQ.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_skillW.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_skillE.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_weaponSkill.fbx"));
+	std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
+	for (GameEngineFile& file : allFile)
+	{
+		GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
+	}
 
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_wait.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_atk1.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_atk2.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_run.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_skillE.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_skillQ.fbx"));
-	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_skillW.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_run.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_wait.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_death.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_atk1.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_atk2.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_skillQ.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_skillW.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_skillE.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_weaponSkill.fbx"));
+	//
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_wait.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_atk1.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_atk2.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_run.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_skillE.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_skillQ.fbx"));
+	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Jackie_R_skillW.fbx"));
+
+
 
 	{
 		GameEngineDirectory dir;
@@ -95,26 +103,38 @@ void Jackie::ReleaseResource()
 	GameEngineFBXMeshManager::GetInst().Delete("Jackie_run.fbx");
 	GameEngineFBXMeshManager::GetInst().Delete("Weapon_Axe_01.fbx");
 
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_run.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_wait.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_death.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_atk1.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_atk2.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_skillQ.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_skillW.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_skillE.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_weaponSkill.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_run.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_wait.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_death.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_atk1.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_atk2.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_skillQ.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_skillW.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_skillE.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_weaponSkill.fbx");
 
 
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_wait.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_atk1.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_atk2.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_run.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_skillE.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_skillQ.fbx");
-	GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_skillW.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_wait.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_atk1.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_atk2.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_run.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_skillE.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_skillQ.fbx");
+	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_R_skillW.fbx");
 
-	GameEngineFBXAnimationManager::GetInst().Delete("Weapon_Axe_01.fbx");
+	GameEngineFBXAnimationManager::GetInst().Delete("Weapon_Special_Jackie_01.fbx");
+
+	{
+		GameEngineDirectory dir;
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "FBX" / "PJW";
+
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineFBXAnimationManager::GetInst().Delete(file.GetFileName());
+		}
+	}
 }
 
 void Jackie::Start()
@@ -173,7 +193,7 @@ void Jackie::Update(float _deltaTime)
 		}
 	}
 
-	axeRenderer_->GetTransform()->GetTransformData().WorldWorld_* axeRenderer_->GetParentAffine();
+	sawRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
 }
 
 void Jackie::initRendererAndAnimation()
@@ -184,38 +204,37 @@ void Jackie::initRendererAndAnimation()
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	renderer_->CreateFBXAnimation("Run", "Jackie_run.fbx", 0);
-	renderer_->CreateFBXAnimation("Wait", "Jackie_wait.fbx", 0);
-	renderer_->CreateFBXAnimation("Death", "Jackie_death.fbx", 0, false);
-	renderer_->CreateFBXAnimation("Atk0", "Jackie_atk1.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillD", "Jackie_weaponSkill.fbx", 0, false);
-	renderer_->CreateFBXAnimation("Atk1", "Jackie_atk2.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillQ", "Jackie_skillQ.fbx", 0, false);
-	renderer_->CreateFBXAnimation("SkillE", "Jackie_skillE.fbx", 0, false);
+	renderer_->CreateFBXAnimation("Run", "Jackie_run.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("Wait", "Jackie_wait.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("Death", "Jackie_death.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Atk0", "Jackie_atk1.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillD", "Jackie_weaponSkill.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Atk1", "Jackie_atk2.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillQ", "Jackie_skillQ.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillE", "Jackie_skillE.UserAnimation", 0, false);
 
-	renderer_->CreateFBXAnimation("SkillW", "Jackie_skillW.fbx", 0);
+	renderer_->CreateFBXAnimation("SkillW", "Jackie_skillW.UserAnimation", 0);
 
-	renderer_->CreateFBXAnimation("SkillR_wait", "Jackie_R_wait.fbx", 0);
-	renderer_->CreateFBXAnimation("SkillR_run", "Jackie_R_run.fbx", 0);
-	renderer_->CreateFBXAnimation("R_Atk0", "Jackie_R_atk1.fbx", 0, false);
-	renderer_->CreateFBXAnimation("R_Atk1", "Jackie_R_atk2.fbx", 0, false);
-	renderer_->CreateFBXAnimation("R_SkillQ", "Jackie_R_skillQ.fbx", 0, false);
-	renderer_->CreateFBXAnimation("R_SkillW", "Jackie_R_skillW.fbx", 0);
-	renderer_->CreateFBXAnimation("R_SkillE", "Jackie_R_skillE.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_wait", "Jackie_R_wait.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("SkillR_run", "Jackie_R_run.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("R_Atk0", "Jackie_R_atk1.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("R_Atk1", "Jackie_R_atk2.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("R_SkillQ", "Jackie_R_skillQ.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("R_SkillW", "Jackie_R_skillW.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("R_SkillE", "Jackie_R_skillE.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
 
-	axeRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	axeRenderer_->SetFBXMesh("Weapon_Axe_01.fbx", "TextureDeferredLight");
+	sawRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	sawRenderer_->SetFBXMesh("Weapon_Special_Jackie_01.fbx", "TextureDeferredLightAni");
 
-	axeRenderer_->GetTransform()->SetLocalScaling(100.f);
-	axeRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+	sawRenderer_->GetTransform()->SetLocalScaling(100.f);
+	sawRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 
-	axeRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger2");
-	//axeRenderer_->SetCustomOffset({ 0.0f, 0.0f, -0.1f });
+	sawRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger2");
 
-	//axeRenderer_->CreateFBXAnimation("Idle", "Weapon_Axe_01_.fbx");
-	//axeRenderer_->ChangeFBXAnimation("Idle");
+	//sawRenderer_->CreateFBXAnimation("chainsaw", "Weapon_Special_Jackie_01.fbx");
+	//sawRenderer_->ChangeFBXAnimation("chainsaw");
 }
 
 void Jackie::initJackieCollision()

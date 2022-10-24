@@ -37,6 +37,15 @@ void MeshLoadLevel::LevelStart()
 	FBXWindow->UserMeshSaveFolder.MoveChild("FBX");
 	FBXWindow->UserMeshSaveFolder.MoveChild("UserMesh");
 
+
+	FBXWindow->FBXFolder.MoveParent("FoxTeam");
+	FBXWindow->FBXFolder.MoveChild("EngineResources");
+	FBXWindow->FBXFolder.MoveChild("FBX");
+
+	FBXWindow->UserAnimationSaveFolder.MoveParent("FoxTeam");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("Resources");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("FBX");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("PJW");
 	//GameEngineGUIWindow::inst
 
 	//GameEngineDirectory Dir;

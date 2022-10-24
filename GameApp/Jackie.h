@@ -114,6 +114,6 @@ private:
 	float timer_R;
 	bool isR_;
 
-	GameEngineFBXRenderer* axeRenderer_;
+	GameEngineFBXRenderer* sawRenderer_;
 };
 
