@@ -11,6 +11,32 @@
 #include "NavMesh.h"
 #include "PlayerInfoManager.h"
 
+const char* enum_MapName[15] = {
+		"HARBOR",			// 항구			
+		"POND",				// 연못
+		"BEACH",			// 모래사장
+		"UPTOWN",			// 고급 주택가
+		"ALLEY",			// 골목길
+		"HOTEL",			// 호텔
+		"DOWNTOWN",			// 번화가		
+		"HOSPITAL",			// 병원
+		"TEMPLE",			// 절
+		"ARCHERY",			// 양궁장
+		"CEMETERY",			// 묘지
+		"FOREST",			// 숲
+		"FACTORY",			// 공장
+		"CHURCH",			// 성당			
+		"SCHOOL"			// 학교
+};
+
+const char* enum_MonsterName[6] = {
+		"CHICKEN",		
+		"WILDDOG",		
+		"BEAR",
+		"BOAR",		
+		"BAT",			
+		"WOLF",			
+};
 
 LumiaMap::LumiaMap()
 	: navMeshRenderer_(nullptr)
@@ -24,6 +50,7 @@ LumiaMap::LumiaMap()
 	, gridZCount_(0)
 	, navMesh_(nullptr)
 	, gridXCount_(0)
+	, mapScale_(100.0f)
 {
 
 }
@@ -54,7 +81,7 @@ void LumiaMap::Start()
 		//navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
 	}
 
-	navMeshRenderer_->GetTransform()->SetLocalScaling(100.0f);
+	navMeshRenderer_->GetTransform()->SetLocalScaling(mapScale_);
 	navMeshRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f });
 	navMeshRenderer_->Off();
 
@@ -80,7 +107,7 @@ void LumiaMap::Start()
 	{
 		mapRenderers[i] = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 		mapRenderers[i]->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
-		mapRenderers[i]->GetTransform()->SetLocalScaling(100.0f);
+		mapRenderers[i]->GetTransform()->SetLocalScaling(mapScale_);
 	}
 
 	tempDir.MoveParent("UserMesh");
@@ -92,12 +119,19 @@ void LumiaMap::Start()
 	{
 		GameEngineFBXRenderer* FBX = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 		FBX->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
-		FBX->GetTransform()->SetLocalScaling(100.0f);
+		FBX->GetTransform()->SetLocalScaling(mapScale_);
 
 		mapRenderers.push_back(FBX);
 	}
 
 	setAllItem();
+
+	GameEngineDirectory spawnPointDir;
+	spawnPointDir.MoveParent("FoxTeam");
+	spawnPointDir / "Resources" / "FBX" / "Map";
+
+	setCharacterSpawnPoints(spawnPointDir);
+	setMonsterSpawnPoints(spawnPointDir);
 
 	/*GameEngineDirectory MeshDir;
 	MeshDir.MoveParent("FoxTeam");
@@ -112,7 +146,7 @@ void LumiaMap::Start()
 	{
 		GameEngineFBXRenderer* FBX = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 		FBX->SetFBXMesh(fileName, "TextureDeferredLight");
-		FBX->GetTransform()->SetLocalScaling(100.0f);
+		FBX->GetTransform()->SetLocalScaling(mapScale_);
 	}*/
 
 	int a = 0;
@@ -541,4 +575,58 @@ void LumiaMap::setAllItem()
 	itembox->PushRandomItem("Alley", "StallionMedal", 9);
 	itembox->PushRandomItem("Alley", "SteelChain", 14);
 	itembox->PushRandomItem("Alley", "Wetsuit", 11);
+}
+
+void LumiaMap::setCharacterSpawnPoints(GameEngineDirectory _dir)
+{
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(_dir.PathToPlusFileName("CharacterSpawnPoints.fbx")))
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(_dir.PathToPlusFileName("CharacterSpawnPoints.fbx"));
+		std::vector<FbxNodeData> nodeDatas = Mesh->GetAllNodeData();
+
+		for (const auto& areaName : enum_MapName)
+		{
+			std::vector<float4> vecTrans;
+
+			for (const auto& data : nodeDatas)
+			{
+				std::string UpperName = GameEngineString::toupper(data.name);
+
+				if (std::string::npos != UpperName.find(areaName) &&
+					float4::ZERO != data.translation)
+				{
+					vecTrans.push_back(data.translation * mapScale_);
+				}
+			}
+
+			characterSpawnPoints_.insert(std::pair(areaName, vecTrans));
+		}
+	}
+}
+
+void LumiaMap::setMonsterSpawnPoints(GameEngineDirectory _dir)
+{
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(_dir.PathToPlusFileName("MonsterSpawnPoints.fbx")))
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(_dir.PathToPlusFileName("MonsterSpawnPoints.fbx"));
+		std::vector<FbxNodeData> nodeDatas = Mesh->GetAllNodeData();
+
+		for (const auto& areaName : enum_MonsterName)
+		{
+			std::vector<float4> vecTrans;
+
+			for (const auto& data : nodeDatas)
+			{
+				std::string UpperName = GameEngineString::toupper(data.name);
+
+				if (std::string::npos != UpperName.find(areaName) &&
+					float4::ZERO != data.translation)
+				{
+					vecTrans.push_back(data.translation * mapScale_);
+				}
+			}
+
+			monsterSpawnPoints_.insert(std::pair(areaName, vecTrans));
+		}
+	}
 }

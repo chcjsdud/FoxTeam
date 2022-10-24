@@ -147,9 +147,6 @@ private:
 	std::vector<Monsters*> MonsterActorByTypeList_[static_cast<int>(MonsterType::MAX)];				// 몬스터 목록(같은 타입의 몬스터를 일괄처리할때 편하도록 목록작성)
 
 private:
-	std::map<std::string, std::vector<float4>> characterSpawnPoints_;								// Area, Position
-
-private:
 	LumiaMap* CurMap_;																				// 맵
 	ItemBoxManager* ItemBoxManager_;																// 아이템박스 매니저
 

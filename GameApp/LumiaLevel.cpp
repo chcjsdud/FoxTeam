@@ -59,26 +59,6 @@
 #include "Dog.h"
 #include "Weekline.h"
 
-const char* enum_str[static_cast<int>(Location::MAX)] = {
-		"DOCK",				// 항구
-		"POND",				// 연못
-		"BEACH",			// 모래사장
-		"UPTOWN",			// 고급 주택가
-		"ALLEY",			// 골목길
-		"HOTEL",			// 호텔
-		"AVENUE",			// 번화가
-		"HOSPITAL",			// 병원
-		"TEMPLE",			// 절
-		"ARCHERY",			// 양궁장
-		"CEMETERY",			// 묘지
-		"FOREST",			// 숲
-		"FACTORY",			// 공장
-		"CHAPEL",			// 성당
-		"SCHOOL",			// 학교
-		"RESERCH_CENTRE",	// 연구소
-		"ESCAPE_DOCK",		// 오래된 선창
-};
-
 Character* LumiaLevel::GetSpecificCharacter(int _Index)
 {
 	// 특정 인덱스의 캐릭터 객체포인터 Get
@@ -409,37 +389,7 @@ void LumiaLevel::MapResourceLoad()
 		Mesh->CreateRenderingBuffer();
 	}
 
-	GameEngineDirectory MeshDir;
-	MeshDir.MoveParent("FoxTeam");
-	MeshDir / "Resources" / "FBX" / "YSJ";
-
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(MeshDir.PathToPlusFileName("CharacterSpawnPoints.fbx")))
-	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(MeshDir.PathToPlusFileName("CharacterSpawnPoints.fbx"));
-		std::vector<FbxNodeData> nodeDatas = Mesh->GetAllNodeData();
-		for (const auto& data : nodeDatas)
-		{
-			std::vector<float4> vecTrans;
-
-			std::string UpperName = GameEngineString::toupper(data.name);
-			for (const auto& areaName : enum_str)
-			{
-
-				const auto& iter = characterSpawnPoints_.find(areaName);
-
-				if (characterSpawnPoints_.end() != iter)
-				{
-					(*iter).second;
-				}
-
-				if (std::string::npos != UpperName.find(areaName))
-				{
-					characterSpawnPoints_.insert(std::pair(areaName, vecTrans));
-				}
-			}
-
-		}
-	}
+	
 
 	GameEngineDirectory UserMapMeshDir;
 	UserMapMeshDir.MoveParent("FoxTeam");

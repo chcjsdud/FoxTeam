@@ -36,6 +36,8 @@ protected:
 	void makeAStarNode(float _intervalX, float _intervalZ);
 	void checkASterNodeObstacle();
 	void setAllItem();
+	void setCharacterSpawnPoints(GameEngineDirectory _dir);
+	void setMonsterSpawnPoints(GameEngineDirectory _dir);
 
 protected:
 	// A*
@@ -57,5 +59,11 @@ protected:
 	NavMesh* navMesh_;
 	GameEngineFBXRenderer* downTownRenderer_;
 	std::vector<GameEngineFBXRenderer*> mapRenderers;
+
+private:
+	std::map<std::string, std::vector<float4>> characterSpawnPoints_;	// Area, Position
+	std::map<std::string, std::vector<float4>> monsterSpawnPoints_;
+
+	float mapScale_;
 };
 
