@@ -18,6 +18,7 @@
 #include "HyunwooEffect.h"
 #include "HyunwooREffect.h"
 
+#include "MonsterCrowdControlPacket.h"
 #include "Monsters.h"
 
 Hyunwoo::Hyunwoo()
@@ -555,6 +556,30 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 				}
 			}
 		}
+
+		//// 221024 SJH ADD : 몬스터 데미지 및 CC 상태 테스트용
+		//auto MonstercollisionList = collision_E->GetCollisionList(eCollisionGroup::Monster);
+		//if (false == b_Ehit_)
+		//{
+		//	for (GameEngineCollision* col : MonstercollisionList)
+		//	{
+		//		GameEngineActor* actor = col->GetActor();
+		//		Monsters* Monster = nullptr;
+
+		//		if (nullptr != actor && actor != this)
+		//		{
+		//			Monster = dynamic_cast<Monsters*>(actor);
+
+		//			if (nullptr != Monster)
+		//			{
+		//				Monster->Damage(150.0f, this);
+		//				Monster->WallSlam(0.2f, direction_ * 3000.f, 1.0f);
+
+		//				b_Ehit_ = true;
+		//			}
+		//		}
+		//	}
+		//}
 
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}

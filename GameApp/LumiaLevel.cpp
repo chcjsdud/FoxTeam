@@ -30,6 +30,7 @@
 #include "MonsterStateChangePacket.h"
 #include "GameTimeSyncPacket.h"
 #include "CharDeathPacket.h"
+#include "MonsterCrowdControlPacket.h"
 
 //======================== Level
 #include "LoadingLevel.h"
@@ -593,6 +594,7 @@ void LumiaLevel::AddSocketHandle()
 		server->AddPacketHandler(ePacketID::CharEffectPacket, new CharEffectPacket);
 		server->AddPacketHandler(ePacketID::CharDeathPacket, new CharDeathPacket);
 		server->AddPacketHandler(ePacketID::MonsterDamagePacket, new MonsterStateChangePacket);
+		server->AddPacketHandler(ePacketID::MonsterCCPacket, new MonsterCrowdControlPacket);
 	}
 
 	if (true == client->IsConnected())
@@ -608,6 +610,7 @@ void LumiaLevel::AddSocketHandle()
 		client->AddPacketHandler(ePacketID::CharEffectPacket, new CharEffectPacket);
 		client->AddPacketHandler(ePacketID::CharDeathPacket, new CharDeathPacket);
 		client->AddPacketHandler(ePacketID::MonsterDamagePacket, new MonsterStateChangePacket);
+		client->AddPacketHandler(ePacketID::MonsterCCPacket, new MonsterCrowdControlPacket);
 	}
 }
 
@@ -942,6 +945,21 @@ void LumiaLevel::DebugWindowUpdate()
 					case MonsterStateType::DEAD:
 					{
 						MonsterDebugWindow_->AddText("DetailState: DEAD");
+						break;
+					}
+					case MonsterStateType::STUN:
+					{
+						MonsterDebugWindow_->AddText("DetailState: STUN");
+						break;
+					}
+					case MonsterStateType::KNOCKBACK:
+					{
+						MonsterDebugWindow_->AddText("DetailState: KNOCKBACK");
+						break;
+					}
+					case MonsterStateType::WALLSLAM:
+					{
+						MonsterDebugWindow_->AddText("DetailState: WALLSLAM");
 						break;
 					}
 					case MonsterStateType::ATK01:

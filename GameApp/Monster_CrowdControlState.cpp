@@ -7,6 +7,10 @@
 #include "GameClient.h"
 #include "MonsterStateChangePacket.h"
 
+#include "LumiaLevel.h"
+#include "LumiaMap.h"
+#include "NavMesh.h"
+
 void Monsters::StartHitState()
 {
 	// 현재 상태 지정
@@ -118,4 +122,97 @@ void Monsters::EndDeadState()
 	// MainRenderer Off
 	// -> 잠시 Off
 	MainRenderer_->Off();
+}
+
+void Monsters::StartStunState()
+{
+	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
+	CurStateType_ = MonsterStateType::STUN;
+}
+
+void Monsters::UpdateStunState(float _DeltaTime)
+{
+	StunTime_ -= _DeltaTime;
+	if (0.0f >= StunTime_)
+	{
+		// 상태전환
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+
+		// 스턴시간 초기화
+		StunTime_ = 0.0f;
+	}
+}
+
+void Monsters::EndStunState()
+{
+}
+
+void Monsters::StartKnockbackState()
+{
+	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
+	CurStateType_ = MonsterStateType::KNOCKBACK;
+}
+
+void Monsters::UpdateKnockbackState(float _DeltaTime)
+{
+	KnockbackTime_ -= _DeltaTime;
+	if (0.0f >= KnockbackTime_)
+	{
+		// 상태전환
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+		
+		// 넉백정보 초기화
+		KnockbackTime_ = 0.0f;
+		KnockbackSpeed_ = float4::ZERO;
+
+		return;
+	}
+
+	transform_.AddWorldPosition(KnockbackSpeed_ * _DeltaTime);
+}
+
+void Monsters::EndKnockbackState()
+{
+}
+
+void Monsters::StartWallSlamState()
+{
+	// 현재 상태 지정
+	PrevStateType_ = CurStateType_;
+	CurStateType_ = MonsterStateType::WALLSLAM;
+}
+
+void Monsters::UpdateWallSlamState(float _DeltaTime)
+{
+	KnockbackTime_ -= _DeltaTime;
+	if (0.0f >= KnockbackTime_)
+	{
+		ChangeAnimationAndState(MonsterStateType::IDLE);
+
+		// 벽스턴관련 정보 초기화
+		KnockbackTime_ = 0.0f;
+		KnockbackSpeed_ = float4::ZERO;
+
+		return;
+	}
+
+	float4 moveSpeed = KnockbackSpeed_ * _DeltaTime;
+	float4 nextMovePosition = transform_.GetWorldPosition() + moveSpeed;
+
+	float temp = 0.0f;
+	if (true == CurrentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+	{
+		GetTransform()->SetWorldPosition(nextMovePosition);
+	}
+	else
+	{
+		// 스턴상태 전환
+		Stun(StunTime_);
+	}
+}
+
+void Monsters::EndWallSlamState()
+{
 }

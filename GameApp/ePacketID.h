@@ -36,6 +36,7 @@ enum class ePacketID
 	MonsterStatePacket,
 	TimeSyncPacket,
 	MonsterDamagePacket,
+	MonsterCCPacket,
 
 	MAX
 };

@@ -87,6 +87,9 @@ enum class MonsterStateType
 	HIT,						// 피격상태
 	DEATH,						// 사망중상태
 	DEAD,						// 사망(리젠대기)상태
+	STUN,						// 스턴상태
+	KNOCKBACK,					// 넉백상태
+	WALLSLAM,					// 벽스턴상태
 	ATK01,						// 일반공격01상태
 	ATK02,						// 일반공격02상태
 	SKILLATTACK,				// 스킬공격상태

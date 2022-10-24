@@ -10,6 +10,7 @@
 #include "GameClient.h"
 #include "MonsterStateChangePacket.h"
 #include "MonsterDamagePacket.h"
+#include "MonsterCrowdControlPacket.h"
 
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
@@ -233,6 +234,54 @@ void Monsters::rcvDamage()
 	}
 }
 
+void Monsters::rcvStun(float _StunTime)
+{
+	// 이미 사망상태로 넘어가야하는 경우 무시
+	if (0.0f >= StateInfo_.HP_)
+	{
+		return;
+	}
+
+	// 스턴정보 셋팅
+	StunTime_ = _StunTime;
+
+	// 스턴상태 전환
+	ChangeAnimationAndState(MonsterStateType::STUN);
+}
+
+void Monsters::rcvKnockback(float _KnockbackTime, float4 _KnockbackSpeed)
+{
+	// 이미 사망상태로 넘어가야하는 경우 무시
+	if (0.0f >= StateInfo_.HP_)
+	{
+		return;
+	}
+
+	// 넉백정보 셋팅
+	KnockbackTime_ = _KnockbackTime;
+	KnockbackSpeed_ = _KnockbackSpeed;
+
+	// 넉백상태 전환
+	ChangeAnimationAndState(MonsterStateType::KNOCKBACK);
+}
+
+void Monsters::rcvWallSlam(float _KnockbackTime, float4 _KnockbackSpeed, float _StunTime)
+{
+	// 이미 사망상태로 넘어가야하는 경우 무시
+	if (0.0f >= StateInfo_.HP_)
+	{
+		return;
+	}
+
+	// 넉백정보 셋팅
+	KnockbackTime_ = _KnockbackTime;
+	KnockbackSpeed_ = _KnockbackSpeed;
+	StunTime_ = _StunTime;
+
+	// 넉백상태 전환
+	ChangeAnimationAndState(MonsterStateType::WALLSLAM);
+}
+
 void Monsters::InitalizeSpawnPosition(const float4& _SpawnPosition)
 {
 	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
@@ -326,6 +375,24 @@ void Monsters::ChangeAnimationAndState(MonsterStateType _StateType)
 			MainState_ << "CROWDCONTROL";
 			break;
 		}
+		case MonsterStateType::STUN:
+		{
+			CrowdControlState_ << "STUN";
+			MainState_ << "CROWDCONTROL";
+			break;
+		}
+		case MonsterStateType::KNOCKBACK:
+		{
+			CrowdControlState_ << "KNOCKBACK";
+			MainState_ << "CROWDCONTROL";
+			break;
+		}
+		case MonsterStateType::WALLSLAM:
+		{
+			CrowdControlState_ << "WALLSLAM";
+			MainState_ << "CROWDCONTROL";
+			break;
+		}
 		case MonsterStateType::ATK01:
 		{
 			AttackState_ << "ATK01";
@@ -373,6 +440,69 @@ void Monsters::UpdateAllStat(MonsterStateInfo _UpdateStat)
 	StateInfo_ = _UpdateStat;
 }
 
+void Monsters::Stun(float _StunTime)
+{
+	// 이미 사망상태로 넘어가야하는 경우 무시
+	if (0.0f >= StateInfo_.HP_)
+	{
+		return;
+	}
+
+	// 스턴정보 셋팅
+	StunTime_ = _StunTime;
+
+	// 스턴상태 전환
+	ChangeAnimationAndState(MonsterStateType::STUN);
+
+	// 패킷전송
+	MonsterCrowdControlPacket Packet;
+	Packet.SetStun(Index_, StunTime_);
+	FT::SendPacket(Packet);
+}
+
+void Monsters::Knockback(float _KnockbackTime, float4 _KnockbackSpeed)
+{
+	// 이미 사망상태로 넘어가야하는 경우 무시
+	if (0.0f >= StateInfo_.HP_)
+	{
+		return;
+	}
+
+	// 넉백정보 셋팅
+	KnockbackTime_ = _KnockbackTime;
+	KnockbackSpeed_ = _KnockbackSpeed;
+
+	// 넉백상태 전환
+	ChangeAnimationAndState(MonsterStateType::KNOCKBACK);
+
+	// 패킷전송
+	MonsterCrowdControlPacket Packet;
+	Packet.SetKnockback(Index_, KnockbackTime_, KnockbackSpeed_);
+	FT::SendPacket(Packet);
+}
+
+void Monsters::WallSlam(float _KnockbackTime, float4 _KnockbackSpeed, float _StunTime)
+{
+	// 이미 사망상태로 넘어가야하는 경우 무시
+	if (0.0f >= StateInfo_.HP_)
+	{
+		return;
+	}
+
+	// 넉백정보 셋팅
+	KnockbackTime_ = _KnockbackTime;
+	KnockbackSpeed_ = _KnockbackSpeed;
+	StunTime_ = _StunTime;
+
+	// 넉백상태 전환
+	ChangeAnimationAndState(MonsterStateType::WALLSLAM);
+
+	// 패킷전송
+	MonsterCrowdControlPacket Packet;
+	Packet.SetWallSlam(Index_, KnockbackTime_, KnockbackSpeed_, StunTime_);
+	FT::SendPacket(Packet);
+}
+
 void Monsters::InitalizeFSMState()
 {
 #pragma region MainState
@@ -394,10 +524,13 @@ void Monsters::InitalizeFSMState()
 #pragma endregion
 
 #pragma region CrowdControlState
-	// 피격, 사망중, 완전사망
+	// 피격, 사망중, 완전사망, 스턴, 넉백, 벽스턴
 	CrowdControlState_.CreateState("HIT", std::bind(&Monsters::UpdateHitState, this, std::placeholders::_1), std::bind(&Monsters::StartHitState, this), std::bind(&Monsters::EndHitState, this));
 	CrowdControlState_.CreateState("DEATH", std::bind(&Monsters::UpdateDeathState, this, std::placeholders::_1), std::bind(&Monsters::StartDeathState, this), std::bind(&Monsters::EndDeathState, this));
 	CrowdControlState_.CreateState("DEAD", std::bind(&Monsters::UpdateDeadState, this, std::placeholders::_1), std::bind(&Monsters::StartDeadState, this), std::bind(&Monsters::EndDeadState, this));
+	CrowdControlState_.CreateState("STUN", std::bind(&Monsters::UpdateStunState, this, std::placeholders::_1), std::bind(&Monsters::StartStunState, this), std::bind(&Monsters::EndStunState, this));
+	CrowdControlState_.CreateState("KNOCKBACK", std::bind(&Monsters::UpdateKnockbackState, this, std::placeholders::_1), std::bind(&Monsters::StartKnockbackState, this), std::bind(&Monsters::EndKnockbackState, this));
+	CrowdControlState_.CreateState("WALLSLAM", std::bind(&Monsters::UpdateWallSlamState, this, std::placeholders::_1), std::bind(&Monsters::StartWallSlamState, this), std::bind(&Monsters::EndWallSlamState, this));
 
 	CrowdControlState_.ChangeState("HIT");
 #pragma endregion
@@ -790,6 +923,9 @@ Monsters::Monsters()
 	, CurStateType_(MonsterStateType::NONE)
 	, IsDeath_(false)
 	, IsAttack_(false)
+	, StunTime_(0.0f)
+	, KnockbackTime_(0.0f)
+	, KnockbackSpeed_(float4::ZERO)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::MONSTER;
