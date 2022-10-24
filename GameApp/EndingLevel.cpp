@@ -35,6 +35,7 @@ void EndingLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void EndingLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	UIcontroller_->ResourceLoad();
 }
 
 void EndingLevel::startIdle()
@@ -101,15 +102,21 @@ void EndingLevel::updatePerson(float _DeltaTime)
 
 void EndingLevel::startCreditup()
 {
-	UIcontroller_->GetCreditTextRenderer()->GetTransform()->SetLocalPosition({0.0f, -450.f, 0.0f});
+	timer_ = 0.0f;
 	UIcontroller_->GetCreditTextRenderer()->On();
-
-	UIcontroller_->GetFoxteamRenderer()->GetTransform()->SetLocalPosition({ 0.0f, -800.0f, 0.0f });
 	UIcontroller_->GetFoxteamRenderer()->On();
 }
 
 void EndingLevel::updateCreditup(float _DeltaTime)
 {
-	UIcontroller_->GetCreditTextRenderer()->GetTransform()->SetLocalMove({ 0.0f, 150.0f * _DeltaTime, 0.0f });
-	UIcontroller_->GetFoxteamRenderer()->GetTransform()->SetLocalMove({ 0.0f, 150.0f * _DeltaTime, 0.0f });
+	if (-290.0f <= UIcontroller_->GetFoxteamRenderer()->GetTransform()->GetLocalPosition().y)
+	{
+		return;
+	}
+
+
+	timer_ += _DeltaTime;
+
+	UIcontroller_->GetCreditTextRenderer()->GetTransform()->SetLocalMove({ 0.0f, 100.0f * _DeltaTime, 0.0f });
+	UIcontroller_->GetFoxteamRenderer()->GetTransform()->SetLocalMove({ 0.0f, 100.0f * _DeltaTime, 0.0f });
 }

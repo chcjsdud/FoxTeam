@@ -4,6 +4,7 @@
 #include "Enums.h"
 #include <GameEngine/GameEngineUIRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
+#include <GameEngine/GameEngineCore.h>
 
 UI_WinLose::UI_WinLose() // default constructer 디폴트 생성자
 	: portraitRenderer_(nullptr), backRenderer_(nullptr), textRenderer_(nullptr), appearTimer_(0.0f), isAllAppeared_(false), isActivated_(false), 
@@ -289,6 +290,10 @@ void UI_WinLose::updateStandBy(float _DeltaTime)
 		else if (true == GameEngineInput::GetInst().Up("LBUTTON"))
 		{
 			SetImageByIndex(0);
+
+
+
+			GameEngineCore::LevelChange("EndingLevel");
 		}
 	}
 

@@ -18,13 +18,15 @@ protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
+
+
 public:
 	GameEngineUIRenderer* GetBackGroundRenderer() { return backgroundRenderer_; }
 	GameEngineUIRenderer* GetDeskRenderer() { return deskRenderer_; }
 	GameEngineUIRenderer* GetPersonRenderer() { return personRenderer_; }
 	GameEngineUIRenderer* GetCreditTextRenderer() { return creditTextRenderer_; }
 	GameEngineUIRenderer* GetFoxteamRenderer() { return foxTeamRenderer_; }
-
+	void ResourceLoad();
 private:
 	GameEngineUIRenderer* backgroundRenderer_;
 	GameEngineUIRenderer* deskRenderer_;

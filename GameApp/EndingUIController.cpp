@@ -29,6 +29,15 @@ void EndingUIController::Start()
 	//	GameEngineTextureManager::GetInst().Load(file.GetFileName(), file.GetFullPath());
 	//}
 
+
+}
+
+void EndingUIController::Update(float _DeltaTime)
+{
+}
+
+void EndingUIController::ResourceLoad()
+{
 	backgroundRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	backgroundRenderer_->SetImage("endingBackground.png", "PointSmp");
 
@@ -36,27 +45,26 @@ void EndingUIController::Start()
 
 	deskRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	deskRenderer_->SetImage("endingDesk.png", "PointSmp");
-//	deskRenderer_->GetTransform()->SetLocalScaling(deskRenderer_->GetCurrentTexture()->GetTextureSize());
+	deskRenderer_->GetTransform()->SetLocalScaling(deskRenderer_->GetCurrentTexture()->GetTextureSize());
 	deskRenderer_->SetAlpha(0.0f);
 
 	personRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	personRenderer_->SetImage("endingPerson.png", "PointSmp");
-//	personRenderer_->GetTransform()->SetLocalScaling(personRenderer_->GetCurrentTexture()->GetTextureSize());
+	personRenderer_->GetTransform()->SetLocalScaling(personRenderer_->GetCurrentTexture()->GetTextureSize());
 	personRenderer_->SetAlpha(0.0f);
 
 	creditTextRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	//creditTextRenderer_->SetImage("FoxteamBig.png", "PointSmp");
 	creditTextRenderer_->SetTextColor(float4::WHITE);
-	creditTextRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 250.0f, 1.0f });
-	creditTextRenderer_->TextSetting("굴림", " CREDIT \n\n\n  신종하\n유석진\n박종원\n이건호\n조규현", 40, FW1_CENTER);
+	creditTextRenderer_->GetTransform()->SetLocalPosition({ 450.0f, -400.0f, 0.0f });
+	//	creditTextRenderer_->GetTransform()->SetLocalScaling(creditTextRenderer_->GetCurrentTexture()->GetTextureSize());
+	creditTextRenderer_->TextSetting("굴림", "CREDIT\n\nShin Jongha\nCho KyuHyeon\nPark Jongwon\nYoo Sukjin\nLee Gunho", 40, FW1_CENTER);
 	creditTextRenderer_->Off();
 
 	foxTeamRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	foxTeamRenderer_->SetImage("Foxteam.png", "PointSmp");
-	foxTeamRenderer_->GetTransform()->SetLocalScaling(foxTeamRenderer_->GetCurrentTexture()->GetTextureSize() * 2);
+	foxTeamRenderer_->GetTransform()->SetLocalPosition({ 420.0f, -800.0f, 0.0f });
+	foxTeamRenderer_->GetTransform()->SetLocalScaling(foxTeamRenderer_->GetCurrentTexture()->GetTextureSize());
 	foxTeamRenderer_->Off();
-}
-
-void EndingUIController::Update(float _DeltaTime)
-{
 }
 
