@@ -20,27 +20,29 @@ public:
 	UI_Notice& operator=(UI_Notice&& _Other) noexcept = delete;
 
 public:
-
 	void UISwitch();
 	void SetText(string _Text, float _Time);
-	void TimeCount(float _Time);
 
 private:
 	void Start() override;
 	void Update(float _Time) override;
 
+	void TimeCount(float _Time);
+
+private:
 	float4 UI_Pos;
 	float4 Font_Pos;
 
-
-
 	GameEngineUIRenderer* BackGroundRenderer;
 	GameEngineUIRenderer* FontRenderer;
+
 	float FadeWaitTime;
 	float FadeTime;
 	float BasicAlpha;
 
 	bool UIOn;
+
+	bool Changing_Flag;
 
 };
 

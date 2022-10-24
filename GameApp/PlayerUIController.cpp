@@ -32,6 +32,9 @@ void PlayerUIController::InitUI()
 	time_UI = GetLevel()->CreateActor<UI_Time>();
 	notice_UI = GetLevel()->CreateActor<UI_Notice>();
 	winLose_UI = GetLevel()->CreateActor<UI_WinLose>();
+
+	//테스트용
+	notice_UI->SetText("알림 UI 테스트용 텍스트입니다", 5.f);
 }
 
 
@@ -62,6 +65,5 @@ void PlayerUIController::Update(float _DeltaTime)
 
 	//스테이터스를 상시 받아야함
 	status_UI->SetStatus(pm->GetMyPlayer().stat_);
-
 }
 

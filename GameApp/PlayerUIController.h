@@ -59,6 +59,11 @@ public:
 		return status_UI;
 	}
 
+	UI_Notice* GetNoticeUI()
+	{
+		return notice_UI;
+	}
+
 	UI_WinLose* GetWinLoseUI()
 	{
 		return winLose_UI;

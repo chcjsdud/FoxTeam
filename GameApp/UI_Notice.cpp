@@ -7,7 +7,7 @@
 
 
 UI_Notice::UI_Notice()
-	: FadeWaitTime(0.0f), FadeTime(0.0f), UIOn(false)
+	: FadeWaitTime(0.0f), FadeTime(0.0f), UIOn(false), Changing_Flag(false)
 {
 }
 
@@ -20,7 +20,7 @@ void UI_Notice::Start()
 {
 
 	UI_Pos = { 0.0f, 170.0f, 0.0f };
-	Font_Pos = { 0.0f, 170.0f, -1.0f };
+	Font_Pos = { 0.0f, 175.0f, -1.0f };
 	BasicAlpha = 0.4f;
 
 	{
@@ -34,7 +34,7 @@ void UI_Notice::Start()
 	{
 		//폰트출력용
 		FontRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		FontRenderer->GetTransform()->SetLocalPosition(UI_Pos);
+		FontRenderer->GetTransform()->SetLocalPosition(Font_Pos);
 		FontRenderer->TextSetting("HMKMRHD", "Test", 12, FW1_CENTER);
 	}
 
@@ -60,30 +60,37 @@ void UI_Notice::Update(float _Time)
 		{
 			BackGroundRenderer->On();
 			FontRenderer->On();
-			FontRenderer->TextSetting("HMKMRHD", "Test", 12, FW1_CENTER);
 		}
 	}
 
-	if (true == GameEngineInput::GetInst().Down("Esc"))
+	//if (true == GameEngineInput::GetInst().Down("Esc"))
+	//{
+	//	if (UIOn == true)
+	//	{
+	//		UIOn = false;
+	//	}
+	//	else
+	//	{
+	//		UIOn = true;
+	//	}
+	//}
+
+	if (FadeWaitTime <= 0.0f)
 	{
-		if (UIOn == true)
-		{
-			UIOn = false;
-		}
-		else
-		{
-			UIOn = true;
-		}
+		FontRenderer->Off();
 	}
 
-	//if (FadeWaitTime >= 0.0f)
-	//{
-	//	BackGroundRenderer->SetAlpha(Time);
-	//}
-	//else
-	//{
-	//	BackGroundRenderer->Off();
-	//}
+	if (FadeTime >= 0.0f)
+	{
+		//기본알파에 시간 비율을 곱해서 2초동안 투명해지게 설정
+		BackGroundRenderer->SetAlpha((BasicAlpha)*(FadeTime));
+		//FontRenderer->SetAlpha((BasicAlpha) * (FadeTime * 0.5f));
+	}
+	else
+	{
+		UISwitch();
+		Changing_Flag = false;
+	}
 
 }
 
@@ -101,32 +108,35 @@ void UI_Notice::UISwitch()
 
 void UI_Notice::SetText(string _Text, float _Time)
 {
-	FadeWaitTime = (_Time - 2.0f);
+	if (Changing_Flag == false)
+	{
+		UISwitch();
+	}
 
-	BackGroundRenderer->On();
-	FontRenderer->On();
+	FadeTime = 1.0f;
+	FadeWaitTime = (_Time - FadeTime);
 
 
-	FontRenderer->TextSetting("HMKMRHD", _Text, 12, FW1_CENTER);
+	FontRenderer->TextSetting("HMKMRHD", _Text, 15, FW1_CENTER);
+	Changing_Flag = true;
 }
 
 void UI_Notice::TimeCount(float _Time)
 {
-
-	if (FadeWaitTime > 0.0f)
+	if (FadeWaitTime >= 0.0f)
 	{
 		FadeWaitTime -= _Time;
 	}
 	else if (FadeWaitTime <= 0.0f)
 	{
-		if (FadeTime <= 0.0f)
+		if (FadeTime >= 0.0f)
 		{
-			FadeTime = 0.0f;
+			FadeTime -= _Time;
 		}
 		else
 		{
-			//FadeTime은 2초
-			FadeTime -= (_Time * 0.5f);
+			FadeWaitTime = 0.0f;
+			FadeTime = 0.0f;
 		}
 	}
 
