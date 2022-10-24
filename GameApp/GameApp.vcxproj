@@ -252,6 +252,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LevelUpSystem.cpp" />
     <ClCompile Include="MonsterCrowdControlPacket.cpp" />
     <ClCompile Include="MonsterDamagePacket.cpp" />
     <ClCompile Include="TestLevelBox.cpp">
@@ -627,6 +628,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LevelUpSystem.h" />
     <ClInclude Include="MonsterCrowdControlPacket.h" />
     <ClInclude Include="MonsterDamagePacket.h" />
     <ClInclude Include="TestLevelBox.h">

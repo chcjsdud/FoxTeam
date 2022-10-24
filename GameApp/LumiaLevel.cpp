@@ -37,6 +37,7 @@
 
 //======================== Controller
 #include "GameTimeController.h"
+#include "LevelUpSystem.h"
 
 //======================== Map
 #include "LumiaMap.h"
@@ -1070,6 +1071,12 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
 		GameTimeController::GetInstance()->HostInitialize();
+	}
+
+	// LevelUpSystem Initalize
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		LevelUpSystem::GetInstance()->LoadLevelInfomationFile();
 	}
 
 	// 220929 ADD SJH : 테스트용(추후삭제예정)
