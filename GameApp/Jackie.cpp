@@ -18,18 +18,14 @@
 Jackie::Jackie() // default constructer 디폴트 생성자
 	: atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(0), collision_Q(nullptr),
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
-	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr), sawRenderer_(nullptr),
+	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr), sawRenderer_(nullptr), axeRenderer_(nullptr),
 	isW_(false), timer_W(0.0f), bSkillEPassable_(false), eStartPosition_(float4::ZERO), eLandingPosition_(float4::ZERO)
+
 {
 
 }
 
 Jackie::~Jackie() // default destructer 디폴트 소멸자
-{
-
-}
-
-Jackie::Jackie(Jackie&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
 {
 
 }
@@ -46,6 +42,10 @@ void Jackie::LoadResource()
 
 	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Special_Jackie_01.fbx"));
 	mesh->CreateRenderingBuffer();
+
+	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Axe_01.fbx"));
+	mesh->CreateRenderingBuffer();
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Axe_01.fbx"));
 
 	std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 	for (GameEngineFile& file : allFile)
@@ -232,9 +232,22 @@ void Jackie::initRendererAndAnimation()
 	sawRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 
 	sawRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger2");
+	sawRenderer_->Off();
 
 	//sawRenderer_->CreateFBXAnimation("chainsaw", "Weapon_Special_Jackie_01.fbx");
 	//sawRenderer_->ChangeFBXAnimation("chainsaw");
+
+	axeRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	axeRenderer_->SetFBXMesh("Weapon_Axe_01.fbx", "TextureDeferredLightAni");
+
+	axeRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger0");
+	//axeRenderer_->SetCustomOffset({ 0.0f, 0.0f, -0.1f });
+
+	axeRenderer_->GetTransform()->SetLocalScaling(100.f);
+	axeRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+
+	axeRenderer_->CreateFBXAnimation("Idle", "Weapon_Axe_01.fbx");
+	axeRenderer_->ChangeFBXAnimation("Idle");
 }
 
 void Jackie::initJackieCollision()
