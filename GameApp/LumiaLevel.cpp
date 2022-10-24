@@ -42,6 +42,7 @@
 //======================== Map
 #include "LumiaMap.h"
 #include "ItemBoxManager.h"
+#include "HyperLoop.h"
 
 //======================== Characters
 #include "Character.h"
@@ -188,6 +189,17 @@ void LumiaLevel::MapCreationCommand()
 
 	// ¸Ê »ý¼º
 	CurMap_ = CreateActor<LumiaMap>();
+
+	std::vector<float4> hyperLoopSpawnPoints = CurMap_->GetHyperLoopSpawnPoints();
+
+	
+	GameEngineActor* HyperLoops[8] = {nullptr, };
+
+	for (int i = 0; i < 8; i++)
+	{
+		HyperLoops[i] = CreateActor<HyperLoop>();
+		HyperLoops[i]->GetTransform()->SetWorldPosition(hyperLoopSpawnPoints[i]);
+	}
 
 //#ifdef _DEBUG
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();

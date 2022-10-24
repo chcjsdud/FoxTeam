@@ -32,12 +32,18 @@ public:
 
 	NavMesh* GetNavMesh() { return navMesh_; }
 
+	std::vector<float4> GetHyperLoopSpawnPoints()
+	{
+		return hyperLoopSpawnPoints_;
+	}
+
 protected:
 	void makeAStarNode(float _intervalX, float _intervalZ);
 	void checkASterNodeObstacle();
 	void setAllItem();
 	void setCharacterSpawnPoints(GameEngineDirectory _dir);
 	void setMonsterSpawnPoints(GameEngineDirectory _dir);
+	void setHyperLoopSpawnPoints(GameEngineDirectory _dir);
 
 protected:
 	// A*
@@ -63,6 +69,7 @@ protected:
 private:
 	std::map<std::string, std::vector<float4>> characterSpawnPoints_;	// Area, Position
 	std::map<std::string, std::vector<float4>> monsterSpawnPoints_;
+	std::vector<float4> hyperLoopSpawnPoints_;
 
 	float mapScale_;
 };

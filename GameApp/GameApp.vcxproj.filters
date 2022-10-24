@@ -391,6 +391,9 @@
     <ClCompile Include="MonsterCrowdControlPacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet\Monster</Filter>
     </ClCompile>
+    <ClCompile Include="HyperLoop.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
+    </ClCompile>
     <ClCompile Include="LevelUpSystem.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>
     </ClCompile>
@@ -1006,6 +1009,9 @@
     </ClInclude>
     <ClInclude Include="MonsterCrowdControlPacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet\Monster</Filter>
+    </ClInclude>
+    <ClInclude Include="HyperLoop.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor</Filter>
     </ClInclude>
     <ClInclude Include="LevelUpSystem.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>

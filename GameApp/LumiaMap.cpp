@@ -132,6 +132,7 @@ void LumiaMap::Start()
 
 	setCharacterSpawnPoints(spawnPointDir);
 	setMonsterSpawnPoints(spawnPointDir);
+	setHyperLoopSpawnPoints(spawnPointDir);
 
 	/*GameEngineDirectory MeshDir;
 	MeshDir.MoveParent("FoxTeam");
@@ -629,4 +630,25 @@ void LumiaMap::setMonsterSpawnPoints(GameEngineDirectory _dir)
 			monsterSpawnPoints_.insert(std::pair(areaName, vecTrans));
 		}
 	}
+}
+
+void LumiaMap::setHyperLoopSpawnPoints(GameEngineDirectory _dir)
+{
+	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(_dir.PathToPlusFileName("HyperloopSpawnPoints.fbx")))
+	{
+		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(_dir.PathToPlusFileName("HyperloopSpawnPoints.fbx"));
+		std::vector<FbxNodeData> nodeDatas = Mesh->GetAllNodeData();
+
+		for (const auto& data : nodeDatas)
+		{
+			std::string UpperName = GameEngineString::toupper(data.name);
+
+			if (float4::ZERO != data.translation)
+			{
+				hyperLoopSpawnPoints_.push_back(data.translation * mapScale_);
+			}
+		}
+	}
+
+	int a = 0;
 }
