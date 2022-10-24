@@ -31,6 +31,7 @@ protected:
 
 private:
 	GameEngineFSM UIState_;
+	GameEngineUIRenderer* ambientRenderer_;
 	GameEngineUIRenderer* fowRenderer_;
 	float timer_;
 	bool isNight_;
