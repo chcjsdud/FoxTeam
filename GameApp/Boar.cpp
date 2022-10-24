@@ -257,7 +257,7 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 			float Dist = 0.0f;
 			if (true == CurrentMap_->GetNavMesh()->CheckIntersects(NextMovePos + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, Dist))
 			{
-				NextMovePos.y = FT::Map::MAX_HEIGHT - Dist;
+				//NextMovePos.y = FT::Map::MAX_HEIGHT - Dist;
 				GetTransform()->SetWorldPosition(NextMovePos);
 			}
 		}
