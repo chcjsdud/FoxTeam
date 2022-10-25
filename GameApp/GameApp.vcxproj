@@ -275,6 +275,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="UI_HPBars.cpp" />
     <ClCompile Include="UI_Notice.cpp" />
     <ClCompile Include="UI_WinLose.cpp">
       <SubType>
@@ -656,6 +657,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="UI_HPBars.h" />
     <ClInclude Include="UI_Notice.h" />
     <ClInclude Include="UI_WinLose.h">
       <SubType>

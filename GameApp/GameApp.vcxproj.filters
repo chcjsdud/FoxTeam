@@ -397,6 +397,9 @@
     <ClCompile Include="LevelUpSystem.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>
     </ClCompile>
+    <ClCompile Include="UI_HPBars.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -1018,6 +1021,9 @@
     </ClInclude>
     <ClInclude Include="LevelUPData.h">
       <Filter>01.GameObject\00.Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_HPBars.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
