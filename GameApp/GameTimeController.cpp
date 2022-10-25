@@ -9,6 +9,7 @@
 #include "PlayerInfoManager.h"
 #include "LumiaLevel.h"
 #include "PlayerUIController.h"
+#include "LevelUpSystem.h"
 
 GameTimeController* GameTimeController::GetInstance()
 {
@@ -124,10 +125,17 @@ void GameTimeController::HostUpdate(float _DeltaTime)
 
 void GameTimeController::GuestUpdate(float _GameTime, DayAndNightType _Type, int _CurDay, float _DayAndNightTime)
 {
+	PrevDay_ = CurDay_;
 	CurDay_ = _CurDay;
 	CurDayOrNight_ = _Type;
 	CurGameTime_ = _GameTime;
 	DayAndNightTime_ = _DayAndNightTime;
+
+	// 일차가 달라졌다면 레벨업 명령(게스트전용)
+	if (PrevDay_ != CurDay_)
+	{
+		LevelUpSystem::GetInstance()->AllUnitLevelUP();
+	}
 }
 
 void GameTimeController::CreateDailytimes()
@@ -180,10 +188,6 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 		int DayAndNightIndex = CurDay_ % 4;
 		if (DayAndNightType::DAY == CurDayOrNight_)			// 현재 낮일때
 		{
-
-			// 루미아레벨로 다운캐스팅 후 해당 몬스터타입 첫등장처리
-
-
 			// 전환되었으므로 타입을 밤으로 설정
 			CurDayOrNight_ = DayAndNightType::NIGHT;
 
@@ -221,6 +225,9 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 			// 밤->낮으로 전환되었으므로 현재일차를 이전일차에 저장후 증가
 			PrevDay_ = CurDay_;
 			CurDay_ += 1;
+
+			// 일차 증가로 현재 게임에 배치된 모든 유닛에게 레벨업명령(서버전용)
+			LevelUpSystem::GetInstance()->AllUnitLevelUP();
 		}
 	}
 }

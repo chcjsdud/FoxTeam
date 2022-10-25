@@ -4,6 +4,12 @@
 #include <iostream>
 #include <fstream>
 
+#include <GameEngine/GameEngineCore.h>
+
+#include "LumiaLevel.h"
+#include "Character.h"
+#include "Monsters.h"
+
 LevelUpSystem* LevelUpSystem::GetInstance()
 {
 	static LevelUpSystem instance;
@@ -17,20 +23,20 @@ void LevelUpSystem::LoadLevelInfomationFile()
 	LevelFilesDir.MoveChild("Resources");
 	LevelFilesDir.MoveChild("CSVFiles");
 
-	AllFiles_ = LevelFilesDir.GetAllFile();
+	std::vector<GameEngineFile> AllFiles = LevelFilesDir.GetAllFile();
 
-	int FileCount = static_cast<int>(AllFiles_.size());
+	int FileCount = static_cast<int>(AllFiles.size());
 	for (int FileNum = 0; FileNum < FileCount; ++FileNum)
 	{
 		// 확인용
-		std::string CurFileName = AllFiles_[FileNum].GetFileName();
-		std::string CurFilePath = AllFiles_[FileNum].GetFullPath();
+		std::string CurFileName = AllFiles[FileNum].GetFileName();
+		std::string CurFilePath = AllFiles[FileNum].GetFullPath();
 
 		// 00. File Open
 		std::ifstream fs(CurFilePath);
 		if (true == fs.fail())
 		{
-			GameEngineDebug::MsgBoxError(CurFileName + "파일읽기에 실패하였습니다!!!!!");
+			GameEngineDebug::MsgBoxError(CurFilePath + "파일읽기에 실패하였습니다!!!!!");
 			continue;
 		}
 
@@ -214,11 +220,64 @@ void LevelUpSystem::LoadLevelInfomationFile()
 
 void LevelUpSystem::AllUnitLevelUP()
 {
-	// 현재 게임에 배치된 모든 유닛에게 레벨업 명령을 내린다!!!
+	// 현재 플레이레벨 Get
+	GameEngineLevel* CurLevel = GameEngineCore::LevelFind("LumiaLevel");
+	if (nullptr == CurLevel)
+	{
+		GameEngineDebug::MsgBoxError("현재 루미아레벨이 존재하지않습니다!!!!");
+		return;
+	}
+	LumiaLevel* CurLumiaLevl = dynamic_cast<LumiaLevel*>(CurLevel);
 
+	// 현재 게임에 배치된 모든 캐릭터에게 레벨업 명령
+	std::vector<Character*> AllCharacter = CurLumiaLevl->GetCharacterActorList();
+	int CharacterCount = static_cast<int>(AllCharacter.size());
+	for (int CharacterNum = 0; CharacterNum < CharacterCount; ++CharacterNum)
+	{
+		if (nullptr == AllCharacter[CharacterNum])
+		{
+			GameEngineDebug::MsgBox("이미 사망했거나 잘못된 주소를 참조하고있는 캐릭터입니다!!!!\n");
+			continue;
+		}
 
+		// 레벨업데이터가 존재하는 캐릭터 타입인지 체크
+		JobType CurCharacterType = AllCharacter[CharacterNum]->GetJobType();
+		std::map<JobType, LevelUPData>::iterator FindIter = CharacterLevelData_.find(CurCharacterType);
+		if (CharacterLevelData_.end() == FindIter)
+		{
+			GameEngineDebug::MsgBox("레벨업 정보에 포함되지않은 캐릭터타입입니다!!! 파일에 해당 직업타입을 작성하세요!!!\n");
+			continue;
+		}
 
+		// 존재한다면 해당 레벨업정보를 전달하여 해당 캐릭터 스탯 증가
+		LevelUPData SendData = (*FindIter).second;
+		AllCharacter[CharacterNum]->LevelUP(SendData);
+	}
 
+	// 현재 게임에 배치된 모든 몬스터에게 레벨업 명령
+	std::vector<Monsters*> AllMonster = CurLumiaLevl->GetMonsterActorList();
+	int MonsterCount = static_cast<int>(AllMonster.size());
+	for (int MonsterNum = 0; MonsterNum < MonsterCount; ++MonsterNum)
+	{
+		if (nullptr == AllMonster[MonsterNum])
+		{
+			GameEngineDebug::MsgBox("이미 사망했거나 잘못된 주소를 참조하고있는 몬스터입니다!!!!\n");
+			continue;
+		}
+
+		// 레벨업데이터가 존재하는 몬스터 타입인지 체크
+		MonsterType CurMonsterType = AllMonster[MonsterNum]->GetMonsterType();
+		std::map<MonsterType, LevelUPData>::iterator FindIter = MonsterLevelData_.find(CurMonsterType);
+		if (MonsterLevelData_.end() == FindIter)
+		{
+			GameEngineDebug::MsgBox("레벨업 정보에 포함되지않은 몬스터타입입니다!!! 파일에 해당 몬스터타입을 작성하세요!!!\n");
+			continue;
+		}
+
+		// 존재한다면 해당 레벨업정보를 전달하여 해당 캐릭터 스탯 증가
+		LevelUPData SendData = (*FindIter).second;
+		AllMonster[MonsterNum]->LevelUP(SendData);
+	}
 }
 
 LevelUpSystem::LevelUpSystem()

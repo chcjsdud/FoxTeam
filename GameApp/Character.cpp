@@ -726,6 +726,22 @@ void Character::Damage(float _Amount, IUnit* _Target)
 	FT::SendPacket(packet);
 }
 
+void Character::LevelUP(LevelUPData _Data)
+{
+	// 레벨이없네!!!!!
+	//stat_.Level += 1;
+	stat_.AttackPower += _Data.AttackPower_;					// 공격력
+	stat_.HPMax += _Data.HP_;									// 체력(최대체력)
+	stat_.HPRegeneration += _Data.HPRegeneration_;				// 체력재생
+	stat_.SPMax += _Data.SP_;									// 스태미나(최대스태미나)
+	stat_.SPRegeneration += _Data.SPRegeneration_;				// 스태미나재생
+	stat_.Defence += _Data.Defence_;							// 방어력
+	stat_.AttackSpeed += _Data.AttackSpeed_;					// 공격속도
+	stat_.CriticalChance += _Data.CriticalChance_;				// 치명타
+	stat_.MovementSpeed += _Data.MovementSpeed_;				// 이동속도
+	stat_.VisionRange += _Data.VisionRange_;					// 시야
+}
+
 void Character::Stun(float _stunTime)
 {
 	mainState_ << "CrowdControlState";

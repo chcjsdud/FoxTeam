@@ -5,6 +5,7 @@
 #include "NavMesh.h"
 #include "CharacterStat.h"
 #include "IUnit.h"
+#include "LevelUPData.h"
 
 struct CombineItem;
 struct QueueItem;
@@ -33,6 +34,9 @@ public:
 	int GetIndex() override;
 	//void Damage(float _amount) override;
 	void Damage(float _Amount, IUnit* _Target) override;
+
+public: // 221025 SJH ADD : ·¹º§¾÷
+	void LevelUP(LevelUPData _Data);
 
 public:
 	void InitSpawnPoint(const float4& _position);

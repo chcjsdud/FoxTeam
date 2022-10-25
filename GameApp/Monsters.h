@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineFSM.h>
 
+#include "LevelUPData.h"
 #include "IUnit.h"
 #include "MonsterStateInfo.h"
 
@@ -63,6 +64,9 @@ public: // inline Set Function
 	{
 		AreaType_ = _AreaType;
 	}
+
+public: // Public Monster LevelUP Related Function
+	void LevelUP(LevelUPData _Data);													// 게임시간에 따른 레벨업
 
 public: // Public Pure Virtual Function
 	int GetIndex() override;															// 인덱스 Get

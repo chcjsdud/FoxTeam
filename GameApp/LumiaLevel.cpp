@@ -836,6 +836,10 @@ void LumiaLevel::DebugWindowUpdate()
 				float CurHp = vecMonsters[MonsterNum]->GetMonsterStateInfo().HP_;
 				MonsterDebugWindow_->AddText("HP: " + std::to_string(CurHp));
 
+				// 현재레벨
+				int CurLevel = vecMonsters[MonsterNum]->GetMonsterStateInfo().Level_;
+				MonsterDebugWindow_->AddText("LV: " + std::to_string(CurLevel));
+
 				// 현재상태
 				MonsterStateBasicType CurMainState = vecMonsters[MonsterNum]->GetMonsterBasicStateType();
 				switch (CurMainState)

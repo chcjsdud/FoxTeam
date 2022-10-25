@@ -18,6 +18,15 @@
 
 #include "Character.h"
 
+void Monsters::LevelUP(LevelUPData _Data)
+{
+	StateInfo_.Level_ += 1;
+	StateInfo_.OffencePower_ += _Data.AttackPower_;					// 공격력
+	StateInfo_.HPMax_ += _Data.HP_;									// 체력(최대체력)
+	StateInfo_.Defense_ += _Data.Defence_;							// 방어력
+	StateInfo_.MoveSpeed_ += _Data.MovementSpeed_;					// 이동속도
+}
+
 int Monsters::GetIndex()
 {
 	return Index_;

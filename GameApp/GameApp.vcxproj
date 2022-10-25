@@ -636,6 +636,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="LevelUPData.h" />
     <ClInclude Include="LevelUpSystem.h" />
     <ClInclude Include="MonsterCrowdControlPacket.h" />
     <ClInclude Include="MonsterDamagePacket.h" />

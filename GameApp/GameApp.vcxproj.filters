@@ -1016,5 +1016,8 @@
     <ClInclude Include="LevelUpSystem.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>
     </ClInclude>
+    <ClInclude Include="LevelUPData.h">
+      <Filter>01.GameObject\00.Constant</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
