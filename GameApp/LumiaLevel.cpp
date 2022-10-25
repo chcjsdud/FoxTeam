@@ -368,9 +368,24 @@ void LumiaLevel::CharacterCreationCommand()
 
 		// 
 		PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].stat_ = NewCharacter->GetStat();
-		PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = float4(-2500.f, 0.0f, 10000.f);
-		NewCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-		//NewCharacter->InitSpawnPoint({ 1200.f, 0.0f, -5630.f });
+
+		int spawnArea = PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].startPoint_;
+
+		// 지역 선택 안하면 디폴트로 스폰
+		if (-1 == spawnArea)
+		{
+			PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = float4(-2500.f, 0.0f, 10000.f);
+			NewCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+		}
+		else
+		{
+			std::vector<float4> spawnPoints = CurMap_->GetCharacterSpawnPoints(spawnArea);
+			GameEngineRandom random;
+			int point = random.RandomInt(0, spawnPoints.size());
+			PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = spawnPoints[point];
+			NewCharacter->InitSpawnPoint(spawnPoints[point]);
+		}
+		
 		NewCharacter->SetIndex(PlayerNum);
 		NewCharacter->UnitType_ = UnitType::CHARACTER;
 		// 관리목록에 추가

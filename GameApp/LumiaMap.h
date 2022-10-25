@@ -36,6 +36,8 @@ public:
 	{
 		return hyperLoopSpawnPoints_;
 	}
+	
+	std::vector<float4> GetCharacterSpawnPoints(int _spawnArea);
 
 protected:
 	void makeAStarNode(float _intervalX, float _intervalZ);

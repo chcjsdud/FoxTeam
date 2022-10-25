@@ -358,6 +358,22 @@ std::vector<float4> LumiaMap::FindPath(const float4& _startPosition, const float
 	return result;
 }
 
+std::vector<float4> LumiaMap::GetCharacterSpawnPoints(int _spawnArea)
+{
+	std::string areaName = enum_MapName[_spawnArea];
+
+	auto iter = characterSpawnPoints_.find(areaName);
+
+	if (characterSpawnPoints_.end() == iter)
+	{
+		GameEngineDebug::MsgBoxError("if (characterSpawnPoints_.end() == iter)");
+
+		return std::vector<float4>();
+	}
+
+	return (*iter).second;
+}
+
 void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 {
 	intervalX_ = _intervalX;
@@ -589,13 +605,20 @@ void LumiaMap::setCharacterSpawnPoints(GameEngineDirectory _dir)
 		{
 			std::vector<float4> vecTrans;
 
-			for (const auto& data : nodeDatas)
+			for (auto& data : nodeDatas)
 			{
 				std::string UpperName = GameEngineString::toupper(data.name);
+
+				if (std::string::npos != UpperName.find("(") ||
+					std::string::npos != UpperName.find(")"))
+				{
+					continue;
+				}
 
 				if (std::string::npos != UpperName.find(areaName) &&
 					float4::ZERO != data.translation)
 				{
+					data.translation *= { 1.0f, 1.0f, -1.0f };
 					vecTrans.push_back(data.translation * mapScale_);
 				}
 			}
