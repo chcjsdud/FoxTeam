@@ -35,7 +35,8 @@ void Jackie::LoadResource()
 	GameEngineDirectory dir;
 
 	dir.MoveParent("FoxTeam");
-	dir / "Resources" / "FBX" / "PJW";
+	dir / "Resources" / "FBX" / "Character" / "Jackie";
+
 
 	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Jackie_run.fbx"));
 	mesh->CreateRenderingBuffer();

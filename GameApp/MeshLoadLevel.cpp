@@ -45,7 +45,8 @@ void MeshLoadLevel::LevelStart()
 	FBXWindow->UserAnimationSaveFolder.MoveParent("FoxTeam");
 	FBXWindow->UserAnimationSaveFolder.MoveChild("Resources");
 	FBXWindow->UserAnimationSaveFolder.MoveChild("FBX");
-	FBXWindow->UserAnimationSaveFolder.MoveChild("PJW");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("Character");
+	FBXWindow->UserAnimationSaveFolder.MoveChild("Hyunwoo");
 	//GameEngineGUIWindow::inst
 
 	//GameEngineDirectory Dir;
