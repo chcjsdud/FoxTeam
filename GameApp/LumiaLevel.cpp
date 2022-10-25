@@ -391,7 +391,7 @@ void LumiaLevel::CharacterCreationCommand()
 		{
 			std::vector<float4> spawnPoints = CurMap_->GetCharacterSpawnPoints(spawnArea);
 			GameEngineRandom random;
-			int point = random.RandomInt(0, spawnPoints.size());
+			int point = random.RandomInt(0, spawnPoints.size() - 1);
 			PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = spawnPoints[point];
 			NewCharacter->InitSpawnPoint(spawnPoints[point]);
 		}
