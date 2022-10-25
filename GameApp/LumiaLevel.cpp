@@ -1086,10 +1086,7 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	}
 
 	// LevelUpSystem Initalize
-	if (true == GameServer::GetInstance()->IsOpened())
-	{
-		LevelUpSystem::GetInstance()->LoadLevelInfomationFile();
-	}
+	LevelUpSystem::GetInstance()->LoadLevelInfomationFile();
 
 	// 220929 ADD SJH : 테스트용(추후삭제예정)
 	// 서버를 생성을 안했거나 클라이언트로 서버에 연결되지않은상태에서 LevelControlWindow에의해 강제로 레벨이동한 경우

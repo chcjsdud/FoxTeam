@@ -41,6 +41,6 @@ struct MonsterStateInfo
 	float SkillCoolDown_;					// 스킬재사용시간
 
 //====================================== 아이템관련
-	std::map<ItemName, float> DropItems_;		// std::map<아이템명, 확률> : 스텟초기화시 정의
+	std::map<ItemName, float> DropItems_;	// std::map<아이템명, 확률> : 스텟초기화시 정의
 	std::vector<ItemName> CurDropItems_;	// 사망시 드랍된 아이템목록 : 사망시 Items_에서 확률을 체크하여 목록작성 -> 서버에서 결정된 후 패킷전송
 };

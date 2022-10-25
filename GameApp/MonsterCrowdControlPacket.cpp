@@ -80,6 +80,11 @@ void MonsterCrowdControlPacket::execute(SOCKET _socketSender, GameEngineSocketIn
 			break;
 		}
 	}
+
+	if (true == _bServer)
+	{
+		_network->Send(this);
+	}
 }
 
 MonsterCrowdControlPacket::MonsterCrowdControlPacket()
