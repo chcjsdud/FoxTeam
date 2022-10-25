@@ -6,6 +6,7 @@
 #include <GameEngine/LightActor.h>
 #include "Rio.h"
 #include "Jackie.h"
+#include "Hyunwoo.h"
 
 #include "TestOBB.h"
 #include "TestLevelBox.h"
@@ -63,7 +64,7 @@ void TestLevel::LevelUpdate(float _DeltaTime)
 
 	if (false == GetMainCameraActor()->IsFreeCameraMode())
 	{
-		float4 playerPosition = rio_->GetTransform()->GetWorldPosition();
+		float4 playerPosition = focusChar_->GetTransform()->GetWorldPosition();
 		GetMainCameraActor()->GetTransform()->SetWorldPosition(playerPosition + float4(200.f, 640.f, -300.f));
 		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 60.f, -35.f, 0.0f });
 	}
@@ -84,6 +85,7 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
 	Rio::LoadResource();
 	Jackie::LoadResource();
+	Hyunwoo::LoadResource();
 
 	rio_ = CreateActor<Rio>();
 	//rio_->Focus();
@@ -102,9 +104,15 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	rio_->SetMap(map_);
 
 	jackie_ = CreateActor<Jackie>();
-	jackie_->Focus();
+	//jackie_->Focus();
 	jackie_->SetMouse(mouse_);
 	jackie_->SetMap(map_);
+
+	Hyunwoo* h = CreateActor<Hyunwoo>();
+	h->Focus();
+	h->SetMouse(mouse_);
+	h->SetMap(map_);
+	focusChar_ = h;
 
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();

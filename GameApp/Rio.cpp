@@ -142,34 +142,36 @@ void Rio::initRendererAndAnimation()
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	renderer_->CreateFBXAnimation("Run_Short", "Rio_Short_Run.UserAnimation", 0);
-	renderer_->CreateFBXAnimation("Run_Long", "Rio_Long_Run.UserAnimation", 0);
+	std::string ext = "UserAnimation";
 
-	renderer_->CreateFBXAnimation("Wait_Short", "Rio_Short_Wait.UserAnimation", 0);
-	renderer_->CreateFBXAnimation("Wait_Long", "Rio_Long_Wait.UserAnimation", 0);
+	renderer_->CreateFBXAnimation("Run_Short", "Rio_Short_Run." + ext, 0);
+	renderer_->CreateFBXAnimation("Run_Long", "Rio_Long_Run." + ext, 0);
 
-	renderer_->CreateFBXAnimation("BasicAttack_Short", "Rio_Short_Attack.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("BasicAttack_Long", "Rio_Long_Attack.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Wait_Short", "Rio_Short_Wait." + ext, 0);
+	renderer_->CreateFBXAnimation("Wait_Long", "Rio_Long_Wait." + ext, 0);
 
-	renderer_->CreateFBXAnimation("SkillQ_Short", "Rio_Short_Skill_Q.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillQ_Long", "Rio_Long_Skill_Q.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("BasicAttack_Short", "Rio_Short_Attack." + ext, 0, false);
+	renderer_->CreateFBXAnimation("BasicAttack_Long", "Rio_Long_Attack." + ext, 0, false);
 
-	renderer_->CreateFBXAnimation("SkillW_Short", "Rio_Short_Skill_W.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillW_Long", "Rio_Long_Skill_W.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillQ_Short", "Rio_Short_Skill_Q." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillQ_Long", "Rio_Long_Skill_Q." + ext, 0, false);
 
-	renderer_->CreateFBXAnimation("SkillE_Short", "Rio_Short_Skill_E.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillW_Short", "Rio_Short_Skill_W." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillW_Long", "Rio_Long_Skill_W." + ext, 0, false);
 
-	renderer_->CreateFBXAnimation("SkillR_Short_Start", "Rio_Short_Skill_R_Start.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillR_Short_End", "Rio_Short_Skill_R_End.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillR_Long", "Rio_Long_Skill_R.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillE_Short", "Rio_Short_Skill_E." + ext, 0, false);
 
-	renderer_->CreateFBXAnimation("SkillD_Short", "Rio_Short_Skill_D.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillD_Long", "Rio_Long_Skill_D.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Short_Start", "Rio_Short_Skill_R_Start." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Short_End", "Rio_Short_Skill_R_End." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Long", "Rio_Long_Skill_R." + ext, 0, false);
 
-	renderer_->CreateFBXAnimation("Rio_CraftFood", "Rio_CraftFood.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("Rio_CraftMetal", "Rio_CraftMetal.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("SkillD_Short", "Rio_Short_Skill_D." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillD_Long", "Rio_Long_Skill_D." + ext, 0, false);
 
-	renderer_->CreateFBXAnimation("Death", "Rio_Death.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Rio_CraftFood", "Rio_CraftFood." + ext, 0, false);
+	renderer_->CreateFBXAnimation("Rio_CraftMetal", "Rio_CraftMetal." + ext, 0, false);
+
+	renderer_->CreateFBXAnimation("Death", "Rio_Death." + ext, 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait_Short");
 

@@ -2,6 +2,7 @@
 
 #include <GameEngine/GameEngineLevel.h>
 
+class Character;
 class Rio;
 class Jackie;
 class MousePointer;
@@ -25,6 +26,7 @@ public:
 	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
 
 private:
+	Character* focusChar_;
 	Rio* rio_;
 	Jackie* jackie_;
 	MousePointer* mouse_;
