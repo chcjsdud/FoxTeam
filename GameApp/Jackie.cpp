@@ -19,7 +19,8 @@ Jackie::Jackie() // default constructer 디폴트 생성자
 	: atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(0), collision_Q(nullptr),
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
 	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr), sawRenderer_(nullptr), axeRenderer_(nullptr),
-	isW_(false), timer_W(0.0f), bSkillEPassable_(false), eStartPosition_(float4::ZERO), eLandingPosition_(float4::ZERO)
+	isW_(false), timer_W(0.0f), bSkillEPassable_(false), eStartPosition_(float4::ZERO), eLandingPosition_(float4::ZERO),
+	debugX(-140.0f), debugY(0.0f), debugZ(-30.0f)
 
 {
 
@@ -162,8 +163,30 @@ void Jackie::Start()
 
 	//GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
 	//hitBase->Cut(3, 3);
-
-
+	if (false == GameEngineInput::GetInst().IsKey("X"))
+	{
+		GameEngineInput::GetInst().CreateKey("X", 'X');
+	}
+	if (false == GameEngineInput::GetInst().IsKey("Y"))
+	{
+		GameEngineInput::GetInst().CreateKey("Y", 'Y');
+	}
+	if (false == GameEngineInput::GetInst().IsKey("Z"))
+	{
+		GameEngineInput::GetInst().CreateKey("Z", 'Z');
+	}
+	if (false == GameEngineInput::GetInst().IsKey("B"))
+	{
+		GameEngineInput::GetInst().CreateKey("B", 'B');
+	}
+	if (false == GameEngineInput::GetInst().IsKey("N"))
+	{
+		GameEngineInput::GetInst().CreateKey("N", 'N');
+	}
+	if (false == GameEngineInput::GetInst().IsKey("M"))
+	{
+		GameEngineInput::GetInst().CreateKey("M", 'M');
+	}
 }
 
 void Jackie::Update(float _deltaTime)
@@ -210,10 +233,49 @@ void Jackie::Update(float _deltaTime)
 		axeRenderer_->GetTransform()->SetLocalPosition({ 5.0f, 40.0f, 80.0f });
 		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -140.f, 0.0f, -30.0f });
 	}
+	else if ("Wait" == curAnimationName_)
+	{
+		//if (true == GameEngineInput::GetInst().Press("X"))
+		//{
+		//	debugX -= 60.0f * _deltaTime;
+		//
+		//}
+		//if (true == GameEngineInput::GetInst().Press("Y"))
+		//{
+		//	debugY -= 60.0f * _deltaTime;
+		//
+		//}
+		//if (true == GameEngineInput::GetInst().Press("Z"))
+		//{
+		//	debugZ -= 60.0f * _deltaTime;
+		//}
+		//if (true == GameEngineInput::GetInst().Press("B"))
+		//{
+		//	debugX += 60.0f * _deltaTime;
+		//
+		//}
+		//if (true == GameEngineInput::GetInst().Press("N"))
+		//{
+		//	debugY += 60.0f * _deltaTime;
+		//
+		//}
+		//if (true == GameEngineInput::GetInst().Press("M"))
+		//{
+		//	debugZ += 60.0f * _deltaTime;
+		//
+		//}
+
+		axeRenderer_->GetTransform()->SetLocalPosition({ 45.0f, 120.0f, 58.0f });
+		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -164.0f, -317.0f, -82.0f });
+
+		//float x = debugX;
+		//float y = debugY;
+		//float z = debugZ;
+	}
 	else
 	{
-		axeRenderer_->GetTransform()->SetLocalPosition({0.0f, 0.0f, 0.0f });
-		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f, 30.0f });
+		axeRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 	}
 
 }
@@ -250,6 +312,7 @@ void Jackie::initRendererAndAnimation()
 	sawRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	sawRenderer_->SetFBXMesh("Weapon_Special_Jackie_01.fbx", "TextureDeferredLightAni");
 
+	sawRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 40.0f });
 	sawRenderer_->GetTransform()->SetLocalScaling(100.f);
 	sawRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 	

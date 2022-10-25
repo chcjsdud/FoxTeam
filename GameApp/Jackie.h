@@ -116,5 +116,10 @@ private:
 
 	GameEngineFBXRenderer* sawRenderer_;
 	GameEngineFBXRenderer* axeRenderer_;
+
+public:
+	float debugX;
+	float debugY;
+	float debugZ;
 };
 
