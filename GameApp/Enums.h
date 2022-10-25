@@ -114,6 +114,7 @@ enum class eCollisionGroup
 
 	Unit,
 	MouseRay,
+	HyperLoop,
 
 	MAX = 999
 };

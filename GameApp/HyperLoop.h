@@ -18,5 +18,6 @@ protected:
 
 private:
 	GameEngineFBXRenderer* renderer_;
+	GameEngineCollision* collision_;
 };
 
