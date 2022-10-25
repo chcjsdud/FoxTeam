@@ -639,13 +639,20 @@ void LumiaMap::setMonsterSpawnPoints(GameEngineDirectory _dir)
 		{
 			std::vector<float4> vecTrans;
 
-			for (const auto& data : nodeDatas)
+			for (auto& data : nodeDatas)
 			{
 				std::string UpperName = GameEngineString::toupper(data.name);
+
+				if (std::string::npos != UpperName.find("(") ||
+					std::string::npos != UpperName.find(")"))
+				{
+					continue;
+				}
 
 				if (std::string::npos != UpperName.find(areaName) &&
 					float4::ZERO != data.translation)
 				{
+					data.translation *= { 1.0f, 1.0f, -1.0f };
 					vecTrans.push_back(data.translation * mapScale_);
 				}
 			}
@@ -662,16 +669,15 @@ void LumiaMap::setHyperLoopSpawnPoints(GameEngineDirectory _dir)
 		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(_dir.PathToPlusFileName("HyperloopSpawnPoints.fbx"));
 		std::vector<FbxNodeData> nodeDatas = Mesh->GetAllNodeData();
 
-		for (const auto& data : nodeDatas)
+		for (auto& data : nodeDatas)
 		{
 			std::string UpperName = GameEngineString::toupper(data.name);
 
 			if (float4::ZERO != data.translation)
 			{
+				data.translation *= { 1.0f, 1.0f, -1.0f };
 				hyperLoopSpawnPoints_.push_back(data.translation * mapScale_);
 			}
 		}
 	}
-
-	int a = 0;
 }
