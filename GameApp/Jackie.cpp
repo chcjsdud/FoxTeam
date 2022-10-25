@@ -40,12 +40,13 @@ void Jackie::LoadResource()
 	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Jackie_run.fbx"));
 	mesh->CreateRenderingBuffer();
 
-	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Special_Jackie_01.fbx"));
-	mesh->CreateRenderingBuffer();
-
 	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Axe_01.fbx"));
 	mesh->CreateRenderingBuffer();
 	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Axe_01.fbx"));
+
+	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Special_Jackie_01.fbx"));
+	mesh->CreateRenderingBuffer();
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Special_Jackie_01.fbx"));
 
 	std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 	for (GameEngineFile& file : allFile)
@@ -102,7 +103,6 @@ void Jackie::ReleaseResource()
 
 	GameEngineFBXMeshManager::GetInst().Delete("Jackie_run.fbx");
 	GameEngineFBXMeshManager::GetInst().Delete("Weapon_Axe_01.fbx");
-
 	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_run.fbx");
 	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_wait.fbx");
 	//GameEngineFBXAnimationManager::GetInst().Delete("Jackie_death.fbx");
@@ -184,6 +184,9 @@ void Jackie::Update(float _deltaTime)
 	if (true == isR_)
 	{
 		timer_R -= _deltaTime;
+		sawRenderer_->On();
+		axeRenderer_->Off();
+		sawRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
 
 		if (0.0f >= timer_R)
 		{
@@ -193,7 +196,25 @@ void Jackie::Update(float _deltaTime)
 		}
 	}
 
-	sawRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
+	if (false == isR_)
+	{
+		sawRenderer_->Off();
+		axeRenderer_->On();
+		axeRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
+
+	}
+
+	if ("Run" == curAnimationName_)
+	{
+		axeRenderer_->GetTransform()->SetLocalPosition({ 5.0f, 40.0f, 80.0f });
+		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -140.f, 0.0f, -30.0f });
+	}
+	else
+	{
+		axeRenderer_->GetTransform()->SetLocalPosition({0.0f, 0.0f, 0.0f });
+		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f, 30.0f });
+	}
+
 }
 
 void Jackie::initRendererAndAnimation()
@@ -230,19 +251,20 @@ void Jackie::initRendererAndAnimation()
 
 	sawRenderer_->GetTransform()->SetLocalScaling(100.f);
 	sawRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+	
+	sawRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger1");
 
-	sawRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger2");
+	sawRenderer_->CreateFBXAnimation("Idle", "Weapon_Special_Jackie_01.fbx");
+	sawRenderer_->ChangeFBXAnimation("Idle");
 	sawRenderer_->Off();
 
-	//sawRenderer_->CreateFBXAnimation("chainsaw", "Weapon_Special_Jackie_01.fbx");
-	//sawRenderer_->ChangeFBXAnimation("chainsaw");
+
+	// 
 
 	axeRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	axeRenderer_->SetFBXMesh("Weapon_Axe_01.fbx", "TextureDeferredLightAni");
 
-	axeRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger0");
-	//axeRenderer_->SetCustomOffset({ 0.0f, 0.0f, -0.1f });
-
+	axeRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger1");
 	axeRenderer_->GetTransform()->SetLocalScaling(100.f);
 	axeRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 
@@ -316,6 +338,8 @@ void Jackie::changeAnimationRun()
 	}
 
 	curAnimationName_ = "Run";
+
+
 	renderer_->ChangeFBXAnimation("Run");
 }
 
@@ -649,6 +673,8 @@ void Jackie::onStartRSkill()
 	isR_ = true;
 	timer_R = 12.0f;
 
+	axeRenderer_->Off();
+	sawRenderer_->On();
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill04_Activation_v1.wav");
 	PacketSoundPlay packet;
 	packet.SetSound("jackie_Skill04_Activation_v1.wav", transform_.GetWorldPosition());
