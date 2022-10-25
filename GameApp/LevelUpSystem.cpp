@@ -236,7 +236,7 @@ void LevelUpSystem::AllUnitLevelUP()
 	{
 		if (nullptr == AllCharacter[CharacterNum])
 		{
-			GameEngineDebug::MsgBox("이미 사망했거나 잘못된 주소를 참조하고있는 캐릭터입니다!!!!\n");
+			GameEngineDebug::MsgBoxError("이미 사망했거나 잘못된 주소를 참조하고있는 캐릭터입니다!!!!\n");
 			continue;
 		}
 
@@ -245,7 +245,7 @@ void LevelUpSystem::AllUnitLevelUP()
 		std::map<JobType, LevelUPData>::iterator FindIter = CharacterLevelData_.find(CurCharacterType);
 		if (CharacterLevelData_.end() == FindIter)
 		{
-			GameEngineDebug::MsgBox("레벨업 정보에 포함되지않은 캐릭터타입입니다!!! 파일에 해당 직업타입을 작성하세요!!!\n");
+			GameEngineDebug::MsgBoxError("레벨업 정보에 포함되지않은 캐릭터타입입니다!!! 파일에 해당 직업타입을 작성하세요!!!\n");
 			continue;
 		}
 
@@ -261,7 +261,7 @@ void LevelUpSystem::AllUnitLevelUP()
 	{
 		if (nullptr == AllMonster[MonsterNum])
 		{
-			GameEngineDebug::MsgBox("이미 사망했거나 잘못된 주소를 참조하고있는 몬스터입니다!!!!\n");
+			GameEngineDebug::MsgBoxError("이미 사망했거나 잘못된 주소를 참조하고있는 몬스터입니다!!!!\n");
 			continue;
 		}
 
@@ -270,7 +270,7 @@ void LevelUpSystem::AllUnitLevelUP()
 		std::map<MonsterType, LevelUPData>::iterator FindIter = MonsterLevelData_.find(CurMonsterType);
 		if (MonsterLevelData_.end() == FindIter)
 		{
-			GameEngineDebug::MsgBox("레벨업 정보에 포함되지않은 몬스터타입입니다!!! 파일에 해당 몬스터타입을 작성하세요!!!\n");
+			GameEngineDebug::MsgBoxError("레벨업 정보에 포함되지않은 몬스터타입입니다!!! 파일에 해당 몬스터타입을 작성하세요!!!\n");
 			continue;
 		}
 
