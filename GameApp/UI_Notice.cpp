@@ -20,7 +20,7 @@ void UI_Notice::Start()
 {
 
 	UI_Pos = { 0.0f, 170.0f, 0.0f };
-	Font_Pos = { 0.0f, 175.0f, -1.0f };
+	Font_Pos = { 0.0f, 180.0f, -1.0f };
 	BasicAlpha = 0.4f;
 
 	{
