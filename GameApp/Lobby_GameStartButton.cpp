@@ -38,7 +38,7 @@ void Lobby_GameStartButton::ButtonClickFunction()
 			{
 				PlayerInfo DummyPlayerInfo = {};
 				DummyPlayerInfo.playerNumber_ = 1;
-				DummyPlayerInfo.startPoint_ = 0;
+				DummyPlayerInfo.startPoint_ = -1;
 				DummyPlayerInfo.character_ = 8;
 				DummyPlayerInfo.curAnimation_ = "";
 				DummyPlayerInfo.isReady_ = 1;
