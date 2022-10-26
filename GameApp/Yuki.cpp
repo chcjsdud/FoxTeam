@@ -212,10 +212,21 @@ void Yuki::initYukiCollision()
 	collision_E->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_E->SetCollisionType(CollisionType::OBBBox3D);
 	collision_E->Off();
+
+	collision_R = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	collision_R->GetTransform()->SetLocalPosition({ 0.f,10.f,100.f });
+	collision_R->GetTransform()->SetLocalScaling({512.0f, 10.0f, 256.0f});
+	collision_R->SetCollisionGroup(eCollisionGroup::PlayerAttack);
+	collision_R->SetCollisionType(CollisionType::OBBBox3D);
+	collision_R->Off();
 }
 
 void Yuki::initYukiCustomState()
 {
+	customState_.CreateState(MakeStateWithEnd(Yuki, CustomRStandBy));
+	customState_.CreateState(MakeStateWithEnd(Yuki, CustomRSlash));
+	customState_.CreateState(MakeStateWithEnd(Yuki, CustomRAfterBurst));
+	customState_ << "CustomRSkill";
 }
 
 void Yuki::initEffectRenderer()
@@ -518,7 +529,8 @@ void Yuki::onUpdateESkill(float _deltaTime)
 
 void Yuki::onStartRSkill()
 {
-
+	mainState_.ChangeState("CustomState", true);
+	customState_.ChangeState("CustomRStandBy", true);
 }
 
 void Yuki::onUpdateRSkill(float _deltaTime)
@@ -536,6 +548,7 @@ void Yuki::onUpdateDSkill(float _deltaTime)
 
 void Yuki::onStartDeath()
 {
+	changeDeathAnimation();
 }
 
 void Yuki::onUpdateDeath(float _deltaTime)
@@ -544,9 +557,54 @@ void Yuki::onUpdateDeath(float _deltaTime)
 
 void Yuki::onUpdateCustomState(float _deltaTime)
 {
+	customState_.Update(_deltaTime);
 }
 
 void Yuki::onPlayEffect(const std::string& _effectName)
 {
 }
 
+void Yuki::startCustomRStandBy()
+{
+
+}
+
+void Yuki::updateCustomRStandBy(float _deltaTime)
+{
+
+}
+
+void Yuki::endCustomRStandBy()
+{
+
+}
+
+void Yuki::startCustomRSlash()
+{
+
+}
+
+void Yuki::updateCustomRSlash(float _deltaTime)
+{
+
+}
+
+void Yuki::endCustomRSlash()
+{
+
+}
+
+void Yuki::startCustomRAfterBurst()
+{
+
+}
+
+void Yuki::updateCustomRAfterBurst(float _deltaTime)
+{
+
+}
+
+void Yuki::endCustomRAfterBurst()
+{
+
+}

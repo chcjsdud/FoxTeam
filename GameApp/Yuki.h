@@ -69,6 +69,19 @@ protected:
 
 	virtual void onPlayEffect(const std::string& _effectName);
 
+	// customstate
+	void startCustomRStandBy();
+	void updateCustomRStandBy(float _deltaTime);
+	void endCustomRStandBy();
+
+	void startCustomRSlash();
+	void updateCustomRSlash(float _deltaTime);
+	void endCustomRSlash();
+
+	void startCustomRAfterBurst();
+	void updateCustomRAfterBurst(float _deltaTime);
+	void endCustomRAfterBurst();
+
 private:
 	GameEngineFBXRenderer* swordRenderer_;
 
@@ -76,7 +89,6 @@ private:
 	GameEngineEffectRenderer* groundEffectRenderer_;
 
 	GameEngineEffectRenderer* rearEffectRenderer_;
-
 
 
 	bool atkFlag_;
@@ -88,5 +100,7 @@ private:
 	float timer_Dash_E;		// 대쉬 지속시간
 	GameEngineCollision* collision_E;
 	bool b_Ehit_;
-};
 
+	GameEngineFSM customState_;
+	GameEngineCollision* collision_R;
+};

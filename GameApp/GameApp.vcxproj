@@ -575,6 +575,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="YukiREffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bat.h" />
@@ -957,6 +961,10 @@
     </ClInclude>
     <ClInclude Include="Wolf.h" />
     <ClInclude Include="Yuki.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="YukiREffect.h">
       <SubType>
       </SubType>
     </ClInclude>
