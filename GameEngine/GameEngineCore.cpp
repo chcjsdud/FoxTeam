@@ -13,6 +13,7 @@
 GameEngineThreadQueue GameEngineCore::ThreadQueue = GameEngineThreadQueue("GameEngineThread");
 
 GameEngineCore* GameEngineCore::MainCore_ = nullptr;
+bool GameEngineCore::bActivate_ = false;
 
 GameEngineCore::GameEngineCore() // default constructer 디폴트 생성자
 {
@@ -84,7 +85,11 @@ void GameEngineCore::MainLoop()
 {
 	GameEngineTime::GetInst().TimeCheck();
 	GameEngineSoundManager::GetInstance()->Update();
-	GameEngineInput::GetInst().Update();
+
+	if (bActivate_)
+	{
+		GameEngineInput::GetInst().Update();
+	}
 
 	if (nullptr != NextLevel_)
 	{

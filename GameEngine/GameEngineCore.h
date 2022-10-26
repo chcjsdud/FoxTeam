@@ -15,11 +15,12 @@ class GameEngineCore : public GameEngineObjectBase
 public:
 	static GameEngineThreadQueue ThreadQueue;
 
-// ============================================= Level 관리자 관련 ============================================= //
+	// ============================================= Level 관리자 관련 ============================================= //
 private:
 	static GameEngineLevel* NextLevel_;
 	static GameEngineLevel* CurrentLevel_;
 	static std::map<std::string, GameEngineLevel*> AllLevel_;
+	static bool bActivate_;
 
 public:
 	template<typename LevelType>
@@ -39,7 +40,7 @@ public:
 
 	static void LevelDestroy(const std::string& _Level);
 
-	static GameEngineLevel* CurrentLevel() 
+	static GameEngineLevel* CurrentLevel()
 	{
 		return CurrentLevel_;
 	}
@@ -48,78 +49,81 @@ public:
 	static void LevelChange(const std::string& _Level);
 	static GameEngineLevel* LevelFind(const std::string& _Level);
 
-// ============================================== GameCore 관련 ============================================== //
-private:
-	static GameEngineCore* MainCore_;
+	static void Activate() { bActivate_ = true; }
+	static void Deactivate() { bActivate_ = false; }
 
-private:
-	static void WindowCreate(GameEngineCore& _RuntimeCore);
-	static void Loop();
-	static void MainLoop();
+		// ============================================== GameCore 관련 ============================================== //
+	private:
+		static GameEngineCore* MainCore_;
 
-public:
-	template<typename UserGameType>
-	static void Start()
-	{
-		GameEngineDebug::LeakCheckOn();
+	private:
+		static void WindowCreate(GameEngineCore & _RuntimeCore);
+		static void Loop();
+		static void MainLoop();
+
+	public:
+		template<typename UserGameType>
+		static void Start()
+		{
+			GameEngineDebug::LeakCheckOn();
 
 #ifdef _DEBUG
-		new int();
+			new int();
 #endif
 
-		UserGameType NewUserGame;
+			UserGameType NewUserGame;
 
-		// 윈도우 생성
-		WindowCreate(NewUserGame);
+			// 윈도우 생성
+			WindowCreate(NewUserGame);
 
-		// 엔진 초기화 및 리소스 로드
-		NewUserGame.EngineInitialize();
-		NewUserGame.ResourcesLoad();
-		NewUserGame.Initialize();
+			// 엔진 초기화 및 리소스 로드
+			NewUserGame.EngineInitialize();
+			NewUserGame.ResourcesLoad();
+			NewUserGame.Initialize();
 
-		// 메인게임 코어 셋팅
-		MainCore_ = &NewUserGame;
+			// 메인게임 코어 셋팅
+			MainCore_ = &NewUserGame;
 
-		// Game Loop
-		Loop();
+			// Game Loop
+			Loop();
 
-		// 엔진 메모리 소멸
-		NewUserGame.Release();
-		NewUserGame.EngineDestroy();
-	}
+			// 엔진 메모리 소멸
+			NewUserGame.Release();
+			NewUserGame.EngineDestroy();
+		}
 
-private:	// member Var
+	private:	// member Var
 
-protected:
-	GameEngineCore(); // default constructer 디폴트 생성자
-	~GameEngineCore(); // default destructer 디폴트 소멸자
+	protected:
+		GameEngineCore(); // default constructer 디폴트 생성자
+		~GameEngineCore(); // default destructer 디폴트 소멸자
 
-protected:		// delete constructer
-	GameEngineCore(const GameEngineCore& _other) = delete; // default Copy constructer 디폴트 복사생성자
-	GameEngineCore(GameEngineCore&& _other) noexcept; // default RValue Copy constructer 디폴트 RValue 복사생성자
+	protected:		// delete constructer
+		GameEngineCore(const GameEngineCore & _other) = delete; // default Copy constructer 디폴트 복사생성자
+		GameEngineCore(GameEngineCore && _other) noexcept; // default RValue Copy constructer 디폴트 RValue 복사생성자
 
-private:		//delete operator
-	GameEngineCore& operator=(const GameEngineCore& _other) = delete; // default Copy operator 디폴트 대입 연산자
-	GameEngineCore& operator=(const GameEngineCore&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
+	private:		//delete operator
+		GameEngineCore& operator=(const GameEngineCore & _other) = delete; // default Copy operator 디폴트 대입 연산자
+		GameEngineCore& operator=(const GameEngineCore && _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
 
-public:
-	void EngineInitialize();
-	void EngineResourcesLoad();
-	void EngineResourcesCreate();
-	void EngineDestroy();
+	public:
+		void EngineInitialize();
+		void EngineResourcesLoad();
+		void EngineResourcesCreate();
+		void EngineDestroy();
 
-protected:
+	protected:
 
-	virtual void Initialize() = 0;
-	virtual void ResourcesLoad() = 0;
-	virtual void Release() = 0;
-	virtual float4 StartWindowSize() = 0;
-	virtual float4 StartWindowPos() = 0;
+		virtual void Initialize() = 0;
+		virtual void ResourcesLoad() = 0;
+		virtual void Release() = 0;
+		virtual float4 StartWindowSize() = 0;
+		virtual float4 StartWindowPos() = 0;
 
-	void EngineResourcesCreate_Mesh();
-	void EngineResourcesCreate_Rasterizer();
-	//void EngineResourcesLoad_Mesh();
-	//void EngineResourcesLoad_Mesh();
-	//void EngineResourcesLoad_Mesh();
-};
+		void EngineResourcesCreate_Mesh();
+		void EngineResourcesCreate_Rasterizer();
+		//void EngineResourcesLoad_Mesh();
+		//void EngineResourcesLoad_Mesh();
+		//void EngineResourcesLoad_Mesh();
+	};
 

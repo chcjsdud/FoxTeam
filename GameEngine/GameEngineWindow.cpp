@@ -6,6 +6,8 @@
 #include <iostream>
 #include <GameApp/KeyboardClass.h>
 
+#include "GameEngineCore.h"
+
 std::function<LRESULT(HWND, UINT, WPARAM, LPARAM)> GameEngineWindow::MessageCallBack_ = nullptr;
 // Æ÷ÀÎÅÍÇü ½Ì±ÛÅæ
 GameEngineWindow* GameEngineWindow::Inst = new GameEngineWindow();
@@ -47,6 +49,18 @@ LRESULT CALLBACK WndProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPar
         WindowOn = false;
         break;
     }
+    case WM_ACTIVATE:
+    {
+        if (_wParam == 0)
+        {
+            GameEngineCore::Deactivate();
+        }
+        else
+        {
+            GameEngineCore::Activate();
+        }
+    }
+    break;
     case WM_CHAR:
     {
         unsigned char ch = static_cast<unsigned char>(_wParam);
