@@ -22,10 +22,10 @@ void Aya::LoadResource()
 		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Aya_Idle.fbx"));
 		mesh->CreateRenderingBuffer();
 
-		std::vector<GameEngineFile> allFile = dir.GetAllFile("fbx");
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 		for (GameEngineFile& file : allFile)
 		{
-			GameEngineFBXAnimationManager::GetInst().Load(file.GetFullPath());
+			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
 		}
 	}
 
@@ -66,7 +66,7 @@ void Aya::ReleaseResource()
 		GameEngineFBXAnimationManager::GetInst().Delete(file.GetFileName());
 	}
 
-	GameEngineFBXMeshManager::GetInst().Delete("Rio_Short_Run.fbx");
+	GameEngineFBXMeshManager::GetInst().Delete("Aya_Idle.fbx");
 }
 
 JobType Aya::GetJobType()
@@ -82,7 +82,7 @@ void Aya::initRendererAndAnimation()
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	std::string ext = "fbx";
+	std::string ext = "UserAnimation";
 
 	renderer_->CreateFBXAnimation("Idle", "Aya_Idle." +  ext, 0, true);
 	renderer_->CreateFBXAnimation("Run", "Aya_Run." + ext, 0, true);
