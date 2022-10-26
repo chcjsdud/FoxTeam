@@ -412,6 +412,9 @@
     <ClCompile Include="YukiREffect.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Yuki</Filter>
     </ClCompile>
+    <ClCompile Include="UI_HyperMap.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -1060,6 +1063,9 @@
     </ClInclude>
     <ClInclude Include="YukiREffect.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Yuki</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_HyperMap.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
