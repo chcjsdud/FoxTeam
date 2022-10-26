@@ -131,7 +131,7 @@ void UI_WinLose::Start()
 	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("deathcheck.png");
 	hitBase->Cut(4, 2);
 	deathCheckRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	deathCheckRenderer_->SetImage("FX_BI_Dust_03b.png", "PointSmp");
+	deathCheckRenderer_->SetImage("deathcheck.png", "PointSmp");
 	deathCheckRenderer_->GetTransform()->SetLocalScaling(deathCheckRenderer_->GetCurrentTexture()->GetTextureSize());
 	deathCheckRenderer_->CreateAnimation("deathcheck.png", "deathcheck", 0, 7, 0.03f, false);
 	deathCheckRenderer_->SetChangeAnimation("deathcheck", true);
