@@ -4,11 +4,18 @@
 // 분류 : 레벨
 // 용도 : 테스트
 // 설명 : 메쉬 아웃라인 테스트용 레벨
-class MouseActor;
+class OutLineTestWindow;
 class OutLineTestLevel : public GameEngineLevel
 {
 public:
+	static bool ThreadLoadingEnd;
+
+public:
 protected:
+
+private:
+	void CreateBasicActor();
+
 private:
 	void LevelStart() override;
 	void LevelUpdate(float _DeltaTime) override;
@@ -30,5 +37,6 @@ private:
 public:
 protected:
 private:
+	OutLineTestWindow* OutLineWindow_;
 };
 

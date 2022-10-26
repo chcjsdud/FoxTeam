@@ -263,6 +263,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="OutLineTestWindow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="TestLevelBox.cpp">
       <SubType>
       </SubType>
@@ -646,6 +650,10 @@
     <ClInclude Include="MonsterCrowdControlPacket.h" />
     <ClInclude Include="MonsterDamagePacket.h" />
     <ClInclude Include="OutLineTestLevel.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="OutLineTestWindow.h">
       <SubType>
       </SubType>
     </ClInclude>

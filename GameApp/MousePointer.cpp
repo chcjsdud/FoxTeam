@@ -165,6 +165,19 @@ void MousePointer::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 	{
 		return;
 	}
+	// 각종 테스트레벨에서 사용안함
+	else if (std::string::npos != _NextLevel->GetName().find("MeshLoadLevel"))
+	{
+		return;
+	}
+	else if (std::string::npos != _NextLevel->GetName().find("OutLineTestLevel"))
+	{
+		return;
+	}
+	else if (std::string::npos != _NextLevel->GetName().find("TestLevel"))
+	{
+		return;
+	}
 
 	// 마우스 레벨이동
 	GetLevel()->SetLevelActorMove(_NextLevel, this);
