@@ -101,7 +101,7 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 			GameEngineVertexBuffer* VertexBuffer = VertexBufferVector[VertexBufferIndex];
 			GameEngineIndexBuffer* IndexBuffer = IndexBufferVector[IndexBufferIndex];
 
-			RenderSet& RenderSetData = RenderSets[_MeshIndex];
+			RenderSet& RenderSetData = RenderSets.emplace_back();
 
 			float4 AllVtxPos = float4::ZERO;
 			float4 MaxVtxValue = float4::ZERO;
@@ -214,11 +214,9 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 			RenderSetData.PipeLine_->SetInputAssembler2IndexBufferSetting(IndexBuffer);
 		}
 	}
-
-
 }
 
-void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Value, std::string _PipeLine)
+void GameEngineFBXRenderer::SetFBXMeshRenderSetChar(const std::string& _Value, std::string _PipeLine, int _MeshIndex)
 {
 	FBXMesh = GameEngineFBXMeshManager::GetInst().Find(_Value);
 
@@ -231,14 +229,163 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Value, std::string _P
 
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh->GetAllMeshMap();
 
-	RenderSets.resize(AllMeshSet.size());
-	for (int i = 0; i < AllMeshSet.size(); ++i)
+	FbxMeshSet& StartMesh = AllMeshSet[_MeshIndex];
+
+
+	std::vector<GameEngineVertexBuffer*>& VertexBufferVector = StartMesh.GameEngineVertexBuffers;
+
+	for (int VertexBufferIndex = 0; VertexBufferIndex < VertexBufferVector.size(); VertexBufferIndex++)
 	{
-		SetFBXMeshRenderSet(_Value, _PipeLine, i);
+		std::vector<GameEngineIndexBuffer*>& IndexBufferVector = StartMesh.GameEngineIndexBuffers[VertexBufferIndex];
 
-		// FbxMeshSet& StartMesh = AllMeshSet[i];
+		for (int IndexBufferIndex = 0; IndexBufferIndex < IndexBufferVector.size(); IndexBufferIndex++)
+		{
+			FbxExRenderingPipeLineSettingData* MatData = &(StartMesh.MaterialData[VertexBufferIndex][IndexBufferIndex]);
+			GameEngineVertexBuffer* VertexBuffer = VertexBufferVector[VertexBufferIndex];
+			GameEngineIndexBuffer* IndexBuffer = IndexBufferVector[IndexBufferIndex];
 
+			RenderSet& RenderSetData = RenderSets[_MeshIndex];
+
+			float4 AllVtxPos = float4::ZERO;
+			float4 MaxVtxValue = float4::ZERO;
+
+			for (size_t i = 0; i < StartMesh.Vertexs.size(); i++)
+			{
+				float4 Vtx = StartMesh.Vertexs[i].POSITION;
+
+				AllVtxPos += Vtx;
+
+				if (abs(Vtx.x) > abs(MaxVtxValue.x))
+				{
+					MaxVtxValue.x = Vtx.x;
+				}
+
+				if (abs(Vtx.y) > abs(MaxVtxValue.y))
+				{
+					MaxVtxValue.y = Vtx.y;
+				}
+
+				if (abs(Vtx.z) > abs(MaxVtxValue.z))
+				{
+					MaxVtxValue.z = Vtx.z;
+				}
+			}
+
+			RenderSetData.LocalPos = AllVtxPos / static_cast<float>(StartMesh.Vertexs.size());
+
+			float4 fScale = MaxVtxValue - RenderSetData.LocalPos;
+
+			RenderSetData.Radius = max(max(abs(fScale.x), abs(fScale.y)), abs(fScale.z));
+			RenderSetData.Index = _MeshIndex;
+
+			RenderSetData.PipeLine_ = Pipe->Clone();
+			RenderSetData.ShaderHelper = new GameEngineShaderResHelper();
+
+			RenderSetData.ShaderHelper->ShaderResourcesCheck(RenderSetData.PipeLine_->GetPixelShader());
+			RenderSetData.ShaderHelper->ShaderResourcesCheck(RenderSetData.PipeLine_->GetVertexShader());
+
+			if (true == RenderSetData.ShaderHelper->IsConstantBuffer("TransformData"))
+			{
+				RenderSetData.ShaderHelper->SettingConstantBufferLink("TransformData", GetTransform()->GetTransformData());
+			}
+
+			if (true == RenderSetData.ShaderHelper->IsConstantBuffer("LightsData"))
+			{
+				const LightsData& LightData = GetLevel()->GetMainCamera()->GetLightData();
+				RenderSetData.ShaderHelper->SettingConstantBufferLink("LightsData", LightData);
+			}
+
+			if (true == RenderSetData.ShaderHelper->IsConstantBuffer("RendererData"))
+			{
+				RenderSetData.ShaderHelper->SettingConstantBufferLink("RendererData", RendererDataInst);
+			}
+
+			if (true == RenderSetData.ShaderHelper->IsTextureSetting("DiffuseTex"))
+			{
+				GameEngineTexture* Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
+
+				if ("" != MatData->DifTexturePath)
+				{
+					if (Tex == nullptr && true == GameEnginePath::IsExist(MatData->DifTexturePath))
+					{
+						GameEngineTextureManager::GetInst().Load(MatData->DifTexturePath);
+						Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
+					}
+
+					if (Tex != nullptr)
+					{
+						RenderSetData.ShaderHelper->SettingTexture("DiffuseTex", Tex);
+					}
+				}
+			}
+
+
+			if (true == RenderSetData.ShaderHelper->IsTextureSetting("NormalTex"))
+			{
+				GameEngineTexture* Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
+
+				if ("" != MatData->NorTexturePath)
+				{
+					if (Tex == nullptr && true == GameEnginePath::IsExist(MatData->NorTexturePath))
+					{
+						GameEngineTextureManager::GetInst().Load(MatData->NorTexturePath);
+						Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
+						RenderSetData.ShaderHelper->SettingTexture("NormalTex", Tex);
+						RendererDataInst.IsBump = 1;
+					}
+				}
+			}
+
+			if (true == RenderSetData.ShaderHelper->IsStructuredBuffer("ArrAniMationMatrix"))
+			{
+				FBXMesh->ImportBone();
+				if (0 == RenderSetData.BoneData.size())
+				{
+					RenderSetData.BoneData.resize(FBXMesh->GetBoneCount(VertexBufferIndex));
+				}
+
+				const LightsData& LightData = GetLevel()->GetMainCamera()->GetLightData();
+				RenderSetData.ShaderHelper->SettingStructuredBufferSetting("ArrAniMationMatrix", FBXMesh->GetAnimationBuffer(VertexBufferIndex));
+				RenderSetData.ShaderHelper->SettingStructuredBufferLink("ArrAniMationMatrix", &RenderSetData.BoneData[0], sizeof(float4x4) * RenderSetData.BoneData.size());
+
+				RendererDataInst.IsAni = 1;
+			}
+
+			RenderSetData.PipeLine_->SetInputAssembler1VertexBufferSetting(VertexBuffer);
+			RenderSetData.PipeLine_->SetInputAssembler2IndexBufferSetting(IndexBuffer);
+		}
 	}
+}
+
+void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Value, std::string _PipeLine, bool _bChar)
+{
+	FBXMesh = GameEngineFBXMeshManager::GetInst().Find(_Value);
+
+	if (nullptr == FBXMesh)
+	{
+		GameEngineDebug::MsgBoxError("존재하지 않는 fbx매쉬를 세팅했습니다.");
+	}
+
+	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find(_PipeLine);
+
+	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh->GetAllMeshMap();
+
+	if (_bChar)
+	{
+		RenderSets.resize(AllMeshSet.size());
+		for (int i = 0; i < AllMeshSet.size(); ++i)
+		{
+			SetFBXMeshRenderSetChar(_Value, _PipeLine, i);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < AllMeshSet.size(); ++i)
+		{
+			SetFBXMeshRenderSet(_Value, _PipeLine, i);
+		}
+	}
+
 }
 
 float4x4 GameEngineFBXRenderer::GetCurrentAffine(int _boneIndex, int _renderSetIndex)

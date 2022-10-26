@@ -183,7 +183,7 @@ void Yuki::Update(float _deltaTime)
 void Yuki::initRendererAndAnimation()
 {
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	renderer_->SetFBXMesh("Yuki_run.fbx", "TextureDeferredLightAni");
+	renderer_->SetFBXMesh("Yuki_run.fbx", "TextureDeferredLightAni", true);
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });

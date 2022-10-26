@@ -195,7 +195,7 @@ void Hyunwoo::Update(float _deltaTime)
 void Hyunwoo::initRendererAndAnimation()
 {
 	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
-	renderer_->SetFBXMesh("hyunwoo_run.fbx", "TextureDeferredLightAni");
+	renderer_->SetFBXMesh("hyunwoo_run.fbx", "TextureDeferredLightAni", true);
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });

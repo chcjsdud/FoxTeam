@@ -38,8 +38,10 @@ public:
 	bool IsOverrideAnimationEnd();
 
 public:
-	void SetFBXMesh(const std::string& _Value, std::string _PipeLine);
+	void SetFBXMesh(const std::string& _Value, std::string _PipeLine, bool _bChar = false);
 	void SetFBXMeshRenderSet(const std::string& _Value, std::string _PipeLine, int _MeshIndex);
+	void SetFBXMeshRenderSetChar(const std::string& _Value, std::string _PipeLine, int _MeshIndex);
+
 
 	inline GameEngineFBXMesh* GetMesh() { return FBXMesh; }
 	const std::string GetCurAnimationName() { return currentAnimation_->AnimationName_; }
