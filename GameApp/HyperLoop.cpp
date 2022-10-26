@@ -50,5 +50,13 @@ void HyperLoop::Update(float _DeltaTime)
 	{
 		GetLevel()->PushDebugRender(collision_->GetTransform(), CollisionType::OBBBox3D, float4::BLACK);
 	}
+
+	if (true == collision_->Collision(eCollisionGroup::MouseRay) &&
+		true == collision_->Collision(eCollisionGroup::Player))
+	{
+		// 하이퍼루프 UI가 나오고, 특정 지역을 선택하면 해당 지역으로 이동
+		int a = 0;
+	}
+	
 }
 
