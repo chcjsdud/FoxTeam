@@ -23,14 +23,21 @@ public:
 public:
 
 protected:
-	GameEngineUIRenderer* BackGroundRenderer;
-	GameEngineUIRenderer* CharRenderer;
+	GameEngineUIRenderer* HPBar_Renderer;
+	GameEngineUIRenderer* SPBar_Renderer;
 	float Time;
 
 
 private:
 	void Start() override;
 	void Update(float _Time) override;
+
+private:
+	float4 HpBarPos;
+	float4 HpBarSize;
+
+	float4 SpBarPos;
+	float4 SpBarSize;
 	
 };
 
