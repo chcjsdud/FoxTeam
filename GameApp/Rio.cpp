@@ -34,12 +34,6 @@ Rio::~Rio()
 
 void Rio::LoadResource()
 {
-	bool a = false;
-
-	if (a)
-	{
-		return;
-	}
 	{
 		GameEngineDirectory dir;
 
@@ -52,17 +46,17 @@ void Rio::LoadResource()
 		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Short_Idle.fbx"));
 		mesh->CreateRenderingBuffer();
 
+		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Short_Idle.fbx"));
 
 		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Long_Idle.fbx"));
 		mesh->CreateRenderingBuffer();
 
-		//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Short_Idle.fbx"));
-		//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Long_Idle.fbx"));
+		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Long_Idle.fbx"));
 
-		std::vector<GameEngineFile> allFile = dir.GetAllFile("fbx");
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 		for (GameEngineFile& file : allFile)
 		{
-			GameEngineFBXAnimationManager::GetInst().Load(file.GetFullPath());
+			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
 		}
 	}
 
@@ -90,7 +84,6 @@ void Rio::LoadResource()
 			GameEngineTextureManager::GetInst().Load(file.FileName(), file.GetFullPath());
 		}
 	}
-	a = true;
 }
 
 void Rio::ReleaseResource()
@@ -149,7 +142,7 @@ void Rio::initRendererAndAnimation()
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	std::string ext = "fbx";
+	std::string ext = "UserAnimation";
 
 	renderer_->CreateFBXAnimation("Run_Short", "Rio_Short_Run." + ext, 0);
 	renderer_->CreateFBXAnimation("Run_Long", "Rio_Long_Run." + ext, 0);

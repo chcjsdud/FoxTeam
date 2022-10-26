@@ -83,10 +83,12 @@ void TestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
+	Rio::LoadResource();
+	Jackie::LoadResource();
+	Hyunwoo::LoadResource();
 
-
-
-
+	rio_ = CreateActor<Rio>();
+	//rio_->Focus();
 	//CreateActor<TestOBB>();
 
 	TestLevelBox* box = nullptr;
@@ -98,26 +100,19 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 	mouse_ = CreateActor<MousePointer>();
 	map_ = CreateActor<TestMap>();
-
-	Rio::LoadResource();
-	rio_ = CreateActor<Rio>();
-	rio_->Focus();
 	rio_->SetMouse(mouse_);
 	rio_->SetMap(map_);
-
-
-	Jackie::LoadResource();
 
 	jackie_ = CreateActor<Jackie>();
 	//jackie_->Focus();
 	jackie_->SetMouse(mouse_);
 	jackie_->SetMap(map_);
-	Hyunwoo::LoadResource();
+
 	Hyunwoo* h = CreateActor<Hyunwoo>();
 	h->Focus();
 	h->SetMouse(mouse_);
 	h->SetMap(map_);
-	focusChar_ = rio_;
+	focusChar_ = h;
 
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();
