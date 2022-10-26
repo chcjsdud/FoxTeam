@@ -18,6 +18,7 @@ public:
 
 public:
 	void PlayAwake();
+	void PlaySlash();
 
 protected:
 	void Start() override;

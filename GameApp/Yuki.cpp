@@ -14,10 +14,11 @@
 #include "CharCrowdControlPacket.h"
 #include "PacketSoundPlay.h"
 #include "CharEffectPacket.h"
+#include "YukiREffect.h"
 
 
 Yuki::Yuki() // default constructer 디폴트 생성자
-	: b_isQ_(false), timer_Q(0.0f)
+	: b_isQ_(false), timer_Q(0.0f), rEffect_(nullptr), timer_R(0.0f), b_RHit_(false)
 {
 
 }
@@ -226,7 +227,7 @@ void Yuki::initYukiCustomState()
 	customState_.CreateState(MakeStateWithEnd(Yuki, CustomRStandBy));
 	customState_.CreateState(MakeStateWithEnd(Yuki, CustomRSlash));
 	customState_.CreateState(MakeStateWithEnd(Yuki, CustomRAfterBurst));
-	customState_ << "CustomRSkill";
+	customState_ << "CustomRStandBy";
 }
 
 void Yuki::initEffectRenderer()
@@ -235,7 +236,7 @@ void Yuki::initEffectRenderer()
 	basicAttackEffectRenderer_->SetImage("Fx_SQ_Cut01.png");
 	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f,  stat_.AttackRange - 180.f });
 	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
+	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize());
 	basicAttackEffectRenderer_->CreateAnimation("Fx_SQ_Cut01.png", "Fx_SQ_Cut01", 0, 5, 0.03f, false);
 	basicAttackEffectRenderer_->Off();
 
@@ -254,6 +255,9 @@ void Yuki::initEffectRenderer()
 	rearEffectRenderer_->GetTransform()->SetLocalScaling(rearEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
 	rearEffectRenderer_->CreateAnimation("FX_BI_Yuki_01.png", "FX_BI_Yuki_01", 0, 35, 0.01f, false);
 	rearEffectRenderer_->Off();
+
+	rEffect_ = GetLevel()->CreateActor<YukiREffect>();
+	rEffect_->SetParent(this);
 }
 
 void Yuki::changeAnimationRun()
@@ -318,11 +322,10 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 
 	target_->Damage(stat_.AttackPower, this);
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("attackGlove_Normal_Hit_P.wav");
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Passive_Hit_r2.wav");
 	PacketSoundPlay packet;
-	packet.SetSound("attackGlove_Normal_Hit_P.wav", transform_.GetWorldPosition());
+	packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
-
 
 	float4 wp = target_->GetTransform()->GetWorldPosition();
 
@@ -558,20 +561,97 @@ void Yuki::onUpdateDeath(float _deltaTime)
 void Yuki::onUpdateCustomState(float _deltaTime)
 {
 	customState_.Update(_deltaTime);
+	if (true == collision_R->IsUpdate())
+	{
+		GetLevel()->PushDebugRender(collision_R->GetTransform(), CollisionType::OBBBox3D, float4::RED);
+	}
 }
 
 void Yuki::onPlayEffect(const std::string& _effectName)
 {
+	if ("BasicAttack" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		basicAttackEffectRenderer_->On();
+		basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
+		basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
+		basicAttackEffectRenderer_->AnimationPlay();
+
+		return;
+	}
+
+	if ("SkillQ" == _effectName)
+	{
+		//float4 wp = GetTransform()->GetWorldPosition();
+		//qEffect_->GetTransform()->SetLocalPosition(wp);
+		//qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		//qEffect_->PlayAwake();
+		//return;
+	}
+
+	if ("SkillE" == _effectName)
+	{
+		rearEffectRenderer_->On();
+		rearEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01", true);
+		rearEffectRenderer_->AnimationPlay();
+		return;
+	}
+
+	if ("SkillR_awake" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		rEffect_->GetTransform()->SetLocalPosition(wp);
+		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		rEffect_->PlayAwake();
+		return;
+	}
+
+	if ("SkillR_slash" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		rEffect_->GetTransform()->SetLocalPosition(wp);
+		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		rEffect_->PlaySlash();
+
+		return;
+	}
+
+
 }
 
 void Yuki::startCustomRStandBy()
 {
+	curAnimationName_ = "SkillR_loop";
+	renderer_->ChangeFBXAnimation("SkillR_loop", true);
 
+	collision_R->On();
+
+	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill04_Active.wav");
+	PacketSoundPlay packet;
+	packet.SetSound("Yuki_Skill04_Active.wav", transform_.GetWorldPosition());
+	FT::SendPacket(packet);
+
+	float4 wp = GetTransform()->GetWorldPosition();
+	rEffect_->GetTransform()->SetLocalPosition(wp);
+	rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+	rEffect_->PlayAwake();
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillR_awake");
+	FT::SendPacket(pack);
 }
 
 void Yuki::updateCustomRStandBy(float _deltaTime)
 {
+	if (0.8f <= timer_R)
+	{
+		timer_R = 0.0f;
+		customState_.ChangeState("CustomRSlash", true);
+		return;
+	}
 
+	timer_R += _deltaTime;
 }
 
 void Yuki::endCustomRStandBy()
@@ -581,12 +661,64 @@ void Yuki::endCustomRStandBy()
 
 void Yuki::startCustomRSlash()
 {
+	curAnimationName_ = "SkillR_end";
+	renderer_->ChangeFBXAnimation("SkillR_end", true);
 
+	rEffect_->PlaySlash();
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillR_slash");
+	FT::SendPacket(pack);
 }
 
 void Yuki::updateCustomRSlash(float _deltaTime)
 {
+	if (true == b_RHit_)
+	{
+		collision_R->Off();
+	}
 
+	if (0.5f <= timer_R)
+	{
+		timer_R = 0.0f;
+		b_Qhit_ = false;
+		changeAnimationWait();
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Watch", true);
+		return;
+	}
+
+	if (false == b_Qhit_)
+	{
+		collision_R->On();
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill04_Attack.wav");
+		PacketSoundPlay packet;
+		packet.SetSound("Yuki_Skill04_Attack.wav", transform_.GetWorldPosition());
+
+		FT::SendPacket(packet);
+
+		auto collisionList = collision_R->GetCollisionList(eCollisionGroup::Player);
+
+		for (GameEngineCollision* col : collisionList)
+		{
+			GameEngineActor* actor = col->GetActor();
+			Character* character = nullptr;
+			if (nullptr != actor && actor != this)
+			{
+				character = dynamic_cast<Character*>(actor);
+
+				if (nullptr != character)
+				{
+					character->Damage((stat_.AttackPower * 2.0f) + 250.0f, this);
+				}
+			}
+		}
+
+		b_Qhit_ = true;
+	}
+
+	timer_R += _deltaTime;
 }
 
 void Yuki::endCustomRSlash()

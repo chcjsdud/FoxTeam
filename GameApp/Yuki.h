@@ -9,6 +9,7 @@
 // 분류 : 
 // 용도 : 
 // 설명 : 
+class YukiREffect;
 class Yuki : public Character
 {	
 public:
@@ -101,6 +102,9 @@ private:
 	GameEngineCollision* collision_E;
 	bool b_Ehit_;
 
+	YukiREffect* rEffect_;
 	GameEngineFSM customState_;
 	GameEngineCollision* collision_R;
+	float timer_R;
+	bool b_RHit_;
 };
