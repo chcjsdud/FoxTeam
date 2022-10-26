@@ -400,6 +400,9 @@
     <ClCompile Include="UI_HPBars.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
+    <ClCompile Include="OutLineTestLevel.cpp">
+      <Filter>01.GameObject\03.Level\OutLineTestLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -614,6 +617,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Jackie">
       <UniqueIdentifier>{bbd5cf88-75a3-4974-9565-6d2b24037134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\OutLineTestLevel">
+      <UniqueIdentifier>{d6f366ac-c7c1-451f-a56a-63058dab044e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1024,6 +1030,9 @@
     </ClInclude>
     <ClInclude Include="UI_HPBars.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="OutLineTestLevel.h">
+      <Filter>01.GameObject\03.Level\OutLineTestLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
