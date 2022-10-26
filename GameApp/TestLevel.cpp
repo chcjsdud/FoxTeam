@@ -88,7 +88,7 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	Hyunwoo::LoadResource();
 
 	rio_ = CreateActor<Rio>();
-	//rio_->Focus();
+	rio_->Focus();
 	//CreateActor<TestOBB>();
 
 	TestLevelBox* box = nullptr;
@@ -109,10 +109,10 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	jackie_->SetMap(map_);
 
 	Hyunwoo* h = CreateActor<Hyunwoo>();
-	h->Focus();
+	//h->Focus();
 	h->SetMouse(mouse_);
 	h->SetMap(map_);
-	focusChar_ = h;
+	focusChar_ = rio_;
 
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();

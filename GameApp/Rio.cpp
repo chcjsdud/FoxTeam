@@ -53,10 +53,10 @@ void Rio::LoadResource()
 
 		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Rio_Bow_Long_Idle.fbx"));
 
-		std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("fbx");
 		for (GameEngineFile& file : allFile)
 		{
-			GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
+			GameEngineFBXAnimationManager::GetInst().Load(file.GetFullPath());
 		}
 	}
 
@@ -142,7 +142,7 @@ void Rio::initRendererAndAnimation()
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	std::string ext = "UserAnimation";
+	std::string ext = "fbx";
 
 	renderer_->CreateFBXAnimation("Run_Short", "Rio_Short_Run." + ext, 0);
 	renderer_->CreateFBXAnimation("Run_Long", "Rio_Long_Run." + ext, 0);

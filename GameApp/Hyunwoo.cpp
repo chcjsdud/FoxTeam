@@ -44,25 +44,25 @@ void Hyunwoo::LoadResource()
 	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_run.fbx"));
 	mesh->CreateRenderingBuffer();
 
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_run.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_wait.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_death.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_atk0.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_atk1.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skillq.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skille_start.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skille_loop.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skille_end.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skillr_start.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skillr_loop.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skillr_end.fbx"));
-	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_weaponskill.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_run.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_wait.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_death.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_atk0.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_atk1.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skillq.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skille_start.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skille_loop.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skille_end.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skillr_start.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skillr_loop.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_skillr_end.fbx"));
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Hyunwoo_weaponskill.fbx"));
 
-	std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
-	for (GameEngineFile& file : allFile)
-	{
-		GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
-	}
+	//std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
+	//for (GameEngineFile& file : allFile)
+	//{
+	//	GameEngineFBXAnimationManager::GetInst().LoadUser(file.GetFullPath());
+	//}
 
 	{
 		GameEngineDirectory dir;
@@ -181,19 +181,19 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	renderer_->GetTransform()->SetLocalRotationDegree({ -90.f,0.0f });
 
-	renderer_->CreateFBXAnimation("Run", "Hyunwoo_run.UserAnimation", 0);
-	renderer_->CreateFBXAnimation("Wait", "Hyunwoo_wait.UserAnimation", 0);
-	renderer_->CreateFBXAnimation("Death", "Hyunwoo_death.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("Atk0", "Hyunwoo_atk0.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillD", "Hyunwoo_weaponskill.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("Atk1", "Hyunwoo_atk1.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillQ", "Hyunwoo_skillq.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillE_start", "Hyunwoo_skille_start.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillE_loop", "Hyunwoo_skille_loop.UserAnimation", 0);
-	renderer_->CreateFBXAnimation("SkillE_end", "Hyunwoo_skille_end.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillR_start", "Hyunwoo_skillR_start.UserAnimation", 0, false);
-	renderer_->CreateFBXAnimation("SkillR_loop", "Hyunwoo_skillR_loop.UserAnimation", 0);
-	renderer_->CreateFBXAnimation("SkillR_end", "Hyunwoo_skillR_end.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Run", "Hyunwoo_run.fbx", 0);
+	renderer_->CreateFBXAnimation("Wait", "Hyunwoo_wait.fbx", 0);
+	renderer_->CreateFBXAnimation("Death", "Hyunwoo_death.fbx", 0, false);
+	renderer_->CreateFBXAnimation("Atk0", "Hyunwoo_atk0.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillD", "Hyunwoo_weaponskill.fbx", 0, false);
+	renderer_->CreateFBXAnimation("Atk1", "Hyunwoo_atk1.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillQ", "Hyunwoo_skillq.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillE_start", "Hyunwoo_skille_start.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillE_loop", "Hyunwoo_skille_loop.fbx", 0);
+	renderer_->CreateFBXAnimation("SkillE_end", "Hyunwoo_skille_end.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_start", "Hyunwoo_skillR_start.fbx", 0, false);
+	renderer_->CreateFBXAnimation("SkillR_loop", "Hyunwoo_skillR_loop.fbx", 0);
+	renderer_->CreateFBXAnimation("SkillR_end", "Hyunwoo_skillR_end.fbx", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
 
