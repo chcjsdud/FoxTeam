@@ -571,6 +571,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="Wolf.cpp" />
+    <ClCompile Include="Yuki.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bat.h" />
@@ -952,6 +956,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Wolf.h" />
+    <ClInclude Include="Yuki.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

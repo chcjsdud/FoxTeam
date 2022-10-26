@@ -20,7 +20,7 @@ Jackie::Jackie() // default constructer 디폴트 생성자
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
 	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr), sawRenderer_(nullptr), axeRenderer_(nullptr),
 	isW_(false), timer_W(0.0f), bSkillEPassable_(false), eStartPosition_(float4::ZERO), eLandingPosition_(float4::ZERO),
-	debugX(-140.0f), debugY(0.0f), debugZ(-30.0f)
+	debugX(-90.0f), debugY(0.0f), debugZ(0.0f)
 
 {
 
@@ -85,6 +85,19 @@ void Jackie::LoadResource()
 		for (GameEngineFile& file : allFile)
 		{
 			GameEngineSoundManager::GetInstance()->CreateSound(file.FileName(), file.GetFullPath());
+		}
+	}
+
+	{
+		GameEngineDirectory dir;
+
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "Texture" / "Jackie";
+
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("png");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineTextureManager::GetInst().Load(file.FileName(), file.GetFullPath());
 		}
 	}
 }
@@ -210,7 +223,46 @@ void Jackie::Update(float _deltaTime)
 		timer_R -= _deltaTime;
 		sawRenderer_->On();
 		axeRenderer_->Off();
+	
+
+//		if (true == GameEngineInput::GetInst().Press("X"))
+//		{
+//			debugX -= 10.0f * _deltaTime;
+//		
+//		}
+//		if (true == GameEngineInput::GetInst().Press("Y"))
+//		{
+//			debugY -= 10.0f * _deltaTime;
+//		
+//		}
+//		if (true == GameEngineInput::GetInst().Press("Z"))
+//		{
+//			debugZ -= 10.0f * _deltaTime;
+//		}
+//		if (true == GameEngineInput::GetInst().Press("B"))
+//		{
+//			debugX += 10.0f * _deltaTime;
+//		
+//		}
+//		if (true == GameEngineInput::GetInst().Press("N"))
+//		{
+//			debugY += 10.0f * _deltaTime;
+//		
+//		}
+//		if (true == GameEngineInput::GetInst().Press("M"))
+//		{
+//			debugZ += 10.0f * _deltaTime;
+//		
+//		}
+
+		sawRenderer_->GetTransform()->SetLocalPosition({ 50.0f, 0.0f, 40.0f });
+		sawRenderer_->GetTransform()->SetLocalRotationDegree({ -93.0f, 0.0f, 0.0f });
+		// 96.5f
 		sawRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
+
+		float x = debugX;
+		float y = debugY;
+		float z = debugZ;
 
 		if (0.0f >= timer_R)
 		{
@@ -226,6 +278,9 @@ void Jackie::Update(float _deltaTime)
 		axeRenderer_->On();
 		axeRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
 
+	
+
+		
 	}
 
 	if ("Run" == curAnimationName_)
@@ -312,11 +367,11 @@ void Jackie::initRendererAndAnimation()
 	sawRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	sawRenderer_->SetFBXMesh("Weapon_Special_Jackie_01.fbx", "TextureDeferredLightAni");
 
-	sawRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 40.0f });
+	sawRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	sawRenderer_->GetTransform()->SetLocalScaling(100.f);
 	sawRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 	
-	sawRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger1");
+	sawRenderer_->SetParentBoneName(renderer_, "Bip001 R Finger2");
 
 	sawRenderer_->CreateFBXAnimation("Idle", "Weapon_Special_Jackie_01.fbx");
 	sawRenderer_->ChangeFBXAnimation("Idle");
@@ -735,7 +790,9 @@ void Jackie::onUpdateESkill(float _deltaTime)
 void Jackie::onStartRSkill()
 {
 	isR_ = true;
-	timer_R = 12.0f;
+
+	// timer_R = 12.0f;
+	timer_R = 120.0f;
 
 	axeRenderer_->Off();
 	sawRenderer_->On();

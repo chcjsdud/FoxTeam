@@ -50,6 +50,7 @@
 #include "Rio.h"
 #include "Hyunwoo.h"
 #include "Jackie.h"
+#include "Yuki.h"
 
 //======================== Monsters
 #include "Monsters.h"
@@ -333,7 +334,7 @@ void LumiaLevel::CharacterCreationCommand()
 		{
 			case JobType::YUKI:
 			{
-				//NewCharacter = CreateActor<Yuki>();
+				NewCharacter = CreateActor<Yuki>();
 				break;
 			}
 			case JobType::FIORA:
@@ -467,6 +468,7 @@ void LumiaLevel::CharacterResourceLoad()
 	Hyunwoo::LoadResource();
 	Rio::LoadResource();
 	Jackie::LoadResource();
+	Yuki::LoadResource();
 }
 
 void LumiaLevel::CreateBasicActor()

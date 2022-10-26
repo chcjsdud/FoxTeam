@@ -6,20 +6,19 @@
 #include <GameEngine/GameEngineEffectRenderer.h>
 #include "Character.h"
 
-
-class HyunwooQEffect;
-class HyunwooREffect;
-class Hyunwoo : public Character
-{
+// 분류 : 
+// 용도 : 
+// 설명 : 
+class Yuki : public Character
+{	
 public:
-	Hyunwoo(); 
-	~Hyunwoo();
+	Yuki(); // default constructer 디폴트 생성자
+	~Yuki(); // default destructer 디폴트 소멸자
+	Yuki(const Yuki& _other) = delete; // default Copy constructer 디폴트 복사생성자
+	Yuki(Yuki&& _other) noexcept; // default RValue Copy constructer 디폴트 RValue 복사생성자
+	Yuki& operator=(const Yuki& _other) = delete; // default Copy operator 디폴트 대입 연산자
+	Yuki& operator=(const Yuki&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
 
-	Hyunwoo(const Hyunwoo& _other) = delete; 
-	Hyunwoo(Hyunwoo&& _other) = delete; 
-
-	Hyunwoo& operator=(const Hyunwoo& _other) = delete;
-	Hyunwoo& operator=(const Hyunwoo&& _other) = delete;
 
 public:
 	static void LoadResource();
@@ -35,10 +34,9 @@ protected:
 protected:
 	// Character을(를) 통해 상속됨
 	virtual void initRendererAndAnimation() override;
-	void initHyunwooCollision();
-	void initHyunwooCustomState();
+	void initYukiCollision();
+	void initYukiCustomState();
 	void initEffectRenderer();
-
 
 	virtual void changeAnimationRun() override;
 	virtual void changeAnimationWait() override;
@@ -71,40 +69,24 @@ protected:
 
 	virtual void onPlayEffect(const std::string& _effectName);
 
-	// customstate
-	void startCustomRSkill();
-	void updateCustomRSkill(float _deltaTime);
-	void endCustomRSkill();
-
 private:
-	HyunwooQEffect* qEffect_;
-	HyunwooREffect* rEffect_;
-	
+	GameEngineFBXRenderer* swordRenderer_;
+
 	GameEngineEffectRenderer* basicAttackEffectRenderer_;
-	GameEngineEffectRenderer* QGroundCrackEffectRenderer_;
+	GameEngineEffectRenderer* groundEffectRenderer_;
+
 	GameEngineEffectRenderer* rearEffectRenderer_;
 
 
-	bool atkFlag_;
-	
-	float timer_collision_Q;
-	float timer_end_Q;
-	bool b_Qhit_;
-	GameEngineCollision* collision_Q;
 
+	bool atkFlag_;
+
+	bool b_isQ_;
+	float timer_Q;
+	bool b_Qhit_;
 
 	float timer_Dash_E;		// 대쉬 지속시간
 	GameEngineCollision* collision_E;
 	bool b_Ehit_;
-
-	// 캐릭터의 고유한 상태를 처리하고 싶을 때 사용
-	GameEngineFSM customState_;
-
-
-	bool b_Rhit_;
-	
-	GameEngineCollision* collision_R;
-	float collisionRRate_;
-
-	bool b_Dhit_;
 };
+

@@ -397,6 +397,9 @@
     <ClCompile Include="LevelUpSystem.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>
     </ClCompile>
+    <ClCompile Include="Yuki.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Yuki</Filter>
+    </ClCompile>
     <ClCompile Include="UI_HPBars.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
@@ -629,6 +632,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\OutLineTestLevel\Actor">
       <UniqueIdentifier>{44118a06-ff35-4b09-b530-1d61d91b0d26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Yuki">
+      <UniqueIdentifier>{d4582ba2-215c-4a17-8d61-7036a9e549f2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1033,6 +1039,9 @@
     </ClInclude>
     <ClInclude Include="LevelUpSystem.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\GameController</Filter>
+    </ClInclude>
+    <ClInclude Include="Yuki.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Yuki</Filter>
     </ClInclude>
     <ClInclude Include="LevelUPData.h">
       <Filter>01.GameObject\00.Constant</Filter>

@@ -50,23 +50,6 @@ void UserGame::ResourcesLoad()
 		}
 	}
 
-	// *** PJW 리소스 로딩 //
-	{
-		GameEngineDirectory TextureDir;
-		TextureDir.MoveParent("FoxTeam");
-		TextureDir.MoveChild("Resources");
-		TextureDir.MoveChild("Texture");
-		TextureDir.MoveChild("PJW");
-
-		std::vector<GameEngineDirectory> AllDir = TextureDir.GetAllDirectoryRecursive();
-		LoadingFolder += static_cast<int>(AllDir.size());
-
-		for (size_t i = 0; i < AllDir.size(); i++)
-		{
-			GameEngineCore::ThreadQueue.JobPost(std::bind(TextureLoading, AllDir[i]));
-		}
-	}
-
 	{
 		GameEngineDirectory TextureDir;
 		TextureDir.MoveParent("FoxTeam");
