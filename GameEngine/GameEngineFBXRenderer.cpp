@@ -101,7 +101,7 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 			GameEngineVertexBuffer* VertexBuffer = VertexBufferVector[VertexBufferIndex];
 			GameEngineIndexBuffer* IndexBuffer = IndexBufferVector[IndexBufferIndex];
 
-			RenderSet& RenderSetData = RenderSets.emplace_back();
+			RenderSet& RenderSetData = RenderSets[_MeshIndex];
 
 			float4 AllVtxPos = float4::ZERO;
 			float4 MaxVtxValue = float4::ZERO;
@@ -231,6 +231,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Value, std::string _P
 
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh->GetAllMeshMap();
 
+	RenderSets.resize(AllMeshSet.size());
 	for (int i = 0; i < AllMeshSet.size(); ++i)
 	{
 		SetFBXMeshRenderSet(_Value, _PipeLine, i);
