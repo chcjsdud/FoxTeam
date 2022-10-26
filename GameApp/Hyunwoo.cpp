@@ -36,6 +36,12 @@ Hyunwoo::~Hyunwoo()
 
 void Hyunwoo::LoadResource()
 {
+	static bool a = false;
+	if (a)
+	{
+		return;
+	}
+
 	GameEngineDirectory dir;
 
 	dir.MoveParent("FoxTeam");
@@ -98,6 +104,7 @@ void Hyunwoo::LoadResource()
 
 
 	}
+	a = true;
 }
 
 void Hyunwoo::ReleaseResource()

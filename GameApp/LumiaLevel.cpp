@@ -315,7 +315,7 @@ void LumiaLevel::MonsterCreationCommand()
 void LumiaLevel::CharacterCreationCommand()
 {
 	// 캐릭터관련 리소스 로드
-	CharacterResourceLoad();
+	//CharacterResourceLoad();
 
 	// Get 현재 게임에 진입한 플레이어 정보
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
@@ -334,6 +334,7 @@ void LumiaLevel::CharacterCreationCommand()
 		{
 			case JobType::YUKI:
 			{
+				Yuki::LoadResource();
 				NewCharacter = CreateActor<Yuki>();
 				break;
 			}
@@ -344,8 +345,8 @@ void LumiaLevel::CharacterCreationCommand()
 			}
 			case JobType::HYUNWOO:
 			{
+				Hyunwoo::LoadResource();
 				NewCharacter = CreateActor<Hyunwoo>();
-
 				break;
 			}
 			case JobType::AYA:
@@ -355,16 +356,19 @@ void LumiaLevel::CharacterCreationCommand()
 			}
 			case JobType::RIO:
 			{
+				Rio::LoadResource();
 				NewCharacter = CreateActor<Rio>();
 				break;
 			}
 			case JobType::JACKIE:
 			{
+				Jackie::LoadResource();
 				NewCharacter = CreateActor<Jackie>();
 				break;
 			}
 			case JobType::DUMMY:
 			{
+				Hyunwoo::LoadResource();
 				NewCharacter = CreateActor<Hyunwoo>();
 				break;
 			}
