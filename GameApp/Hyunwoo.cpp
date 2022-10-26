@@ -260,7 +260,7 @@ void Hyunwoo::initEffectRenderer()
 
 
 	QGroundCrackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
-	QGroundCrackEffectRenderer_->SetImage("FX_BI_GroundBomb_02.png", "PointSmp");
+	QGroundCrackEffectRenderer_->SetImage("FX_BI_GroundBomb_01.png", "PointSmp");
 	QGroundCrackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 100.0f });
 	QGroundCrackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
 	QGroundCrackEffectRenderer_->GetTransform()->SetLocalScaling(QGroundCrackEffectRenderer_->GetCurrentTexture()->GetTextureSize());
