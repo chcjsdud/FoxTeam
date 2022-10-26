@@ -61,6 +61,7 @@
 #include "Boar.h"
 #include "Dog.h"
 #include "Weekline.h"
+#include "Aya.h"
 
 Character* LumiaLevel::GetSpecificCharacter(int _Index)
 {
@@ -349,7 +350,7 @@ void LumiaLevel::CharacterCreationCommand()
 			}
 			case JobType::AYA:
 			{
-				//NewCharacter = CreateActor<Aya>();
+				NewCharacter = CreateActor<Aya>();
 				break;
 			}
 			case JobType::RIO:
@@ -468,6 +469,7 @@ void LumiaLevel::CharacterResourceLoad()
 	Rio::LoadResource();
 	Jackie::LoadResource();
 	Yuki::LoadResource();
+	Aya::LoadResource();
 }
 
 void LumiaLevel::CreateBasicActor()
