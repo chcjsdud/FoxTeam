@@ -869,13 +869,15 @@ void GameEngineFBXMesh::LoadUv(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _MeshM
 void GameEngineFBXMesh::VertexBufferCheck()
 {
 	int meshInfoSize = static_cast<int>(MeshInfos.size());
+
+	AllMeshMap.resize(meshInfoSize);
 	for (int meshInfoIndex = 0; meshInfoIndex < meshInfoSize; ++meshInfoIndex)
 	{
 		FbxExMeshInfo& meshInfo = MeshInfos.at(meshInfoIndex);
 		fbxsdk::FbxNode* pMeshNode = meshInfo.Mesh->GetNode();
 		fbxsdk::FbxMesh* pMesh = meshInfo.Mesh;
 
-		FbxMeshSet& DrawMesh = AllMeshMap.emplace_back();
+		FbxMeshSet& DrawMesh = AllMeshMap[meshInfoIndex];
 		DrawMesh.Index = meshInfoIndex;
 
 		if (DrawMesh.MapWI.end() == DrawMesh.MapWI.find(pMesh))
@@ -888,7 +890,8 @@ void GameEngineFBXMesh::VertexBufferCheck()
 		//DrawMesh.Vertexs.push_back(std::vector<GameEngineVertex>());
 		//DrawMesh.Indexs.push_back(std::vector<std::vector<UINT>>());
 		std::vector<GameEngineVertex>& VtxData = DrawMesh.Vertexs;
-		std::vector<std::vector<UINT>>& IdxData = DrawMesh.Indexs.emplace_back();
+		DrawMesh.Indexs.push_back(std::vector<std::vector<unsigned int>>());
+		std::vector<std::vector<unsigned int>>& IdxData = DrawMesh.Indexs.back();
 
 		int controlPointsCount = pMesh->GetControlPointsCount();
 
