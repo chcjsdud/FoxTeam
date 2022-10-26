@@ -7,6 +7,7 @@
 #include "Rio.h"
 #include "Jackie.h"
 #include "Hyunwoo.h"
+#include "Aya.h"
 
 #include "TestOBB.h"
 #include "TestLevelBox.h"
@@ -86,9 +87,9 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	Rio::LoadResource();
 	Jackie::LoadResource();
 	Hyunwoo::LoadResource();
+	Aya::LoadResource();
 
-	rio_ = CreateActor<Rio>();
-	rio_->Focus();
+
 	//CreateActor<TestOBB>();
 
 	TestLevelBox* box = nullptr;
@@ -100,6 +101,9 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 	mouse_ = CreateActor<MousePointer>();
 	map_ = CreateActor<TestMap>();
+
+	rio_ = CreateActor<Rio>();
+	//rio_->Focus();
 	rio_->SetMouse(mouse_);
 	rio_->SetMap(map_);
 
@@ -109,10 +113,15 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	jackie_->SetMap(map_);
 
 	Hyunwoo* h = CreateActor<Hyunwoo>();
-	h->Focus();
+	//h->Focus();
 	h->SetMouse(mouse_);
 	h->SetMap(map_);
-	focusChar_ = rio_;
+
+	aya_ = CreateActor<Aya>();
+	aya_->Focus();
+	aya_->SetMouse(mouse_);
+	aya_->SetMap(map_);
+	focusChar_ = aya_;
 
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();

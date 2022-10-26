@@ -5,6 +5,7 @@
 class Character;
 class Rio;
 class Jackie;
+class Aya;
 class MousePointer;
 class LumiaMap;
 class TestLevel : public GameEngineLevel
@@ -29,6 +30,7 @@ private:
 	Character* focusChar_;
 	Rio* rio_;
 	Jackie* jackie_;
+	Aya* aya_;
 	MousePointer* mouse_;
 	LumiaMap* map_;
 };

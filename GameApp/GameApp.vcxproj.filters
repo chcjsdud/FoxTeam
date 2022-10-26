@@ -415,6 +415,9 @@
     <ClCompile Include="UI_HyperMap.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Aya.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -641,6 +644,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Yuki">
       <UniqueIdentifier>{d4582ba2-215c-4a17-8d61-7036a9e549f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya">
+      <UniqueIdentifier>{eaece77b-4574-4ade-b578-79d03d2547a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1066,6 +1072,9 @@
     </ClInclude>
     <ClInclude Include="UI_HyperMap.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Aya.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

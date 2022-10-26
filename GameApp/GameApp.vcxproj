@@ -184,6 +184,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
+    <ClCompile Include="Aya.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Bear.cpp">
       <SubType>
@@ -582,6 +586,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Aya.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Bear.h">
       <SubType>
