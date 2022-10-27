@@ -225,38 +225,38 @@ void Jackie::Update(float _deltaTime)
 		axeRenderer_->Off();
 	
 
-//		if (true == GameEngineInput::GetInst().Press("X"))
-//		{
-//			debugX -= 10.0f * _deltaTime;
-//		
-//		}
-//		if (true == GameEngineInput::GetInst().Press("Y"))
-//		{
-//			debugY -= 10.0f * _deltaTime;
-//		
-//		}
-//		if (true == GameEngineInput::GetInst().Press("Z"))
-//		{
-//			debugZ -= 10.0f * _deltaTime;
-//		}
-//		if (true == GameEngineInput::GetInst().Press("B"))
-//		{
-//			debugX += 10.0f * _deltaTime;
-//		
-//		}
-//		if (true == GameEngineInput::GetInst().Press("N"))
-//		{
-//			debugY += 10.0f * _deltaTime;
-//		
-//		}
-//		if (true == GameEngineInput::GetInst().Press("M"))
-//		{
-//			debugZ += 10.0f * _deltaTime;
-//		
-//		}
+		if (true == GameEngineInput::GetInst().Press("X"))
+		{
+			debugX -= 60.0f * _deltaTime;
+		
+		}
+		if (true == GameEngineInput::GetInst().Press("Y"))
+		{
+			debugY -= 60.0f * _deltaTime;
+		
+		}
+		if (true == GameEngineInput::GetInst().Press("Z"))
+		{
+			debugZ -= 60.0f * _deltaTime;
+		}
+		if (true == GameEngineInput::GetInst().Press("B"))
+		{
+			debugX += 60.0f * _deltaTime;
+		
+		}
+		if (true == GameEngineInput::GetInst().Press("N"))
+		{
+			debugY += 60.0f * _deltaTime;
+		
+		}
+		if (true == GameEngineInput::GetInst().Press("M"))
+		{
+			debugZ += 60.0f * _deltaTime;
+		
+		}
 
-		sawRenderer_->GetTransform()->SetLocalPosition({ 50.0f, 0.0f, 40.0f });
-		sawRenderer_->GetTransform()->SetLocalRotationDegree({ -93.0f, 0.0f, 0.0f });
+		//sawRenderer_->GetTransform()->SetLocalPosition({ debugX, debugY, debugZ });
+	//	sawRenderer_->GetTransform()->SetLocalRotationDegree({ -93.0f, 0.0f, 0.0f });
 		// 96.5f
 		sawRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
 
