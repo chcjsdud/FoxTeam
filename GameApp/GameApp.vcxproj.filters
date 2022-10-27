@@ -418,6 +418,9 @@
     <ClCompile Include="Aya.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya</Filter>
     </ClCompile>
+    <ClCompile Include="AyaBullet.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya</Filter>
+    </ClCompile>
     <ClCompile Include="OutLineTestActor.cpp">
       <Filter>01.GameObject\03.Level\OutLineTestLevel\Actor</Filter>
     </ClCompile>
@@ -1080,6 +1083,9 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="Aya.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya</Filter>
+    </ClInclude>
+    <ClInclude Include="AyaBullet.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya</Filter>
     </ClInclude>
     <ClInclude Include="OutLineTestActor.h">

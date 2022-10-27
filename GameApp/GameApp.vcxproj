@@ -188,6 +188,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="AyaBullet.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Bear.cpp">
       <SubType>
@@ -592,6 +593,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="AyaBullet.h" />
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Bear.h">
       <SubType>

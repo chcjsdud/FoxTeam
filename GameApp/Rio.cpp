@@ -251,6 +251,8 @@ void Rio::changeAnimationCook()
 
 void Rio::changeDeathAnimation()
 {
+	shortBow_->Off();
+	longBow_->Off();
 	ChangeAnimation("Death", true);
 }
 

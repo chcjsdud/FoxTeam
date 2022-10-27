@@ -6,6 +6,7 @@
 
 #include "Character.h"
 #include "PacketSoundPlay.h"
+#include "Monsters.h"
 
 RioArrow::RioArrow()
 	: renderer_(nullptr)
@@ -19,6 +20,7 @@ RioArrow::RioArrow()
 	, lifeTime_(0.5f)
 	, scale_(float4(5.f, 150.f, 50.f))
 	, bKnockback_(false)
+	, effect_(nullptr)
 {
 
 }
@@ -209,7 +211,41 @@ void RioArrow::updateFly(float _deltaTime)
 				}
 
 				Release();
-				break;
+				return;
+			}
+		}
+	}
+
+	collisionList.clear();
+	collisionList = collision_->GetCollisionList(eCollisionGroup::Monster);
+	for (GameEngineCollision* col : collisionList)
+	{
+		if (col->GetActor() != owner_)
+		{
+			Monsters* opponent = dynamic_cast<Monsters*>(col->GetActor());
+
+			if (opponent != nullptr)
+			{
+				opponent->Damage(damage_, owner_);
+
+				if (bKnockback_)
+				{
+					GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_Skill04_Hit.wav");
+					PacketSoundPlay packet;
+					packet.SetSound("Rio_LongBow_Skill04_Hit.wav", transform_.GetWorldPosition());
+					opponent->WallSlam(0.25f, transform_.GetWorldForwardVector() * 1000.f, 0.0f);
+					FT::SendPacket(packet);
+				}
+				else
+				{
+					GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill02_Hit.wav");
+					PacketSoundPlay packet;
+					packet.SetSound("Rio_ShortBow_Skill02_Hit.wav", transform_.GetWorldPosition());
+					FT::SendPacket(packet);
+				}
+
+				Release();
+				return;
 			}
 		}
 	}
