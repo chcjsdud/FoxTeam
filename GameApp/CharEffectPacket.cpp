@@ -67,6 +67,11 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 
 	Character* targetChar = level->GetCharacterActorList()[targetIndex_];
 
+	if ("StunEffect" == effectAnimationName_)
+	{
+		int a = 0;
+	}
+
 	targetChar->PlayEffect(effectAnimationName_);
 
 	if (_bServer)

@@ -12,12 +12,14 @@
 #include "PlayerUIController.h"
 #include <GameEngine/GameEngineLevelControlWindow.h>
 #include "CharStatPacket.h"
+#include "CharEffectPacket.h"
 #include "GameServer.h"
 #include "GameClient.h"
 #include "ItemBoxManager.h"
 #include "PacketSoundPlay.h"
 #include "CharDeathPacket.h"
 #include "SlowEffect.h"
+#include "StunEffect.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -47,6 +49,7 @@ Character::Character()
 	, slowRatio_(0.0f)
 	, bSlowFlag_(false)
 	, slowEffect_(nullptr)
+	, stunEffect_(nullptr)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -769,6 +772,9 @@ void Character::Stun(float _stunTime)
 	crowdControlState_ << "Stun";
 	timerStun_ = _stunTime;
 	changeAnimationWait();
+
+	stunEffect_->PlayAwake(_stunTime);
+
 }
 
 void Character::Knockback(float _knockbackTime, float4 _knockbackSpeed)
@@ -786,6 +792,8 @@ void Character::WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _st
 	timerKnockback_ = _knockbackTime;
 	knockbackSpeed_ = _knockbackSpeed;
 	timerStun_ = _stunTime;
+
+
 }
 
 void Character::Slow(float _slowTime, float _slowRatio)
@@ -871,6 +879,10 @@ void Character::initBasicEffect()
 	slowEffect_ = GetLevel()->CreateActor<SlowEffect>();
 	slowEffect_->GetTransform()->SetLocalPosition(this->GetTransform()->GetLocalPosition());
 	slowEffect_->SetParent(this);
+
+	stunEffect_ = GetLevel()->CreateActor<StunEffect>();
+	stunEffect_->GetTransform()->SetLocalPosition(this->GetTransform()->GetLocalPosition());
+	stunEffect_->SetParent(this);
 }
 
 
@@ -1300,10 +1312,24 @@ void Character::updateCook(float _deltaTime)
 void Character::startStun()
 {
 	changeAnimationWait();
+
+	// 이 부분에서
+	// "니 컴퓨터의 내 인덱스 더미 캐릭터에게 스턴 이팩트를 띄워 줘
+	// 들어가야 한다.
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("StunEffect");
+	
+	FT::SendPacket(pack);
+
 }
 
 void Character::updateStun(float _deltaTime)
 {
+	float4 wp = GetTransform()->GetWorldPosition();
+	stunEffect_->GetTransform()->SetLocalPosition(wp);
+
 	timerStun_ -= _deltaTime;
 	if (timerStun_ <= 0.0f)
 	{
@@ -1570,6 +1596,13 @@ void Character::updatePlayerWinner(float _deltaTime)
 
 void Character::PlayEffect(const std::string& _effectName)
 {
+	if ("StunEffect" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		stunEffect_->GetTransform()->SetLocalPosition(wp);
+		stunEffect_->PlayAwake(1.0f);
+		return;
+	}
 
 	onPlayEffect(_effectName);
 }

@@ -418,7 +418,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 					
 
 					FT::SendPacket(ccPacket);
-					//FT::SendPacket(effectPacket);
+				//	FT::SendPacket(effectPacket);
 				}
 			}
 		}
@@ -570,9 +570,14 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 					if (nullptr != character)
 					{
 						character->Damage(150.0f, this);
+						
 						CharCrowdControlPacket ccPacket;
 						ccPacket.SetTargetIndex(character->GetIndex());
 						ccPacket.SetWallSlam(0.2f, direction_ * 3000.f, 1.0f);
+
+						// 여기선 못하고, 월 슬램 이후 그 캐릭터 클래스 내부에서 자체적으로 스턴 이펙트를 띄울 방법...
+						// 야 니네 컴퓨터의 내 캐릭터 인덱스 캐릭터에게 이팩트 띄워 줘
+
 
 						GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill03_Hit.wav");
 						PacketSoundPlay packet;

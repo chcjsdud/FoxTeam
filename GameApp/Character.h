@@ -12,6 +12,7 @@ struct CombineItem;
 struct QueueItem;
 
 // 이터널 리턴에 나오는 실험체의 베이스가 되는 클래스
+class StunEffect;
 class SlowEffect;
 class ItemBoxManager;
 class MousePointer;
@@ -57,6 +58,7 @@ public:
 	void ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect);
 
 	void Stun(float _stunTime);
+
 	void Knockback(float _knockbackTime, float4 _knockbackSpeed);
 	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime);
 
@@ -394,5 +396,6 @@ private:
 // 기본 군중 제어 이팩트
 protected:
 	SlowEffect* slowEffect_;
+	StunEffect* stunEffect_;
 
 };
