@@ -969,6 +969,18 @@ void Character::setRotationTo(const float4& _destination, const float4 _startPos
 	transform_.SetLocalRotationDegree({ 0.0f, angle * -cross.y, 0.0f });
 }
 
+void Character::setRotationToMouse()
+{
+	if (mouse_ == nullptr)
+	{
+		changeAnimationWait();
+		mainState_ << "NormalState";
+		return;
+	}
+	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
+	setRotationTo(mousePosition, transform_.GetWorldPosition());
+}
+
 void Character::startNormalState()
 {
 }

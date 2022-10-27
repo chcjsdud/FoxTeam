@@ -6,6 +6,7 @@
 #include "LumiaLevel.h"
 #include "Character.h"
 #include "RioDSkill.h"
+#include "AyaBullet.h"
 
 PacketCreateProjectile::PacketCreateProjectile()
     : ownerIndex_(-1)
@@ -121,6 +122,9 @@ void PacketCreateProjectile::execute(SOCKET _socketSender, GameEngineSocketInter
         break;
     case eProjectileType::RioDSkill:
         rioDSkill(level, _network, _bServer);
+        break;
+    case eProjectileType::AyaTargetBullet:
+        ayaTargetBullet(level, _network, _bServer);
         break;
     default:
         break;
@@ -279,5 +283,26 @@ void PacketCreateProjectile::rioDSkill(LumiaLevel* _level, GameEngineSocketInter
         arrow->SetOwner(list[ownerIndex_]);
         arrow->SetWaitTime(waitTime_);
         arrow->SetDamage(0.0f);
+    }
+}
+
+void PacketCreateProjectile::ayaTargetBullet(LumiaLevel* _level, GameEngineSocketInterface* _network, bool _bServer)
+{
+    std::vector<Character*> list = _level->GetCharacterActorList();
+    AyaBullet* arrow = _level->CreateActor<AyaBullet>();
+
+    if (targetIndex_ != -1)
+    {
+        if (_bServer)
+        {
+            arrow->MakeTarget(*list[ownerIndex_], damage_, position_, speed_, *list[targetIndex_]);
+            arrow->SetWaitTime(waitTime_);
+            _network->Send(this);
+        }
+        else
+        {
+            arrow->MakeTarget(*list[ownerIndex_], 0.0f, position_, speed_, *list[targetIndex_]);
+            arrow->SetWaitTime(waitTime_);
+        }
     }
 }

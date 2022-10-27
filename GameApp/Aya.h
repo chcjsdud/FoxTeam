@@ -21,7 +21,8 @@ public:
 	static void ReleaseResource();
 
 public:
-
+	void Start() override;
+	void Update(float _deltaTime) override;
 
 	// Character을(를) 통해 상속됨
 	virtual JobType GetJobType() override;
@@ -69,5 +70,7 @@ public:
 	virtual void onPlayEffect(const std::string& _effectName) override;
 
 private:
-
+	int ammo_;
+	int skillWFireCount_;
+	float skillWFireDelay_;
 };

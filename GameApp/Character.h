@@ -148,6 +148,7 @@ protected:
 	void moveProcess(float _deltaTime);
 
 	void setRotationTo(const float4& _destination, const float4 _startPosition);
+	void setRotationToMouse();
 	IUnit* getMousePickedCharacter();
 
 private:

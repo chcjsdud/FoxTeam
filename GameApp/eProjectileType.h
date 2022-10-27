@@ -9,4 +9,6 @@ enum class eProjectileType
 	RioRSkillShortImpact,
 	RioRSkillLong,
 	RioDSkill,
+
+	AyaTargetBullet,
 };
