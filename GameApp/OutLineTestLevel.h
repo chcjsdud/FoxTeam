@@ -5,6 +5,9 @@
 // 용도 : 테스트
 // 설명 : 메쉬 아웃라인 테스트용 레벨
 class OutLineTestWindow;
+class OutLineTestMap;
+class OutLineTestActor;
+class LightActor;
 class OutLineTestLevel : public GameEngineLevel
 {
 public:
@@ -38,5 +41,10 @@ public:
 protected:
 private:
 	OutLineTestWindow* OutLineWindow_;
+
+private:
+	LightActor* TestLightActor_;
+	OutLineTestMap* TestMap_;
+	OutLineTestActor* TestActor_;
 };
 

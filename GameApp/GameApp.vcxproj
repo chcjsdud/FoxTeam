@@ -263,10 +263,12 @@
     <ClCompile Include="LevelUpSystem.cpp" />
     <ClCompile Include="MonsterCrowdControlPacket.cpp" />
     <ClCompile Include="MonsterDamagePacket.cpp" />
+    <ClCompile Include="OutLineTestActor.cpp" />
     <ClCompile Include="OutLineTestLevel.cpp">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="OutLineTestMap.cpp" />
     <ClCompile Include="OutLineTestWindow.cpp">
       <SubType>
       </SubType>
@@ -666,10 +668,12 @@
     <ClInclude Include="LevelUpSystem.h" />
     <ClInclude Include="MonsterCrowdControlPacket.h" />
     <ClInclude Include="MonsterDamagePacket.h" />
+    <ClInclude Include="OutLineTestActor.h" />
     <ClInclude Include="OutLineTestLevel.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="OutLineTestMap.h" />
     <ClInclude Include="OutLineTestWindow.h">
       <SubType>
       </SubType>
