@@ -88,6 +88,7 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	Jackie::LoadResource();
 	Hyunwoo::LoadResource();
 	Aya::LoadResource();
+	Character::LoadResource();
 
 
 	//CreateActor<TestOBB>();

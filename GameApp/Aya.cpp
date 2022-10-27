@@ -5,8 +5,12 @@
 #include "LumiaMap.h"
 #include "PacketCreateProjectile.h"
 #include "RioArrow.h"
+#include "MousePointer.h"
 
 Aya::Aya()
+	: ammo_(6)
+	, skillWFireCount_(0)
+	, skillWFireDelay_(0.3f)
 {
 
 }
@@ -87,7 +91,7 @@ void Aya::Update(float _deltaTime)
 
 JobType Aya::GetJobType()
 {
-    return JobType::AYA;
+	return JobType::AYA;
 }
 
 void Aya::initRendererAndAnimation()
@@ -100,21 +104,21 @@ void Aya::initRendererAndAnimation()
 
 	std::string ext = "UserAnimation";
 
-	renderer_->CreateFBXAnimation("Idle", "Aya_Idle." +  ext, 0, true);
+	renderer_->CreateFBXAnimation("Idle", "Aya_Idle." + ext, 0, true);
 	renderer_->CreateFBXAnimation("Run", "Aya_Run." + ext, 0, true);
-	renderer_->CreateFBXAnimation("Attack", "Aya_Attack." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("Reload", "Aya_Reload." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillD", "Aya_SkillD." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillE", "Aya_SkillE." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillQ", "Aya_SkillQ." +  ext, 0, false, 0.03f);
-	renderer_->CreateFBXAnimation("SkillR_End", "Aya_SkillR_End." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillR_Start", "Aya_SkillR_Start." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillW_Back", "Aya_SkillW_Back." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillW_Forward", "Aya_SkillW_Forward." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillW_Left", "Aya_SkillW_Left." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillW_Right", "Aya_SkillW_Right." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillW_Shot", "Aya_SkillW_Shot." +  ext, 0, false);
-	renderer_->CreateFBXAnimation("SkillW_Wait", "Aya_SkillW_Wait." + ext, 0, false);
+	renderer_->CreateFBXAnimation("Attack", "Aya_Attack." + ext, 0, false);
+	renderer_->CreateFBXAnimation("Reload", "Aya_Reload." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillD", "Aya_SkillD." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillE", "Aya_SkillE." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillQ", "Aya_SkillQ." + ext, 0, false, 0.03f);
+	renderer_->CreateFBXAnimation("SkillR_End", "Aya_SkillR_End." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillR_Start", "Aya_SkillR_Start." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillW_Back", "Aya_SkillW_Back." + ext, 0);
+	renderer_->CreateFBXAnimation("SkillW_Forward", "Aya_SkillW_Forward." + ext, 0);
+	renderer_->CreateFBXAnimation("SkillW_Left", "Aya_SkillW_Left." + ext, 0);
+	renderer_->CreateFBXAnimation("SkillW_Right", "Aya_SkillW_Right." + ext, 0);
+	renderer_->CreateFBXAnimation("SkillW_Shot", "Aya_SkillW_Shot." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillW_Wait", "Aya_SkillW_Wait." + ext, 0);
 	renderer_->CreateFBXAnimation("Death", "Aya_Death." + ext, 0, false);
 
 	renderer_->ChangeFBXAnimation("Idle");
@@ -178,7 +182,7 @@ void Aya::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 
 void Aya::onStartQSkill()
 {
-	target_ =  getMousePickedCharacter();
+	target_ = getMousePickedCharacter();
 
 	if (target_ == nullptr)
 	{
@@ -254,17 +258,65 @@ void Aya::onUpdateQSkill(float _deltaTime)
 
 void Aya::onStartWSkill()
 {
-	
+	setRotationToMouse();
+
+	ChangeAnimation("SkillW_Wait");
+	renderer_->OverrideFBXAnimation("SkillW_Shot", "Bip001 Spine2");
 }
 
 void Aya::onUpdateWSkill(float _deltaTime)
 {
-	
+	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
+	static float cos = 0.0f;
+	static float4 cross;
+	if (GameEngineInput::Press("LButton") || GameEngineInput::Down("LButton"))
+	{
+		cos = float4::Dot3DToCos(mousePosition - transform_.GetWorldPosition(), transform_.GetWorldForwardVector());
+		cross = float4::Cross3D(mousePosition - transform_.GetWorldPosition(), transform_.GetWorldForwardVector());
+	}
+
+
+	if (cos > 0.7f)
+	{
+		ChangeAnimation("SkillW_Forward");
+	}
+	else if (cos < -0.7f)
+	{
+		ChangeAnimation("SkillW_Back");
+	}
+	else
+	{	// 양수 왼쪽, 음수 오른쪽
+		if (cross.y > 0.f)
+		{
+			ChangeAnimation("SkillW_Left");
+		}
+		else
+		{
+			ChangeAnimation("SkillW_Right");
+		}
+	}
+
+
+	FT::AddText(std::to_string(cos));
+	FT::AddText(std::to_string(cross.x) + ", " + std::to_string(cross.y) + ", " + std::to_string(cross.z));
+
+	if (renderer_->IsOverrideAnimationEnd())
+	{
+		ChangeOverrideAnimation("SkillW_Shot", "Bip001 Spine2", true);
+	}
+
+	if (GameEngineInput::Down("Z"))
+	{
+		renderer_->ClearOverrideAnimation();
+
+		mainState_ << "NormalState";
+	}
 }
 
 void Aya::onStartESkill()
 {
 	setRotationToMouse();
+
 	ChangeAnimation("SkillE", true);
 
 	FT::PlaySoundAndSendPacket("aya_Skill03_Activation.wav", transform_.GetWorldPosition());

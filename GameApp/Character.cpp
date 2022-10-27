@@ -667,7 +667,7 @@ void Character::ChangeAnimation(const std::string& _animationName, bool _bForce)
 	renderer_->ChangeFBXAnimation(_animationName, _bForce);
 }
 
-void Character::ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect)
+void Character::ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect, bool _bForce)
 {
 	if ("" == _animationName)
 	{
@@ -677,7 +677,7 @@ void Character::ChangeOverrideAnimation(const std::string& _animationName, const
 
 	overrideAnimationName_ = _animationName;
 	overrideAnimationBoneName_ = _boneNameToAffect;
-	renderer_->OverrideFBXAnimation(_animationName, _boneNameToAffect);
+	renderer_->OverrideFBXAnimation(_animationName, _boneNameToAffect, _bForce);
 }
 
 void Character::Damage(float _Amount, IUnit* _Target)

@@ -187,7 +187,7 @@ void Hyunwoo::Update(float _deltaTime)
 		controlWindow->AddText("P1Pos " + std::to_string(collision_->GetTransform()->GetWorldPosition().x) + " , " + std::to_string(collision_->GetTransform()->GetWorldPosition().z));
 		controlWindow->AddText("StunRenderPos " + std::to_string(slowEffect_->GetTransform()->GetWorldPosition().x) + ", " + std::to_string(slowEffect_->GetTransform()->GetWorldPosition().z));
 	
-		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
+		float4 position = mouse_->GetIntersectionYAxisPlane(0, 50000.f);
 		controlWindow->AddText("MPos : " + std::to_string(position.x) + ", " + std::to_string(position.z));
 	}
 }
