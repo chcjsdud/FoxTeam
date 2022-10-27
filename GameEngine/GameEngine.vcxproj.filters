@@ -133,6 +133,9 @@
     <Filter Include="Object\Component\Render\Widget\01.Effect">
       <UniqueIdentifier>{792a1565-1e6f-4e3d-9abf-15dfd86584bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Component\Render\OutLine">
+      <UniqueIdentifier>{80bbd5c4-bed6-4a49-ae72-63160ab0d661}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
