@@ -425,6 +425,9 @@
     <ClInclude Include="GameEngineBoneComponent.h">
       <Filter>Object\Component\Transform</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineOutlineRenderer.h">
+      <Filter>Object\Component\Render\OutLine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -696,6 +699,9 @@
     </ClCompile>
     <ClCompile Include="GameEngineBoneComponent.cpp">
       <Filter>Object\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineOutlineRenderer.cpp">
+      <Filter>Object\Component\Render\OutLine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
