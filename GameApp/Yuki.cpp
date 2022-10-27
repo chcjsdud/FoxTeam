@@ -234,7 +234,7 @@ void Yuki::initEffectRenderer()
 {
 	basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 	basicAttackEffectRenderer_->SetImage("Fx_SQ_Cut01.png");
-	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f,  stat_.AttackRange - 180.f });
+	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, 180.0f });
 	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
 	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize());
 	basicAttackEffectRenderer_->CreateAnimation("Fx_SQ_Cut01.png", "Fx_SQ_Cut01", 0, 5, 0.03f, false);
@@ -587,10 +587,10 @@ void Yuki::onPlayEffect(const std::string& _effectName)
 {
 	if ("BasicAttack" == _effectName)
 	{
-		float4 wp = GetTransform()->GetWorldPosition();
+		//float4 wp = GetTransform()->GetWorldPosition();
 		basicAttackEffectRenderer_->On();
 		basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
-		basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
+		//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
 		basicAttackEffectRenderer_->AnimationPlay();
 
 		return;

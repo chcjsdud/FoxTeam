@@ -406,6 +406,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 				if (nullptr != character)
 				{
 					character->Damage((stat_.AttackPower*0.4f) + 50.0f, this);
+					character->Slow(2.0f, 0.4f);
 
 					CharCrowdControlPacket ccPacket;
 					ccPacket.SetTargetIndex(character->GetIndex());
@@ -763,9 +764,7 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName)
 	
 	if ("BasicAttack" == _effectName)
 	{
-		float4 wp = GetTransform()->GetWorldPosition();
 		basicAttackEffectRenderer_->On();
-		basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({wp.x, wp.y + 50.f, wp.z});
 		basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_08", true);
 		basicAttackEffectRenderer_->AnimationPlay();
 

@@ -48,7 +48,7 @@ void SlowEffect::Start()
 	zoneRenderer1_->GetTransform()->SetLocalRotationDegree({ 60.f,0.0f,0.f });
 	zoneRenderer1_->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, 0.0f });
 
-	zoneRenderer1_->GetTransform()->SetLocalScaling(zoneRenderer1_->GetCurrentTexture()->GetTextureSize());
+	zoneRenderer1_->GetTransform()->SetLocalScaling(zoneRenderer1_->GetCurrentTexture()->GetTextureSize() * 0.9f);
 	zoneRenderer1_->Off();
 
 	zoneRenderer2_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
@@ -57,7 +57,7 @@ void SlowEffect::Start()
 	zoneRenderer2_->GetTransform()->SetLocalRotationDegree({ 115.f,0.0f,0.f });
 	zoneRenderer2_->GetTransform()->SetLocalPosition({ 0.0f, 70.0f, 0.0f });
 
-	zoneRenderer2_->GetTransform()->SetLocalScaling(zoneRenderer2_->GetCurrentTexture()->GetTextureSize());
+	zoneRenderer2_->GetTransform()->SetLocalScaling(zoneRenderer2_->GetCurrentTexture()->GetTextureSize() * 0.85f);
 	zoneRenderer2_->Off();
 
 	renderState_.CreateState(MakeState(SlowEffect, Sleep));
