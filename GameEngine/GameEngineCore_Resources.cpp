@@ -677,6 +677,7 @@ void GameEngineCore::EngineResourcesCreate()
 		DepthInfo.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
 		DepthInfo.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
 		DepthInfo.StencilEnable = false;
+
 		GameEngineDepthStencilManager::GetInst().Create("BaseDepthOn", DepthInfo);
 	}
 
@@ -697,6 +698,34 @@ void GameEngineCore::EngineResourcesCreate()
 		DepthInfo.DepthEnable = false;
 		DepthInfo.StencilEnable = false;
 		GameEngineDepthStencilManager::GetInst().Create("BaseDepthOff", DepthInfo);
+	}
+
+	{ // 221027 SJH ADD : 모든 오브젝트의 유효외곽선을 처리하기위한 스텐실버퍼 사용
+		D3D11_DEPTH_STENCIL_DESC DepthInfo = { 1, };
+
+		// 깊이버퍼 옵션
+		DepthInfo.DepthEnable = true;
+		DepthInfo.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+		DepthInfo.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS_EQUAL;
+
+		// 스텐실버퍼 옵션
+		DepthInfo.StencilEnable = true;										// Stencil 사용유무
+		DepthInfo.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;		// Stencil Read Mask Default Value(0xFF)
+		DepthInfo.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;		// Stencil Write Mask Default Value(0xFF)
+
+		//== 앞면 스텐실검사 옵션
+		DepthInfo.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;		// 깊이검사 실패시 스텐실값 변경 옵션
+		DepthInfo.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;			// 스텐실검사 실패시 스텐실값 변경 옵션
+		DepthInfo.FrontFace.StencilPassOp = D3D11_STENCIL_OP_INCR_SAT;		// 깊이/스텐실검사 모두 성공시 스텐실값 변경 옵션
+		DepthInfo.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;			// 비교사용 옵션(항상통과)
+
+		//== 뒷면 스텐실검사 옵션
+		DepthInfo.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;		// 깊이/스텐실 검사 실패시 스텐실값 변경 옵션
+		DepthInfo.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;			// 스텐실검사 실패시 스텐실값 변경 옵션
+		DepthInfo.BackFace.StencilPassOp = D3D11_STENCIL_OP_INCR_SAT;		// 깊이/스텐실검사 모두 성공시 스텐실값 변경 옵션
+		DepthInfo.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;			// 비교사용 옵션(항상통과)
+
+		GameEngineDepthStencilManager::GetInst().Create("OutLineState", DepthInfo);
 	}
 
 	{
