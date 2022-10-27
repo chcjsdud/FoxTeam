@@ -37,6 +37,7 @@ public:
 	float AttackStartTime; // 실질적으로 공격이 나가는 시간
 	float AttackEndTime; // 공격이 끝나는 시간
 	float MovementSpeed; // 이동 속도
+	float MovementRatio; // (이동 속도 비율...1.0f 이 정상)
 	float CooldownReduction; // 쿨타임 감소
 
 	// 거리
@@ -72,6 +73,7 @@ public:
 		, CooldownReduction(0.0f)
 		, AttackRange(425.f)
 		, VisionRange(FT::Char::DEFAULT_VISION_RANGE_DAY)
+		, MovementRatio(1.0f)
 	{
 
 	}

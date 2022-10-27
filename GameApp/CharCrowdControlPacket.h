@@ -28,6 +28,7 @@ public:
 	void SetStun(float _stunTime);
 	void SetKnockback(float _knockbackTime, float4 _knockbackSpeed);
 	void SetWallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime);
+	void SetSlow(float _slowTime, float _slowRatio);
 
 protected:
 	virtual void initPacketID() override;
@@ -42,6 +43,9 @@ private:
 	float stunTime_;
 	float knockbackTime_;
 	float4 knockbackSpeed_;
+
+	float slowTime_;
+	float slowRatio_;
 	int targetIndex_;
 };
 

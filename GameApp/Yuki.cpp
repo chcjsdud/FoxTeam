@@ -215,8 +215,8 @@ void Yuki::initYukiCollision()
 	collision_E->Off();
 
 	collision_R = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	collision_R->GetTransform()->SetLocalPosition({ 0.f,10.f,100.f });
-	collision_R->GetTransform()->SetLocalScaling({512.0f, 10.0f, 256.0f});
+	collision_R->GetTransform()->SetLocalPosition({ 0.f,10.f,200.f });
+	collision_R->GetTransform()->SetLocalScaling({768.0f, 10.0f, 512.0f});
 	collision_R->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_R->SetCollisionType(CollisionType::OBBBox3D);
 	collision_R->Off();
@@ -400,6 +400,11 @@ void Yuki::onStartWSkill()
 	groundEffectRenderer_->On();
 	groundEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01SE", true);
 	groundEffectRenderer_->AnimationPlay();
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillW");
+	FT::SendPacket(pack);
 }
 
 void Yuki::onUpdateWSkill(float _deltaTime)
@@ -600,6 +605,14 @@ void Yuki::onPlayEffect(const std::string& _effectName)
 		//return;
 	}
 
+	if ("SkillW" == _effectName)
+	{
+		groundEffectRenderer_->On();
+		groundEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01SE", true);
+		groundEffectRenderer_->AnimationPlay();
+		return;
+	}
+
 	if ("SkillE" == _effectName)
 	{
 		rearEffectRenderer_->On();
@@ -727,6 +740,7 @@ void Yuki::updateCustomRSlash(float _deltaTime)
 		}
 
 		b_Qhit_ = true;
+
 	}
 
 	timer_R += _deltaTime;

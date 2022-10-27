@@ -20,7 +20,7 @@ Jackie::Jackie() // default constructer 디폴트 생성자
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
 	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr), sawRenderer_(nullptr), axeRenderer_(nullptr),
 	isW_(false), timer_W(0.0f), bSkillEPassable_(false), eStartPosition_(float4::ZERO), eLandingPosition_(float4::ZERO),
-	debugX(-90.0f), debugY(0.0f), debugZ(0.0f)
+	debugX(-90.0f), debugY(0.0f), debugZ(0.0f), timer_R(0.0f)
 
 {
 
@@ -206,6 +206,12 @@ void Jackie::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
 
+	if (true == isPlayerDead_)
+	{
+		int a = 0;
+		return;
+	}
+
 	if (true == isW_)
 	{
 		timer_W -= _deltaTime;
@@ -223,41 +229,7 @@ void Jackie::Update(float _deltaTime)
 		timer_R -= _deltaTime;
 		sawRenderer_->On();
 		axeRenderer_->Off();
-	
 
-		if (true == GameEngineInput::GetInst().Press("X"))
-		{
-			debugX -= 60.0f * _deltaTime;
-		
-		}
-		if (true == GameEngineInput::GetInst().Press("Y"))
-		{
-			debugY -= 60.0f * _deltaTime;
-		
-		}
-		if (true == GameEngineInput::GetInst().Press("Z"))
-		{
-			debugZ -= 60.0f * _deltaTime;
-		}
-		if (true == GameEngineInput::GetInst().Press("B"))
-		{
-			debugX += 60.0f * _deltaTime;
-		
-		}
-		if (true == GameEngineInput::GetInst().Press("N"))
-		{
-			debugY += 60.0f * _deltaTime;
-		
-		}
-		if (true == GameEngineInput::GetInst().Press("M"))
-		{
-			debugZ += 60.0f * _deltaTime;
-		
-		}
-
-		//sawRenderer_->GetTransform()->SetLocalPosition({ debugX, debugY, debugZ });
-	//	sawRenderer_->GetTransform()->SetLocalRotationDegree({ -93.0f, 0.0f, 0.0f });
-		// 96.5f
 		sawRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
 
 		float x = debugX;
@@ -268,7 +240,6 @@ void Jackie::Update(float _deltaTime)
 		{
 			timer_R = 0.0f;
 			isR_ = false;
-
 		}
 	}
 
@@ -277,10 +248,6 @@ void Jackie::Update(float _deltaTime)
 		sawRenderer_->Off();
 		axeRenderer_->On();
 		axeRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
-
-	
-
-		
 	}
 
 	if ("Run" == curAnimationName_)
@@ -290,42 +257,8 @@ void Jackie::Update(float _deltaTime)
 	}
 	else if ("Wait" == curAnimationName_)
 	{
-		//if (true == GameEngineInput::GetInst().Press("X"))
-		//{
-		//	debugX -= 60.0f * _deltaTime;
-		//
-		//}
-		//if (true == GameEngineInput::GetInst().Press("Y"))
-		//{
-		//	debugY -= 60.0f * _deltaTime;
-		//
-		//}
-		//if (true == GameEngineInput::GetInst().Press("Z"))
-		//{
-		//	debugZ -= 60.0f * _deltaTime;
-		//}
-		//if (true == GameEngineInput::GetInst().Press("B"))
-		//{
-		//	debugX += 60.0f * _deltaTime;
-		//
-		//}
-		//if (true == GameEngineInput::GetInst().Press("N"))
-		//{
-		//	debugY += 60.0f * _deltaTime;
-		//
-		//}
-		//if (true == GameEngineInput::GetInst().Press("M"))
-		//{
-		//	debugZ += 60.0f * _deltaTime;
-		//
-		//}
-
 		axeRenderer_->GetTransform()->SetLocalPosition({ 45.0f, 120.0f, 58.0f });
 		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -164.0f, -317.0f, -82.0f });
-
-		//float x = debugX;
-		//float y = debugY;
-		//float z = debugZ;
 	}
 	else
 	{
@@ -376,9 +309,6 @@ void Jackie::initRendererAndAnimation()
 	sawRenderer_->CreateFBXAnimation("Idle", "Weapon_Special_Jackie_01.fbx");
 	sawRenderer_->ChangeFBXAnimation("Idle");
 	sawRenderer_->Off();
-
-
-	// 
 
 	axeRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	axeRenderer_->SetFBXMesh("Weapon_Axe_01.fbx", "TextureDeferredLightAni");
@@ -792,10 +722,16 @@ void Jackie::onStartRSkill()
 	isR_ = true;
 
 	// timer_R = 12.0f;
-	timer_R = 120.0f;
+	timer_R = 12.0f;
 
 	axeRenderer_->Off();
 	sawRenderer_->On();
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillR");
+	FT::SendPacket(pack);
+
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill04_Activation_v1.wav");
 	PacketSoundPlay packet;
 	packet.SetSound("jackie_Skill04_Activation_v1.wav", transform_.GetWorldPosition());
@@ -822,11 +758,14 @@ void Jackie::onUpdateDSkill(float _deltaTime)
 
 void Jackie::onStartDeath()
 {
+
 	changeDeathAnimation();
+
 }
 
 void Jackie::onUpdateDeath(float _deltaTime)
 {
+
 }
 
 void Jackie::onUpdateCustomState(float _deltaTime)
@@ -851,6 +790,23 @@ void Jackie::onPlayEffect(const std::string& _effectName)
 		qEffect_->GetTransform()->SetLocalPosition(wp);
 		qEffect_->GetTransform()->SetLocalRotationDegree(wr);
 		qEffect_->PlayAwake();
+		return;
+	}
+
+	if ("SkillE" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		float4 wr = GetTransform()->GetLocalRotation();
+		eEffect_->GetTransform()->SetLocalPosition(wp);
+		eEffect_->GetTransform()->SetLocalRotationDegree(wr);
+		eEffect_->PlayAwake();
+		return;
+	}
+
+	if ("SkillR" == _effectName)
+	{
+		timer_R = 12.0f;
+		isR_ = true;
 		return;
 	}
 
@@ -914,6 +870,12 @@ void Jackie::updateSkillEShot(float _deltaTime)
 		eEffect_->GetTransform()->SetLocalPosition(eLandingPosition_);
 		eEffect_->On();
 		eEffect_->PlayAwake();
+
+		CharEffectPacket pack;
+		pack.SetTargetIndex(myIndex_);
+		pack.SetAnimationName("SkillE");
+		FT::SendPacket(pack);
+
 		customState_ << "SkillEEnd";
 	}
 

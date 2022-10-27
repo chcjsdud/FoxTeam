@@ -12,6 +12,8 @@ CharCrowdControlPacket::CharCrowdControlPacket()
 	, stunTime_(0.0f)
 	, knockbackTime_(0.0f)
 	, targetIndex_(-1)
+	, slowTime_(0.0f)
+	, slowRatio_(0.0f)
 {
 
 }
@@ -42,6 +44,13 @@ void CharCrowdControlPacket::SetWallSlam(float _knockbackTime, float4 _knockback
 	knockbackSpeed_ = _knockbackSpeed;
 }
 
+void CharCrowdControlPacket::SetSlow(float _slowTime, float _slowRatio)
+{
+	type_ = static_cast<int>(eCrowdControlType::Slow);
+	slowTime_ = _slowTime;
+	slowRatio_ = _slowRatio;
+}
+
 void CharCrowdControlPacket::initPacketID()
 {
 	SetPacketID(ePacketID::CharCrowdControlPacket);
@@ -54,6 +63,8 @@ void CharCrowdControlPacket::userSerialize()
 	serializer_ << knockbackTime_;
 	serializer_ << knockbackSpeed_;
 	serializer_ << targetIndex_;
+	serializer_ << slowTime_;
+	serializer_ << slowRatio_;
 }
 
 void CharCrowdControlPacket::userDeserialize()
@@ -63,6 +74,8 @@ void CharCrowdControlPacket::userDeserialize()
 	serializer_ >> knockbackTime_;
 	serializer_ >> knockbackSpeed_;
 	serializer_ >> targetIndex_;
+	serializer_ >> slowTime_;
+	serializer_ >> slowRatio_;
 }
 
 GameEnginePacketBase* CharCrowdControlPacket::getUserObject()
@@ -112,6 +125,9 @@ void CharCrowdControlPacket::execute(SOCKET _socketSender, GameEngineSocketInter
 		break;
 	case eCrowdControlType::WallSlam:
 		character->WallSlam(knockbackTime_, knockbackSpeed_, stunTime_);
+		break;
+	case eCrowdControlType::Slow:
+		character->Slow(slowTime_, slowRatio_);
 		break;
 	default:
 		break;

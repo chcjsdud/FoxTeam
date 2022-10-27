@@ -406,6 +406,11 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 				if (nullptr != character)
 				{
 					character->Damage(300.0f, this);
+
+					CharCrowdControlPacket ccPacket;
+					ccPacket.SetTargetIndex(character->GetIndex());
+					ccPacket.SetSlow(2.0f, 0.4f);
+					FT::SendPacket(ccPacket);
 				}
 			}
 		}

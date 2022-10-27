@@ -55,6 +55,7 @@ public:
 	void Knockback(float _knockbackTime, float4 _knockbackSpeed);
 	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime);
 
+	void Slow(float _slowTime, float _slowRatio);
 
 	bool IsDead() { return isPlayerDead_; }
 
@@ -286,6 +287,10 @@ public:
 #pragma region EffectPlay
 	void PlayEffect(const std::string& _effectName);
 #pragma endregion
+
+#pragma region SlowCheck
+	void SlowCheck(float _DeltaTIme);
+#pragma endregion
 	//------------------------------------------------------------------------------------------------------------------
 
 protected:
@@ -336,6 +341,12 @@ protected:
 
 	GameEngineFSM deathState_;
 
+
+	// 비 군중 제어 but 스탯 관여
+	float bSlowFlag_;
+	float slowTimer_;
+	float slowRatio_;
+	float originalMovementSpeed_;
 
 	// 군중 제어
 	float timerStun_;

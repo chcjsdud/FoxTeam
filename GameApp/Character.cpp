@@ -42,6 +42,9 @@ Character::Character()
 	, coolTimeE_(0.0f)
 	, coolTimeR_(0.0f)
 	, coolTimeD_(0.0f)
+	, slowTimer_(0.0f)
+	, slowRatio_(0.0f)
+	, bSlowFlag_(false)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -137,6 +140,7 @@ void Character::Update(float _DeltaTime)
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 
+	SlowCheck(_DeltaTime);
 
 	if (true == isPlayerDead_)
 	{
@@ -767,6 +771,22 @@ void Character::WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _st
 	timerStun_ = _stunTime;
 }
 
+void Character::Slow(float _slowTime, float _slowRatio)
+{
+	slowTimer_ = _slowTime;
+
+	if (1.0f < _slowRatio)
+	{
+		slowRatio_ = 1.0f;
+	}
+	else
+	{
+		slowRatio_ = _slowRatio;
+	}
+
+	bSlowFlag_ = true;
+}
+
 void Character::initInput()
 {
 	GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
@@ -919,7 +939,7 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 {
 	setRotationTo(destination_, _startPosition);
 
-	float4 moveSpeed = direction_ * stat_.MovementSpeed * _deltaTime;
+	float4 moveSpeed = (direction_ * stat_.MovementSpeed * stat_.MovementRatio) * _deltaTime;
 	float4 nextMovePosition = _startPosition + moveSpeed;
 
 	float temp;
@@ -1102,6 +1122,7 @@ void Character::startRun()
 
 void Character::updateRun(float _deltaTime)
 {
+
 	inputProcess(_deltaTime);
 	moveProcess(_deltaTime);
 }
@@ -1511,4 +1532,30 @@ void Character::updatePlayerWinner(float _deltaTime)
 void Character::PlayEffect(const std::string& _effectName)
 {
 	onPlayEffect(_effectName);
+}
+
+void Character::SlowCheck(float _DeltaTIme)
+{
+	// 슬로우 같은건 CC로 퉁칠수가 없습니다.
+	// (걸린 와중에도 이동속도만 느려지지 모든 행동을 할 수 있기 때문)
+
+	// 따라서 업데이트 중에 플래그와 슬로우 지속시간을 체크하며, 주어진 슬로우 비율만큼 이동속도를 늦춥니다.
+	int a = 0;
+
+	if (true == bSlowFlag_)
+	{
+		stat_.MovementRatio = (1.0f - slowRatio_);
+
+		if (slowTimer_ <= 0.0f)
+		{
+			slowTimer_ = 0.0f;
+			stat_.MovementRatio = 1.0f;
+			bSlowFlag_ = false;
+			return;
+		}
+
+		slowTimer_ -= _DeltaTIme;
+
+	}
+
 }
