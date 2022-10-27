@@ -274,6 +274,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="SlowEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="TestLevelBox.cpp">
       <SubType>
       </SubType>
@@ -677,6 +681,10 @@
     </ClInclude>
     <ClInclude Include="OutLineTestMap.h" />
     <ClInclude Include="OutLineTestWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="SlowEffect.h">
       <SubType>
       </SubType>
     </ClInclude>

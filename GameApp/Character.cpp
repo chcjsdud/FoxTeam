@@ -17,6 +17,7 @@
 #include "ItemBoxManager.h"
 #include "PacketSoundPlay.h"
 #include "CharDeathPacket.h"
+#include "SlowEffect.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -45,6 +46,7 @@ Character::Character()
 	, slowTimer_(0.0f)
 	, slowRatio_(0.0f)
 	, bSlowFlag_(false)
+	, slowEffect_(nullptr)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -77,11 +79,26 @@ void Character::SetFraggerIndex(int _index)
 	fraggerIndex_ = _index;
 }
 
+void Character::LoadResource()
+{
+	GameEngineDirectory dir;
+
+	dir.MoveParent("FoxTeam");
+	dir / "Resources" / "Texture" / "Character";
+
+	std::vector<GameEngineFile> allFile = dir.GetAllFile("png");
+	for (GameEngineFile& file : allFile)
+	{
+		GameEngineTextureManager::GetInst().Load(file.FileName(), file.GetFullPath());
+	}
+}
+
 void Character::Start()
 {
 	initRendererAndAnimation();
 	initInput();
 	initState();
+	initBasicEffect();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
@@ -784,6 +801,9 @@ void Character::Slow(float _slowTime, float _slowRatio)
 		slowRatio_ = _slowRatio;
 	}
 
+
+	slowEffect_->PlayAwake(_slowTime);
+
 	bSlowFlag_ = true;
 }
 
@@ -844,6 +864,13 @@ void Character::initState()
 	crowdControlState_ << "Stun";
 
 	deathState_ << "PlayerAlive";
+}
+
+void Character::initBasicEffect()
+{
+	slowEffect_ = GetLevel()->CreateActor<SlowEffect>();
+	slowEffect_->GetTransform()->SetLocalPosition(this->GetTransform()->GetLocalPosition());
+	slowEffect_->SetParent(this);
 }
 
 
@@ -1543,6 +1570,7 @@ void Character::updatePlayerWinner(float _deltaTime)
 
 void Character::PlayEffect(const std::string& _effectName)
 {
+
 	onPlayEffect(_effectName);
 }
 
@@ -1556,6 +1584,8 @@ void Character::SlowCheck(float _DeltaTIme)
 
 	if (true == bSlowFlag_)
 	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		slowEffect_->GetTransform()->SetLocalPosition(wp);
 		stat_.MovementRatio = (1.0f - slowRatio_);
 
 		if (slowTimer_ <= 0.0f)

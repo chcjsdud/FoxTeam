@@ -465,6 +465,7 @@ void LumiaLevel::MapResourceLoad()
 
 void LumiaLevel::CharacterResourceLoad()
 {
+	Character::LoadResource();
 	Hyunwoo::LoadResource();
 	Rio::LoadResource();
 	Jackie::LoadResource();

@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+#include <GameEngine/GameEngineEffectRenderer.h>
 
 #include "NavMesh.h"
 #include "CharacterStat.h"
@@ -11,6 +12,7 @@ struct CombineItem;
 struct QueueItem;
 
 // 이터널 리턴에 나오는 실험체의 베이스가 되는 클래스
+class SlowEffect;
 class ItemBoxManager;
 class MousePointer;
 class LumiaMap;
@@ -26,6 +28,9 @@ public:
 	Character(Character&& _other) noexcept = delete;
 	Character& operator=(const Character& _other) = delete;
 	Character& operator=(const Character&& _other) = delete;
+
+public:
+	static void LoadResource();
 
 public:
 	void Start() override;
@@ -154,6 +159,8 @@ protected:
 private:
 	void initInput();
 	void initState();
+protected:
+	void initBasicEffect();
 
 private:
 	void moveTick(float _deltaTime, const float4& _startPosition);
@@ -383,4 +390,9 @@ private:
 		BasicAttack
 	};
 	eCurrentAnimation currentAnimation_;
+
+// 기본 군중 제어 이팩트
+protected:
+	SlowEffect* slowEffect_;
+
 };

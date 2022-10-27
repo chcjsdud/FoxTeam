@@ -427,6 +427,9 @@
     <ClCompile Include="OutLineTestMap.cpp">
       <Filter>01.GameObject\03.Level\OutLineTestLevel\Actor</Filter>
     </ClCompile>
+    <ClCompile Include="SlowEffect.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\99.CCEffect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -656,6 +659,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya">
       <UniqueIdentifier>{eaece77b-4574-4ade-b578-79d03d2547a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\99.CCEffect">
+      <UniqueIdentifier>{17d27d47-3e6e-4ee0-b013-2b59d39befc4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1093,6 +1099,9 @@
     </ClInclude>
     <ClInclude Include="OutLineTestMap.h">
       <Filter>01.GameObject\03.Level\OutLineTestLevel\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="SlowEffect.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\99.CCEffect</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
