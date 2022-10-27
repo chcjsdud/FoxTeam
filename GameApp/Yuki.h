@@ -26,7 +26,7 @@ public:
 	static void ReleaseResource();
 
 public:
-	virtual JobType GetJobType() { return JobType::HYUNWOO; }
+	virtual JobType GetJobType() { return JobType::YUKI; }
 
 protected:
 	void Start() override;

@@ -231,7 +231,7 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	{
 		clientSocket_->Initialize();
 		clientSocket_->Connect("127.0.0.1");
-		//clientSocket_->Connect("121.129.74.177");
+		//clientSocket_->Connect("121.129.74.58");
 		//clientSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);				// 221010 SJH DEL
 		clientSocket_->AddPacketHandler(ePacketID::LobbyToLumiaPacket, new LobbyToLumiaPacket);
 		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);

@@ -24,14 +24,12 @@ void CharSelectPacket::userSerialize()
 {
 	serializer_ << targetIndex_;
 	serializer_ << character_;
-	//serializer_ << startPoint_;
 }
 
 void CharSelectPacket::userDeserialize()
 {
 	serializer_ >> targetIndex_;
 	serializer_ >> character_;
-	//serializer_ >> startPoint_;
 }
 
 void CharSelectPacket::initPacketID()

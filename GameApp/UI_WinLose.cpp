@@ -132,7 +132,7 @@ void UI_WinLose::Start()
 	hitBase->Cut(4, 2);
 	deathCheckRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 	deathCheckRenderer_->SetImage("deathcheck.png", "PointSmp");
-	deathCheckRenderer_->GetTransform()->SetLocalScaling(deathCheckRenderer_->GetCurrentTexture()->GetTextureSize());
+	deathCheckRenderer_->GetTransform()->SetLocalScaling({512.0f, 512.0f});
 	deathCheckRenderer_->CreateAnimation("deathcheck.png", "deathcheck", 0, 7, 0.03f, false);
 	deathCheckRenderer_->SetChangeAnimation("deathcheck", true);
 	deathCheckRenderer_->Off();

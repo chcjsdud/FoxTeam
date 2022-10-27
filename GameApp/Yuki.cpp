@@ -314,6 +314,17 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 		packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 		FT::SendPacket(packet);
 
+		basicAttackEffectRenderer_->On();
+		basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
+		//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
+		basicAttackEffectRenderer_->AnimationPlay();
+
+
+		CharEffectPacket pack;
+		pack.SetTargetIndex(myIndex_);
+		pack.SetAnimationName("BasicAttack");
+		FT::SendPacket(pack);
+
 		b_isQ_ = false;
 
 		return;
