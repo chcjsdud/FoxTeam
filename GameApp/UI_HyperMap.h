@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
-#include <GameEngine/GameEngineImageRenderer.h>
+#include <GameEngine/GameEngineUIRenderer.h>
 
 using namespace std;
 
@@ -12,12 +12,17 @@ public:
 
 	Location GetSelectLocation(float4 _Position);
 
-	Location SelectedLocation;
+	Location ReturnSelectedLocation();
+
+	void MapOff();
+	void MapOn();
+
+	bool MapOnFlag;
 
 public:
-	GameEngineImageRenderer* fullMapRenderer_;
-	GameEngineImageRenderer* areaChoiceMapRenderer_;
-	GameEngineImageRenderer* selectAreaRenderer_;
+	GameEngineUIRenderer* fullMapRenderer_;
+	GameEngineUIRenderer* areaChoiceMapRenderer_;
+	GameEngineUIRenderer* selectAreaRenderer_;
 
 	GameEngineCollision* textureCollision_;
 
@@ -30,4 +35,10 @@ private:
 	UI_HyperMap(UI_HyperMap&& _Other) noexcept = delete;
 	UI_HyperMap& operator=(const UI_HyperMap& _Other) = delete;
 	UI_HyperMap& operator=(UI_HyperMap&& _Other) noexcept = delete;
+
+private:
+	//현재 내가 선택한 지역을 저장해둔 멤버변수입니다
+	Location SelectedLocation;
+
+	float4 MapPos;
 };

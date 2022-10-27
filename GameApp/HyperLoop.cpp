@@ -41,6 +41,11 @@ void HyperLoop::Start()
 	collision_->GetTransform()->SetLocalMove({ 0.0f , 125.0f, 0.0f });
 	collision_->SetCollisionGroup(eCollisionGroup::HyperLoop);
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
+
+	//이건호 : 맵UI CreateActor 로 초기화
+	mapUI_ = GetLevel()->CreateActor<UI_HyperMap>();
+	//초기화후 Off해서 모든 기능을 꺼줌
+	mapUI_->MapOff();
 }
 
 void HyperLoop::Update(float _DeltaTime)
@@ -55,8 +60,14 @@ void HyperLoop::Update(float _DeltaTime)
 		true == collision_->Collision(eCollisionGroup::Player))
 	{
 		// 하이퍼루프 UI가 나오고, 특정 지역을 선택하면 해당 지역으로 이동
-		int a = 0;
+
+		//이건호 : 맵 UI를 킨다 
+		// MapOff(); 함수를 사용하면 Map뜬거를 끌수 있습니다
+		mapUI_->MapOn();
+
+		//이건호 : 내가 맵에서 우클릭으로 클릭한 지역을 enum class Location으로 받을 수 있습니다
+		Location SelectedArea = mapUI_->ReturnSelectedLocation();
 	}
-	
+
 }
 

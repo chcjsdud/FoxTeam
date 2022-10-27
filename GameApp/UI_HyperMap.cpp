@@ -5,7 +5,7 @@
 #include "GameEngineBase/GameEngineDebug.h"
 
 UI_HyperMap::UI_HyperMap()
-	: SelectedLocation(Location::NONE)
+	: SelectedLocation(Location::NONE), MapOnFlag(false)
 {
 }
 
@@ -15,32 +15,34 @@ UI_HyperMap::~UI_HyperMap()
 
 void UI_HyperMap::Start()
 {
+	MapPos = { 0.f, 0.f, -1.f };
+		
 	{
-		fullMapRenderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		fullMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		fullMapRenderer_->SetImage("Map_Full.png", "PointSmp");
-		fullMapRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -101.0f });
+		fullMapRenderer_->GetTransform()->SetLocalPosition(MapPos);
 		fullMapRenderer_->GetTransform()->SetLocalScaling(fullMapRenderer_->GetCurrentTexture()->GetTextureSize());
 	}
 
 	{
-		selectAreaRenderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		selectAreaRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		selectAreaRenderer_->SetImage("Map_Alley_Pin.png", "PointSmp");
-		selectAreaRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -104.0f });
+		selectAreaRenderer_->GetTransform()->SetLocalPosition(MapPos + float4{0.f,0.f,-1.f,0.f});
 		selectAreaRenderer_->GetTransform()->SetLocalScaling(selectAreaRenderer_->GetCurrentTexture()->GetTextureSize());
 		selectAreaRenderer_->Off();
 	}
 
 
 	{
-		areaChoiceMapRenderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		areaChoiceMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		areaChoiceMapRenderer_->SetImage("Map_Resize_Color.png", "PointSmp");
-		areaChoiceMapRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f,0.0f });
+		areaChoiceMapRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -101.0f });
 		areaChoiceMapRenderer_->GetTransform()->SetLocalScaling(areaChoiceMapRenderer_->GetCurrentTexture()->GetTextureSize());
 	}
 
 	{
 		textureCollision_ = CreateTransformComponent<GameEngineCollision>();
-		textureCollision_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -101.0f });
+		textureCollision_->GetTransform()->SetLocalPosition(MapPos);
 		textureCollision_->GetTransform()->SetLocalScaling(fullMapRenderer_->GetCurrentTexture()->GetTextureSize());
 		textureCollision_->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 	}
@@ -48,11 +50,17 @@ void UI_HyperMap::Start()
 
 void UI_HyperMap::Update(float _DeltaTime)
 {
+	if (MapOnFlag == false)
+	{
+		//맵UI가 커져있지 않으면 업데이트를 하지 않음
+		return;
+	}
+
 	if (textureCollision_->Collision(eCollisionGroup::MousePointer))
 	{
 		GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
 
-		if (GameEngineInput::GetInst().Down("LBUTTON"))
+		if (GameEngineInput::GetInst().Down("RButton"))
 		{
 			switch (SelectedLocation)
 			{
@@ -139,7 +147,6 @@ void UI_HyperMap::Update(float _DeltaTime)
 
 Location UI_HyperMap::GetSelectLocation(float4 _Position)
 {
-
 	float4 ImagePos = fullMapRenderer_->GetTransform()->GetWorldPosition();
 	float4 ImagehalfSize = { -155.0f, 178.0f, 0.0f, 0.0f };
 
@@ -273,4 +280,35 @@ Location UI_HyperMap::GetSelectLocation(float4 _Position)
 
 
 	return SelectedLocation;
+}
+
+Location UI_HyperMap::ReturnSelectedLocation()
+{
+	if (SelectedLocation == Location::NONE)
+	{
+		//하이퍼루프가 먼저 업데이트 되서 맵에 정보가 없으면
+		GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
+	}
+
+	return SelectedLocation;
+}
+
+void UI_HyperMap::MapOff()
+{
+	fullMapRenderer_->Off();
+	areaChoiceMapRenderer_->Off();
+	selectAreaRenderer_->Off();
+
+	textureCollision_->Off();
+	MapOnFlag = false;
+}
+
+void UI_HyperMap::MapOn()
+{
+	fullMapRenderer_->On();
+	areaChoiceMapRenderer_->On();
+	selectAreaRenderer_->On();
+
+	textureCollision_->On();
+	MapOnFlag = true;
 }

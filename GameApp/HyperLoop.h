@@ -1,6 +1,9 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 
+//10.27 이건호 하이퍼 루프 맵 UI 추가
+#include "UI_HyperMap.h"
+
 // 설명 : 
 class HyperLoop : public GameEngineActor
 {
@@ -19,5 +22,9 @@ protected:
 private:
 	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* collision_;
+
+	UI_HyperMap* mapUI_;
+
+	
 };
 

@@ -12,6 +12,7 @@
 #include "UI_Status.h"
 #include "UI_Time.h"
 #include "UI_Notice.h"
+#include "UI_HyperMap.h"
 #include "UI_FOW.h"
 #include "UI_BloodBackground.h"
 
@@ -79,6 +80,11 @@ public:
 		return FOW_UI;
 	}
 
+	//UI_HyperMap* GetHyperMap()
+	//{
+	//	return hypermap_UI;
+	//}
+
 	void SetJobType(JobType _MyJob);
 
 public:
@@ -96,6 +102,9 @@ private:
 	UI_Status* status_UI;
 	UI_Time* time_UI;
 	UI_Notice* notice_UI;
+	//UI_HyperMap* hypermap_UI;
+
+
 	UI_FOW* FOW_UI;
 
 	UI_BloodBackground* blood_UI;

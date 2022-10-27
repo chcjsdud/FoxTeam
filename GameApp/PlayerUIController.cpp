@@ -32,6 +32,7 @@ void PlayerUIController::InitUI()
 	time_UI = GetLevel()->CreateActor<UI_Time>();
 	notice_UI = GetLevel()->CreateActor<UI_Notice>();
 	winLose_UI = GetLevel()->CreateActor<UI_WinLose>();
+//	hypermap_UI = GetLevel()->CreateActor<UI_HyperMap>();
 
 	//테스트용
 	notice_UI->SetText("알림 UI 테스트용 텍스트입니다", 5.f);
