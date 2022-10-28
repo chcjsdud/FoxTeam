@@ -20,6 +20,7 @@
 #include "CharDeathPacket.h"
 #include "SlowEffect.h"
 #include "StunEffect.h"
+#include "UI_Skill.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -40,11 +41,16 @@ Character::Character()
 	, myIndex_(-1)
 	, uiController_(nullptr)
 	, overrideAnimationName_("")
-	, coolTimeQ_(0.0f)
-	, coolTimeW_(0.0f)
-	, coolTimeE_(0.0f)
-	, coolTimeR_(0.0f)
-	, coolTimeD_(0.0f)
+	, coolTimer_Q_(0.0f)
+	, coolTimer_W_(0.0f)
+	, coolTimer_E_(0.0f)
+	, coolTimer_R_(0.0f)
+	, coolTimer_D_(0.0f)
+	, bCoolQ_(false)
+	, bCoolW_(false)
+	, bCoolE_(false)
+	, bCoolR_(false)
+	, bCoolD_(false)
 	, slowTimer_(0.0f)
 	, slowRatio_(0.0f)
 	, bSlowFlag_(false)
@@ -160,7 +166,10 @@ void Character::Update(float _DeltaTime)
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 
-	SlowCheck(_DeltaTime);
+
+	CoolTimeCheck(_DeltaTime);
+	DebuffCheck(_DeltaTime);		// CC가 아닌 디버프(출혈, 슬로우 등) 체크
+	
 
 	if (true == isPlayerDead_)
 	{
@@ -1028,38 +1037,63 @@ void Character::updateNormalState(float _deltaTime)
 {
 	if (bFocused_)
 	{
-		if (true == GameEngineInput::GetInst().Down("Q"))
+		if (true == GameEngineInput::GetInst().Down("Q") && false == bCoolQ_)
 		{
+
+			bCoolQ_ = true;
+			coolTimer_Q_ = stat_.Cooltime_q;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("QSkill", true);
+
+
 			return;
 		}
-
-		if (true == GameEngineInput::GetInst().Down("W"))
+		else
 		{
+			// 쿨입니다 <- 나래이션 띄우기
+		}
+
+		if (true == GameEngineInput::GetInst().Down("W") && false == bCoolW_)
+		{
+			bCoolW_ = true;
+			coolTimer_W_ = stat_.Cooltime_w;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("WSkill", true);
+
 			return;
 		}
 
-		if (true == GameEngineInput::GetInst().Down("E"))
+		if (true == GameEngineInput::GetInst().Down("E") && false == bCoolE_)
 		{
+
+			bCoolE_ = true;
+			coolTimer_E_ = stat_.Cooltime_e;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("ESkill", true);
+
+
 			return;
 		}
 
-		if (true == GameEngineInput::GetInst().Down("R"))
+		if (true == GameEngineInput::GetInst().Down("R") && false == bCoolR_)
 		{
+			bCoolR_ = true;
+			coolTimer_R_ = stat_.Cooltime_r;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("RSkill", true);
+
+
 			return;
 		}
 
-		if (true == GameEngineInput::GetInst().Down("D"))
+		if (true == GameEngineInput::GetInst().Down("D") && false == bCoolD_)
 		{
+
+			bCoolD_ = true;
+			coolTimer_D_ = stat_.Cooltime_d;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("DSkill", true);
+
 			return;
 		}
 
@@ -1460,6 +1494,7 @@ void Character::updateBasicAttacking(float _deltaTime)
 
 void Character::startQSkill()
 {
+
 	onStartQSkill();
 }
 
@@ -1607,6 +1642,11 @@ void Character::PlayEffect(const std::string& _effectName)
 	onPlayEffect(_effectName);
 }
 
+void Character::DebuffCheck(float _DeltaTime)
+{
+	SlowCheck(_DeltaTime);
+}
+
 void Character::SlowCheck(float _DeltaTIme)
 {
 	// 슬로우 같은건 CC로 퉁칠수가 없습니다.
@@ -1632,5 +1672,94 @@ void Character::SlowCheck(float _DeltaTIme)
 		slowTimer_ -= _DeltaTIme;
 
 	}
+
+}
+
+void Character::CoolTimeCheck(float _DeltaTime)
+{
+	if (true == bCoolQ_)
+	{
+		coolTimer_Q_ -= _DeltaTime;
+		int tmp = static_cast<int>(coolTimer_Q_);
+		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->TextSetting("굴림", to_string(tmp), 20, FW1_CENTER);
+		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->On();
+		if (coolTimer_Q_ <= 0.0f) // 쿨이 다 되었다
+		{
+			// 초기화
+			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->TextSetting("굴림", " ", 20, FW1_CENTER);
+			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->Off();
+			coolTimer_Q_ = stat_.Cooltime_q;
+			bCoolQ_ = false;
+		}
+
+	}
+
+
+
+	if (true == bCoolW_)
+	{
+		coolTimer_W_ -= _DeltaTime;
+		int tmp = static_cast<int>(coolTimer_W_);
+		uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("굴림",to_string(tmp), 20, FW1_CENTER);
+		uiController_->GetSkillUI()->GetCoolTimeMaskW()->On();
+		if (coolTimer_W_ <= 0.0f) // 쿨이 다 되었다
+		{
+			// 초기화
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("굴림", " ", 20, FW1_CENTER);
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->Off();
+			coolTimer_W_ = stat_.Cooltime_w;
+
+			bCoolW_ = false;
+		}
+	}
+	
+	if (true == bCoolE_)
+	{
+		coolTimer_E_ -= _DeltaTime;
+		int tmp = static_cast<int>(coolTimer_E_);
+		uiController_->GetSkillUI()->GetCoolTimeMaskE()->TextSetting("굴림", to_string(tmp), 20, FW1_CENTER);
+		uiController_->GetSkillUI()->GetCoolTimeMaskE()->On();
+		if (coolTimer_E_ <= 0.0f) // 쿨이 다 되었다
+		{
+			// 초기화
+			uiController_->GetSkillUI()->GetCoolTimeMaskE()->TextSetting("굴림", " ", 20, FW1_CENTER);
+			uiController_->GetSkillUI()->GetCoolTimeMaskE()->Off();
+			coolTimer_E_ = stat_.Cooltime_e;
+			bCoolE_ = false;
+		}
+	}
+
+	if (true == bCoolR_)
+	{
+		coolTimer_R_ -= _DeltaTime;
+		int tmp = static_cast<int>(coolTimer_R_);
+		uiController_->GetSkillUI()->GetCoolTimeMaskR()->TextSetting("굴림", to_string(tmp), 20, FW1_CENTER);
+		uiController_->GetSkillUI()->GetCoolTimeMaskR()->On();
+		if (coolTimer_R_ <= 0.0f) // 쿨이 다 되었다
+		{
+			// 초기화
+			uiController_->GetSkillUI()->GetCoolTimeMaskR()->TextSetting("굴림", " ", 20, FW1_CENTER);
+			uiController_->GetSkillUI()->GetCoolTimeMaskR()->Off();
+			coolTimer_R_ = stat_.Cooltime_r;
+			bCoolR_ = false;
+		}
+	}
+
+	if (true == bCoolD_)
+	{
+		coolTimer_D_ -= _DeltaTime;
+		int tmp = static_cast<int>(coolTimer_D_);
+		uiController_->GetSkillUI()->GetCoolTimeMaskD()->TextSetting("굴림", to_string(tmp), 20, FW1_CENTER);
+		uiController_->GetSkillUI()->GetCoolTimeMaskD()->On();
+		if (coolTimer_D_ <= 0.0f) // 쿨이 다 되었다
+		{
+			// 초기화
+			uiController_->GetSkillUI()->GetCoolTimeMaskD()->TextSetting("굴림", " ", 20, FW1_CENTER);
+			uiController_->GetSkillUI()->GetCoolTimeMaskD()->Off();
+			coolTimer_D_ = stat_.Cooltime_d;
+			bCoolD_ = false;
+		}
+	}
+
 
 }

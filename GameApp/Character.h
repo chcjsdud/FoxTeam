@@ -90,17 +90,26 @@ public:
 	void SetCharacterDeath();
 	void SetFraggerIndex(int _index);
 
-	float GetCooltimeQSkill() { return coolTimeQ_; }
-	float GetCooltimeWSkill() { return coolTimeW_; }
-	float GetCooltimeESkill() { return coolTimeE_; }
-	float GetCooltimeRSkill() { return coolTimeR_; }
-	float GetCooltimeDSkill() { return coolTimeD_; }
 
-	void SetCooltimeQSkill(float _coolTime) { coolTimeQ_ = _coolTime; }
-	void SetCooltimeWSkill(float _coolTime) { coolTimeW_ = _coolTime; }
-	void SetCooltimeESkill(float _coolTime) { coolTimeE_ = _coolTime; }
-	void SetCooltimeRSkill(float _coolTime) { coolTimeR_ = _coolTime; }
-	void SetCooltimeDSkill(float _coolTime) { coolTimeD_ = _coolTime; }
+	// 스탯 내 기준점이 되는 쿨타임 변수
+	float GetCooltimeQSkill() { return stat_.Cooltime_q; }
+	float GetCooltimeWSkill() { return stat_.Cooltime_w; }
+	float GetCooltimeESkill() { return stat_.Cooltime_e; }
+	float GetCooltimeRSkill() { return stat_.Cooltime_r; }
+	float GetCooltimeDSkill() { return stat_.Cooltime_d; }
+
+	// "현재" 돌고 있는 스킬의 쿨타임 타이머
+	float GetCurCooltimeTimerQ() { return coolTimer_Q_; }
+	float GetCurCooltimeTimerW() { return coolTimer_W_; }
+	float GetCurCooltimeTimerE() { return coolTimer_E_; }
+	float GetCurCooltimeTimerR() { return coolTimer_R_; }
+	float GetCurCooltimeTimerD() { return coolTimer_D_; }
+
+	void SetCooltimeQSkill(float _coolTime) { stat_.Cooltime_q = _coolTime; }
+	void SetCooltimeWSkill(float _coolTime) { stat_.Cooltime_w = _coolTime; }
+	void SetCooltimeESkill(float _coolTime) { stat_.Cooltime_e = _coolTime; }
+	void SetCooltimeRSkill(float _coolTime) { stat_.Cooltime_r = _coolTime; }
+	void SetCooltimeDSkill(float _coolTime) { stat_.Cooltime_d = _coolTime; }
 
 #pragma endregion
 
@@ -179,8 +188,15 @@ private:
 	void checkBuildItems();
 	void checkBuildItemsRecursive(ItemBase* _item);
 
+#pragma region DebuffCheck
+	void DebuffCheck(float _DeltaTime);
+	void SlowCheck(float _DeltaTIme);
+#pragma endregion
 
 
+#pragma region CoolTimeCheck
+	void CoolTimeCheck(float _DeltaTime);
+#pragma endregion
 	//------------------------------------------------------------------------------------------------------------------
 	// State
 	//------------------------------------------------------------------------------------------------------------------
@@ -298,9 +314,7 @@ public:
 	void PlayEffect(const std::string& _effectName);
 #pragma endregion
 
-#pragma region SlowCheck
-	void SlowCheck(float _DeltaTIme);
-#pragma endregion
+
 	//------------------------------------------------------------------------------------------------------------------
 
 protected:
@@ -331,12 +345,18 @@ protected:
 	std::string curAnimationName_;
 	std::string overrideAnimationName_;
 	std::string overrideAnimationBoneName_;
-
-	float coolTimeQ_;
-	float coolTimeW_;
-	float coolTimeE_;
-	float coolTimeR_;
-	float coolTimeD_;
+	
+	// 쿨타임 계산 버퍼와 플래그
+	float coolTimer_Q_;
+	float coolTimer_W_;
+	float coolTimer_E_;
+	float coolTimer_R_;
+	float coolTimer_D_;
+	bool bCoolQ_;
+	bool bCoolW_;
+	bool bCoolE_;
+	bool bCoolR_;
+	bool bCoolD_;
 
 	// Omni State
 	GameEngineFSM mainState_;

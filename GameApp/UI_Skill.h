@@ -23,6 +23,11 @@ public:
 public:
 	void SetJobType(JobType _myjob);
 
+	GameEngineUIRenderer* GetCoolTimeMaskQ() { return Icon_Q_CoolCounter; }
+	GameEngineUIRenderer* GetCoolTimeMaskW() { return Icon_W_CoolCounter; }
+	GameEngineUIRenderer* GetCoolTimeMaskE() { return Icon_E_CoolCounter; }
+	GameEngineUIRenderer* GetCoolTimeMaskR() { return Icon_R_CoolCounter; }
+	GameEngineUIRenderer* GetCoolTimeMaskD() { return Icon_Weapon_CoolCounter; }
 protected:
 	GameEngineUIRenderer* BackGroundRenderer;
 	//리소스가 많아지면 맵을 사용할 예정
@@ -34,8 +39,6 @@ private:
 	void Start() override;
 	void Update(float _Time) override;
 
-	//이현
-private:
 
 #pragma region 아이콘 렌더러
 
@@ -45,6 +48,12 @@ private:
 	GameEngineUIRenderer* Icon_R;
 	GameEngineUIRenderer* Icon_Passive;
 	GameEngineUIRenderer* Icon_Weapon;
+
+	GameEngineUIRenderer* Icon_Q_CoolCounter;
+	GameEngineUIRenderer* Icon_W_CoolCounter;
+	GameEngineUIRenderer* Icon_E_CoolCounter;
+	GameEngineUIRenderer* Icon_R_CoolCounter;
+	GameEngineUIRenderer* Icon_Weapon_CoolCounter;
 
 #pragma endregion
 

@@ -172,6 +172,10 @@ void Hyunwoo::Start()
 	stat_.MovementSpeed = 355.0f;
 	stat_.AttackRange = 280.f;
 
+	stat_.Cooltime_q = 8.5f;
+	stat_.Cooltime_w = 28.0f;
+	stat_.Cooltime_e = 18.0f;
+	stat_.Cooltime_r = 65.0f;
 
 }
 
