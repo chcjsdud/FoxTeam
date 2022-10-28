@@ -37,14 +37,14 @@ void UI_HPBars::Start()
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
 
 	{
-		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
 		HPBar_Renderer->SetImage("HPBar_UI.png", "PointSmp");
 		HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
 		HPBar_Renderer->GetTransform()->SetLocalScaling(HpBarSize);
 	}
 
 	{
-		SPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		SPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
 		SPBar_Renderer->SetImage("SPBar_UI.png", "PointSmp");
 		//배경보다 항상 앞에 나옴
 		SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);

@@ -71,14 +71,14 @@ void UI_CharPicture::Start()
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
 
 	{
-		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
 		BackGroundRenderer->SetImage("Char_UI_Background.png", "PointSmp");
 		BackGroundRenderer->GetTransform()->SetLocalPosition(CharUI_Pos);
 		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
 	}
 
 	{
-		CharRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		CharRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
 		CharRenderer->SetImage("Char_UI_Hyunwoo.png", "PointSmp");
 		//배경보다 항상 앞에 나옴
 		CharRenderer->GetTransform()->SetLocalPosition(CharUI_Pos + float4{0.0f, 0.0f, -1.0f, 0.0f});

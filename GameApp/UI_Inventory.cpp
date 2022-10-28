@@ -98,29 +98,29 @@ void UI_Inventory::Start()
 	
 
 	{
-		Slot0_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot1_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot2_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot3_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot4_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot5_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot6_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot7_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot8_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot9_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot0_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		Slot1_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		Slot2_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		Slot3_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		Slot4_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		Slot5_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		Slot6_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		Slot7_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		Slot8_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		Slot9_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
 	}
 
 	{
-		Slot0_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot1_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot2_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot3_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot4_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot5_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot6_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot7_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot8_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot9_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot0_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot1_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot2_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot3_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot4_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot5_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot6_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot7_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot8_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot9_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
 	}
 
 }

@@ -35,7 +35,7 @@ void UI_Equip::Start()
 	float4 Eqiup_BackGroundPos = { -215.0f, -315.0f, 0.0f };
 
 	{
-		Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
 		Renderer->SetImage("Eqiup_BackGround.png", "PointSmp");
 		Renderer->GetTransform()->SetLocalPosition(Eqiup_BackGroundPos);
 		Renderer->GetTransform()->SetLocalScaling(Renderer->GetCurrentTexture()->GetTextureSize());

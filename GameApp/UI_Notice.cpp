@@ -24,7 +24,7 @@ void UI_Notice::Start()
 	BasicAlpha = 0.4f;
 
 	{
-		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
 		BackGroundRenderer->SetImage("UI_HalfAlphaRect.png", "PointSmp");
 		BackGroundRenderer->GetTransform()->SetLocalPosition(UI_Pos);
 		BackGroundRenderer->GetTransform()->SetLocalScaling(float4{ 620.0f, 30.0f });
@@ -33,7 +33,7 @@ void UI_Notice::Start()
 
 	{
 		//폰트출력용
-		FontRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		FontRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		FontRenderer->GetTransform()->SetLocalPosition(Font_Pos);
 		FontRenderer->TextSetting("HMKMRHD", "Test", 12, FW1_CENTER);
 	}

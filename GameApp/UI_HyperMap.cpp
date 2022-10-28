@@ -18,14 +18,14 @@ void UI_HyperMap::Start()
 	MapPos = { 0.f, 0.f, -1.f };
 		
 	{
-		fullMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		fullMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
 		fullMapRenderer_->SetImage("Map_Full.png", "PointSmp");
 		fullMapRenderer_->GetTransform()->SetLocalPosition(MapPos);
 		fullMapRenderer_->GetTransform()->SetLocalScaling(fullMapRenderer_->GetCurrentTexture()->GetTextureSize());
 	}
 
 	{
-		selectAreaRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		selectAreaRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
 		selectAreaRenderer_->SetImage("Map_Alley_Pin.png", "PointSmp");
 		selectAreaRenderer_->GetTransform()->SetLocalPosition(MapPos + float4{0.f,0.f,-1.f,0.f});
 		selectAreaRenderer_->GetTransform()->SetLocalScaling(selectAreaRenderer_->GetCurrentTexture()->GetTextureSize());
@@ -34,7 +34,8 @@ void UI_HyperMap::Start()
 
 
 	{
-		areaChoiceMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		//무조건 덮어씌워지고 안보여야함
+		areaChoiceMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), -1);
 		areaChoiceMapRenderer_->SetImage("Map_Resize_Color.png", "PointSmp");
 		areaChoiceMapRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, -101.0f });
 		areaChoiceMapRenderer_->GetTransform()->SetLocalScaling(areaChoiceMapRenderer_->GetCurrentTexture()->GetTextureSize());

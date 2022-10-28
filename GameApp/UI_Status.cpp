@@ -58,66 +58,66 @@ void UI_Status::Start()
 
 	//렌더러 초기화 모음
 	{
-		MainStatusRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		MainStatusRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
 		MainStatusRenderer->SetImage("MainStatus_Background.png", "PointSmp");
 		MainStatusRenderer->GetTransform()->SetLocalPosition(MainStatus_BackgroundPos);
 		MainStatusRenderer->GetTransform()->SetLocalScaling(MainStatusRenderer->GetCurrentTexture()->GetTextureSize());
 
-		SubStatusRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		SubStatusRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
 		SubStatusRenderer->SetImage("SubStatus_Background.png", "PointSmp");
 		SubStatusRenderer->GetTransform()->SetLocalPosition(SubStatus_BackgroundPos);
 		SubStatusRenderer->GetTransform()->SetLocalScaling(SubStatusRenderer->GetCurrentTexture()->GetTextureSize());
 
 
 		//메인 스테이터스
-		AttackValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		AttackValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		AttackValue_Renderer->GetTransform()->SetLocalPosition(BasicValue_Pos);
 
-		DefenseValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		DefenseValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		DefenseValue_Renderer->GetTransform()->SetLocalPosition(DefenseValue_Pos);
 
-		AttackSpeedValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		AttackSpeedValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		AttackSpeedValue_Renderer->GetTransform()->SetLocalPosition(AttackSpeedValue_Pos);
 
-		MoveSpeedValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		MoveSpeedValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		MoveSpeedValue_Renderer->GetTransform()->SetLocalPosition(MoveSpeedValue_Pos);
 
-		CriticalValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		CriticalValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		CriticalValue_Renderer->GetTransform()->SetLocalPosition(CriticalValue_Pos);
 
-		CooldownValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		CooldownValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		CooldownValue_Renderer->GetTransform()->SetLocalPosition(CooldownValue_Pos);
 
-		SkillDamageIncreaseValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		SkillDamageIncreaseValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		SkillDamageIncreaseValue_Renderer->GetTransform()->SetLocalPosition(SkillDamageIncreaseValue_Pos);
 
-		SkillDamageReductionValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		SkillDamageReductionValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		SkillDamageReductionValue_Renderer->GetTransform()->SetLocalPosition(SkillDamageReductionValue_Pos);
 		
 
 		//서브스테이터스
-		VisionRange_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		VisionRange_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		VisionRange_Renderer->GetTransform()->SetLocalPosition(SubStatBasicValue_Pos);
 
-		AttackRange_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		AttackRange_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		AttackRange_Renderer->GetTransform()->SetLocalPosition(AttackRange_Pos);
 
-		BasicAttackDamageReduction_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		BasicAttackDamageReduction_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		BasicAttackDamageReduction_Renderer->GetTransform()->SetLocalPosition(BasicAttackDamageReduction_Pos);
 
-		Tenacity_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Tenacity_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		Tenacity_Renderer->GetTransform()->SetLocalPosition(Tenacity_Pos);
 
-		DefPenetration_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		DefPenetration_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		DefPenetration_Renderer->GetTransform()->SetLocalPosition(DefPenetration_Pos);
 
-		VampValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		VampValue_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		VampValue_Renderer->GetTransform()->SetLocalPosition(VampValue_Pos);
 
-		HPRegeneration_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		HPRegeneration_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		HPRegeneration_Renderer->GetTransform()->SetLocalPosition(HPRegeneration_Pos);
 
-		SPRegeneration_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		SPRegeneration_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 		SPRegeneration_Renderer->GetTransform()->SetLocalPosition(SPRegeneration_Pos);
 	}
 

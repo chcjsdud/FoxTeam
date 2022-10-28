@@ -44,14 +44,14 @@ void UI_ItemBox::Start()
 		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
 	{
-		ItemBoxBackGround_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		ItemBoxBackGround_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
 		ItemBoxBackGround_Renderer->SetImage("ItemBox_BackGround.png", "PointSmp");
 		ItemBoxBackGround_Renderer->GetTransform()->SetLocalPosition(BackgroundPos);
 		ItemBoxBackGround_Renderer->GetTransform()->SetLocalScaling(ItemBoxBackGround_Renderer->GetCurrentTexture()->GetTextureSize());
 	}
 
 	{
-		BoxtypeFont_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		BoxtypeFont_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
 	//	BoxtypeFont_Renderer->TextSetting("굴림", "상자", 30);
 	//	BoxtypeFont_Renderer->GetTransform()->SetLocalPosition(BackgroundPos);
 	}
@@ -110,25 +110,25 @@ void UI_ItemBox::Start()
 	}
 
 	{
-		Slot0_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot1_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot2_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot3_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot4_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot5_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot6_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot7_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot0_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Slot1_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Slot2_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Slot3_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Slot4_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Slot5_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Slot6_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Slot7_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
 	}
 
 	{
-		Slot0_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot1_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot2_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot3_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot4_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot5_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot6_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Slot7_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+		Slot0_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot1_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot2_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot3_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot4_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot5_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot6_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		Slot7_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
 	}
 
 

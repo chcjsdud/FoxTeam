@@ -28,6 +28,7 @@ enum class RenderOrder
 	UI,
 	UIICON,
 	UICOL,
+	FONT,
 	MOUSE,
 	MAX
 };
