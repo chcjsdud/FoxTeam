@@ -37,27 +37,27 @@ void StunEffect::Start()
 	stunRingRenderer_->SetImage("stunring.png", "PointSmp");
 
 	stunRingRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f, 0.0f, 0.f });
-	stunRingRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 300.0f, 0.0f });
+	stunRingRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 230.0f, 0.0f });
 
 	stunRingRenderer_->GetTransform()->SetLocalScaling(stunRingRenderer_->GetCurrentTexture()->GetTextureSize() * 0.5f);
 	stunRingRenderer_->Off();
 
 	starRenderer0_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 	starRenderer0_->SetImage("stunstar.png", "PointSmp");
-	//starRenderer0_->AttachTransform(stunRingRenderer_->GetTransform());
-	starRenderer0_->GetTransform()->SetLocalRotationDegree({ 0.0f,0.0f,0.0f });
-	starRenderer0_->GetTransform()->SetLocalPosition({ 10.0f, 300.0f, 0.0f });
-
-	starRenderer0_->GetTransform()->SetLocalScaling(starRenderer0_->GetCurrentTexture()->GetTextureSize() * 0.05f);
+	starRenderer0_->AttachTransform(stunRingRenderer_->GetTransform());
+	starRenderer0_->GetTransform()->SetLocalPosition({ 0.27f, 0.03f, 0.0f });
+	starRenderer0_->GetTransform()->SetLocalRotationDegree({ -80.0f, 0.0f,45.0f });
+	starRenderer0_->GetTransform()->SetLocalScaling(starRenderer0_->GetCurrentTexture()->GetTextureSize() * 0.0005f);
 	starRenderer0_->Off();
 
 	starRenderer1_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 	starRenderer1_->SetImage("stunstar.png", "PointSmp");
-	//starRenderer1_->AttachTransform(stunRingRenderer_->GetTransform());
-	starRenderer1_->GetTransform()->SetLocalRotationDegree({ 0.0f,0.0f,0.0f });
-	starRenderer1_->GetTransform()->SetLocalPosition({ -10.0f, 300.0f, 0.0f });
+	starRenderer1_->AttachTransform(stunRingRenderer_->GetTransform());
+	starRenderer1_->GetTransform()->SetLocalPosition({ -0.32f, 0.0f, 0.0f });
+	starRenderer1_->GetTransform()->SetLocalRotationDegree({ -80.0f,0.0f,45.0f });
 
-	starRenderer1_->GetTransform()->SetLocalScaling(starRenderer1_->GetCurrentTexture()->GetTextureSize() * 0.05f);
+
+	starRenderer1_->GetTransform()->SetLocalScaling(starRenderer1_->GetCurrentTexture()->GetTextureSize() * 0.0005f);
 	starRenderer1_->Off();
 
 	renderState_.CreateState(MakeState(StunEffect, Sleep));
@@ -89,12 +89,14 @@ void StunEffect::updateAwake(float _deltaTime)
 		return;
 	}
 
-	rotationDegree_ += 320.0f * _deltaTime;
-
+	rotationDegree_ += 250.0f * _deltaTime;
+	stunRingRenderer_->SetAlpha(0.8f);
+	starRenderer0_->SetAlpha(0.9f);
+	starRenderer1_->SetAlpha(0.9f);
 	timer_ -= _deltaTime;
 	stunRingRenderer_->GetTransform()->SetLocalRotationDegree({ 90.0f, rotationDegree_, 0.0f });
-	//zoneRenderer1_->GetTransform()->SetLocalRotationDegree({ 60.0f, rotationDegree_, 0.0f });
-	//zoneRenderer2_->GetTransform()->SetLocalRotationDegree({ 115.0f, rotationDegree_, 0.0f });
+	//starRenderer0_->GetTransform()->SetLocalRotationDegree({ 0.0f, rotationDegree_, 0.0f });
+	//starRenderer1_->GetTransform()->SetLocalRotationDegree({ 0.0f, rotationDegree_, 0.0f });
 
 }
 
