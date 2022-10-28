@@ -783,6 +783,23 @@ void Character::LevelUP(LevelUPData _Data)
 	stat_.CriticalChance += _Data.CriticalChance_;				// 치명타
 	stat_.MovementSpeed += _Data.MovementSpeed_;				// 이동속도
 	stat_.VisionRange += _Data.VisionRange_;					// 시야
+
+	if (5 > stat_.Level_q)										// 스킬 레벨은 각 최대 스킬 레벨(5,3) 만큼만 일괄적으로 오릅니다.
+	{
+		stat_.Level_q++;
+		stat_.Level_w++;
+		stat_.Level_e++;
+	}
+
+	if (3 > stat_.Level_r)
+	{
+		stat_.Level_r++;
+	}
+
+	if (2 > stat_.Level_d)
+	{
+		stat_.Level_d++;
+	}
 }
 
 void Character::Stun(float _stunTime)
