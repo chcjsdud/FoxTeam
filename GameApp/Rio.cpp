@@ -332,7 +332,7 @@ void Rio::onStartQSkill()
 	packet.SetSound("Rio_Bow_Skill01_BowChange.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
 
-	SetCooltimeQSkill(8.0f * stat_.CooldownReduction);
+	coolTimer_Q_ = 1.0f;
 	bShortRSkillExtra_ = false;
 }
 
@@ -449,7 +449,7 @@ void Rio::onStartWSkill()
 		}
 	}
 
-	SetCooltimeWSkill(12.0f * stat_.CooldownReduction);
+	//coolTimer_W_ = 12.f;
 }
 
 void Rio::onUpdateWSkill(float _deltaTime)

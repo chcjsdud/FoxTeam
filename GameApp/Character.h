@@ -163,17 +163,17 @@ protected:
 protected:
 	void inputProcess(float _deltaTime);
 	void moveProcess(float _deltaTime);
+	void moveTickLockDirection(float _deltaTime, const float4& _startPosition);
 
 	void setRotationTo(const float4& _destination, const float4 _startPosition);
 	void setRotationToMouse();
 	IUnit* getMousePickedCharacter();
 
+	void initBasicEffect();
+
 private:
 	void initInput();
 	void initState();
-
-protected:
-	void initBasicEffect();
 
 private:
 	void moveTick(float _deltaTime, const float4& _startPosition);

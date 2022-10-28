@@ -992,7 +992,7 @@ void Character::moveProcess(float _deltaTime)
 {
 	float4 worldPosition = transform_.GetWorldPosition();
 	worldPosition.y = destination_.y;
-	if ((destination_ - worldPosition).Len3D() > 10.f)
+	if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
 	{
 		moveTick(_deltaTime, worldPosition);
 	}
@@ -1004,7 +1004,7 @@ void Character::moveProcess(float _deltaTime)
 			destinations_.pop_back();
 
 			// 여기서 한번 더 해주지 않으면 움직임이 1 프레임 손실된다.
-			if ((destination_ - worldPosition).Len3D() > 10.f)
+			if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
 			{
 				moveTick(_deltaTime, worldPosition);
 			}
@@ -1030,6 +1030,22 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 
 		changeAnimationRun();
 		currentAnimation_ = eCurrentAnimation::Run;
+		GetTransform()->SetWorldPosition(nextMovePosition);
+	}
+	else
+	{
+		destination_ = _startPosition;
+	}
+}
+
+void Character::moveTickLockDirection(float _deltaTime, const float4& _startPosition)
+{
+	float4 moveSpeed = (direction_ * stat_.MovementSpeed * stat_.MovementRatio) * _deltaTime;
+	float4 nextMovePosition = _startPosition + moveSpeed;
+
+	float temp;
+	if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+	{
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}
 	else
@@ -1073,9 +1089,12 @@ void Character::updateNormalState(float _deltaTime)
 	{
 		if (true == GameEngineInput::GetInst().Down("Q") && false == bCoolQ_)
 		{
-			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetImage("cooltime_mask.png", "PointSmp");
-			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(1.0f);
-			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->On();
+			if (uiController_ != nullptr)
+			{
+				uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetImage("cooltime_mask.png", "PointSmp");
+				uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(1.0f);
+				uiController_->GetSkillUI()->GetCoolTimeMaskQ()->On();
+			}
 			bCoolQ_ = true;
 			coolTimer_Q_ = stat_.Cooltime_q;
 			mainState_.ChangeState("AttackState", true);
@@ -1091,9 +1110,12 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("W") && false == bCoolW_)
 		{
-			uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetImage("cooltime_mask.png", "PointSmp");
-			uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetAlpha(1.0f);
-			uiController_->GetSkillUI()->GetCoolTimeMaskW()->On();
+			if (uiController_ != nullptr)
+			{
+				uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetImage("cooltime_mask.png", "PointSmp");
+				uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetAlpha(1.0f);
+				uiController_->GetSkillUI()->GetCoolTimeMaskW()->On();
+			}
 			bCoolW_ = true;
 			coolTimer_W_ = stat_.Cooltime_w;
 			mainState_.ChangeState("AttackState", true);
@@ -1104,9 +1126,12 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("E") && false == bCoolE_)
 		{
-			uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetImage("cooltime_mask.png", "PointSmp");
-			uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetAlpha(1.0f);
-			uiController_->GetSkillUI()->GetCoolTimeMaskE()->On();
+			if (uiController_ != nullptr)
+			{
+				uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetImage("cooltime_mask.png", "PointSmp");
+				uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetAlpha(1.0f);
+				uiController_->GetSkillUI()->GetCoolTimeMaskE()->On();
+			}
 			bCoolE_ = true;
 			coolTimer_E_ = stat_.Cooltime_e;
 			mainState_.ChangeState("AttackState", true);
@@ -1118,9 +1143,12 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("R") && false == bCoolR_)
 		{
-			uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetImage("cooltime_mask.png", "PointSmp");
-			uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetAlpha(1.0f);
-			uiController_->GetSkillUI()->GetCoolTimeMaskR()->On();
+			if (uiController_ != nullptr)
+			{
+				uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetImage("cooltime_mask.png", "PointSmp");
+				uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetAlpha(1.0f);
+				uiController_->GetSkillUI()->GetCoolTimeMaskR()->On();
+			}
 			bCoolR_ = true;
 			coolTimer_R_ = stat_.Cooltime_r;
 			mainState_.ChangeState("AttackState", true);
@@ -1132,9 +1160,12 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("D") && false == bCoolD_)
 		{
-			uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetImage("cooltime_mask.png", "PointSmp");
-			uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetAlpha(1.0f);
-			uiController_->GetSkillUI()->GetCoolTimeMaskD()->On();
+			if (uiController_ != nullptr)
+			{
+				uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetImage("cooltime_mask.png", "PointSmp");
+				uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetAlpha(1.0f);
+				uiController_->GetSkillUI()->GetCoolTimeMaskD()->On();
+			}
 			bCoolD_ = true;
 			coolTimer_D_ = stat_.Cooltime_d;
 			mainState_.ChangeState("AttackState", true);

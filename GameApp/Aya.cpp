@@ -275,6 +275,35 @@ void Aya::onUpdateWSkill(float _deltaTime)
 		cross = float4::Cross3D(mousePosition - transform_.GetWorldPosition(), transform_.GetWorldForwardVector());
 	}
 
+	Move(mousePosition);
+	moveProcess(_deltaTime);
+
+	{
+		float4 worldPosition = transform_.GetWorldPosition();
+		worldPosition.y = destination_.y;
+		if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
+		{
+			moveTickLockDirection(_deltaTime, worldPosition);
+		}
+		else
+		{
+			if (!destinations_.empty())
+			{
+				destination_ = destinations_.back();
+				destinations_.pop_back();
+
+				// 여기서 한번 더 해주지 않으면 움직임이 1 프레임 손실된다.
+				if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
+				{
+					moveTickLockDirection(_deltaTime, worldPosition);
+				}
+			}
+			else
+			{
+				//ChangeAnimation("SkillW_Wait");
+			}
+		}
+	}
 
 	if (cos > 0.7f)
 	{
