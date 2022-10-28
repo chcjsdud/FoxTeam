@@ -1040,7 +1040,9 @@ void Character::moveTick(float _deltaTime, const float4& _startPosition)
 
 void Character::moveTickLockDirection(float _deltaTime, const float4& _startPosition)
 {
-	float4 moveSpeed = (direction_ * stat_.MovementSpeed * stat_.MovementRatio) * _deltaTime;
+	float4 direction = destination_ - _startPosition;
+	direction.Normalize3D();
+	float4 moveSpeed = (direction * stat_.MovementSpeed * stat_.MovementRatio) * _deltaTime;
 	float4 nextMovePosition = _startPosition + moveSpeed;
 
 	float temp;

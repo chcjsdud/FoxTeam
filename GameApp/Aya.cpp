@@ -230,12 +230,12 @@ void Aya::onStartQSkill()
 
 	if (GameServer::GetInstance()->IsOpened())
 	{
-		AyaBullet* arrow = level_->CreateActor<AyaBullet>();
-		arrow->MakeTarget(*this, stat_.AttackPower / 1.5f, startPosition, arrowSpeed, *target_);
+		AyaBullet* bullet = level_->CreateActor<AyaBullet>();
+		bullet->MakeTarget(*this, stat_.AttackPower / 1.5f, startPosition, arrowSpeed, *target_);
 
-		arrow = level_->CreateActor<AyaBullet>();
-		arrow->MakeTarget(*this, stat_.AttackPower / 1.0f, startPosition, arrowSpeed, *target_);
-		arrow->SetWaitTime(doubleStrikeDelay);
+		bullet = level_->CreateActor<AyaBullet>();
+		bullet->MakeTarget(*this, stat_.AttackPower / 1.0f, startPosition, arrowSpeed, *target_);
+		bullet->SetWaitTime(doubleStrikeDelay);
 	}
 
 	FT::PlaySoundAndSendPacket("aya_Skill01_Attack_v1.wav", transform_.GetWorldPosition());
@@ -262,6 +262,29 @@ void Aya::onStartWSkill()
 
 	ChangeAnimation("SkillW_Wait");
 	renderer_->OverrideFBXAnimation("SkillW_Shot", "Bip001 Spine2");
+
+
+	float4 offset = { 20.f, 120.f, 30.f, 0.f };
+	offset = offset * transform_.GetTransformData().WorldWorld_;
+	float4 startPosition = transform_.GetWorldPosition();
+	startPosition += offset;
+
+	float bulletSpeed = 1200.f;
+
+
+	PacketCreateProjectile packetBullet;
+	packetBullet.MakeNonTargetProjectile(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
+	packetBullet.SetType(eProjectileType::AyaTargetBullet);
+	FT::SendPacket(packetBullet);
+
+
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		AyaBullet* bullet = level_->CreateActor<AyaBullet>();
+		bullet->MakeNonTarget(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
+	}
+
+	FT::PlaySoundAndSendPacket("aya_Skill02_Shot.wav", transform_.GetWorldPosition());
 }
 
 void Aya::onUpdateWSkill(float _deltaTime)
@@ -271,45 +294,16 @@ void Aya::onUpdateWSkill(float _deltaTime)
 	static float4 cross;
 	if (GameEngineInput::Press("LButton") || GameEngineInput::Down("LButton"))
 	{
+		Move(mousePosition);
 		cos = float4::Dot3DToCos(mousePosition - transform_.GetWorldPosition(), transform_.GetWorldForwardVector());
 		cross = float4::Cross3D(mousePosition - transform_.GetWorldPosition(), transform_.GetWorldForwardVector());
 	}
 
-	Move(mousePosition);
-	moveProcess(_deltaTime);
-
-	{
-		float4 worldPosition = transform_.GetWorldPosition();
-		worldPosition.y = destination_.y;
-		if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
-		{
-			moveTickLockDirection(_deltaTime, worldPosition);
-		}
-		else
-		{
-			if (!destinations_.empty())
-			{
-				destination_ = destinations_.back();
-				destinations_.pop_back();
-
-				// 여기서 한번 더 해주지 않으면 움직임이 1 프레임 손실된다.
-				if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
-				{
-					moveTickLockDirection(_deltaTime, worldPosition);
-				}
-			}
-			else
-			{
-				//ChangeAnimation("SkillW_Wait");
-			}
-		}
-	}
-
-	if (cos > 0.7f)
+	if (cos > 0.8f)
 	{
 		ChangeAnimation("SkillW_Forward");
 	}
-	else if (cos < -0.7f)
+	else if (cos < -0.8f)
 	{
 		ChangeAnimation("SkillW_Back");
 	}
@@ -326,11 +320,61 @@ void Aya::onUpdateWSkill(float _deltaTime)
 	}
 
 
+	float4 worldPosition = transform_.GetWorldPosition();
+	worldPosition.y = destination_.y;
+	if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
+	{
+		moveTickLockDirection(_deltaTime, worldPosition);
+	}
+	else
+	{
+		if (!destinations_.empty())
+		{
+			destination_ = destinations_.back();
+			destinations_.pop_back();
+
+			// 여기서 한번 더 해주지 않으면 움직임이 1 프레임 손실된다.
+			if ((destination_ - worldPosition).Len3D() > FT::Char::MOVE_FINISH_CHECK_DISTANCE)
+			{
+				moveTickLockDirection(_deltaTime, worldPosition);
+			}
+		}
+		else
+		{
+			ChangeAnimation("SkillW_Wait");
+		}
+	}
+
+
+
+
 	FT::AddText(std::to_string(cos));
 	FT::AddText(std::to_string(cross.x) + ", " + std::to_string(cross.y) + ", " + std::to_string(cross.z));
 
 	if (renderer_->IsOverrideAnimationEnd())
 	{
+		float4 offset = { 20.f, 120.f, 30.f, 0.f };
+		offset = offset * transform_.GetTransformData().WorldWorld_;
+		float4 startPosition = transform_.GetWorldPosition();
+		startPosition += offset;
+
+		float bulletSpeed = 1200.f;
+
+
+		PacketCreateProjectile packetBullet;
+		packetBullet.MakeNonTargetProjectile(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
+		packetBullet.SetType(eProjectileType::AyaTargetBullet);
+		FT::SendPacket(packetBullet);
+
+
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			AyaBullet* bullet = level_->CreateActor<AyaBullet>();
+			bullet->MakeNonTarget(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
+		}
+
+		FT::PlaySoundAndSendPacket("aya_Skill02_Shot.wav", transform_.GetWorldPosition());
+
 		ChangeOverrideAnimation("SkillW_Shot", "Bip001 Spine2", true);
 	}
 

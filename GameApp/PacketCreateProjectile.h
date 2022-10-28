@@ -46,6 +46,7 @@ private:
 	void rioDSkill(LumiaLevel* _level, GameEngineSocketInterface* _network, bool _bServer);
 
 	void ayaTargetBullet(LumiaLevel* _level, GameEngineSocketInterface* _network, bool _bServer);
+	void ayaWSkill(LumiaLevel* _level, GameEngineSocketInterface* _network, bool _bServer);
 
 private:
 	float4 position_;

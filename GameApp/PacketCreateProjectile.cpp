@@ -306,3 +306,25 @@ void PacketCreateProjectile::ayaTargetBullet(LumiaLevel* _level, GameEngineSocke
         }
     }
 }
+
+void PacketCreateProjectile::ayaWSkill(LumiaLevel* _level, GameEngineSocketInterface* _network, bool _bServer)
+{
+    std::vector<Character*> list = _level->GetCharacterActorList();
+    AyaBullet* bullet = _level->CreateActor<AyaBullet>();
+
+    if (_bServer)
+    {
+        bullet->MakeNonTarget(*list[ownerIndex_], damage_, position_, rotationY_, speed_);
+        bullet->SetWaitTime(waitTime_);
+        bullet->SetLifeTime(lifeTime_);
+        bullet->SetScale(scale_);
+        _network->Send(this);
+    }
+    else
+    {
+        bullet->MakeNonTarget(*list[ownerIndex_], 0.0f, position_, rotationY_, speed_);
+        bullet->SetWaitTime(waitTime_);
+        bullet->SetLifeTime(lifeTime_);
+        bullet->SetScale(scale_);
+    }
+}
