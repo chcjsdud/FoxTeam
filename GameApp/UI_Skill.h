@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
+#include "CharacterStat.h"
 
 using namespace std;
 // Ό³Έν :
@@ -22,6 +23,8 @@ public:
 
 public:
 	void SetJobType(JobType _myjob);
+
+	void SetStatus(CharacterStat* _Mystat);
 
 	GameEngineUIRenderer* GetCoolTimeMaskQ() { return Icon_Q_CoolCounter; }
 	GameEngineUIRenderer* GetCoolTimeMaskW() { return Icon_W_CoolCounter; }

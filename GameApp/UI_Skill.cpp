@@ -110,6 +110,11 @@ void UI_Skill::Start()
 
 }
 
+void UI_Skill::SetStatus(CharacterStat* _Mystat)
+{
+
+}
+
 void UI_Skill::Update(float _Time)
 {
 	if (0.0f >= (Time -= _Time))
