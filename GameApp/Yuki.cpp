@@ -161,6 +161,13 @@ void Yuki::Start()
 	stat_.AttackEndTime = 0.4f;
 	stat_.MovementSpeed = 355.0f;
 	stat_.AttackRange = 280.f;
+
+	stat_.Cooltime_q = 5.0f;
+	stat_.Cooltime_w = 14.0f;
+	stat_.Cooltime_e = 18.0f;
+	stat_.Cooltime_r = 100.0f;
+
+
 }
 
 void Yuki::Update(float _deltaTime)

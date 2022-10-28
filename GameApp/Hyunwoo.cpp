@@ -176,6 +176,7 @@ void Hyunwoo::Start()
 	stat_.Cooltime_w = 28.0f;
 	stat_.Cooltime_e = 18.0f;
 	stat_.Cooltime_r = 65.0f;
+	stat_.Cooltime_d = 10.0f;
 
 }
 
@@ -409,7 +410,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 				if (nullptr != character)
 				{
-					character->Damage((stat_.AttackPower*0.4f) + 50.0f, this);
+					character->Damage((stat_.AttackPower*0.4f) + (50.0f * stat_.Level_q), this);
 					character->Slow(2.0f, 0.4f);
 
 					CharCrowdControlPacket ccPacket;
@@ -573,8 +574,7 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 
 					if (nullptr != character)
 					{
-						character->Damage(150.0f, this);
-						
+						character->Damage((stat_.AttackPower * 0.7f), this);
 						CharCrowdControlPacket ccPacket;
 						ccPacket.SetTargetIndex(character->GetIndex());
 						ccPacket.SetWallSlam(0.2f, direction_ * 3000.f, 1.0f);
@@ -716,8 +716,8 @@ void Hyunwoo::onUpdateDSkill(float _deltaTime)
 
 			curAnimationName_ = "SkillD";
 			renderer_->ChangeFBXAnimation("SkillD", true);
-			otherCharacter->Damage(150.0f, this);
-			// 
+			otherCharacter->Damage(stat_.AttackPower + (stat_.AttackPower * (0.3f * stat_.Level_d)) + (20.0f * stat_.Level_d), this);
+		
 
 			b_Dhit_ = true;
 			normalState_ << "Chase";
@@ -901,7 +901,7 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 					{
 						
 
-						character->Damage(300.0f, this);
+						character->Damage((stat_.Level_r * (80.0f + (collisionRRate_ * 100.0f))) + (stat_.AttackPower * 0.75f), this);
 
 					}
 				}

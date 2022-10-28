@@ -51,6 +51,13 @@ public:
 	float Cooltime_r;
 	float Cooltime_d;
 
+	// 스킬 레벨
+	int Level_q;
+	int Level_w;
+	int Level_e;
+	int Level_r;
+	int Level_d;
+
 public:
 	// 기본 세팅은 리오 기준으로 되어있음
 	CharacterStat()
@@ -86,6 +93,11 @@ public:
 		, Cooltime_e(8.0f)
 		, Cooltime_r(80.0f)
 		, Cooltime_d(30.0f)
+		, Level_q(1)
+		, Level_w(1)
+		, Level_e(1)
+		, Level_r(1)
+		, Level_d(1)
 	{
 
 	}
