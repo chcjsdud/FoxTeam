@@ -174,6 +174,11 @@ void Jackie::Start()
 	stat_.MovementSpeed = 350.0f;
 	stat_.AttackRange = 280.f;
 
+	stat_.Cooltime_q = 9.0f;
+	stat_.Cooltime_w = 19.0f;
+	stat_.Cooltime_e = 24.0f;
+	stat_.Cooltime_r = 70.0f;
+
 	//GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
 	//hitBase->Cut(3, 3);
 	if (false == GameEngineInput::GetInst().IsKey("X"))
