@@ -352,11 +352,25 @@ protected:
 	float coolTimer_E_;
 	float coolTimer_R_;
 	float coolTimer_D_;
+
 	bool bCoolQ_;
 	bool bCoolW_;
 	bool bCoolE_;
 	bool bCoolR_;
 	bool bCoolD_;
+
+	// 쿨타임 보조 효과용 변수
+	bool bCoolWQ_;
+	bool bCoolWW_;
+	bool bCoolWE_;
+	bool bCoolWR_;
+	bool bCoolWD_;
+
+	float coolTimerW_Q_;
+	float coolTimerW_W_;
+	float coolTimerW_E_;
+	float coolTimerW_R_;
+	float coolTimerW_D_;
 
 	// Omni State
 	GameEngineFSM mainState_;

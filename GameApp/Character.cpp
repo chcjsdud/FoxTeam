@@ -56,6 +56,16 @@ Character::Character()
 	, bSlowFlag_(false)
 	, slowEffect_(nullptr)
 	, stunEffect_(nullptr)
+	, bCoolWQ_(false)
+	, bCoolWW_(false)
+	, bCoolWE_(false)
+	, bCoolWR_(false)
+	, bCoolWD_(false)
+	, coolTimerW_Q_(0.5f)
+	, coolTimerW_W_(0.5f)
+	, coolTimerW_E_(0.5f)
+	, coolTimerW_R_(0.5f)
+	, coolTimerW_D_(0.5f)
 {
 	// »ý¼º°ú µ¿½Ã¿¡ À¯´ÖÅ¸ÀÔ °áÁ¤
 	UnitType_ = UnitType::CHARACTER;
@@ -1039,7 +1049,9 @@ void Character::updateNormalState(float _deltaTime)
 	{
 		if (true == GameEngineInput::GetInst().Down("Q") && false == bCoolQ_)
 		{
-
+			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(1.0f);
+			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->On();
 			bCoolQ_ = true;
 			coolTimer_Q_ = stat_.Cooltime_q;
 			mainState_.ChangeState("AttackState", true);
@@ -1055,6 +1067,9 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("W") && false == bCoolW_)
 		{
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetAlpha(1.0f);
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->On();
 			bCoolW_ = true;
 			coolTimer_W_ = stat_.Cooltime_w;
 			mainState_.ChangeState("AttackState", true);
@@ -1065,7 +1080,9 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("E") && false == bCoolE_)
 		{
-
+			uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetAlpha(1.0f);
+			uiController_->GetSkillUI()->GetCoolTimeMaskE()->On();
 			bCoolE_ = true;
 			coolTimer_E_ = stat_.Cooltime_e;
 			mainState_.ChangeState("AttackState", true);
@@ -1077,6 +1094,9 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("R") && false == bCoolR_)
 		{
+			uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetAlpha(1.0f);
+			uiController_->GetSkillUI()->GetCoolTimeMaskR()->On();
 			bCoolR_ = true;
 			coolTimer_R_ = stat_.Cooltime_r;
 			mainState_.ChangeState("AttackState", true);
@@ -1088,7 +1108,9 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("D") && false == bCoolD_)
 		{
-
+			uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetAlpha(1.0f);
+			uiController_->GetSkillUI()->GetCoolTimeMaskD()->On();
 			bCoolD_ = true;
 			coolTimer_D_ = stat_.Cooltime_d;
 			mainState_.ChangeState("AttackState", true);
@@ -1680,18 +1702,37 @@ void Character::CoolTimeCheck(float _DeltaTime)
 	if (true == bCoolQ_)
 	{
 		coolTimer_Q_ -= _DeltaTime;
-		int tmp = static_cast<int>(coolTimer_Q_);
-		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER);
-		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->On();
+		int tmp = static_cast<int>(coolTimer_Q_) + 1;
+		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER, float4::WHITE, {0.0f, 12.0f});
+
 		if (coolTimer_Q_ <= 0.0f) // ÄðÀÌ ´Ù µÇ¾ú´Ù
 		{
 			// ÃÊ±âÈ­
-			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
-			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->TextSetting("±¼¸²", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
+			// ÄðÅ¸ÀÓ ¸¶½ºÅ© ÇÏ¾á»öÀ¸·Î ±³Ã¼ -> ¾ËÆÄ°ª ±Þ°ÝÈ÷ ³·¾ÆÁ®¼­ Åõ¸íÈ­ -> OFF() -> ´Ù½Ã ºí·ç ¸¶½ºÅ©·Î ÀÌ¹ÌÁö ¹Ù²Þ -> ¾ËÆÄ°ª 1.0f
+
 			coolTimer_Q_ = stat_.Cooltime_q;
 			bCoolQ_ = false;
+			bCoolWQ_ = true;
 		}
 
+	}
+
+	if (false == bCoolQ_ && true == bCoolWQ_)
+	{
+		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetImage("cooltime_whitemask.png", "PointSmp");
+		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(coolTimerW_Q_/0.5f);
+
+		coolTimerW_Q_ -= _DeltaTime;
+		
+		if (0.0f >= coolTimerW_Q_)
+		{
+			coolTimerW_Q_ = 0.5f;
+			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(1.0f);
+			bCoolWQ_ = false;
+		}
 	}
 
 
@@ -1699,67 +1740,138 @@ void Character::CoolTimeCheck(float _DeltaTime)
 	if (true == bCoolW_)
 	{
 		coolTimer_W_ -= _DeltaTime;
-		int tmp = static_cast<int>(coolTimer_W_);
-		uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("±¼¸²",to_string(tmp), 20, FW1_CENTER);
-		uiController_->GetSkillUI()->GetCoolTimeMaskW()->On();
+		int tmp = static_cast<int>(coolTimer_W_) + 1;
+		uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER,float4::WHITE, { 0.0f, 12.0f });
+
 		if (coolTimer_W_ <= 0.0f) // ÄðÀÌ ´Ù µÇ¾ú´Ù
 		{
 			// ÃÊ±âÈ­
-			uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
-			uiController_->GetSkillUI()->GetCoolTimeMaskW()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("±¼¸²", " ", 20, FW1_CENTER,float4::WHITE, { 0.0f, 12.0f });
+
 			coolTimer_W_ = stat_.Cooltime_w;
 
 			bCoolW_ = false;
+			bCoolWW_ = true;
 		}
 	}
 	
+	if (false == bCoolW_ && true == bCoolWW_)
+	{
+		uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetImage("cooltime_whitemask.png", "PointSmp");
+		uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetAlpha(coolTimerW_W_ / 0.5f);
+
+		coolTimerW_W_ -= _DeltaTime;
+
+		if (0.0f >= coolTimerW_W_)
+		{
+			coolTimerW_W_ = 0.5f;
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetAlpha(1.0f);
+			bCoolWW_ = false;
+		}
+	}
+
 	if (true == bCoolE_)
 	{
 		coolTimer_E_ -= _DeltaTime;
-		int tmp = static_cast<int>(coolTimer_E_);
-		uiController_->GetSkillUI()->GetCoolTimeMaskE()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER);
-		uiController_->GetSkillUI()->GetCoolTimeMaskE()->On();
+		int tmp = static_cast<int>(coolTimer_E_) + 1;
+		uiController_->GetSkillUI()->GetCoolTimeMaskE()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
+
 		if (coolTimer_E_ <= 0.0f) // ÄðÀÌ ´Ù µÇ¾ú´Ù
 		{
 			// ÃÊ±âÈ­
-			uiController_->GetSkillUI()->GetCoolTimeMaskE()->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
-			uiController_->GetSkillUI()->GetCoolTimeMaskE()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskE()->TextSetting("±¼¸²", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
+
 			coolTimer_E_ = stat_.Cooltime_e;
 			bCoolE_ = false;
+			bCoolWE_ = true;
+		}
+	}
+
+	if (false == bCoolE_ && true == bCoolWE_)
+	{
+		uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetImage("cooltime_whitemask.png", "PointSmp");
+		uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetAlpha(coolTimerW_E_ / 0.5f);
+
+		coolTimerW_E_ -= _DeltaTime;
+
+		if (0.0f >= coolTimerW_E_)
+		{
+			coolTimerW_E_ = 0.5f;
+			uiController_->GetSkillUI()->GetCoolTimeMaskE()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetAlpha(1.0f);
+			bCoolWE_ = false;
 		}
 	}
 
 	if (true == bCoolR_)
 	{
 		coolTimer_R_ -= _DeltaTime;
-		int tmp = static_cast<int>(coolTimer_R_);
-		uiController_->GetSkillUI()->GetCoolTimeMaskR()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER);
-		uiController_->GetSkillUI()->GetCoolTimeMaskR()->On();
+		int tmp = static_cast<int>(coolTimer_R_) + 1;
+		uiController_->GetSkillUI()->GetCoolTimeMaskR()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
+
 		if (coolTimer_R_ <= 0.0f) // ÄðÀÌ ´Ù µÇ¾ú´Ù
 		{
 			// ÃÊ±âÈ­
-			uiController_->GetSkillUI()->GetCoolTimeMaskR()->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
-			uiController_->GetSkillUI()->GetCoolTimeMaskR()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskR()->TextSetting("±¼¸²", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
+
 			coolTimer_R_ = stat_.Cooltime_r;
 			bCoolR_ = false;
+			bCoolWR_ = true;
+		}
+	}
+
+	if (false == bCoolR_ && true == bCoolWR_)
+	{
+		uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetImage("cooltime_whitemask.png", "PointSmp");
+		uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetAlpha(coolTimerW_R_ / 0.5f);
+
+		coolTimerW_R_ -= _DeltaTime;
+
+		if (0.0f >= coolTimerW_R_)
+		{
+			coolTimerW_R_ = 0.5f;
+			uiController_->GetSkillUI()->GetCoolTimeMaskR()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetAlpha(1.0f);
+			bCoolWR_ = false;
 		}
 	}
 
 	if (true == bCoolD_)
 	{
 		coolTimer_D_ -= _DeltaTime;
-		int tmp = static_cast<int>(coolTimer_D_);
-		uiController_->GetSkillUI()->GetCoolTimeMaskD()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER);
-		uiController_->GetSkillUI()->GetCoolTimeMaskD()->On();
+		int tmp = static_cast<int>(coolTimer_D_) + 1;
+		uiController_->GetSkillUI()->GetCoolTimeMaskD()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
+
 		if (coolTimer_D_ <= 0.0f) // ÄðÀÌ ´Ù µÇ¾ú´Ù
 		{
 			// ÃÊ±âÈ­
-			uiController_->GetSkillUI()->GetCoolTimeMaskD()->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
-			uiController_->GetSkillUI()->GetCoolTimeMaskD()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskD()->TextSetting("±¼¸²", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
+	
 			coolTimer_D_ = stat_.Cooltime_d;
 			bCoolD_ = false;
+			bCoolWD_ = true;
 		}
 	}
 
+	if (false == bCoolD_ && true == bCoolWD_)
+	{
+		uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetImage("cooltime_whitemask.png", "PointSmp");
+		uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetAlpha(coolTimerW_D_ / 0.5f);
+
+		coolTimerW_D_ -= _DeltaTime;
+
+		if (0.0f >= coolTimerW_D_)
+		{
+			coolTimerW_D_ = 0.5f;
+			uiController_->GetSkillUI()->GetCoolTimeMaskD()->Off();
+			uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetImage("cooltime_mask.png", "PointSmp");
+			uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetAlpha(1.0f);
+			bCoolWD_ = false;
+		}
+	}
 
 }

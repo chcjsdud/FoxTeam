@@ -23,7 +23,6 @@ UI_Skill::~UI_Skill()
 void UI_Skill::Start()
 {
 	float4 Skill_IconSize = { 35.f,35.f };
-	float4 Skill_MaskSize = { 35.f,35.f, 10.0f };
 	float4 Passive_IconSize = { 29.f,29.f };
 	
 	Skill_BackGroundPos = { -20.0f, -315.0f, 0.0f };
@@ -68,40 +67,40 @@ void UI_Skill::Start()
 
 		Icon_Q_CoolCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		Icon_Q_CoolCounter->SetImage("cooltime_mask.png", "PointSmp");
-		Icon_Q_CoolCounter->GetTransform()->SetLocalScaling(Skill_MaskSize);
-		Icon_Q_CoolCounter->GetTransform()->SetLocalPosition(Icon_Q_Pos);
+		Icon_Q_CoolCounter->GetTransform()->SetLocalScaling(Skill_IconSize);
+		Icon_Q_CoolCounter->GetTransform()->SetLocalPosition(Icon_Q_Pos + float4{ 0.0f, 0.0f, -1.0f });
 		Icon_Q_CoolCounter->SetTextColor(float4::WHITE);
 		Icon_Q_CoolCounter->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
 		Icon_Q_CoolCounter->Off();
 
 		Icon_W_CoolCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		Icon_W_CoolCounter->SetImage("cooltime_mask.png", "PointSmp");
-		Icon_W_CoolCounter->GetTransform()->SetLocalScaling(Skill_MaskSize);
-		Icon_W_CoolCounter->GetTransform()->SetLocalPosition(Icon_W_Pos);
+		Icon_W_CoolCounter->GetTransform()->SetLocalScaling(Skill_IconSize);
+		Icon_W_CoolCounter->GetTransform()->SetLocalPosition(Icon_W_Pos + float4{ 0.0f, 0.0f, -1.0f });
 		Icon_W_CoolCounter->SetTextColor(float4::WHITE);
 		Icon_W_CoolCounter->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
 		Icon_W_CoolCounter->Off();
 
 		Icon_E_CoolCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		Icon_E_CoolCounter->SetImage("cooltime_mask.png", "PointSmp");
-		Icon_E_CoolCounter->GetTransform()->SetLocalScaling(Skill_MaskSize);
-		Icon_E_CoolCounter->GetTransform()->SetLocalPosition(Icon_E_Pos);
+		Icon_E_CoolCounter->GetTransform()->SetLocalScaling(Skill_IconSize);
+		Icon_E_CoolCounter->GetTransform()->SetLocalPosition(Icon_E_Pos + float4{ 0.0f, 0.0f, -1.0f });
 		Icon_E_CoolCounter->SetTextColor(float4::WHITE);
 		Icon_E_CoolCounter->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
 		Icon_E_CoolCounter->Off();
 
 		Icon_R_CoolCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		Icon_R_CoolCounter->SetImage("cooltime_mask.png", "PointSmp");
-		Icon_R_CoolCounter->GetTransform()->SetLocalScaling(Skill_MaskSize);
-		Icon_R_CoolCounter->GetTransform()->SetLocalPosition(Icon_R_Pos);
+		Icon_R_CoolCounter->GetTransform()->SetLocalScaling(Skill_IconSize);
+		Icon_R_CoolCounter->GetTransform()->SetLocalPosition(Icon_R_Pos + float4{ 0.0f, 0.0f, -1.0f });
 		Icon_R_CoolCounter->SetTextColor(float4::WHITE);
 		Icon_R_CoolCounter->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
 		Icon_R_CoolCounter->Off();
 
 		Icon_Weapon_CoolCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		Icon_Weapon_CoolCounter->SetImage("cooltime_mask.png", "PointSmp");
-		Icon_Weapon_CoolCounter->GetTransform()->SetLocalScaling(Skill_MaskSize);
-		Icon_Weapon_CoolCounter->GetTransform()->SetLocalPosition(Icon_Weapon_Pos);
+		Icon_Weapon_CoolCounter->GetTransform()->SetLocalScaling(Skill_IconSize);
+		Icon_Weapon_CoolCounter->GetTransform()->SetLocalPosition(Icon_Weapon_Pos + float4{ 0.0f, 0.0f, -1.0f });
 		Icon_Weapon_CoolCounter->SetTextColor(float4::WHITE);
 		Icon_Weapon_CoolCounter->TextSetting("±¼¸²", " ", 20, FW1_CENTER);
 		Icon_Weapon_CoolCounter->Off();
