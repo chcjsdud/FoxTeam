@@ -20,6 +20,7 @@
 #include "CharDeathPacket.h"
 #include "SlowEffect.h"
 #include "StunEffect.h"
+#include "LevelUpEffect.h"
 #include "UI_Skill.h"
 
 Character::Character()
@@ -123,7 +124,6 @@ void Character::Start()
 	collision_->GetTransform()->SetLocalScaling(150.0f);
 	collision_->SetCollisionGroup(eCollisionGroup::Player);
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
-
 
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 	// 현재 레벨이 루미아 레벨이 아닌 경우 처리하지 않음
@@ -800,6 +800,9 @@ void Character::LevelUP(LevelUPData _Data)
 	{
 		stat_.Level_d++;
 	}
+
+	levelUpEffect_->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
+	levelUpEffect_->PlayAwake();
 }
 
 void Character::Stun(float _stunTime)
@@ -919,6 +922,10 @@ void Character::initBasicEffect()
 	stunEffect_ = GetLevel()->CreateActor<StunEffect>();
 	stunEffect_->GetTransform()->SetLocalPosition(this->GetTransform()->GetLocalPosition());
 	stunEffect_->SetParent(this);
+
+	levelUpEffect_ = GetLevel()->CreateActor<LevelUpEffect>();
+	levelUpEffect_->GetTransform()->SetLocalPosition(this->GetTransform()->GetLocalPosition());
+	levelUpEffect_->SetParent(this);
 }
 
 
@@ -1714,6 +1721,7 @@ void Character::SlowCheck(float _DeltaTIme)
 
 }
 
+
 void Character::CoolTimeCheck(float _DeltaTime)
 {
 	if (true == bCoolQ_)
@@ -1890,5 +1898,4 @@ void Character::CoolTimeCheck(float _DeltaTime)
 			bCoolWD_ = false;
 		}
 	}
-
 }

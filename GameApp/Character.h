@@ -13,6 +13,7 @@ struct QueueItem;
 
 // 이터널 리턴에 나오는 실험체의 베이스가 되는 클래스
 class StunEffect;
+class LevelUpEffect;
 class SlowEffect;
 class ItemBoxManager;
 class MousePointer;
@@ -170,6 +171,7 @@ protected:
 private:
 	void initInput();
 	void initState();
+
 protected:
 	void initBasicEffect();
 
@@ -431,5 +433,5 @@ private:
 protected:
 	SlowEffect* slowEffect_;
 	StunEffect* stunEffect_;
-
+	LevelUpEffect* levelUpEffect_;
 };

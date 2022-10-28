@@ -261,6 +261,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="LevelUpEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="LevelUpSystem.cpp" />
     <ClCompile Include="MonsterCrowdControlPacket.cpp" />
     <ClCompile Include="MonsterDamagePacket.cpp" />
@@ -675,6 +679,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="LevelUPData.h" />
+    <ClInclude Include="LevelUpEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="LevelUpSystem.h" />
     <ClInclude Include="MonsterCrowdControlPacket.h" />
     <ClInclude Include="MonsterDamagePacket.h" />

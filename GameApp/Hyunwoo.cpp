@@ -344,6 +344,7 @@ void Hyunwoo::onStartQSkill()
 	b_Qhit_ = false;
 
 	curAnimationName_ = "SkillQ";
+
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
 }

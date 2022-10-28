@@ -143,25 +143,25 @@ void GameTimeController::CreateDailytimes()
 	// 4일 낮/밤시간 정의
 	// -> 4일마다 반복
 	DailyTime OneDay = {};
-	OneDay.DayTime_ = 170.0f;
-	OneDay.NightTime_ = 140.0f;
+	//OneDay.DayTime_ = 170.0f;
+	//OneDay.NightTime_ = 140.0f;
 
-	//OneDay.DayTime_ = 10.0f;
-	//OneDay.NightTime_ = 10.0f;
+	OneDay.DayTime_ = 10.0f;
+	OneDay.NightTime_ = 10.0f;
 
 	DailyTime TwoDay = {};
-	TwoDay.DayTime_ = 140.0f;
-	TwoDay.NightTime_ = 140.0f;
+	//TwoDay.DayTime_ = 140.0f;
+	//TwoDay.NightTime_ = 140.0f;
 
-	//TwoDay.DayTime_ = 10.0f;
-	//TwoDay.NightTime_ = 10.0f;
+	TwoDay.DayTime_ = 10.0f;
+	TwoDay.NightTime_ = 10.0f;
 
 	DailyTime ThreeDay = {};
-	ThreeDay.DayTime_ = 125.0f;
-	ThreeDay.NightTime_ = 125.0f;
+	//ThreeDay.DayTime_ = 125.0f;
+	//ThreeDay.NightTime_ = 125.0f;
 
-	//ThreeDay.DayTime_ = 10.0f;
-	//ThreeDay.NightTime_ = 10.0f;
+	ThreeDay.DayTime_ = 10.0f;
+	ThreeDay.NightTime_ = 10.0f;
 
 	DailyTime FourDay = {};
 	FourDay.DayTime_ = 110.0f;
