@@ -101,6 +101,15 @@ void Aya::Update(float _deltaTime)
 	Character::Update(_deltaTime);
 
 	level_->PushDebugRender(skillRCol_->GetTransform(), CollisionType::CirCle);
+
+	if (GameEngineInput::Down("Z"))
+	{
+		coolTimer_Q_ = 0.5f;
+		coolTimer_W_ = 0.5f;
+		coolTimer_E_ = 0.5f;
+		coolTimer_R_ = 0.5f;
+		coolTimer_D_ = 0.5f;
+	}
 }
 
 JobType Aya::GetJobType()
@@ -465,7 +474,7 @@ void Aya::onUpdateRSkill(float _d1eltaTime)
 				{
 					continue;
 				}
-				unit->Damage(300.f * (stat_.SkillDamageAmplification), this);
+				unit->Damage(300.f + stat_.AttackPower * 2.f, this);
 				unit->Stun(2.0f);
 			}
 		}
@@ -477,7 +486,7 @@ void Aya::onUpdateRSkill(float _d1eltaTime)
 			Monsters* unit = dynamic_cast<Monsters*>(c->GetActor());
 			if (nullptr != unit)
 			{
-				unit->Damage(300.f * (stat_.SkillDamageAmplification), this);
+				unit->Damage(300.f + stat_.AttackPower * 2.f, this);
 				unit->Stun(2.0f);
 			}
 		}
