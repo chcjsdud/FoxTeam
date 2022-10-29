@@ -19,16 +19,12 @@
 
 Yuki::Yuki() // default constructer 디폴트 생성자
 	: b_isQ_(false), timer_Q(0.0f), rEffect_(nullptr), timer_R(0.0f), b_RHit_(false)
+	, swordRenderer_(nullptr)
 {
 
 }
 
 Yuki::~Yuki() // default destructer 디폴트 소멸자
-{
-
-}
-
-Yuki::Yuki(Yuki&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
 {
 
 }
@@ -42,6 +38,11 @@ void Yuki::LoadResource()
 
 	GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Yuki_run.fbx"));
 	mesh->CreateRenderingBuffer();
+
+	mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_TwoHandSword_01.fbx"));
+	mesh->CreateRenderingBuffer();
+
+	GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Weapon_TwoHandSword_01.fbx"));
 
 	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Yuki_run.fbx"));
 	//GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Yuki_wait.fbx"));
@@ -210,6 +211,18 @@ void Yuki::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("SkillW", "Yuki_skillw_upper_wait.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
+
+	swordRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	swordRenderer_->SetFBXMesh("Weapon_TwoHandSword_01.fbx", "TextureDeferredLightAni");
+
+	swordRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+	swordRenderer_->GetTransform()->SetLocalScaling(100.f);
+	swordRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+
+	swordRenderer_->SetParentBoneName(renderer_, "Bip001 R Finger2");
+	swordRenderer_->SetCustomOffset({ -2.5f, 0.f, 0.f });
+	swordRenderer_->CreateFBXAnimation("Idle", "Weapon_TwoHandSword_01.fbx");
+	swordRenderer_->ChangeFBXAnimation("Idle");
 }
 
 void Yuki::initYukiCollision()

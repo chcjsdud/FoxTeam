@@ -13,6 +13,7 @@
 #include "TestLevelBox.h"
 #include "MousePointer.h"
 #include "TestMap.h"
+#include "Yuki.h"
 
 TestLevel::TestLevel()
 	: rio_(nullptr)
@@ -89,6 +90,7 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	Hyunwoo::LoadResource();
 	Aya::LoadResource();
 	Character::LoadResource();
+	Yuki::LoadResource();
 
 
 	//CreateActor<TestOBB>();
@@ -103,26 +105,33 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	mouse_ = CreateActor<MousePointer>();
 	map_ = CreateActor<TestMap>();
 
-	rio_ = CreateActor<Rio>();
-	//rio_->Focus();
-	rio_->SetMouse(mouse_);
-	rio_->SetMap(map_);
+	//rio_ = CreateActor<Rio>();
+	////rio_->Focus();
+	//rio_->SetMouse(mouse_);
+	//rio_->SetMap(map_);
 
-	jackie_ = CreateActor<Jackie>();
-	//jackie_->Focus();
-	jackie_->SetMouse(mouse_);
-	jackie_->SetMap(map_);
+	//jackie_ = CreateActor<Jackie>();
+	////jackie_->Focus();
+	//jackie_->SetMouse(mouse_);
+	//jackie_->SetMap(map_);
 
-	Hyunwoo* h = CreateActor<Hyunwoo>();
-	//h->Focus();
-	h->SetMouse(mouse_);
-	h->SetMap(map_);
+	//Hyunwoo* h = CreateActor<Hyunwoo>();
+	////h->Focus();
+	//h->SetMouse(mouse_);
+	//h->SetMap(map_);
 
-	aya_ = CreateActor<Aya>();
-	aya_->Focus();
-	aya_->SetMouse(mouse_);
-	aya_->SetMap(map_);
-	focusChar_ = aya_;
+	//aya_ = CreateActor<Aya>();
+	////aya_->Focus();
+	//aya_->SetMouse(mouse_);
+	//aya_->SetMap(map_);
+	
+	
+	Yuki* y = CreateActor<Yuki>();
+	//y->Focus();
+	y->SetMouse(mouse_);
+	y->SetMap(map_);
+	
+	focusChar_ = y;
 
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();

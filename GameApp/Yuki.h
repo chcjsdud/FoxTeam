@@ -16,7 +16,7 @@ public:
 	Yuki(); // default constructer 디폴트 생성자
 	~Yuki(); // default destructer 디폴트 소멸자
 	Yuki(const Yuki& _other) = delete; // default Copy constructer 디폴트 복사생성자
-	Yuki(Yuki&& _other) noexcept; // default RValue Copy constructer 디폴트 RValue 복사생성자
+	Yuki(Yuki&& _other) noexcept = delete;
 	Yuki& operator=(const Yuki& _other) = delete; // default Copy operator 디폴트 대입 연산자
 	Yuki& operator=(const Yuki&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
 
