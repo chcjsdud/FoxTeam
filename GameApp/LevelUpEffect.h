@@ -2,6 +2,7 @@
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
 
+class GameEngineUIRenderer;
 class GameEngineEffectRenderer;
 class LevelUpEffect : public GameEngineActor
 {
@@ -28,6 +29,9 @@ protected:
 	void startSleep();
 	void updateSleep(float _deltaTime);
 
+	void startFade();
+	void updateFade(float _deltaTime);
+
 private:
 	GameEngineFSM renderState_;
 	GameEngineEffectRenderer* levelUpRenderer_;
@@ -36,7 +40,8 @@ private:
 
 private:
 	float timer_;
-
+	float glowTimer_;
 	float rotationDegree_;
+	float4 scaleContainer_;
 };
 
