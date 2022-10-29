@@ -73,4 +73,6 @@ private:
 	int ammo_;
 	int skillWFireCount_;
 	float skillWFireDelay_;
+
+	GameEngineCollision* skillRCol_;
 };

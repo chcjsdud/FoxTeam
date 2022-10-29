@@ -1,16 +1,22 @@
 #include "PreCompile.h"
+
+
+#include <GameEngine/GameEngineCollision.h>
+
 #include "Aya.h"
 #include "AyaBullet.h"
-
 #include "LumiaMap.h"
 #include "PacketCreateProjectile.h"
 #include "RioArrow.h"
 #include "MousePointer.h"
+#include "Monsters.h"
+#include "CharCrowdControlPacket.h"
 
 Aya::Aya()
 	: ammo_(6)
 	, skillWFireCount_(0)
 	, skillWFireDelay_(0.3f)
+	, skillRCol_(nullptr)
 {
 
 }
@@ -81,12 +87,20 @@ void Aya::ReleaseResource()
 void Aya::Start()
 {
 	Character::Start();
+
+	skillRCol_ = CreateTransformComponent<GameEngineCollision>();
+	skillRCol_->SetCollisionType(CollisionType::Sphere3D);
+	skillRCol_->SetCollisionGroup(eCollisionGroup::PlayerAttack);
+	skillRCol_->GetTransform()->SetLocalScaling(700.f);
+
 	stat_.AttackSpeed = 1.1f;
 }
 
 void Aya::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
+
+	level_->PushDebugRender(skillRCol_->GetTransform(), CollisionType::CirCle);
 }
 
 JobType Aya::GetJobType()
@@ -274,6 +288,7 @@ void Aya::onStartWSkill()
 
 	PacketCreateProjectile packetBullet;
 	packetBullet.MakeNonTargetProjectile(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
+	packetBullet.SetScale({ 80.f, 150.f, 100 });
 	packetBullet.SetType(eProjectileType::AyaTargetBullet);
 	FT::SendPacket(packetBullet);
 
@@ -282,9 +297,11 @@ void Aya::onStartWSkill()
 	{
 		AyaBullet* bullet = level_->CreateActor<AyaBullet>();
 		bullet->MakeNonTarget(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
+		bullet->SetScale({ 80.f, 150.f, 100 });
 	}
 
 	FT::PlaySoundAndSendPacket("aya_Skill02_Shot.wav", transform_.GetWorldPosition());
+	skillWFireCount_ = 1;
 }
 
 void Aya::onUpdateWSkill(float _deltaTime)
@@ -345,12 +362,6 @@ void Aya::onUpdateWSkill(float _deltaTime)
 		}
 	}
 
-
-
-
-	FT::AddText(std::to_string(cos));
-	FT::AddText(std::to_string(cross.x) + ", " + std::to_string(cross.y) + ", " + std::to_string(cross.z));
-
 	if (renderer_->IsOverrideAnimationEnd())
 	{
 		float4 offset = { 20.f, 120.f, 30.f, 0.f };
@@ -363,6 +374,7 @@ void Aya::onUpdateWSkill(float _deltaTime)
 
 		PacketCreateProjectile packetBullet;
 		packetBullet.MakeNonTargetProjectile(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
+		packetBullet.SetScale({ 80.f, 150.f, 100 });
 		packetBullet.SetType(eProjectileType::AyaTargetBullet);
 		FT::SendPacket(packetBullet);
 
@@ -371,17 +383,25 @@ void Aya::onUpdateWSkill(float _deltaTime)
 		{
 			AyaBullet* bullet = level_->CreateActor<AyaBullet>();
 			bullet->MakeNonTarget(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
+			bullet->SetScale({ 80.f, 150.f, 100 });
 		}
 
 		FT::PlaySoundAndSendPacket("aya_Skill02_Shot.wav", transform_.GetWorldPosition());
 
 		ChangeOverrideAnimation("SkillW_Shot", "Bip001 Spine2", true);
+		++skillWFireCount_;
+	}
+
+	if (skillWFireCount_ >= 10)
+	{
+		renderer_->ClearOverrideAnimation();
+		mainState_ << "NormalState";
+
 	}
 
 	if (GameEngineInput::Down("Z"))
 	{
 		renderer_->ClearOverrideAnimation();
-
 		mainState_ << "NormalState";
 	}
 }
@@ -417,10 +437,56 @@ void Aya::onUpdateESkill(float _deltaTime)
 
 void Aya::onStartRSkill()
 {
+	ChangeAnimation("SkillR_Start");
+	FT::PlaySoundAndSendPacket("aya_Skill04_Ready.wav", transform_.GetWorldPosition());
 }
 
 void Aya::onUpdateRSkill(float _d1eltaTime)
 {
+	if (attackState_.GetTime() < 0.0f)
+	{
+		if (renderer_->IsCurrentAnimationEnd())
+		{
+			normalState_ << "Watch";
+			mainState_ << "NormalState";
+		}
+		return;
+	}
+
+	if (attackState_.GetTime() > 1.5f)
+	{
+		std::list<GameEngineCollision*> list = skillRCol_->GetCollisionList(eCollisionGroup::Player);
+		for (GameEngineCollision* c : list)
+		{
+			Character* unit = dynamic_cast<Character*>(c->GetActor());
+			if (nullptr != unit)
+			{
+				if (unit == this)
+				{
+					continue;
+				}
+				unit->Damage(300.f * (stat_.SkillDamageAmplification), this);
+				unit->Stun(2.0f);
+			}
+		}
+
+		list.clear();
+		list = skillRCol_->GetCollisionList(eCollisionGroup::Monster);
+		for (GameEngineCollision* c : list)
+		{
+			Monsters* unit = dynamic_cast<Monsters*>(c->GetActor());
+			if (nullptr != unit)
+			{
+				unit->Damage(300.f * (stat_.SkillDamageAmplification), this);
+				unit->Stun(2.0f);
+			}
+		}
+
+		attackState_.GetCurrentState()->Time_ = -1000.f;
+		ChangeAnimation("SkillR_End");
+		FT::PlaySoundAndSendPacket("aya_Skill04_Activation.wav", transform_.GetWorldPosition());
+	}
+
 }
 
 void Aya::onStartDSkill()
