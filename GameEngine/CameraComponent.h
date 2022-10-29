@@ -2,6 +2,7 @@
 #include "GameEngineTransformComponent.h"
 #include "GameEngineDebugRenderData.h"
 #include "GameEngineLightComponent.h"
+#include "GameEngineOutlineRenderer.h"
 #include "DeferredCalLightEffect.h"
 #include "DeferredMerge.h"
 #include "Enums.h"
@@ -34,6 +35,8 @@ private:	// member Var
 private:
 	LightsData LightData_;
 	std::list<GameEngineLightComponent*> Lights_;
+	//std::list< GameEngineOutlineRenderer*> OutLineRendererList_;
+	std::map<int, std::list<GameEngineRendererBase*>> OutLineRendererList_;
 	std::map<int, std::list<GameEngineRendererBase*>> RendererList_;
 
 private:
@@ -47,6 +50,8 @@ private:
 	GameEngineRenderTarget* CameraDeferredGBufferTarget;
 	GameEngineRenderTarget* CameraDeferredLightTarget;
 	GameEngineRenderTarget* CameraDeferredTarget_;
+
+	GameEngineRenderTarget* CameraOutLineTarget_;
 
 public:
 	CameraComponent();
@@ -70,6 +75,7 @@ private:
 	void NextLevelMoveRenderer(CameraComponent* _NextCamera, GameEngineActor* _Actor);
 
 	void RenderForward(float _DeltaTime);
+	void RenderOutLine(float _DeltaTime);
 	void RenderDeffered(float _DeltaTime);
 
 public:
@@ -134,6 +140,8 @@ public:
 	void SetProjectionMode(ProjectionMode _ProjectionMode);
 	void PushRenderer(int _Order, GameEngineRendererBase* _Renderer);
 	void PushLight(GameEngineLightComponent* _Light);
+	//void PushOutLineRenderer(GameEngineOutlineRenderer* _Renderer);
+	void PushOutLineRenderer(int _Order, GameEngineOutlineRenderer* _Renderer);
 
 public:
 	void PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color = float4::GREEN);

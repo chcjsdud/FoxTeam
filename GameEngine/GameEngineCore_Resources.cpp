@@ -1080,12 +1080,6 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		Pipe->SetRasterizer("EngineBaseRasterizerFront");
 		Pipe->SetPixelShader("OutLine_PS");
-		Pipe->SetOutputMergerBlend("Trans");
-		Pipe->SetOutputMergerDepthStencil("OutLineState");
-
-	}
-
-	{
-
+		Pipe->SetOutputMergerBlend("AlphaToCoverage");
 	}
 }

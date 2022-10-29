@@ -4,10 +4,13 @@
 // 분류 : 액터
 // 용도 : 테스트
 // 설명 : 
+class GameEngineFBXRenderer;
 class GameEngineOutlineRenderer;
 class OutLineTestActor : public GameEngineActor
 {
 public:
+	static void TestResourceLoad();
+
 protected:
 private:
 	void Start() override;
@@ -28,6 +31,10 @@ private:
 public:
 protected:
 private:
+	bool IsChange_;
+
+private:
+	GameEngineFBXRenderer* TestBaseRenderer_;
 	GameEngineOutlineRenderer* TestRenderer_;
 };
 

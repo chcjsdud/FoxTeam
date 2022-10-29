@@ -15,9 +15,6 @@ void Skinning(inout float4 _Pos, float4 _Weight, int4 _Index, StructuredBuffer<A
     _Pos.w = 1.0F;
 
     _Weight[3] = 1.f - _Weight[0] - _Weight[1] - _Weight[2];
-
-    // 8 2.4
-    // 9 7.6
     
     for (int i = 0; i < 4; ++i)
     {

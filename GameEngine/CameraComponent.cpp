@@ -53,6 +53,12 @@ CameraComponent::~CameraComponent()
 		delete CameraDeferredTarget_;
 		CameraDeferredTarget_ = nullptr;
 	}
+
+	if (nullptr != CameraOutLineTarget_)
+	{
+		delete CameraOutLineTarget_;
+		CameraOutLineTarget_ = nullptr;
+	}
 }
 
 void CameraComponent::ClearCameraTarget()
@@ -105,10 +111,11 @@ void CameraComponent::Render(float _DeltaTime)
 	}
 
 	RenderDeffered(_DeltaTime);
+	RenderOutLine(_DeltaTime);
 	RenderForward(_DeltaTime);
 
-
 	CameraBufferTarget_->Clear();
+	CameraBufferTarget_->Merge(CameraOutLineTarget_);
 	CameraBufferTarget_->Merge(CameraDeferredTarget_);
 	CameraBufferTarget_->Merge(CameraForwardTarget_);
 
@@ -245,6 +252,38 @@ void CameraComponent::RenderForward(float _DeltaTime)
 
 }
 
+void CameraComponent::RenderOutLine(float _DeltaTime)
+{
+	float4x4 View = GetTransform()->GetTransformData().View_;
+	float4x4 Projection = GetTransform()->GetTransformData().Projection_;
+
+	CameraOutLineTarget_->Clear(false);
+	CameraOutLineTarget_->Setting();
+
+	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : OutLineRendererList_)
+	{
+		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
+
+		Renderers.sort(ZSort);
+
+		for (GameEngineRendererBase* Renderer : Renderers)
+		{
+			if (false == Renderer->IsUpdate())
+			{
+				continue;
+			}
+
+			Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
+			Renderer->GetTransform()->GetTransformData().View_ = View;
+
+			Renderer->GetTransform()->GetTransformData().WVPCalculation();
+
+			Renderer->Render(_DeltaTime, true);
+
+		}
+	}
+}
+
 void CameraComponent::RenderDeffered(float _DeltaTime)
 {
 	float4x4 View = GetTransform()->GetTransformData().View_;
@@ -315,6 +354,11 @@ void CameraComponent::PushRenderer(int _Order, GameEngineRendererBase* _Renderer
 void CameraComponent::PushLight(GameEngineLightComponent* _Light)
 {
 	Lights_.push_back(_Light);
+}
+
+void CameraComponent::PushOutLineRenderer(int _Order, GameEngineOutlineRenderer* _Renderer)
+{
+	OutLineRendererList_[_Order].push_back(_Renderer);
 }
 
 void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color)
@@ -430,6 +474,9 @@ void CameraComponent::Start()
 	DeferredMergeEffect.SetResult(CameraDeferredTarget_);
 	DeferredMergeEffect.SetDeferredTarget(CameraDeferredGBufferTarget, CameraDeferredLightTarget);
 
+	CameraOutLineTarget_ = new GameEngineRenderTarget();
+	CameraOutLineTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
+	CameraForwardTarget_->SetDepthBuffer(CameraBufferTarget_->GetDepthBuffer());
 }
 
 void CameraComponent::Update(float _DeltaTime)

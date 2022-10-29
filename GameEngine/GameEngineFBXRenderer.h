@@ -52,6 +52,7 @@ public:
 	size_t GetRenderSetCount() { return RenderSets.size(); }
 	RenderSet& GetRenderSet(unsigned int _Index) { return RenderSets[_Index]; }
 	std::vector<RenderSet>& GetAllRenderSet() { return RenderSets; }
+	std::vector<RenderSet> GetAllRenderSetValue() { return RenderSets; }
 
 	float4x4 GetCurrentAffine(int _boneIndex, int _renderSetIndex = 0);
 	float4x4 GetParentAffine();

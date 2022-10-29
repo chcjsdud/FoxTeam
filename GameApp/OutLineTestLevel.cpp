@@ -12,6 +12,11 @@
 
 bool OutLineTestLevel::ThreadLoadingEnd = false;
 
+void OutLineTestLevel::LoadBasicActorResrouce()
+{
+	OutLineTestActor::TestResourceLoad();
+}
+
 void OutLineTestLevel::CreateBasicActor()
 {
 	// 마우스 생성
@@ -31,7 +36,7 @@ void OutLineTestLevel::CreateBasicActor()
 	TestMap_ = CreateActor<OutLineTestMap>();
 
 	// 테스트액터
-	//TestActor_ = CreateActor<OutLineTestActor>();
+	TestActor_ = CreateActor<OutLineTestActor>();
 }
 
 void OutLineTestLevel::LevelStart()
@@ -44,6 +49,7 @@ void OutLineTestLevel::LevelUpdate(float _DeltaTime)
 	if (0 >= UserGame::LoadingFolder &&
 		false == ThreadLoadingEnd)
 	{
+		LoadBasicActorResrouce();
 		CreateBasicActor();
 		ThreadLoadingEnd = true;
 	}
