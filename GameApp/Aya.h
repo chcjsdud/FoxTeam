@@ -75,4 +75,5 @@ private:
 	float skillWFireDelay_;
 
 	GameEngineCollision* skillRCol_;
+	GameEngineFBXRenderer* pistolRenderer_;
 };

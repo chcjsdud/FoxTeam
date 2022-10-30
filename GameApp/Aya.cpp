@@ -17,6 +17,7 @@ Aya::Aya()
 	, skillWFireCount_(0)
 	, skillWFireDelay_(0.3f)
 	, skillRCol_(nullptr)
+	, pistolRenderer_(nullptr)
 {
 
 }
@@ -36,6 +37,10 @@ void Aya::LoadResource()
 
 		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Aya_Idle.fbx"));
 		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Pistol_01.fbx"));
+		mesh->CreateRenderingBuffer();
+		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Pistol_01.fbx"));
 
 		std::vector<GameEngineFile> allFile = dir.GetAllFile("UserAnimation");
 		for (GameEngineFile& file : allFile)
@@ -146,6 +151,15 @@ void Aya::initRendererAndAnimation()
 
 	renderer_->ChangeFBXAnimation("Idle");
 
+	pistolRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	pistolRenderer_->SetFBXMesh("Weapon_Pistol_01.fbx", "TextureDeferredLightAni");
+	pistolRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+	pistolRenderer_->GetTransform()->SetLocalScaling(100.f);
+	pistolRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+	pistolRenderer_->SetParentBoneName(renderer_, "Bip001 R Finger1");
+	pistolRenderer_->SetCustomOffset({ 2.7f, 0.f, -2.5f });
+	pistolRenderer_->CreateFBXAnimation("Idle", "Weapon_Pistol_01.fbx");
+	pistolRenderer_->ChangeFBXAnimation("Idle");
 }
 
 void Aya::changeAnimationRun()

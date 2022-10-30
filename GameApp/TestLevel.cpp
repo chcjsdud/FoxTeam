@@ -120,18 +120,18 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	//h->SetMouse(mouse_);
 	//h->SetMap(map_);
 
-	//aya_ = CreateActor<Aya>();
-	////aya_->Focus();
-	//aya_->SetMouse(mouse_);
-	//aya_->SetMap(map_);
+	aya_ = CreateActor<Aya>();
+	//aya_->Focus();
+	aya_->SetMouse(mouse_);
+	aya_->SetMap(map_);
 	
 	
-	Yuki* y = CreateActor<Yuki>();
-	//y->Focus();
-	y->SetMouse(mouse_);
-	y->SetMap(map_);
+	//Yuki* y = CreateActor<Yuki>();
+	////y->Focus();
+	//y->SetMouse(mouse_);
+	//y->SetMap(map_);
 	
-	focusChar_ = y;
+	focusChar_ = aya_;
 
 	CreateActor<SKySphereActor>();
 	LightActor* light = CreateActor<LightActor>();
