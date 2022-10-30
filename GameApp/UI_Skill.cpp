@@ -33,6 +33,14 @@ void UI_Skill::Start()
 	Icon_Weapon_Pos = { 50.0f, -300.0f, -1.0f };
 	Icon_Passive_Pos = { 89.0f, -300.0f, -1.0f };
 
+	Icon_Q_LevelCounterPos = { -123.0f, -320.0f, -1.0f };
+	Icon_W_LevelCounterPos = { -80.0f, -320.0f, -1.0f };
+	Icon_E_LevelCounterPos = { -37.0f, -320.0f, -1.0f };
+	Icon_R_LevelCounterPos = { 7.0f, -320.0f, -1.0f };
+	Icon_Weapon_LevelCounterPos = { 50.0f, -320.0f, -1.0f };
+	Icon_Passive_LevelCounterPos = { 89.0f, -316.0f, -1.0f };
+
+
 	{
 		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
 		BackGroundRenderer->SetImage("Skill_BackGround.png", "PointSmp");
@@ -106,8 +114,37 @@ void UI_Skill::Start()
 		Icon_Weapon_CoolCounter->Off();
 	}
 
+	{
+		Icon_Q_LevelCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Icon_Q_LevelCounter->SetImage("UI_SkillLevelBg_Five.png", "PointSmp");
+		Icon_Q_LevelCounter->GetTransform()->SetLocalScaling(Icon_Q_LevelCounter->GetCurrentTexture()->GetTextureSize());
+		Icon_Q_LevelCounter->GetTransform()->SetLocalPosition(Icon_Q_LevelCounterPos);
 
+		Icon_W_LevelCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Icon_W_LevelCounter->SetImage("UI_SkillLevelBg_Five.png", "PointSmp");
+		Icon_W_LevelCounter->GetTransform()->SetLocalScaling(Icon_W_LevelCounter->GetCurrentTexture()->GetTextureSize());
+		Icon_W_LevelCounter->GetTransform()->SetLocalPosition(Icon_W_LevelCounterPos);
 
+		Icon_E_LevelCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Icon_E_LevelCounter->SetImage("UI_SkillLevelBg_Five.png", "PointSmp");
+		Icon_E_LevelCounter->GetTransform()->SetLocalScaling(Icon_E_LevelCounter->GetCurrentTexture()->GetTextureSize());
+		Icon_E_LevelCounter->GetTransform()->SetLocalPosition(Icon_E_LevelCounterPos);
+
+		Icon_R_LevelCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Three.png", "PointSmp");
+		Icon_R_LevelCounter->GetTransform()->SetLocalScaling(Icon_R_LevelCounter->GetCurrentTexture()->GetTextureSize());
+		Icon_R_LevelCounter->GetTransform()->SetLocalPosition(Icon_R_LevelCounterPos);
+
+		Icon_Weapon_LevelCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Icon_Weapon_LevelCounter->SetImage("UI_SkillLevelBg_Two.png", "PointSmp");
+		Icon_Weapon_LevelCounter->GetTransform()->SetLocalScaling(Icon_Weapon_LevelCounter->GetCurrentTexture()->GetTextureSize());
+		Icon_Weapon_LevelCounter->GetTransform()->SetLocalPosition(Icon_Weapon_LevelCounterPos);
+
+		Icon_Passive_LevelCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		Icon_Passive_LevelCounter->SetImage("UI_SkillLevelBg_Passive.png", "PointSmp");
+		Icon_Passive_LevelCounter->GetTransform()->SetLocalScaling(Icon_Passive_LevelCounter->GetCurrentTexture()->GetTextureSize());
+		Icon_Passive_LevelCounter->GetTransform()->SetLocalPosition(Icon_Passive_LevelCounterPos);
+	}
 }
 
 void UI_Skill::SetStatus(CharacterStat* _Mystat)
@@ -134,6 +171,13 @@ void UI_Skill::Update(float _Time)
 			Icon_R->Off();
 			Icon_Passive->Off();
 			Icon_Weapon->Off();
+
+			Icon_Q_LevelCounter->Off();
+			Icon_W_LevelCounter->Off();
+			Icon_E_LevelCounter->Off();
+			Icon_R_LevelCounter->Off();
+			Icon_Weapon_LevelCounter->Off();
+			Icon_Passive_LevelCounter->Off();
 		}
 		else
 		{
@@ -145,6 +189,13 @@ void UI_Skill::Update(float _Time)
 			Icon_R->On();
 			Icon_Passive->On();
 			Icon_Weapon->On();
+
+			Icon_Q_LevelCounter->On();
+			Icon_W_LevelCounter->On();
+			Icon_E_LevelCounter->On();
+			Icon_R_LevelCounter->On();
+			Icon_Weapon_LevelCounter->On();
+			Icon_Passive_LevelCounter->On();
 		}
 	}
 

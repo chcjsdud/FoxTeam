@@ -58,6 +58,13 @@ private:
 	GameEngineUIRenderer* Icon_R_CoolCounter;
 	GameEngineUIRenderer* Icon_Weapon_CoolCounter;
 
+	GameEngineUIRenderer* Icon_Q_LevelCounter;
+	GameEngineUIRenderer* Icon_W_LevelCounter;
+	GameEngineUIRenderer* Icon_E_LevelCounter;
+	GameEngineUIRenderer* Icon_R_LevelCounter;
+	GameEngineUIRenderer* Icon_Passive_LevelCounter;
+	GameEngineUIRenderer* Icon_Weapon_LevelCounter;
+
 #pragma endregion
 
 #pragma region float4 ¸ðÀ½
@@ -69,6 +76,13 @@ private:
 	float4 Icon_R_Pos;
 	float4 Icon_Passive_Pos;
 	float4 Icon_Weapon_Pos;
+
+	float4 Icon_Q_LevelCounterPos;
+	float4 Icon_W_LevelCounterPos;
+	float4 Icon_E_LevelCounterPos;
+	float4 Icon_R_LevelCounterPos;
+	float4 Icon_Passive_LevelCounterPos;
+	float4 Icon_Weapon_LevelCounterPos;
 
 #pragma endregion
 };
