@@ -17,7 +17,8 @@
 #include "UI_TestMouse.h"
 #include "Lobby_Map.h"
 #include "Lobby_StartButton.h"
-#include "Lobby_GameStartButton.h"				// 220928 ADD SJH
+#include "Lobby_GameStartButton.h"	
+#include "CharFullSelectEffect.h"
 
 #include <GameEngine/GameEngineCollision.h>
 
@@ -426,7 +427,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 				return;
 			}
 
-			GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_btnMatchClick.wav");
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_matchClick2.wav");
 			pm->GetPlayerList()[pm->GetMyNumber()].isReady_ = true;
 
 			ReadyPacket packet;
@@ -489,6 +490,11 @@ void LobbyLevel::EndSelect()
 
 void LobbyLevel::StartJoin()
 {
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	UIController_->GetCharFullEffect()->SetCharImage(static_cast<JobType>(pm->GetMyPlayer().character_));
+	UIController_->GetCharFullEffect()->PlayAwake();
+
+
 }
 
 void LobbyLevel::UpdateJoin(float _DeltaTime)

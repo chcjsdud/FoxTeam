@@ -46,7 +46,7 @@ void TempLobbyRenderer::SetRender(bool _bool)
 
 void TempLobbyRenderer::Start()
 {
-	portraitRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	portraitRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
 	portraitRenderer_->SetImage("Down_Lobby_Portrait_Anon.png", "PointSmp");
 }
 

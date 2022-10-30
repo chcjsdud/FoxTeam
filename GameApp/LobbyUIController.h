@@ -5,7 +5,7 @@
 // 설명 : 
 
 
-
+class CharFullSelectEffect;
 class Lobby_ButtonOne;
 class Lobby_ButtonTwo;
 class Lobby_PortraitBg;
@@ -30,7 +30,7 @@ public:
 	Lobby_ButtonTwo* GetClientButton() { return clientButtonUI_; }
 	Lobby_StartButton* GetStartButton() { return startButtonUI_; }
 	Lobby_Map* GetMapUI() { return mapUI_; }
-
+	CharFullSelectEffect* GetCharFullEffect() { return charFullEffect_; }
 public:
 	//내가 고른 캐릭터가 뭔지 가지고 있을 static 변수
 	static JobType SelectedChar;
@@ -47,6 +47,7 @@ private:
 	Lobby_ButtonOne* hostButtonUI_;
 	Lobby_ButtonTwo* clientButtonUI_;
 	Lobby_CharFull* charFullUI_;
+	CharFullSelectEffect* charFullEffect_;
 	Lobby_StartButton* startButtonUI_;
 	Lobby_Map* mapUI_;
 	std::vector<Lobby_PortraitBg*> PortraitBg;

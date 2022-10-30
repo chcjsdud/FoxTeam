@@ -9,6 +9,7 @@
 #include "Lobby_CharFull.h"
 #include "Lobby_StartButton.h"
 #include "Lobby_Map.h"
+#include "CharFullSelectEffect.h"
 
 #include "PlayerInfoManager.h"
 
@@ -40,6 +41,7 @@ void LobbyUIController::InitUI()
 		charFullUI_= GetLevel()->CreateActor<Lobby_CharFull>();
 		startButtonUI_ = GetLevel()->CreateActor<Lobby_StartButton>();
 		mapUI_ = GetLevel()->CreateActor<Lobby_Map>();
+		charFullEffect_ = GetLevel()->CreateActor<CharFullSelectEffect>();
 	}
 
 	{
