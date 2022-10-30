@@ -43,6 +43,8 @@ LobbyLevel::LobbyLevel()
 	, myIsReady_(false)
 	, UIController_(nullptr)
 	, GameStartButton_(nullptr)
+	, voicePlayTime_(0.0f)
+	, isVoicePlayed_(false)
 {
 
 }
@@ -192,6 +194,8 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	if (true == UIController_->GetHostButton()->MouseCollisionCheck() && true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
 		//  프로세스를 호스트로 지정 (= 방을 만들겠다)
+
+
 		serverSocket_->Initialize();
 		serverSocket_->OpenServer();
 		//serverSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);				// 221010 SJH DEL
@@ -304,6 +308,8 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			{
 				if (GameEngineInput::GetInst().Down("LBUTTON"))
 				{
+					GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_btnClick_v1.wav");
+
 					UIController_->GetPortraitVector(x)->SelectOn();
 					CharSelectPacket packet;
 					packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
@@ -348,6 +354,8 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 				return;
 			}
 
+
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_matchClick2.wav");
 			pm->GetPlayerList()[pm->GetMyNumber()].isReady_ = true;
 
 			ReadyPacket packet;
@@ -371,6 +379,9 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			{
 				if (GameEngineInput::GetInst().Down("LBUTTON"))
 				{
+
+					GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_btnClick_v1.wav");
+
 					UIController_->GetPortraitVector(x)->SelectOn();
 					CharSelectPacket packet;
 					packet.SetTargetIndex(pm->GetMyNumber()); // 나의 플레이어 번호를 알려준다
@@ -415,6 +426,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 				return;
 			}
 
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_btnMatchClick.wav");
 			pm->GetPlayerList()[pm->GetMyNumber()].isReady_ = true;
 
 			ReadyPacket packet;
@@ -486,6 +498,7 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 	GameServer* serverSocket_ = GameServer::GetInstance();
 	GameClient* clientSocket_ = GameClient::GetInstance();
 
+
 		if (true == serverSocket_->IsOpened())
 		{
 			serverSocket_->ProcessPacket();
@@ -508,36 +521,7 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 
 
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-	//
-	//if (true == serverSocket_->IsOpened())
-	//{
 
-	//	int count = 0;
-	//
-	//	for (int i = 0; i < pm->GetPlayerList().size(); i++)
-	//	{
-	//		if (true == pm->GetPlayerList()[i].isReady_)
-	//		{
-	//			count++;
-	//		}
-	//	}
-	//
-	//	if (count == pm->GetPlayerList().size())
-	//	{
-	//		// 모두 캐릭터 선택을 마치면, 호스트 프로세스가 최종적으로 이 위치로 들어오게 됩니다.
-	//		
-	//		// 각 프로세스마다 맵과 몬스터 ,아이템을 배치하는 과정을 여기에서 명령해야 할 듯...
-	//
-	//
-	//		GameEngineDebug::MsgBoxError("모두 준비 완료, 게임을 시작합니다.");
-	//	}
-	//}
-	//else if (true == clientSocket_->IsConnected())
-	//{
-	//	clientSocket_->ProcessPacket();
-	//}
-
-	// 유저들의 달라진 캐릭터 선택을 인지해 렌더링을 바꿔 준다.
 	for (int i = 0; i < pm->GetPlayerList().size(); i++)
 	{
 		tempLobbyRenderers_[i]->SetRender(true);
@@ -576,6 +560,19 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 			break;
 		}
 	}
+
+	if (false == isVoicePlayed_)
+	{
+		voicePlayTime_ += _DeltaTime;
+
+		if (1.5f <= voicePlayTime_)
+		{
+			PlaySelectedCharVoice(static_cast<JobType>(pm->GetMyPlayer().character_));
+			voicePlayTime_ = 0.0f;
+			isVoicePlayed_ = true;
+		}
+	}
+
 }
 
 void LobbyLevel::EndJoin()
@@ -587,6 +584,45 @@ void LobbyLevel::EndJoin()
 void LobbyLevel::Check_PortraitCollision()
 {
 
+
+
+
+}
+
+void LobbyLevel::PlaySelectedCharVoice(JobType _type)
+{
+	switch (_type)
+	{
+	case JobType::NONE:
+		break;
+	case JobType::YUKI:
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_selected_1_ko.wav");
+		break;
+	case JobType::FIORA:
+		break;
+	case JobType::ZAHIR:
+		break;
+	case JobType::NADINE:
+		break;
+	case JobType::HYUNWOO:
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Hyunwoo_selected_1_ko.wav");
+		break;
+	case JobType::JACKIE:
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Jackie_selected_1_ko.wav");
+		break;
+	case JobType::RIO:
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_selected_1_ko.wav");
+		break;
+	case JobType::AYA:
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Aya_selected_1_ko.wav");
+		break;
+	case JobType::DUMMY:
+		break;
+	case JobType::MAX:
+		break;
+	default:
+		break;
+	}
 
 
 

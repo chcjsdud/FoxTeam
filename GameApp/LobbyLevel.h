@@ -46,6 +46,7 @@ protected:
 	void EndJoin();
 
 	void Check_PortraitCollision();
+	void PlaySelectedCharVoice(JobType _type);
 
 private:
 	GameEngineFSM state_;
@@ -81,5 +82,10 @@ private:
 
 private:
 	Lobby_GameStartButton* GameStartButton_;
+
+
+private: // voice play ¿ë
+	float voicePlayTime_;
+	bool isVoicePlayed_;
 };
 
