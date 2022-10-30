@@ -117,14 +117,12 @@ void TitleLevel::UpdateIdle(float _DeltaTime)
 		isTyped_ = false;
 		UIController_->GetStartButton()->SetImageByIndex(0);
 	}
-
-
 	if (true == isTyped_ && true == UIController_->GetStartButton()->MouseCollisionCheck())
 	{
 		if (true == GameEngineInput::GetInst().Press("LBUTTON"))
 		{
 			UIController_->GetStartButton()->SetImageByIndex(2);
-
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_btnClick_v1.wav");
 			state_.ChangeState("Select");
 
 		}

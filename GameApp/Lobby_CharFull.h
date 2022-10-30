@@ -24,5 +24,11 @@ private:
 
 private:
 	GameEngineUIRenderer* CharFull_Renderer;
+
+	GameEngineUIRenderer* qDescription_;
+	GameEngineUIRenderer* wDescription_;
+	GameEngineUIRenderer* eDescription_;
+	GameEngineUIRenderer* rDescription_;
+
 };
 

@@ -180,7 +180,7 @@ void Character::Update(float _DeltaTime)
 
 	CoolTimeCheck(_DeltaTime);
 	DebuffCheck(_DeltaTime);		// CC가 아닌 디버프(출혈, 슬로우 등) 체크
-	
+	EffectTransformCheck(_DeltaTime);
 
 	if (true == isPlayerDead_)
 	{
@@ -1935,4 +1935,9 @@ void Character::CoolTimeCheck(float _DeltaTime)
 			bCoolWD_ = false;
 		}
 	}
+}
+
+void Character::EffectTransformCheck(float _DeltaTime)
+{
+	levelUpEffect_->GetTransform()->SetWorldPosition(transform_.GetWorldPosition());
 }

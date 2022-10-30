@@ -195,9 +195,12 @@ private:
 	void SlowCheck(float _DeltaTIme);
 #pragma endregion
 
-
 #pragma region CoolTimeCheck
 	void CoolTimeCheck(float _DeltaTime);
+#pragma endregion
+
+#pragma region EffectTransformCheck
+	void EffectTransformCheck(float _DeltaTime);
 #pragma endregion
 	//------------------------------------------------------------------------------------------------------------------
 	// State

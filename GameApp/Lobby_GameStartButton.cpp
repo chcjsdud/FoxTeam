@@ -73,7 +73,7 @@ void Lobby_GameStartButton::Start()
 	//Renderer_->GetTransform()->SetWorldScaling(float4(281.0f, 47.0f));
 	//Renderer_->GetTransform()->SetWorldPosition(float4(WindowSizeHarf.x - 170.f, -WindowSizeHarf.y + 120.f));
 	Renderer_->GetTransform()->SetWorldScaling(float4(190.0f, 89.0f));
-	Renderer_->GetTransform()->SetWorldPosition(float4(WindowSizeHarf.x - 170.f, -WindowSizeHarf.y + 135.f));
+	Renderer_->GetTransform()->SetWorldPosition(float4(WindowSizeHarf.x - 100.f, -WindowSizeHarf.y + 45.f));
 
 	// 버튼 텍스쳐 등록
 	SetButtonState(ButtonState::Normal, "Lobby_GameStart_Btn.png");
