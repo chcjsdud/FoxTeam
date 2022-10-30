@@ -19,6 +19,7 @@ public:
 	void SetScale(const float4& _pos);
 	void SetImage(std::string _imageName);
 	void SetRender(bool _bool);
+	void SetText(const std::string& _text);
 
 protected:
 	virtual void Start();

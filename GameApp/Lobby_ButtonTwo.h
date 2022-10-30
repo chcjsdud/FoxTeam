@@ -11,7 +11,8 @@ public:
 	~Lobby_ButtonTwo();
 
 	bool MouseCollisionCheck();
-
+	void SetText(const std::string& _text);
+	void SetImageByIndex(int _index);
 public:
 	GameEngineUIRenderer* ButtonTwoRenderer;
 	GameEngineCollision* ButtonTwoCollision;

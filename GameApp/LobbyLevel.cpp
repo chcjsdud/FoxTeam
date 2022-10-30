@@ -192,10 +192,51 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	// 서버가 쓰이는 업데이트는
 	// 기본적으로 현 프로세스가 [호스트일 때 / 클라이언트일 때] 를 모두 상정하고, if 문으로 구분해서 코드를 짜셔야 합니다.
 	// 
-	if (true == UIController_->GetHostButton()->MouseCollisionCheck() && true == GameEngineInput::GetInst().Down("LBUTTON"))
+
+	if (true == UIController_->GetHostButton()->MouseCollisionCheck())
+	{
+		if (true == GameEngineInput::GetInst().Press("LBUTTON"))
+		{
+			
+			UIController_->GetHostButton()->SetImageByIndex(2);
+		}
+		else
+		{
+			UIController_->GetHostButton()->SetImageByIndex(1);
+		}
+	}
+	else if (false == UIController_->GetHostButton()->MouseCollisionCheck())
+	{
+		UIController_->GetHostButton()->SetImageByIndex(0);
+
+	}
+
+	if (true == UIController_->GetClientButton()->MouseCollisionCheck())
+	{
+		if (true == GameEngineInput::GetInst().Press("LBUTTON"))
+		{
+
+			UIController_->GetClientButton()->SetImageByIndex(2);
+		}
+		else
+		{
+			UIController_->GetClientButton()->SetImageByIndex(1);
+		}
+	}
+	else if (false == UIController_->GetHostButton()->MouseCollisionCheck())
+	{
+		UIController_->GetClientButton()->SetImageByIndex(0);
+
+	}
+
+	if (true == UIController_->GetHostButton()->MouseCollisionCheck() && true == GameEngineInput::GetInst().Up("LBUTTON"))
 	{
 		//  프로세스를 호스트로 지정 (= 방을 만들겠다)
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_btnClick_v1.wav");
+		UIController_->GetHostButton()->SetImageByIndex(3);
+		UIController_->GetHostButton()->SetText("호스트");
 
+		UIController_->GetClientButton()->Off();
 
 		serverSocket_->Initialize();
 		serverSocket_->OpenServer();
@@ -234,6 +275,12 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 	// 프로세스를 클라이언트로 지정 (= 방에 참여하겠다)
 	if (true == UIController_->GetClientButton()->MouseCollisionCheck() && true == GameEngineInput::GetInst().Down("LBUTTON"))
 	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_btnClick_v1.wav");
+		UIController_->GetClientButton()->SetImageByIndex(3);
+		UIController_->GetClientButton()->SetText("클라이언트");
+
+		UIController_->GetHostButton()->Off();
+
 		clientSocket_->Initialize();
 		clientSocket_->Connect("127.0.0.1");
 		//clientSocket_->Connect("121.129.74.58");
@@ -263,6 +310,8 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 
 		return;
 	}
+
+
 }
 
 void LobbyLevel::EndIdle()
@@ -444,6 +493,16 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 	for (int i = 0; i < pm->GetPlayerList().size(); i++)
 	{
 		tempLobbyRenderers_[i]->SetRender(true);
+
+		if (i == 0)
+		{
+			tempLobbyRenderers_[i]->SetText("호스트\n" + pm->GetPlayerList()[i].playerNickname_);
+		}
+		else
+		{
+			tempLobbyRenderers_[i]->SetText("플레이어" + to_string(i) + "\n" + pm->GetPlayerList()[i].playerNickname_);
+		}
+
 		switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
 		{
 		case JobType::NONE:
@@ -531,6 +590,14 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 	for (int i = 0; i < pm->GetPlayerList().size(); i++)
 	{
 		tempLobbyRenderers_[i]->SetRender(true);
+		if (i == 0)
+		{
+			tempLobbyRenderers_[i]->SetText("호스트\n" + pm->GetPlayerList()[i].playerNickname_);
+		}
+		else
+		{
+			tempLobbyRenderers_[i]->SetText("플레이어" + to_string(i) + "\n" + pm->GetPlayerList()[i].playerNickname_);
+		}
 		switch (static_cast<JobType>(pm->GetPlayerList()[i].character_))
 		{
 		case JobType::NONE:

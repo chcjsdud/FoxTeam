@@ -44,6 +44,11 @@ void TempLobbyRenderer::SetRender(bool _bool)
 	}
 }
 
+void TempLobbyRenderer::SetText(const std::string& _text)
+{
+	portraitRenderer_->TextSetting("±¼¸²", _text, 12, FW1_LEFT, float4::WHITE, {-100.0f, 0.0f, 0.0f});
+}
+
 void TempLobbyRenderer::Start()
 {
 	portraitRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
