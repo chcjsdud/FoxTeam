@@ -21,9 +21,9 @@ void Lobby_CharFull::SetChar(JobType _Character)
 void Lobby_CharFull::Start()
 {
 	{
-		CharFull_Renderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		CharFull_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
 		CharFull_Renderer->SetImage("Lobby_CharFull_Hyunwoo.png", "PointSmp");
-		CharFull_Renderer->GetTransform()->SetLocalPosition({ 0.0f, 125.0f, -100.0f });
+		CharFull_Renderer->GetTransform()->SetLocalPosition({ 0.0f, 125.0f});
 		CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
 		CharFull_Renderer->Off();
 	}

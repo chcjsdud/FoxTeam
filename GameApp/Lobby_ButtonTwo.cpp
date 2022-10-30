@@ -20,16 +20,16 @@ bool Lobby_ButtonTwo::MouseCollisionCheck()
 void Lobby_ButtonTwo::Start()
 {
 	{
-		ButtonTwoRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		ButtonTwoRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UIPANEL0));
 		ButtonTwoRenderer->SetImage("Lobby_BasicButtonTwo.png", "PointSmp");
 		//이미지 크기는 126, 두 이미지의 거리는 8
-		ButtonTwoRenderer->GetTransform()->SetLocalPosition({ 554.0f,330.0f, -102.0f });
+		ButtonTwoRenderer->GetTransform()->SetLocalPosition({ 554.0f,330.0f});
 		ButtonTwoRenderer->GetTransform()->SetLocalScaling(ButtonTwoRenderer->GetCurrentTexture()->GetTextureSize());
 	}
 	
 	{
-		ButtonTwoCollision = CreateTransformComponent<GameEngineCollision>();
-		ButtonTwoCollision->GetTransform()->SetLocalPosition({ 554.0f,330.0f, -102.0f });
+		ButtonTwoCollision = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(RenderOrder::UICOL));
+		ButtonTwoCollision->GetTransform()->SetLocalPosition({ 554.0f,330.0f});
 		ButtonTwoCollision->GetTransform()->SetLocalScaling(ButtonTwoRenderer->GetCurrentTexture()->GetTextureSize());
 		ButtonTwoCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 	}

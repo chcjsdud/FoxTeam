@@ -21,6 +21,7 @@ enum class DayAndNightType
 // UI RenderOrder
 enum class RenderOrder
 {
+	UNSEEN,						// 안 보여야 하는 것 (컬러로 컬리젼 정의하는 렌더러라던지)
 	BACKDROP,					// 배경
 	UIPANEL0,
 	UIPANEL1,

@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
-#include <GameEngine/GameEngineImageRenderer.h>
+#include <GameEngine/GameEngineUIRenderer.h>
 #include "Enums.h"
 
 using namespace std;
@@ -34,9 +34,9 @@ public:
 
 
 public:
-	GameEngineImageRenderer* BasicImageRenderer;
-	GameEngineImageRenderer* SelectImageRenderer;
-	GameEngineImageRenderer* CharPortraitRenderer;
+	GameEngineUIRenderer* BasicImageRenderer;
+	GameEngineUIRenderer* SelectImageRenderer;
+	GameEngineUIRenderer* CharPortraitRenderer;
 	GameEngineCollision* MouseCollision;
 
 protected:

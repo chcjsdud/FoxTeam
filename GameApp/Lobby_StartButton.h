@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
-#include <GameEngine/GameEngineImageRenderer.h>
+#include <GameEngine/GameEngineUIRenderer.h>
 
 using namespace std;
 
@@ -13,7 +13,7 @@ public:
 	bool MouseCollisionCheck();
 	void CharSelectSwitch();
 public:
-	GameEngineImageRenderer* ButtonRenderer;
+	GameEngineUIRenderer* ButtonRenderer;
 	GameEngineCollision* ButtonCollision;
 
 protected:

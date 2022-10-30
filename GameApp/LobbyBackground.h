@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
-#include <GameEngine/GameEngineImageRenderer.h>
+#include <GameEngine/GameEngineUIRenderer.h>
 
 using namespace std;
 
@@ -18,10 +18,10 @@ public:
 
 #pragma region ·»´õ·¯ ¸ðÀ½
 
-	GameEngineImageRenderer* BackGroundRenderer;
-	GameEngineImageRenderer* Deco_CircleRenderer;
-	GameEngineImageRenderer* Deco_GlowingRenderer;
-	GameEngineImageRenderer* Deco_CharSelectBgRenderer;
+	GameEngineUIRenderer* BackGroundRenderer;
+	GameEngineUIRenderer* Deco_CircleRenderer;
+	GameEngineUIRenderer* Deco_GlowingRenderer;
+	GameEngineUIRenderer* Deco_CharSelectBgRenderer;
 
 #pragma endregion
 

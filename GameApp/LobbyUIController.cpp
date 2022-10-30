@@ -47,7 +47,7 @@ void LobbyUIController::InitUI()
 		{
 			Lobby_PortraitBg* Portrait = GetLevel()->CreateActor<Lobby_PortraitBg>();
 
-			float4 BasicPosition = { -580.0f, 200.0f, -102.0f };
+			float4 BasicPosition = { -580.0f, 200.0f};
 			int Vertical = (x / 4);
 			int Horizonal = x - (Vertical * 4);
 

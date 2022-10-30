@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
-#include <GameEngine/GameEngineImageRenderer.h>
+#include <GameEngine/GameEngineUIRenderer.h>
 
 using namespace std;
 
@@ -23,6 +23,6 @@ private:
 	Lobby_CharFull& operator=(Lobby_CharFull&& _Other) noexcept = delete;
 
 private:
-	GameEngineImageRenderer* CharFull_Renderer;
+	GameEngineUIRenderer* CharFull_Renderer;
 };
 

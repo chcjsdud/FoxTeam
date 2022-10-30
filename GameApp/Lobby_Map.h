@@ -1,6 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
-#include <GameEngine/GameEngineImageRenderer.h>
+#include <GameEngine/GameEngineUIRenderer.h>
 
 using namespace std;
 
@@ -16,7 +16,7 @@ public:
 	~LocationNode();
 
 protected:
-	GameEngineImageRenderer* nodeRenderer_;
+	GameEngineUIRenderer* nodeRenderer_;
 	Location SelectedLocation;
 
 protected:
@@ -25,13 +25,12 @@ protected:
 
 public:
 	int GetSelectedLocation() { return static_cast<int>(SelectedLocation); }
-	GameEngineImageRenderer* GetRenderer() { return nodeRenderer_; }
-	void SetRenderer(GameEngineImageRenderer* _renderer) { nodeRenderer_ = _renderer; }
+	GameEngineUIRenderer* GetRenderer() { return nodeRenderer_; }
+	void SetRenderer(GameEngineUIRenderer* _renderer) { nodeRenderer_ = _renderer; }
 	void ChangeLocation(int _location) { SelectedLocation = static_cast<Location>(_location); }
 };
 
 
-class GameEngineUIRenderer;
 class NodeCapacityCounter : public GameEngineActor
 {
 	friend class Lobby_Map;
@@ -59,7 +58,6 @@ private:
 };
 
 
-class GameEngineUIRenderer;
 class Lobby_Map : public GameEngineActor
 {
 public:
@@ -75,9 +73,9 @@ public:
 	void ArrangeCounter();
 
 public:
-	GameEngineImageRenderer* fullMapRenderer_;
+	GameEngineUIRenderer* fullMapRenderer_;
 
-	GameEngineImageRenderer* areaChoiceMapRenderer_;
+	GameEngineUIRenderer* areaChoiceMapRenderer_;
 	
 	std::vector<LocationNode*> selectAreaNodeList_;
 	std::vector<NodeCapacityCounter*> capacityCounterList_;

@@ -36,9 +36,9 @@ void LocationNode::Update(float _DeltaTime)
 void Lobby_Map::Start()
 {
 	{
-		fullMapRenderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		fullMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
 		fullMapRenderer_->SetImage("Map_Full.png", "PointSmp");
-		fullMapRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -101.0f });
+		fullMapRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f});
 		fullMapRenderer_->GetTransform()->SetLocalScaling(fullMapRenderer_->GetCurrentTexture()->GetTextureSize());
 	}
 
@@ -48,9 +48,9 @@ void Lobby_Map::Start()
 		{
 			for (int i = 0; i < 6; i++)
 			{
-				GameEngineImageRenderer* selectAreaRenderer0_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+				GameEngineUIRenderer* selectAreaRenderer0_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UIICON));
 				selectAreaRenderer0_->SetImage("Map_Laboratory_Pin.png", "PointSmp");
-				selectAreaRenderer0_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -105.0f });
+				selectAreaRenderer0_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f});
 				selectAreaRenderer0_->GetTransform()->SetLocalScaling(selectAreaRenderer0_->GetCurrentTexture()->GetTextureSize());
 				selectAreaRenderer0_->Off();
 
@@ -74,17 +74,17 @@ void Lobby_Map::Start()
 
 
 	{
-		areaChoiceMapRenderer_ = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		areaChoiceMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UNSEEN));
 		areaChoiceMapRenderer_->SetImage("Map_Resize_Color.png", "PointSmp");
 		//항상 뒤에 가려서 안보이게함
-		areaChoiceMapRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f,0.0f });
+		areaChoiceMapRenderer_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f});
 		areaChoiceMapRenderer_->GetTransform()->SetLocalScaling(areaChoiceMapRenderer_->GetCurrentTexture()->GetTextureSize());
 		//areaChoiceMapRenderer_->Off();
 	}
 
 	{
-		textureCollision_ = CreateTransformComponent<GameEngineCollision>();
-		textureCollision_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f, -101.0f });
+		textureCollision_ = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(RenderOrder::UI));
+		textureCollision_->GetTransform()->SetLocalPosition({ 420.0f, 90.0f });
 		textureCollision_->GetTransform()->SetLocalScaling(fullMapRenderer_->GetCurrentTexture()->GetTextureSize());
 		textureCollision_->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 	}
@@ -249,7 +249,7 @@ int Lobby_Map::GetSelectLocation(float4 _Position)
 void Lobby_Map::ResizeMyPin()
 {
 	GameEngineImageRenderer* renderer = selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->GetRenderer();
-	renderer->GetTransform()->SetLocalPosition({420.0f, 90.0f, -102.0f});
+	renderer->GetTransform()->SetLocalPosition({420.0f, 90.0f});
 }
 
 void Lobby_Map::ArrangeCounter()
@@ -338,7 +338,7 @@ void NodeCapacityCounter::SetCounter(int _count)
 
 void NodeCapacityCounter::Start()
 {
-	counterRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	counterRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::FONT));
 	counterRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 
 }

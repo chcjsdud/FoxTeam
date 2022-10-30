@@ -20,13 +20,13 @@ bool Lobby_ButtonOne::MouseCollisionCheck()
 void Lobby_ButtonOne::Start()
 {
 	{
-		ButtonOneRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		ButtonOneRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UIPANEL0));
 		ButtonOneRenderer->SetImage("Lobby_BasicButtonOne.png", "PointSmp");
-		ButtonOneRenderer->GetTransform()->SetLocalPosition({ 420.0f, 330.0f, -102.0f });
+		ButtonOneRenderer->GetTransform()->SetLocalPosition({ 420.0f, 330.0f});
 		ButtonOneRenderer->GetTransform()->SetLocalScaling(ButtonOneRenderer->GetCurrentTexture()->GetTextureSize());
 
-		ButtonOneCollision = CreateTransformComponent<GameEngineCollision>();
-		ButtonOneCollision->GetTransform()->SetLocalPosition({ 420.0f, 330.0f, -102.0f });
+		ButtonOneCollision = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(RenderOrder::UICOL));
+		ButtonOneCollision->GetTransform()->SetLocalPosition({ 420.0f, 330.0f});
 		ButtonOneCollision->GetTransform()->SetLocalScaling(ButtonOneRenderer->GetCurrentTexture()->GetTextureSize());
 		ButtonOneCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 	}

@@ -819,8 +819,8 @@ void Character::Stun(float _stunTime)
 	packet.SetStun(2.0f);
 	packet.SetTargetIndex(this->GetIndex());
 	FT::SendPacket(packet);
-
 }
+
 
 void Character::Knockback(float _knockbackTime, float4 _knockbackSpeed)
 {
@@ -837,8 +837,6 @@ void Character::WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _st
 	timerKnockback_ = _knockbackTime;
 	knockbackSpeed_ = _knockbackSpeed;
 	timerStun_ = _stunTime;
-
-
 }
 
 void Character::Slow(float _slowTime, float _slowRatio)

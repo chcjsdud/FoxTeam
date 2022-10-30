@@ -18,31 +18,31 @@ void Lobby_PortraitBg::Start()
 {
 
 	{
-		BasicImageRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		BasicImageRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
 		BasicImageRenderer->SetImage("Lobby_PortraitBG_Basic.png", "PointSmp");
 		BasicImageRenderer->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 		BasicImageRenderer->GetTransform()->SetLocalScaling(BasicImageRenderer->GetCurrentTexture()->GetTextureSize());
 	}
 
 	{
-		CharPortraitRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		CharPortraitRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
 		CharPortraitRenderer->SetImage("Lobby_Portrait_Aya.png", "PointSmp");
-		CharPortraitRenderer->GetTransform()->SetLocalPosition((GetTransform()->GetLocalPosition() + float4{ 0.0f, 9.0f, -1.0f }));
+		CharPortraitRenderer->GetTransform()->SetLocalPosition((GetTransform()->GetLocalPosition() + float4{ 0.0f, 9.0f}));
 		CharPortraitRenderer->GetTransform()->SetLocalScaling(CharPortraitRenderer->GetCurrentTexture()->GetTextureSize());
 		CharPortraitRenderer->On();
 	}
 
 	{
-		SelectImageRenderer = CreateTransformComponent<GameEngineImageRenderer>(GetTransform());
+		SelectImageRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
 		SelectImageRenderer->SetImage("Lobby_PortraitBG_Select.png", "PointSmp");
-		SelectImageRenderer->GetTransform()->SetLocalPosition((GetTransform()->GetLocalPosition() + float4{0.0f, 0.0f, -2.0f}));
+		SelectImageRenderer->GetTransform()->SetLocalPosition((GetTransform()->GetLocalPosition()));
 		SelectImageRenderer->GetTransform()->SetLocalScaling(SelectImageRenderer->GetCurrentTexture()->GetTextureSize());
 		SelectImageRenderer->Off();
 	}
 
 
 	{
-		MouseCollision = CreateTransformComponent<GameEngineCollision>();
+		MouseCollision = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(RenderOrder::UICOL));
 		MouseCollision->GetTransform()->SetLocalPosition(GetTransform()->GetLocalPosition());
 		MouseCollision->GetTransform()->SetLocalScaling(BasicImageRenderer->GetCurrentTexture()->GetTextureSize());
 		MouseCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
