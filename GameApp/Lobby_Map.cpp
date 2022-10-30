@@ -67,6 +67,7 @@ void Lobby_Map::Start()
 		for (int i = 0; i < 15; i++)
 		{
 			NodeCapacityCounter* capacityCounter = GetLevel()->CreateActor<NodeCapacityCounter>();
+			capacityCounter->Off();
 			capacityCounterList_.emplace_back(capacityCounter);
 		}
 
@@ -132,24 +133,28 @@ int Lobby_Map::GetSelectLocation(float4 _Position)
 		{
 			//255, 0, 0
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::ALLEY));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 골목길", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y > 0.95f && Color.x < 0.1f)
 		{
 			//255, 255, 0
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::ARCHERY_RANGE));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 양궁장", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y < 0.1f && Color.x > 0.95f)
 		{
 			//255, 0, 255
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::FACTORY));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 공장", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y > 0.95f && Color.x > 0.95f)
 		{
 			//255, 255, 255
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::CEMETERY));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 묘지", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y < 0.6f && Color.y > 0.4f && Color.x < 0.1f)
@@ -162,18 +167,21 @@ int Lobby_Map::GetSelectLocation(float4 _Position)
 		{
 			//255, 128, 255
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::POND));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 연못", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y < 0.1f && Color.x < 0.6f && Color.x > 0.4f)
 		{
 			//255, 0, 128
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::TEMPLE));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 절", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y > 0.95f && Color.x < 0.6f && Color.x > 0.4f)
 		{
 			//255, 255, 128
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::UPTOWN));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 고급 주택가", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 	}
 	else if (Color.z > 0.4f && Color.z < 0.6f)
@@ -184,18 +192,21 @@ int Lobby_Map::GetSelectLocation(float4 _Position)
 		{
 			//128, 0, 0
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::FOREST));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 숲", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y > 0.95f && Color.x < 0.1f)
 		{
 			//128, 255, 0
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::DOCK));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 항구", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y > 0.95f && Color.x > 0.95f)
 		{
 			//128, 255, 255
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::HOSPITAL));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 병원", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 	}
 	else if (Color.z < 0.05f)
@@ -207,6 +218,7 @@ int Lobby_Map::GetSelectLocation(float4 _Position)
 			//0, 255, 0
 			//교회
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::CHAPEL));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 성당", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y > 0.95f && Color.x > 0.95f)
@@ -214,12 +226,14 @@ int Lobby_Map::GetSelectLocation(float4 _Position)
 			//0, 255, 255
 			//다운타운
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::AVENUE));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 번화가", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y < 0.05f && Color.x > 0.95f)
 		{
 			//0, 0, 255
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::SCHOOL));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 학교", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 
@@ -227,18 +241,21 @@ int Lobby_Map::GetSelectLocation(float4 _Position)
 		{
 			//0, 128, 0
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::HOTEL));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 호텔", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y < 0.6f && Color.y > 0.4f && Color.x > 0.95f)
 		{
 			//0, 128, 255
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::BEACH));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 모래사장", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 
 		if (Color.y < 0.6f && Color.y > 0.4f && Color.x < 0.6f && Color.x > 0.4f)
 		{
 			//0, 128, 128
 			selectAreaNodeList_[PlayerInfoManager::GetInstance()->GetMyNumber()]->ChangeLocation(static_cast<int>(Location::SCHOOL));
+			fullMapRenderer_->TextSetting("굴림", "시작 지점 : 학교", 20.0f, FW1_LEFT, { 0.85f,0.85f,0.85f,1.0f }, { 0.0f, -180.0f });
 		}
 	}
 
@@ -256,6 +273,7 @@ void Lobby_Map::ArrangeCounter()
 {
 	for (int i = 0; i < capacityCounterList_.size(); i++)
 	{
+		capacityCounterList_[i]->On();
 		switch (static_cast<Location>(i))
 		{
 		case Location::NONE:
@@ -340,7 +358,6 @@ void NodeCapacityCounter::Start()
 {
 	counterRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::FONT));
 	counterRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-
 }
 
 void NodeCapacityCounter::Update(float _DeltaTime)
@@ -352,7 +369,6 @@ void NodeCapacityCounter::Update(float _DeltaTime)
 	//}
 	//else
 	{
-		counterRenderer_->On();
 		counterRenderer_->TextSetting("굴림", count_, 20, FW1_CENTER);
 	}
 
