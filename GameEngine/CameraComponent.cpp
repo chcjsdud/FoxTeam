@@ -258,7 +258,7 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	CameraDeferredGBufferTarget->Clear();
 	CameraDeferredGBufferTarget->Setting();
 
-	// 외곽선 없는넘들
+	// 외곽선 없는 렌더러 먼저 그리고,
 	std::list<GameEngineRendererBase*> OutLineList;
 	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
 	{
@@ -291,7 +291,7 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 		}
 	}
 
-	// 외곽선 먼저 렌더링
+	// 외곽선을 그리고
 	for (GameEngineRendererBase* Renderer : OutLineList)
 	{
 		// 외곽선 타겟 셋팅
@@ -308,7 +308,7 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	}
 	OutLineList.clear();
 
-	// 외곽선이 있는얘들
+	// 외곽선을 가지고있는 렌더러들을 그린다.
 	CameraDeferredGBufferTarget->Setting();
 	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
 	{
