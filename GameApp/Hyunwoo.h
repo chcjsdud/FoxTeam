@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngineUIRenderer.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineEffectRenderer.h>
+#include "BasicAttackEffect.h"
 #include "Character.h"
 
 
@@ -81,7 +82,7 @@ private:
 	HyunwooQEffect* qEffect_;
 	HyunwooREffect* rEffect_;
 	
-	GameEngineEffectRenderer* basicAttackEffectRenderer_;
+	BasicAttackEffect* basicAttackEffect_;
 	GameEngineEffectRenderer* QGroundCrackEffectRenderer_;
 	GameEngineEffectRenderer* rearEffectRenderer_;
 

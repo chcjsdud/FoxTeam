@@ -23,7 +23,7 @@
 
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
-	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), basicAttackEffectRenderer_(nullptr), QGroundCrackEffectRenderer_(nullptr), qEffect_(nullptr),
+	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), basicAttackEffect_(nullptr), QGroundCrackEffectRenderer_(nullptr), qEffect_(nullptr),
 	rEffect_(nullptr)
 {
 
@@ -266,15 +266,12 @@ void Hyunwoo::initEffectRenderer()
 	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_08.png");
 	hitBase->Cut(3, 3);
 
-	basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
-
-	basicAttackEffectRenderer_->SetImage("FX_BI_Hit_08.png");
-	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f,  stat_.AttackRange - 180.f });
-	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
-	basicAttackEffectRenderer_->CreateAnimation("FX_BI_Hit_08.png", "FX_BI_Hit_08", 0, 8, 0.03f, false);
-	basicAttackEffectRenderer_->Off();
-
+	basicAttackEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
+	basicAttackEffect_->GetAttackRenderer()->SetImage("FX_BI_Hit_08.png", "PointSmp");
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 90.0f,0.0f,0.0f });
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicAttackEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize() / 3);
+	basicAttackEffect_->GetAttackRenderer()->CreateAnimation("FX_BI_Hit_08.png", "FX_BI_Hit_08", 0, 8, 0.03f, false);
 
 	QGroundCrackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 	QGroundCrackEffectRenderer_->SetImage("FX_BI_GroundBomb_01.png", "PointSmp");
@@ -453,19 +450,6 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 		b_Qhit_ = true;
 	}
-
-	// 델타타임에 걸맞게 
-	/*피해량:50/100/150/200/250(+공격력의 40%)(+스킬 증폭의 55%)
-	이동 속도 감소: -40%
-	사정거리: 3m
-	스테미너 소모: 60/70/80/90/100
-	시전 시간: 즉시
-	둔화 지속 시간: 2초
-	쿨다운: 8.5/7.5/6.5/5.5/4.5초*/
-
-
-	// 0.3초 쯤의 시전딜레이가 확인됨.
-	// 정확히 말하자면 즉발은 맞지만, 타격 이펙트가 생기는 부분은 0.3초 이후
 
 
 }
@@ -779,10 +763,14 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 	
 	if ("BasicAttack" == _effectName)
 	{
-		basicAttackEffectRenderer_->On();
-		basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_08", true);
-		basicAttackEffectRenderer_->AnimationPlay();
+		if (_victim != nullptr)
+		{
+			float4 wp = _victim->GetTransform()->GetWorldPosition();
+			wp.y += 50.0f;
+			basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
+		}
 
+		basicAttackEffect_->PlayAwake("FX_BI_Hit_08");
 		return;
 	}
 
@@ -962,25 +950,19 @@ void Hyunwoo::onStartBasicAttacking(IUnit* _target)
 
 
 	float4 wp = target_->GetTransform()->GetWorldPosition();
-
-	basicAttackEffectRenderer_->On();
-	basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_Hit_08", true);
-	//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
-	basicAttackEffectRenderer_->AnimationPlay();
-
+	wp.y += 50.0f;
+	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
+	basicAttackEffect_->PlayAwake("FX_BI_Hit_08");
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("BasicAttack");
+	pack.SetVictimIndex(_target->GetIndex());
 	FT::SendPacket(pack);
 	// 여기 이펙트 패킷 하나
 }
 
 void Hyunwoo::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 {
-	if (true == basicAttackEffectRenderer_->IsCurAnimationEnd())
-	{
-		basicAttackEffectRenderer_->Off();
-	}
 
 }

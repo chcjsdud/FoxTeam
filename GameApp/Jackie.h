@@ -6,6 +6,7 @@
 #include <GameEngine/GameEngineEffectRenderer.h>
 #include <GameEngine/GameEngineFSM.h>
 #include "Character.h"
+#include "BasicAttackEffect.h"
 #include "JackieQEffect.h"
 #include "JackieEEffect.h"
 // ¿ëµµ : 
@@ -106,7 +107,7 @@ private:
 	bool bSkillEPassable_;
 	float skillETime_;
 
-	GameEngineEffectRenderer* basicAttackEffectRenderer_;
+	BasicAttackEffect* basicAttackEffect_;
 	GameEngineEffectRenderer* skillQEffectRenderer_;
 
 	JackieQEffect* qEffect_;

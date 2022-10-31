@@ -263,14 +263,6 @@ void Yuki::initYukiCustomState()
 void Yuki::initEffectRenderer()
 {
 	float4 bsicAtkOriScale = { 256.0f, 42.7f };
-	//basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
-	//basicAttackEffectRenderer_->SetImage("Fx_SQ_Cut01.png");
-	//basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-	//basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	//basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(bsicAtkOriScale * 1.5f);
-	//basicAttackEffectRenderer_->CreateAnimation("Fx_SQ_Cut01.png", "Fx_SQ_Cut01", 0, 5, 0.03f, false);
-	//basicAttackEffectRenderer_->Off();
-
 	basicAttackEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
 	basicAttackEffect_->GetAttackRenderer()->SetImage("Fx_SQ_Cut01.png", "PointSmp");
 	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
@@ -386,11 +378,7 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 	FT::SendPacket(packet);
 
 	float4 wp = target_->GetTransform()->GetWorldPosition();
-
-	//basicAttackEffectRenderer_->On();
-	//basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
-	//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition(wp);
-	//basicAttackEffectRenderer_->AnimationPlay();
+	wp.y += 50.0f;
 	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
 	basicAttackEffect_->PlayAwake("Fx_SQ_Cut01");
 
@@ -647,15 +635,12 @@ void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 
 		if (_victim != nullptr)
 		{
-			//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition(_victim->GetTransform()->GetWorldPosition());
-			basicAttackEffect_->GetTransform()->SetWorldPosition(_victim->GetTransform()->GetWorldPosition());
+			float4 wp = _victim->GetTransform()->GetWorldPosition();
+			wp.y += 50.0f;
+			basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
 		}
 
 		basicAttackEffect_->PlayAwake("Fx_SQ_Cut01");
-		//basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
-		//
-		//basicAttackEffectRenderer_->AnimationPlay();
-
 		return;
 	}
 

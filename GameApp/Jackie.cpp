@@ -18,7 +18,7 @@
 Jackie::Jackie() // default constructer 디폴트 생성자
 	: atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(0), collision_Q(nullptr),
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
-	basicAttackEffectRenderer_(nullptr), skillQEffectRenderer_(nullptr), sawRenderer_(nullptr), axeRenderer_(nullptr),
+	basicAttackEffect_(nullptr), skillQEffectRenderer_(nullptr), sawRenderer_(nullptr), axeRenderer_(nullptr),
 	isW_(false), timer_W(0.0f), bSkillEPassable_(false), eStartPosition_(float4::ZERO), eLandingPosition_(float4::ZERO),
 	debugX(-90.0f), debugY(0.0f), debugZ(0.0f), timer_R(0.0f)
 
@@ -378,14 +378,13 @@ void Jackie::initJackieCustomState()
 
 void Jackie::initEffectRenderer()
 {
-	basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 
-	basicAttackEffectRenderer_->SetImage("FX_BI_SELine_10.png", "PointSmp");
-	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, stat_.AttackRange - 180.f });
-	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 2);
-	basicAttackEffectRenderer_->CreateAnimation("FX_BI_SELine_10.png", "FX_BI_SELine_10", 0, 8, 0.02f, false);
-	basicAttackEffectRenderer_->Off(); 
+	basicAttackEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
+	basicAttackEffect_->GetAttackRenderer()->SetImage("FX_BI_SELine_10.png", "PointSmp");
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 90.0f,0.0f,0.0f });
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicAttackEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize() / 3);
+	basicAttackEffect_->GetAttackRenderer()->CreateAnimation("FX_BI_SELine_10.png", "FX_BI_SELine_10", 0, 8, 0.03f, false);
 
 	qEffect_ = GetLevel()->CreateActor<JackieQEffect>();
 	qEffect_->SetParent(this);
@@ -525,27 +524,23 @@ void Jackie::onStartBasicAttacking(IUnit* _target)
 		FT::SendPacket(packet);
 	}
 
-
-
-	basicAttackEffectRenderer_->On();
-	basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_SELine_10", true);
-	basicAttackEffectRenderer_->AnimationPlay();
-
-
+	float4 wp = target_->GetTransform()->GetWorldPosition();
+	wp.y += 100.0f;
+	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
+	basicAttackEffect_->PlayAwake("FX_BI_SELine_10");
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("BasicAttack");
+	pack.SetVictimIndex(_target->GetIndex());
 	FT::SendPacket(pack);
+	// 여기 이펙트 패킷 하나
 
 }
 
 void Jackie::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 {
-	if (true == basicAttackEffectRenderer_->IsCurAnimationEnd())
-	{
-		basicAttackEffectRenderer_->Off();
-	}
+
 }
 
 void Jackie::onStartQSkill()
@@ -809,9 +804,14 @@ void Jackie::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 {
 	if ("BasicAttack" == _effectName)
 	{
-		basicAttackEffectRenderer_->On();
-		basicAttackEffectRenderer_->SetChangeAnimation("FX_BI_SELine_10", true);
-		basicAttackEffectRenderer_->AnimationPlay();
+		if (_victim != nullptr)
+		{
+			float4 wp = _victim->GetTransform()->GetWorldPosition();
+			wp.y += 100.0f;
+			basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
+		}
+
+		basicAttackEffect_->PlayAwake("FX_BI_SELine_10");
 		return;
 	}
 
