@@ -78,6 +78,11 @@ DeferredOutPut TextureDeferredLight_PS(VertexOut _In)
     {
         Out.ViewDif.w = 1.0f;
     }
+
+    if (Out.ViewDif.r == 0.0f && Out.ViewDif.g == 0.0f && Out.ViewDif.b == 0.0f)
+    {
+        clip(-1);
+    }
     
     Out.ViewPos = _In.ViewPosition;
     Out.ViewPos.w = 1.0f;
