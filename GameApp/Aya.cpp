@@ -153,6 +153,10 @@ void Aya::Update(float _deltaTime)
 		coolTimer_D_ = 0.5f;
 	}
 
+	if (!bFocused_)
+	{
+		return;
+	}
 	if (ammo_ <= 0)
 	{
 		if (reloadTime_ == 0.0f)
@@ -163,13 +167,14 @@ void Aya::Update(float _deltaTime)
 		ChangeOverrideAnimation("Reload", "Bip001 Spine2");
 		reloadTime_ += _deltaTime;
 
-		if (renderer_->IsOverrideAnimationEnd() || reloadTime_ > 2.0f)
+		if (renderer_->IsOverrideAnimationEnd() || reloadTime_ > 2.5f)
 		{
 			ammo_ = 6;
 			reloadTime_ = 0.0f;
 			renderer_->ClearOverrideAnimation();
 			overrideAnimationBoneName_ = "";
 			overrideAnimationName_ = "";
+			ChangeAnimation("Idle", true);
 		}
 	}
 
@@ -210,8 +215,6 @@ void Aya::initRendererAndAnimation()
 
 	renderer_->ChangeFBXAnimation("Idle");
 
-	renderer_->GetRenderSet(1).isRender = false;
-
 	pistolRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	pistolRenderer_->SetFBXMesh("Weapon_Pistol_01.fbx", "TextureDeferredLightAni");
 	pistolRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
@@ -225,8 +228,9 @@ void Aya::initRendererAndAnimation()
 	// ¿Ü°û¼±
 	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
 	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
-	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
 	MainOutLineRenderer_->Off();
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
+	//MainOutLineRenderer_->GetRenderSet(1).isRender = false;
 
 	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
 	WeaponOutLineRenderer1_->SetBaseRenderer(pistolRenderer_, "PreprocessingAni", true, false);
@@ -253,10 +257,15 @@ void Aya::changeAnimationWait()
 
 void Aya::changeAnimationBasicAttack()
 {
-	if (ammo_ <= 0)
+	if (bFocused_)
 	{
-		return;
+		if (ammo_ <= 0)
+		{
+			ChangeAnimation("Idle");
+			return;
+		}
 	}
+
 	ChangeAnimation("Attack", true);
 }
 
@@ -269,8 +278,13 @@ void Aya::onStartBasicAttacking(IUnit* _target)
 {
 	if (ammo_ <= 0)
 	{
+		ChangeAnimation("Idle");
 		mainState_ << "NormalState";
 		return;
+	}
+	else
+	{
+		ChangeAnimation("Attack");
 	}
 
 	--ammo_;
@@ -312,6 +326,7 @@ void Aya::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 {
 	if (ammo_ <= 0)
 	{
+		mainState_ << "NormalState";
 		return;
 	}
 

@@ -272,7 +272,13 @@ float4x4 FBXAnimation::GetAffine(int _boneIndex, int _renderSetIndex)
 		NextFrame = 0;
 	}
 
-	FbxExBoneFrameData& CurData = PixAniData->AniFrameData[Render.Index][_boneIndex].BoneMatData[CurFrame];
+	int currentFrame = CurFrame;
+	if (currentFrame >= End)
+	{
+		currentFrame = Start;
+	}
+
+	FbxExBoneFrameData& CurData = PixAniData->AniFrameData[Render.Index][_boneIndex].BoneMatData[currentFrame];
 	FbxExBoneFrameData& NextData = PixAniData->AniFrameData[Render.Index][_boneIndex].BoneMatData[NextFrame];
 
 	if (CurData.FrameMat == NextData.FrameMat)
