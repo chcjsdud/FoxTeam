@@ -280,6 +280,8 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 				Renderer->GetTransform()->GetTransformData().WVPCalculation();
 				Renderer->Render(_DeltaTime, true);
 			}
+			// 외곽선 렌더러를 사용하는 렌더러들의 각각의 외곽선 렌더러를 수집
+			// -> CameraDeferredGBufferTarget에 먼저 렌더링하기 위하여 리스트 수집
 			else
 			{
 				std::map<GameEngineRendererBase*, GameEngineRendererBase*>::iterator FindIter = OutLineRendererList_.find(Renderer);
