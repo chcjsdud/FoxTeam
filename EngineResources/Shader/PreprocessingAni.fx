@@ -1,5 +1,6 @@
 #include "CbufferHeader.fx"
 #include "LightHeader.fx"
+#include "AniHeader.fx"
 
 struct VertexIn
 {
@@ -8,11 +9,12 @@ struct VertexIn
     float4 Normal : NORMAL;
     float4 BiNormal : BINORMAL;
     float4 Tangent : TANGENT;
+    float4 Weight : BLENDWEIGHT;
+    int4 Index : BLENDINDICES;
 };
 
 struct VertexOut
 {
-    // 
     float4 Position : SV_POSITION;
     float4 ViewPosition : POSITION;
     float4 Texcoord : TEXTURECOORD;
@@ -21,9 +23,28 @@ struct VertexOut
     float4 ViewTangent : TANGENT;
 };
 
-VertexOut OutLine_VS(VertexIn _In)
+struct DeferredOutPut
+{
+    float4 ViewDif : SV_Target0;
+    float4 ViewPos : SV_Target1;
+    float4 ViewNor : SV_Target2;
+};
+
+Texture2D DiffuseTex : register(t0);
+Texture2D NormalTex : register(t1);
+SamplerState Smp : register(s0);
+
+cbuffer OutLineData : register(b1)
+{
+    float4 LineColor;
+    float LineThickness;
+};
+
+VertexOut PreprocessingAni_VS(VertexIn _In)
 {
     VertexOut Out = (VertexOut) 0;
+    
+    Skinning(_In.Position, _In.Weight, _In.Index, ArrAniMationMatrix);
     
     _In.Position.w = 1.0f;
     Out.Position = mul(_In.Position, WVP_);
@@ -45,36 +66,14 @@ VertexOut OutLine_VS(VertexIn _In)
     return Out;
 }
 
-
-struct DeferredOutPut
-{
-    float4 ViewDif : SV_Target0; // ÅØ½ºÃ³ »ö±ò
-    float4 ViewPos : SV_Target1;
-    float4 ViewNor : SV_Target2;
-};
-
-Texture2D DiffuseTex : register(t0);
-Texture2D NormalTex : register(t1);
-SamplerState Smp : register(s0);
-
-cbuffer OutLineData : register(b1)
-{
-    float4 LineColor;
-    float LineThickness;
-};
-
-DeferredOutPut OutLine_PS(VertexOut _In)
+DeferredOutPut PreprocessingAni_PS(VertexOut _In)
 {
     DeferredOutPut Out;
 
     Out.ViewDif = LineColor;
-    if(0.0f >= Out.ViewDif.w)
-    {
-        Out.ViewDif.w = 1.0f;
-    }
-    
     Out.ViewPos = _In.ViewPosition;
     Out.ViewPos.w = 1.0f;
+    
     Out.ViewNor = _In.ViewNormal;
     Out.ViewNor.w = 1.0f;
  
@@ -83,4 +82,3 @@ DeferredOutPut OutLine_PS(VertexOut _In)
     
     return Out;
 }
-

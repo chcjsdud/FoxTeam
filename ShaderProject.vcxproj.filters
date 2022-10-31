@@ -81,10 +81,10 @@
     <FxCompile Include="EngineResources\Shader\TextureTrans.fx">
       <Filter>Engine</Filter>
     </FxCompile>
-    <FxCompile Include="EngineResources\Shader\OutLineAni.fx">
+    <FxCompile Include="EngineResources\Shader\PreprocessingAni.fx">
       <Filter>Engine</Filter>
     </FxCompile>
-    <FxCompile Include="EngineResources\Shader\OutLine.fx">
+    <FxCompile Include="EngineResources\Shader\Preprocessing.fx">
       <Filter>Engine</Filter>
     </FxCompile>
   </ItemGroup>

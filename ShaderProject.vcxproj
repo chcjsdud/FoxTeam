@@ -30,8 +30,8 @@
     <FxCompile Include="EngineResources\Shader\DeferredNavTile.fx" />
     <FxCompile Include="EngineResources\Shader\Fade.fx" />
     <FxCompile Include="EngineResources\Shader\LightHeader.fx" />
-    <FxCompile Include="EngineResources\Shader\OutLine.fx" />
-    <FxCompile Include="EngineResources\Shader\OutLineAni.fx" />
+    <FxCompile Include="EngineResources\Shader\Preprocessing.fx" />
+    <FxCompile Include="EngineResources\Shader\PreprocessingAni.fx" />
     <FxCompile Include="EngineResources\Shader\PJWAni.fx" />
     <FxCompile Include="EngineResources\Shader\ProgressBar.fx" />
     <FxCompile Include="EngineResources\Shader\TargetMerge.fx" />

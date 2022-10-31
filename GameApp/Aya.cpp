@@ -164,11 +164,11 @@ void Aya::initRendererAndAnimation()
 	pistolRenderer_->ChangeFBXAnimation("Idle");
 
 	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainOutLineRenderer_->SetBaseRenderer(renderer_, "ObjectOutLineAni", true);
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
 	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
 
 	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponOutLineRenderer1_->SetBaseRenderer(pistolRenderer_, "ObjectOutLineAni", true);
+	WeaponOutLineRenderer1_->SetBaseRenderer(pistolRenderer_, "PreprocessingAni", true);
 }
 
 void Aya::changeAnimationRun()

@@ -343,14 +343,14 @@ void Jackie::initRendererAndAnimation()
 	axeRenderer_->ChangeFBXAnimation("Idle");
 
 	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainOutLineRenderer_->SetBaseRenderer(renderer_, "ObjectOutLineAni", true);
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
 	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
 
 	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponOutLineRenderer1_->SetBaseRenderer(axeRenderer_, "ObjectOutLineAni", true);
+	WeaponOutLineRenderer1_->SetBaseRenderer(axeRenderer_, "PreprocessingAni", true);
 
 	WeaponOutLineRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponOutLineRenderer2_->SetBaseRenderer(sawRenderer_, "ObjectOutLineAni", true);
+	WeaponOutLineRenderer2_->SetBaseRenderer(sawRenderer_, "PreprocessingAni", true);
 }
 
 void Jackie::initJackieCollision()
