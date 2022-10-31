@@ -54,10 +54,10 @@ CameraComponent::~CameraComponent()
 		CameraDeferredTarget_ = nullptr;
 	}
 
-	if (nullptr != CameraOutLineTarget_)
+	if (nullptr != CameraPreprocessingTarget_)
 	{
-		delete CameraOutLineTarget_;
-		CameraOutLineTarget_ = nullptr;
+		delete CameraPreprocessingTarget_;
+		CameraPreprocessingTarget_ = nullptr;
 	}
 }
 
@@ -258,7 +258,7 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	CameraDeferredGBufferTarget->Clear();
 	CameraDeferredGBufferTarget->Setting();
 
-	// 외곽선 없는 렌더러 먼저 그리고,
+	// 선처리가 필요없는 렌더러를 먼저 그리고,
 	std::list<GameEngineRendererBase*> OutLineList;
 	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
 	{
@@ -280,7 +280,7 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 				Renderer->GetTransform()->GetTransformData().WVPCalculation();
 				Renderer->Render(_DeltaTime, true);
 			}
-			// 외곽선 렌더러를 사용하는 렌더러들의 각각의 외곽선 렌더러를 수집
+			// 선처리가 필요한 렌더러를 사용하는 렌더러들의 각각의 선처리 렌더러를 수집
 			// -> CameraDeferredGBufferTarget에 먼저 렌더링하기 위하여 리스트 수집
 			else
 			{
@@ -293,24 +293,25 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 		}
 	}
 
-	// 외곽선을 그리고
+	// 선처리렌더러를 먼저그리고,
 	for (GameEngineRendererBase* Renderer : OutLineList)
 	{
-		// 외곽선 타겟 셋팅
-		CameraOutLineTarget_->Clear(false);
-		CameraOutLineTarget_->Setting();
+		// 선처리렌더러 타겟 셋팅
+		CameraPreprocessingTarget_->Clear(false);
+		CameraPreprocessingTarget_->Setting();
 
+		// 선처리렌더러를 그리고나서
 		Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
 		Renderer->GetTransform()->GetTransformData().View_ = View;
 		Renderer->GetTransform()->GetTransformData().WVPCalculation();
 		Renderer->Render(_DeltaTime, true);
 
 		// 본래타겟에 합치고
-		CameraDeferredGBufferTarget->Merge(CameraOutLineTarget_);
+		CameraDeferredGBufferTarget->Merge(CameraPreprocessingTarget_);
 	}
 	OutLineList.clear();
 
-	// 외곽선을 가지고있는 렌더러들을 그린다.
+	// 선처리렌더러를 가지고있는 렌더러들을 그린다.
 	CameraDeferredGBufferTarget->Setting();
 	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
 	{
@@ -377,7 +378,7 @@ void CameraComponent::PushLight(GameEngineLightComponent* _Light)
 	Lights_.push_back(_Light);
 }
 
-void CameraComponent::PushOutLineRenderer(GameEngineRendererBase* _BaseRenderer, GameEngineOutlineRenderer* _OutLineRenderer)
+void CameraComponent::PushOutLineRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _OutLineRenderer)
 {
 	OutLineRendererList_[_BaseRenderer] = _OutLineRenderer;
 }
@@ -495,8 +496,8 @@ void CameraComponent::Start()
 	DeferredMergeEffect.SetResult(CameraDeferredTarget_);
 	DeferredMergeEffect.SetDeferredTarget(CameraDeferredGBufferTarget, CameraDeferredLightTarget);
 
-	CameraOutLineTarget_ = new GameEngineRenderTarget();
-	CameraOutLineTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
+	CameraPreprocessingTarget_ = new GameEngineRenderTarget();
+	CameraPreprocessingTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
 	CameraForwardTarget_->SetDepthBuffer(CameraBufferTarget_->GetDepthBuffer());
 }
 

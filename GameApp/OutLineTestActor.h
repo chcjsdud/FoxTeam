@@ -5,7 +5,7 @@
 // 용도 : 테스트
 // 설명 : 
 class GameEngineFBXRenderer;
-class GameEngineOutlineRenderer;
+class GameEnginePreprocessingRenderer;
 class OutLineTestActor : public GameEngineActor
 {
 public:
@@ -35,6 +35,6 @@ private:
 
 private:
 	GameEngineFBXRenderer* TestBaseRenderer_;
-	GameEngineOutlineRenderer* TestRenderer_;
+	GameEnginePreprocessingRenderer* TestRenderer_;
 };
 

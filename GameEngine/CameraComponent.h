@@ -2,7 +2,7 @@
 #include "GameEngineTransformComponent.h"
 #include "GameEngineDebugRenderData.h"
 #include "GameEngineLightComponent.h"
-#include "GameEngineOutlineRenderer.h"
+#include "GameEnginePreprocessingRenderer.h"
 #include "DeferredCalLightEffect.h"
 #include "DeferredMerge.h"
 #include "Enums.h"
@@ -50,7 +50,7 @@ private:
 	GameEngineRenderTarget* CameraDeferredLightTarget;
 	GameEngineRenderTarget* CameraDeferredTarget_;
 
-	GameEngineRenderTarget* CameraOutLineTarget_;
+	GameEngineRenderTarget* CameraPreprocessingTarget_;
 
 public:
 	CameraComponent();
@@ -138,7 +138,7 @@ public:
 	void SetProjectionMode(ProjectionMode _ProjectionMode);
 	void PushRenderer(int _Order, GameEngineRendererBase* _Renderer);
 	void PushLight(GameEngineLightComponent* _Light);
-	void PushOutLineRenderer(GameEngineRendererBase* _BaseRenderer, GameEngineOutlineRenderer* _OutLineRenderer);
+	void PushOutLineRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _OutLineRenderer);
 
 public:
 	void PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color = float4::GREEN);

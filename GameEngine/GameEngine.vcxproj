@@ -147,7 +147,7 @@
       <SubType>
       </SubType>
     </ClInclude>
-    <ClInclude Include="GameEngineOutlineRenderer.h" />
+    <ClInclude Include="GameEnginePreprocessingRenderer.h" />
     <ClInclude Include="GameEnginePacketBase.h">
       <SubType>
       </SubType>
@@ -436,7 +436,7 @@
       <SubType>
       </SubType>
     </ClCompile>
-    <ClCompile Include="GameEngineOutlineRenderer.cpp" />
+    <ClCompile Include="GameEnginePreprocessingRenderer.cpp" />
     <ClCompile Include="GameEnginePacketBase.cpp">
       <SubType>
       </SubType>

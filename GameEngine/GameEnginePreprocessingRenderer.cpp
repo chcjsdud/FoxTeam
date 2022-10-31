@@ -1,5 +1,5 @@
 #include "PreCompile.h"
-#include "GameEngineOutlineRenderer.h"
+#include "GameEnginePreprocessingRenderer.h"
 
 #include "GameEngineFBXRenderer.h"
 #include "GameEngineLevel.h"
@@ -18,12 +18,12 @@
 #include "GameEngineFBXAnimationManager.h"
 #include "GameEngineTextureManager.h"
 
-RenderSet& GameEngineOutlineRenderer::GetRenderSet(unsigned int _Index)
+RenderSet& GameEnginePreprocessingRenderer::GetRenderSet(unsigned int _Index)
 {
 	return RenderSets_[_Index];
 }
 
-void GameEngineOutlineRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName, bool _IsCharacter)
+void GameEnginePreprocessingRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName, bool _IsCharacter)
 {
 	// 베이스가되는 렌더러 셋팅
 	BaseRenderer_ = _BaseRenderer;
@@ -43,13 +43,13 @@ void GameEngineOutlineRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRend
 	BaseRenderer_->SetOutLineRenderer(this);
 }
 
-void GameEngineOutlineRenderer::SetOutLineData(const float4& _LineColor, float _LineThickness)
+void GameEnginePreprocessingRenderer::SetOutLineData(const float4& _LineColor, float _LineThickness)
 {
 	OutLineData_.LineColor = _LineColor;
 	OutLineData_.LineThickness = _LineThickness;
 }
 
-void GameEngineOutlineRenderer::SetMesh(std::string _PipeLineName, bool _IsCharacter)
+void GameEnginePreprocessingRenderer::SetMesh(std::string _PipeLineName, bool _IsCharacter)
 {
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh_->GetAllMeshMap();
 	int AllMeshCount = static_cast<int>(AllMeshSet.size());
@@ -70,7 +70,7 @@ void GameEngineOutlineRenderer::SetMesh(std::string _PipeLineName, bool _IsChara
 	}
 }
 
-void GameEngineOutlineRenderer::SetFBXMeshRenderSet(std::string _PipeLineName, int _MeshIndex)
+void GameEnginePreprocessingRenderer::SetFBXMeshRenderSet(std::string _PipeLineName, int _MeshIndex)
 {
 	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find(_PipeLineName);
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh_->GetAllMeshMap();
@@ -199,7 +199,7 @@ void GameEngineOutlineRenderer::SetFBXMeshRenderSet(std::string _PipeLineName, i
 	}
 }
 
-void GameEngineOutlineRenderer::SetFBXMeshRenderSetCharacter(std::string _PipeLineName, int _MeshIndex)
+void GameEnginePreprocessingRenderer::SetFBXMeshRenderSetCharacter(std::string _PipeLineName, int _MeshIndex)
 {
 	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find(_PipeLineName);
 	
@@ -328,14 +328,14 @@ void GameEngineOutlineRenderer::SetFBXMeshRenderSetCharacter(std::string _PipeLi
 	}
 }
 
-void GameEngineOutlineRenderer::Start()
+void GameEnginePreprocessingRenderer::Start()
 {
 	// 상수버퍼 링크정보 초기화
 	OutLineData_.LineColor = float4::RED;
 	OutLineData_.LineThickness = 2.0f;
 }
 
-void GameEngineOutlineRenderer::Update(float _DeltaTime)
+void GameEnginePreprocessingRenderer::Update(float _DeltaTime)
 {
 	// 베이스의 렌더셋 본데이터로 내 본데이터를 갱신
 	if (nullptr != BaseRenderer_)
@@ -347,7 +347,7 @@ void GameEngineOutlineRenderer::Update(float _DeltaTime)
 	}
 }
 
-void GameEngineOutlineRenderer::Render(float _DeltaTime, bool _IsDeferred)
+void GameEnginePreprocessingRenderer::Render(float _DeltaTime, bool _IsDeferred)
 {
 	for (size_t i = 0; i < RenderSets_.size(); i++)
 	{
@@ -373,14 +373,14 @@ void GameEngineOutlineRenderer::Render(float _DeltaTime, bool _IsDeferred)
 	}
 }
 
-GameEngineOutlineRenderer::GameEngineOutlineRenderer()
+GameEnginePreprocessingRenderer::GameEnginePreprocessingRenderer()
 	: OutLineData_{}
 	, BaseRenderer_(nullptr)
 	, FBXMesh_(nullptr)
 {
 }
 
-GameEngineOutlineRenderer::~GameEngineOutlineRenderer()
+GameEnginePreprocessingRenderer::~GameEnginePreprocessingRenderer()
 {
 	for (size_t i = 0; i < RenderSets_.size(); i++)
 	{

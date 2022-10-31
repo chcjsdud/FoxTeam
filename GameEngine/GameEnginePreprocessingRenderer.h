@@ -13,7 +13,7 @@ struct OutLineData
 // 용도 : 외곽선처리
 // 설명 : 
 class GameEngineFBXRenderer;
-class GameEngineOutlineRenderer : public GameEngineRenderer
+class GameEnginePreprocessingRenderer : public GameEngineRenderer
 {
 public:
 	RenderSet& GetRenderSet(unsigned int _Index);
@@ -36,16 +36,16 @@ private:
 	void Render(float _DeltaTime, bool _IsDeferred) override;
 
 public:
-	GameEngineOutlineRenderer();
-	~GameEngineOutlineRenderer();
+	GameEnginePreprocessingRenderer();
+	~GameEnginePreprocessingRenderer();
 
 protected:
-	GameEngineOutlineRenderer(const GameEngineOutlineRenderer& _Other) = delete;
-	GameEngineOutlineRenderer(GameEngineOutlineRenderer&& _Other) noexcept = delete;
+	GameEnginePreprocessingRenderer(const GameEnginePreprocessingRenderer& _Other) = delete;
+	GameEnginePreprocessingRenderer(GameEnginePreprocessingRenderer&& _Other) noexcept = delete;
 
 private:
-	GameEngineOutlineRenderer& operator=(const GameEngineOutlineRenderer& _Other) = delete;
-	GameEngineOutlineRenderer& operator=(GameEngineOutlineRenderer&& _Other) noexcept = delete;
+	GameEnginePreprocessingRenderer& operator=(const GameEnginePreprocessingRenderer& _Other) = delete;
+	GameEnginePreprocessingRenderer& operator=(GameEnginePreprocessingRenderer&& _Other) noexcept = delete;
 
 public:
 protected:

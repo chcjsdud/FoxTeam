@@ -445,7 +445,7 @@ void GameEngineFBXRenderer::ClearParentBone()
 	parentBoneIndex_ = -1;
 }
 
-void GameEngineFBXRenderer::SetOutLineRenderer(GameEngineOutlineRenderer* _OutLineRenderer)
+void GameEngineFBXRenderer::SetOutLineRenderer(GameEnginePreprocessingRenderer* _OutLineRenderer)
 {
 	// ¿Ü°û¼±·»´õ·¯ ÀúÀå
 	OutLineRenderer_ = _OutLineRenderer;

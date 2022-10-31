@@ -441,7 +441,7 @@ protected:
 
 // ¿Ü°û¼±Ã³¸®
 protected:
-	GameEngineOutlineRenderer* MainOutLineRenderer_;
-	GameEngineOutlineRenderer* WeaponOutLineRenderer1_;
-	GameEngineOutlineRenderer* WeaponOutLineRenderer2_;
+	GameEnginePreprocessingRenderer* MainOutLineRenderer_;
+	GameEnginePreprocessingRenderer* WeaponOutLineRenderer1_;
+	GameEnginePreprocessingRenderer* WeaponOutLineRenderer2_;
 };

@@ -425,7 +425,7 @@
     <ClInclude Include="GameEngineBoneComponent.h">
       <Filter>Object\Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="GameEngineOutlineRenderer.h">
+    <ClInclude Include="GameEnginePreprocessingRenderer.h">
       <Filter>Object\Component\Render\OutLine</Filter>
     </ClInclude>
   </ItemGroup>
@@ -700,7 +700,7 @@
     <ClCompile Include="GameEngineBoneComponent.cpp">
       <Filter>Object\Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="GameEngineOutlineRenderer.cpp">
+    <ClCompile Include="GameEnginePreprocessingRenderer.cpp">
       <Filter>Object\Component\Render\OutLine</Filter>
     </ClCompile>
   </ItemGroup>
