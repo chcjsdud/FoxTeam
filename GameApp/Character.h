@@ -332,6 +332,7 @@ protected:
 	// ÄÄÆ÷³ÍÆ®
 	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* collision_;
+	GameEngineEffectRenderer* shadow_;
 
 	// ¸Ê, ÀÌµ¿
 	LumiaMap* currentMap_;

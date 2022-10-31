@@ -671,6 +671,7 @@ void Rio::onUpdateRSkill(float _deltaTime)
 			{
 				attackState_.GetCurrentState()->Time_ = -5.f;
 				bShortRSkillExtra_ = true;
+				coolTimer_R_ = 0.0f;
 			}
 		}
 	}

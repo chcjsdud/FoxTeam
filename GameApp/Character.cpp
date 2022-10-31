@@ -131,6 +131,13 @@ void Character::Start()
 	collision_->GetTransform()->SetLocalScaling(150.0f);
 	collision_->SetCollisionGroup(eCollisionGroup::Player);
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
+	
+	shadow_ = CreateTransformComponent<GameEngineEffectRenderer>();
+	shadow_->SetImage("shadow.png", "LINEARSmp");
+	shadow_->GetTransform()->SetLocalScaling({ 150.f, 150.f});
+	shadow_->GetTransform()->SetLocalRotationDegree({ 90.f, 0.0f });
+	shadow_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 0.0f });
+	shadow_->SetAlpha(0.5f);
 
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 	// 현재 레벨이 루미아 레벨이 아닌 경우 처리하지 않음
