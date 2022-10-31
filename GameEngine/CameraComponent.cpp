@@ -394,6 +394,11 @@ void CameraComponent::PushPreprocessingRenderer(GameEngineRendererBase* _BaseRen
 
 void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color)
 {
+	if (IsDebugCheck() == true)
+	{
+		return;
+	}
+
 	switch (_Type)
 	{
 	case CollisionType::Point2D:

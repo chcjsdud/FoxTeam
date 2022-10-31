@@ -96,11 +96,6 @@ public:
 
 	bool IsDebugCheck()
 	{
-		if (true == isDebug_)
-		{
-			int a = 0;
-		}
-
 		return isDebug_;
 	}
 

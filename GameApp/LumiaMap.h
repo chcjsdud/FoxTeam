@@ -66,6 +66,7 @@ protected:
 	GameEngineFBXRenderer* navMeshRenderer_;
 	NavMesh* navMesh_;
 	GameEngineFBXRenderer* downTownRenderer_;
+	GameEngineRenderer* navTileRenderer_;
 	std::vector<GameEngineFBXRenderer*> mapRenderers;
 
 private:
@@ -74,5 +75,6 @@ private:
 	std::vector<float4> hyperLoopSpawnPoints_;
 
 	float mapScale_;
+
 };
 

@@ -194,8 +194,8 @@ void LumiaLevel::MapCreationCommand()
 
 	std::vector<float4> hyperLoopSpawnPoints = CurMap_->GetHyperLoopSpawnPoints();
 
-	
-	GameEngineActor* HyperLoops[8] = {nullptr, };
+
+	GameEngineActor* HyperLoops[8] = { nullptr, };
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -213,10 +213,10 @@ void LumiaLevel::MapCreationCommand()
 	HyperLoops[7]->GetTransform()->SetWorldRotationDegree({ 0.0f, 0.0f, 0.0f });
 
 
-//#ifdef _DEBUG
+	//#ifdef _DEBUG
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 맵생성을 완료했습니다\n");
-//#endif // _DEBUG
+	//#endif // _DEBUG
 }
 
 void LumiaLevel::MonsterCreationCommand()
@@ -237,41 +237,41 @@ void LumiaLevel::MonsterCreationCommand()
 		MonsterType CurMonsterType = CurMonsterInfo.MonsterType_;
 		switch (CurMonsterType)
 		{
-			case MonsterType::WOLF:					// 늑대
-			{
-				NewMonster = CreateActor<Wolf>();
-				break;
-			}
-			case MonsterType::BEAR:					// 곰
-			{
-				NewMonster = CreateActor<Bear>();
-				break;
-			}
-			case MonsterType::BAT:					// 박쥐
-			{
-				NewMonster = CreateActor<Bat>();
-				break;
-			}
-			case MonsterType::DOG:					// 들개
-			{
-				NewMonster = CreateActor<Dog>();
-				break;
-			}
-			case MonsterType::CHICKEN:				// 닭
-			{
-				NewMonster = CreateActor<Chicken>();
-				break;
-			}
-			case MonsterType::BOAR:					// 멧돼지
-			{
-				NewMonster = CreateActor<Boar>();
-				break;
-			}
-			//case MonsterType::WEEKLINE:				// Dr.위클라인
-			//{
-			//	GameEngineDebug::OutPutDebugString("구현하지못한 몬스터타입(Dr.위클라인)입니다!!!!");
-			//	break;
-			//}
+		case MonsterType::WOLF:					// 늑대
+		{
+			NewMonster = CreateActor<Wolf>();
+			break;
+		}
+		case MonsterType::BEAR:					// 곰
+		{
+			NewMonster = CreateActor<Bear>();
+			break;
+		}
+		case MonsterType::BAT:					// 박쥐
+		{
+			NewMonster = CreateActor<Bat>();
+			break;
+		}
+		case MonsterType::DOG:					// 들개
+		{
+			NewMonster = CreateActor<Dog>();
+			break;
+		}
+		case MonsterType::CHICKEN:				// 닭
+		{
+			NewMonster = CreateActor<Chicken>();
+			break;
+		}
+		case MonsterType::BOAR:					// 멧돼지
+		{
+			NewMonster = CreateActor<Boar>();
+			break;
+		}
+		//case MonsterType::WEEKLINE:				// Dr.위클라인
+		//{
+		//	GameEngineDebug::OutPutDebugString("구현하지못한 몬스터타입(Dr.위클라인)입니다!!!!");
+		//	break;
+		//}
 		}
 
 		// 예외처리
@@ -310,7 +310,7 @@ void LumiaLevel::MonsterCreationCommand()
 //#ifdef _DEBUG
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 몬스터생성을 완료했습니다\n");
-//#endif // _DEBUG
+	//#endif // _DEBUG
 }
 
 void LumiaLevel::CharacterCreationCommand()
@@ -333,41 +333,41 @@ void LumiaLevel::CharacterCreationCommand()
 		Character* NewCharacter = nullptr;
 		switch (CurCharacterType)
 		{
-			case JobType::YUKI:
-			{
-				NewCharacter = CreateActor<Yuki>();
-				break;
-			}
-			case JobType::FIORA:
-			{
-				//NewCharacter = CreateActor<Fiora>();
-				break;
-			}
-			case JobType::HYUNWOO:
-			{
-				NewCharacter = CreateActor<Hyunwoo>();
-				break;
-			}
-			case JobType::AYA:
-			{
-				NewCharacter = CreateActor<Aya>();
-				break;
-			}
-			case JobType::RIO:
-			{
-				NewCharacter = CreateActor<Rio>();
-				break;
-			}
-			case JobType::JACKIE:
-			{
-				NewCharacter = CreateActor<Jackie>();
-				break;
-			}
-			case JobType::DUMMY:
-			{
-				NewCharacter = CreateActor<Rio>();
-				break;
-			}
+		case JobType::YUKI:
+		{
+			NewCharacter = CreateActor<Yuki>();
+			break;
+		}
+		case JobType::FIORA:
+		{
+			//NewCharacter = CreateActor<Fiora>();
+			break;
+		}
+		case JobType::HYUNWOO:
+		{
+			NewCharacter = CreateActor<Hyunwoo>();
+			break;
+		}
+		case JobType::AYA:
+		{
+			NewCharacter = CreateActor<Aya>();
+			break;
+		}
+		case JobType::RIO:
+		{
+			NewCharacter = CreateActor<Rio>();
+			break;
+		}
+		case JobType::JACKIE:
+		{
+			NewCharacter = CreateActor<Jackie>();
+			break;
+		}
+		case JobType::DUMMY:
+		{
+			NewCharacter = CreateActor<Rio>();
+			break;
+		}
 		}
 
 		// 예외처리
@@ -396,7 +396,7 @@ void LumiaLevel::CharacterCreationCommand()
 			PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = spawnPoints[point];
 			NewCharacter->InitSpawnPoint(spawnPoints[point]);
 		}
-		
+
 		NewCharacter->SetIndex(PlayerNum);
 		NewCharacter->UnitType_ = UnitType::CHARACTER;
 		// 관리목록에 추가
@@ -411,9 +411,9 @@ void LumiaLevel::CharacterCreationCommand()
 		}
 	}
 
-//#ifdef _DEBUG
+	//#ifdef _DEBUG
 	GameEngineDebug::OutPutDebugString(std::to_string(pm->GetMyNumber()) + "번째 플레이어의 캐릭터생성을 완료했습니다\n");
-//#endif // _DEBUG
+	//#endif // _DEBUG
 }
 
 void LumiaLevel::MapResourceLoad()
@@ -428,7 +428,7 @@ void LumiaLevel::MapResourceLoad()
 		Mesh->CreateRenderingBuffer();
 	}
 
-	
+
 
 	GameEngineDirectory UserMapMeshDir;
 	UserMapMeshDir.MoveParent("FoxTeam");
@@ -528,6 +528,11 @@ void LumiaLevel::CreateLevelInput()
 	if (false == GameEngineInput::GetInst().IsKey("O"))
 	{
 		GameEngineInput::GetInst().CreateKey("O", 'O');
+	}
+
+	if (false == GameEngineInput::GetInst().IsKey("L"))
+	{
+		GameEngineInput::GetInst().CreateKey("L", 'L');
 	}
 
 	if (false == GameEngineInput::GetInst().IsKey("LButton"))
@@ -829,36 +834,36 @@ void LumiaLevel::DebugWindowUpdate()
 				MonsterType Type = vecMonsters[MonsterNum]->GetMonsterType();
 				switch (Type)
 				{
-					case MonsterType::WOLF:
-					{
-						MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(WOLF) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
-						break;
-					}
-					case MonsterType::BEAR:
-					{
-						MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(BEAR) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
-						break;
-					}
-					case MonsterType::BAT:
-					{
-						MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(BAT) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
-						break;
-					}
-					case MonsterType::DOG:
-					{
-						MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(DOG) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
-						break;
-					}
-					case MonsterType::CHICKEN:
-					{
-						MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(CHICKEN) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
-						break;
-					}
-					case MonsterType::BOAR:
-					{
-						MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(BOAR) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
-						break;
-					}
+				case MonsterType::WOLF:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(WOLF) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+				case MonsterType::BEAR:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(BEAR) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+				case MonsterType::BAT:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(BAT) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+				case MonsterType::DOG:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(DOG) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+				case MonsterType::CHICKEN:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(CHICKEN) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
+				case MonsterType::BOAR:
+				{
+					MonsterDebugWindow_->AddText("Monster" + std::to_string(Index) + "(BOAR) -> " + "Pos< " + "x " + std::to_string(CurPos.x) + " y " + std::to_string(CurPos.y) + " z " + std::to_string(CurPos.z) + +">");
+					break;
+				}
 				}
 
 				// 현재체력
@@ -873,106 +878,106 @@ void LumiaLevel::DebugWindowUpdate()
 				MonsterStateBasicType CurMainState = vecMonsters[MonsterNum]->GetMonsterBasicStateType();
 				switch (CurMainState)
 				{
-					case MonsterStateBasicType::NONE:
-					{
-						MonsterDebugWindow_->AddText("MainState: NONE");
-						break;
-					}
-					case MonsterStateBasicType::NORMAL:
-					{
-						MonsterDebugWindow_->AddText("MainState: NORMAL");
-						break;
-					}
-					case MonsterStateBasicType::CROWDCONTROL:
-					{
-						MonsterDebugWindow_->AddText("MainState: CROWDCONTROL");
-						break;
-					}
-					case MonsterStateBasicType::ATTACK:
-					{
-						MonsterDebugWindow_->AddText("MainState: ATTACK");
-						break;
-					}
+				case MonsterStateBasicType::NONE:
+				{
+					MonsterDebugWindow_->AddText("MainState: NONE");
+					break;
+				}
+				case MonsterStateBasicType::NORMAL:
+				{
+					MonsterDebugWindow_->AddText("MainState: NORMAL");
+					break;
+				}
+				case MonsterStateBasicType::CROWDCONTROL:
+				{
+					MonsterDebugWindow_->AddText("MainState: CROWDCONTROL");
+					break;
+				}
+				case MonsterStateBasicType::ATTACK:
+				{
+					MonsterDebugWindow_->AddText("MainState: ATTACK");
+					break;
+				}
 				}
 
 				MonsterStateType CurDetailState = vecMonsters[MonsterNum]->GetMonsterDetailStateType();
 				switch (CurDetailState)
 				{
-					case MonsterStateType::NONE:
-					{
-						MonsterDebugWindow_->AddText("DetailState: NONE");
-						break;
-					}
-					case MonsterStateType::APPEAR:
-					{
-						MonsterDebugWindow_->AddText("DetailState: APPEAR");
-						break;
-					}
-					case MonsterStateType::REGEN:
-					{
-						MonsterDebugWindow_->AddText("DetailState: REGEN");
-						break;
-					}
-					case MonsterStateType::IDLE:
-					{
-						MonsterDebugWindow_->AddText("DetailState: IDLE");
-						break;
-					}
-					case MonsterStateType::HOMINGINSTINCT:
-					{
-						MonsterDebugWindow_->AddText("DetailState: HOMINGINSTINCT");
-						break;
-					}
-					case MonsterStateType::CHASE:
-					{
-						MonsterDebugWindow_->AddText("DetailState: CHASE");
-						break;
-					}
-					case MonsterStateType::HIT:
-					{
-						MonsterDebugWindow_->AddText("DetailState: HIT");
-						break;
-					}
-					case MonsterStateType::DEATH:
-					{
-						MonsterDebugWindow_->AddText("DetailState: DEATH");
-						break;
-					}
-					case MonsterStateType::DEAD:
-					{
-						MonsterDebugWindow_->AddText("DetailState: DEAD");
-						break;
-					}
-					case MonsterStateType::STUN:
-					{
-						MonsterDebugWindow_->AddText("DetailState: STUN");
-						break;
-					}
-					case MonsterStateType::KNOCKBACK:
-					{
-						MonsterDebugWindow_->AddText("DetailState: KNOCKBACK");
-						break;
-					}
-					case MonsterStateType::WALLSLAM:
-					{
-						MonsterDebugWindow_->AddText("DetailState: WALLSLAM");
-						break;
-					}
-					case MonsterStateType::ATK01:
-					{
-						MonsterDebugWindow_->AddText("DetailState: ATK01");
-						break;
-					}
-					case MonsterStateType::ATK02:
-					{
-						MonsterDebugWindow_->AddText("DetailState: ATK02");
-						break;
-					}
-					case MonsterStateType::SKILLATTACK:
-					{
-						MonsterDebugWindow_->AddText("DetailState: SKILLATTACK");
-						break;
-					}
+				case MonsterStateType::NONE:
+				{
+					MonsterDebugWindow_->AddText("DetailState: NONE");
+					break;
+				}
+				case MonsterStateType::APPEAR:
+				{
+					MonsterDebugWindow_->AddText("DetailState: APPEAR");
+					break;
+				}
+				case MonsterStateType::REGEN:
+				{
+					MonsterDebugWindow_->AddText("DetailState: REGEN");
+					break;
+				}
+				case MonsterStateType::IDLE:
+				{
+					MonsterDebugWindow_->AddText("DetailState: IDLE");
+					break;
+				}
+				case MonsterStateType::HOMINGINSTINCT:
+				{
+					MonsterDebugWindow_->AddText("DetailState: HOMINGINSTINCT");
+					break;
+				}
+				case MonsterStateType::CHASE:
+				{
+					MonsterDebugWindow_->AddText("DetailState: CHASE");
+					break;
+				}
+				case MonsterStateType::HIT:
+				{
+					MonsterDebugWindow_->AddText("DetailState: HIT");
+					break;
+				}
+				case MonsterStateType::DEATH:
+				{
+					MonsterDebugWindow_->AddText("DetailState: DEATH");
+					break;
+				}
+				case MonsterStateType::DEAD:
+				{
+					MonsterDebugWindow_->AddText("DetailState: DEAD");
+					break;
+				}
+				case MonsterStateType::STUN:
+				{
+					MonsterDebugWindow_->AddText("DetailState: STUN");
+					break;
+				}
+				case MonsterStateType::KNOCKBACK:
+				{
+					MonsterDebugWindow_->AddText("DetailState: KNOCKBACK");
+					break;
+				}
+				case MonsterStateType::WALLSLAM:
+				{
+					MonsterDebugWindow_->AddText("DetailState: WALLSLAM");
+					break;
+				}
+				case MonsterStateType::ATK01:
+				{
+					MonsterDebugWindow_->AddText("DetailState: ATK01");
+					break;
+				}
+				case MonsterStateType::ATK02:
+				{
+					MonsterDebugWindow_->AddText("DetailState: ATK02");
+					break;
+				}
+				case MonsterStateType::SKILLATTACK:
+				{
+					MonsterDebugWindow_->AddText("DetailState: SKILLATTACK");
+					break;
+				}
 				}
 
 				// 타겟
@@ -1069,6 +1074,18 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 	if (true == GameEngineInput::GetInst().Down("O"))
 	{
 		GetMainCameraActor()->FreeCameraModeSwitch();
+	}
+
+	if (true == GameEngineInput::Down("L"))
+	{
+		if (GetMainCamera()->IsDebugCheck())
+		{
+			GetMainCamera()->DebugOff();
+		}
+		else
+		{
+			GetMainCamera()->DebugOn();
+		}
 	}
 
 	// MainCamera Adjustment

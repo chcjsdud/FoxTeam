@@ -155,6 +155,15 @@ void LumiaMap::Start()
 
 void LumiaMap::Update(float _deltaTime)
 {
+	if (level_->GetMainCamera()->IsDebugCheck() == true)
+	{
+		navTileRenderer_->Off();
+	}
+	else
+	{
+		navTileRenderer_->On();
+	}
+
 	if (nullptr != PlayerInfoManager::GetInstance()->GetMainCharacter())
 	{
 		float4 PlayerPos = PlayerInfoManager::GetInstance()->
@@ -489,11 +498,11 @@ void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 	tileVertexBuffer_->Create(tileVertices_, D3D11_USAGE::D3D11_USAGE_DYNAMIC);
 	tileIndexBuffer_->Create(tileIndices_, D3D11_USAGE::D3D11_USAGE_DEFAULT);
 
-	GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
-	Renderer->SetRenderingPipeLine("DeferredNavTile");
-	Renderer->SetMesh(tileVertexBuffer_, tileIndexBuffer_);
-	Renderer->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
-	//Renderer->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
+	navTileRenderer_ = CreateTransformComponent<GameEngineRenderer>(GetTransform());
+	navTileRenderer_->SetRenderingPipeLine("DeferredNavTile");
+	navTileRenderer_->SetMesh(tileVertexBuffer_, tileIndexBuffer_);
+	navTileRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
+	//navTileRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 }
 
 void LumiaMap::checkASterNodeObstacle()
