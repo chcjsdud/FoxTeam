@@ -211,6 +211,7 @@ void Rio::initRendererAndAnimation()
 
 	WeaponOutLineRenderer2_ = CreateTransformComponent<GameEngineOutlineRenderer>();
 	WeaponOutLineRenderer2_->SetBaseRenderer(longBow_, "ObjectOutLineAni", true);
+	WeaponOutLineRenderer2_->GetRenderSet(0).isRender = false;
 }
 
 void Rio::changeAnimationWait()
