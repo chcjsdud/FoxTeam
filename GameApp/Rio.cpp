@@ -208,7 +208,6 @@ void Rio::initRendererAndAnimation()
 
 	GameEngineOutlineRenderer* TestRenderer2 = CreateTransformComponent<GameEngineOutlineRenderer>();
 	TestRenderer2->SetBaseRenderer(shortBow_, "ObjectOutLineAni", true);
-	TestRenderer2->GetRenderSet(0).isRender = false;
 
 	GameEngineOutlineRenderer* TestRenderer3 = CreateTransformComponent<GameEngineOutlineRenderer>();
 	TestRenderer3->SetBaseRenderer(longBow_, "ObjectOutLineAni", true);
