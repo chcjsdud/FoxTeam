@@ -227,6 +227,17 @@ void Yuki::initRendererAndAnimation()
 	swordRenderer_->CreateFBXAnimation("Idle", "Weapon_TwoHandSword_01.fbx");
 	swordRenderer_->ChangeFBXAnimation("Idle");
 
+	// ¿Ü°û¼±
+	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
+	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+	MainOutLineRenderer_->Off();
+
+	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	WeaponOutLineRenderer1_->SetBaseRenderer(swordRenderer_, "PreprocessingAni", true, false);
+	WeaponOutLineRenderer1_->Off();
+
+	// ½Ç·ç¿§
 	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
 	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
 	MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;

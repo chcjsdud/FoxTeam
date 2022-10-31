@@ -46,6 +46,10 @@ public:
 public: // 221025 SJH ADD : 레벨업
 	void LevelUP(LevelUPData _Data);
 
+public: // 221025 SJH ADD : 외곽선 On/Off -> 마우스가 선택하면 On, 충돌이끝나면 off
+	void PickingOutLineOn();
+	void PickingOutLineOff();
+
 public:
 	void InitSpawnPoint(const float4& _position);
 
@@ -445,4 +449,10 @@ protected:
 	GameEnginePreprocessingRenderer* MainSilhouetteRenderer_;
 	GameEnginePreprocessingRenderer* WeaponSilhouetteRenderer1_;
 	GameEnginePreprocessingRenderer* WeaponSilhouetteRenderer2_;
+
+// 외곽선처리
+protected:
+	GameEnginePreprocessingRenderer* MainOutLineRenderer_;
+	GameEnginePreprocessingRenderer* WeaponOutLineRenderer1_;
+	GameEnginePreprocessingRenderer* WeaponOutLineRenderer2_;
 };

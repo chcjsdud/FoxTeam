@@ -202,6 +202,22 @@ void Rio::initRendererAndAnimation()
 	longBow_->GetRenderSet(0).isRender = false;
 	longBow_->Off();
 
+	// ¿Ü°û¼±
+	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
+	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+	MainOutLineRenderer_->Off();
+
+	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	WeaponOutLineRenderer1_->SetBaseRenderer(shortBow_, "PreprocessingAni", true, false);
+	WeaponOutLineRenderer1_->Off();
+
+	WeaponOutLineRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	WeaponOutLineRenderer2_->SetBaseRenderer(longBow_, "PreprocessingAni", true, false);
+	WeaponOutLineRenderer2_->GetRenderSet(0).isRender = false;
+	WeaponOutLineRenderer2_->Off();
+
+	// ½Ç·ç¿§
 	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
 	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
 	MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;

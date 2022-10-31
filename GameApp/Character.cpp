@@ -71,6 +71,9 @@ Character::Character()
 	, MainSilhouetteRenderer_(nullptr)
 	, WeaponSilhouetteRenderer1_(nullptr)
 	, WeaponSilhouetteRenderer2_(nullptr)
+	, MainOutLineRenderer_(nullptr)
+	, WeaponOutLineRenderer1_(nullptr)
+	, WeaponOutLineRenderer2_(nullptr)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -807,6 +810,42 @@ void Character::LevelUP(LevelUPData _Data)
 
 	levelUpEffect_->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 	levelUpEffect_->PlayAwake();
+}
+
+void Character::PickingOutLineOn()
+{
+	if (nullptr != MainOutLineRenderer_)
+	{
+		MainOutLineRenderer_->On();
+	}
+
+	if (nullptr != WeaponOutLineRenderer1_)
+	{
+		WeaponOutLineRenderer1_->On();
+	}
+
+	if (nullptr != WeaponOutLineRenderer2_)
+	{
+		WeaponOutLineRenderer2_->On();
+	}
+}
+
+void Character::PickingOutLineOff()
+{
+	if (nullptr != MainOutLineRenderer_)
+	{
+		MainOutLineRenderer_->Off();
+	}
+
+	if (nullptr != WeaponOutLineRenderer1_)
+	{
+		WeaponOutLineRenderer1_->Off();
+	}
+
+	if (nullptr != WeaponOutLineRenderer2_)
+	{
+		WeaponOutLineRenderer2_->Off();
+	}
 }
 
 void Character::Stun(float _stunTime)

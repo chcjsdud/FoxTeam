@@ -342,6 +342,21 @@ void Jackie::initRendererAndAnimation()
 	axeRenderer_->CreateFBXAnimation("Idle", "Weapon_Axe_01.fbx");
 	axeRenderer_->ChangeFBXAnimation("Idle");
 
+	// ¿Ü°û¼±
+	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
+	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+	MainOutLineRenderer_->Off();
+
+	WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	WeaponSilhouetteRenderer1_->SetBaseRenderer(axeRenderer_, "PreprocessingAni", true, false);
+	WeaponSilhouetteRenderer1_->Off();
+
+	WeaponSilhouetteRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	WeaponSilhouetteRenderer2_->SetBaseRenderer(sawRenderer_, "PreprocessingAni", true, false);
+	WeaponSilhouetteRenderer2_->Off();
+
+	// ½Ç·ç¿§
 	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
 	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
 	MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
