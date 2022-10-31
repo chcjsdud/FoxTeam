@@ -8,6 +8,7 @@ class GameEngineLevel;
 class GameEngineIndexBuffer;
 class GameEngineVertexBuffer;
 class GameEngineRenderingPipeLine;
+class GameEngineOutlineRenderer;
 class GameEngineFBXRenderer : public GameEngineRendererBase
 {
 	friend FBXAnimation;
@@ -62,6 +63,9 @@ public:
 	void SetCustomOffset(const float4& _customOffset) { customOffest_ = _customOffset; }
 	void ClearParentBone();
 
+public:
+	void SetOutLineRenderer(GameEngineOutlineRenderer* _OutLineRenderer);
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -82,5 +86,8 @@ private:
 	GameEngineFBXRenderer* parentBoneRenderer_;
 	int parentBoneIndex_;
 	float4 customOffest_;
+
+private:
+	GameEngineOutlineRenderer* OutLineRenderer_;
 };
 

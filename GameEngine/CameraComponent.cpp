@@ -111,11 +111,9 @@ void CameraComponent::Render(float _DeltaTime)
 	}
 
 	RenderDeffered(_DeltaTime);
-	RenderOutLine(_DeltaTime);
 	RenderForward(_DeltaTime);
 
 	CameraBufferTarget_->Clear();
-	CameraBufferTarget_->Merge(CameraOutLineTarget_);
 	CameraBufferTarget_->Merge(CameraDeferredTarget_);
 	CameraBufferTarget_->Merge(CameraForwardTarget_);
 
@@ -252,38 +250,6 @@ void CameraComponent::RenderForward(float _DeltaTime)
 
 }
 
-void CameraComponent::RenderOutLine(float _DeltaTime)
-{
-	float4x4 View = GetTransform()->GetTransformData().View_;
-	float4x4 Projection = GetTransform()->GetTransformData().Projection_;
-
-	CameraOutLineTarget_->Clear(false);
-	CameraOutLineTarget_->Setting();
-
-	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : OutLineRendererList_)
-	{
-		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
-
-		Renderers.sort(ZSort);
-
-		for (GameEngineRendererBase* Renderer : Renderers)
-		{
-			if (false == Renderer->IsUpdate())
-			{
-				continue;
-			}
-
-			Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
-			Renderer->GetTransform()->GetTransformData().View_ = View;
-
-			Renderer->GetTransform()->GetTransformData().WVPCalculation();
-
-			Renderer->Render(_DeltaTime, true);
-
-		}
-	}
-}
-
 void CameraComponent::RenderDeffered(float _DeltaTime)
 {
 	float4x4 View = GetTransform()->GetTransformData().View_;
@@ -292,7 +258,7 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	CameraDeferredGBufferTarget->Clear();
 	CameraDeferredGBufferTarget->Setting();
 
-
+	// ¿Ü°û¼± ¾ø´Â³Ñµé
 	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
 	{
 		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
@@ -306,11 +272,56 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 				continue;
 			}
 
-			Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
-			Renderer->GetTransform()->GetTransformData().View_ = View;
-			Renderer->GetTransform()->GetTransformData().WVPCalculation();
+			if (false == Renderer->IsPreprocessing())
+			{
+				Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
+				Renderer->GetTransform()->GetTransformData().View_ = View;
+				Renderer->GetTransform()->GetTransformData().WVPCalculation();
+				Renderer->Render(_DeltaTime, true);
+			}
+		}
+	}
 
-			Renderer->Render(_DeltaTime, true);
+	// ¿Ü°û¼±ÀÌ ÀÖ´Â¾êµé
+	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
+	{
+		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
+
+		Renderers.sort(ZSort);
+
+		for (GameEngineRendererBase* Renderer : Renderers)
+		{
+			if (false == Renderer->IsUpdate())
+			{
+				continue;
+			}
+
+			if (true == Renderer->IsPreprocessing())
+			{
+				std::map<GameEngineRendererBase*, GameEngineRendererBase*>::iterator FindIter = OutLineRendererList_.find(Renderer);
+				if (OutLineRendererList_.end() != FindIter)
+				{
+					// ¿Ü°û¼± Å¸°Ù ¼ÂÆÃ
+					CameraOutLineTarget_->Clear(false);
+					CameraOutLineTarget_->Setting();
+
+					GameEngineRendererBase* OutLine = (*FindIter).second;
+					OutLine->GetTransform()->GetTransformData().Projection_ = Projection;
+					OutLine->GetTransform()->GetTransformData().View_ = View;
+					OutLine->GetTransform()->GetTransformData().WVPCalculation();
+					OutLine->Render(_DeltaTime, true);
+
+					// º»·¡Å¸°Ù¿¡ ÇÕÄ¡°í
+					CameraDeferredGBufferTarget->Merge(CameraOutLineTarget_);
+
+					// ¿øÇü·»´õ·¯ ·»´õ¸µ
+					CameraDeferredGBufferTarget->Setting();
+					Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
+					Renderer->GetTransform()->GetTransformData().View_ = View;
+					Renderer->GetTransform()->GetTransformData().WVPCalculation();
+					Renderer->Render(_DeltaTime, true);
+				}
+			}
 		}
 	}
 
@@ -356,9 +367,9 @@ void CameraComponent::PushLight(GameEngineLightComponent* _Light)
 	Lights_.push_back(_Light);
 }
 
-void CameraComponent::PushOutLineRenderer(int _Order, GameEngineOutlineRenderer* _Renderer)
+void CameraComponent::PushOutLineRenderer(GameEngineRendererBase* _BaseRenderer, GameEngineOutlineRenderer* _OutLineRenderer)
 {
-	OutLineRendererList_[_Order].push_back(_Renderer);
+	OutLineRendererList_[_BaseRenderer] = _OutLineRenderer;
 }
 
 void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color)

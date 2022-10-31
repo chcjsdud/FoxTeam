@@ -16,16 +16,19 @@ class GameEngineFBXRenderer;
 class GameEngineOutlineRenderer : public GameEngineRenderer
 {
 public:
-	void SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, bool _IsCharacter = false);
+	RenderSet& GetRenderSet(unsigned int _Index);
+
+public:
+	void SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName, bool _IsCharacter = false);
 
 protected:
 private:
 	void SetOutLineData(const float4& _LineColor, float _LineThickness);
 
 private:
-	void SetMesh(bool _IsCharacter);
-	void SetFBXMeshRenderSet(int _MeshIndex);
-	void SetFBXMeshRenderSetCharacter(int _MeshIndex);
+	void SetMesh(std::string _PipeLineName, bool _IsCharacter);
+	void SetFBXMeshRenderSet(std::string _PipeLineName, int _MeshIndex);
+	void SetFBXMeshRenderSetCharacter(std::string _PipeLineName, int _MeshIndex);
 
 private:
 	void Start() override;

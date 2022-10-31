@@ -18,14 +18,19 @@
 #include "GameEngineFBXAnimationManager.h"
 #include "GameEngineTextureManager.h"
 
-void GameEngineOutlineRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, bool _IsCharacter)
+RenderSet& GameEngineOutlineRenderer::GetRenderSet(unsigned int _Index)
+{
+	return RenderSets_[_Index];
+}
+
+void GameEngineOutlineRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName, bool _IsCharacter)
 {
 	// 베이스가되는 렌더러 셋팅
 	BaseRenderer_ = _BaseRenderer;
 	FBXMesh_ = BaseRenderer_->GetMesh();
 	if (nullptr != FBXMesh_)
 	{
-		SetMesh(_IsCharacter);
+		SetMesh(_PipeLineName, _IsCharacter);
 	}
 
 	// 베이스렌더러의 회전/크기/위치 저장
@@ -33,6 +38,9 @@ void GameEngineOutlineRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRend
 	GetTransform()->SetLocalScaling(BaseRenderer_->GetTransform()->GetLocalScaling() + Thickness);
 	GetTransform()->SetLocalRotationDegree(BaseRenderer_->GetTransform()->GetLocalRotation());
 	GetTransform()->SetLocalPosition(BaseRenderer_->GetTransform()->GetLocalPosition());
+
+	// 
+	BaseRenderer_->SetOutLineRenderer(this);
 }
 
 void GameEngineOutlineRenderer::SetOutLineData(const float4& _LineColor, float _LineThickness)
@@ -41,7 +49,7 @@ void GameEngineOutlineRenderer::SetOutLineData(const float4& _LineColor, float _
 	OutLineData_.LineThickness = _LineThickness;
 }
 
-void GameEngineOutlineRenderer::SetMesh(bool _IsCharacter)
+void GameEngineOutlineRenderer::SetMesh(std::string _PipeLineName, bool _IsCharacter)
 {
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh_->GetAllMeshMap();
 	int AllMeshCount = static_cast<int>(AllMeshSet.size());
@@ -50,21 +58,21 @@ void GameEngineOutlineRenderer::SetMesh(bool _IsCharacter)
 		RenderSets_.resize(AllMeshCount);
 		for (int i = 0; i < AllMeshCount; ++i)
 		{
-			SetFBXMeshRenderSetCharacter(i);
+			SetFBXMeshRenderSetCharacter(_PipeLineName, i);
 		}
 	}
 	else
 	{
 		for (int i = 0; i < AllMeshCount; ++i)
 		{
-			SetFBXMeshRenderSet(i);
+			SetFBXMeshRenderSet(_PipeLineName, i);
 		}
 	}
 }
 
-void GameEngineOutlineRenderer::SetFBXMeshRenderSet(int _MeshIndex)
+void GameEngineOutlineRenderer::SetFBXMeshRenderSet(std::string _PipeLineName, int _MeshIndex)
 {
-	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("ObjectOutLine");
+	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find(_PipeLineName);
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh_->GetAllMeshMap();
 	FbxMeshSet& StartMesh = AllMeshSet[_MeshIndex];
 
@@ -191,9 +199,10 @@ void GameEngineOutlineRenderer::SetFBXMeshRenderSet(int _MeshIndex)
 	}
 }
 
-void GameEngineOutlineRenderer::SetFBXMeshRenderSetCharacter(int _MeshIndex)
+void GameEngineOutlineRenderer::SetFBXMeshRenderSetCharacter(std::string _PipeLineName, int _MeshIndex)
 {
-	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find("ObjectOutLine");
+	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find(_PipeLineName);
+	
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh_->GetAllMeshMap();
 	FbxMeshSet& StartMesh = AllMeshSet[_MeshIndex];
 
@@ -321,16 +330,9 @@ void GameEngineOutlineRenderer::SetFBXMeshRenderSetCharacter(int _MeshIndex)
 
 void GameEngineOutlineRenderer::Start()
 {
-	//GetLevel()->GetMainCamera()->PushRenderer(GetOrder(), this);
-	GetLevel()->GetMainCamera()->PushOutLineRenderer(GetOrder(), this);
-
-	// 랜파 셋팅
-	SetRenderingPipeLine("ObjectOutLine");
-
-	// 상수버퍼 링크
+	// 상수버퍼 링크정보 초기화
 	OutLineData_.LineColor = float4::RED;
 	OutLineData_.LineThickness = 2.0f;
-	ShaderHelper.SettingConstantBufferLink("OutLineData", OutLineData_);
 }
 
 void GameEngineOutlineRenderer::Update(float _DeltaTime)

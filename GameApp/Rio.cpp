@@ -201,6 +201,18 @@ void Rio::initRendererAndAnimation()
 
 	longBow_->GetRenderSet(0).isRender = false;
 	longBow_->Off();
+
+	GameEngineOutlineRenderer* TestRenderer = CreateTransformComponent<GameEngineOutlineRenderer>();
+	TestRenderer->SetBaseRenderer(renderer_, "ObjectOutLineAni", true);
+	TestRenderer->GetRenderSet(1).isRender = false;
+
+	GameEngineOutlineRenderer* TestRenderer2 = CreateTransformComponent<GameEngineOutlineRenderer>();
+	TestRenderer2->SetBaseRenderer(shortBow_, "ObjectOutLineAni", true);
+	TestRenderer2->GetRenderSet(0).isRender = false;
+
+	GameEngineOutlineRenderer* TestRenderer3 = CreateTransformComponent<GameEngineOutlineRenderer>();
+	TestRenderer3->SetBaseRenderer(longBow_, "ObjectOutLineAni", true);
+	TestRenderer3->GetRenderSet(0).isRender = false;
 }
 
 void Rio::changeAnimationWait()

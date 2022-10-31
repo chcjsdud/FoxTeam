@@ -81,6 +81,9 @@
     <FxCompile Include="EngineResources\Shader\TextureTrans.fx">
       <Filter>Engine</Filter>
     </FxCompile>
+    <FxCompile Include="EngineResources\Shader\OutLineAni.fx">
+      <Filter>Engine</Filter>
+    </FxCompile>
     <FxCompile Include="EngineResources\Shader\OutLine.fx">
       <Filter>Engine</Filter>
     </FxCompile>

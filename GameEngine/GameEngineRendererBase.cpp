@@ -11,6 +11,7 @@
 #include "CameraComponent.h"
 
 GameEngineRendererBase::GameEngineRendererBase() 
+	: IsPreprocessing_(false)
 {
 }
 

@@ -30,7 +30,7 @@ void OutLineTestActor::Start()
 	TestBaseRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 
 	TestRenderer_ = CreateTransformComponent<GameEngineOutlineRenderer>();
-	TestRenderer_->SetBaseRenderer(TestBaseRenderer_, true);
+	TestRenderer_->SetBaseRenderer(TestBaseRenderer_, "ObjectOutLineAni", true);
 
 	if (false == GameEngineInput::GetInst().IsKey("TestChangeKey"))
 	{

@@ -1073,6 +1073,17 @@ void GameEngineCore::EngineResourcesCreate()
 	// =============================================== 특수기능 관련 =============================================== //
 
 	{ // 221027 SJH ADD : 외곽선렌파(정면을향하는면을 잘라냄)
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("ObjectOutLineAni");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("OutLineAni_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerFront");
+		Pipe->SetPixelShader("OutLineAni_PS");
+		Pipe->SetOutputMergerBlend("AlphaToCoverage");
+	}
+
+	{ // 221027 SJH ADD : 외곽선렌파(정면을향하는면을 잘라냄)
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("ObjectOutLine");
 		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
 		Pipe->SetVertexShader("OutLine_VS");

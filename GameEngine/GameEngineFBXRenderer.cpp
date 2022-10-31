@@ -26,6 +26,7 @@ GameEngineFBXRenderer::GameEngineFBXRenderer()
 	, parentBoneIndex_(-1)
 	, parentBoneRenderer_(nullptr)
 	, customOffest_(0.0f, 0.0f, 0.0f, 0.0f)
+	, OutLineRenderer_(nullptr)
 {
 }
 
@@ -442,6 +443,18 @@ void GameEngineFBXRenderer::ClearParentBone()
 {
 	parentBoneRenderer_ = nullptr;
 	parentBoneIndex_ = -1;
+}
+
+void GameEngineFBXRenderer::SetOutLineRenderer(GameEngineOutlineRenderer* _OutLineRenderer)
+{
+	// 외곽선렌더러 저장
+	OutLineRenderer_ = _OutLineRenderer;
+
+	// 카메라 렌더링 목록에 추가
+	GetLevel()->GetMainCamera()->PushOutLineRenderer(this, OutLineRenderer_);
+
+	// 선처리 Flag On
+	PreprocessingOn();
 }
 
 void GameEngineFBXRenderer::Start()
