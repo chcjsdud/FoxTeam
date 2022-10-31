@@ -259,6 +259,7 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	CameraDeferredGBufferTarget->Setting();
 
 	// ¿Ü°û¼± ¾ø´Â³Ñµé
+	std::list<GameEngineRendererBase*> OutLineList;
 	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
 	{
 		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
@@ -279,10 +280,36 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 				Renderer->GetTransform()->GetTransformData().WVPCalculation();
 				Renderer->Render(_DeltaTime, true);
 			}
+			else
+			{
+				std::map<GameEngineRendererBase*, GameEngineRendererBase*>::iterator FindIter = OutLineRendererList_.find(Renderer);
+				if (OutLineRendererList_.end() != FindIter)
+				{
+					OutLineList.push_back((*FindIter).second);
+				}
+			}
 		}
 	}
 
+	// ¿Ü°û¼± ¸ÕÀú ·»´õ¸µ
+	for (GameEngineRendererBase* Renderer : OutLineList)
+	{
+		// ¿Ü°û¼± Å¸°Ù ¼ÂÆÃ
+		CameraOutLineTarget_->Clear(false);
+		CameraOutLineTarget_->Setting();
+
+		Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
+		Renderer->GetTransform()->GetTransformData().View_ = View;
+		Renderer->GetTransform()->GetTransformData().WVPCalculation();
+		Renderer->Render(_DeltaTime, true);
+
+		// º»·¡Å¸°Ù¿¡ ÇÕÄ¡°í
+		CameraDeferredGBufferTarget->Merge(CameraOutLineTarget_);
+	}
+	OutLineList.clear();
+
 	// ¿Ü°û¼±ÀÌ ÀÖ´Â¾êµé
+	CameraDeferredGBufferTarget->Setting();
 	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
 	{
 		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
@@ -298,29 +325,10 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 
 			if (true == Renderer->IsPreprocessing())
 			{
-				std::map<GameEngineRendererBase*, GameEngineRendererBase*>::iterator FindIter = OutLineRendererList_.find(Renderer);
-				if (OutLineRendererList_.end() != FindIter)
-				{
-					// ¿Ü°û¼± Å¸°Ù ¼ÂÆÃ
-					CameraOutLineTarget_->Clear(false);
-					CameraOutLineTarget_->Setting();
-
-					GameEngineRendererBase* OutLine = (*FindIter).second;
-					OutLine->GetTransform()->GetTransformData().Projection_ = Projection;
-					OutLine->GetTransform()->GetTransformData().View_ = View;
-					OutLine->GetTransform()->GetTransformData().WVPCalculation();
-					OutLine->Render(_DeltaTime, true);
-
-					// º»·¡Å¸°Ù¿¡ ÇÕÄ¡°í
-					CameraDeferredGBufferTarget->Merge(CameraOutLineTarget_);
-
-					// ¿øÇü·»´õ·¯ ·»´õ¸µ
-					CameraDeferredGBufferTarget->Setting();
-					Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
-					Renderer->GetTransform()->GetTransformData().View_ = View;
-					Renderer->GetTransform()->GetTransformData().WVPCalculation();
-					Renderer->Render(_DeltaTime, true);
-				}
+				Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
+				Renderer->GetTransform()->GetTransformData().View_ = View;
+				Renderer->GetTransform()->GetTransformData().WVPCalculation();
+				Renderer->Render(_DeltaTime, true);
 			}
 		}
 	}
