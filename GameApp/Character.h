@@ -21,6 +21,7 @@ class LumiaMap;
 class ItemBase;
 class EquipmentItem;
 class PlayerUIController;
+class GameEngineFBXRenderer;
 class Character : public IUnit
 {
 public:

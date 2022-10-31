@@ -2,6 +2,7 @@
 
 
 #include <GameEngine/GameEngineCollision.h>
+#include <GameEngine/GameEngineFBXRenderer.h>
 
 #include "Aya.h"
 #include "AyaBullet.h"
@@ -18,6 +19,7 @@ Aya::Aya()
 	, skillWFireDelay_(0.3f)
 	, skillRCol_(nullptr)
 	, pistolRenderer_(nullptr)
+	, reloadTime_(0.0f)
 {
 
 }
@@ -115,6 +117,28 @@ void Aya::Update(float _deltaTime)
 		coolTimer_R_ = 0.5f;
 		coolTimer_D_ = 0.5f;
 	}
+
+	if (ammo_ <= 0)
+	{
+		if (reloadTime_ == 0.0f)
+		{
+			FT::PlaySoundAndSendPacket("Gun_Reloading.wav", transform_.GetWorldPosition());
+		}
+
+		ChangeOverrideAnimation("Reload", "Bip001 Spine2");
+		reloadTime_ += _deltaTime;
+
+		if (renderer_->IsOverrideAnimationEnd() || reloadTime_ > 2.0f)
+		{
+			ammo_ = 6;
+			reloadTime_ = 0.0f;
+			renderer_->ClearOverrideAnimation();
+			overrideAnimationBoneName_ = "";
+			overrideAnimationName_ = "";
+		}
+	}
+
+	FT::AddText(std::to_string(ammo_));
 }
 
 JobType Aya::GetJobType()
@@ -183,6 +207,10 @@ void Aya::changeAnimationWait()
 
 void Aya::changeAnimationBasicAttack()
 {
+	if (ammo_ <= 0)
+	{
+		return;
+	}
 	ChangeAnimation("Attack", true);
 }
 
@@ -193,6 +221,14 @@ void Aya::changeDeathAnimation()
 
 void Aya::onStartBasicAttacking(IUnit* _target)
 {
+	if (ammo_ <= 0)
+	{
+		mainState_ << "NormalState";
+		return;
+	}
+
+	--ammo_;
+
 	float4 offset = { 20.f, 120.f, 30.f, 0.f };
 	offset = offset * transform_.GetTransformData().WorldWorld_;
 	float4 startPosition = transform_.GetWorldPosition();
@@ -220,6 +256,11 @@ void Aya::onStartBasicAttacking(IUnit* _target)
 
 void Aya::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 {
+	if (ammo_ <= 0)
+	{
+		return;
+	}
+
 	if (renderer_->IsCurrentAnimationEnd())
 	{
 		changeAnimationWait();
@@ -228,6 +269,8 @@ void Aya::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 
 void Aya::onStartQSkill()
 {
+	renderer_->ClearOverrideAnimation();
+	overrideAnimationBoneName_ = "";
 	target_ = getMousePickedCharacter();
 
 	if (target_ == nullptr)
@@ -304,10 +347,12 @@ void Aya::onUpdateQSkill(float _deltaTime)
 
 void Aya::onStartWSkill()
 {
+	renderer_->ClearOverrideAnimation();
+	overrideAnimationBoneName_ = "";
 	setRotationToMouse();
 
 	ChangeAnimation("SkillW_Wait");
-	renderer_->OverrideFBXAnimation("SkillW_Shot", "Bip001 Spine2");
+	ChangeOverrideAnimation("SkillW_Shot", "Bip001 Spine2", true);
 
 
 	float4 offset = { 20.f, 120.f, 30.f, 0.f };
@@ -427,6 +472,7 @@ void Aya::onUpdateWSkill(float _deltaTime)
 	if (skillWFireCount_ >= 10)
 	{
 		renderer_->ClearOverrideAnimation();
+		overrideAnimationBoneName_ = "";
 		mainState_ << "NormalState";
 
 	}
@@ -434,12 +480,15 @@ void Aya::onUpdateWSkill(float _deltaTime)
 	if (GameEngineInput::Down("Z"))
 	{
 		renderer_->ClearOverrideAnimation();
+		overrideAnimationBoneName_ = "";
 		mainState_ << "NormalState";
 	}
 }
 
 void Aya::onStartESkill()
 {
+	renderer_->ClearOverrideAnimation();
+	overrideAnimationBoneName_ = "";
 	setRotationToMouse();
 
 	ChangeAnimation("SkillE", true);
@@ -469,6 +518,8 @@ void Aya::onUpdateESkill(float _deltaTime)
 
 void Aya::onStartRSkill()
 {
+	renderer_->ClearOverrideAnimation();
+	overrideAnimationBoneName_ = "";
 	ChangeAnimation("SkillR_Start");
 	FT::PlaySoundAndSendPacket("aya_Skill04_Ready.wav", transform_.GetWorldPosition());
 }
@@ -523,10 +574,26 @@ void Aya::onUpdateRSkill(float _d1eltaTime)
 
 void Aya::onStartDSkill()
 {
+	renderer_->ClearOverrideAnimation();
+	
+	ChangeOverrideAnimation("Reload", "Bip001 Spine2");
+	FT::PlaySoundAndSendPacket("Pistol_skill_D.wav", transform_.GetWorldPosition());
 }
 
 void Aya::onUpdateDSkill(float _deltaTime)
 {
+	if (renderer_->IsOverrideAnimationEnd())
+	{
+		renderer_->ClearOverrideAnimation();
+		overrideAnimationBoneName_ = "";
+		overrideAnimationName_ = "";
+		mainState_ << "NormalState";
+		ammo_ = 6;
+		return;
+	}
+
+	inputProcess(_deltaTime);
+	moveProcess(_deltaTime);
 }
 
 void Aya::onUpdateCustomState(float _deltaTime)

@@ -70,6 +70,7 @@ public:
 	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) override;
 	virtual void onEffectTransformCheck(float _deltaTime) override;
 private:
+	float reloadTime_;
 	int ammo_;
 	int skillWFireCount_;
 	float skillWFireDelay_;
