@@ -71,14 +71,14 @@ void LoadingLevel_LoadPercent::Start()
 	float4 WindowSizeHarf = WindowSize.halffloat4();
 
 	// Create Loading Percent
-	LoadingCircle_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UI));
+	LoadingCircle_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(UIRenderOrder::UI));
 	LoadingCircle_->SetImage("LeadingLevel_Circle.png");
 	LoadingCircle_->GetTransform()->SetLocalScaling(float4(30.f, 30.f));
 	LoadingCircle_->GetTransform()->SetLocalPosition(float4(WindowSizeHarf.x - 30.f, -WindowSizeHarf.y + 30.f));
 	LoadingCircle_->SetAlpha(0.5f);
 
 	// Create Loading ProgressBar
-	LoadingBar_ = CreateTransformComponent<GameEngineProgressBarRenderer>(static_cast<int>(RenderOrder::UI));
+	LoadingBar_ = CreateTransformComponent<GameEngineProgressBarRenderer>(static_cast<int>(UIRenderOrder::UI));
 	LoadingBar_->SetImage("LoadingLevel_ProgressBar.png");
 	LoadingBar_->SetProgressBarDirect(static_cast<int>(ProgressBarDirect::RightToLeft));
 	LoadingBar_->GetTransform()->SetLocalScaling(float4(WindowSize.x - 140.f, 4.f));
@@ -86,7 +86,7 @@ void LoadingLevel_LoadPercent::Start()
 	LoadingBar_->SetPercent(LoadingPercent_);
 
 	// Create Loading Text
-	LoadingText_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UI));
+	LoadingText_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(UIRenderOrder::UI));
 	LoadingText_->TextSetting("malgunbd", "다른 플레이어를 기다리는 중...", 12.f, FW1_CENTER | FW1_VCENTER, float4(1.0f, 1.0f, 1.0f, 0.7f));
 	LoadingText_->GetTransform()->SetLocalPosition(float4(WindowSizeHarf.x - 150.f, -WindowSizeHarf.y + 30.f));
 
@@ -97,7 +97,7 @@ void LoadingLevel_LoadPercent::Start()
 		ImageName += std::to_string(Index + 1);
 		ImageName += ".png";
 
-		GameEngineUIRenderer* NewExplanationImage = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UI));
+		GameEngineUIRenderer* NewExplanationImage = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(UIRenderOrder::UI));
 		NewExplanationImage->SetImage(ImageName);
 		NewExplanationImage->GetTransform()->SetLocalScaling(float4(280.0f, 200.f));
 		NewExplanationImage->GetTransform()->SetLocalPosition(float4(0.0f, -WindowSizeHarf.y + 130.f));

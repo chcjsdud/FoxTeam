@@ -20,31 +20,31 @@ void Lobby_CharFull::SetChar(JobType _Character)
 
 void Lobby_CharFull::Start()
 {
-	CharFull_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
+	CharFull_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UI));
 	CharFull_Renderer->SetImage("Lobby_CharFull_Hyunwoo.png", "PointSmp");
 	CharFull_Renderer->GetTransform()->SetLocalPosition({ 0.0f, 125.0f });
 	CharFull_Renderer->GetTransform()->SetLocalScaling(CharFull_Renderer->GetCurrentTexture()->GetTextureSize());
 	CharFull_Renderer->Off();
 
-	qDescription_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
+	qDescription_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UI));
 	qDescription_->SetImage("Yuki_Q_Icon.png", "PointSmp");
 	qDescription_->GetTransform()->SetLocalPosition({ -300.0f, -200.0f });
 	qDescription_->GetTransform()->SetLocalScaling(qDescription_->GetCurrentTexture()->GetTextureSize() * 0.4f);
 	qDescription_->Off();
 
-	wDescription_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
+	wDescription_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UI));
 	wDescription_->SetImage("Yuki_Q_Icon.png", "PointSmp");
 	wDescription_->GetTransform()->SetLocalPosition({ 170.0f, -200.0f });
 	wDescription_->GetTransform()->SetLocalScaling(wDescription_->GetCurrentTexture()->GetTextureSize() * 0.4f);
 	wDescription_->Off();
 
-	eDescription_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
+	eDescription_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UI));
 	eDescription_->SetImage("Yuki_Q_Icon.png", "PointSmp");
 	eDescription_->GetTransform()->SetLocalPosition({ -300.0f, -250.0f });
 	eDescription_->GetTransform()->SetLocalScaling(eDescription_->GetCurrentTexture()->GetTextureSize() * 0.4f);
 	eDescription_->Off();
 
-	rDescription_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UI));
+	rDescription_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UI));
 	rDescription_->SetImage("Yuki_Q_Icon.png", "PointSmp");
 	rDescription_->GetTransform()->SetLocalPosition({ 170.0f, -250.0f });
 	rDescription_->GetTransform()->SetLocalScaling(rDescription_->GetCurrentTexture()->GetTextureSize() * 0.4f);

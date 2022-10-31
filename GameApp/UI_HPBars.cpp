@@ -27,14 +27,14 @@ void UI_HPBars::Start()
 	SpBarSize = { 246.f, 11.f };
 
 	{
-		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
 		HPBar_Renderer->SetImage("HPBar_UI.png", "PointSmp");
 		HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
 		HPBar_Renderer->GetTransform()->SetLocalScaling(HpBarSize);
 	}
 
 	{
-		SPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		SPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
 		SPBar_Renderer->SetImage("SPBar_UI.png", "PointSmp");
 		//배경보다 항상 앞에 나옴
 		SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);
@@ -42,11 +42,11 @@ void UI_HPBars::Start()
 	}
 
 	{
-		HPBar_ValueRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
+		HPBar_ValueRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 		HPBar_ValueRenderer->GetTransform()->SetLocalPosition(HpBarFontPos);
 		
 
-		SPBar_ValueRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
+		SPBar_ValueRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 		SPBar_ValueRenderer->GetTransform()->SetLocalPosition(SpBarFontPos);
 	}
 

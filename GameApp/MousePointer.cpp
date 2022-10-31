@@ -110,13 +110,13 @@ void MousePointer::Start()
 	rayCollision_->SetCollisionGroup(eCollisionGroup::MouseRay);
 
 	// 마우스 렌더러 생성
-	MouseRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::MOUSE));
+	MouseRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(UIRenderOrder::MOUSE));
 	MouseRenderer_->SetImage(GameEngineString::toupper("Cursor_01.png"));
 	MouseRenderer_->GetTransform()->SetLocalPosition({ 12.0f, -10.0f, 0.0f });
 	MouseRenderer_->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
 
 	// 마우스 충돌체 생성
-	MouseCollider_ = CreateTransformComponent<GameEngineCollision>(static_cast<int>(RenderOrder::MOUSE));
+	MouseCollider_ = CreateTransformComponent<GameEngineCollision>(static_cast<int>(UIRenderOrder::MOUSE));
 	MouseCollider_->GetTransform()->SetLocalScaling(float4{ 30.0f, 30.0f, 30.0f });
 	MouseCollider_->SetCollisionInfo(static_cast<int>(eCollisionGroup::MousePointer), CollisionType::AABBBox3D);
 

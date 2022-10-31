@@ -69,7 +69,7 @@ void Lobby_GameStartButton::Start()
 	ButtonDefault->Cut(1, 1);
 
 	// 기본 렌더러 생성
-	Renderer_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(RenderOrder::UI));
+	Renderer_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(UIRenderOrder::UI));
 	//Renderer_->GetTransform()->SetWorldScaling(float4(281.0f, 47.0f));
 	//Renderer_->GetTransform()->SetWorldPosition(float4(WindowSizeHarf.x - 170.f, -WindowSizeHarf.y + 120.f));
 	Renderer_->GetTransform()->SetWorldScaling(float4(190.0f, 89.0f));
@@ -91,7 +91,7 @@ void Lobby_GameStartButton::Start()
 	//ButtonSound_ = GameEngineSoundManager::GetInst().CreateSoundPlayer();
 
 	// 기본 충돌체 생성
-	Collider_ = CreateTransformComponent<GameEngineCollision>(static_cast<int>(RenderOrder::UICOL));
+	Collider_ = CreateTransformComponent<GameEngineCollision>(static_cast<int>(UIRenderOrder::UICOL));
 	Collider_->GetTransform()->SetWorldScaling(Renderer_->GetTransform()->GetWorldScaling());
 	Collider_->GetTransform()->SetWorldPosition(Renderer_->GetTransform()->GetWorldPosition());
 	Collider_->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);

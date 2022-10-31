@@ -199,7 +199,7 @@ void Hyunwoo::Update(float _deltaTime)
 
 void Hyunwoo::initRendererAndAnimation()
 {
-	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::CHARACTER));
 	renderer_->SetFBXMesh("hyunwoo_run.fbx", "TextureDeferredLightAni", true);
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
@@ -221,6 +221,11 @@ void Hyunwoo::initRendererAndAnimation()
 
 	renderer_->ChangeFBXAnimation("Wait");
 
+	renderer_->GetRenderSet(1).isRender = false;
+
+	MainOutLineRenderer_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "ObjectOutLineAni", true);
+	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
 }
 
 

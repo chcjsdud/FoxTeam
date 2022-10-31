@@ -18,14 +18,14 @@ void UI_HyperMap::Start()
 	MapPos = { 0.f, 0.f, -1.f };
 		
 	{
-		fullMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		fullMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
 		fullMapRenderer_->SetImage("Map_Full.png", "PointSmp");
 		fullMapRenderer_->GetTransform()->SetLocalPosition(MapPos);
 		fullMapRenderer_->GetTransform()->SetLocalScaling(fullMapRenderer_->GetCurrentTexture()->GetTextureSize());
 	}
 
 	{
-		selectAreaRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
+		selectAreaRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
 		selectAreaRenderer_->SetImage("Map_Alley_Pin.png", "PointSmp");
 		selectAreaRenderer_->GetTransform()->SetLocalPosition(MapPos + float4{0.f,0.f,-1.f,0.f});
 		selectAreaRenderer_->GetTransform()->SetLocalScaling(selectAreaRenderer_->GetCurrentTexture()->GetTextureSize());

@@ -1,5 +1,15 @@
 #pragma once
 
+// ObjectRenderOrder
+enum class ObjectRenderOrder
+{
+	NONE = -1,
+	WEAPON,
+	CHARACTER,
+
+	MAX
+};
+
 // Unit Type
 enum class UnitType
 {
@@ -19,7 +29,7 @@ enum class DayAndNightType
 };
 
 // UI RenderOrder
-enum class RenderOrder
+enum class UIRenderOrder
 {
 	UNSEEN,						// 안 보여야 하는 것 (컬러로 컬리젼 정의하는 렌더러라던지)
 	BACKDROP,					// 배경

@@ -124,7 +124,7 @@ JobType Aya::GetJobType()
 
 void Aya::initRendererAndAnimation()
 {
-	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::CHARACTER));
 	renderer_->SetFBXMesh("Aya_Idle.fbx", "TextureDeferredLightAni", true);
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
@@ -151,7 +151,9 @@ void Aya::initRendererAndAnimation()
 
 	renderer_->ChangeFBXAnimation("Idle");
 
-	pistolRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_->GetRenderSet(1).isRender = false;
+
+	pistolRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	pistolRenderer_->SetFBXMesh("Weapon_Pistol_01.fbx", "TextureDeferredLightAni");
 	pistolRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	pistolRenderer_->GetTransform()->SetLocalScaling(100.f);
@@ -160,6 +162,13 @@ void Aya::initRendererAndAnimation()
 	pistolRenderer_->SetCustomOffset({ 2.7f, 0.f, -2.5f });
 	pistolRenderer_->CreateFBXAnimation("Idle", "Weapon_Pistol_01.fbx");
 	pistolRenderer_->ChangeFBXAnimation("Idle");
+
+	MainOutLineRenderer_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "ObjectOutLineAni", true);
+	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+
+	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	WeaponOutLineRenderer1_->SetBaseRenderer(pistolRenderer_, "ObjectOutLineAni", true);
 }
 
 void Aya::changeAnimationRun()

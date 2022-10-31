@@ -24,7 +24,7 @@ void CharFullSelectEffect::PlayAwake()
 
 void CharFullSelectEffect::Start()
 {
-	charStencilRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UIPANEL2));
+	charStencilRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UIPANEL2));
 	charStencilRenderer_->SetImage("Lobby_CharFull_Hyunwoo.png", "PointSmp");
 	charStencilRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 125.0f});
 	charStencilRenderer_->GetTransform()->SetLocalScaling(charStencilRenderer_->GetCurrentTexture()->GetTextureSize());

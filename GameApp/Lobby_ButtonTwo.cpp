@@ -50,7 +50,7 @@ void Lobby_ButtonTwo::SetImageByIndex(int _index)
 void Lobby_ButtonTwo::Start()
 {
 	{
-		ButtonTwoRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UIPANEL0));
+		ButtonTwoRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UIPANEL0));
 		ButtonTwoRenderer->SetImage("Btn_Slide_Basic.png", "PointSmp");
 		//이미지 크기는 126, 두 이미지의 거리는 8
 		ButtonTwoRenderer->GetTransform()->SetLocalPosition({ 554.0f, 330.0f });
@@ -59,7 +59,7 @@ void Lobby_ButtonTwo::Start()
 	}
 	
 	{
-		ButtonTwoCollision = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(RenderOrder::UICOL));
+		ButtonTwoCollision = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(UIRenderOrder::UICOL));
 		ButtonTwoCollision->GetTransform()->SetLocalPosition({ 554.0f,330.0f});
 		ButtonTwoCollision->GetTransform()->SetLocalScaling(ButtonTwoRenderer->GetTransform()->GetLocalScaling());
 		ButtonTwoCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);

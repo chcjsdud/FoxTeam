@@ -191,7 +191,7 @@ void Yuki::Update(float _deltaTime)
 
 void Yuki::initRendererAndAnimation()
 {
-	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::CHARACTER));
 	renderer_->SetFBXMesh("Yuki_run.fbx", "TextureDeferredLightAni", true);
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
@@ -213,7 +213,9 @@ void Yuki::initRendererAndAnimation()
 
 	renderer_->ChangeFBXAnimation("Wait");
 
-	swordRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_->GetRenderSet(1).isRender = false;
+
+	swordRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	swordRenderer_->SetFBXMesh("Weapon_TwoHandSword_01.fbx", "TextureDeferredLightAni");
 
 	swordRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
@@ -224,6 +226,13 @@ void Yuki::initRendererAndAnimation()
 	swordRenderer_->SetCustomOffset({ -2.5f, 0.f, 0.f });
 	swordRenderer_->CreateFBXAnimation("Idle", "Weapon_TwoHandSword_01.fbx");
 	swordRenderer_->ChangeFBXAnimation("Idle");
+
+	MainOutLineRenderer_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "ObjectOutLineAni", true);
+	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+
+	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	WeaponOutLineRenderer1_->SetBaseRenderer(swordRenderer_, "ObjectOutLineAni", true);
 }
 
 void Yuki::initYukiCollision()

@@ -36,12 +36,12 @@ void Lobby_StartButton::Start()
 {
 	float4 ButtonPos = { -475.0f, -240.0f, 0.0f };
 
-	ButtonRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UIPANEL0));
+	ButtonRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UIPANEL0));
 	ButtonRenderer->SetImage("Lobby_SelectButton_Before.png", "PointSmp");
 	ButtonRenderer->GetTransform()->SetLocalPosition(ButtonPos);
 	ButtonRenderer->GetTransform()->SetLocalScaling(ButtonRenderer->GetCurrentTexture()->GetTextureSize());
 
-	ButtonCollision = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(RenderOrder::UICOL));
+	ButtonCollision = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(UIRenderOrder::UICOL));
 	ButtonCollision->GetTransform()->SetLocalPosition(ButtonPos);
 	ButtonCollision->GetTransform()->SetLocalScaling(ButtonRenderer->GetCurrentTexture()->GetTextureSize());
 	ButtonCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);

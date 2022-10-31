@@ -33,33 +33,33 @@ void UI_Time::Start()
 	DayCount_Pos = { -20.f, 361.f, 0.0f };
 
 	{
-		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::BACKDROP);
+		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
 		BackGroundRenderer->SetImage("UI_TimeBg_Test.png", "PointSmp");
 		BackGroundRenderer->GetTransform()->SetLocalPosition(UI_Pos);
 		//BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize() * 0.8f);
 		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
 
-		DayNightRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		DayNightRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL0);
 		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
 		DayNightRenderer->GetTransform()->SetLocalPosition(Day_Pos);
 		DayNightRenderer->GetTransform()->SetLocalScaling(DayNightRenderer->GetCurrentTexture()->GetTextureSize());
 
-		TimeRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
+		TimeRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 		TimeRenderer->GetTransform()->SetLocalPosition(Time_Pos);
 	}
 
 	{
-		NightChangeClockRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
+		NightChangeClockRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL0);
 		NightChangeClockRenderer->SetImage("UI_Clock.png", "PointSmp");
 		NightChangeClockRenderer->GetTransform()->SetLocalPosition(Clock_Pos);
 		NightChangeClockRenderer->GetTransform()->SetLocalScaling({ 21.f,21.f });
 
-		NightChangeTimeRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
+		NightChangeTimeRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 		NightChangeTimeRenderer->GetTransform()->SetLocalPosition(ClockTime_Pos);
 	}
 
 	{
-		DayCountRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
+		DayCountRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 		DayCountRenderer->GetTransform()->SetLocalPosition(DayCount_Pos);
 	}
 

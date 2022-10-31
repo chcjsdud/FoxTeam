@@ -438,4 +438,10 @@ protected:
 	SlowEffect* slowEffect_;
 	StunEffect* stunEffect_;
 	LevelUpEffect* levelUpEffect_;
+
+// ¿Ü°û¼±Ã³¸®
+protected:
+	GameEngineOutlineRenderer* MainOutLineRenderer_;
+	GameEngineOutlineRenderer* WeaponOutLineRenderer1_;
+	GameEngineOutlineRenderer* WeaponOutLineRenderer2_;
 };

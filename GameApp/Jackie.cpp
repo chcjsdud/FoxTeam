@@ -275,7 +275,7 @@ void Jackie::Update(float _deltaTime)
 
 void Jackie::initRendererAndAnimation()
 {
-	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::CHARACTER));
 	renderer_->SetFBXMesh("Jackie_run.fbx", "TextureDeferredLightAni", true);
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
@@ -302,7 +302,9 @@ void Jackie::initRendererAndAnimation()
 
 	renderer_->ChangeFBXAnimation("Wait");
 
-	sawRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_->GetRenderSet(1).isRender = false;
+
+	sawRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	sawRenderer_->SetFBXMesh("Weapon_Special_Jackie_01.fbx", "TextureDeferredLightAni");
 
 	sawRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
@@ -315,7 +317,7 @@ void Jackie::initRendererAndAnimation()
 	sawRenderer_->ChangeFBXAnimation("Idle");
 	sawRenderer_->Off();
 
-	axeRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	axeRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	axeRenderer_->SetFBXMesh("Weapon_Axe_01.fbx", "TextureDeferredLightAni");
 
 	axeRenderer_->SetParentBoneName(renderer_, "Bip001 L Finger1");
@@ -324,6 +326,16 @@ void Jackie::initRendererAndAnimation()
 
 	axeRenderer_->CreateFBXAnimation("Idle", "Weapon_Axe_01.fbx");
 	axeRenderer_->ChangeFBXAnimation("Idle");
+
+	MainOutLineRenderer_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "ObjectOutLineAni", true);
+	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+
+	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	WeaponOutLineRenderer1_->SetBaseRenderer(axeRenderer_, "ObjectOutLineAni", true);
+
+	WeaponOutLineRenderer2_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	WeaponOutLineRenderer2_->SetBaseRenderer(sawRenderer_, "ObjectOutLineAni", true);
 }
 
 void Jackie::initJackieCollision()

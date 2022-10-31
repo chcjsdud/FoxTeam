@@ -51,13 +51,13 @@ void Lobby_ButtonOne::SetImageByIndex(int _index)
 void Lobby_ButtonOne::Start()
 {
 	{
-		ButtonOneRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(RenderOrder::UIPANEL0));
+		ButtonOneRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UIPANEL0));
 		ButtonOneRenderer->SetImage("Btn_Slide_Basic.png", "PointSmp");
 		ButtonOneRenderer->GetTransform()->SetLocalPosition({ 410.0f, 330.0f });
 		ButtonOneRenderer->GetTransform()->SetLocalScaling(ButtonOneRenderer->GetCurrentTexture()->GetTextureSize());
 		ButtonOneRenderer->TextSetting("굴림", "호스트 생성", 16.0f, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f, 0.0f });
 
-		ButtonOneCollision = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(RenderOrder::UICOL));
+		ButtonOneCollision = CreateTransformComponent<GameEngineCollision>(GetTransform(), static_cast<int>(UIRenderOrder::UICOL));
 		ButtonOneCollision->GetTransform()->SetLocalPosition({ 410.0f, 330.0f});
 		ButtonOneCollision->GetTransform()->SetLocalScaling(ButtonOneRenderer->GetTransform()->GetLocalScaling());
 		ButtonOneCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);

@@ -136,7 +136,7 @@ void Rio::Update(float _deltaTime)
 
 void Rio::initRendererAndAnimation()
 {
-	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::CHARACTER));
 	renderer_->SetFBXMesh("Rio_Short_Run.fbx", "TextureDeferredLightAni", true);
 
 	renderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
@@ -177,7 +177,7 @@ void Rio::initRendererAndAnimation()
 
 	renderer_->GetRenderSet(1).isRender = false;
 
-	shortBow_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	shortBow_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	shortBow_->SetFBXMesh("Rio_Bow_Short_Idle.fbx", "TextureDeferredLightAni");
 	shortBow_->GetTransform()->SetLocalScaling(100.f);
 	shortBow_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
@@ -188,7 +188,7 @@ void Rio::initRendererAndAnimation()
 	shortBow_->CreateFBXAnimation("ShortBow_Idle", "Rio_Bow_Short_Idle.fbx");
 	shortBow_->ChangeFBXAnimation("ShortBow_Idle");
 
-	longBow_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	longBow_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	longBow_->SetFBXMesh("Rio_Bow_Long_Idle.fbx", "TextureDeferredLightAni");
 	longBow_->GetTransform()->SetLocalScaling(100.f);
 	longBow_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
@@ -202,16 +202,15 @@ void Rio::initRendererAndAnimation()
 	longBow_->GetRenderSet(0).isRender = false;
 	longBow_->Off();
 
-	GameEngineOutlineRenderer* TestRenderer = CreateTransformComponent<GameEngineOutlineRenderer>();
-	TestRenderer->SetBaseRenderer(renderer_, "ObjectOutLineAni", true);
-	TestRenderer->GetRenderSet(1).isRender = false;
+	MainOutLineRenderer_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(renderer_, "ObjectOutLineAni", true);
+	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
 
-	GameEngineOutlineRenderer* TestRenderer2 = CreateTransformComponent<GameEngineOutlineRenderer>();
-	TestRenderer2->SetBaseRenderer(shortBow_, "ObjectOutLineAni", true);
+	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	WeaponOutLineRenderer1_->SetBaseRenderer(shortBow_, "ObjectOutLineAni", true);
 
-	GameEngineOutlineRenderer* TestRenderer3 = CreateTransformComponent<GameEngineOutlineRenderer>();
-	TestRenderer3->SetBaseRenderer(longBow_, "ObjectOutLineAni", true);
-	TestRenderer3->GetRenderSet(0).isRender = false;
+	WeaponOutLineRenderer2_ = CreateTransformComponent<GameEngineOutlineRenderer>();
+	WeaponOutLineRenderer2_->SetBaseRenderer(longBow_, "ObjectOutLineAni", true);
 }
 
 void Rio::changeAnimationWait()
