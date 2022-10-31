@@ -116,7 +116,7 @@ void Aya::Start()
 	skillRCol_->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	skillRCol_->GetTransform()->SetLocalScaling(700.f);
 
-	stat_.AttackSpeed = 1.1f;
+	stat_.AttackSpeed = 0.8f;
 
 	// 평타 상대 피격 이펙트
 	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Shoot_01.png");
@@ -209,7 +209,7 @@ void Aya::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("SkillW_Forward", "Aya_SkillW_Forward." + ext, 0);
 	renderer_->CreateFBXAnimation("SkillW_Left", "Aya_SkillW_Left." + ext, 0);
 	renderer_->CreateFBXAnimation("SkillW_Right", "Aya_SkillW_Right." + ext, 0);
-	renderer_->CreateFBXAnimation("SkillW_Shot", "Aya_SkillW_Shot." + ext, 0, false);
+	renderer_->CreateFBXAnimation("SkillW_Shot", "Aya_SkillW_Shot." + ext, 0, false, 0.027f);
 	renderer_->CreateFBXAnimation("SkillW_Wait", "Aya_SkillW_Wait." + ext, 0);
 	renderer_->CreateFBXAnimation("Death", "Aya_Death." + ext, 0, false);
 
@@ -239,7 +239,7 @@ void Aya::initRendererAndAnimation()
 	// 실루엣
 	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
 	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
-	MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
+	//MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
 
 	WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
 	WeaponSilhouetteRenderer1_->SetBaseRenderer(pistolRenderer_, "PreprocessingAni", true);
@@ -344,6 +344,7 @@ void Aya::onStartQSkill()
 
 	if (target_ == nullptr)
 	{
+		coolTimer_Q_ = 0.0f;
 		changeAnimationWait();
 		mainState_ << "NormalState";
 		return;
@@ -510,6 +511,14 @@ void Aya::onUpdateWSkill(float _deltaTime)
 
 	if (renderer_->IsOverrideAnimationEnd())
 	{
+		renderer_->ClearOverrideAnimation();
+		overrideAnimationBoneName_ = "";
+		overrideAnimationName_ = "";
+	}
+
+	if (attackState_.GetTime() >= 0.3f)
+	{
+		attackState_.GetCurrentState()->Time_ = 0.0f;
 		float4 offset = { 20.f, 120.f, 30.f, 0.f };
 		offset = offset * transform_.GetTransformData().WorldWorld_;
 		float4 startPosition = transform_.GetWorldPosition();
@@ -542,6 +551,8 @@ void Aya::onUpdateWSkill(float _deltaTime)
 	{
 		renderer_->ClearOverrideAnimation();
 		overrideAnimationBoneName_ = "";
+		overrideAnimationName_ = "";
+		changeAnimationWait();
 		mainState_ << "NormalState";
 
 	}
