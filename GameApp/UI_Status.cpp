@@ -4,7 +4,7 @@
 #include "GameEngine/GameEngineInput.h"
 
 UI_Status::UI_Status()
-	: Time(1.0f), UIOn(false)
+	: Time(1.0f), UIOn(true)
 {
 }
 

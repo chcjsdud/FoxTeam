@@ -5,7 +5,7 @@
 #include "GameTimeController.h"
 
 UI_Time::UI_Time()
-	: Time(1.0f), UIOn(false)
+	: Time(1.0f), UIOn(true)
 {
 }
 

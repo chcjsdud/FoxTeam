@@ -8,7 +8,7 @@
 #include "UI_ItemSettingHelper.h"
 
 UI_Inventory::UI_Inventory()
-	: Time(1.0f), UIOn(false),
+	: Time(1.0f), UIOn(true),
 	Slot0_Item(nullptr), Slot1_Item(nullptr), Slot2_Item(nullptr), Slot3_Item(nullptr),
 	Slot4_Item(nullptr), Slot5_Item(nullptr), Slot6_Item(nullptr), Slot7_Item(nullptr),
 	Slot8_Item(nullptr), Slot9_Item(nullptr)

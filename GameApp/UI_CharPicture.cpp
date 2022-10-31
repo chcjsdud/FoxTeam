@@ -4,7 +4,7 @@
 #include "GameEngine/GameEngineInput.h"
 
 UI_CharPicture::UI_CharPicture()
-	: Time(1.0f), UIOn(false)
+	: Time(1.0f), UIOn(true)
 {
 }
 
