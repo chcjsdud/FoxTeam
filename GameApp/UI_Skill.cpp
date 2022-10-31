@@ -141,7 +141,7 @@ void UI_Skill::Start()
 		Icon_Weapon_LevelCounter->GetTransform()->SetLocalPosition(Icon_Weapon_LevelCounterPos);
 
 		Icon_Passive_LevelCounter = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIPANEL0);
-		Icon_Passive_LevelCounter->SetImage("UI_SkillLevelBg_Passive.png", "PointSmp");
+		Icon_Passive_LevelCounter->SetImage("UI_SkillLevelBg_Passive_LV1.png", "PointSmp");
 		Icon_Passive_LevelCounter->GetTransform()->SetLocalScaling(Icon_Passive_LevelCounter->GetCurrentTexture()->GetTextureSize());
 		Icon_Passive_LevelCounter->GetTransform()->SetLocalPosition(Icon_Passive_LevelCounterPos);
 	}
@@ -149,6 +149,118 @@ void UI_Skill::Start()
 
 void UI_Skill::SetStatus(CharacterStat* _Mystat)
 {
+	int QLevel = _Mystat->Level_q;
+	int WLevel = _Mystat->Level_w;
+	int ELevel = _Mystat->Level_e;
+	int RLevel = _Mystat->Level_r;
+	int WeaponLevel = _Mystat->Level_d;
+
+	switch (QLevel)
+	{
+	case 0:
+		Icon_Q_LevelCounter->SetImage("UI_SkillLevelBg_Five.png", "PointSmp");
+		break;
+	case 1:
+		Icon_Q_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV1.png", "PointSmp");
+		break;
+	case 2:
+		Icon_Q_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV2.png", "PointSmp");
+		break;
+	case 3:
+		Icon_Q_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV3.png", "PointSmp");
+		break;
+	case 4:
+		Icon_Q_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV4.png", "PointSmp");
+		break;
+	case 5:
+		Icon_Q_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV5.png", "PointSmp");
+		break;
+	default:
+		break;
+	}
+
+	switch (WLevel)
+	{
+	case 0:
+		Icon_W_LevelCounter->SetImage("UI_SkillLevelBg_Five.png", "PointSmp");
+		break;
+	case 1:
+		Icon_W_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV1.png", "PointSmp");
+		break;
+	case 2:
+		Icon_W_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV2.png", "PointSmp");
+		break;
+	case 3:
+		Icon_W_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV3.png", "PointSmp");
+		break;
+	case 4:
+		Icon_W_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV4.png", "PointSmp");
+		break;
+	case 5:
+		Icon_W_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV5.png", "PointSmp");
+		break;
+	default:
+		break;
+	}
+
+	switch (ELevel)
+	{
+	case 0:
+		Icon_E_LevelCounter->SetImage("UI_SkillLevelBg_Five.png", "PointSmp");
+		break;
+	case 1:
+		Icon_E_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV1.png", "PointSmp");
+		break;
+	case 2:
+		Icon_E_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV2.png", "PointSmp");
+		break;
+	case 3:
+		Icon_E_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV3.png", "PointSmp");
+		break;
+	case 4:
+		Icon_E_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV4.png", "PointSmp");
+		break;
+	case 5:
+		Icon_E_LevelCounter->SetImage("UI_SkillLevelBg_Five_LV5.png", "PointSmp");
+		break;
+	default:
+		break;
+	}
+
+	switch (RLevel)
+	{
+	case 0:
+		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Three.png", "PointSmp");
+		break;
+	case 1:
+		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Three_LV1.png", "PointSmp");
+		break;
+	case 2:
+		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Three_LV2.png", "PointSmp");
+		break;
+	case 3:
+		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Three_LV3.png", "PointSmp");
+		break;
+	default:
+		break;
+	}
+
+
+
+	switch (WeaponLevel)
+	{
+	case 0:
+		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Two.png", "PointSmp");
+		break;
+	case 1:
+		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Two_LV1.png", "PointSmp");
+		break;
+	case 2:
+		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Two_LV2.png", "PointSmp");
+		break;
+	default:
+		break;
+	}
 
 }
 

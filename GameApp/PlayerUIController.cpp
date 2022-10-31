@@ -66,5 +66,6 @@ void PlayerUIController::Update(float _DeltaTime)
 
 	//스테이터스를 상시 받아야함
 	status_UI->SetStatus(pm->GetMyPlayer().stat_);
+	skill_UI->SetStatus(pm->GetMyPlayer().stat_);
 }
 
