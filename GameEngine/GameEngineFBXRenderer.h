@@ -86,8 +86,5 @@ private:
 	GameEngineFBXRenderer* parentBoneRenderer_;
 	int parentBoneIndex_;
 	float4 customOffest_;
-
-private:
-	GameEnginePreprocessingRenderer* PreprocessingRenderer_;
 };
 
