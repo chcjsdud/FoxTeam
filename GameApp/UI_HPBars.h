@@ -29,6 +29,8 @@ protected:
 	GameEngineUIRenderer* SPBar_Renderer;
 	float Time;
 
+	GameEngineUIRenderer* HPBar_ValueRenderer;
+	GameEngineUIRenderer* SPBar_ValueRenderer;
 
 private:
 	void Start() override;

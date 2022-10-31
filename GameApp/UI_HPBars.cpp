@@ -20,8 +20,11 @@ void UI_HPBars::Start()
 	HpBarPos = { -19.0f, -335.0f, -1.0f };
 	HpBarSize = {246.0f, 11.0f};
 
-	SpBarPos = { -19.0f, -345.0f, -1.0f };
-	SpBarSize = { 246.f, 8.f };
+	float4 HpBarFontPos = { -19.0f, -327.0f, -1.0f };
+	float4 SpBarFontPos = { -19.0f, -340.0f, -1.0f };
+
+	SpBarPos = { -19.0f, -347.0f, -1.0f };
+	SpBarSize = { 246.f, 11.f };
 
 	{
 		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::UIICON);
@@ -37,6 +40,17 @@ void UI_HPBars::Start()
 		SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);
 		SPBar_Renderer->GetTransform()->SetLocalScaling(SpBarSize);
 	}
+
+	{
+		HPBar_ValueRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
+		HPBar_ValueRenderer->GetTransform()->SetLocalPosition(HpBarFontPos);
+		
+
+		SPBar_ValueRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)RenderOrder::FONT);
+		SPBar_ValueRenderer->GetTransform()->SetLocalPosition(SpBarFontPos);
+	}
+
+
 
 }
 
@@ -86,12 +100,17 @@ void UI_HPBars::SetStatus(CharacterStat* _Mystat)
 	float4 NewHPBarPos = {HpBarPos.x - ((HpBarSize.x - NewHPBarSize.x) / 2.0f), HpBarPos.y, HpBarPos.z};
 	float4 NewSPBarPos = { SpBarPos.x - ((SpBarSize.x - NewSPBarSize.x) / 2.0f), SpBarPos.y, SpBarPos.z };
 
+	string HPValueString = to_string(static_cast<int>(_Mystat->HP)) + "/" + to_string(static_cast<int>(_Mystat->HPMax));
+	string SPValueString = to_string(static_cast<int>(_Mystat->SP)) + "/" + to_string(static_cast<int>(_Mystat->SPMax));
+
 	HPBar_Renderer->GetTransform()->SetLocalScaling(NewHPBarSize);
 	HPBar_Renderer->GetTransform()->SetLocalPosition(NewHPBarPos);
+	HPBar_ValueRenderer->TextSetting("±¼¸²", HPValueString, 11, FW1_CENTER, float4::WHITE);
 
 	
 	SPBar_Renderer->GetTransform()->SetLocalScaling(NewSPBarSize);
 	SPBar_Renderer->GetTransform()->SetLocalPosition(NewSPBarPos);
+	SPBar_ValueRenderer->TextSetting("±¼¸²", SPValueString, 11, FW1_CENTER, float4::WHITE);
 
 }
 
