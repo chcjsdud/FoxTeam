@@ -223,9 +223,9 @@ void Hyunwoo::initRendererAndAnimation()
 
 	renderer_->GetRenderSet(1).isRender = false;
 
-	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
-	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
+	MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
 }
 
 

@@ -440,9 +440,9 @@ protected:
 	StunEffect* stunEffect_;
 	LevelUpEffect* levelUpEffect_;
 
-// 寇胞急贸府
+// 角风咖 贸府
 protected:
-	GameEnginePreprocessingRenderer* MainOutLineRenderer_;
-	GameEnginePreprocessingRenderer* WeaponOutLineRenderer1_;
-	GameEnginePreprocessingRenderer* WeaponOutLineRenderer2_;
+	GameEnginePreprocessingRenderer* MainSilhouetteRenderer_;
+	GameEnginePreprocessingRenderer* WeaponSilhouetteRenderer1_;
+	GameEnginePreprocessingRenderer* WeaponSilhouetteRenderer2_;
 };

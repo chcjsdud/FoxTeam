@@ -233,12 +233,12 @@ void Jackie::Update(float _deltaTime)
 	{
 		timer_R -= _deltaTime;
 		sawRenderer_->On();
-		WeaponOutLineRenderer2_->On();
+		WeaponSilhouetteRenderer2_->On();
 		axeRenderer_->Off();
-		WeaponOutLineRenderer1_->Off();
+		WeaponSilhouetteRenderer1_->Off();
 
 		sawRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
-		WeaponOutLineRenderer2_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
+		WeaponSilhouetteRenderer2_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
 
 		float x = debugX;
 		float y = debugY;
@@ -254,11 +254,11 @@ void Jackie::Update(float _deltaTime)
 	if (false == isR_)
 	{
 		sawRenderer_->Off();
-		WeaponOutLineRenderer1_->Off();
+		WeaponSilhouetteRenderer1_->Off();
 		axeRenderer_->On();
 		axeRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
-		WeaponOutLineRenderer2_->On();
-		WeaponOutLineRenderer2_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
+		WeaponSilhouetteRenderer2_->On();
+		WeaponSilhouetteRenderer2_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
 	}
 
 	if ("Run" == curAnimationName_)
@@ -266,24 +266,24 @@ void Jackie::Update(float _deltaTime)
 		axeRenderer_->GetTransform()->SetLocalPosition({ 5.0f, 40.0f, 80.0f });
 		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -140.f, 0.0f, -30.0f });
 
-		WeaponOutLineRenderer1_->GetTransform()->SetLocalPosition({ 5.0f, 40.0f, 80.0f });
-		WeaponOutLineRenderer1_->GetTransform()->SetLocalRotationDegree({ -140.f, 0.0f, -30.0f });
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalPosition({ 5.0f, 40.0f, 80.0f });
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree({ -140.f, 0.0f, -30.0f });
 	}
 	else if ("Wait" == curAnimationName_)
 	{
 		axeRenderer_->GetTransform()->SetLocalPosition({ 45.0f, 120.0f, 58.0f });
 		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -164.0f, -317.0f, -82.0f });
 
-		WeaponOutLineRenderer1_->GetTransform()->SetLocalPosition({ 45.0f, 120.0f, 58.0f });
-		WeaponOutLineRenderer1_->GetTransform()->SetLocalRotationDegree({ -164.0f, -317.0f, -82.0f });
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalPosition({ 45.0f, 120.0f, 58.0f });
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree({ -164.0f, -317.0f, -82.0f });
 	}
 	else
 	{
 		axeRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 		axeRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 
-		WeaponOutLineRenderer1_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-		WeaponOutLineRenderer1_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 	}
 
 }
@@ -342,15 +342,15 @@ void Jackie::initRendererAndAnimation()
 	axeRenderer_->CreateFBXAnimation("Idle", "Weapon_Axe_01.fbx");
 	axeRenderer_->ChangeFBXAnimation("Idle");
 
-	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
-	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
+	MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
 
-	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponOutLineRenderer1_->SetBaseRenderer(axeRenderer_, "PreprocessingAni", true);
+	WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	WeaponSilhouetteRenderer1_->SetBaseRenderer(axeRenderer_, "PreprocessingAni", true);
 
-	WeaponOutLineRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponOutLineRenderer2_->SetBaseRenderer(sawRenderer_, "PreprocessingAni", true);
+	WeaponSilhouetteRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	WeaponSilhouetteRenderer2_->SetBaseRenderer(sawRenderer_, "PreprocessingAni", true);
 }
 
 void Jackie::initJackieCollision()

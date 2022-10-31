@@ -26,7 +26,7 @@ GameEngineFBXRenderer::GameEngineFBXRenderer()
 	, parentBoneIndex_(-1)
 	, parentBoneRenderer_(nullptr)
 	, customOffest_(0.0f, 0.0f, 0.0f, 0.0f)
-	, OutLineRenderer_(nullptr)
+	, PreprocessingRenderer_(nullptr)
 {
 }
 
@@ -445,15 +445,15 @@ void GameEngineFBXRenderer::ClearParentBone()
 	parentBoneIndex_ = -1;
 }
 
-void GameEngineFBXRenderer::SetOutLineRenderer(GameEnginePreprocessingRenderer* _OutLineRenderer)
+void GameEngineFBXRenderer::SetOutLineRenderer(GameEnginePreprocessingRenderer* _PreprocessingRenderer)
 {
 	// 외곽선렌더러 저장
-	OutLineRenderer_ = _OutLineRenderer;
+	PreprocessingRenderer_ = _PreprocessingRenderer;
 
 	// 카메라 렌더링 목록에 추가
-	GetLevel()->GetMainCamera()->PushOutLineRenderer(this, OutLineRenderer_);
+	GetLevel()->GetMainCamera()->PushPreprocessingRenderer(this, PreprocessingRenderer_);
 
-	// 선처리 Flag On
+	// 전처리 렌더러 사용
 	PreprocessingOn();
 }
 

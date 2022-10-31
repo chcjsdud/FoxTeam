@@ -68,9 +68,9 @@ Character::Character()
 	, coolTimerW_E_(0.5f)
 	, coolTimerW_R_(0.5f)
 	, coolTimerW_D_(0.5f)
-	, MainOutLineRenderer_(nullptr)
-	, WeaponOutLineRenderer1_(nullptr)
-	, WeaponOutLineRenderer2_(nullptr)
+	, MainSilhouetteRenderer_(nullptr)
+	, WeaponSilhouetteRenderer1_(nullptr)
+	, WeaponSilhouetteRenderer2_(nullptr)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;

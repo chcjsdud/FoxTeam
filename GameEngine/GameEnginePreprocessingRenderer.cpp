@@ -23,7 +23,7 @@ RenderSet& GameEnginePreprocessingRenderer::GetRenderSet(unsigned int _Index)
 	return RenderSets_[_Index];
 }
 
-void GameEnginePreprocessingRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName, bool _IsCharacter)
+void GameEnginePreprocessingRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName, bool _IsCharacter, bool _IsSilhouett)
 {
 	// 베이스가되는 렌더러 셋팅
 	BaseRenderer_ = _BaseRenderer;
@@ -31,6 +31,19 @@ void GameEnginePreprocessingRenderer::SetBaseRenderer(GameEngineFBXRenderer* _Ba
 	if (nullptr != FBXMesh_)
 	{
 		SetMesh(_PipeLineName, _IsCharacter);
+	}
+
+	// 실루엣일때 전처리데이터 
+	if (true == _IsSilhouett)
+	{
+		OutLineData_.LineColor = float4(0.06f, 0.4f, 0.57f, 1.0f);
+		OutLineData_.LineThickness = 0.0f;
+	}
+	// 외곽선일때 전처리데이터
+	else
+	{
+		OutLineData_.LineColor = float4::RED;
+		OutLineData_.LineThickness = 2.0f;
 	}
 
 	// 베이스렌더러의 회전/크기/위치 저장
@@ -331,8 +344,8 @@ void GameEnginePreprocessingRenderer::SetFBXMeshRenderSetCharacter(std::string _
 void GameEnginePreprocessingRenderer::Start()
 {
 	// 상수버퍼 링크정보 초기화
-	OutLineData_.LineColor = float4::RED;
-	OutLineData_.LineThickness = 2.0f;
+	OutLineData_.LineColor = float4(0.06f, 0.4f, 0.57f, 1.0f);
+	OutLineData_.LineThickness = 0.0f;
 }
 
 void GameEnginePreprocessingRenderer::Update(float _DeltaTime)

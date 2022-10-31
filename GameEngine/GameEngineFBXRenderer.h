@@ -88,6 +88,6 @@ private:
 	float4 customOffest_;
 
 private:
-	GameEnginePreprocessingRenderer* OutLineRenderer_;
+	GameEnginePreprocessingRenderer* PreprocessingRenderer_;
 };
 

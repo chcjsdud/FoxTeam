@@ -36,7 +36,7 @@ private:
 	LightsData LightData_;
 	std::list<GameEngineLightComponent*> Lights_;
 	std::map<int, std::list<GameEngineRendererBase*>> RendererList_;
-	std::map<GameEngineRendererBase*, GameEngineRendererBase*> OutLineRendererList_;
+	std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>> PreprocessingRendererList_;
 
 private:
 	int DebugRenderCount_;
@@ -138,7 +138,7 @@ public:
 	void SetProjectionMode(ProjectionMode _ProjectionMode);
 	void PushRenderer(int _Order, GameEngineRendererBase* _Renderer);
 	void PushLight(GameEngineLightComponent* _Light);
-	void PushOutLineRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _OutLineRenderer);
+	void PushPreprocessingRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _PreprocessingRenderer);
 
 public:
 	void PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color = float4::GREEN);

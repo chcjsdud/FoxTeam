@@ -284,10 +284,19 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 			// -> CameraDeferredGBufferTarget에 먼저 렌더링하기 위하여 리스트 수집
 			else
 			{
-				std::map<GameEngineRendererBase*, GameEngineRendererBase*>::iterator FindIter = OutLineRendererList_.find(Renderer);
-				if (OutLineRendererList_.end() != FindIter)
+				std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>>::iterator FindIter = PreprocessingRendererList_.find(Renderer);
+				if (PreprocessingRendererList_.end() != FindIter)
 				{
-					OutLineList.push_back((*FindIter).second);
+					for (GameEngineRendererBase* PreRenderer : (*FindIter).second)
+					{
+						// Off 상태라면 그리지않는다.
+						if (false == PreRenderer->IsUpdate())
+						{
+							continue;
+						}
+
+						OutLineList.push_back(PreRenderer);
+					}
 				}
 			}
 		}
@@ -378,9 +387,9 @@ void CameraComponent::PushLight(GameEngineLightComponent* _Light)
 	Lights_.push_back(_Light);
 }
 
-void CameraComponent::PushOutLineRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _OutLineRenderer)
+void CameraComponent::PushPreprocessingRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _PreprocessingRenderer)
 {
-	OutLineRendererList_[_BaseRenderer] = _OutLineRenderer;
+	PreprocessingRendererList_[_BaseRenderer].push_back(_PreprocessingRenderer);
 }
 
 void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color)

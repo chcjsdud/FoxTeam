@@ -19,7 +19,7 @@ public:
 	RenderSet& GetRenderSet(unsigned int _Index);
 
 public:
-	void SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName, bool _IsCharacter = false);
+	void SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName, bool _IsCharacter = false, bool _IsSilhouette = true);
 
 protected:
 private:
