@@ -3,6 +3,8 @@
 #include <GameEngine/GameEngineActor.h>
 #include "Character.h"
 #include <GameEngine/GameEngineFSM.h>
+#include "BasicAttackEffect.h"
+#include "AyaBullet.h"
 
 class GameEngineFBXRenderer;
 class LumiaMap;
@@ -75,6 +77,13 @@ private:
 	int skillWFireCount_;
 	float skillWFireDelay_;
 
+	BasicAttackEffect* basicAttackEffect_;
+	BasicAttackEffect* basicHitEffect_;
+
 	GameEngineCollision* skillRCol_;
 	GameEngineFBXRenderer* pistolRenderer_;
+
+//	std::vector<bullet*>
+	AyaBullet* bullet0_;
+	AyaBullet* bullet1_;
 };

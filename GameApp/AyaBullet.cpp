@@ -7,7 +7,7 @@
 #include "Character.h"
 #include "PacketSoundPlay.h"
 #include "Monsters.h"
-
+#include "CharEffectPacket.h"
 AyaBullet::AyaBullet()
 	: renderer_(nullptr)
 	, collision_(nullptr)
@@ -21,6 +21,7 @@ AyaBullet::AyaBullet()
 	, scale_(float4(5.f, 150.f, 50.f))
 	, bKnockback_(false)
 	, effect_(nullptr)
+	, atkEffect_(nullptr)
 {
 }
 
@@ -35,6 +36,17 @@ void AyaBullet::Start()
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
 	collision_->Off();
 
+	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("Fx_ShootGlowSE_04.png");
+	hitBase->Cut(2, 2);
+
+	atkEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
+	atkEffect_->GetAttackRenderer()->SetImage("Fx_ShootGlowSE_04.png", "PointSmp");
+	atkEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,50.0f,0.0f });
+	atkEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 90.0f,0.0f,0.0f });
+	atkEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(atkEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize() * 2.5f);
+	atkEffect_->GetAttackRenderer()->CreateAnimation("Fx_ShootGlowSE_04.png", "Fx_ShootGlowSE_04", 0, 3, 0.08f, false);
+
+	
 	GetTransform()->SetLocalScaling(scale_);
 
 	state_.CreateState(MakeState(AyaBullet, Chase));
@@ -127,8 +139,20 @@ void AyaBullet::updateChase(float _deltaTime)
 			//PacketSoundPlay packet;
 			//packet.SetSound("Rio_ShortBow_Hit_01.wav", transform_.GetWorldPosition());
 			//FT::SendPacket(packet);
+
 			target_->Damage(damage_, owner_);
+
+			atkEffect_->GetAttackRenderer()->SetColor({ 1.0f,1.0f,0.7f });
+			//atkEffect_->GetTransform()->SetWorldPosition(wp);
+			atkEffect_->PlayAwake("Fx_ShootGlowSE_04");
 		}
+			CharEffectPacket pack;
+			pack.SetTargetIndex(owner_->GetIndex());
+			pack.SetAnimationName("BasicAttack_Hit");
+			pack.SetVictimIndex(target_->GetIndex());
+			FT::SendPacket(pack);
+	
+		
 
 		Release();
 	}
@@ -160,8 +184,21 @@ void AyaBullet::updateFly(float _deltaTime)
 
 			if (opponent != nullptr)
 			{
+
 				opponent->Damage(damage_, owner_);
 
+				atkEffect_->GetAttackRenderer()->SetColor({ 0.8f,0.8f,1.0f });
+				//atkEffect_->GetTransform()->SetWorldPosition(wp);
+				atkEffect_->PlayAwake("Fx_ShootGlowSE_04");
+
+				CharEffectPacket pack;
+				pack.SetTargetIndex(owner_->GetIndex());
+				pack.SetAnimationName("SkillW_Hit");
+				pack.SetVictimIndex(opponent->GetIndex());
+				FT::SendPacket(pack);
+		
+
+				// 여기 이펙트 패킷 하나
 				// sound
 
 				Release();
@@ -180,7 +217,20 @@ void AyaBullet::updateFly(float _deltaTime)
 
 			if (opponent != nullptr)
 			{
+
 				opponent->Damage(damage_, owner_);
+
+
+				atkEffect_->GetAttackRenderer()->SetColor({ 0.8f,0.8f,1.0f });
+				//atkEffect_->GetTransform()->SetWorldPosition(wp);
+				atkEffect_->PlayAwake("Fx_ShootGlowSE_04");
+
+				CharEffectPacket pack;
+				pack.SetTargetIndex(owner_->GetIndex());
+				pack.SetAnimationName("SkillW_Hit");
+				pack.SetVictimIndex(opponent->GetIndex());
+				FT::SendPacket(pack);
+
 
 				// sound
 

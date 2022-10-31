@@ -12,13 +12,16 @@
 #include "MousePointer.h"
 #include "Monsters.h"
 #include "CharCrowdControlPacket.h"
-
+#include "CharEffectPacket.h"
 Aya::Aya()
 	: ammo_(6)
 	, skillWFireCount_(0)
 	, skillWFireDelay_(0.3f)
 	, skillRCol_(nullptr)
 	, pistolRenderer_(nullptr)
+	, basicAttackEffect_(nullptr)
+	, bullet0_(nullptr)
+	, bullet1_(nullptr)
 	, reloadTime_(0.0f)
 {
 
@@ -62,6 +65,19 @@ void Aya::LoadResource()
 			GameEngineSoundManager::GetInstance()->CreateSound(file.FileName(), file.GetFullPath());
 		}
 	}
+
+	{
+		GameEngineDirectory dir;
+
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "Texture" / "Aya";
+
+		std::vector<GameEngineFile> allFile = dir.GetAllFile("png");
+		for (GameEngineFile& file : allFile)
+		{
+			GameEngineTextureManager::GetInst().Load(file.FileName(), file.GetFullPath());
+		}
+	}
 }
 
 void Aya::ReleaseResource()
@@ -101,6 +117,25 @@ void Aya::Start()
 	skillRCol_->GetTransform()->SetLocalScaling(700.f);
 
 	stat_.AttackSpeed = 1.1f;
+
+	// 평타 상대 피격 이펙트
+	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Shoot_01.png");
+	hitBase->Cut(2, 2);
+
+	basicAttackEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
+	basicAttackEffect_->GetAttackRenderer()->SetImage("FX_BI_Shoot_01.png", "PointSmp");
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, 100.0f });
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 0.0f, 90.0f,0.0f });
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicAttackEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
+	basicAttackEffect_->GetAttackRenderer()->CreateAnimation("FX_BI_Shoot_01.png", "FX_BI_Shoot_01", 0, 3, 0.02f, false);
+
+	basicHitEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
+	basicHitEffect_->GetAttackRenderer()->SetImage("Fx_ShootGlowSE_04.png", "PointSmp");
+	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,50.0f,0.0f });
+	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 90.0f,0.0f,0.0f });
+	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHitEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
+	basicHitEffect_->GetAttackRenderer()->CreateAnimation("Fx_ShootGlowSE_04.png", "Fx_ShootGlowSE_04", 0, 3, 0.03f, false);
+
 }
 
 void Aya::Update(float _deltaTime)
@@ -244,12 +279,20 @@ void Aya::onStartBasicAttacking(IUnit* _target)
 
 	if (GameServer::GetInstance()->IsOpened())
 	{
-		AyaBullet* arrow = level_->CreateActor<AyaBullet>();
-		arrow->MakeTarget(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
+		bullet0_ = level_->CreateActor<AyaBullet>();
+		bullet0_->MakeTarget(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
 
-		arrow = level_->CreateActor<AyaBullet>();
-		arrow->MakeTarget(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
+		//arrow = level_->CreateActor<AyaBullet>();
+		//bullet0_->MakeTarget(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
 	}
+
+	basicAttackEffect_->GetAttackRenderer()->SetColor({ 1.0f, 1.0f, 0.7f });
+	basicAttackEffect_->PlayAwake("FX_BI_Shoot_01");
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("BasicAttack_Shot");
+	FT::SendPacket(pack);
 
 	FT::PlaySoundAndSendPacket("Gun_Fire.wav", transform_.GetWorldPosition());
 }
@@ -610,8 +653,73 @@ void Aya::onUpdateDeath(float _deltaTime)
 
 void Aya::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 {
+	float4 startPosition = transform_.GetWorldPosition();
+	float arrowSpeed = 1500.f;
+
+	if ("BasicAttack_Shot" == _effectName)
+	{
+		basicAttackEffect_->GetAttackRenderer()->SetColor({ 1.0f, 1.0f, 0.7f });
+		basicAttackEffect_->PlayAwake("FX_BI_Shoot_01");
+
+		//bullet0_ = level_->CreateActor<AyaBullet>();
+		//bullet0_->SetDummy();
+		//bullet0_->MakeTarget(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *_victim);
+		return;
+	}
+
+	if ("BasicAttack_Hit" == _effectName)
+	{
+		if (_victim != nullptr)
+		{
+			float4 wp = _victim->GetTransform()->GetWorldPosition();
+			wp.y += 100.0f;
+		//	bullet0_ = level_->CreateActor<AyaBullet>();
+		//	bullet0_->SetDummy();
+		//	bullet0_->GetAttackEffect()->GetTransform()->SetWorldPosition(wp);
+			basicHitEffect_->GetAttackRenderer()->SetColor({ 1.0f,1.0f,0.7f });
+			basicHitEffect_->GetTransform()->SetWorldPosition(wp);
+			basicHitEffect_->PlayAwake("Fx_ShootGlowSE_04");
+		}
+		//bullet0_->GetAttackEffect()->PlayAwake("Fx_ShootGlowSE_04");
+		return;
+	}
+
+	if ("SkillQ_Hit" == _effectName)
+	{
+		if (_victim != nullptr)
+		{
+			float4 wp = _victim->GetTransform()->GetWorldPosition();
+			wp.y += 50.0f;
+			
+		}
+
+		//bullet0_->GetAttackEffect()->GetAttackRenderer()->SetColor({ 0.8f, 0.8f, 1.0f });
+		//bullet0_->GetAttackEffect()->PlayAwake("Fx_ShootGlowSE_04");
+		return;
+	}
+
+	if ("SkillW_Hit" == _effectName)
+	{
+		if (_victim != nullptr)
+		{
+			float4 wp = _victim->GetTransform()->GetWorldPosition();
+			wp.y += 50.0f;
+			//bullet0_->GetAttackEffect()->GetTransform()->SetWorldPosition(wp);
+		}
+
+	//bullet0_->GetAttackEffect()->GetAttackRenderer()->SetColor({ 0.8f, 0.8f, 1.0f });
+	//bullet0_->GetAttackEffect()->PlayAwake("Fx_ShootGlowSE_04");
+		return;
+	}
+
 }
 
 void Aya::onEffectTransformCheck(float _deltaTime)
 {
+	float4 wp = GetTransform()->GetWorldPosition();
+	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
+	basicAttackEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+
+	//basicHitEffect_->GetTransform()->SetWorldPosition(wp);
+	//basicHitEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 }

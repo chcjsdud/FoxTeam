@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngineFSM.h>
 #include "IUnit.h"
 #include <GameEngine/GameEngineEffectRenderer.h>
+#include "BasicAttackEffect.h"
 
 class GameEngineFBXRenderer;
 class GameEngineCollision;
@@ -48,6 +49,8 @@ private:
 	GameEngineFBXRenderer* renderer_;
 	GameEngineEffectRenderer* effect_;
 	GameEngineCollision* collision_;
+	
+	BasicAttackEffect* atkEffect_;
 
 	IUnit* owner_;
 	IUnit* target_;
