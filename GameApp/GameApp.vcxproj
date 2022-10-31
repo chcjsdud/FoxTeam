@@ -599,6 +599,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="YukiQEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="YukiREffect.cpp">
       <SubType>
       </SubType>
@@ -1009,6 +1013,10 @@
     </ClInclude>
     <ClInclude Include="Wolf.h" />
     <ClInclude Include="Yuki.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="YukiQEffect.h">
       <SubType>
       </SubType>
     </ClInclude>

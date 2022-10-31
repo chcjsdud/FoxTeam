@@ -43,7 +43,7 @@ void YukiREffect::Start()
 	zoneRenderer_->Off();
 
 	impactRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
-	impactRenderer_->SetImage("FX_BI_Sword_01.png");
+	impactRenderer_->SetImage("FX_BI_Sword_02AB.png", "PointSmp");
 	impactRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, 150.0f });
 	impactRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,180.f,0.f });
 	impactRenderer_->GetTransform()->SetLocalScaling(impactRenderer_->GetCurrentTexture()->GetTextureSize() * 5.5f);

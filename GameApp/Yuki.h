@@ -9,6 +9,7 @@
 // 분류 : 
 // 용도 : 
 // 설명 : 
+class YukiQEffect;
 class YukiREffect;
 class Yuki : public Character
 {	
@@ -94,6 +95,7 @@ private:
 
 	bool atkFlag_;
 
+	YukiQEffect* qEffect_;
 	bool b_isQ_;
 	float timer_Q;
 	bool b_Qhit_;

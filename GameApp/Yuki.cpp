@@ -15,6 +15,7 @@
 #include "PacketSoundPlay.h"
 #include "CharEffectPacket.h"
 #include "YukiREffect.h"
+#include "YukiQEffect.h"
 
 
 Yuki::Yuki() // default constructer 디폴트 생성자
@@ -252,11 +253,12 @@ void Yuki::initYukiCustomState()
 
 void Yuki::initEffectRenderer()
 {
+	float4 bsicAtkOriScale = { 256.0f, 42.7f };
 	basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 	basicAttackEffectRenderer_->SetImage("Fx_SQ_Cut01.png");
 	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, 180.0f });
 	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(basicAttackEffectRenderer_->GetCurrentTexture()->GetTextureSize());
+	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(bsicAtkOriScale * 1.5f);
 	basicAttackEffectRenderer_->CreateAnimation("Fx_SQ_Cut01.png", "Fx_SQ_Cut01", 0, 5, 0.03f, false);
 	basicAttackEffectRenderer_->Off();
 
@@ -278,6 +280,9 @@ void Yuki::initEffectRenderer()
 
 	rEffect_ = GetLevel()->CreateActor<YukiREffect>();
 	rEffect_->SetParent(this);
+
+	qEffect_ = GetLevel()->CreateActor<YukiQEffect>();
+	qEffect_->SetParent(this);
 }
 
 void Yuki::changeAnimationRun()
@@ -294,6 +299,13 @@ void Yuki::changeAnimationWait()
 
 void Yuki::changeAnimationBasicAttack()
 {
+	if (b_isQ_)
+	{
+		curAnimationName_ = "SkillQ";
+		renderer_->ChangeFBXAnimation("SkillQ", true);
+		return;
+	}
+
 	if (false == atkFlag_)
 	{
 		curAnimationName_ = "Atk0";
@@ -334,11 +346,12 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 		packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 		FT::SendPacket(packet);
 
-		basicAttackEffectRenderer_->On();
-		basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
+		//basicAttackEffectRenderer_->On();
+		//basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
 		//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
-		basicAttackEffectRenderer_->AnimationPlay();
+		//basicAttackEffectRenderer_->AnimationPlay();
 
+		qEffect_->PlayBurst(_target->GetTransform()->GetWorldPosition());
 
 		CharEffectPacket pack;
 		pack.SetTargetIndex(myIndex_);
@@ -383,9 +396,10 @@ void Yuki::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 
 void Yuki::onStartQSkill()
 {
-
+	
 	// 검에 이팩트 재생
-
+	qEffect_->GetTransform()->SetWorldPosition(swordRenderer_->GetTransform()->GetWorldPosition());
+	qEffect_->PlayAwake();
 	b_isQ_ = true;
 	timer_Q = 2.0f;
 	
