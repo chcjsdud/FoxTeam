@@ -1072,7 +1072,7 @@ void GameEngineCore::EngineResourcesCreate()
 
 	// =============================================== 특수기능 관련 =============================================== //
 
-	{ // 221027 SJH ADD : 외곽선렌파(정면을향하는면을 잘라냄)
+	{ // 221027 SJH ADD : 선처리 렌더링파이프라인(애니메이션)
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("PreprocessingAni");
 		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
 		Pipe->SetVertexShader("PreprocessingAni_VS");
@@ -1083,7 +1083,7 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetOutputMergerBlend("AlphaToCoverage");
 	}
 
-	{ // 221027 SJH ADD : 외곽선렌파(정면을향하는면을 잘라냄)
+	{ // 221027 SJH ADD : 선처리 렌더링파이프라인
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("Preprocessing");
 		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
 		Pipe->SetVertexShader("Preprocessing_VS");

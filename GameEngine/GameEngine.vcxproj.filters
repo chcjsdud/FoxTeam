@@ -133,7 +133,7 @@
     <Filter Include="Object\Component\Render\Widget\01.Effect">
       <UniqueIdentifier>{792a1565-1e6f-4e3d-9abf-15dfd86584bd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Component\Render\OutLine">
+    <Filter Include="Object\Component\Render\Preprocessing">
       <UniqueIdentifier>{80bbd5c4-bed6-4a49-ae72-63160ab0d661}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -426,7 +426,7 @@
       <Filter>Object\Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="GameEnginePreprocessingRenderer.h">
-      <Filter>Object\Component\Render\OutLine</Filter>
+      <Filter>Object\Component\Render\Preprocessing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -701,7 +701,7 @@
       <Filter>Object\Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="GameEnginePreprocessingRenderer.cpp">
-      <Filter>Object\Component\Render\OutLine</Filter>
+      <Filter>Object\Component\Render\Preprocessing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
