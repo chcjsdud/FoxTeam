@@ -4,12 +4,15 @@
 #include <GameEngine/GameEngineUIRenderer.h>
 #include <GameEngine/GameEngineRenderer.h>
 #include <GameEngine/GameEngineEffectRenderer.h>
+#include "BasicAttackEffect.h"
 #include "Character.h"
 
 // 분류 : 
 // 용도 : 
 // 설명 : 
+
 class YukiQEffect;
+class YukiQSlashEffect;
 class YukiREffect;
 class Yuki : public Character
 {	
@@ -69,7 +72,9 @@ protected:
 	virtual void onUpdateCustomState(float _deltaTime) override;
 
 
-	virtual void onPlayEffect(const std::string& _effectName);
+	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) override;
+
+	virtual void onEffectTransformCheck(float _deltaTime) override;
 
 	// customstate
 	void startCustomRStandBy();
@@ -87,15 +92,15 @@ protected:
 private:
 	GameEngineFBXRenderer* swordRenderer_;
 
-	GameEngineEffectRenderer* basicAttackEffectRenderer_;
 	GameEngineEffectRenderer* groundEffectRenderer_;
 
 	GameEngineEffectRenderer* rearEffectRenderer_;
 
-
+	BasicAttackEffect* basicAttackEffect_;
 	bool atkFlag_;
 
 	YukiQEffect* qEffect_;
+	YukiQSlashEffect* qSlashEffect_;
 	bool b_isQ_;
 	float timer_Q;
 	bool b_Qhit_;

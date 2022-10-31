@@ -7,7 +7,7 @@
 #include "ePacketID.h"
 #include "PlayerInfoManager.h"
 CharEffectPacket::CharEffectPacket() // default constructer 디폴트 생성자
-	: targetIndex_(-1)
+	: targetIndex_(-1), victimIndex_(-1)
 {
 
 }
@@ -27,6 +27,11 @@ void CharEffectPacket::SetTargetIndex(int _index)
     targetIndex_ = _index;
 }
 
+void CharEffectPacket::SetVictimIndex(int _index)
+{
+	victimIndex_ = _index;
+}
+
 void CharEffectPacket::SetAnimationName(const std::string& _animation)
 {
     effectAnimationName_ = _animation;
@@ -36,12 +41,14 @@ void CharEffectPacket::userSerialize()
 {
 	serializer_ << targetIndex_;
 	serializer_ << effectAnimationName_;
+	serializer_ << victimIndex_;
 }
 
 void CharEffectPacket::userDeserialize()
 {
 	serializer_ >> targetIndex_;
 	serializer_ >> effectAnimationName_;
+	serializer_ >> victimIndex_;
 }
 
 void CharEffectPacket::initPacketID()
@@ -67,12 +74,17 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 
 	Character* targetChar = level->GetCharacterActorList()[targetIndex_];
 
-	if ("StunEffect" == effectAnimationName_)
+
+	if (-1 != victimIndex_)
 	{
-		int a = 0;
+		Character* victimChar = level->GetCharacterActorList()[victimIndex_];
+		targetChar->PlayEffect(effectAnimationName_, victimChar);
+	}
+	else 
+	{
+		targetChar->PlayEffect(effectAnimationName_);
 	}
 
-	targetChar->PlayEffect(effectAnimationName_);
 
 	if (_bServer)
 	{

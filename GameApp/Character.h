@@ -154,7 +154,7 @@ protected:
 	virtual void onStartDeath() = 0;
 	virtual void onUpdateDeath(float _deltaTime) = 0;
 
-	virtual void onPlayEffect(const std::string& _effectName) = 0;
+	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) = 0;
 
 #pragma endregion
 
@@ -201,6 +201,7 @@ private:
 
 #pragma region EffectTransformCheck
 	void EffectTransformCheck(float _DeltaTime);
+	virtual void onEffectTransformCheck(float _DeltaTime) = 0;
 #pragma endregion
 	//------------------------------------------------------------------------------------------------------------------
 	// State
@@ -316,7 +317,7 @@ private:
 
 public:
 #pragma region EffectPlay
-	void PlayEffect(const std::string& _effectName);
+	void PlayEffect(const std::string& _effectName, IUnit* _victim = nullptr);
 #pragma endregion
 
 

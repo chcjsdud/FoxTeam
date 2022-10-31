@@ -67,8 +67,8 @@ public:
 
 	virtual void onUpdateDeath(float _deltaTime) override;
 
-	virtual void onPlayEffect(const std::string& _effectName) override;
-
+	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) override;
+	virtual void onEffectTransformCheck(float _deltaTime) override;
 private:
 	int ammo_;
 	int skillWFireCount_;

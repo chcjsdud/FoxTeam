@@ -767,7 +767,7 @@ void Hyunwoo::onUpdateCustomState(float _deltaTime)
 
 
 
-void Hyunwoo::onPlayEffect(const std::string& _effectName)
+void Hyunwoo::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 {
 	// 상대방에게서 보내 진 이펙트 패킷이 execute 되면
 	// 최종적으로 그 이펙트명이 해당 타겟 인덱스 캐릭터의 인자로 들어와 이 함수로 들어 옵니다.
@@ -821,6 +821,10 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName)
 		rearEffectRenderer_->AnimationPlay();
 		return;
 	}
+}
+
+void Hyunwoo::onEffectTransformCheck(float _deltaTime)
+{
 }
 
 void Hyunwoo::startCustomRSkill()

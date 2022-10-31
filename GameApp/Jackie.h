@@ -69,7 +69,8 @@ protected:
 	virtual void onUpdateCustomState(float _deltaTime) override;
 
 
-	virtual void onPlayEffect(const std::string& _effectName);
+	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) override;
+	virtual void onEffectTransformCheck(float _deltaTime) override;
 
 
 	// customstate

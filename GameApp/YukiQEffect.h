@@ -17,7 +17,6 @@ public:
 
 public:
 	void PlayAwake();
-	void PlayBurst(float4 _pos);
 	void Stop();
 
 protected:
@@ -32,16 +31,10 @@ protected:
 	void startAwake();
 	void updateAwake(float _deltaTime);
 
-	void startBurst();
-	void updateBurst(float _deltaTime);
-
 private:
 	GameEngineFSM renderState_;
 	GameEngineEffectRenderer* kiGatheringRenderer_;
 	GameEngineEffectRenderer* kiCoreRenderer_;
-
-	GameEngineEffectRenderer* slashRenderer_;
-	GameEngineEffectRenderer* kiBurstRenderer_;
 private:
 	float timer_;
 	float4 targetPos_;

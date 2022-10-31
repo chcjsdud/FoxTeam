@@ -1712,7 +1712,7 @@ void Character::updatePlayerWinner(float _deltaTime)
 {
 }
 
-void Character::PlayEffect(const std::string& _effectName)
+void Character::PlayEffect(const std::string& _effectName, IUnit* _victim)
 {
 	if ("StunEffect" == _effectName)
 	{
@@ -1722,7 +1722,7 @@ void Character::PlayEffect(const std::string& _effectName)
 		return;
 	}
 
-	onPlayEffect(_effectName);
+	onPlayEffect(_effectName, _victim);
 }
 
 void Character::DebuffCheck(float _DeltaTime)
@@ -1940,4 +1940,5 @@ void Character::CoolTimeCheck(float _DeltaTime)
 void Character::EffectTransformCheck(float _DeltaTime)
 {
 	levelUpEffect_->GetTransform()->SetWorldPosition(transform_.GetWorldPosition());
+	onEffectTransformCheck(_DeltaTime);
 }

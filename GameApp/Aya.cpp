@@ -532,6 +532,10 @@ void Aya::onUpdateDeath(float _deltaTime)
 {
 }
 
-void Aya::onPlayEffect(const std::string& _effectName)
+void Aya::onPlayEffect(const std::string& _effectName, IUnit* _victim)
+{
+}
+
+void Aya::onEffectTransformCheck(float _deltaTime)
 {
 }

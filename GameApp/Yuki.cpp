@@ -16,7 +16,7 @@
 #include "CharEffectPacket.h"
 #include "YukiREffect.h"
 #include "YukiQEffect.h"
-
+#include "YukiQSlashEffect.h"
 
 Yuki::Yuki() // default constructer 디폴트 생성자
 	: b_isQ_(false), timer_Q(0.0f), rEffect_(nullptr), timer_R(0.0f), b_RHit_(false)
@@ -254,13 +254,20 @@ void Yuki::initYukiCustomState()
 void Yuki::initEffectRenderer()
 {
 	float4 bsicAtkOriScale = { 256.0f, 42.7f };
-	basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
-	basicAttackEffectRenderer_->SetImage("Fx_SQ_Cut01.png");
-	basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, 180.0f });
-	basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(bsicAtkOriScale * 1.5f);
-	basicAttackEffectRenderer_->CreateAnimation("Fx_SQ_Cut01.png", "Fx_SQ_Cut01", 0, 5, 0.03f, false);
-	basicAttackEffectRenderer_->Off();
+	//basicAttackEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
+	//basicAttackEffectRenderer_->SetImage("Fx_SQ_Cut01.png");
+	//basicAttackEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+	//basicAttackEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
+	//basicAttackEffectRenderer_->GetTransform()->SetLocalScaling(bsicAtkOriScale * 1.5f);
+	//basicAttackEffectRenderer_->CreateAnimation("Fx_SQ_Cut01.png", "Fx_SQ_Cut01", 0, 5, 0.03f, false);
+	//basicAttackEffectRenderer_->Off();
+
+	basicAttackEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
+	basicAttackEffect_->GetAttackRenderer()->SetImage("Fx_SQ_Cut01.png", "PointSmp");
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 90.0f,0.0f,0.0f });
+	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(bsicAtkOriScale * 1.5f);
+	basicAttackEffect_->GetAttackRenderer()->CreateAnimation("Fx_SQ_Cut01.png", "Fx_SQ_Cut01", 0, 5, 0.03f, false);
 
 	groundEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
 	groundEffectRenderer_->SetImage("FX_BI_Yuki_01SE.png");
@@ -283,6 +290,8 @@ void Yuki::initEffectRenderer()
 
 	qEffect_ = GetLevel()->CreateActor<YukiQEffect>();
 	qEffect_->SetParent(this);
+
+	qSlashEffect_ = GetLevel()->CreateActor<YukiQSlashEffect>();
 }
 
 void Yuki::changeAnimationRun()
@@ -345,17 +354,13 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 		PacketSoundPlay packet;
 		packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 		FT::SendPacket(packet);
-
-		//basicAttackEffectRenderer_->On();
-		//basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
-		//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
-		//basicAttackEffectRenderer_->AnimationPlay();
-
-		qEffect_->PlayBurst(_target->GetTransform()->GetWorldPosition());
+		qSlashEffect_->PlayBurst(_target->GetTransform()->GetWorldPosition());
+		qSlashEffect_->GetTransform()->SetWorldPosition(_target->GetTransform()->GetWorldPosition());
 
 		CharEffectPacket pack;
 		pack.SetTargetIndex(myIndex_);
-		pack.SetAnimationName("BasicAttack");
+		pack.SetVictimIndex(_target->GetIndex());
+		pack.SetAnimationName("SkillQ_Slash");
 		FT::SendPacket(pack);
 
 		b_isQ_ = false;
@@ -373,25 +378,27 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 
 	float4 wp = target_->GetTransform()->GetWorldPosition();
 
-	basicAttackEffectRenderer_->On();
-	basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
-	//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
-	basicAttackEffectRenderer_->AnimationPlay();
-
+	//basicAttackEffectRenderer_->On();
+	//basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
+	//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition(wp);
+	//basicAttackEffectRenderer_->AnimationPlay();
+	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
+	basicAttackEffect_->PlayAwake("Fx_SQ_Cut01");
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("BasicAttack");
+	pack.SetVictimIndex(_target->GetIndex());
 	FT::SendPacket(pack);
 	// 여기 이펙트 패킷 하나
 }
 
 void Yuki::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 {
-	if (true == basicAttackEffectRenderer_->IsCurAnimationEnd())
-	{
-		basicAttackEffectRenderer_->Off();
-	}
+	//if (true == basicAttackEffectRenderer_->IsCurAnimationEnd())
+	//{
+	//	basicAttackEffectRenderer_->Off();
+	//}
 }
 
 void Yuki::onStartQSkill()
@@ -407,6 +414,13 @@ void Yuki::onStartQSkill()
 	PacketSoundPlay packet;
 	packet.SetSound("Yuki_Skill01_Active.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
+
+	qEffect_->PlayAwake();
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillQ_Start");
+	FT::SendPacket(pack);
 }
 
 void Yuki::onUpdateQSkill(float _deltaTime)
@@ -617,26 +631,35 @@ void Yuki::onUpdateCustomState(float _deltaTime)
 	}
 }
 
-void Yuki::onPlayEffect(const std::string& _effectName)
+void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 {
 	if ("BasicAttack" == _effectName)
 	{
-		//float4 wp = GetTransform()->GetWorldPosition();
-		basicAttackEffectRenderer_->On();
-		basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
-		//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition({ wp.x,wp.y + 40.0f, wp.z });
-		basicAttackEffectRenderer_->AnimationPlay();
+
+		if (_victim != nullptr)
+		{
+			//basicAttackEffectRenderer_->GetTransform()->SetWorldPosition(_victim->GetTransform()->GetWorldPosition());
+			basicAttackEffect_->GetTransform()->SetWorldPosition(_victim->GetTransform()->GetWorldPosition());
+		}
+
+		basicAttackEffect_->PlayAwake("Fx_SQ_Cut01");
+		//basicAttackEffectRenderer_->SetChangeAnimation("Fx_SQ_Cut01", true);
+		//
+		//basicAttackEffectRenderer_->AnimationPlay();
 
 		return;
 	}
 
-	if ("SkillQ" == _effectName)
+	if ("SkillQ_Start" == _effectName)
 	{
-		//float4 wp = GetTransform()->GetWorldPosition();
-		//qEffect_->GetTransform()->SetLocalPosition(wp);
-		//qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
-		//qEffect_->PlayAwake();
-		//return;
+		qEffect_->PlayAwake();
+		return;
+	}
+
+	if ("SkillQ_Slash" == _effectName)
+	{
+		qSlashEffect_->PlayBurst(_victim->GetTransform()->GetWorldPosition());
+		return;
 	}
 
 	if ("SkillW" == _effectName)
@@ -657,23 +680,25 @@ void Yuki::onPlayEffect(const std::string& _effectName)
 
 	if ("SkillR_awake" == _effectName)
 	{
-		float4 wp = GetTransform()->GetWorldPosition();
-		rEffect_->GetTransform()->SetLocalPosition(wp);
-		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 		rEffect_->PlayAwake();
 		return;
 	}
 
 	if ("SkillR_slash" == _effectName)
 	{
-		float4 wp = GetTransform()->GetWorldPosition();
-		rEffect_->GetTransform()->SetLocalPosition(wp);
-		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 		rEffect_->PlaySlash();
-
 		return;
 	}
+}
 
+void Yuki::onEffectTransformCheck(float _deltaTime)
+{
+	float4 wp = GetTransform()->GetWorldPosition();	
+	rEffect_->GetTransform()->SetLocalPosition(wp);
+	rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+
+	qEffect_->GetTransform()->SetLocalPosition(wp);
+	qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 
 }
 

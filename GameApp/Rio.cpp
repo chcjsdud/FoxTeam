@@ -734,7 +734,11 @@ void Rio::onUpdateCustomState(float _deltaTime)
 	customState_.Update(_deltaTime);
 }
 
-void Rio::onPlayEffect(const std::string& _effectName)
+void Rio::onPlayEffect(const std::string& _effectName, IUnit* _victim)
+{
+}
+
+void Rio::onEffectTransformCheck(float _deltaTime)
 {
 }
 

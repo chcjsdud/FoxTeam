@@ -189,6 +189,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="AyaBullet.cpp" />
+    <ClCompile Include="BasicAttackEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Bear.cpp">
       <SubType>
@@ -603,6 +607,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="YukiQSlashEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="YukiREffect.cpp">
       <SubType>
       </SubType>
@@ -614,6 +622,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="AyaBullet.h" />
+    <ClInclude Include="BasicAttackEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Bear.h">
       <SubType>
@@ -1017,6 +1029,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="YukiQEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="YukiQSlashEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
