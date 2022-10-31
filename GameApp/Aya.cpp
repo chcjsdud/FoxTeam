@@ -430,13 +430,14 @@ void Aya::onStartWSkill()
 	float4 startPosition = transform_.GetWorldPosition();
 	startPosition += offset;
 
-	float bulletSpeed = 1200.f;
+	float bulletSpeed = 1500.f;
 
 
 	PacketCreateProjectile packetBullet;
 	packetBullet.MakeNonTargetProjectile(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
 	packetBullet.SetScale({ 80.f, 150.f, 100 });
-	packetBullet.SetType(eProjectileType::AyaTargetBullet);
+	packetBullet.SetType(eProjectileType::AyaWSkill);
+	packetBullet.SetLifeTime(0.5);
 	FT::SendPacket(packetBullet);
 
 
@@ -524,13 +525,14 @@ void Aya::onUpdateWSkill(float _deltaTime)
 		float4 startPosition = transform_.GetWorldPosition();
 		startPosition += offset;
 
-		float bulletSpeed = 1200.f;
+		float bulletSpeed = 1500.f;
 
 
 		PacketCreateProjectile packetBullet;
 		packetBullet.MakeNonTargetProjectile(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
 		packetBullet.SetScale({ 80.f, 150.f, 100 });
-		packetBullet.SetType(eProjectileType::AyaTargetBullet);
+		packetBullet.SetType(eProjectileType::AyaWSkill);
+		packetBullet.SetLifeTime(0.5);
 		FT::SendPacket(packetBullet);
 
 
@@ -630,6 +632,10 @@ void Aya::onUpdateRSkill(float _d1eltaTime)
 				}
 				unit->Damage(300.f + stat_.AttackPower * 2.f, this);
 				unit->Stun(2.0f);
+				CharCrowdControlPacket packet;
+				packet.SetStun(2.0f);
+				packet.SetTargetIndex(unit->GetIndex());
+				FT::SendPacket(packet);
 			}
 		}
 
@@ -642,6 +648,10 @@ void Aya::onUpdateRSkill(float _d1eltaTime)
 			{
 				unit->Damage(300.f + stat_.AttackPower * 2.f, this);
 				unit->Stun(2.0f);
+				CharCrowdControlPacket packet;
+				packet.SetStun(2.0f);
+				packet.SetTargetIndex(unit->GetIndex());
+				FT::SendPacket(packet);
 			}
 		}
 

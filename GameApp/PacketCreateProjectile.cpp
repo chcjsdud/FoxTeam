@@ -126,6 +126,9 @@ void PacketCreateProjectile::execute(SOCKET _socketSender, GameEngineSocketInter
     case eProjectileType::AyaTargetBullet:
         ayaTargetBullet(level, _network, _bServer);
         break;
+    case eProjectileType::AyaWSkill:
+        ayaWSkill(level, _network, _bServer);
+        break;
     default:
         break;
     }

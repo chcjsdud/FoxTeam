@@ -856,11 +856,6 @@ void Character::Stun(float _stunTime)
 	changeAnimationWait();
 
 	stunEffect_->PlayAwake(_stunTime);
-
-	CharCrowdControlPacket packet;
-	packet.SetStun(2.0f);
-	packet.SetTargetIndex(this->GetIndex());
-	FT::SendPacket(packet);
 }
 
 
