@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
+#include "CharacterStat.h"
 
 using namespace std;
 // Ό³Έν :
@@ -21,6 +22,7 @@ public:
 	bool UIOn;
 
 public:
+	void SetStatus(CharacterStat* _Mystat);
 
 protected:
 	GameEngineUIRenderer* HPBar_Renderer;
@@ -31,6 +33,7 @@ protected:
 private:
 	void Start() override;
 	void Update(float _Time) override;
+
 
 private:
 	float4 HpBarPos;

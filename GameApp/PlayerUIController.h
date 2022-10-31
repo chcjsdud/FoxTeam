@@ -13,6 +13,8 @@
 #include "UI_Time.h"
 #include "UI_Notice.h"
 #include "UI_HyperMap.h"
+#include "UI_HPBars.h"
+
 #include "UI_FOW.h"
 #include "UI_BloodBackground.h"
 
@@ -80,6 +82,11 @@ public:
 		return FOW_UI;
 	}
 
+	UI_HPBars* GetHPBars()
+	{
+		return hpbars_UI;
+	}
+
 	//UI_HyperMap* GetHyperMap()
 	//{
 	//	return hypermap_UI;
@@ -102,7 +109,7 @@ private:
 	UI_Status* status_UI;
 	UI_Time* time_UI;
 	UI_Notice* notice_UI;
-	//UI_HyperMap* hypermap_UI;
+	UI_HPBars* hpbars_UI;
 
 
 	UI_FOW* FOW_UI;
