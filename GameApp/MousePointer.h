@@ -6,6 +6,8 @@
 // Ό³Έν : 
 class GameEngineUIRenderer;
 class GameEngineCollision;
+class Character;
+class Monsters;
 class MousePointer : public GameEngineActor
 {
 public: // Static Value
@@ -36,6 +38,11 @@ private:
 	void updateMouseRay();
 
 private:
+	void CheckCollision();
+	void CheckCharacterCollision();
+	void CheckMonsterCollision();
+
+private:
 	void Start() override;
 	void Update(float _deltaTime) override;
 	void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) override;
@@ -61,5 +68,9 @@ private: // Ray(InGame)
 private: // Mouse(UI)
 	GameEngineUIRenderer* MouseRenderer_;
 	GameEngineCollision* MouseCollider_;
+
+private: // Object That Collided with the Previous Ray
+	Character* PrevColCharacter_;
+	Monsters* PrevColMonster_;
 };
 

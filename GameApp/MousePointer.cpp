@@ -5,6 +5,8 @@
 #include <GameEngine/GameEngineCollision.h>
 
 #include "Enums.h"
+#include "Character.h"
+#include "Monsters.h"
 
 MousePointer* MousePointer::InGameMouse = nullptr;
 
@@ -102,6 +104,110 @@ void MousePointer::updateMouseRay()
 	rayOrigin_ = inverseViewMatrix.vw;
 }
 
+void MousePointer::CheckCollision()
+{
+	// 캐릭터와의 충돌체크
+	CheckCharacterCollision();
+
+	// 몬스터와의 충돌체크
+	CheckMonsterCollision();
+}
+
+void MousePointer::CheckCharacterCollision()
+{
+	// Check Player Group Collision Check
+	GameEngineCollision* CurCollisionCharacter = rayCollision_->GetCollision(static_cast<int>(eCollisionGroup::Player));
+	if (nullptr != CurCollisionCharacter)
+	{
+		// 현재 충돌한 플레이어와 이전에 충돌한 플레이어를 비교하여 동일하다면 처리없음
+		// 다르다면 이전충돌한 플레이어는 외곽선해제, 현재 충돌한 플레이어는 외곽선활성화 및 이전충돌플레이어에 저장
+
+		// Current Collider Get Actor
+		GameEngineActor* Actor = CurCollisionCharacter->GetActor();
+
+		// Convert Character
+		Character* CurCharacter = dynamic_cast<Character*>(Actor);
+
+		// Check Prev Character & Current Character
+		if (nullptr != PrevColCharacter_)										// 이전에 충돌한 플레이어가 존재할때
+		{
+			if (PrevColCharacter_->GetIndex() == CurCharacter->GetIndex())
+			{
+				// 동일한 플레이어이므로 외곽선 활성
+				CurCharacter->PickingOutLineOn();
+			}
+			else
+			{
+				// 이전 충돌한 플레이어 외곽선해제
+				PrevColCharacter_->PickingOutLineOff();
+
+				// 현재 충돌한 플레이어 외곽선활성 및 저장
+				CurCharacter->PickingOutLineOn();
+				PrevColCharacter_ = CurCharacter;
+			}
+		}
+		else																	// 이전에 충돌한 플레이거가 존재하지않을때
+		{
+			CurCharacter->PickingOutLineOn();
+			PrevColCharacter_ = CurCharacter;
+		}
+	}
+	else // 현재 충돌한 플레이어가 존재하지않으므로 이전 충돌한 플레이어 외곽선해제
+	{
+		if (nullptr != PrevColCharacter_)
+		{
+			PrevColCharacter_->PickingOutLineOff();
+		}
+	}
+}
+
+void MousePointer::CheckMonsterCollision()
+{
+	//// Check Monster Group Collision Check
+	//GameEngineCollision* CurCollisionMonster = rayCollision_->GetCollision(static_cast<int>(eCollisionGroup::Monster));
+	//if (nullptr != CurCollisionMonster)
+	//{
+	//	// 현재 충돌한 몬스터와 이전에 충돌한 몬스터를 비교하여 동일하다면 처리없음
+	//	// 다르다면 이전충돌한 몬스터는 외곽선해제, 현재 충돌한 몬스터는 외곽선활성화 및 이전충돌몬스터에 저장
+
+	//	// Current Collider Get Actor
+	//	GameEngineActor* Actor = CurCollisionMonster->GetActor();
+
+	//	// Convert Monster
+	//	Monsters* CurMonster = dynamic_cast<Monsters*>(Actor);
+
+	//	// Check Prev Character & Current Character
+	//	if (nullptr != PrevColMonster_)										// 이전에 충돌한 몬스터가 존재할때
+	//	{
+	//		if (PrevColMonster_->GetIndex() == CurMonster->GetIndex())
+	//		{
+	//			return;
+	//		}
+	//		else
+	//		{
+	//			// 이전 충돌한 몬스터 외곽선해제
+	//			PrevColMonster_->PickingOutLineOff();
+
+	//			// 현재 충돌한 몬스터 외곽선활성 및 저장
+	//			CurMonster->PickingOutLineOn();
+	//			PrevColMonster_ = CurMonster;
+	//		}
+	//	}
+	//	else																	// 이전에 충돌한 몬스터가 존재하지않을때
+	//	{
+	//		CurMonster->PickingOutLineOn();
+	//		PrevColMonster_ = CurMonster;
+	//	}
+	//}
+	//else // 현재 충돌한 몬스터가 존재하지않으므로 이전 충돌한 플레이어 외곽선해제
+	//{
+	//	if (nullptr != PrevColMonster_)
+	//	{
+	//		PrevColMonster_->PickingOutLineOff();
+	//	}
+	//}
+}
+
 void MousePointer::Start()
 {
 	// 광선 충돌체 생성
@@ -139,8 +245,11 @@ void MousePointer::Update(float _deltaTime)
 	updateMouseRay();
 	rayCollision_->SetRayData(rayOrigin_, rayDirection_);
 
-	// 
+	// 마우스액터 위치 갱신 : 현재 마우스위치
 	GetTransform()->SetWorldPosition(GameEngineInput::GetInst().GetMouse3DPos());
+
+	// 충돌체크
+	CheckCollision();
 
 	// 키체크
 	if (true == GameEngineInput::GetInst().Down("LBUTTON"))
@@ -189,6 +298,8 @@ MousePointer::MousePointer()
 	, rayCollision_(nullptr)
 	, MouseRenderer_(nullptr)
 	, MouseCollider_(nullptr)
+	, PrevColCharacter_(nullptr)
+	, PrevColMonster_(nullptr)
 {
 }
 
