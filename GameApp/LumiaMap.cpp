@@ -112,19 +112,12 @@ void LumiaMap::Start()
 
 	tempDir.MoveParent("UserMesh");
 	tempDir.MoveChild("ItemBox");
-
 	vecFile = tempDir.GetAllFile(".UserMesh");
-
 	for (size_t i = 0; i < vecFile.size(); i++)
 	{
 		GameEngineFBXRenderer* FBX = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
 		FBX->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
 		FBX->GetTransform()->SetLocalScaling(mapScale_);
-
-		// 221101 SJH ADD : ¼öÁ¤Áß
-		//GameEnginePreprocessingRenderer* OutLineRenderer = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-		//OutLineRenderer->SetBaseRenderer(FBX, "Preprocessing", false, false);
-		//OutLineRenderer->GetTransform()->SetLocalScaling(mapScale_);
 
 		mapRenderers.push_back(FBX);
 	}
