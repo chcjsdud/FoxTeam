@@ -159,15 +159,6 @@ void Aya::Update(float _deltaTime)
 
 	level_->PushDebugRender(skillRCol_->GetTransform(), CollisionType::CirCle);
 
-	if (GameEngineInput::Down("Z"))
-	{
-		coolTimer_Q_ = 0.5f;
-		coolTimer_W_ = 0.5f;
-		coolTimer_E_ = 0.5f;
-		coolTimer_R_ = 0.5f;
-		coolTimer_D_ = 0.5f;
-	}
-
 	if (!bFocused_)
 	{
 		return;

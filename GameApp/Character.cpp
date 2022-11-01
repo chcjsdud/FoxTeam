@@ -190,7 +190,6 @@ void Character::Update(float _DeltaTime)
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 
-
 	CoolTimeCheck(_DeltaTime);
 	DebuffCheck(_DeltaTime);		// CC가 아닌 디버프(출혈, 슬로우 등) 체크
 	EffectTransformCheck(_DeltaTime);
@@ -260,7 +259,16 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
 	}
 
-
+	if (GameEngineInput::Down("Z"))
+	{
+		mainState_ << "NormalState";
+		normalState_ << "Wait";
+		coolTimer_Q_ = 0.5f;
+		coolTimer_W_ = 0.5f;
+		coolTimer_E_ = 0.5f;
+		coolTimer_R_ = 0.5f;
+		coolTimer_D_ = 0.5f;
+	}
 }
 
 
