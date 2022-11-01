@@ -7,13 +7,13 @@
 class GameEngineFBXRenderer;
 class GameEngineShadowRenderer : public GameEngineRenderer
 {
-public:
+public:	// 베이스렌더러 지정 및 렌더셋 셋팅
 	void SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer);
 
 protected:
-
 private:
 	void SetRenderSet(int _MeshIndex);
+	void ParallelogramAlgorithm();
 
 private:
 	void Start() override;

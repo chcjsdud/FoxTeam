@@ -18,7 +18,7 @@ void GameEngineShadowRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRende
 		FBXMesh_ = BaseRenderer_->GetMesh();
 	}
 
-	// 렌더셋
+	// 렌더셋 셋팅
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh_->GetAllMeshMap();
 	int AllMeshCount = static_cast<int>(AllMeshSet.size());
 
@@ -27,6 +27,9 @@ void GameEngineShadowRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRende
 	{
 		SetRenderSet(MeshNum);
 	}
+
+	// 베이스렌더러를 평행사면형 알고리즘을 이용하여 그림자형태로 변환
+	ParallelogramAlgorithm();
 }
 
 void GameEngineShadowRenderer::SetRenderSet(int _MeshIndex)
@@ -114,6 +117,16 @@ void GameEngineShadowRenderer::SetRenderSet(int _MeshIndex)
 			RenderSetData.PipeLine_->SetInputAssembler2IndexBufferSetting(IndexBuffer);
 		}
 	}
+}
+
+void GameEngineShadowRenderer::ParallelogramAlgorithm()
+{
+	// 베이스렌더러 기준 평행사변형 형태로 베이스렌더러를 눕힌 형태의 그림자렌더러로 변환
+
+
+
+
+
 }
 
 void GameEngineShadowRenderer::Start()
