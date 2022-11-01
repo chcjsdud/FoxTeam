@@ -46,7 +46,7 @@ void UserGame::Initialize()
 	
 
 	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
-	LevelCreate<OutLineTestLevel>("OutLineTestLevel");
+	//LevelCreate<OutLineTestLevel>("OutLineTestLevel");
 	LevelCreate<TestLevel>("TestLevel");
 	LevelCreate<TitleLevel>("TitleLevel");
 	LevelCreate<LobbyLevel>("LobbyLevel");
