@@ -89,13 +89,6 @@ void AyaESpectrum::updateSleep(float _deltaTime)
 {
 }
 
-void AyaESpectrum::startFade()
-{
-}
-
-void AyaESpectrum::updateFade(float _deltaTime)
-{
-}
 
 void AyaESpectrum::startAwake()
 {
@@ -106,11 +99,11 @@ void AyaESpectrum::updateAwake(float _deltaTime)
 {
 	revealTime_ += _deltaTime;
 
-	if (1.0f <= revealTime_)
+	if (0.5f <= revealTime_)
 	{
 		revealTime_ = 0.0f;
 		count_ = 0;
-		renderState_ << "Sleep";
+		renderState_ << "Fade";
 		return;
 	}
 
@@ -148,3 +141,50 @@ void AyaESpectrum::updateAwake(float _deltaTime)
 
 
 
+void AyaESpectrum::startFade()
+{
+}
+
+void AyaESpectrum::updateFade(float _deltaTime)
+{
+	revealTime_ += _deltaTime;
+
+	if (0.5f <= revealTime_)
+	{
+		revealTime_ = 0.0f;
+		count_ = 0;
+		renderState_ << "Sleep";
+		return;
+	}
+
+	if (0 == count_)
+	{
+		renderers_[0]->Off();
+		count_ = 1;
+	}
+
+
+	if (1 == count_ && 0.1f <= revealTime_)
+	{
+		renderers_[1]->Off();
+		count_ = 2;
+	}
+
+	if (2 == count_ && 0.2f <= revealTime_)
+	{
+		renderers_[2]->Off();
+		count_ = 3;
+	}
+
+	if (3 == count_ && 0.3f <= revealTime_)
+	{
+		renderers_[3]->Off();
+		count_ = 4;
+	}
+
+	if (4 == count_ && 0.4f <= revealTime_)
+	{
+		renderers_[4]->Off();
+		count_ = 5;
+	}
+}

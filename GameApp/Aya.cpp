@@ -54,6 +54,9 @@ void Aya::LoadResource()
 		GameEngineFBXMesh* spectrum4 = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("skillE_05.fbx"));
 		spectrum4->CreateRenderingBuffer();
 
+		GameEngineFBXMesh* bullet = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("bullet.fbx"));
+		bullet->CreateRenderingBuffer();
+
 		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Pistol_01.fbx"));
 		mesh->CreateRenderingBuffer();
 		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Pistol_01.fbx"));
@@ -333,7 +336,7 @@ void Aya::onStartBasicAttacking(IUnit* _target)
 	float4 startPosition = transform_.GetWorldPosition();
 	startPosition += offset;
 
-	float arrowSpeed = 1500.f;
+	float arrowSpeed = 2500.f;
 	{
 		PacketCreateProjectile packetBullet;
 		packetBullet.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
@@ -410,7 +413,7 @@ void Aya::onStartQSkill()
 	float4 startPosition = transform_.GetWorldPosition();
 	startPosition += offset;
 
-	float arrowSpeed = 1500.f;
+	float arrowSpeed = 2500.f;
 
 	{
 		PacketCreateProjectile packetBullet;
@@ -469,7 +472,7 @@ void Aya::onStartWSkill()
 	float4 startPosition = transform_.GetWorldPosition();
 	startPosition += offset;
 
-	float bulletSpeed = 1500.f;
+	float bulletSpeed = 2500.f;
 
 
 	PacketCreateProjectile packetBullet;
@@ -564,7 +567,7 @@ void Aya::onUpdateWSkill(float _deltaTime)
 		float4 startPosition = transform_.GetWorldPosition();
 		startPosition += offset;
 
-		float bulletSpeed = 1500.f;
+		float bulletSpeed = 2500.f;
 
 
 		PacketCreateProjectile packetBullet;

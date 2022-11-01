@@ -46,7 +46,13 @@ void AyaBullet::Start()
 	atkEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(atkEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize() * 2.5f);
 	atkEffect_->GetAttackRenderer()->CreateAnimation("Fx_ShootGlowSE_04.png", "Fx_ShootGlowSE_04", 0, 3, 0.08f, false);
 
-	
+	renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	renderer_->SetFBXMesh("bullet.fbx", "Color", false);
+	renderer_->GetRenderSet(0).ShaderHelper->SettingConstantBufferSet("ResultColor", float4{1.0f, 0.8f, 0.0f});
+
+	renderer_->GetTransform()->SetLocalScaling(float4{4.5f,4.5f,9.0f} * 0.0005f);
+	renderer_->GetTransform()->SetLocalPosition(float4{0.0f,500.0f,0.0f } *0.0005f);
+
 	GetTransform()->SetLocalScaling(scale_);
 
 	state_.CreateState(MakeState(AyaBullet, Chase));

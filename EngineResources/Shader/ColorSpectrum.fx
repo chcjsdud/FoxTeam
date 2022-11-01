@@ -65,7 +65,7 @@ float4 ColorSpectrum_PS(VertexOut _In) : SV_Target0
         Color *= (DiffuseLight + SpacularLight + AmbientLight);
     }
     
-    Color.w = 1.0f;
+    Color.w = vDiffuseColor.w;
     
     return Color;
 }
