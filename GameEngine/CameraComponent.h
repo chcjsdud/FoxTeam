@@ -37,6 +37,7 @@ private:
 	std::list<GameEngineLightComponent*> Lights_;
 	std::map<int, std::list<GameEngineRendererBase*>> RendererList_;
 	std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>> PreprocessingRendererList_;
+	std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>> ShadowRendererList_;
 
 private:
 	int DebugRenderCount_;
@@ -51,6 +52,7 @@ private:
 	GameEngineRenderTarget* CameraDeferredTarget_;
 
 	GameEngineRenderTarget* CameraPreprocessingTarget_;
+	GameEngineRenderTarget* CameraShadowTarget_;
 
 public:
 	CameraComponent();

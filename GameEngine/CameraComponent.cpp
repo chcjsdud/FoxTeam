@@ -18,7 +18,8 @@ CameraComponent::CameraComponent() :
 	NearZ_(0.1f),
 	FarZ_(10000.0f),
 	DebugRenderCount_(0),
-	CameraBufferTarget_(nullptr)
+	CameraBufferTarget_(nullptr),
+	CameraShadowTarget_(nullptr)
 {
 }
 
@@ -58,6 +59,12 @@ CameraComponent::~CameraComponent()
 	{
 		delete CameraPreprocessingTarget_;
 		CameraPreprocessingTarget_ = nullptr;
+	}
+
+	if (nullptr != CameraShadowTarget_)
+	{
+		delete CameraShadowTarget_;
+		CameraShadowTarget_ = nullptr;
 	}
 }
 

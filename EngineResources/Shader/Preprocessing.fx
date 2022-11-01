@@ -49,8 +49,6 @@ VertexOut Preprocessing_VS(VertexIn _In)
 struct DeferredOutPut
 {
     float4 ViewDif : SV_Target0; // ÅØ½ºÃ³ »ö±ò
-    float4 ViewPos : SV_Target1;
-    float4 ViewNor : SV_Target2;
 };
 
 Texture2D DiffuseTex : register(t0);
@@ -68,14 +66,6 @@ DeferredOutPut Preprocessing_PS(VertexOut _In)
     DeferredOutPut Out;
 
     Out.ViewDif = LineColor;
-    Out.ViewPos = _In.ViewPosition;
-    Out.ViewPos.w = 1.0f;
-    
-    Out.ViewNor = _In.ViewNormal;
-    Out.ViewNor.w = 1.0f;
- 
-    Out.ViewNor = BumpNormalCalculate(NormalTex, Smp, _In.Texcoord, _In.ViewTangent, _In.ViewBiNormal, _In.ViewNormal);
-    Out.ViewNor.w = 1.0f;
     
     return Out;
 }
