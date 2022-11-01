@@ -47,7 +47,7 @@ public:
 public: // 221025 SJH ADD : 레벨업
 	void LevelUP(LevelUPData _Data);
 
-public: // 221025 SJH ADD : 외곽선 On/Off -> 마우스가 선택하면 On, 충돌이끝나면 off
+public: // 221025 SJH ADD : Functions related to outline activation and deactivation
 	void PickingOutLineOn();
 	void PickingOutLineOff();
 

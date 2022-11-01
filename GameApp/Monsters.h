@@ -69,7 +69,7 @@ public: // inline Set Function
 public: // Public Monster LevelUP Related Function
 	void LevelUP(LevelUPData _Data);													// 게임시간에 따른 레벨업
 
-public: // Outline Active or Deactive Related Function
+public: // Functions related to outline activation and deactivation
 	void PickingOutLineOn();															// 마우스와 충돌로 인한 외곽선 활성화
 	void PickingOutLineOff();															// 마우스와 충돌해제로 인한 외곽선 비활성화
 

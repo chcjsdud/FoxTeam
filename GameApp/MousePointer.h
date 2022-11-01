@@ -37,7 +37,7 @@ protected:
 private:
 	void updateMouseRay();
 
-private:
+private: // Functions related to outline activation and deactivation
 	void CheckCollision();
 	void CheckCharacterCollision();
 	void CheckMonsterCollision();
