@@ -14,6 +14,7 @@
 #include "UI_Notice.h"
 #include "UI_HyperMap.h"
 #include "UI_HPBars.h"
+#include "UI_CalculateHelper.h"
 
 #include "UI_FOW.h"
 #include "UI_BloodBackground.h"
@@ -87,6 +88,8 @@ public:
 		return hpbars_UI;
 	}
 
+
+
 	//UI_HyperMap* GetHyperMap()
 	//{
 	//	return hypermap_UI;
@@ -111,6 +114,7 @@ private:
 	UI_Notice* notice_UI;
 	UI_HPBars* hpbars_UI;
 
+	UI_CalculateHelper* calhelper_;
 
 	UI_FOW* FOW_UI;
 

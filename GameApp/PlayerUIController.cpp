@@ -4,6 +4,7 @@
 #include "LumiaLevel.h"
 
 
+
 PlayerUIController::PlayerUIController()
 	: MyJob(JobType::HYUNWOO), winLoseFlag_(false), blood_UI(nullptr)
 {
@@ -33,6 +34,8 @@ void PlayerUIController::InitUI()
 	notice_UI = GetLevel()->CreateActor<UI_Notice>();
 	winLose_UI = GetLevel()->CreateActor<UI_WinLose>();
 	hpbars_UI = GetLevel()->CreateActor<UI_HPBars>();
+
+	calhelper_ = GetLevel()->CreateActor<UI_CalculateHelper>();
 
 	//테스트용
 	notice_UI->SetText("알림 UI 테스트용 텍스트입니다", 5.f);
@@ -68,5 +71,7 @@ void PlayerUIController::Update(float _DeltaTime)
 	status_UI->SetStatus(pm->GetMyPlayer().stat_);
 	skill_UI->SetStatus(pm->GetMyPlayer().stat_);
 	hpbars_UI->SetStatus(pm->GetMyPlayer().stat_);
+
+	float4 playerpos = calhelper_->Cal3Dto2D(pm->GetMyPlayer().curPos_);
 }
 
