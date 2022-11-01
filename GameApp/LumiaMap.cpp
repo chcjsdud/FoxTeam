@@ -381,6 +381,50 @@ std::vector<float4> LumiaMap::GetCharacterSpawnPoints(int _spawnArea)
 	return (*iter).second;
 }
 
+std::vector<float4> LumiaMap::GetEyeSightPolygon(const float4& _position, const float _length)
+{
+	std::vector<float4> result;
+	if (nullptr == navMeshRenderer_)
+	{
+		return std::vector<float4>();
+	}
+
+	float4 direction = {0.0f, 0.0f, 1.0f};
+	float degree = 0.f;
+	float interval = _length / 15.f;
+	float degreeInterval = 10.f;
+	int count = 360 / static_cast<int>(degreeInterval);
+
+	result.reserve(count + 1);
+
+	for (size_t i = 0; i < count; i++)
+	{
+		float length = 0.0f;
+		float4 checkPosition;
+		degree += degreeInterval;
+		direction = { 0.0f, 0.0f, 1.0f };
+		direction.RotateYDegree(degree);
+		while (length <= _length)
+		{
+
+			length += interval;
+			float4 temp = direction * length;
+			checkPosition = _position + temp;
+			float height;
+			NavFace* face = navMesh_->GetNavFaceFromPositionXZ(checkPosition, float4::DOWN, height);
+			checkPosition.y = 100.0f;
+			if (nullptr == face)
+			{
+				break;
+			}
+		}
+
+		result.push_back(checkPosition);
+	}
+
+	return result;
+}
+
 void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)
 {
 	intervalX_ = _intervalX;

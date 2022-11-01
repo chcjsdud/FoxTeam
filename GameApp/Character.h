@@ -180,6 +180,7 @@ protected:
 private:
 	void initInput();
 	void initState();
+	void initEyeSight();
 
 private:
 	void moveTick(float _deltaTime, const float4& _startPosition);
@@ -334,6 +335,11 @@ protected:
 	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* collision_;
 	GameEngineEffectRenderer* shadow_;
+	GameEngineRenderer* eyeSightRenderer_;
+	GameEngineVertexBuffer* eyeSightVertex_;
+	GameEngineIndexBuffer* eyeSightIndex_;
+	std::vector<GameEngineVertex> vertices_;
+	std::vector<UINT> indices_;
 
 	// ∏ , ¿Ãµø
 	LumiaMap* currentMap_;

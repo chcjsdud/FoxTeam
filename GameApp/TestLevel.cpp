@@ -85,12 +85,12 @@ void TestLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
 
 void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 {
-	Rio::LoadResource();
-	Jackie::LoadResource();
-	Hyunwoo::LoadResource();
+	//Rio::LoadResource();
+	//Jackie::LoadResource();
+	//Hyunwoo::LoadResource();
 	Aya::LoadResource();
 	Character::LoadResource();
-	Yuki::LoadResource();
+	//Yuki::LoadResource();
 
 
 	//CreateActor<TestOBB>();
@@ -121,7 +121,7 @@ void TestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	//h->SetMap(map_);
 
 	aya_ = CreateActor<Aya>();
-	//aya_->Focus();
+	aya_->Focus();
 	aya_->SetMouse(mouse_);
 	aya_->SetMap(map_);
 	

@@ -127,15 +127,16 @@ void Character::Start()
 	initInput();
 	initState();
 	initBasicEffect();
+	initEyeSight();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
 	collision_->SetCollisionGroup(eCollisionGroup::Player);
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
-	
+
 	shadow_ = CreateTransformComponent<GameEngineEffectRenderer>();
 	shadow_->SetImage("shadow.png", "LINEARSmp");
-	shadow_->GetTransform()->SetLocalScaling({ 75.f, 75.f});
+	shadow_->GetTransform()->SetLocalScaling({ 75.f, 75.f });
 	shadow_->GetTransform()->SetLocalRotationDegree({ 90.f, 0.0f });
 	shadow_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 0.0f });
 	//shadow_->SetAlpha(0.5f);
@@ -270,6 +271,28 @@ void Character::Update(float _DeltaTime)
 		coolTimer_E_ = 0.5f;
 		coolTimer_R_ = 0.5f;
 		coolTimer_D_ = 0.5f;
+	}
+
+	static float sightUpdateTime = 0.0f;
+	sightUpdateTime += _DeltaTime;
+	if (bFocused_ && sightUpdateTime > 0.066f)
+	{
+		sightUpdateTime = 0.0f;
+		ID3D11DeviceContext* dc = GameEngineDevice::GetContext();
+
+		D3D11_MAPPED_SUBRESOURCE subResource;
+		ZeroMemory(&subResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+
+		std::vector result = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition());
+
+		for (size_t i = 0; i < vertices_.size(); i++)
+		{
+			vertices_[i].POSITION = result[i];
+		}
+
+		dc->Map(eyeSightVertex_->Buffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+		memcpy(subResource.pData, &vertices_[0], subResource.RowPitch);
+		dc->Unmap(eyeSightVertex_->Buffer_, 0);
 	}
 }
 
@@ -1065,6 +1088,38 @@ void Character::initState()
 	deathState_ << "PlayerAlive";
 }
 
+void Character::initEyeSight()
+{
+	vertices_.reserve(36);
+	indices_.reserve(36);
+
+	for (size_t i = 0; i < 36; i++)
+	{
+		GameEngineVertex v;
+		v.POSITION = { 0.0f, 0.0f, 0.0f, 1.0f };
+		v.COLOR = float4::BLACK;
+		vertices_.push_back(v);
+	}
+
+	for (size_t i = 0; i < 36; i++)
+	{
+		indices_.push_back(i);
+	}
+
+	eyeSightVertex_ = new GameEngineVertexBuffer();
+	eyeSightIndex_ = new GameEngineIndexBuffer();
+
+	eyeSightVertex_->Create(vertices_, D3D11_USAGE::D3D11_USAGE_DYNAMIC);
+	eyeSightIndex_->Create(indices_, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+
+	eyeSightRenderer_ = CreateTransformComponent<GameEngineRenderer>(nullptr);
+	eyeSightRenderer_->SetRenderingPipeLine("DeferredNavTile");
+	eyeSightRenderer_->SetMesh(eyeSightVertex_, eyeSightIndex_);
+	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
+	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+
+}
+
 void Character::initBasicEffect()
 {
 	slowEffect_ = GetLevel()->CreateActor<SlowEffect>();
@@ -1585,7 +1640,7 @@ void Character::startStun()
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("StunEffect");
-	
+
 	FT::SendPacket(pack);
 
 }
@@ -1913,7 +1968,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 	{
 		coolTimer_Q_ -= _DeltaTime;
 		int tmp = static_cast<int>(coolTimer_Q_) + 1;
-		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER, float4::WHITE, {0.0f, 12.0f});
+		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
 
 		if (coolTimer_Q_ <= 0.0f) // ÄðÀÌ ´Ù µÇ¾ú´Ù
 		{
@@ -1931,10 +1986,10 @@ void Character::CoolTimeCheck(float _DeltaTime)
 	if (false == bCoolQ_ && true == bCoolWQ_)
 	{
 		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetImage("cooltime_whitemask.png", "PointSmp");
-		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(coolTimerW_Q_/0.5f);
+		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(coolTimerW_Q_ / 0.5f);
 
 		coolTimerW_Q_ -= _DeltaTime;
-		
+
 		if (0.0f >= coolTimerW_Q_)
 		{
 			coolTimerW_Q_ = 0.5f;
@@ -1951,12 +2006,12 @@ void Character::CoolTimeCheck(float _DeltaTime)
 	{
 		coolTimer_W_ -= _DeltaTime;
 		int tmp = static_cast<int>(coolTimer_W_) + 1;
-		uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER,float4::WHITE, { 0.0f, 12.0f });
+		uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("±¼¸²", to_string(tmp), 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
 
 		if (coolTimer_W_ <= 0.0f) // ÄðÀÌ ´Ù µÇ¾ú´Ù
 		{
 			// ÃÊ±âÈ­
-			uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("±¼¸²", " ", 20, FW1_CENTER,float4::WHITE, { 0.0f, 12.0f });
+			uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("±¼¸²", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
 
 			coolTimer_W_ = stat_.Cooltime_w;
 
@@ -1964,7 +2019,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 			bCoolWW_ = true;
 		}
 	}
-	
+
 	if (false == bCoolW_ && true == bCoolWW_)
 	{
 		uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetImage("cooltime_whitemask.png", "PointSmp");
@@ -2060,7 +2115,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 		{
 			// ÃÊ±âÈ­
 			uiController_->GetSkillUI()->GetCoolTimeMaskD()->TextSetting("±¼¸²", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
-	
+
 			coolTimer_D_ = stat_.Cooltime_d;
 			bCoolD_ = false;
 			bCoolWD_ = true;

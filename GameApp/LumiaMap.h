@@ -39,6 +39,8 @@ public:
 	
 	std::vector<float4> GetCharacterSpawnPoints(int _spawnArea);
 
+	std::vector<float4> GetEyeSightPolygon(const float4& _position, const float _length = 600.f);
+
 protected:
 	void makeAStarNode(float _intervalX, float _intervalZ);
 	void checkASterNodeObstacle();
