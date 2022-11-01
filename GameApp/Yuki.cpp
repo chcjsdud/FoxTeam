@@ -20,7 +20,7 @@
 
 Yuki::Yuki() // default constructer 디폴트 생성자
 	: b_isQ_(false), timer_Q(0.0f), rEffect_(nullptr), timer_R(0.0f), b_RHit_(false)
-	, swordRenderer_(nullptr)
+	, swordRenderer_(nullptr), rExplodeTimer_(1.0f)
 {
 
 }
@@ -185,6 +185,23 @@ void Yuki::Update(float _deltaTime)
 			timer_Q = 2.0f;
 			b_isQ_ = false;
 			// 이펙트 해제
+		}
+	}
+
+
+	if (rUnitList_.size() != 0)
+	{
+		rExplodeTimer_ -= _deltaTime;
+
+		if (0.0f >= rExplodeTimer_)
+		{
+			for (int i = 0; i < rUnitList_.size(); i++)
+			{
+				rUnitList_[i]->Damage(1000.0f, this);
+		
+			}
+
+			rUnitList_.clear();
 		}
 	}
 }
@@ -813,7 +830,7 @@ void Yuki::updateCustomRSlash(float _deltaTime)
 		return;
 	}
 
-	if (false == b_Qhit_)
+	if (false == b_RHit_)
 	{
 		collision_R->On();
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill04_Attack.wav");
@@ -835,11 +852,20 @@ void Yuki::updateCustomRSlash(float _deltaTime)
 				if (nullptr != character)
 				{
 					character->Damage((stat_.AttackPower * 2.0f) + 250.0f, this);
+					
+					rUnitList_.push_back(character);
+					character->Slow(1.0f, 0.7f);
+
+					CharCrowdControlPacket ccPacket;
+					ccPacket.SetTargetIndex(character->GetIndex());
+					ccPacket.SetSlow(1.0f, 0.7f);
+
+
 				}
 			}
 		}
 
-		b_Qhit_ = true;
+		b_RHit_ = true;
 
 	}
 
@@ -848,6 +874,9 @@ void Yuki::updateCustomRSlash(float _deltaTime)
 
 void Yuki::endCustomRSlash()
 {
+
+
+
 
 }
 

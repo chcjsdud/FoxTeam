@@ -114,4 +114,7 @@ private:
 	GameEngineCollision* collision_R;
 	float timer_R;
 	bool b_RHit_;
+
+	std::vector<Character*> rUnitList_;
+	float rExplodeTimer_;
 };
