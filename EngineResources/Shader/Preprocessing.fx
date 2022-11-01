@@ -68,13 +68,9 @@ DeferredOutPut Preprocessing_PS(VertexOut _In)
     DeferredOutPut Out;
 
     Out.ViewDif = LineColor;
-    if(0.0f >= Out.ViewDif.w)
-    {
-        Out.ViewDif.w = 1.0f;
-    }
-    
     Out.ViewPos = _In.ViewPosition;
     Out.ViewPos.w = 1.0f;
+    
     Out.ViewNor = _In.ViewNormal;
     Out.ViewNor.w = 1.0f;
  

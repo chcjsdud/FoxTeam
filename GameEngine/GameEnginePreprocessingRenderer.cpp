@@ -53,7 +53,7 @@ void GameEnginePreprocessingRenderer::SetBaseRenderer(GameEngineFBXRenderer* _Ba
 	GetTransform()->SetLocalPosition(BaseRenderer_->GetTransform()->GetLocalPosition());
 
 	// 
-	BaseRenderer_->SetOutLineRenderer(this);
+	BaseRenderer_->SetPreprocessingRenderer(this);
 }
 
 void GameEnginePreprocessingRenderer::SetOutLineData(const float4& _LineColor, float _LineThickness)

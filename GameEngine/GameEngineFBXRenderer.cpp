@@ -444,7 +444,7 @@ void GameEngineFBXRenderer::ClearParentBone()
 	parentBoneIndex_ = -1;
 }
 
-void GameEngineFBXRenderer::SetOutLineRenderer(GameEnginePreprocessingRenderer* _PreprocessingRenderer)
+void GameEngineFBXRenderer::SetPreprocessingRenderer(GameEnginePreprocessingRenderer* _PreprocessingRenderer)
 {
 	// 카메라 렌더링 목록에 추가
 	GetLevel()->GetMainCamera()->PushPreprocessingRenderer(this, _PreprocessingRenderer);

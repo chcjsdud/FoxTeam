@@ -121,6 +121,9 @@ void LumiaMap::Start()
 		FBX->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
 		FBX->GetTransform()->SetLocalScaling(mapScale_);
 
+		//GameEnginePreprocessingRenderer* OutLineRenderer = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		//OutLineRenderer->SetBaseRenderer(FBX, "Preprocessing", false, false);
+
 		mapRenderers.push_back(FBX);
 	}
 

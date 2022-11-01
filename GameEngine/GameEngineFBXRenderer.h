@@ -64,7 +64,7 @@ public:
 	void ClearParentBone();
 
 public:
-	void SetOutLineRenderer(GameEnginePreprocessingRenderer* _OutLineRenderer);
+	void SetPreprocessingRenderer(GameEnginePreprocessingRenderer* _OutLineRenderer);
 
 protected:
 	void Start() override;
