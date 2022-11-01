@@ -12,7 +12,6 @@ protected:
 private:
 	void Start() override;
 	void Update(float _DeltaTime) override;
-	void Render(float _DeltaTime, bool _IsDeferred) override;
 
 public:
 	GameEngineShadowRenderer();
@@ -29,5 +28,11 @@ private:
 public:
 protected:
 private:
+	GameEngineFBXMesh* FBXMesh_;
+	std::vector<RenderSet> RenderSets_;
+	float4 ShadowColor_;
+
+private:
+	GameEngineFBXRenderer* BaseRenderer_;
 };
 

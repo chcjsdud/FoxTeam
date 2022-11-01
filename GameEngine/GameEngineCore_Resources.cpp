@@ -1121,4 +1121,15 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetPixelShader("Preprocessing_PS");
 		Pipe->SetOutputMergerBlend("AlphaToCoverage");
 	}
+
+	{ // 221101 SJH ADD : 그림자처리 렌더링파이프라인
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("ShadowAni");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("ShadowAni_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerBack");
+		Pipe->SetPixelShader("ShadowAni_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
 }
