@@ -219,6 +219,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="GameEngineShadowRenderer.h" />
     <ClInclude Include="GameEngineSocketClient.h">
       <SubType>
       </SubType>
@@ -508,6 +509,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GameEngineShadowRenderer.cpp" />
     <ClCompile Include="GameEngineSocketClient.cpp">
       <SubType>
       </SubType>

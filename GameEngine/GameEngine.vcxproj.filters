@@ -431,6 +431,9 @@
     <ClInclude Include="GameEnginePreprocessingRenderer.h">
       <Filter>Object\Component\Render\Preprocessing</Filter>
     </ClInclude>
+    <ClInclude Include="GameEngineShadowRenderer.h">
+      <Filter>Object\Component\Render\Shadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PreCompile.cpp">
@@ -705,6 +708,9 @@
     </ClCompile>
     <ClCompile Include="GameEnginePreprocessingRenderer.cpp">
       <Filter>Object\Component\Render\Preprocessing</Filter>
+    </ClCompile>
+    <ClCompile Include="GameEngineShadowRenderer.cpp">
+      <Filter>Object\Component\Render\Shadow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
