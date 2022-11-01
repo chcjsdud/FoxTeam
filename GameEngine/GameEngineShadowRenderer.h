@@ -8,7 +8,13 @@ class GameEngineFBXRenderer;
 class GameEngineShadowRenderer : public GameEngineRenderer
 {
 public:
+	void SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer);
+
 protected:
+
+private:
+	void SetRenderSet(int _MeshIndex);
+
 private:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -28,6 +34,7 @@ private:
 public:
 protected:
 private:
+	std::string PipeLineName_;
 	GameEngineFBXMesh* FBXMesh_;
 	std::vector<RenderSet> RenderSets_;
 	float4 ShadowColor_;
