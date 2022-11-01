@@ -577,12 +577,6 @@ void LumiaMap::setAllItem()
 		return;
 	}
 
-	// 아이템 중복 체크 안함
-	itembox->PushRandomItem("DOWNTOWN", "FabricArmor", 30);
-	itembox->PushRandomItem("DOWNTOWN", "LeatherArmor", 50);
-	itembox->PushRandomItem("DOWNTOWN", "KitchenKnife", 70);
-
-
 	itembox->PushRandomItem("Alley", "Bandage", 14);
 	itembox->PushRandomItem("Alley", "Binoculars", 7);
 	itembox->PushRandomItem("Alley", "Bracelet", 11);
@@ -599,6 +593,260 @@ void LumiaMap::setAllItem()
 	itembox->PushRandomItem("Alley", "StallionMedal", 9);
 	itembox->PushRandomItem("Alley", "SteelChain", 14);
 	itembox->PushRandomItem("Alley", "Wetsuit", 11);
+
+	itembox->PushRandomItem("Temple", "Bamboo", 9);
+	itembox->PushRandomItem("Temple", "KitchenKnife", 6);
+	itembox->PushRandomItem("Temple", "Ramen", 5);
+	itembox->PushRandomItem("Temple", "ShortSpear", 6);
+	itembox->PushRandomItem("Temple", "Hairband", 11);
+	itembox->PushRandomItem("Temple", "MonksRobe", 13);
+	itembox->PushRandomItem("Temple", "FabricArmor", 12);
+	itembox->PushRandomItem("Temple", "Feather", 9);
+	itembox->PushRandomItem("Temple", "BuddhistScripture", 14);
+	itembox->PushRandomItem("Temple", "StallionMedal", 9);
+	itembox->PushRandomItem("Temple", "Cloth", 13);
+	itembox->PushRandomItem("Temple", "Gemstone", 14);
+	itembox->PushRandomItem("Temple", "Paper", 13);
+	itembox->PushRandomItem("Temple", "Gunpowder", 9);
+	itembox->PushRandomItem("Temple", "Garlic", 8);
+	itembox->PushRandomItem("Temple", "OrientalHerb", 6);
+
+	itembox->PushRandomItem("Downtown", "GlassBottle", 12);
+	itembox->PushRandomItem("Downtown", "PlayingCards", 14);
+	itembox->PushRandomItem("Downtown", "FountainPen", 12);
+	itembox->PushRandomItem("Downtown", "Hairband", 13);
+	itembox->PushRandomItem("Downtown", "Watch", 9);
+	itembox->PushRandomItem("Downtown", "Slippers", 12);
+	itembox->PushRandomItem("Downtown", "Tights", 11);
+	itembox->PushRandomItem("Downtown", "Fan", 13);
+	itembox->PushRandomItem("Downtown", "Nail", 13);
+	itembox->PushRandomItem("Downtown", "Battery", 14);
+	itembox->PushRandomItem("Downtown", "Oil", 9);
+	itembox->PushRandomItem("Downtown", "Cloth", 14);
+	itembox->PushRandomItem("Downtown", "Can", 8);
+	itembox->PushRandomItem("Downtown", "Chocolate", 4);
+	itembox->PushRandomItem("Downtown", "Honey", 8);
+	itembox->PushRandomItem("Downtown", "Milk", 8);
+	//itembox->PushRandomItem("Downtown", "SurveillanceCamera", 7);
+
+	itembox->PushRandomItem("Pond", "ShortRod", 9);
+	itembox->PushRandomItem("Pond", "Bamboo", 9);
+	itembox->PushRandomItem("Pond", "Hammer", 12);
+	itembox->PushRandomItem("Pond", "Pickaxe", 14);
+	itembox->PushRandomItem("Pond", "Hatchet", 6);
+	itembox->PushRandomItem("Pond", "ShortSpear", 5);
+	itembox->PushRandomItem("Pond", "Hat", 11);
+	itembox->PushRandomItem("Pond", "BikeHelmet", 11);
+	itembox->PushRandomItem("Pond", "Bracelet", 12);
+	itembox->PushRandomItem("Pond", "Flower", 6);
+	itembox->PushRandomItem("Pond", "Ribbon", 11);
+	itembox->PushRandomItem("Pond", "Box", 9);
+	//itembox->PushRandomItem("Pond", "Snare", 4);
+	//itembox->PushRandomItem("Pond", "Mousetrap", 7);
+	itembox->PushRandomItem("Pond", "TurtleShell", 13);
+	itembox->PushRandomItem("Pond", "Gemstone", 14);
+	itembox->PushRandomItem("Pond", "OrientalHerb", 7);
+
+	itembox->PushRandomItem("Hospital", "CottonGloves", 8);
+	itembox->PushRandomItem("Hospital", "Razor", 8);
+	itembox->PushRandomItem("Hospital", "Scissors", 12);
+	itembox->PushRandomItem("Hospital", "Needle", 9);
+	itembox->PushRandomItem("Hospital", "Bandage", 13);
+	itembox->PushRandomItem("Hospital", "Tights", 11);
+	//itembox->PushRandomItem("Hospital", "SurveillanceCamera", 5);
+	itembox->PushRandomItem("Hospital", "ScrapMetal", 13);
+	itembox->PushRandomItem("Hospital", "LaserPointer", 9);
+	itembox->PushRandomItem("Hospital", "Alcohol", 14);
+	itembox->PushRandomItem("Hospital", "Glue", 12);
+	itembox->PushRandomItem("Hospital", "Lemon", 5);
+	itembox->PushRandomItem("Hospital", "Bread", 7);
+	itembox->PushRandomItem("Hospital", "Ice", 9);
+	itembox->PushRandomItem("Hospital", "Milk", 5);
+
+	itembox->PushRandomItem("Archery", "Bamboo", 8);
+	itembox->PushRandomItem("Archery", "IronBall", 12);
+	itembox->PushRandomItem("Archery", "Bow", 6);
+	itembox->PushRandomItem("Archery", "Hat", 11);
+	itembox->PushRandomItem("Archery", "MonksRobe", 12);
+	itembox->PushRandomItem("Archery", "FabricArmor", 11);
+	itembox->PushRandomItem("Archery", "RunningShoes", 12);
+	//itembox->PushRandomItem("Archery", "SurveillanceCamera", 4);
+	//itembox->PushRandomItem("Archery", "Snare", 4);
+	itembox->PushRandomItem("Archery", "Nail", 13);
+	itembox->PushRandomItem("Archery", "Rubber", 9);
+	itembox->PushRandomItem("Archery", "Oil", 11);
+	itembox->PushRandomItem("Archery", "Paper", 13);
+	itembox->PushRandomItem("Archery", "Gunpowder", 8);
+	itembox->PushRandomItem("Archery", "RustySword", 8);
+	itembox->PushRandomItem("Archery", "Chocolate", 5);
+
+
+	itembox->PushRandomItem("School", "Whip", 4);
+	itembox->PushRandomItem("School", "Razor", 8);
+	itembox->PushRandomItem("School", "Chalk", 8);
+	itembox->PushRandomItem("School", "Scissors", 12);
+	itembox->PushRandomItem("School", "FountainPen", 11);
+	itembox->PushRandomItem("School", "Hat", 12);
+	itembox->PushRandomItem("School", "BikeHelmet", 11);
+	itembox->PushRandomItem("School", "Windbreaker", 12);
+	itembox->PushRandomItem("School", "Bandage", 13);
+	itembox->PushRandomItem("School", "Slippers", 12);
+	itembox->PushRandomItem("School", "Ribbon", 9);
+	itembox->PushRandomItem("School", "Lighter", 13);
+	itembox->PushRandomItem("School", "LaserPointer", 11);
+	itembox->PushRandomItem("School", "Alcohol", 9);
+	itembox->PushRandomItem("School", "Can", 8);
+	itembox->PushRandomItem("School", "Bread", 6);
+	itembox->PushRandomItem("School", "Milk", 4);
+
+	// CEMETERY
+	itembox->PushRandomItem("Cemetary", "BrassKnuckles", 5);
+	itembox->PushRandomItem("Cemetary", "Bamboo", 13);
+	itembox->PushRandomItem("Cemetary", "Pickaxe", 14);
+	itembox->PushRandomItem("Cemetary", "SteelChain", 14);
+	itembox->PushRandomItem("Cemetary", "Hairband", 11);
+	itembox->PushRandomItem("Cemetary", "FabricArmor", 11);
+	itembox->PushRandomItem("Cemetary", "Feather", 14);
+	itembox->PushRandomItem("Cemetary", "Flower", 5);
+	//itembox->PushRandomItem("Cemetary", "SurveillanceCamera", 6);
+	//itembox->PushRandomItem("Cemetary", "Mousetrap", 9);
+	itembox->PushRandomItem("Cemetary", "IronOre", 9);
+	itembox->PushRandomItem("Cemetary", "Gunpowder", 8);
+	itembox->PushRandomItem("Cemetary", "Garlic", 9);
+	itembox->PushRandomItem("Cemetary", "Egg", 4);
+	itembox->PushRandomItem("Cemetary", "Ice", 9);
+	itembox->PushRandomItem("Cemetary", "Coffee", 7);
+
+	itembox->PushRandomItem("Factory", "IronBall", 14);
+	itembox->PushRandomItem("Factory", "Chalk", 7);
+	itembox->PushRandomItem("Factory", "Whip", 4);
+	itembox->PushRandomItem("Factory", "WaltherPPK", 8);
+	itembox->PushRandomItem("Factory", "Hatchet", 6);
+	itembox->PushRandomItem("Factory", "Binoculars", 9);
+	itembox->PushRandomItem("Factory", "Nail", 14);
+	itembox->PushRandomItem("Factory", "ScrapMetal", 14);
+	itembox->PushRandomItem("Factory", "Lighter", 14);
+	itembox->PushRandomItem("Factory", "Battery", 14);
+	itembox->PushRandomItem("Factory", "Alcohol", 11);
+	itembox->PushRandomItem("Factory", "Oil", 9);
+	itembox->PushRandomItem("Factory", "Glue", 13);
+	itembox->PushRandomItem("Factory", "Ramen", 7);
+	itembox->PushRandomItem("Factory", "Baseball", 4);
+	itembox->PushRandomItem("Factory", "Fedorova", 5);
+
+	itembox->PushRandomItem("Hotel", "CottonGloves", 9);
+	itembox->PushRandomItem("Hotel", "PlayingCards", 12);
+	itembox->PushRandomItem("Hotel", "WaltherPPK", 7);
+	itembox->PushRandomItem("Hotel", "Fedorova", 8);
+	itembox->PushRandomItem("Hotel", "KitchenKnife", 6);
+	itembox->PushRandomItem("Hotel", "Needle", 9);
+	itembox->PushRandomItem("Hotel", "Windbreaker", 11);
+	itembox->PushRandomItem("Hotel", "Watch", 11);
+	itembox->PushRandomItem("Hotel", "Binoculars", 6);
+	itembox->PushRandomItem("Hotel", "PianoWire", 14);
+	itembox->PushRandomItem("Hotel", "ScrapMetal", 13);
+	itembox->PushRandomItem("Hotel", "Cloth", 14);
+	itembox->PushRandomItem("Hotel", "IronOre", 9);
+	itembox->PushRandomItem("Hotel", "Lemon", 5);
+	itembox->PushRandomItem("Hotel", "Ice", 9);
+	itembox->PushRandomItem("Hotel", "Whiskey", 5);
+	itembox->PushRandomItem("Hotel", "CarbonatedWater", 9);
+	itembox->PushRandomItem("Hotel", "Battery", 11);
+
+
+	itembox->PushRandomItem("Forest", "BrassKnuckles", 6);
+	itembox->PushRandomItem("Forest", "Bamboo", 11);
+	itembox->PushRandomItem("Forest", "IronBall", 14);
+	itembox->PushRandomItem("Forest", "ShortCrossbow", 8);
+	itembox->PushRandomItem("Forest", "LongRifle", 4);
+	itembox->PushRandomItem("Forest", "Pickaxe", 14);
+	itembox->PushRandomItem("Forest", "ShortSpear", 5);
+	itembox->PushRandomItem("Forest", "Tights", 11);
+	itembox->PushRandomItem("Forest", "Feather", 14);
+	itembox->PushRandomItem("Forest", "Flower", 5);
+	itembox->PushRandomItem("Forest", "Fan", 13);
+	//itembox->PushRandomItem("Forest", "Snare", 4);
+	itembox->PushRandomItem("Forest", "Gemstone", 14);
+	itembox->PushRandomItem("Forest", "IronOre", 9);
+	itembox->PushRandomItem("Forest", "Egg", 8);
+	itembox->PushRandomItem("Forest", "OrientalHerb", 7);
+	itembox->PushRandomItem("Forest", "Honey", 9);
+	itembox->PushRandomItem("Forest", "FabricArmor", 11);
+
+	itembox->PushRandomItem("CHURCH", "GlassBottle", 9);
+	itembox->PushRandomItem("CHURCH", "Razor", 7);
+	itembox->PushRandomItem("CHURCH", "Chalk", 5);
+	itembox->PushRandomItem("CHURCH", "Bow", 5);
+	itembox->PushRandomItem("CHURCH", "RustySword", 7);
+	itembox->PushRandomItem("CHURCH", "BikeHelmet", 12);
+	itembox->PushRandomItem("CHURCH", "Fan", 11);
+	itembox->PushRandomItem("CHURCH", "Box", 12);
+	itembox->PushRandomItem("CHURCH", "HolyGrail", 14);
+	itembox->PushRandomItem("CHURCH", "Cross", 14);
+	itembox->PushRandomItem("CHURCH", "PianoWire", 13);
+	itembox->PushRandomItem("CHURCH", "Paper", 13);
+	itembox->PushRandomItem("CHURCH", "ShortCrossbow", 7);
+	itembox->PushRandomItem("CHURCH", "Milk", 6);
+	itembox->PushRandomItem("CHURCH", "Whiskey", 7);
+
+	itembox->PushRandomItem("SANDY_BEACH", "WaltherPPK", 4);
+	itembox->PushRandomItem("SANDY_BEACH", "Hammer", 12);
+	itembox->PushRandomItem("SANDY_BEACH", "Hatchet", 5);
+	itembox->PushRandomItem("SANDY_BEACH", "SteelChain", 13);
+	itembox->PushRandomItem("SANDY_BEACH", "BikeHelmet", 11);
+	itembox->PushRandomItem("SANDY_BEACH", "Wetsuit", 11);
+	itembox->PushRandomItem("SANDY_BEACH", "Binoculars", 6);
+	//itembox->PushRandomItem("SANDY_BEACH", "Snare", 4);
+	//itembox->PushRandomItem("SANDY_BEACH", "Mousetrap", 9);
+	itembox->PushRandomItem("SANDY_BEACH", "PianoWire", 14);
+	itembox->PushRandomItem("SANDY_BEACH", "TurtleShell", 13);
+	itembox->PushRandomItem("SANDY_BEACH", "StallionMedal", 9);
+	itembox->PushRandomItem("SANDY_BEACH", "Can", 9);
+	itembox->PushRandomItem("SANDY_BEACH", "CarbonatedWater", 9);
+	itembox->PushRandomItem("SANDY_BEACH", "Gemstone", 14);
+	itembox->PushRandomItem("SANDY_BEACH", "Pickaxe", 13);
+	itembox->PushRandomItem("SANDY_BEACH", "GlassBottle", 11);
+
+	itembox->PushRandomItem("Uptown", "FountainPen", 12);
+	itembox->PushRandomItem("Uptown", "Windbreaker", 11);
+	itembox->PushRandomItem("Uptown", "Watch", 9);
+	itembox->PushRandomItem("Uptown", "Bracelet", 11);
+	itembox->PushRandomItem("Uptown", "RunningShoes", 12);
+	itembox->PushRandomItem("Uptown", "Flower", 6);
+	itembox->PushRandomItem("Uptown", "Ribbon", 11);
+	//itembox->PushRandomItem("Uptown", "SurveillanceCamera", 4);
+	itembox->PushRandomItem("Uptown", "PianoWire", 14);
+	itembox->PushRandomItem("Uptown", "LaserPointer", 9);
+	itembox->PushRandomItem("Uptown", "Oil", 13);
+	itembox->PushRandomItem("Uptown", "Lemon", 4);
+	itembox->PushRandomItem("Uptown", "Chocolate", 6);
+	itembox->PushRandomItem("Uptown", "Fedorova", 7);
+	itembox->PushRandomItem("Uptown", "Whiskey", 9);
+	itembox->PushRandomItem("Uptown", "Coffee", 4);
+	itembox->PushRandomItem("Uptown", "CarbonatedWater", 9);
+	itembox->PushRandomItem("Uptown", "Baseball", 4);
+	itembox->PushRandomItem("Uptown", "Hairband", 11);
+
+
+	itembox->PushRandomItem("HARBOR", "ShortRod", 9);
+	itembox->PushRandomItem("HARBOR", "GlassBottle", 11);
+	itembox->PushRandomItem("HARBOR", "LongRifle", 4);
+	itembox->PushRandomItem("HARBOR", "KitchenKnife", 6);
+	itembox->PushRandomItem("HARBOR", "RustySword", 7);
+	itembox->PushRandomItem("HARBOR", "Wetsuit", 11);
+	itembox->PushRandomItem("HARBOR", "Bandage", 14);
+	itembox->PushRandomItem("HARBOR", "Box", 9);
+	//itembox->PushRandomItem("HARBOR", "SurveillanceCamera", 4);
+	//itembox->PushRandomItem("HARBOR", "Snare", 4);
+	itembox->PushRandomItem("HARBOR", "TurtleShell", 14);
+	itembox->PushRandomItem("HARBOR", "Rubber", 9);
+	itembox->PushRandomItem("HARBOR", "ScrapMetal", 14);
+	itembox->PushRandomItem("HARBOR", "Lighter", 14);
+	itembox->PushRandomItem("HARBOR", "Battery", 14);
+	itembox->PushRandomItem("HARBOR", "Slippers", 11);
+	itembox->PushRandomItem("HARBOR", "Ramen", 6);
+	itembox->PushRandomItem("HARBOR", "Coffee", 7);
+	
 }
 
 void LumiaMap::setCharacterSpawnPoints(GameEngineDirectory _dir)

@@ -212,7 +212,7 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 			bool Check = false;
 
 			// 아이템 최대 갯수
-			if (curList.size() >= 6)
+			if (curList.size() >= 8)
 			{
 				Check = true;
 			}
