@@ -13,6 +13,7 @@
 #include "Monsters.h"
 #include "CharCrowdControlPacket.h"
 #include "CharEffectPacket.h"
+#include "AyaREffect.h"
 Aya::Aya()
 	: ammo_(6)
 	, skillWFireCount_(0)
@@ -154,7 +155,7 @@ void Aya::Start()
 
 	eSpectrum_ = GetLevel()->CreateActor<AyaESpectrum>();
 
-
+	rEffect_ = GetLevel()->CreateActor<AyaREffect>();
 }
 
 void Aya::Update(float _deltaTime)
@@ -627,6 +628,10 @@ void Aya::onStartESkill()
 	eSpectrum_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
 	eSpectrum_->PlayAwake();
 
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillE");
+	FT::SendPacket(pack);
 }
 
 void Aya::onUpdateESkill(float _deltaTime)
@@ -648,6 +653,10 @@ void Aya::onUpdateESkill(float _deltaTime)
 	{
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}
+	else
+	{
+		eSpectrum_->Reset();
+	}
 
 
 }
@@ -658,6 +667,13 @@ void Aya::onStartRSkill()
 	overrideAnimationBoneName_ = "";
 	ChangeAnimation("SkillR_Start");
 	FT::PlaySoundAndSendPacket("aya_Skill04_Ready.wav", transform_.GetWorldPosition());
+	rEffect_->PlayAwake();
+
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillR");
+	FT::SendPacket(pack);
 }
 
 void Aya::onUpdateRSkill(float _d1eltaTime)
@@ -685,7 +701,9 @@ void Aya::onUpdateRSkill(float _d1eltaTime)
 					continue;
 				}
 				unit->Damage(300.f + stat_.AttackPower * 2.f, this);
+				FT::PlaySoundAndSendPacket("aya_Skill01_Attack_v1.wav", transform_.GetWorldPosition());
 				unit->Stun(2.0f);
+
 				CharCrowdControlPacket packet;
 				packet.SetStun(2.0f);
 				packet.SetTargetIndex(unit->GetIndex());
@@ -701,7 +719,9 @@ void Aya::onUpdateRSkill(float _d1eltaTime)
 			if (nullptr != unit)
 			{
 				unit->Damage(300.f + stat_.AttackPower * 2.f, this);
+				FT::PlaySoundAndSendPacket("aya_Skill01_Attack_v1.wav", transform_.GetWorldPosition());
 				unit->Stun(2.0f);
+
 				CharCrowdControlPacket packet;
 				packet.SetStun(2.0f);
 				packet.SetTargetIndex(unit->GetIndex());
@@ -813,6 +833,20 @@ void Aya::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 		return;
 	}
 
+	if ("SkillE" == _effectName)
+	{
+		eSpectrum_->GetTransform()->SetWorldPosition(startPosition);
+		eSpectrum_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
+		eSpectrum_->PlayAwake();
+		return;
+	}
+
+	if ("SkillR" == _effectName)
+	{
+		rEffect_->PlayAwake();
+		return;
+	}
+
 }
 
 void Aya::onEffectTransformCheck(float _deltaTime)
@@ -821,6 +855,7 @@ void Aya::onEffectTransformCheck(float _deltaTime)
 	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
 	basicAttackEffect_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
 
+	rEffect_->GetTransform()->SetWorldPosition(wp);
 
 
 	//basicHitEffect_->GetTransform()->SetWorldPosition(wp);

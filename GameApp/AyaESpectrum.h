@@ -41,5 +41,6 @@ private:
 	std::vector<GameEngineFBXRenderer*> renderers_;
 	float revealTime_;
 	int count_;
+	bool isStopped_;
 };
 

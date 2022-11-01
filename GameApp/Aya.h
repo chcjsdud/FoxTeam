@@ -7,6 +7,7 @@
 #include "AyaESpectrum.h"
 #include "AyaBullet.h"
 
+class AyaREffect;
 class GameEngineFBXRenderer;
 class LumiaMap;
 class Aya : public Character
@@ -89,4 +90,5 @@ private:
 	AyaBullet* bullet1_;
 
 	AyaESpectrum* eSpectrum_;
+	AyaREffect* rEffect_;
 };

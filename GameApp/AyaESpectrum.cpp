@@ -4,7 +4,7 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 
 AyaESpectrum::AyaESpectrum() // default constructer 디폴트 생성자
-	: count_(0)
+	: count_(0), isStopped_(false)
 {
 
 }
@@ -28,8 +28,7 @@ void AyaESpectrum::PlayAwake()
 void AyaESpectrum::Reset()
 {
 	count_ = 0;
-
-	renderState_ << "Sleep";
+	isStopped_ = true;
 }
 
 void AyaESpectrum::Start()
@@ -78,7 +77,7 @@ void AyaESpectrum::Update(float _deltaTime)
 void AyaESpectrum::startSleep()
 {
 	revealTime_ = 0.0f;
-
+	isStopped_ = false;
 	for (int i = 0; i < renderers_.size(); i++)
 	{
 		renderers_[i]->Off();
@@ -93,12 +92,12 @@ void AyaESpectrum::updateSleep(float _deltaTime)
 void AyaESpectrum::startAwake()
 {
 	// 첫 위치 지정
+
 }
 
 void AyaESpectrum::updateAwake(float _deltaTime)
 {
 	revealTime_ += _deltaTime;
-
 	if (0.5f <= revealTime_)
 	{
 		revealTime_ = 0.0f;
@@ -106,37 +105,41 @@ void AyaESpectrum::updateAwake(float _deltaTime)
 		renderState_ << "Fade";
 		return;
 	}
-
-	if (0 == count_)
+	if (false == isStopped_)
 	{
-		renderers_[0]->On();
-		count_ = 1;
+
+
+		if (0 == count_)
+		{
+			renderers_[0]->On();
+			count_ = 1;
+		}
+
+		if (1 == count_ && 0.1f <= revealTime_)
+		{
+			renderers_[1]->On();
+			count_ = 2;
+		}
+
+		if (2 == count_ && 0.2f <= revealTime_)
+		{
+			renderers_[2]->On();
+			count_ = 3;
+		}
+
+		if (3 == count_ && 0.3f <= revealTime_)
+		{
+			renderers_[3]->On();
+			count_ = 4;
+		}
+
+		if (4 == count_ && 0.4f <= revealTime_)
+		{
+			renderers_[4]->On();
+			count_ = 5;
+		}
 	}
 
-
-	if (1 == count_ && 0.1f <= revealTime_)
-	{
-		renderers_[1]->On();
-		count_ = 2;
-	}
-
-	if (2 == count_ && 0.2f <= revealTime_)
-	{
-		renderers_[2]->On();
-		count_ = 3;
-	}
-
-	if (3 == count_ && 0.3f <= revealTime_)
-	{
-		renderers_[3]->On();
-		count_ = 4;
-	}
-
-	if (4 == count_ && 0.4f <= revealTime_)
-	{
-		renderers_[4]->On();
-		count_ = 5;
-	}
 }
 
 
