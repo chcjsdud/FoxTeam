@@ -519,7 +519,6 @@ void CameraComponent::Start()
 
 	CameraPreprocessingTarget_ = new GameEngineRenderTarget();
 	CameraPreprocessingTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
-	CameraForwardTarget_->SetDepthBuffer(CameraBufferTarget_->GetDepthBuffer());
 }
 
 void CameraComponent::Update(float _DeltaTime)

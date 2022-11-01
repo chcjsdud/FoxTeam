@@ -121,7 +121,7 @@ void GameEngineShadowRenderer::SetRenderSet(int _MeshIndex)
 
 void GameEngineShadowRenderer::ParallelogramAlgorithm()
 {
-	// 베이스렌더러 기준 평행사변형 형태로 베이스렌더러를 눕힌 형태의 그림자렌더러로 변환
+	// 베이스렌더러 기준으로 렌더타겟에 렌더링 후 해당 렌더타겟을 회전시켜 그림자를 만든다
 
 
 

@@ -41,5 +41,8 @@ private:
 
 private:
 	GameEngineFBXRenderer* BaseRenderer_;
+
+private:
+
 };
 

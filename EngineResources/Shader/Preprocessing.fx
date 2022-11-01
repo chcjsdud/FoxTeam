@@ -48,7 +48,7 @@ VertexOut Preprocessing_VS(VertexIn _In)
 
 struct DeferredOutPut
 {
-    float4 ViewDif : SV_Target0; // 텍스처 색깔
+    float4 ViewDif : SV_Target0;
 };
 
 Texture2D DiffuseTex : register(t0);
