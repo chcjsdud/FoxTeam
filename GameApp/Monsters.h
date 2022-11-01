@@ -8,6 +8,7 @@
 // 분류 : 몬스터
 // 용도 : 몬스터 기본(부모)클래스
 // 설명 : 현재 맵에 배치되는 몬스터들의 공통정보
+class GameEnginePreprocessingRenderer;
 class GameEngineFBXRenderer;
 class GameEngineCollision;
 class NavFace;
@@ -67,6 +68,10 @@ public: // inline Set Function
 
 public: // Public Monster LevelUP Related Function
 	void LevelUP(LevelUPData _Data);													// 게임시간에 따른 레벨업
+
+public: // Outline Active or Deactive Related Function
+	void PickingOutLineOn();															// 마우스와 충돌로 인한 외곽선 활성화
+	void PickingOutLineOff();															// 마우스와 충돌해제로 인한 외곽선 비활성화
 
 public: // Public Pure Virtual Function
 	int GetIndex() override;															// 인덱스 Get
@@ -230,13 +235,17 @@ private:
 	Monsters& operator=(const Monsters&& _other) = delete;
 
 public:
-protected: // 컴포넌트
+protected: // 기본 컴포넌트
 	GameEngineFBXRenderer* MainRenderer_;												// 메인 렌더러
 	GameEngineFBXRenderer* EffectRenderer_;												// 이펙트 렌더러
 	GameEngineCollision* BodyCollider_;													// 몸체 충돌체(메인 -> 피격충돌체, 사망시 드랍아이템목록표시충돌체)
 	GameEngineCollision* AtkCollider_;													// 일반공격 충돌체(서브 -> 일반공격충돌체)
 	GameEngineCollision* SkillAtkReadyCollider_;										// 스킬공격준비 충돌체(서브 -> 스킬공격감지(준비))
 	GameEngineCollision* SkillAtkCollider_;												// 스킬공격 충돌체(서브 -> 스킬공격충돌체)
+
+protected: // 선처리 컴포넌트
+	GameEnginePreprocessingRenderer* MainOutLineRenderer_;								// 메인렌더러의 선처리 렌더러(외곽선)
+	GameEnginePreprocessingRenderer* MainSilhouetteRenderer_;							// 메인렌더러의 선처리 렌더러(실루엣)
 
 protected: // 생성정보(탐색용)
 	int Index_;																			// 생성 인덱스

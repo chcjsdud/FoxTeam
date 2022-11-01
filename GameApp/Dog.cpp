@@ -81,6 +81,8 @@ void Dog::InitalizeResourceLoad()
 
 void Dog::InitalizeRenderAndAnimation()
 {
+	//============================== 렌더러 셋팅
+
 	// 렌더러 셋팅
 	MainRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	MainRenderer_->SetFBXMesh("Dog_BaseMesh.fbx", "TextureDeferredLightAni");
@@ -104,6 +106,17 @@ void Dog::InitalizeRenderAndAnimation()
 
 	// 기본상태 셋팅
 	ChangeAnimationAndState(MonsterStateType::APPEAR);
+
+	//============================== 선처리 렌더러 셋팅
+
+	// 외곽선
+	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(MainRenderer_, "PreprocessingAni", true, false);
+	MainOutLineRenderer_->Off();
+
+	// 실루엣
+	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	MainSilhouetteRenderer_->SetBaseRenderer(MainRenderer_, "PreprocessingAni", true);
 }
 
 void Dog::InitalizeCollider()

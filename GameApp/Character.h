@@ -22,6 +22,7 @@ class ItemBase;
 class EquipmentItem;
 class PlayerUIController;
 class GameEngineFBXRenderer;
+class GameEnginePreprocessingRenderer;
 class Character : public IUnit
 {
 public:

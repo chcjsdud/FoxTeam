@@ -163,49 +163,50 @@ void MousePointer::CheckCharacterCollision()
 
 void MousePointer::CheckMonsterCollision()
 {
-	//// Check Monster Group Collision Check
-	//GameEngineCollision* CurCollisionMonster = rayCollision_->GetCollision(static_cast<int>(eCollisionGroup::Monster));
-	//if (nullptr != CurCollisionMonster)
-	//{
-	//	// 현재 충돌한 몬스터와 이전에 충돌한 몬스터를 비교하여 동일하다면 처리없음
-	//	// 다르다면 이전충돌한 몬스터는 외곽선해제, 현재 충돌한 몬스터는 외곽선활성화 및 이전충돌몬스터에 저장
+	// Check Monster Group Collision Check
+	GameEngineCollision* CurCollisionMonster = rayCollision_->GetCollision(static_cast<int>(eCollisionGroup::Monster));
+	if (nullptr != CurCollisionMonster)
+	{
+		// 현재 충돌한 몬스터와 이전에 충돌한 몬스터를 비교하여 동일하다면 처리없음
+		// 다르다면 이전충돌한 몬스터는 외곽선해제, 현재 충돌한 몬스터는 외곽선활성화 및 이전충돌몬스터에 저장
 
-	//	// Current Collider Get Actor
-	//	GameEngineActor* Actor = CurCollisionMonster->GetActor();
+		// Current Collider Get Actor
+		GameEngineActor* Actor = CurCollisionMonster->GetActor();
 
-	//	// Convert Monster
-	//	Monsters* CurMonster = dynamic_cast<Monsters*>(Actor);
+		// Convert Monster
+		Monsters* CurMonster = dynamic_cast<Monsters*>(Actor);
 
-	//	// Check Prev Character & Current Character
-	//	if (nullptr != PrevColMonster_)										// 이전에 충돌한 몬스터가 존재할때
-	//	{
-	//		if (PrevColMonster_->GetIndex() == CurMonster->GetIndex())
-	//		{
-	//			return;
-	//		}
-	//		else
-	//		{
-	//			// 이전 충돌한 몬스터 외곽선해제
-	//			PrevColMonster_->PickingOutLineOff();
+		// Check Prev Character & Current Character
+		if (nullptr != PrevColMonster_)										// 이전에 충돌한 몬스터가 존재할때
+		{
+			if (PrevColMonster_->GetIndex() == CurMonster->GetIndex())
+			{
+				// 동일한 몬스터이므로 외곽선 활성
+				CurMonster->PickingOutLineOn();
+			}
+			else
+			{
+				// 이전 충돌한 몬스터 외곽선해제
+				PrevColMonster_->PickingOutLineOff();
 
-	//			// 현재 충돌한 몬스터 외곽선활성 및 저장
-	//			CurMonster->PickingOutLineOn();
-	//			PrevColMonster_ = CurMonster;
-	//		}
-	//	}
-	//	else																	// 이전에 충돌한 몬스터가 존재하지않을때
-	//	{
-	//		CurMonster->PickingOutLineOn();
-	//		PrevColMonster_ = CurMonster;
-	//	}
-	//}
-	//else // 현재 충돌한 몬스터가 존재하지않으므로 이전 충돌한 플레이어 외곽선해제
-	//{
-	//	if (nullptr != PrevColMonster_)
-	//	{
-	//		PrevColMonster_->PickingOutLineOff();
-	//	}
-	//}
+				// 현재 충돌한 몬스터 외곽선활성 및 저장
+				CurMonster->PickingOutLineOn();
+				PrevColMonster_ = CurMonster;
+			}
+		}
+		else																	// 이전에 충돌한 몬스터가 존재하지않을때
+		{
+			CurMonster->PickingOutLineOn();
+			PrevColMonster_ = CurMonster;
+		}
+	}
+	else // 현재 충돌한 몬스터가 존재하지않으므로 이전 충돌한 플레이어 외곽선해제
+	{
+		if (nullptr != PrevColMonster_)
+		{
+			PrevColMonster_->PickingOutLineOff();
+		}
+	}
 }
 
 void MousePointer::Start()

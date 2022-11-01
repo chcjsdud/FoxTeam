@@ -27,6 +27,22 @@ void Monsters::LevelUP(LevelUPData _Data)
 	StateInfo_.MoveSpeed_ += _Data.MovementSpeed_;					// 이동속도
 }
 
+void Monsters::PickingOutLineOn()
+{
+	if (nullptr != MainOutLineRenderer_)
+	{
+		MainOutLineRenderer_->On();
+	}
+}
+
+void Monsters::PickingOutLineOff()
+{
+	if (nullptr != MainOutLineRenderer_)
+	{
+		MainOutLineRenderer_->Off();
+	}
+}
+
 int Monsters::GetIndex()
 {
 	return Index_;
@@ -912,6 +928,8 @@ Monsters::Monsters()
 	, AtkCollider_(nullptr)
 	, SkillAtkReadyCollider_(nullptr)
 	, SkillAtkCollider_(nullptr)
+	, MainOutLineRenderer_(nullptr)
+	, MainSilhouetteRenderer_(nullptr)
 	, Index_(-1)
 	, Type_(MonsterType::NONE)
 	, AreaType_(Location::NONE)

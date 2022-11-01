@@ -131,6 +131,17 @@ void Boar::InitalizeRenderAndAnimation()
 	//============================= 기본상태 셋팅
 	ChangeAnimationAndState(MonsterStateType::APPEAR);
 
+	//============================== 선처리 렌더러 셋팅
+
+	// 외곽선
+	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	MainOutLineRenderer_->SetBaseRenderer(MainRenderer_, "PreprocessingAni", true, false);
+	MainOutLineRenderer_->Off();
+
+	// 실루엣
+	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+	MainSilhouetteRenderer_->SetBaseRenderer(MainRenderer_, "PreprocessingAni", true);
+
 	//============================= HitBoxRange Renderer
 	HitBox_Frame_ = CreateTransformComponent<GameEngineFBXRenderer>();
 	HitBox_Frame_->SetFBXMesh("Boar_SkillAtk_HitRange_Frame.fbx", "TextureDeferredLight");
