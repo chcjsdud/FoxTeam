@@ -122,8 +122,56 @@ void GameEngineShadowRenderer::SetRenderSet(int _MeshIndex)
 void GameEngineShadowRenderer::ParallelogramAlgorithm()
 {
 	// 베이스렌더러 기준으로 렌더타겟에 렌더링 후 해당 렌더타겟을 회전시켜 그림자를 만든다
+	switch (ShadowDir_)
+	{
+		case ShadowDir::NONE:			// 바닥
+		{
 
+			break;
+		}
+		case ShadowDir::TOP:			// 상단
+		{
 
+			break;
+		}
+		case ShadowDir::RIGHTTOP:		// 오른쪽상단
+		{
+
+			break;
+		}
+		case ShadowDir::RIGHT:			// 오른쪽
+		{
+
+			break;
+		}
+		case ShadowDir::RIGHTBOTTOM:	// 오른쪽하단
+		{
+
+			break;
+		}
+		case ShadowDir::BOTTOM:			// 하단
+		{
+
+			break;
+		}
+		case ShadowDir::LEFTBOTTOM:		// 왼쪽하단
+		{
+
+			break;
+		}
+		case ShadowDir::LEFT:			// 왼쪽
+		{
+
+			break;
+		}
+		case ShadowDir::LEFTTOP:		// 왼쪽상단
+		{
+
+			break;
+		}
+	}
+
+	// ...
 
 
 
@@ -150,10 +198,27 @@ void GameEngineShadowRenderer::Update(float _DeltaTime)
 	}
 }
 
+void GameEngineShadowRenderer::Render(float _DeltaTime, bool _IsDeferred)
+{
+	for (int MeshNum = 0; static_cast<int>(MeshNum < RenderSets_.size()); ++MeshNum)
+	{
+		if (false == RenderSets_[MeshNum].isRender)
+		{
+			continue;
+		}
+
+		RenderSets_[MeshNum].ShaderHelper->Setting();
+		RenderSets_[MeshNum].PipeLine_->Rendering();
+		RenderSets_[MeshNum].ShaderHelper->ReSet();
+		RenderSets_[MeshNum].PipeLine_->Reset();
+	}
+}
+
 GameEngineShadowRenderer::GameEngineShadowRenderer()
 	: PipeLineName_{}
 	, FBXMesh_(nullptr)
 	, BaseRenderer_(nullptr)
+	, ShadowDir_(ShadowDir::NONE)
 {
 }
 
