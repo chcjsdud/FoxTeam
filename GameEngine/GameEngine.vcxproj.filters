@@ -136,6 +136,9 @@
     <Filter Include="Object\Component\Render\Preprocessing">
       <UniqueIdentifier>{80bbd5c4-bed6-4a49-ae72-63160ab0d661}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Component\Render\Shadow">
+      <UniqueIdentifier>{f0051be3-b036-4a2c-bfdf-10d07269940a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PreCompile.h">
