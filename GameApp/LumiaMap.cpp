@@ -578,8 +578,8 @@ void LumiaMap::setAllItem()
 	}
 
 	// 아이템 중복 체크 안함
-	itembox->PushRandomItem("DOWNTOWN", "Scissors", 30);
-	itembox->PushRandomItem("DOWNTOWN", "FountainPen", 50);
+	itembox->PushRandomItem("DOWNTOWN", "FabricArmor", 30);
+	itembox->PushRandomItem("DOWNTOWN", "LeatherArmor", 50);
 	itembox->PushRandomItem("DOWNTOWN", "KitchenKnife", 70);
 
 

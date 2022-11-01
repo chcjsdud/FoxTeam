@@ -4,6 +4,7 @@
 ItemBase::ItemBase()
 	: type_(ItemType::NONE)
 	, tier_(ItemTier::NONE)
+	, index_(-1)
 	, renderer_(nullptr)
 {
 	
@@ -26,6 +27,7 @@ ItemBase* ItemBase::Copy()
 	CopyItem->type_ = type_;
 	CopyItem->renderer_ = renderer_;
 	CopyItem->tier_ = tier_;
+	CopyItem->index_ = index_;
 
 	return CopyItem;
 }

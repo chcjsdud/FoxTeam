@@ -23,6 +23,8 @@ public:
 		return equipType_;
 	}
 
+	ItemBase* Copy() override;
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;

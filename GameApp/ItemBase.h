@@ -28,6 +28,11 @@ public:
 	{
 		tier_ = _tier;
 	}
+	void SetIndex(int _index)
+	{
+		index_ = _index;
+	}
+
 	
 	ItemType GetItemType()
 	{
@@ -37,19 +42,24 @@ public:
 	{
 		return tier_;
 	}
+	int GetIndex()
+	{
+		return index_;
+	}
 
 	void SetImage(const std::string& _imageName, const std::string& _sampler = "");
 
 	// ItemType 따라서 Copy 할 정보가 다름 virtual
-	ItemBase* Copy();
+	virtual ItemBase* Copy();
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
-private:
 	ItemType type_;
 	ItemTier tier_;
+	int index_;
+
 	GameEngineImageRenderer* renderer_;
 };
 

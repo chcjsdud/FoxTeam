@@ -8,6 +8,7 @@
 #include "LumiaMap.h"
 #include "ItemBox.h"
 #include "ItemBase.h"
+#include "EquipmentItem.h"
 #include "PlayerInfoManager.h"
 #include "PlayerUIController.h"
 #include <GameEngine/GameEngineLevelControlWindow.h>
@@ -148,6 +149,7 @@ void Character::Start()
 
 	itemBoxmanager_ = level->GetItemBoxManager();
 	inventory_.resize(10);
+	equipedItem_.resize(static_cast<size_t>(EquipmentType::MAX));
 
 	currentMap_ = level->GetMap();
 	mouse_ = level->GetMousePointer();
@@ -307,6 +309,13 @@ void Character::getItem(int _index)
 		return;
 	}
 
+	if (ItemType::EQUIPMENT == Item->GetItemType())
+	{
+		getEquipItem(reinterpret_cast<EquipmentItem*>(Item), _index);
+		checkItemRecipes();
+		return;
+	}
+
 	for (auto& invenItem : inventory_)
 	{
 		if (nullptr != invenItem)
@@ -321,28 +330,117 @@ void Character::getItem(int _index)
 		itemBoxmanager_->DeleteItemFromItemBox(_index);
 
 		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
-		std::list<ItemBase*>::iterator iterErase = allMyBuildItems_.end();
 
 		for (; iter != allMyBuildItems_.end(); ++iter)
 		{
-			if ((*iter) != Item)
+			if ((*iter)->GetName() != Item->GetName())
 			{
 				continue;
 			}
 
-			iterErase = iter;
 			break;
 		}
 
-		if (iterErase != allMyBuildItems_.end())
+		if (iter != allMyBuildItems_.end())
 		{
-			allMyBuildItems_.erase(iterErase);
+			allMyBuildItems_.erase(iter);
 		}
 
 		break;
 	}
 
 	checkItemRecipes();
+}
+
+void Character::getEquipItem(EquipmentItem* _item, int _index)
+{
+	std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
+
+	for (; iter != allMyBuildItems_.end(); ++iter)
+	{
+		if ((*iter)->GetName() != _item->GetName())
+		{
+			continue;
+		}
+
+		break;
+	}
+
+	if (iter != allMyBuildItems_.end())
+	{
+		EquipmentItem* currentEquipItem = equipedItem_[static_cast<size_t>(_item->GetEquipType())];
+
+		if (nullptr == currentEquipItem)
+		{
+			equipedItem_[static_cast<size_t>(_item->GetEquipType())] = reinterpret_cast<EquipmentItem*>(_item);
+			itemBoxmanager_->DeleteItemFromItemBox(_index);
+			allMyBuildItems_.erase(iter);
+			return;
+		}
+
+		if (currentEquipItem->GetItemTier() < _item->GetItemTier())
+		{
+			// 장착되있던 아이템은 인벤토리로 들어감
+			bool isFull = true;
+			for (auto& invenItem : inventory_)
+			{
+				if (nullptr != invenItem)
+				{
+					continue;
+				}
+
+				isFull = false;
+				invenItem = currentEquipItem;
+				//이건호 : 기존 UI를 비우고 인벤토리 벡터 전체를 받아오도록 설정
+				uiController_->GetInventoryUI()->EmptySlot();
+				uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+
+				break;
+			}
+
+			if (true == isFull)
+			{
+				// 인벤토리가 가득찬 경우에는 바닥에 떨어짐
+			}
+
+			equipedItem_[static_cast<size_t>(_item->GetEquipType())] = reinterpret_cast<EquipmentItem*>(_item);
+			itemBoxmanager_->DeleteItemFromItemBox(_index);
+			allMyBuildItems_.erase(iter);
+			return;
+		}
+	}
+
+	for (auto& invenItem : inventory_)
+	{
+		if (nullptr != invenItem)
+		{
+			continue;
+		}
+
+		invenItem = _item;
+		//이건호 : 기존 UI를 비우고 인벤토리 벡터 전체를 받아오도록 설정
+		uiController_->GetInventoryUI()->EmptySlot();
+		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+		itemBoxmanager_->DeleteItemFromItemBox(_index);
+
+		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
+
+		for (; iter != allMyBuildItems_.end(); ++iter)
+		{
+			if ((*iter)->GetName() != _item->GetName())
+			{
+				continue;
+			}
+
+			break;
+		}
+
+		if (iter != allMyBuildItems_.end())
+		{
+			allMyBuildItems_.erase(iter);
+		}
+		break;
+	}
 }
 
 void Character::getItem(const std::string& _itemName)
@@ -363,22 +461,20 @@ void Character::getItem(const std::string& _itemName)
 		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 
 		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
-		std::list<ItemBase*>::iterator iterErase = allMyBuildItems_.end();
 
 		for (; iter != allMyBuildItems_.end(); ++iter)
 		{
-			if ((*iter) != item)
+			if ((*iter)->GetName() != item->GetName())
 			{
 				continue;
 			}
 
-			iterErase = iter;
 			break;
 		}
 
-		if (iterErase != allMyBuildItems_.end())
+		if (iter != allMyBuildItems_.end())
 		{
-			allMyBuildItems_.erase(iterErase);
+			allMyBuildItems_.erase(iter);
 		}
 
 		break;
@@ -605,8 +701,8 @@ void Character::checkBuildItemsRecursive(ItemBase* _item)
 	{
 		if (iter.second->GetName() == _item->GetName())
 		{
-			allMyBuildItems_.push_back(iter.first.left_);
-			allMyBuildItems_.push_back(iter.first.right_);
+			allMyBuildItems_.push_back(iter.first.left_->Copy());
+			allMyBuildItems_.push_back(iter.first.right_->Copy());
 
 			checkBuildItemsRecursive(iter.first.left_);
 			checkBuildItemsRecursive(iter.first.right_);

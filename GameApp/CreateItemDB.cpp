@@ -8,6 +8,8 @@
 
 #include "LumiaLevel.h"
 
+static int itemIndex = 0;
+
 void ItemBoxManager::CreateAllItemList()
 {
 	CreateMiscItemList();		// 재료
@@ -46,9 +48,15 @@ ItemBase* ItemBoxManager::CreateItem(const std::string _Name, ItemType _Type, It
 		break;
 	}
 
+	if (nullptr == NewItem)
+	{
+		GameEngineDebug::MsgBoxError("아이템을 생성하지 못했습니다.");
+	}
+
 	NewItem->SetName(_Name);
 	NewItem->SetItemType(_Type);
 	NewItem->SetItemTier(_Tier);
+	NewItem->SetIndex(itemIndex++);
 
 	std::string imageName = _ImageName;
 	GameEngineTexture* CurTexture = GameEngineTextureManager::GetInst().Find(imageName);
@@ -248,7 +256,9 @@ void ItemBoxManager::CreateUseableItemList()
 void ItemBoxManager::CreateEquipmentItemList()
 {
 	// Head
-	CreateEquipmentItem("Hairband", EquipmentType::HEAD, "ItemIcon_101101.png");
+	EquipmentItem* item = CreateEquipmentItem("Hairband", EquipmentType::HEAD, "ItemIcon_101101.png");
+
+	EquipmentType type = item->GetEquipType();
 	CreateEquipmentItem("Hat", EquipmentType::HEAD, "ItemIcon_101101.png");
 	CreateEquipmentItem("BikeHelmet", EquipmentType::HEAD, "ItemIcon_101101.png");
 

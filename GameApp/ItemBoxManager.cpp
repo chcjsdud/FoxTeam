@@ -242,8 +242,6 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 		if (false == SameItem)
 		{
 			curList.push_back(findItem->Copy());
-
-			int a = 0;
 		}
 	}
 
