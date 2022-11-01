@@ -189,6 +189,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="AyaBullet.cpp" />
+    <ClCompile Include="AyaESpectrum.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="BasicAttackEffect.cpp">
       <SubType>
       </SubType>
@@ -623,6 +627,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="AyaBullet.h" />
+    <ClInclude Include="AyaESpectrum.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="BasicAttackEffect.h">
       <SubType>
       </SubType>

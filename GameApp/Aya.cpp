@@ -43,6 +43,17 @@ void Aya::LoadResource()
 		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Aya_Idle.fbx"));
 		mesh->CreateRenderingBuffer();
 
+		GameEngineFBXMesh* spectrum0 = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("skillE_01.fbx"));
+		spectrum0->CreateRenderingBuffer();
+		GameEngineFBXMesh* spectrum1 = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("skillE_02.fbx"));
+		spectrum1->CreateRenderingBuffer();
+		GameEngineFBXMesh* spectrum2 = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("skillE_03.fbx"));
+		spectrum2->CreateRenderingBuffer();
+		GameEngineFBXMesh* spectrum3 = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("skillE_04.fbx"));
+		spectrum3->CreateRenderingBuffer();
+		GameEngineFBXMesh* spectrum4 = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("skillE_05.fbx"));
+		spectrum4->CreateRenderingBuffer();
+
 		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Pistol_01.fbx"));
 		mesh->CreateRenderingBuffer();
 		GameEngineFBXAnimationManager::GetInst().Load(dir.PathToPlusFileName("Weapon_Pistol_01.fbx"));
@@ -135,6 +146,10 @@ void Aya::Start()
 	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 90.0f,0.0f,0.0f });
 	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHitEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
 	basicHitEffect_->GetAttackRenderer()->CreateAnimation("Fx_ShootGlowSE_04.png", "Fx_ShootGlowSE_04", 0, 3, 0.03f, false);
+
+
+	eSpectrum_ = GetLevel()->CreateActor<AyaESpectrum>();
+
 
 }
 
@@ -602,13 +617,21 @@ void Aya::onUpdateWSkill(float _deltaTime)
 
 void Aya::onStartESkill()
 {
+
+	float4 wp = transform_.GetWorldPosition();
+
 	renderer_->ClearOverrideAnimation();
 	overrideAnimationBoneName_ = "";
 	setRotationToMouse();
 
 	ChangeAnimation("SkillE", true);
 
-	FT::PlaySoundAndSendPacket("aya_Skill03_Activation.wav", transform_.GetWorldPosition());
+	FT::PlaySoundAndSendPacket("aya_Skill03_Activation.wav", wp);
+
+	eSpectrum_->GetTransform()->SetWorldPosition(wp);
+	eSpectrum_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
+	eSpectrum_->PlayAwake();
+
 }
 
 void Aya::onUpdateESkill(float _deltaTime)
@@ -618,6 +641,7 @@ void Aya::onUpdateESkill(float _deltaTime)
 		destinations_.clear();
 		destination_ = transform_.GetWorldPosition();
 		changeAnimationWait();
+
 		mainState_ << "NormalState";
 	}
 
@@ -629,6 +653,8 @@ void Aya::onUpdateESkill(float _deltaTime)
 	{
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}
+
+
 }
 
 void Aya::onStartRSkill()
@@ -798,7 +824,9 @@ void Aya::onEffectTransformCheck(float _deltaTime)
 {
 	float4 wp = GetTransform()->GetWorldPosition();
 	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
-	basicAttackEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+	basicAttackEffect_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
+
+
 
 	//basicHitEffect_->GetTransform()->SetWorldPosition(wp);
 	//basicHitEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());

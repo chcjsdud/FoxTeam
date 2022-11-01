@@ -41,7 +41,7 @@ void AyaBullet::Start()
 
 	atkEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
 	atkEffect_->GetAttackRenderer()->SetImage("Fx_ShootGlowSE_04.png", "PointSmp");
-	atkEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,50.0f,0.0f });
+	atkEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,50.0f,0.0f }); 
 	atkEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 90.0f,0.0f,0.0f });
 	atkEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(atkEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize() * 2.5f);
 	atkEffect_->GetAttackRenderer()->CreateAnimation("Fx_ShootGlowSE_04.png", "Fx_ShootGlowSE_04", 0, 3, 0.08f, false);

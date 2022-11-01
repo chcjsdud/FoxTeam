@@ -4,6 +4,7 @@
 #include "Character.h"
 #include <GameEngine/GameEngineFSM.h>
 #include "BasicAttackEffect.h"
+#include "AyaESpectrum.h"
 #include "AyaBullet.h"
 
 class GameEngineFBXRenderer;
@@ -86,4 +87,6 @@ private:
 //	std::vector<bullet*>
 	AyaBullet* bullet0_;
 	AyaBullet* bullet1_;
+
+	AyaESpectrum* eSpectrum_;
 };

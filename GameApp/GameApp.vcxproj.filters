@@ -451,6 +451,9 @@
     <ClCompile Include="UI_CalculateHelper.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI\UIHelper</Filter>
     </ClCompile>
+    <ClCompile Include="AyaESpectrum.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -1147,6 +1150,9 @@
     </ClInclude>
     <ClInclude Include="UI_CalculateHelper.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI\UIHelper</Filter>
+    </ClInclude>
+    <ClInclude Include="AyaESpectrum.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Aya</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
