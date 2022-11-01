@@ -15,15 +15,21 @@ struct OutLineData
 class GameEngineFBXRenderer;
 class GameEnginePreprocessingRenderer : public GameEngineRenderer
 {
+public: // Public Inline Get Function
+	inline OutLineData GetOutLineData() const
+	{
+		return OutLineData_;
+	}
+
 public:
 	RenderSet& GetRenderSet(unsigned int _Index);
 
 public:
 	void SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName, bool _IsCharacter = false, bool _IsSilhouette = true);
+	void SetOutLineData(const float4& _LineColor, float _LineThickness);
 
 protected:
 private:
-	void SetOutLineData(const float4& _LineColor, float _LineThickness);
 
 private:
 	void SetMesh(std::string _PipeLineName, bool _IsCharacter);

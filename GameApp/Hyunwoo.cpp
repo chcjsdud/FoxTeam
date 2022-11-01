@@ -224,15 +224,35 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->GetRenderSet(1).isRender = false;
 
 	// ¿Ü°û¼±
-	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
-	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
-	MainOutLineRenderer_->Off();
+	{
+		// Main
+		MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
+
+		OutLineData MainOutLineData = MainOutLineRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = renderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainOutLineRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainOutLineRenderer_->GetTransform()->SetLocalRotationDegree(renderer_->GetTransform()->GetLocalRotation());
+		MainOutLineRenderer_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
+		MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+		MainOutLineRenderer_->Off();
+	}
 
 	// ½Ç·ç¿§
-	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
-	MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
+	{
+		// Main
+		MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
+
+		OutLineData MainOutLineData = MainSilhouetteRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = renderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainSilhouetteRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainSilhouetteRenderer_->GetTransform()->SetLocalRotationDegree(renderer_->GetTransform()->GetLocalRotation());
+		MainSilhouetteRenderer_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
+		MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
+	}
 }
 
 

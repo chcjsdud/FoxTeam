@@ -203,31 +203,83 @@ void Rio::initRendererAndAnimation()
 	longBow_->Off();
 
 	// ¿Ü°û¼±
-	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
-	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
-	MainOutLineRenderer_->Off();
+	{
+		// Main
+		MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
 
-	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponOutLineRenderer1_->SetBaseRenderer(shortBow_, "PreprocessingAni", true, false);
-	WeaponOutLineRenderer1_->Off();
+		OutLineData MainOutLineData = MainOutLineRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = renderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainOutLineRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainOutLineRenderer_->GetTransform()->SetLocalRotationDegree(renderer_->GetTransform()->GetLocalRotation());
+		MainOutLineRenderer_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
+		MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+		MainOutLineRenderer_->Off();
 
-	WeaponOutLineRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponOutLineRenderer2_->SetBaseRenderer(longBow_, "PreprocessingAni", true, false);
-	WeaponOutLineRenderer2_->GetRenderSet(0).isRender = false;
-	WeaponOutLineRenderer2_->Off();
+		// Weapon1
+		WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponOutLineRenderer1_->SetBaseRenderer(shortBow_, "PreprocessingAni", true, false);
+
+		OutLineData Weapon1OutLineData = WeaponOutLineRenderer1_->GetOutLineData();
+		float4 Weapon1Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon1OutLineData.LineThickness;
+		float4 CalcWeapon1Scale = shortBow_->GetTransform()->GetLocalScaling() + Weapon1Thickness;
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalScaling(CalcWeapon1Scale);
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalRotationDegree(shortBow_->GetTransform()->GetLocalRotation());
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalPosition(shortBow_->GetTransform()->GetLocalPosition());
+		WeaponOutLineRenderer1_->Off();
+
+		// Weapon2
+		WeaponOutLineRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponOutLineRenderer2_->SetBaseRenderer(longBow_, "PreprocessingAni", true, false);
+
+		OutLineData Weapon2OutLineData = WeaponOutLineRenderer1_->GetOutLineData();
+		float4 Weapon2Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon2OutLineData.LineThickness;
+		float4 CalcWeapon2Scale = longBow_->GetTransform()->GetLocalScaling() + Weapon2Thickness;
+		WeaponOutLineRenderer2_->GetTransform()->SetLocalScaling(CalcWeapon2Scale);
+		WeaponOutLineRenderer2_->GetTransform()->SetLocalRotationDegree(longBow_->GetTransform()->GetLocalRotation());
+		WeaponOutLineRenderer2_->GetTransform()->SetLocalPosition(longBow_->GetTransform()->GetLocalPosition());
+		WeaponOutLineRenderer2_->GetRenderSet(0).isRender = false;
+		WeaponOutLineRenderer2_->Off();
+	}
 
 	// ½Ç·ç¿§
-	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
-	MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
+	{
+		// Main
+		MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
 
-	WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponSilhouetteRenderer1_->SetBaseRenderer(shortBow_, "PreprocessingAni", true);
+		OutLineData MainOutLineData = MainSilhouetteRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = renderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainSilhouetteRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainSilhouetteRenderer_->GetTransform()->SetLocalRotationDegree(renderer_->GetTransform()->GetLocalRotation());
+		MainSilhouetteRenderer_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
+		MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
 
-	WeaponSilhouetteRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponSilhouetteRenderer2_->SetBaseRenderer(longBow_, "PreprocessingAni", true);
-	WeaponSilhouetteRenderer2_->GetRenderSet(0).isRender = false;
+		// Weapon1
+		WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponSilhouetteRenderer1_->SetBaseRenderer(shortBow_, "PreprocessingAni", true);
+
+		OutLineData Weapon1OutLineData = WeaponSilhouetteRenderer1_->GetOutLineData();
+		float4 Weapon1Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon1OutLineData.LineThickness;
+		float4 CalcWeapon1Scale = shortBow_->GetTransform()->GetLocalScaling() + Weapon1Thickness;
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalScaling(CalcWeapon1Scale);
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree(shortBow_->GetTransform()->GetLocalRotation());
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalPosition(shortBow_->GetTransform()->GetLocalPosition());
+
+		// Weapon2
+		WeaponSilhouetteRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponSilhouetteRenderer2_->SetBaseRenderer(longBow_, "PreprocessingAni", true);
+
+		OutLineData Weapon2OutLineData = WeaponSilhouetteRenderer2_->GetOutLineData();
+		float4 Weapon2Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon2OutLineData.LineThickness;
+		float4 CalcWeapon2Scale = longBow_->GetTransform()->GetLocalScaling() + Weapon2Thickness;
+		WeaponSilhouetteRenderer2_->GetTransform()->SetLocalScaling(CalcWeapon2Scale);
+		WeaponSilhouetteRenderer2_->GetTransform()->SetLocalRotationDegree(longBow_->GetTransform()->GetLocalRotation());
+		WeaponSilhouetteRenderer2_->GetTransform()->SetLocalPosition(longBow_->GetTransform()->GetLocalPosition());
+		WeaponSilhouetteRenderer2_->GetRenderSet(0).isRender = false;
+	}
 }
 
 void Rio::changeAnimationWait()

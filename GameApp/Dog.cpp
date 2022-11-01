@@ -110,13 +110,33 @@ void Dog::InitalizeRenderAndAnimation()
 	//============================== ¼±Ã³¸® ·»´õ·¯ ¼ÂÆÃ
 
 	// ¿Ü°û¼±
-	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainOutLineRenderer_->SetBaseRenderer(MainRenderer_, "PreprocessingAni", true, false);
-	MainOutLineRenderer_->Off();
+	{
+		// Main
+		MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainOutLineRenderer_->SetBaseRenderer(MainRenderer_, "PreprocessingAni", true, false);
+
+		OutLineData MainOutLineData = MainOutLineRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = MainRenderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainOutLineRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainOutLineRenderer_->GetTransform()->SetLocalRotationDegree(MainRenderer_->GetTransform()->GetLocalRotation());
+		MainOutLineRenderer_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+		MainOutLineRenderer_->Off();
+	}
 
 	// ½Ç·ç¿§
-	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainSilhouetteRenderer_->SetBaseRenderer(MainRenderer_, "PreprocessingAni", true);
+	{
+		// Main
+		MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainSilhouetteRenderer_->SetBaseRenderer(MainRenderer_, "PreprocessingAni", true);
+
+		OutLineData MainOutLineData = MainSilhouetteRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = MainRenderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainSilhouetteRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainSilhouetteRenderer_->GetTransform()->SetLocalRotationDegree(MainRenderer_->GetTransform()->GetLocalRotation());
+		MainSilhouetteRenderer_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+	}
 }
 
 void Dog::InitalizeCollider()

@@ -343,29 +343,81 @@ void Jackie::initRendererAndAnimation()
 	axeRenderer_->ChangeFBXAnimation("Idle");
 
 	// ¿Ü°û¼±
-	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
-	MainOutLineRenderer_->GetRenderSet(1).isRender = false;
-	MainOutLineRenderer_->Off();
+	{
+		// Main
+		MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
 
-	WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponSilhouetteRenderer1_->SetBaseRenderer(axeRenderer_, "PreprocessingAni", true, false);
-	WeaponSilhouetteRenderer1_->Off();
+		OutLineData MainOutLineData = MainOutLineRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = renderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainOutLineRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainOutLineRenderer_->GetTransform()->SetLocalRotationDegree(renderer_->GetTransform()->GetLocalRotation());
+		MainOutLineRenderer_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
+		MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+		MainOutLineRenderer_->Off();
 
-	WeaponSilhouetteRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponSilhouetteRenderer2_->SetBaseRenderer(sawRenderer_, "PreprocessingAni", true, false);
-	WeaponSilhouetteRenderer2_->Off();
+		// Weapon1
+		WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponOutLineRenderer1_->SetBaseRenderer(axeRenderer_, "PreprocessingAni", true, false);
+
+		OutLineData Weapon1OutLineData = WeaponOutLineRenderer1_->GetOutLineData();
+		float4 Weapon1Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon1OutLineData.LineThickness;
+		float4 CalcWeapon1Scale = axeRenderer_->GetTransform()->GetLocalScaling() + Weapon1Thickness;
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalScaling(CalcWeapon1Scale);
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalRotationDegree(axeRenderer_->GetTransform()->GetLocalRotation());
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalPosition(axeRenderer_->GetTransform()->GetLocalPosition());
+		WeaponOutLineRenderer1_->Off();
+
+		// Weapon2
+		WeaponOutLineRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponOutLineRenderer2_->SetBaseRenderer(sawRenderer_, "PreprocessingAni", true, false);
+
+		OutLineData Weapon2OutLineData = WeaponOutLineRenderer1_->GetOutLineData();
+		float4 Weapon2Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon2OutLineData.LineThickness;
+		float4 CalcWeapon2Scale = sawRenderer_->GetTransform()->GetLocalScaling() + Weapon2Thickness;
+		WeaponOutLineRenderer2_->GetTransform()->SetLocalScaling(CalcWeapon2Scale);
+		WeaponOutLineRenderer2_->GetTransform()->SetLocalRotationDegree(sawRenderer_->GetTransform()->GetLocalRotation());
+		WeaponOutLineRenderer2_->GetTransform()->SetLocalPosition(sawRenderer_->GetTransform()->GetLocalPosition());
+		WeaponOutLineRenderer2_->Off();
+	}
 
 	// ½Ç·ç¿§
-	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
-	MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
+	{
+		// Main
+		MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
 
-	WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponSilhouetteRenderer1_->SetBaseRenderer(axeRenderer_, "PreprocessingAni", true);
+		OutLineData MainOutLineData = MainSilhouetteRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = renderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainSilhouetteRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainSilhouetteRenderer_->GetTransform()->SetLocalRotationDegree(renderer_->GetTransform()->GetLocalRotation());
+		MainSilhouetteRenderer_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
+		MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
 
-	WeaponSilhouetteRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponSilhouetteRenderer2_->SetBaseRenderer(sawRenderer_, "PreprocessingAni", true);
+		// Weapon1
+		WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponSilhouetteRenderer1_->SetBaseRenderer(axeRenderer_, "PreprocessingAni", true);
+
+		OutLineData Weapon1OutLineData = WeaponSilhouetteRenderer1_->GetOutLineData();
+		float4 Weapon1Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon1OutLineData.LineThickness;
+		float4 CalcWeapon1Scale = axeRenderer_->GetTransform()->GetLocalScaling() + Weapon1Thickness;
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalScaling(CalcWeapon1Scale);
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree(axeRenderer_->GetTransform()->GetLocalRotation());
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalPosition(axeRenderer_->GetTransform()->GetLocalPosition());
+
+		// Weapon2
+		WeaponSilhouetteRenderer2_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponSilhouetteRenderer2_->SetBaseRenderer(sawRenderer_, "PreprocessingAni", true);
+
+		OutLineData Weapon2OutLineData = WeaponSilhouetteRenderer2_->GetOutLineData();
+		float4 Weapon2Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon2OutLineData.LineThickness;
+		float4 CalcWeapon2Scale = sawRenderer_->GetTransform()->GetLocalScaling() + Weapon2Thickness;
+		WeaponSilhouetteRenderer2_->GetTransform()->SetLocalScaling(CalcWeapon2Scale);
+		WeaponSilhouetteRenderer2_->GetTransform()->SetLocalRotationDegree(sawRenderer_->GetTransform()->GetLocalRotation());
+		WeaponSilhouetteRenderer2_->GetTransform()->SetLocalPosition(sawRenderer_->GetTransform()->GetLocalPosition());
+	}
 }
 
 void Jackie::initJackieCollision()

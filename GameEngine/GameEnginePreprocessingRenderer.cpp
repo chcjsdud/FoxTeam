@@ -46,12 +46,6 @@ void GameEnginePreprocessingRenderer::SetBaseRenderer(GameEngineFBXRenderer* _Ba
 		OutLineData_.LineThickness = 2.0f;
 	}
 
-	// 베이스렌더러의 회전/크기/위치 저장
-	float4 Thickness = float4::ONE * OutLineData_.LineThickness;
-	GetTransform()->SetLocalScaling(BaseRenderer_->GetTransform()->GetLocalScaling() + Thickness);
-	GetTransform()->SetLocalRotationDegree(BaseRenderer_->GetTransform()->GetLocalRotation());
-	GetTransform()->SetLocalPosition(BaseRenderer_->GetTransform()->GetLocalPosition());
-
 	// 
 	BaseRenderer_->SetPreprocessingRenderer(this);
 }
@@ -60,6 +54,10 @@ void GameEnginePreprocessingRenderer::SetOutLineData(const float4& _LineColor, f
 {
 	OutLineData_.LineColor = _LineColor;
 	OutLineData_.LineThickness = _LineThickness;
+
+	float4 Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * OutLineData_.LineThickness;
+	float4 CalcScale = BaseRenderer_->GetTransform()->GetLocalScaling() + Thickness;
+	GetTransform()->SetLocalScaling(CalcScale);
 }
 
 void GameEnginePreprocessingRenderer::SetMesh(std::string _PipeLineName, bool _IsCharacter)

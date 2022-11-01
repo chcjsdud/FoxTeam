@@ -226,23 +226,56 @@ void Aya::initRendererAndAnimation()
 	pistolRenderer_->ChangeFBXAnimation("Idle");
 
 	// ¿Ü°û¼±
-	MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
-	MainOutLineRenderer_->Off();
-	MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
-	//MainOutLineRenderer_->GetRenderSet(1).isRender = false;
+	{
+		// Main
+		MainOutLineRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainOutLineRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true, false);
 
-	WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponOutLineRenderer1_->SetBaseRenderer(pistolRenderer_, "PreprocessingAni", true, false);
-	WeaponOutLineRenderer1_->Off();
+		OutLineData MainOutLineData = MainOutLineRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = renderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainOutLineRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainOutLineRenderer_->GetTransform()->SetLocalRotationDegree(renderer_->GetTransform()->GetLocalRotation());
+		MainOutLineRenderer_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
+		MainOutLineRenderer_->Off();
+
+		// Weapon1
+		WeaponOutLineRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponOutLineRenderer1_->SetBaseRenderer(pistolRenderer_, "PreprocessingAni", true, false);
+
+		OutLineData Weapon1OutLineData = WeaponOutLineRenderer1_->GetOutLineData();
+		float4 Weapon1Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon1OutLineData.LineThickness;
+		float4 CalcWeapon1Scale = pistolRenderer_->GetTransform()->GetLocalScaling() + Weapon1Thickness;
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalScaling(CalcWeapon1Scale);
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalRotationDegree(pistolRenderer_->GetTransform()->GetLocalRotation());
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalPosition(pistolRenderer_->GetTransform()->GetLocalPosition());
+		WeaponOutLineRenderer1_->Off();
+	}
 
 	// ½Ç·ç¿§
-	MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
-	//MainSilhouetteRenderer_->GetRenderSet(1).isRender = false;
+	{
+		// Main
+		MainSilhouetteRenderer_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		MainSilhouetteRenderer_->SetBaseRenderer(renderer_, "PreprocessingAni", true);
 
-	WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
-	WeaponSilhouetteRenderer1_->SetBaseRenderer(pistolRenderer_, "PreprocessingAni", true);
+		OutLineData MainOutLineData = MainSilhouetteRenderer_->GetOutLineData();
+		float4 MainThickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * MainOutLineData.LineThickness;
+		float4 MainCalcScale = renderer_->GetTransform()->GetLocalScaling() + MainThickness;
+		MainSilhouetteRenderer_->GetTransform()->SetLocalScaling(MainCalcScale);
+		MainSilhouetteRenderer_->GetTransform()->SetLocalRotationDegree(renderer_->GetTransform()->GetLocalRotation());
+		MainSilhouetteRenderer_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
+
+		// Weapon1
+		WeaponSilhouetteRenderer1_ = CreateTransformComponent<GameEnginePreprocessingRenderer>();
+		WeaponSilhouetteRenderer1_->SetBaseRenderer(pistolRenderer_, "PreprocessingAni", true);
+
+		OutLineData Weapon1OutLineData = WeaponSilhouetteRenderer1_->GetOutLineData();
+		float4 Weapon1Thickness = float4(1.0f, 1.0f, 1.0f, 0.0f) * Weapon1OutLineData.LineThickness;
+		float4 CalcWeapon1Scale = pistolRenderer_->GetTransform()->GetLocalScaling() + Weapon1Thickness;
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalScaling(CalcWeapon1Scale);
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree(pistolRenderer_->GetTransform()->GetLocalRotation());
+		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalPosition(pistolRenderer_->GetTransform()->GetLocalPosition());
+	}
 }
 
 void Aya::changeAnimationRun()
