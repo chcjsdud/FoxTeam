@@ -131,6 +131,7 @@ void Aya::Start()
 	skillRCol_->GetTransform()->SetLocalScaling(700.f);
 
 	stat_.AttackSpeed = 0.8f;
+	stat_.AttackRange = 550.f;
 
 	// 평타 상대 피격 이펙트
 	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Shoot_01.png");

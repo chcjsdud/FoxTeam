@@ -134,10 +134,10 @@ void Character::Start()
 	
 	shadow_ = CreateTransformComponent<GameEngineEffectRenderer>();
 	shadow_->SetImage("shadow.png", "LINEARSmp");
-	shadow_->GetTransform()->SetLocalScaling({ 150.f, 150.f});
+	shadow_->GetTransform()->SetLocalScaling({ 75.f, 75.f});
 	shadow_->GetTransform()->SetLocalRotationDegree({ 90.f, 0.0f });
 	shadow_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 0.0f });
-	shadow_->SetAlpha(0.5f);
+	//shadow_->SetAlpha(0.5f);
 
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 	// 현재 레벨이 루미아 레벨이 아닌 경우 처리하지 않음
@@ -262,7 +262,7 @@ void Character::Update(float _DeltaTime)
 	if (GameEngineInput::Down("Z"))
 	{
 		mainState_ << "NormalState";
-		normalState_ << "Wait";
+		normalState_ << "Watch";
 		coolTimer_Q_ = 0.5f;
 		coolTimer_W_ = 0.5f;
 		coolTimer_E_ = 0.5f;
