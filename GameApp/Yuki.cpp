@@ -399,10 +399,24 @@ void Yuki::changeAnimationBasicAttack()
 		atkFlag_ = false;
 	}
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("attackGlove_Normal01.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("attackGlove_Normal01.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	int random = randomGenerator.RandomInt(0, 1);
+
+	PacketSoundPlay packet0;
+
+	switch (random)
+	{
+	case 0:
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("attackTwoHandSword_r1.wav");
+		packet0.SetSound("attackTwoHandSword_r1.wav", transform_.GetWorldPosition());
+		break;
+	case 1:
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("attackTwoHandSword_r2.wav");
+		packet0.SetSound("attackTwoHandSword_r2.wav", transform_.GetWorldPosition());
+
+	default:
+		break;
+	}
+	FT::SendPacket(packet0);
 }
 
 void Yuki::changeDeathAnimation()
@@ -414,6 +428,8 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 {
 	if (b_isQ_)
 	{
+		RandomSoundPlay("Yuki_PlaySkill1011200seq1_1_ko.wav", "Yuki_PlaySkill1011200seq1_2_ko.wav", "Yuki_PlaySkill1011200seq1_3_ko.wav");
+
 		target_->Damage(stat_.AttackPower * 1.6f + 20.0f, this);
 
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Attack.wav");
@@ -500,7 +516,7 @@ void Yuki::onUpdateQSkill(float _deltaTime)
 void Yuki::onStartWSkill()
 {
 	// ¹Ù´Ú¿¡ º¢²É ÀÌÆåÆ® Àç»ý
-
+	RandomSoundPlay("Yuki_PlaySkill1011300seq0_1_ko.wav", "Yuki_PlaySkill1011300seq0_2_ko.wav", "Yuki_PlaySkill1011300seq0_3_ko.wav");
 	if ("Wait" == curAnimationName_)
 	{
 		curAnimationName_ = "SkillW";
@@ -531,6 +547,8 @@ void Yuki::onUpdateWSkill(float _deltaTime)
 
 void Yuki::onStartESkill()
 {
+
+
 	timer_Dash_E = 0.0f;
 	b_Ehit_ = false;
 	collision_E->On();
@@ -549,6 +567,8 @@ void Yuki::onStartESkill()
 	curAnimationName_ = "SkillE_move";
 	renderer_->ChangeFBXAnimation("SkillE_move", true);
 
+	RandomSoundPlay("Yuki_PlaySkill1011400seq0_1_ko.wav", "Yuki_PlaySkill1011400seq0_2_ko.wav", "");
+
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill03_Move.wav");
 	PacketSoundPlay packet;
 	packet.SetSound("Yuki_Skill03_Move.wav", transform_.GetWorldPosition());
@@ -557,6 +577,8 @@ void Yuki::onStartESkill()
 	rearEffectRenderer_->On();
 	rearEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01", true);
 	rearEffectRenderer_->AnimationPlay();
+
+
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -772,6 +794,8 @@ void Yuki::startCustomRStandBy()
 	renderer_->ChangeFBXAnimation("SkillR_loop", true);
 
 	collision_R->On();
+
+	RandomSoundPlay("Yuki_PlaySkill1011500seq0_1_ko.wav", "Yuki_PlaySkill1011500seq0_2_ko.wav", "Yuki_PlaySkill1011500seq0_1_ko.wav");
 
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill04_Active.wav");
 	PacketSoundPlay packet;

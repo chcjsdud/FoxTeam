@@ -467,6 +467,6 @@ protected:
 	GameEnginePreprocessingRenderer* WeaponOutLineRenderer1_;
 	GameEnginePreprocessingRenderer* WeaponOutLineRenderer2_;
 
-private:
+protected:
 	GameEngineRandom randomGenerator;
 };
