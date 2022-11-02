@@ -6,6 +6,7 @@ using namespace std;
 
 //캐릭터를 쫓아다니는 UI들을 모아둔 클래스입니다
 class GameEngineUIRenderer;
+class GameEngineProgressBarRenderer;
 class UI_CharFollow : public GameEngineActor
 {
 public:
@@ -18,7 +19,7 @@ public:
 public:
 	GameEngineUIRenderer* HPBar_Renderer;
 	GameEngineUIRenderer* SPBar_Renderer;
-	GameEngineUIRenderer* EmptyBar_Renderer;
+	GameEngineProgressBarRenderer* EmptyBar_Renderer;
 
 	float4 HpBarPos;
 	float4 HpBarSize;
@@ -28,6 +29,8 @@ public:
 
 	float4 EmptyBarPos;
 	float4 EmptyBarSize;
+
+	bool UIOn;
 
 protected:
 	virtual void Start();

@@ -15,6 +15,7 @@
 #include "UI_HyperMap.h"
 #include "UI_HPBars.h"
 #include "UI_CalculateHelper.h"
+#include "UI_CharFollow.h"
 
 #include "UI_FOW.h"
 #include "UI_BloodBackground.h"
@@ -87,7 +88,11 @@ public:
 	{
 		return hpbars_UI;
 	}
-
+	
+	UI_CharFollow* GetUICharFollow()
+	{
+		return charfollow_UI;
+	}
 
 
 	//UI_HyperMap* GetHyperMap()
@@ -113,6 +118,7 @@ private:
 	UI_Time* time_UI;
 	UI_Notice* notice_UI;
 	UI_HPBars* hpbars_UI;
+	UI_CharFollow* charfollow_UI;
 
 	UI_CalculateHelper* calhelper_;
 
