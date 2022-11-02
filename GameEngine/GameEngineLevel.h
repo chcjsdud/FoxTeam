@@ -24,6 +24,7 @@ class GameEngineLevel : public GameEngineObjectNameBase
 	friend GameEngineRenderer;
 	friend GameEngineCollision;
 	friend GameEngineLightComponent;
+	friend CameraComponent;
 
 	class NextLevelActor
 	{

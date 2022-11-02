@@ -326,3 +326,17 @@ void GameEngineShaderResHelper::SettingStructuredBufferSetting(const std::string
 	FindIter->second.Res_ = _Buffer;
 
 }
+
+GameEngineStructuredBuffer* GameEngineShaderResHelper::GetStructuredBufferSetting(const std::string& _SettingName)
+{
+	std::string UpperName = GameEngineString::toupper(_SettingName);
+
+	std::map<std::string, GameEngineStructuredBufferSetting>::iterator FindIter = AllStructuredBufferData_.find(UpperName);
+	if (FindIter == AllStructuredBufferData_.end())
+	{
+		GameEngineDebug::MsgBoxError("존재하지 않는 스트럭처드 버퍼 슬롯을 얻어오려고 했습니다.." + UpperName);
+		return nullptr;
+	}
+
+	return FindIter->second.Res_;
+}

@@ -50,6 +50,10 @@ public:
 		return Result_;
 	}
 
+	GameEngineShaderResHelper& GetShaderRes()
+	{
+		return Res_;
+	}
 
 	// constrcuter destructer
 	GameEnginePostProcessRender();

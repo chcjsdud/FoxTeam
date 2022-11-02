@@ -70,6 +70,7 @@ private:
 
 	void RenderForward(float _DeltaTime);
 	void RenderDeffered(float _DeltaTime);
+	void RenderShadow(float _DeltaTime);
 
 public:
 	inline const LightsData& GetLightData() const

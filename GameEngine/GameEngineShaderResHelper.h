@@ -151,6 +151,8 @@ public:
 
 	void SettingStructuredBufferSetting(const std::string& _SettingName, GameEngineStructuredBuffer* _Buffer);
 
+	GameEngineStructuredBuffer* GetStructuredBufferSetting(const std::string& _SettingName);
+
 	void ReSet();
 	void Setting();
 

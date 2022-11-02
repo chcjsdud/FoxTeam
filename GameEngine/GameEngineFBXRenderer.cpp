@@ -71,17 +71,22 @@ void GameEngineFBXRenderer::Render(float _DeltaTime, bool _IsDeferred)
 	}
 }
 
-void GameEngineFBXRenderer::ShadowInit(GameEngineRenderingPipeLine* _ShadowPipe)
+void GameEngineFBXRenderer::ShadowRender(float _DeltaTime)
 {
-	if (true == PipeLineName_.empty())
+	for (size_t i = 0; i < RenderSets.size(); i++)
 	{
-		GameEngineDebug::MsgBoxError("현재 렌더러의 렌더링파이프라인명을 알수없습니다!!!!");
-		return;
-	}
+		// Shadow PipeLine Vertex Buffer & Index Buffer Setting
+		DefaultShadowPipeLine_->SetInputAssembler1VertexBufferSetting(RenderSets[i].PipeLine_->GetVertexBuffer());
+		DefaultShadowPipeLine_->SetInputAssembler2IndexBufferSetting(RenderSets[i].PipeLine_->GetIndexBuffer());
 
-	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find(PipeLineName_);
-	_ShadowPipe->SetInputAssembler1VertexBufferSetting(Pipe->GetVertexBuffer());
-	_ShadowPipe->SetInputAssembler2IndexBufferSetting(Pipe->GetIndexBuffer());
+		// Shadow ShaderHelper StructuredBuffer Setting & Link
+		ShadowHelper_.SettingStructuredBufferSetting("ArrAniMationMatrix", RenderSets[i].ShaderHelper->GetStructuredBufferSetting("ArrAniMationMatrix"));
+		ShadowHelper_.SettingStructuredBufferLink("ArrAniMationMatrix", &RenderSets[i].BoneData[0], sizeof(float4x4) * RenderSets[i].BoneData.size());
+		ShadowHelper_.Setting();
+
+		// Shadow Rendering
+		DefaultShadowPipeLine_->Rendering();
+	}
 }
 
 void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::string _PipeLine, int _MeshIndex)
@@ -377,7 +382,6 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Value, std::string _P
 		GameEngineDebug::MsgBoxError("존재하지 않는 fbx매쉬를 세팅했습니다.");
 	}
 
-	PipeLineName_ = _PipeLine;
 	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find(_PipeLine);
 
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh->GetAllMeshMap();
