@@ -441,7 +441,7 @@ void Aya::onStartQSkill()
 		bullet->MakeTarget(*this, stat_.AttackPower / 1.0f, startPosition, arrowSpeed, *target_);
 		bullet->SetWaitTime(doubleStrikeDelay);
 	}
-
+	RandomSoundPlay("Aya_PlaySkill1002200seq0_1_ko.wav", "Aya_PlaySkill1002200seq0_2_ko.wav", "Aya_PlaySkill1002200seq0_3_ko.wav");	
 	FT::PlaySoundAndSendPacket("aya_Skill01_Attack_v1.wav", transform_.GetWorldPosition());
 }
 
@@ -478,6 +478,7 @@ void Aya::onStartWSkill()
 	float bulletSpeed = 2500.f;
 
 
+
 	PacketCreateProjectile packetBullet;
 	packetBullet.MakeNonTargetProjectile(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
 	packetBullet.SetScale({ 80.f, 150.f, 100 });
@@ -492,7 +493,7 @@ void Aya::onStartWSkill()
 		bullet->MakeNonTarget(*this, stat_.AttackPower / 1.5f, startPosition, transform_.GetWorldRotation().y, bulletSpeed);
 		bullet->SetScale({ 80.f, 150.f, 100 });
 	}
-
+	RandomSoundPlay("Aya_PlaySkill1002300seq0_1_ko.wav", "Aya_PlaySkill1002300seq0_2_ko.wav", "Aya_PlaySkill1002300seq0_3_ko.wav");
 	FT::PlaySoundAndSendPacket("aya_Skill02_Shot.wav", transform_.GetWorldPosition());
 	skillWFireCount_ = 1;
 }
@@ -622,7 +623,7 @@ void Aya::onStartESkill()
 	setRotationToMouse();
 
 	ChangeAnimation("SkillE", true);
-
+	RandomSoundPlay("Aya_PlaySkill1002400seq0_1_ko.wav", "Aya_PlaySkill1002400seq0_2_ko.wav", "Aya_PlaySkill1002400seq0_3_ko.wav");
 	FT::PlaySoundAndSendPacket("aya_Skill03_Activation.wav", wp);
 
 	eSpectrum_->GetTransform()->SetWorldPosition(wp);
@@ -667,6 +668,8 @@ void Aya::onStartRSkill()
 	renderer_->ClearOverrideAnimation();
 	overrideAnimationBoneName_ = "";
 	ChangeAnimation("SkillR_Start");
+
+	RandomSoundPlay("Aya_PlaySkill1002500seq0_1_ko.wav", "Aya_PlaySkill1002500seq0_2_ko.wav", "Aya_PlaySkill1002500seq0_3_ko.wav");
 	FT::PlaySoundAndSendPacket("aya_Skill04_Ready.wav", transform_.GetWorldPosition());
 	rEffect_->PlayAwake();
 
