@@ -69,6 +69,14 @@ void UI_WinLose::SetPortrait(JobType _jobtype, bool _isWin)
 		portraitRenderer_->SetImage("Death_CharFull_Rio.png", "PointSmp");
 		break;
 	case JobType::AYA:
+		if (true == _isWin)
+		{
+			portraitRenderer_->SetImage("Lobby_CharFull_Aya.png", "PointSmp");
+			break;
+		}
+		portraitRenderer_->SetImage("Death_CharFull_Aya.png", "PointSmp");
+		break;
+		
 		break;
 	case JobType::DUMMY:
 		break;

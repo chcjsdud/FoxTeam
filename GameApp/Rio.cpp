@@ -484,6 +484,8 @@ void Rio::onStartWSkill()
 
 	if (bLongBow_)
 	{
+		RandomSoundPlay("Rio_PlaySkill1031310Seq0_1_ko.wav", "Rio_PlaySkill1031310Seq0_2_ko.wav", "Rio_PlaySkill1031310Seq0_3_ko.wav");
+
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_Skill02_Shot.wav");
 		PacketSoundPlay packet;
 		packet.SetSound("Rio_LongBow_Skill02_Shot.wav", transform_.GetWorldPosition());
@@ -514,6 +516,8 @@ void Rio::onStartWSkill()
 	}
 	else
 	{
+		RandomSoundPlay("Rio_PlaySkill1031300Seq0_1_ko.wav", "Rio_PlaySkill1031300Seq0_2_ko.wav", "Rio_PlaySkill1031300Seq0_3_ko.wav");
+
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill02_Shot.wav");
 		PacketSoundPlay packet;
 		packet.SetSound("Rio_ShortBow_Skill02_Shot.wav", transform_.GetWorldPosition());
@@ -590,11 +594,15 @@ void Rio::onStartRSkill()
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
 	setRotationTo(mousePosition, transform_.GetWorldPosition());
 
+	RandomSoundPlay("Rio_PlaySkill1031510Seq0_1_ko.wav", "Rio_PlaySkill1031510Seq0_2_ko.wav", "Rio_PlaySkill1031510Seq0_3_ko.wav");
+
 	if (bLongBow_)
 	{
 		ChangeAnimation("SkillR_Long");
 
 		{
+
+
 			GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_SKill04_01.wav");
 			PacketSoundPlay packet;
 			packet.SetSound("Rio_LongBow_SKill04_01.wav", transform_.GetWorldPosition());
@@ -909,6 +917,8 @@ void Rio::startSkillEBegin()
 	float4 landingPosition = landingPosition_;
 	landingPosition.y += FT::Map::MAX_HEIGHT;
 
+	RandomSoundPlay("Rio_PlaySkill1031400Seq0_1_ko.wav", "Rio_PlaySkill1031400Seq0_2_ko.wav", "Rio_PlaySkill1031400Seq0_3_ko.wav");
+
 	bSkillEPassable_ = currentMap_->GetNavMesh()->CheckIntersects(landingPosition, float4::DOWN, height);
 
 	ChangeAnimation("SkillE_Short");
@@ -931,7 +941,7 @@ void Rio::updateSkillEBegin(float _deltaTime)
 
 void Rio::startSkillEShot()
 {
-	
+
 
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_Bow_Skill03_Start.wav");
 	PacketSoundPlay packet;
