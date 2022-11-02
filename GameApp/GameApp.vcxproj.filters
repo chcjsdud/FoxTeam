@@ -460,6 +460,9 @@
     <ClCompile Include="UI_CharFollow.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
+    <ClCompile Include="RioWSkillWind.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -1165,6 +1168,9 @@
     </ClInclude>
     <ClInclude Include="UI_CharFollow.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="RioWSkillWind.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

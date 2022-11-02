@@ -294,6 +294,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="RioWSkillWind.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="SlowEffect.cpp">
       <SubType>
       </SubType>
@@ -738,6 +742,10 @@
     </ClInclude>
     <ClInclude Include="OutLineTestMap.h" />
     <ClInclude Include="OutLineTestWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="RioWSkillWind.h">
       <SubType>
       </SubType>
     </ClInclude>
