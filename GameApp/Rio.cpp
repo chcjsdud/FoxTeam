@@ -13,6 +13,7 @@
 #include "eProjectileType.h"
 #include "RioDSkill.h"
 #include "BasicAttackEffect.h"
+#include "RioWSkillWind.h"
 
 Rio::Rio()
 	: Character()
@@ -882,7 +883,15 @@ void Rio::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 		return;
 	}
 
+	if ("wWind" == _effectName)
+	{
+		float4 wp = _victim->GetTransform()->GetWorldPosition();
+		RioWSkillWind* wind = GetLevel()->CreateActor<RioWSkillWind>();
+		wind->SetParentIndex(GetIndex());
+		wind->GetTransform()->SetWorldPosition(wp);
+		wind->PlayAwake(3.0f);
 
+	}
 
 }
 

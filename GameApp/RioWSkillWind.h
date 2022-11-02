@@ -18,7 +18,7 @@ public:
 	RioWSkillWind& operator=(const RioWSkillWind&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
 
 public:
-	void PlayAwake(float _time);
+	void PlayAwake(float _time, float _slowRatio = 0.0f);
 	void SetParentIndex(int _index) { parentIndex_ = _index; }
 
 public:
@@ -47,5 +47,7 @@ private:
 	float rotationContainer_;
 	
 	int parentIndex_;
+
+	float slowRatio_;
 };
 

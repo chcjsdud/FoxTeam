@@ -8,6 +8,7 @@
 #include "BasicAttackEffect.h"
 #include "Character.h"
 #include "PacketSoundPlay.h"
+#include "RioWSkillWind.h"
 #include "Monsters.h"
 
 RioArrow::RioArrow()
@@ -234,6 +235,22 @@ void RioArrow::updateFly(float _deltaTime)
 					PacketSoundPlay packet;
 					packet.SetSound("Rio_ShortBow_Skill02_Hit.wav", transform_.GetWorldPosition());
 					FT::SendPacket(packet);
+				}
+
+				if (type_ == eProjectileType::RioWSkillShort)
+				{
+					RioWSkillWind* wind = GetLevel()->CreateActor<RioWSkillWind>();
+					wind->SetParentIndex(owner_->GetIndex());
+
+					wind->GetTransform()->SetWorldPosition(opponent->GetTransform()->GetWorldPosition());
+
+					wind->PlayAwake(3.0f, 0.3f);
+
+					CharEffectPacket pack;
+					pack.SetTargetIndex(owner_->GetIndex());
+					pack.SetAnimationName("wWind");
+					pack.SetVictimIndex(opponent->GetIndex());
+					FT::SendPacket(pack);
 				}
 
 				Release();

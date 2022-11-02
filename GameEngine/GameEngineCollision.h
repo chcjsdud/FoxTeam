@@ -46,6 +46,8 @@ public:
 	static bool SphereToOBB(GameEngineTransform* _left, GameEngineTransform* _right);
 	static bool OBBToSphere(GameEngineTransform* _left, GameEngineTransform* _right);
 
+	static bool CirCleToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right);
+	static bool OBBToCirCle(GameEngineTransform* _Left, GameEngineTransform* _Right);
 //======================================== SJH
 private: // 타입별 광선과의 교차검사
 	bool OBBBoxToRay(const float4& _RayOriginPos, const float4& _RayDirection, float& _Dist);

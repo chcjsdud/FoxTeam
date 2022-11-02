@@ -5,7 +5,7 @@
 #include <GameEngine/GameEngineEffectRenderer.h>
 #include "CharCrowdControlPacket.h"
 RioWSkillWind::RioWSkillWind() // default constructer 디폴트 생성자
-	:parentIndex_(-1)
+	:parentIndex_(-1), slowRatio_(0.0f)
 {
 
 }
@@ -20,8 +20,9 @@ RioWSkillWind::RioWSkillWind(RioWSkillWind&& _other) noexcept  // default RValue
 
 }
 
-void RioWSkillWind::PlayAwake(float _time)
+void RioWSkillWind::PlayAwake(float _time, float _slowRatio)
 {
+	slowRatio_ = _slowRatio;
 	timer_ = _time;
 	renderState_ << "Awake";
 }
@@ -32,16 +33,16 @@ void RioWSkillWind::Start()
 	zoneRenderer_->SetImage("wMask.png", "PointSmp");
 	zoneRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 20.0f, 0.0f });
 	zoneRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
-	zoneRenderer_->GetTransform()->SetLocalScaling(zoneRenderer_->GetCurrentTexture()->GetTextureSize());
+	zoneRenderer_->GetTransform()->SetLocalScaling(zoneRenderer_->GetCurrentTexture()->GetTextureSize() * 1.5f);
 	//zoneRenderer_->SetAlpha(0.f);
 	zoneRenderer_->Off();
 
 	impactRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
 	impactRenderer_->SetImage("wWind.png", "PointSmp");
-	impactRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 40.0f, 0.0f });
+	impactRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 25.0f, 0.0f });
 	impactRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f, 0.f,0.f });
-	impactRenderer_->GetTransform()->SetLocalScaling(impactRenderer_->GetCurrentTexture()->GetTextureSize());
-	//impactRenderer_->SetAlpha(0.8f);
+	impactRenderer_->GetTransform()->SetLocalScaling(impactRenderer_->GetCurrentTexture()->GetTextureSize() * 2.0f);
+	impactRenderer_->SetAlpha(0.8f);
 	impactRenderer_->Off();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
@@ -102,29 +103,33 @@ void RioWSkillWind::updateAwake(float _deltaTime)
 		return;
 	}
 
-
-	auto collisionList = collision_->GetCollisionList(eCollisionGroup::Player);
-
-	for (GameEngineCollision* col : collisionList)
+	if (slowRatio_ > 0.0f)
 	{
-		GameEngineActor* actor = col->GetActor();
-		Character* character = nullptr;
-		if (nullptr != actor)
+		auto collisionList = collision_->GetCollisionList(eCollisionGroup::Player);
+
+		for (GameEngineCollision* col : collisionList)
 		{
-			character = dynamic_cast<Character*>(actor);
-
-			if (nullptr != character && parentIndex_ != character->GetIndex())
+			GameEngineActor* actor = col->GetActor();
+			Character* character = nullptr;
+			if (nullptr != actor)
 			{
-				character->Slow(0.5f, 0.7f);
+				character = dynamic_cast<Character*>(actor);
 
-				CharCrowdControlPacket ccPacket;
-				ccPacket.SetTargetIndex(character->GetIndex());
-				ccPacket.SetSlow(0.5f, 0.7f);
+				if (nullptr != character && parentIndex_ != character->GetIndex())
+				{
+					character->Slow(0.5f, slowRatio_);
 
-				FT::SendPacket(ccPacket);
+					CharCrowdControlPacket ccPacket;
+					ccPacket.SetTargetIndex(character->GetIndex());
+					ccPacket.SetSlow(0.5f, slowRatio_);
+
+					FT::SendPacket(ccPacket);
+				}
 			}
 		}
 	}
+
+	
 
 	impactRenderer_->GetTransform()->SetLocalRotationDegree({ 90.0f, rotationContainer_, 0.0f });
 }

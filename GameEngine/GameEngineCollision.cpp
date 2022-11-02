@@ -62,6 +62,11 @@ void GameEngineCollision::Init()
 		= std::bind(&GameEngineCollision::SphereToOBB, std::placeholders::_1, std::placeholders::_2);
 	CollisionCheckFunction[static_cast<int>(CollisionType::OBBBox3D)][static_cast<int>(CollisionType::Sphere3D)]
 		= std::bind(&GameEngineCollision::OBBToSphere, std::placeholders::_1, std::placeholders::_2);
+
+	CollisionCheckFunction[static_cast<int>(CollisionType::CirCle)][static_cast<int>(CollisionType::OBBBox3D)]
+		= std::bind(&GameEngineCollision::CirCleToOBB, std::placeholders::_1, std::placeholders::_2);
+	CollisionCheckFunction[static_cast<int>(CollisionType::OBBBox3D)][static_cast<int>(CollisionType::CirCle)]
+		= std::bind(&GameEngineCollision::OBBToCirCle, std::placeholders::_1, std::placeholders::_2);
 }
 
 
@@ -112,6 +117,21 @@ bool GameEngineCollision::AABBToCirCle(GameEngineTransform* _Left, GameEngineTra
 {
 	return CirCleToAABB(_Right, _Left);
 }
+
+bool GameEngineCollision::CirCleToOBB(GameEngineTransform* _Left, GameEngineTransform* _Right)
+{
+	DirectX::BoundingSphere Left = _Left->GetSphere();
+	DirectX::BoundingOrientedBox Right = _Right->GetOBB();
+	Left.Center.y = 0.0f;
+
+	return Left.Intersects(Right);
+}
+
+bool GameEngineCollision::OBBToCirCle(GameEngineTransform* _Left, GameEngineTransform* _Right)
+{
+	return CirCleToOBB(_Right, _Left);
+}
+
 
 bool GameEngineCollision::OBBToAABB(GameEngineTransform* _Left, GameEngineTransform* _Right)
 {
