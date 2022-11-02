@@ -36,6 +36,7 @@ void PlayerUIController::InitUI()
 	hpbars_UI = GetLevel()->CreateActor<UI_HPBars>();
 	charfollow_UI = GetLevel()->CreateActor<UI_CharFollow>();
 
+
 	calhelper_ = GetLevel()->CreateActor<UI_CalculateHelper>();
 
 	//테스트용
@@ -49,6 +50,20 @@ void PlayerUIController::SetJobType(JobType _MyJob)
 
 	charPicture_UI->SetJobType(MyJob);
 	skill_UI->SetJobType(MyJob);
+}
+
+void PlayerUIController::UIOff()
+{
+	hpbars_UI->Off();
+	charPicture_UI->Off();
+	equip_UI ->Off();
+	inventory_UI->Off();
+	skill_UI->Off();
+	status_UI->Off();
+	time_UI->Off();
+	notice_UI->Off();
+	hpbars_UI->Off();
+	charfollow_UI->Off();
 }
 
 

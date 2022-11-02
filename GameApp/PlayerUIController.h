@@ -101,6 +101,8 @@ public:
 	//}
 
 	void SetJobType(JobType _MyJob);
+	
+	void UIOff();
 
 public:
 
