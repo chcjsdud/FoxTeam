@@ -5,6 +5,7 @@
 #include "IUnit.h"
 #include <GameEngine/GameEngineEffectRenderer.h>
 #include "BasicAttackEffect.h"
+#include "eProjectileType.h"
 
 class GameEngineFBXRenderer;
 class GameEngineCollision;
@@ -31,6 +32,7 @@ public:
 	void SetLifeTime(float _lifeTime) { lifeTime_ = _lifeTime; }
 	void SetScale(const float4& _scale) { scale_ = _scale;  transform_.SetLocalScaling(scale_); }
 	void SetKnockback(bool _knockback) { bKnockback_ = _knockback; }
+	void SetType(eProjectileType _type) { type_ = _type; }
 
 private:
 	void startWait();
@@ -54,6 +56,7 @@ private:
 
 	IUnit* owner_;
 	IUnit* target_;
+	eProjectileType type_;
 
 	float4 scale_;
 	float damage_;

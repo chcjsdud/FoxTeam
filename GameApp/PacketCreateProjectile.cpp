@@ -138,6 +138,7 @@ void PacketCreateProjectile::rioTargetArrow(LumiaLevel* _level, GameEngineSocket
 {
     std::vector<Character*> list = _level->GetCharacterActorList();
     RioArrow* arrow = _level->CreateActor<RioArrow>();
+    arrow->SetType(static_cast<eProjectileType>(projectileType_));
 
     if (targetIndex_ != -1)
     {
@@ -159,6 +160,7 @@ void PacketCreateProjectile::rioWSkillShort(LumiaLevel* _level, GameEngineSocket
 {
     std::vector<Character*> list = _level->GetCharacterActorList();
     RioArrow* arrow = _level->CreateActor<RioArrow>();
+    arrow->SetType(static_cast<eProjectileType>(projectileType_));
 
     if (_bServer)
     {
@@ -181,6 +183,7 @@ void PacketCreateProjectile::rioWSkillLong(LumiaLevel* _level, GameEngineSocketI
 {
     std::vector<Character*> list = _level->GetCharacterActorList();
     RioArrow* arrow = _level->CreateActor<RioArrow>();
+    arrow->SetType(static_cast<eProjectileType>(projectileType_));
 
     if (_bServer)
     {
@@ -203,6 +206,7 @@ void PacketCreateProjectile::rioRSkillShort(LumiaLevel* _level, GameEngineSocket
 {
     std::vector<Character*> list = _level->GetCharacterActorList();
     RioArrow* arrow = _level->CreateActor<RioArrow>();
+    arrow->SetType(static_cast<eProjectileType>(projectileType_));
 
     if (_bServer)
     {
@@ -225,6 +229,7 @@ void PacketCreateProjectile::rioRSkillShortImpact(LumiaLevel* _level, GameEngine
 {
     std::vector<Character*> list = _level->GetCharacterActorList();
     RioArrow* arrow = _level->CreateActor<RioArrow>();
+    arrow->SetType(static_cast<eProjectileType>(projectileType_));
 
     if (_bServer)
     {
@@ -249,6 +254,7 @@ void PacketCreateProjectile::rioRSkillLong(LumiaLevel* _level, GameEngineSocketI
 {
     std::vector<Character*> list = _level->GetCharacterActorList();
     RioArrow* arrow = _level->CreateActor<RioArrow>();
+    arrow->SetType(static_cast<eProjectileType>(projectileType_));
 
     if (_bServer)
     {
@@ -292,20 +298,21 @@ void PacketCreateProjectile::rioDSkill(LumiaLevel* _level, GameEngineSocketInter
 void PacketCreateProjectile::ayaTargetBullet(LumiaLevel* _level, GameEngineSocketInterface* _network, bool _bServer)
 {
     std::vector<Character*> list = _level->GetCharacterActorList();
-    AyaBullet* arrow = _level->CreateActor<AyaBullet>();
+    AyaBullet* bullet = _level->CreateActor<AyaBullet>();
+    bullet->SetType(static_cast<eProjectileType>(projectileType_));
 
     if (targetIndex_ != -1)
     {
         if (_bServer)
         {
-            arrow->MakeTarget(*list[ownerIndex_], damage_, position_, speed_, *list[targetIndex_]);
-            arrow->SetWaitTime(waitTime_);
+            bullet->MakeTarget(*list[ownerIndex_], damage_, position_, speed_, *list[targetIndex_]);
+            bullet->SetWaitTime(waitTime_);
             _network->Send(this);
         }
         else
         {
-            arrow->MakeTarget(*list[ownerIndex_], 0.0f, position_, speed_, *list[targetIndex_]);
-            arrow->SetWaitTime(waitTime_);
+            bullet->MakeTarget(*list[ownerIndex_], 0.0f, position_, speed_, *list[targetIndex_]);
+            bullet->SetWaitTime(waitTime_);
         }
     }
 }
@@ -314,6 +321,7 @@ void PacketCreateProjectile::ayaWSkill(LumiaLevel* _level, GameEngineSocketInter
 {
     std::vector<Character*> list = _level->GetCharacterActorList();
     AyaBullet* bullet = _level->CreateActor<AyaBullet>();
+    bullet->SetType(static_cast<eProjectileType>(projectileType_));
 
     if (_bServer)
     {

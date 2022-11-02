@@ -362,6 +362,7 @@ void Rio::onStartBasicAttacking(IUnit* _target)
 
 		RioArrow* arrow = level_->CreateActor<RioArrow>();
 		arrow->MakeTargetArrow(*this, stat_.AttackPower, startPosition, 1000.f, *target_);
+		arrow->SetType(eProjectileType::RioTargetArrow);
 	}
 	else
 	{
@@ -391,6 +392,7 @@ void Rio::onStartBasicAttacking(IUnit* _target)
 		if (GameServer::GetInstance()->IsOpened())
 		{
 			RioArrow* arrow = level_->CreateActor<RioArrow>();
+			arrow->SetType(eProjectileType::RioTargetArrow);
 			arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
 
 			arrow = level_->CreateActor<RioArrow>();
@@ -502,6 +504,7 @@ void Rio::onStartWSkill()
 		if (GameServer::GetInstance()->IsOpened())
 		{
 			RioArrow* arrow = level_->CreateActor<RioArrow>();
+			arrow->SetType(eProjectileType::RioWSkillLong);
 			arrow->MakeNonTargetArrow(*this, stat_.AttackPower * 2.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
 			arrow->SetLifeTime(0.7f);
 			arrow->SetWaitTime(0.25f);
@@ -527,7 +530,7 @@ void Rio::onStartWSkill()
 			packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, transform_.GetWorldRotation().y - 10.f + 5 * i, 1000.f);
 			packetArrow.SetWaitTime(0.05f * i);
 			packetArrow.SetLifeTime(0.7f);
-			packetArrow.SetType(eProjectileType::RioWSkillLong);
+			packetArrow.SetType(eProjectileType::RioWSkillShort);
 			FT::SendPacket(packetArrow);
 
 		}
@@ -537,6 +540,7 @@ void Rio::onStartWSkill()
 			for (size_t i = 0; i < 5; i++)
 			{
 				RioArrow* arrow = level_->CreateActor<RioArrow>();
+				arrow->SetType(eProjectileType::RioWSkillShort);
 				arrow->MakeNonTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, transform_.GetWorldRotation().y - 10.f + 5 * i, 1000.f);
 				arrow->SetWaitTime(0.05f * i);
 				arrow->SetLifeTime(0.7f);
@@ -612,6 +616,7 @@ void Rio::onStartRSkill()
 		if (GameServer::GetInstance()->IsOpened())
 		{
 			RioArrow* arrow = level_->CreateActor<RioArrow>();
+			arrow->SetType(eProjectileType::RioRSkillLong);
 			arrow->MakeNonTargetArrow(*this, stat_.AttackPower * 6.0f, startPosition, transform_.GetWorldRotation().y, 700.f);
 			arrow->SetLifeTime(1.0f);
 			arrow->SetWaitTime(1.4f);
@@ -641,6 +646,7 @@ void Rio::onStartRSkill()
 			if (GameServer::GetInstance()->IsOpened())
 			{
 				RioArrow* arrow = level_->CreateActor<RioArrow>();
+				arrow->SetType(eProjectileType::RioRSkillShortImpact);
 				arrow->MakeNonTargetArrow(*this, stat_.AttackPower * 3.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
 				arrow->SetLifeTime(0.5f);
 				arrow->SetWaitTime(0.3f);
@@ -671,6 +677,7 @@ void Rio::onStartRSkill()
 				if (GameServer::GetInstance()->IsOpened())
 				{
 					RioArrow* arrow = level_->CreateActor<RioArrow>();
+					arrow->SetType(eProjectileType::RioRSkillShort);
 					arrow->MakeNonTargetArrow(*this, stat_.AttackPower, startPosition, transform_.GetWorldRotation().y, 1200.f);
 					arrow->SetLifeTime(0.5f);
 					arrow->SetWaitTime(0.4f + 0.1f * i);
