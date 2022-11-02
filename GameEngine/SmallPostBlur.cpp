@@ -40,7 +40,7 @@ void SmallPostBlur::Initialize()
 
 	Effect_ = Effect_->Clone();
 	Effect_->RasterizerClone();
-	Effect_->GetRasterizer()->SetViewPort(RenderTargetSize.x, RenderTargetSize.y, 0.0f, 0.0f);
+	Effect_->SetViewPort(RenderTargetSize.x, RenderTargetSize.y, 0.0f, 0.0f);
 }
 
 void SmallPostBlur::SetFilter(std::string _TextureName)

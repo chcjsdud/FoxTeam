@@ -24,3 +24,8 @@ enum class RenderingOrder
 	Debug,
 };
 
+enum class ProjectionMode
+{
+	Perspective,
+	Orthographic
+};

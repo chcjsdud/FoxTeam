@@ -56,6 +56,31 @@ GameEngineRenderingPipeLine::GameEngineRenderingPipeLine(GameEngineRenderingPipe
 
 }
 
+void GameEngineRenderingPipeLine::AddWindowSizeViewPort()
+{
+	ViewPort_.Height = GameEngineWindow::GetInst().GetSize().y;
+	ViewPort_.Width = GameEngineWindow::GetInst().GetSize().x;
+	ViewPort_.TopLeftX = 0;
+	ViewPort_.TopLeftY = 0;
+	ViewPort_.MinDepth = 0;
+	ViewPort_.MaxDepth = 1.0f;
+}
+
+void GameEngineRenderingPipeLine::SetViewPort(float _Width, float _Height, float _TopLeftX, float _TopLeftY, float _MinDepth, float _MaxDepth)
+{
+	ViewPort_.Height = _Height;
+	ViewPort_.Width = _Width;
+	ViewPort_.TopLeftX = _TopLeftX;
+	ViewPort_.TopLeftY = _TopLeftY;
+	ViewPort_.MinDepth = _MinDepth;
+	ViewPort_.MaxDepth = _MaxDepth;
+}
+
+void GameEngineRenderingPipeLine::SettingViewPort()
+{
+	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPort_);
+}
+
 void GameEngineRenderingPipeLine::SetInputAssembler1VertexBufferSetting(const std::string& _Name)
 {
 	VertexBuffer_ = GameEngineVertexBufferManager::GetInst().Find(_Name);
@@ -146,29 +171,13 @@ void GameEngineRenderingPipeLine::CreateLayOut()
 		IsCloneLayOutCreate = true;
 	}
 
-	//if (nullptr != LayOut_)
-	//{
-	//	LayOut_->Release();
-	//	LayOut_ = nullptr;
-	//}
-
 	if (nullptr == VertexBuffer_->InputLayoutDesc_)
 	{
 		GameEngineDebug::MsgBoxError("인풋 레이아웃 정보가 없습니다.");
 	}
-	
-	std::vector<D3D11_INPUT_ELEMENT_DESC>& InputLayoutDesc_ = *VertexBuffer_->InputLayoutDesc_;
 
-	if (
-		S_OK != GameEngineDevice::GetInst().GetDevice()->CreateInputLayout
-		(
-			&InputLayoutDesc_[0],
-			static_cast<unsigned int>(InputLayoutDesc_.size()),
-			VertexShader_->CodeBlob_->GetBufferPointer(),
-			VertexShader_->CodeBlob_->GetBufferSize(),
-			&LayOut_
-		)
-		)
+	std::vector<D3D11_INPUT_ELEMENT_DESC>& InputLayoutDesc_ = *(VertexBuffer_->InputLayoutDesc_);
+	if (S_OK != GameEngineDevice::GetInst().GetDevice()->CreateInputLayout(&InputLayoutDesc_[0], static_cast<unsigned int>(InputLayoutDesc_.size()), VertexShader_->CodeBlob_->GetBufferPointer(), VertexShader_->CodeBlob_->GetBufferSize(), &LayOut_))
 	{
 		GameEngineDebug::MsgBoxError("인풋레이아웃 생성에 실패했습니다.");
 		return;
@@ -184,6 +193,8 @@ void GameEngineRenderingPipeLine::SetRasterizer(const std::string& _Name)
 		GameEngineDebug::MsgBoxError("존재하지 않는 레이터라이저 세팅을 세팅하려고 했습니다.");
 		return;
 	}
+
+	AddWindowSizeViewPort();
 }
 
 void GameEngineRenderingPipeLine::SetPixelShader(const std::string& _Name) 
@@ -245,7 +256,7 @@ void GameEngineRenderingPipeLine::VertexShader()
 void GameEngineRenderingPipeLine::Rasterizer()
 {
 	Rasterizer_->Setting();
-	Rasterizer_->SettingViewPort();
+	SettingViewPort();
 }
 
 bool GameEngineRenderingPipeLine::IsDeferred()

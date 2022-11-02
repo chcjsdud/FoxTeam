@@ -179,11 +179,8 @@ void GameEngineShadowRenderer::ParallelogramAlgorithm()
 
 void GameEngineShadowRenderer::Start()
 {
-	PipeLineName_ = "ShadowAni";
+	PipeLineName_ = "DepthShadow";
 	SetRenderingPipeLine(PipeLineName_);
-
-	ShadowColor_ = float4(0.0f, 0.0f, 0.0f, 1.0f);
-	ShaderHelper.SettingConstantBufferLink("ShadowColor", ShadowColor_);
 }
 
 void GameEngineShadowRenderer::Update(float _DeltaTime)

@@ -27,7 +27,7 @@ cbuffer TransformData : register(b0)
 cbuffer RendererData : register(b12)
 {
     int IsBump;
-    int Shadow;
+    int IsShadow;
     int IsAni;
     int Temp2;
     int Temp3;

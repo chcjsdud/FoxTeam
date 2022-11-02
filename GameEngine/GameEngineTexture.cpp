@@ -73,7 +73,7 @@ void GameEngineTexture::Create(
 	Create(TextureInfo);
 }
 
-void GameEngineTexture::Create(D3D11_TEXTURE2D_DESC _Desc) 
+void GameEngineTexture::Create(D3D11_TEXTURE2D_DESC _Desc, bool _BindCreate)
 {
 	TextureDesc_ = _Desc;
 
@@ -82,6 +82,11 @@ void GameEngineTexture::Create(D3D11_TEXTURE2D_DESC _Desc)
 	if (nullptr == Texture2D_)
 	{
 		GameEngineDebug::MsgBoxError("Texture Create Error");
+		return;
+	}
+
+	if (false == _BindCreate)
+	{
 		return;
 	}
 
@@ -94,7 +99,6 @@ void GameEngineTexture::Create(D3D11_TEXTURE2D_DESC _Desc)
 	{
 		CreateShaderResourceView();
 	}
-
 
 	if (_Desc.BindFlags & D3D11_BIND_FLAG::D3D11_BIND_DEPTH_STENCIL)
 	{
@@ -164,6 +168,60 @@ ID3D11DepthStencilView* GameEngineTexture::CreateDepthStencilView()
 	return DepthStencilView_;
 }
 
+ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetViewArrayIndex(int _Index)
+{
+	D3D11_RENDER_TARGET_VIEW_DESC Desc;
+	Desc.Format = TextureDesc_.Format;
+	if (TextureDesc_.ArraySize == 1)
+	{
+		Desc.ViewDimension = D3D11_RTV_DIMENSION::D3D11_RTV_DIMENSION_TEXTURE2D;
+		Desc.Texture2D.MipSlice = 0;
+	}
+	else
+	{
+		Desc.ViewDimension = D3D11_RTV_DIMENSION::D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+		Desc.Texture2DArray.ArraySize = 1;// 3
+		Desc.Texture2DArray.FirstArraySlice = _Index; // 0 3
+		Desc.Texture2DArray.MipSlice = 0;
+	}
+
+	ID3D11RenderTargetView* Result = nullptr;
+	if (S_OK != GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D_, &Desc, &Result))
+	{
+		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
+		return nullptr;
+	}
+
+	return Result;
+}
+
+ID3D11DepthStencilView* GameEngineTexture::CreateDepthStencilViewArrayIndex(int _Index)
+{
+	D3D11_DEPTH_STENCIL_VIEW_DESC Desc;
+	Desc.Format = TextureDesc_.Format;
+	Desc.Flags = 0;
+	if (TextureDesc_.ArraySize == 1)
+	{
+		Desc.ViewDimension = D3D11_DSV_DIMENSION::D3D11_DSV_DIMENSION_TEXTURE2D;
+		Desc.Texture2D.MipSlice = 0;
+	}
+	else
+	{
+		Desc.ViewDimension = D3D11_DSV_DIMENSION::D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+		Desc.Texture2DArray.ArraySize = 1;// 3
+		Desc.Texture2DArray.FirstArraySlice = _Index; // 0 3
+		Desc.Texture2DArray.MipSlice = 0;
+	}
+
+	ID3D11DepthStencilView* Result = nullptr;
+	if (S_OK != GameEngineDevice::GetDevice()->CreateDepthStencilView(Texture2D_, &Desc, &Result))
+	{
+		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
+		return nullptr;
+	}
+
+	return Result;
+}
 
 void GameEngineTexture::Load(const std::string& _Path)
 {

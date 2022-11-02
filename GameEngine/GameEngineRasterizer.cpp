@@ -2,7 +2,7 @@
 #include "GameEngineRasterizer.h"
 
 GameEngineRasterizer::GameEngineRasterizer() // default constructer 디폴트 생성자
-    : State_(nullptr), ViewPort_()
+    : State_(nullptr)
 {
 
 }
@@ -39,19 +39,6 @@ void GameEngineRasterizer::Create(const D3D11_RASTERIZER_DESC& _Value)
     WireDesc_ = Desc_;
     WireDesc_.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
 
-
-    // 	D3D11_RASTERIZER_DESC;
-    //    D3D11_FILL_MODE FillMode;
-    //    D3D11_CULL_MODE CullMode;
-    //    BOOL FrontCounterClockwise;
-    //    INT DepthBias;
-    //    FLOAT DepthBiasClamp;
-    //    FLOAT SlopeScaledDepthBias;
-    //    BOOL DepthClipEnable;
-    //    BOOL ScissorEnable;
-    //    BOOL MultisampleEnable;
-    //    BOOL AntialiasedLineEnable;
-
     if (S_OK != GameEngineDevice::GetDevice()->CreateRasterizerState(&Desc_, &State_))
     {
         GameEngineDebug::MsgBoxError("레스터라이저 생성에 실패했습니다.");
@@ -76,24 +63,14 @@ void GameEngineRasterizer::PushScissorRect(D3D11_RECT _Rect)
     Create(Desc_);
 }
 
-
-
-void GameEngineRasterizer::SettingViewPort() 
-{
-	GameEngineDevice::GetContext()->RSSetViewports(1, &ViewPort_);
-}
-
 void GameEngineRasterizer::Setting() 
 {
     if (0 != ScissorRects_.size())
     {
-
     }
 
     GameEngineDevice::GetContext()->RSSetState(State_);
 }
-
-
 
 void GameEngineRasterizer::SwitchState() 
 {
@@ -107,10 +84,7 @@ GameEngineRasterizer* GameEngineRasterizer::Clone()
     GameEngineRasterizer* NewClone = new GameEngineRasterizer();
 
     NewClone->Create(Desc_);
-
-    NewClone->ViewPort_ = ViewPort_;
     NewClone->CloneOn();
-
 
     return NewClone;
 }

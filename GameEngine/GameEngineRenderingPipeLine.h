@@ -34,6 +34,8 @@ private:	// member Var
 	D3D11_PRIMITIVE_TOPOLOGY Topology_;
 	// RS
 	GameEngineRasterizer* Rasterizer_;
+	D3D11_VIEWPORT ViewPort_;
+
 	// PS
 	GameEnginePixelShader* PixelShader_;
 	// Blend
@@ -61,6 +63,25 @@ public:
 	{
 		return VertexShader_;
 	}
+
+	inline GameEngineVertexBuffer* GetVertexBuffer() const
+	{
+		return VertexBuffer_;
+	}
+
+	inline GameEngineIndexBuffer* GetIndexBuffer() const
+	{
+		return IndexBuffer_;
+	}
+
+	ID3D11InputLayout* GetInputLayOut()
+	{
+		return LayOut_;
+	}
+
+	void AddWindowSizeViewPort();
+	void SetViewPort(float _Width, float _Height, float _TopLeftX, float _TopLeftY, float _MinDepth = 0.0f, float _MaxDepth = 1.0f);
+	void SettingViewPort();
 
 	// void SetInputAssembler1InputLayOutSetting(const std::string& _Name);
 
@@ -90,6 +111,8 @@ public:
 
 	void InstanceRendering();
 
+	void CreateLayOut();
+
 	GameEngineRenderingPipeLine* Clone();
 
 	void Copy(GameEngineRenderingPipeLine* _Value);
@@ -115,7 +138,5 @@ private:		//delete operator
 	void Rasterizer();
 	void PixelShader();
 	void OutPutMerger();
-
-	void CreateLayOut();
 };
 

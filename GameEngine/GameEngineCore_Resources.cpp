@@ -491,7 +491,6 @@ void GameEngineCore::EngineResourcesCreate_Rasterizer()
 		Info.MultisampleEnable = true;
 		Info.DepthClipEnable = true;
 		GameEngineRasterizer* Ptr = GameEngineRasterizerManager::GetInst().Create("EngineBaseRasterizerBack", Info);
-		Ptr->AddWindowSizeViewPort();
 	}
 
 	{
@@ -502,7 +501,6 @@ void GameEngineCore::EngineResourcesCreate_Rasterizer()
 		Info.MultisampleEnable = true;
 		Info.DepthClipEnable = true;
 		GameEngineRasterizer* Ptr = GameEngineRasterizerManager::GetInst().Create("EngineBaseRasterizerFront", Info);
-		Ptr->AddWindowSizeViewPort();
 	}
 
 	{
@@ -513,7 +511,6 @@ void GameEngineCore::EngineResourcesCreate_Rasterizer()
 		Info.MultisampleEnable = true;
 		Info.DepthClipEnable = true;
 		GameEngineRasterizer* Ptr = GameEngineRasterizerManager::GetInst().Create("EngineBaseRasterizerNone", Info);
-		Ptr->AddWindowSizeViewPort();
 	}
 
 	{
@@ -524,7 +521,6 @@ void GameEngineCore::EngineResourcesCreate_Rasterizer()
 		Info.MultisampleEnable = true;
 		Info.DepthClipEnable = true;
 		GameEngineRasterizer* Ptr = GameEngineRasterizerManager::GetInst().Create("EngineBaseRasterizerWireFrame", Info);
-		Ptr->AddWindowSizeViewPort();
 	}
 }
 
@@ -708,6 +704,15 @@ void GameEngineCore::EngineResourcesCreate()
 		GameEngineDepthStencilManager::GetInst().Create("MergeDepth", DepthInfo);
 	}
 
+	{ // 221102 SJH ADD : 그림자 깊이버퍼
+		D3D11_DEPTH_STENCIL_DESC DepthInfo = { 0 };
+
+		DepthInfo.DepthEnable = true;
+		DepthInfo.DepthFunc = D3D11_COMPARISON_FUNC::D3D11_COMPARISON_LESS;
+		DepthInfo.DepthWriteMask = D3D11_DEPTH_WRITE_MASK::D3D11_DEPTH_WRITE_MASK_ALL;
+		DepthInfo.StencilEnable = false;
+		GameEngineDepthStencilManager::GetInst().Create("ShadowDepth", DepthInfo);
+	}
 
 	{
 		D3D11_DEPTH_STENCIL_DESC DepthInfo = { 0 };
@@ -1123,13 +1128,15 @@ void GameEngineCore::EngineResourcesCreate()
 	}
 
 	{ // 221101 SJH ADD : 그림자처리 렌더링파이프라인
-		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("ShadowAni");
-		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
-		Pipe->SetVertexShader("ShadowAni_VS");
-		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+	  // -> 앞뒷면 상관없이 렌더링
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DepthShadow");
+		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
+		Pipe->SetVertexShader("Shadow_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		Pipe->SetRasterizer("EngineBaseRasterizerBack");
-		Pipe->SetPixelShader("ShadowAni_PS");
+		Pipe->SetOutputMergerDepthStencil("ShadowDepth");
+		Pipe->SetRasterizer("EngineBaseRasterizerNone");
+		Pipe->SetPixelShader("Shadow_PS");
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
 }

@@ -35,7 +35,7 @@
     <FxCompile Include="EngineResources\Shader\PreprocessingAni.fx" />
     <FxCompile Include="EngineResources\Shader\PJWAni.fx" />
     <FxCompile Include="EngineResources\Shader\ProgressBar.fx" />
-    <FxCompile Include="EngineResources\Shader\ShadowAni.fx" />
+    <FxCompile Include="EngineResources\Shader\Shadow.fx" />
     <FxCompile Include="EngineResources\Shader\TargetMerge.fx" />
     <FxCompile Include="EngineResources\Shader\TestColor.fx" />
     <FxCompile Include="EngineResources\Shader\Texture.fx" />

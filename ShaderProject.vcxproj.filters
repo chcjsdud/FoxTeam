@@ -90,7 +90,7 @@
     <FxCompile Include="EngineResources\Shader\ColorSpectrum.fx">
       <Filter>Engine</Filter>
     </FxCompile>
-    <FxCompile Include="EngineResources\Shader\ShadowAni.fx">
+    <FxCompile Include="EngineResources\Shader\Shadow.fx">
       <Filter>Engine</Filter>
     </FxCompile>
   </ItemGroup>

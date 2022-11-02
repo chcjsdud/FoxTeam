@@ -3,6 +3,10 @@
 #include <map>
 #include <GameEngine\Enums.h>
 
+// 분류 : 레벨
+// 용도 : 
+// 설명 : 하나의 레벨을 관리하고 레벨에 배치되는 액터를 관리하는 기능 제공
+class GameEngineCore;
 class CameraActor;
 class CameraComponent;
 class GameEngineActor;
@@ -11,74 +15,24 @@ class GameEngineTransform;
 class GameEngineCollision;
 class GameEngineDebugRenderData;
 class GameEnginePostProcessRender;
+class GameEngineLightComponent;
+class GameEngineLevelControlWindow;
 class GameEngineLevel : public GameEngineObjectNameBase
 {
-	friend class GameEngineLevelControlWindow;
-	friend class GameEngineCore;
-	friend class GameEngineRenderer;
-	friend class GameEngineCollision;
+	friend GameEngineLevelControlWindow;
+	friend GameEngineCore;
+	friend GameEngineRenderer;
+	friend GameEngineCollision;
+	friend GameEngineLightComponent;
 
 	class NextLevelActor
 	{
-	public:
-		GameEngineActor* Actor;
-		GameEngineLevel* Level;
+		public:
+			GameEngineActor* Actor;
+			GameEngineLevel* Level;
 	};
 
-public:
-	GameEngineLevel();
-	~GameEngineLevel();
-	GameEngineLevel(const GameEngineLevel& _Other) = delete;
-	GameEngineLevel(GameEngineLevel&& _Other) noexcept = delete;
-	GameEngineLevel& operator=(const GameEngineLevel& _Other) = delete;
-	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
-
-public:
-	virtual void LevelStart() = 0;
-	virtual void LevelUpdate(float _DeltaTime) = 0;
-	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) = 0;
-	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) = 0;
-
-public:
-	void ActorUpdate(float _DeltaTime);
-	void Render(float _DeltaTime);
-	void Release(float _DeltaTime);
-
-	template<typename ActorType>
-	ActorType* CreateActor(int _UpdateOrder = 0);
-
-	template<typename ActorType>
-	ActorType* CreateActor(std::string _Name, int _UpdateOrder = 0);
-
-	void SetLevelActorMove(GameEngineLevel* _NextLevel, GameEngineActor* _Actor);
-
-	template<typename UserEnumType>
-	void PushCollision(GameEngineCollision* _Collision, UserEnumType _Group);
-	void PushCollision(GameEngineCollision* _Collision, int _Group);
-
-	void PushDebugRender(GameEngineTransform* _Transform, CollisionType _Type, float4 _Color = float4::GREEN);
-	void PushDebugRenderUI(GameEngineTransform* _Transform, CollisionType _Type, float4 _Color = float4::GREEN);
-
-	void AddTimeEvent(float _Time, std::function<void()> _Event);
-
-	template<typename PostProcess, typename ... Parameter>
-	PostProcess* AddPostProcessCameraMergePrev(Parameter ... _Arg);
-
-	template<typename PostProcess, typename ... Parameter >
-	PostProcess* AddPostProcessCameraMergeNext(Parameter ... _Arg);
-
-	template<typename PostProcess, typename ... Parameter >
-	PostProcess* AddPostProcess(const std::string& _Key, Parameter ... _Arg);
-
-	void ClearAll();
-
-public:
-	CameraActor* GetMainCameraActor();
-	CameraComponent* GetMainCamera();
-	CameraActor* GetUICameraActor();
-	CameraComponent* GetUICamera();
-
-public:
+public: // Public Inline Get Function
 	inline std::map<int, std::list<GameEngineCollision*>>& GetAllCollision()
 	{
 		return CollisionList_;
@@ -89,19 +43,90 @@ public:
 		return CollisionList_[_Group];
 	}
 
-private:
+public: // Public Get Function
+	CameraActor* GetMainCameraActor();
+	CameraComponent* GetMainCamera();
+	CameraActor* GetUICameraActor();
+	CameraComponent* GetUICamera();
+
+public: // Public Set Function
+	void SetLevelActorMove(GameEngineLevel* _NextLevel, GameEngineActor* _Actor);
+
+public: // 
+	void ActorUpdate(float _DeltaTime);
+	void Render(float _DeltaTime);
+
+public: // Public Release Related Function
+	void Release(float _DeltaTime);
+	void ClearAll();
+
+public: // Public Push Related Function
+	void PushCollision(GameEngineCollision* _Collision, int _Group);
+	void PushDebugRender(GameEngineTransform* _Transform, CollisionType _Type, float4 _Color = float4::GREEN);
+	void PushDebugRenderUI(GameEngineTransform* _Transform, CollisionType _Type, float4 _Color = float4::GREEN);
+
+public: // Public TimeEventer Related Function
+	void AddTimeEvent(float _Time, std::function<void()> _Event);
+
+public: // Public CollisionGroup Related Function
+	void ChangeCollisionGroup(int _Group, GameEngineCollision* _Collision);
+
+public: // Public Template Function
+	template<typename ActorType>
+	ActorType* CreateActor(int _UpdateOrder = 0);
+
+	template<typename ActorType>
+	ActorType* CreateActor(std::string _Name, int _UpdateOrder = 0);
+
+	template<typename UserEnumType>
+	void PushCollision(GameEngineCollision* _Collision, UserEnumType _Group);
+
+	template<typename PostProcess, typename ... Parameter>
+	PostProcess* AddPostProcessCameraMergePrev(Parameter ... _Arg);
+
+	template<typename PostProcess, typename ... Parameter >
+	PostProcess* AddPostProcessCameraMergeNext(Parameter ... _Arg);
+
+	template<typename PostProcess, typename ... Parameter >
+	PostProcess* AddPostProcess(const std::string& _Key, Parameter ... _Arg);
+
+protected: // Protected Pure Virtual Function
+	virtual void LevelStart() = 0;
+	virtual void LevelUpdate(float _DeltaTime) = 0;
+	virtual void LevelChangeEndEvent(GameEngineLevel* _NextLevel) = 0;
+	virtual void LevelChangeStartEvent(GameEngineLevel* _PrevLevel) = 0;
+
+protected:
+private: // Private Level Init : 레벨생성시 1번 호출
 	void Init();
+
+private: // Private Actor Level Move Related Function
+	void SetLevelActorMoveProcess();
 	void LevelChangeEndActorEvent(GameEngineLevel* _NextLevel);
 	void LevelChangeStartActorEvent(GameEngineLevel* _PrevLevel);
-	void SetLevelActorMoveProcess();
 
+private: // Private TimeEventer Update Function
 	void TimeEventUpdate();
 
-	void ChangeCollisionGroup(int _Group, GameEngineCollision* _Collision);
+private: // Private ShadowTarget Release Function
+	void ReleaseShadowTarget();
+
+public:
+	GameEngineLevel();
+	~GameEngineLevel();
+
+protected:
+	GameEngineLevel(const GameEngineLevel& _Other) = delete;
+	GameEngineLevel(GameEngineLevel&& _Other) noexcept = delete;
+
+private:
+	GameEngineLevel& operator=(const GameEngineLevel& _Other) = delete;
+	GameEngineLevel& operator=(GameEngineLevel&& _Other) noexcept = delete;
 
 protected:
 	CameraActor* MainCameraActor_;
 	CameraActor* UICameraActor_;
+
 private:
 	std::map<int, std::list<GameEngineActor*>> ActorList_;
 	std::vector<NextLevelActor> NextLevelActorsData_;
@@ -112,12 +137,12 @@ private:
 	std::list<TimeEvent*> AllEvent_;
 	std::list<TimeEvent*> AddEvent_;
 
-
-}; // GameEngineLevel
-
-
-
-
+private: // Shadow Processing Related Value
+	GameEngineTexture* ShadowTexture_;													// 현재 레벨에서 사용하는 모든 광원(빛)의 데이터의 배열을 가진 텍스쳐 1장			: 광원(빛) 생성마다 삭제되었다가 재생성
+	std::vector<GameEngineLightComponent*> AllLights_;									// 현재 레벨에서 사용하는 모든 광원(빛)의 목록									: 각 카메라에서 원본관리
+	std::vector<ID3D11RenderTargetView*> RenderTargets_;								// 현재 레벨에서 사용하는 모든 광원(빛)이 가지는 렌더타겟의 리소스				: 
+	std::vector<GameEngineDepthBuffer*> Depths_;										// 현재 레벨에서 사용하는 모든 광원(빛)이 가지는 렌더타겟의 깊이/스텐실 리소스	: 
+};
 
 template<typename UserEnumType>
 inline void GameEngineLevel::PushCollision(GameEngineCollision* _Collision, UserEnumType _Group)

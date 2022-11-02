@@ -197,10 +197,7 @@ void GameEngineDevice::CreateSwapChain()
 
 void GameEngineDevice::RenderStart()
 {
-	// BackBufferTarget_ <= 여기에 그린 녀석만 나와.
-	// 지우고
 	BackBufferTarget_->Clear();
-	// 세팅하고
 	BackBufferTarget_->Setting();
 }
 
@@ -220,13 +217,8 @@ void GameEngineDevice::ResourceReset()
 
 void GameEngineDevice::RenderEnd()
 {
-	// 화면에 그려라 인데.
 	HRESULT Result = SwapChain_->Present(0, 0);
 	if (Result == DXGI_ERROR_DEVICE_REMOVED || Result == DXGI_ERROR_DEVICE_RESET)
 	{
-		int a = 0;
 	}
-
-	// 화면에 뿌려라
-	// BackBufferTarget_;
 }

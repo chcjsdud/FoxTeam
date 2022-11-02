@@ -29,6 +29,9 @@ public:
 	ID3D11ShaderResourceView* CreateShaderResourceView();
 	ID3D11DepthStencilView* CreateDepthStencilView();
 
+	ID3D11RenderTargetView* CreateRenderTargetViewArrayIndex(int _Index);
+	ID3D11DepthStencilView* CreateDepthStencilViewArrayIndex(int _Index);
+
 	void Create(ID3D11Texture2D* _Texture2D);
 
 	void Create(
@@ -38,7 +41,7 @@ public:
 		unsigned int _BindFlag = D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE
 	);
 
-	void Create(D3D11_TEXTURE2D_DESC _Desc);
+	void Create(D3D11_TEXTURE2D_DESC _Desc, bool _BindCreate = true);
 
 	void Load(const std::string& _Path);
 

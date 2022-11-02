@@ -9,67 +9,92 @@ enum class LightShapeType
 	Mesh,
 };
 
+// 라이트(광원) 1개의 데이터
 struct LightData
 {
-	float4 ViewLightDir; // 라이트의 포워드 벡터
-	float4 ViewNegLightDir; // 라이트의 포워드 -벡터
-	float4 ViewLightPosition; // 라이트의 위치
+	float4 ViewLightDir;
+	float4 ViewNegLightDir;
+	float4 ViewLightPosition;
 	float4 AmbientLight;
-
 	float4 DiffuseLightColor;
 	float4 AmbientLightColor;
 	float4 SpacularLightColor;
 	float4 SpacularLightPow;
+	float4 LightPower;							// x는 디퓨즈 라이트의 강도 y는 스펙큘러의 강도 z는 앰비언트의 강도 w는 모든 강도};
 
-	float4 LightPower; // x는 디퓨즈 라이트의 강도 y는 스펙큘러의 강도 z는 앰비언트의 강도 w는 모든 강도};
+	//===================== 그림자 계산용데이터
+	float4x4 LightView;
+	float4x4 LightProj;
+	float4x4 LightVP;
+	float4x4 CameraViewInverse;
 };
 
+// 전체 라이트 데이터 목록
 struct LightsData 
 {
 	int LightCount;
 	LightData Lights[128];
 };
 
-// 설명 :
+// 분류 : 컴포넌트
+// 용도 : 빛(광원)
+// 설명 : 빛 연산 및 그림자적용 기능제공
 class GameEngineLightComponent : public GameEngineTransformComponent
 {
-public:
-	// constrcuter destructer
-	GameEngineLightComponent();
-	~GameEngineLightComponent();
-
-	// delete Function
-	GameEngineLightComponent(const GameEngineLightComponent& _Other) = delete;
-	GameEngineLightComponent(GameEngineLightComponent&& _Other) noexcept = delete;
-	GameEngineLightComponent& operator=(const GameEngineLightComponent& _Other) = delete;
-	GameEngineLightComponent& operator=(GameEngineLightComponent&& _Other) noexcept = delete;
-
-	const LightData& GetLightData() 
+public: // Public Inline Get Function
+	inline const LightData& GetLightData() 
 	{
-		return LightDataObject;
+		return LightDataObject_;
 	}
 
-	void SetDiffusePower(float _Power) 
+public: // Public Inline Set Function
+	inline void SetDiffusePower(float _Power)
 	{
-		LightDataObject.LightPower.x = _Power;
+		LightDataObject_.LightPower.x = _Power;
 	}
 
-	void SetSpacularLightPow(float _Pow)
+	inline void SetSpacularLightPow(float _Pow)
 	{
-		LightDataObject.SpacularLightPow.x = _Pow;
+		LightDataObject_.SpacularLightPow.x = _Pow;
 	}
 
-	void SetAmbientPower(float _Power)
+	inline void SetAmbientPower(float _Power)
 	{
-		LightDataObject.LightPower.z = _Power;
+		LightDataObject_.LightPower.z = _Power;
 	}
+
+public: // Public ShadowTarget Related Function
+	void ShadowTargetSetting();
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
+public:
+	GameEngineLightComponent();
+	~GameEngineLightComponent();
+
+protected:
+	GameEngineLightComponent(const GameEngineLightComponent& _Other) = delete;
+	GameEngineLightComponent(GameEngineLightComponent&& _Other) noexcept = delete;
+
 private:
-	LightShapeType ShapeType;
-	LightData LightDataObject;
+	GameEngineLightComponent& operator=(const GameEngineLightComponent& _Other) = delete;
+	GameEngineLightComponent& operator=(GameEngineLightComponent&& _Other) noexcept = delete;
+
+private: // Light Related Value
+	LightShapeType ShapeType_;
+	LightData LightDataObject_;
+
+private: // Shadow Related Value
+	ProjectionMode ProjectionMode_;											// 광원(빛)이 그림자를 렌더링할때 직교투영을 통해 ShadowRenderTarget_에 렌더링
+	GameEngineRenderTarget* ShadowRenderTarget_;							// 광원(빛)은 그림자를 렌더링하려는 렌더타겟을 1개 보유
+	ID3D11RenderTargetView* ShadowTargetView_;								// ShadowRenderTarget_의 리소스뷰
+	ID3D11DepthStencilView* ShadowTargetDepth_;								// ShadowRenderTarget_에 적용하는 깊이/스텐실 리소스뷰
+
+private: // Shadow RenderTarget Related Value
+	float4 ShadowClipingRange_;													// 클리핑평면의 범위(너비,높이)
+	float ShadowClipingNear_;													// Near
+	float ShadowClipingFar_;													// Far
 };
 

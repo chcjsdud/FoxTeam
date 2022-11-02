@@ -1,16 +1,21 @@
-// 라이트 1개의 데이터
+// 라이트(광원) 1개의 데이터
 struct LightData 
 {
-    float4 ViewLightDir; // 라이트의 포워드 벡터
-	float4 ViewNegLightDir; // 라이트의 포워드 -벡터
-    float4 ViewLightPosition; // 라이트의 위치
+    float4 ViewLightDir;
+	float4 ViewNegLightDir;
+    float4 ViewLightPosition;
     float4 AmbientLight;
     float4 DiffuseLightColor;
     float4 AmbientLightColor;
     float4 SpacularLightColor;
     float4 SpacularLightPow;
-    float4 LightPower; // x는 디퓨즈 라이트의 강도 y는 스펙큘러의 강도 z는 앰비언트의 강도 w는 모든 강도
-    // float4 CameraPosition;
+    float4 LightPower;                              // x는 디퓨즈 라이트의 강도 y는 스펙큘러의 강도 z는 앰비언트의 강도 w는 모든 강도
+    
+    //===================== 그림자 계산용데이터
+    float4x4 LightView;
+    float4x4 LightProj;
+    float4x4 LightVP;
+    float4x4 CameraViewInverse;
 };
 
 cbuffer LightsData : register(b11)
@@ -42,7 +47,6 @@ float4 CalculateDirectionSpacularLight(float4 _vViewPosition, float4 _vViewNorma
     
     float Spc = max(0.0f, dot(Reflection.xyz, NegCameraPosition.xyz));
     SpacularLight.xyz = pow(Spc, _Light.SpacularLightPow.x);
-    // SpacularLight.xyz = Spc;
     SpacularLight.w = 1.0f;
     return SpacularLight * _Light.SpacularLightColor * _Light.LightPower.y * _Light.LightPower.w;
 }

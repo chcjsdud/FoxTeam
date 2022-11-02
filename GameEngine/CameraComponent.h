@@ -7,13 +7,6 @@
 #include "DeferredMerge.h"
 #include "Enums.h"
 
-// 투영 타입
-enum class ProjectionMode
-{
-	Perspective,
-	Orthographic
-};
-
 // 분류 : 카메라 컴포넌트
 // 용도 : 
 // 설명 : 
@@ -51,7 +44,7 @@ private:
 	GameEngineRenderTarget* CameraDeferredLightTarget;
 	GameEngineRenderTarget* CameraDeferredTarget_;
 
-	GameEngineRenderTarget* CameraPreprocessingTarget_;
+	GameEngineRenderTarget* CameraPreprocessingTarget_;				// 선처리렌더러(외곽선, 실루엣) 타겟 : 깊이버퍼 없음
 	GameEngineRenderTarget* CameraShadowTarget_;
 
 public:
