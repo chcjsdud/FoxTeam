@@ -15,7 +15,10 @@ public:
 
 public:
 	void PlayAwake(const std::string& _animationName);
+	void PlayFade(float _time);
 	GameEngineEffectRenderer* GetAttackRenderer() { return atkRenderer_; }
+
+	void SetFadeTime(float _time);
 
 protected:
 	void Start() override;
@@ -28,10 +31,16 @@ protected:
 	void startAwake();
 	void updateAwake(float _deltaTime);
 
+
+	void startFade();
+	void updateFade(float _deltaTime);
+
 private:
 	GameEngineFSM renderState_;
 	GameEngineEffectRenderer* atkRenderer_;
 	std::string animationName_;
 
+	float fadeTime_;
+	float standardTime_;
 };
 

@@ -12,6 +12,7 @@
 #include "PacketSoundPlay.h"
 #include "eProjectileType.h"
 #include "RioDSkill.h"
+#include "BasicAttackEffect.h"
 
 Rio::Rio()
 	: Character()
@@ -39,6 +40,9 @@ void Rio::LoadResource()
 
 		dir.MoveParent("FoxTeam");
 		dir / "Resources" / "FBX" / "Character" / "Rio";
+
+		GameEngineFBXMesh* arrow = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_000_Arrow.fbx"));
+		arrow->CreateRenderingBuffer();
 
 		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Rio_Short_Run.fbx"));
 		mesh->CreateRenderingBuffer();
@@ -127,6 +131,18 @@ void Rio::Start()
 	customState_.CreateState(MakeState(Rio, SkillEEnd));
 
 	//stat_.AttackPower = 300.0f;
+
+	basicHitEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
+	basicHitEffect_->GetAttackRenderer()->SetImage("rioHit2.png", "PointSmp");
+	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, -10.0f });
+	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f,0.0f });
+	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHitEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize() * 0.25f);
+
+	basicHit0Effect_ = GetLevel()->CreateActor<BasicAttackEffect>();
+	basicHit0Effect_->GetAttackRenderer()->SetImage("rioHit.png", "PointSmp");
+	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, -120.0f });
+	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f,0.0f });
+	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHit0Effect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
 }
 
 void Rio::Update(float _deltaTime)
@@ -805,6 +821,62 @@ void Rio::onUpdateCustomState(float _deltaTime)
 
 void Rio::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 {
+	float4 startPosition = transform_.GetWorldPosition();
+	float arrowSpeed = 1500.f;
+
+	//if ("BasicAttack_Shot" == _effectName)
+	//{
+	//	basicAttackEffect_->GetAttackRenderer()->SetColor({ 1.0f, 1.0f, 0.7f });
+	//	basicAttackEffect_->PlayAwake("FX_BI_Shoot_01");
+	//
+	//	//bullet0_ = level_->CreateActor<AyaBullet>();
+	//	//bullet0_->SetDummy();
+	//	//bullet0_->MakeTarget(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *_victim);
+	//	return;
+	//}
+	if ("BasicAttack_Hit0" == _effectName)
+	{
+		if (_victim != nullptr)
+		{
+			float4 wp = _victim->GetTransform()->GetWorldPosition();
+			wp.y -= 50.0f;
+
+			float4 wr = _victim->GetTransform()->GetLocalRotation();
+			//	bullet0_ = level_->CreateActor<AyaBullet>();
+			//	bullet0_->SetDummy();
+			//	bullet0_->GetAttackEffect()->GetTransform()->SetWorldPosition(wp);
+			basicHit0Effect_->GetAttackRenderer()->SetColor({ 1.0f,1.0f,0.7f });
+			basicHit0Effect_->GetTransform()->SetWorldPosition(wp);
+			basicHit0Effect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+			basicHit0Effect_->PlayFade(0.3f);
+		}
+		//bullet0_->GetAttackEffect()->PlayAwake("Fx_ShootGlowSE_04");
+		return;
+	}
+
+
+	if ("BasicAttack_Hit" == _effectName)
+	{
+		if (_victim != nullptr)
+		{
+			float4 wp = _victim->GetTransform()->GetWorldPosition();
+			wp.y -= 50.0f;
+
+			float4 wr = _victim->GetTransform()->GetLocalRotation();
+			//	bullet0_ = level_->CreateActor<AyaBullet>();
+			//	bullet0_->SetDummy();
+			//	bullet0_->GetAttackEffect()->GetTransform()->SetWorldPosition(wp);
+			basicHitEffect_->GetAttackRenderer()->SetColor({ 1.0f,1.0f,0.7f });
+			basicHitEffect_->GetTransform()->SetWorldPosition(wp);
+			basicHitEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+			basicHitEffect_->PlayFade(0.3f);
+		}
+		//bullet0_->GetAttackEffect()->PlayAwake("Fx_ShootGlowSE_04");
+		return;
+	}
+
+
+
 }
 
 void Rio::onEffectTransformCheck(float _deltaTime)
@@ -843,6 +915,8 @@ void Rio::updateSkillEBegin(float _deltaTime)
 
 void Rio::startSkillEShot()
 {
+	
+
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_Bow_Skill03_Start.wav");
 	PacketSoundPlay packet;
 	packet.SetSound("Rio_Bow_Skill03_Start.wav", transform_.GetWorldPosition());

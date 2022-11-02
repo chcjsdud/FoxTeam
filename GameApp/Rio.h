@@ -4,6 +4,7 @@
 #include "Character.h"
 #include <GameEngine/GameEngineFSM.h>
 
+class BasicAttackEffect;
 class GameEngineFBXRenderer;
 class LumiaMap;
 class Rio : public Character
@@ -82,7 +83,8 @@ private:
 	GameEngineCollision* skillECollision_;
 	GameEngineFSM customState_;
 	bool bLongBow_;
-
+	BasicAttackEffect* basicHit0Effect_;
+	BasicAttackEffect* basicHitEffect_;
 	bool bSkillEPassable_;
 	float skillETime_;
 	float4 landingPosition_;

@@ -5,6 +5,7 @@
 #include "IUnit.h"
 #include <GameEngine/GameEngineEffectRenderer.h>
 
+class BasicAttackEffect;
 class GameEngineFBXRenderer;
 class GameEngineCollision;
 class Character;
@@ -31,6 +32,8 @@ public:
 	void SetScale(const float4& _scale) { scale_ = _scale;  transform_.SetLocalScaling(scale_); }
 	void SetKnockback(bool _knockback) { bKnockback_ = _knockback; }
 
+	GameEngineEffectRenderer* GetEffectRenderer() { return effect_; }
+
 private:
 	void startWait();
 	void updateWait(float _deltaTime);
@@ -45,7 +48,7 @@ private:
 
 private:
 	GameEngineFSM state_;
-	GameEngineFBXRenderer* renderer_;
+	//GameEngineFBXRenderer* renderer_;
 	GameEngineEffectRenderer* effect_;
 	GameEngineCollision* collision_;
 

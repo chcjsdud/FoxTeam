@@ -25,6 +25,18 @@ void BasicAttackEffect::PlayAwake(const std::string& _animationName)
 	renderState_ << "Awake";
 }
 
+void BasicAttackEffect::PlayFade(float _time)
+{
+	SetFadeTime(_time);
+	renderState_ << "Fade";
+}
+
+void BasicAttackEffect::SetFadeTime(float _time)
+{
+	fadeTime_ = _time;
+	standardTime_ = _time;
+}
+
 void BasicAttackEffect::Start()
 {
 	atkRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
@@ -32,6 +44,7 @@ void BasicAttackEffect::Start()
 
 	renderState_.CreateState(MakeState(BasicAttackEffect, Sleep));
 	renderState_.CreateState(MakeState(BasicAttackEffect, Awake));
+	renderState_.CreateState(MakeState(BasicAttackEffect, Fade));
 	renderState_ << "Sleep";
 }
 
@@ -64,5 +77,28 @@ void BasicAttackEffect::updateAwake(float _deltaTime)
 
 		renderState_ << "Sleep";
 	}
+}
+
+void BasicAttackEffect::startFade()
+{
+	atkRenderer_->On();
+	atkRenderer_->SetAlpha(1.0f);
+}
+
+void BasicAttackEffect::updateFade(float _deltaTime)
+{
+	fadeTime_ -= _deltaTime;
+
+	if (fadeTime_ <= 0.0f)
+	{
+		fadeTime_ = 0.0f;
+		standardTime_ = 0.0f;
+		atkRenderer_->Off();
+		renderState_ << "Sleep";
+		return;
+	}
+
+	atkRenderer_->SetAlpha(fadeTime_ / standardTime_);
+
 }
 

@@ -4,13 +4,14 @@
 #include <GameEngine/GameEngineFBXRenderer.h>
 #include <GameEngine/GameEngineCollision.h>
 
+#include "CharEffectPacket.h"
+#include "BasicAttackEffect.h"
 #include "Character.h"
 #include "PacketSoundPlay.h"
 #include "Monsters.h"
 
 RioArrow::RioArrow()
-	: renderer_(nullptr)
-	, collision_(nullptr)
+	: collision_(nullptr)
 	, target_(nullptr)
 	, damage_(0.0f)
 	, rotationY_(0.0f)
@@ -32,11 +33,20 @@ RioArrow::~RioArrow()
 
 void RioArrow::Start()
 {
-	//effect_ = CreateTransformComponent<GameEngineEffectRenderer>();
-	//effect_->SetImage("FX_BI_TX_RioShootFire.png", "LinearSmp");
-	//effect_->GetTransform()->SetLocalRotationDegree({ 90.f,90.f,0.f });
-	//effect_->GetTransform()->SetLocalScaling(effect_->GetCurrentTexture()->GetTextureSize() / 2);
-	//effect_->SetAlpha(0.5f);
+
+	//renderer_ = CreateTransformComponent<GameEngineFBXRenderer>();
+	//renderer_->SetFBXMesh("Rio_000_Arrow.fbx", "TextureDeferredLight", false);
+	//renderer_->GetTransform()->SetLocalScaling(float4{ 9.f,9.f,18.f } * 0.2f);
+	//renderer_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
+	//renderer_->GetTransform()->SetLocalPosition(float4{ 0.0f, 10.f, 2000.0f } * 0.001f);
+
+	effect_ = CreateTransformComponent<GameEngineEffectRenderer>();
+	effect_->SetImage("FX_BI_HitGlow_04.png", "LinearSmp");
+	effect_->GetTransform()->SetLocalRotationDegree({ 0.f,90.f,0.f });
+	effect_->GetTransform()->SetLocalPosition(float4{ 0.0f, 10.0f ,0.0f } * 0.001f);
+	effect_->GetTransform()->SetLocalScaling({ 5.f, 1.5f });
+	effect_->SetColor({ 1.0f,1.0f,0.7f });
+	effect_->Off();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->SetCollisionGroup(eCollisionGroup::Projectile);
@@ -90,6 +100,7 @@ void RioArrow::MakeNonTargetArrow(IUnit& _owner, float _damage, const float4& _p
 
 void RioArrow::startWait()
 {
+	effect_->Off();
 }
 
 void RioArrow::updateWait(float _deltaTime)
@@ -118,6 +129,7 @@ void RioArrow::startChase()
 	packet.SetSound("Rio_ShortBow_NormalAttack_01.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
 	collision_->On();
+	effect_->On();
 }
 
 void RioArrow::updateChase(float _deltaTime)
@@ -151,8 +163,22 @@ void RioArrow::updateChase(float _deltaTime)
 			PacketSoundPlay packet;
 			packet.SetSound("Rio_ShortBow_Hit_01.wav", transform_.GetWorldPosition());
 			FT::SendPacket(packet);
+
 			target_->Damage(damage_, owner_);
 		}
+		CharEffectPacket pack0;
+		pack0.SetTargetIndex(owner_->GetIndex());
+		pack0.SetAnimationName("BasicAttack_Hit0");
+		pack0.SetVictimIndex(target_->GetIndex());
+		FT::SendPacket(pack0);
+
+
+		CharEffectPacket pack;
+		pack.SetTargetIndex(owner_->GetIndex());
+		pack.SetAnimationName("BasicAttack_Hit");
+		pack.SetVictimIndex(target_->GetIndex());
+		FT::SendPacket(pack);
+
 
 		Release();
 	}
@@ -162,7 +188,7 @@ void RioArrow::startFly()
 {
 	transform_.SetLocalRotationDegree({ 0.0f, rotationY_, 0.0f });
 	collision_->On();
-
+	effect_->On();
 	if (bKnockback_)
 	{
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_Skill04_Projectile.wav");
