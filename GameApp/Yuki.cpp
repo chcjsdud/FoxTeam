@@ -197,10 +197,16 @@ void Yuki::Update(float _deltaTime)
 		{
 			for (int i = 0; i < rUnitList_.size(); i++)
 			{
-				rUnitList_[i]->Damage(1000.0f, this);
+				FT::PlaySoundAndSendPacket("Yuki_Skill04_Debuff.wav", transform_.GetWorldPosition());
+				FT::PlaySoundAndSendPacket("Yuki_Skill04_Debuff_Hit.wav", transform_.GetWorldPosition());
+				rUnitList_[i]->Damage(rUnitList_[i]->GetStat()->HPMax * (0.125f + (0.025f * stat_.Level_r)), this);
+
+				// 여기에 이펙트 배치
+				// 잔상 이펙트는 캐릭터 수 만큼 있어야 할 것...
 		
 			}
 
+			rExplodeTimer_ = 1.0f;
 			rUnitList_.clear();
 		}
 	}
@@ -823,7 +829,7 @@ void Yuki::updateCustomRSlash(float _deltaTime)
 	if (0.5f <= timer_R)
 	{
 		timer_R = 0.0f;
-		b_Qhit_ = false;
+		b_RHit_ = false;
 		changeAnimationWait();
 		mainState_.ChangeState("NormalState", true);
 		normalState_.ChangeState("Watch", true);
