@@ -1928,6 +1928,42 @@ void Character::PlayEffect(const std::string& _effectName, IUnit* _victim)
 	onPlayEffect(_effectName, _victim);
 }
 
+void Character::RandomSoundPlay(const std::string& _sound0, const std::string& _sound1, const std::string& _sound2)
+{
+	int random = randomGenerator.RandomInt(0, 3);
+
+	switch (random)
+	{
+	case 0:
+		if ("" == _sound0)
+		{
+			break;
+		}
+		FT::PlaySoundAndSendPacket(_sound0, transform_.GetWorldPosition());
+		break;
+	case 1:
+		if ("" == _sound1)
+		{
+			break;
+		}
+		FT::PlaySoundAndSendPacket(_sound1, transform_.GetWorldPosition());
+		break;
+	case 2:
+		if ("" == _sound2)
+		{
+			break;
+		}
+		FT::PlaySoundAndSendPacket(_sound2, transform_.GetWorldPosition());
+		break;
+	case 3:
+		break;
+	default:
+		break;
+	}
+
+
+}
+
 void Character::DebuffCheck(float _DeltaTime)
 {
 	SlowCheck(_DeltaTime);

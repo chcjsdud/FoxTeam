@@ -376,6 +376,7 @@ void Hyunwoo::onStartQSkill()
 
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
+	RandomSoundPlay("Hyunwoo_PlaySkill1007200Seq0_1_ko.wav", "Hyunwoo_PlaySkill1007200Seq0_2_ko.wav", "Hyunwoo_PlaySkill1007200Seq0_3_ko.wav");
 }
 
 void Hyunwoo::onUpdateQSkill(float _deltaTime)
@@ -483,6 +484,8 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 void Hyunwoo::onStartWSkill()
 {
+	RandomSoundPlay("Hyunwoo_PlaySkill1007300Seq0_1_ko.wav", "Hyunwoo_PlaySkill1007300Seq0_2_ko.wav", "Hyunwoo_PlaySkill1007300Seq0_3_ko.wav");
+
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill02_Activation.wav");
 	PacketSoundPlay packet;
 	packet.SetSound("hyunwoo_Skill02_Activation.wav", transform_.GetWorldPosition());
@@ -504,6 +507,8 @@ void Hyunwoo::onUpdateWSkill(float _deltaTime)
 
 void Hyunwoo::onStartESkill()
 {
+	RandomSoundPlay("Hyunwoo_PlaySkill1007400Seq0_1_ko.wav", "Hyunwoo_PlaySkill1007400Seq0_2_ko.wav", "Hyunwoo_PlaySkill1007400Seq0_3_ko.wav");
+
 	timer_Dash_E = 0.0f;
 	b_Ehit_ = false;
 	collision_E->On();
@@ -849,6 +854,8 @@ void Hyunwoo::onEffectTransformCheck(float _deltaTime)
 
 void Hyunwoo::startCustomRSkill()
 {
+	RandomSoundPlay("Hyunwoo_PlaySkill1007500Seq0_1_ko.wav", "Hyunwoo_PlaySkill1007500Seq0_2_ko.wav", "Hyunwoo_PlaySkill1007500Seq0_3_ko.wav");
+
 	curAnimationName_ = "SkillR_start";
 	renderer_->ChangeFBXAnimation("SkillR_start", true);
 	collision_R->On();

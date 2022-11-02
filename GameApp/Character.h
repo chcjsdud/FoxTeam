@@ -2,7 +2,7 @@
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
 #include <GameEngine/GameEngineEffectRenderer.h>
-
+#include <GameEngineBase/GameEngineRandom.h>
 #include "NavMesh.h"
 #include "CharacterStat.h"
 #include "IUnit.h"
@@ -327,6 +327,9 @@ public:
 	void PlayEffect(const std::string& _effectName, IUnit* _victim = nullptr);
 #pragma endregion
 
+#pragma region RandomSoundPlay
+	void RandomSoundPlay(const std::string& _sound0 = "", const std::string& _sound1 = "", const std::string& _sound2 = "");
+#pragma endregion
 
 	//------------------------------------------------------------------------------------------------------------------
 
@@ -463,4 +466,7 @@ protected:
 	GameEnginePreprocessingRenderer* MainOutLineRenderer_;
 	GameEnginePreprocessingRenderer* WeaponOutLineRenderer1_;
 	GameEnginePreprocessingRenderer* WeaponOutLineRenderer2_;
+
+private:
+	GameEngineRandom randomGenerator;
 };
