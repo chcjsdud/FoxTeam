@@ -1,5 +1,6 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
+#include "CharacterStat.h"
 
 using namespace std;
 
@@ -11,9 +12,22 @@ public:
 	UI_CharFollow();
 	~UI_CharFollow();
 
+	void SetFollowInfo(float4 _Pos, CharacterStat* _Stat);
+
 
 public:
-	GameEngineUIRenderer* HPBarRenderer;
+	GameEngineUIRenderer* HPBar_Renderer;
+	GameEngineUIRenderer* SPBar_Renderer;
+	GameEngineUIRenderer* EmptyBar_Renderer;
+
+	float4 HpBarPos;
+	float4 HpBarSize;
+
+	float4 SpBarPos;
+	float4 SpBarSize;
+
+	float4 EmptyBarPos;
+	float4 EmptyBarSize;
 
 protected:
 	virtual void Start();
