@@ -106,7 +106,7 @@ void PacketCreateProjectile::execute(SOCKET _socketSender, GameEngineSocketInter
         rioTargetArrow(level, _network, _bServer);
         break;
     case eProjectileType::RioWSkillShort:
-        rioTargetArrow(level, _network, _bServer);
+        rioWSkillShort(level, _network, _bServer);
         break;
     case eProjectileType::RioWSkillLong:
         rioWSkillLong(level, _network, _bServer);
