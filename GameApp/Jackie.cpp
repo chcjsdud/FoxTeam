@@ -619,6 +619,8 @@ void Jackie::onStartQSkill()
 	curAnimationName_ = "SkillQ";
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
+	RandomSoundPlay("Jackie_PlaySkill1001200seq0_1_ko.wav", "Jackie_PlaySkill1001200seq0_2_ko.wav", "Jackie_PlaySkill1001200seq0_3_ko.wav");
+
 	float4 wp = GetTransform()->GetWorldPosition();
 	float4 wr = GetTransform()->GetLocalRotation();
 	qEffect_->GetTransform()->SetLocalPosition(wp);
@@ -777,6 +779,8 @@ void Jackie::onStartWSkill()
 {
 	isW_ = true;
 	timer_W = 3.0f;
+	RandomSoundPlay("Jackie_PlaySkill1001300seq0_1_ko.wav", "Jackie_PlaySkill1001300seq0_2_ko.wav", "Jackie_PlaySkill1001300seq0_3_ko.wav");
+
 
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill02_Activation.wav");
 	PacketSoundPlay packet;
@@ -794,6 +798,8 @@ void Jackie::onUpdateWSkill(float _deltaTime)
 
 void Jackie::onStartESkill()
 {
+
+
 }
 
 void Jackie::onUpdateESkill(float _deltaTime)
@@ -825,6 +831,8 @@ void Jackie::onStartRSkill()
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("SkillR");
 	FT::SendPacket(pack);
+
+	RandomSoundPlay("Jackie_PlaySkill1001500seq0_1_ko.wav", "Jackie_PlaySkill1001500seq0_2_ko.wav", "Jackie_PlaySkill1001500seq0_3_ko.wav");
 
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill04_Activation_v1.wav");
 	PacketSoundPlay packet;
@@ -928,6 +936,10 @@ void Jackie::startSkillEBegin()
 	landingPosition.y += FT::Map::MAX_HEIGHT;
 
 	bSkillEPassable_ = currentMap_->GetNavMesh()->CheckIntersects(landingPosition, float4::DOWN, height);
+
+
+	RandomSoundPlay("Jackie_PlaySkill1001400seq0_1_ko.wav", "Jackie_PlaySkill1001400seq0_2_ko.wav", "Jackie_PlaySkill1001400seq0_3_ko.wav");
+
 
 	if (true == isR_)
 	{
