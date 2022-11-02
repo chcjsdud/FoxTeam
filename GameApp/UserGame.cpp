@@ -19,6 +19,7 @@
 #include "TestLevel.h"
 #include "EndingLevel.h"
 #include "OutLineTestLevel.h"
+#include "ShadowTestLevel.h"
 
 std::atomic<int> UserGame::LoadingFolder = 0;
 bool UserGame::IsServer_ = false;
@@ -47,6 +48,7 @@ void UserGame::Initialize()
 
 	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");
 	//LevelCreate<OutLineTestLevel>("OutLineTestLevel");
+	LevelCreate<ShadowTestLevel>("ShadowTestLevel");
 	LevelCreate<TestLevel>("TestLevel");
 	LevelCreate<TitleLevel>("TitleLevel");
 	LevelCreate<LobbyLevel>("LobbyLevel");

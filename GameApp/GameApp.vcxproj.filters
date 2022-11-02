@@ -463,6 +463,9 @@
     <ClCompile Include="RioWSkillWind.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
     </ClCompile>
+    <ClCompile Include="ShadowTestLevel.cpp">
+      <Filter>01.GameObject\03.Level\ShadowTestLevel</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -698,6 +701,15 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LobbyLevel\UI\Effect">
       <UniqueIdentifier>{8280ee57-7128-4098-a502-f708eefd5efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\ShadowTestLevel">
+      <UniqueIdentifier>{f9fbfe84-cb23-4146-837d-12839dd9461f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\ShadowTestLevel\Actor">
+      <UniqueIdentifier>{85f21b70-d71a-4206-bbba-01ddba106d91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\ShadowTestLevel\IMGUI">
+      <UniqueIdentifier>{2166421b-24bb-459e-9892-a67cd31d963d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1171,6 +1183,9 @@
     </ClInclude>
     <ClInclude Include="RioWSkillWind.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowTestLevel.h">
+      <Filter>01.GameObject\03.Level\ShadowTestLevel</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
