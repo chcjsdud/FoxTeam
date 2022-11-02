@@ -94,6 +94,9 @@ private:
 	bool b_Qhit_;
 	GameEngineCollision* collision_Q;
 
+	bool b_isW_;
+	float timer_w_;
+	float timer_unstoppable_;
 
 	float timer_Dash_E;		// 대쉬 지속시간
 	GameEngineCollision* collision_E;

@@ -984,6 +984,11 @@ void Character::PickingOutLineOff()
 
 void Character::Stun(float _stunTime)
 {
+	if (true == stat_.isUnstoppable_)
+	{
+		return;
+	}
+
 	mainState_ << "CrowdControlState";
 	crowdControlState_ << "Stun";
 	timerStun_ = _stunTime;
@@ -995,6 +1000,11 @@ void Character::Stun(float _stunTime)
 
 void Character::Knockback(float _knockbackTime, float4 _knockbackSpeed)
 {
+	if (true == stat_.isUnstoppable_)
+	{
+		return;
+	}
+
 	mainState_.ChangeState("CrowdControlState", true);
 	crowdControlState_.ChangeState("Knockback", true);
 	timerKnockback_ = _knockbackTime;
@@ -1003,6 +1013,11 @@ void Character::Knockback(float _knockbackTime, float4 _knockbackSpeed)
 
 void Character::WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime)
 {
+	if (true == stat_.isUnstoppable_)
+	{
+		return;
+	}
+
 	mainState_ << "CrowdControlState";
 	crowdControlState_ << "WallSlam";
 	timerKnockback_ = _knockbackTime;
@@ -1012,6 +1027,11 @@ void Character::WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _st
 
 void Character::Slow(float _slowTime, float _slowRatio)
 {
+	if (true == stat_.isUnstoppable_)
+	{
+		return;
+	}
+
 	slowTimer_ = _slowTime;
 
 	if (1.0f < _slowRatio)

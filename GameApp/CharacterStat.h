@@ -58,6 +58,9 @@ public:
 	int Level_r;
 	int Level_d;
 
+	// 1103 박종원 : CC기 무시 bool 값
+	bool isUnstoppable_;
+
 public:
 	// 기본 세팅은 리오 기준으로 되어있음
 	CharacterStat()
@@ -98,6 +101,7 @@ public:
 		, Level_e(1)
 		, Level_r(1)
 		, Level_d(1)
+		, isUnstoppable_(false)
 	{
 
 	}

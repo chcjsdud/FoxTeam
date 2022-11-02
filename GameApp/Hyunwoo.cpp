@@ -24,7 +24,7 @@
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
 	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), basicAttackEffect_(nullptr), QGroundCrackEffectRenderer_(nullptr), qEffect_(nullptr),
-	rEffect_(nullptr)
+	rEffect_(nullptr), b_isW_(false)
 {
 
 }
@@ -184,17 +184,36 @@ void Hyunwoo::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
 
-	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
-	if (nullptr != controlWindow)
+	if (true == b_isW_)
 	{
-		GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
-		controlWindow->AddText("P1Dir" + std::to_string(direction_.x) + ", " + std::to_string(direction_.z));
-		controlWindow->AddText("P1Pos " + std::to_string(collision_->GetTransform()->GetWorldPosition().x) + " , " + std::to_string(collision_->GetTransform()->GetWorldPosition().z));
-		controlWindow->AddText("StunRenderPos " + std::to_string(slowEffect_->GetTransform()->GetWorldPosition().x) + ", " + std::to_string(slowEffect_->GetTransform()->GetWorldPosition().z));
-	
-		float4 position = mouse_->GetIntersectionYAxisPlane(0, 50000.f);
-		controlWindow->AddText("MPos : " + std::to_string(position.x) + ", " + std::to_string(position.z));
+		timer_w_ -= _deltaTime;
+		timer_unstoppable_ -= _deltaTime;
+
+		if (0.0f >= timer_unstoppable_)
+		{
+			stat_.isUnstoppable_ = false;
+
+		}
+
+		if (0.0f >= timer_w_)
+		{
+			timer_w_ = 2.5f;
+			timer_unstoppable_ = 1.0f;
+			b_isW_ = false;
+		}
 	}
+
+	//GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	//if (nullptr != controlWindow)
+	//{
+	//	GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
+	//	controlWindow->AddText("P1Dir" + std::to_string(direction_.x) + ", " + std::to_string(direction_.z));
+	//	controlWindow->AddText("P1Pos " + std::to_string(collision_->GetTransform()->GetWorldPosition().x) + " , " + std::to_string(collision_->GetTransform()->GetWorldPosition().z));
+	//	controlWindow->AddText("StunRenderPos " + std::to_string(slowEffect_->GetTransform()->GetWorldPosition().x) + ", " + std::to_string(slowEffect_->GetTransform()->GetWorldPosition().z));
+	//
+	//	float4 position = mouse_->GetIntersectionYAxisPlane(0, 50000.f);
+	//	controlWindow->AddText("MPos : " + std::to_string(position.x) + ", " + std::to_string(position.z));
+	//}
 }
 
 void Hyunwoo::initRendererAndAnimation()
@@ -491,18 +510,23 @@ void Hyunwoo::onStartWSkill()
 	packet.SetSound("hyunwoo_Skill02_Activation.wav", transform_.GetWorldPosition());
 
 	FT::SendPacket(packet);
+	timer_unstoppable_ = 1.0f;
+	timer_w_ = 2.5f;
+	b_isW_ = true;
+	stat_.isUnstoppable_ = true;
+
 }
 
 void Hyunwoo::onUpdateWSkill(float _deltaTime)
 {
 	// W 스킬은 일시적인 방어력 증강과
 	// 모든 군중 제어기 면역을 일시적으로 부여하는 스테이트입니다.
-
-
-
 	changeAnimationWait();
 	mainState_.ChangeState("NormalState", true);
 	normalState_.ChangeState("Watch", true);
+	return;
+
+
 }
 
 void Hyunwoo::onStartESkill()
