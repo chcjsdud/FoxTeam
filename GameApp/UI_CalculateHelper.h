@@ -26,7 +26,7 @@ public:
 
 		float4x4 Pro = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().Projection_;
 		float4x4 View = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().View_;
-		DirectX::XMMATRIX ViewProjectionMatrix = View.DirectMatrix *= Pro.DirectMatrix;
+		DirectX::XMMATRIX ViewProjectionMatrix = View.DirectMatrix * Pro.DirectMatrix;
 		Position = DirectX::XMVector3TransformCoord(Position, ViewProjectionMatrix);
 		float4 ReturnPosition = { 0.0f, 0.0f };
 		ReturnPosition.DirectVector = Position;

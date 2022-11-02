@@ -17,8 +17,8 @@ public:
 
 
 public:
-	GameEngineUIRenderer* HPBar_Renderer;
-	GameEngineUIRenderer* SPBar_Renderer;
+	GameEngineProgressBarRenderer* HPBar_Renderer;
+	GameEngineProgressBarRenderer* SPBar_Renderer;
 	GameEngineProgressBarRenderer* EmptyBar_Renderer;
 
 	float4 HpBarPos;

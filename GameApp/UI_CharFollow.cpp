@@ -17,30 +17,34 @@ UI_CharFollow::~UI_CharFollow()
 
 void UI_CharFollow::Start()
 {
-	HpBarPos = {0.0f, 0.0f};
+	//HpBarPos = {0.0f, 0.0f};
 	HpBarSize = { 70.0f, 9.0f };
 
-	SpBarPos = {0.0f,0.0f};
-	SpBarSize = { 70.f, 3.f };
+	//SpBarPos = {0.0f,-7.0f};
+	SpBarSize = { 70.f, 4.f };
 
-	EmptyBarPos = {0.0f,0.0f };
-	EmptyBarSize = {70.f, 13.f};
+	//EmptyBarPos = {0.0f, -2.0f };
+	EmptyBarSize = {72.f, 14.f};
 
 	{
-		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		HPBar_Renderer = CreateTransformComponent<GameEngineProgressBarRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
 		HPBar_Renderer->SetImage("HPBar_UI.png", "PointSmp");
-		//HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
+		HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
 		HPBar_Renderer->GetTransform()->SetLocalScaling(HpBarSize);
+		HPBar_Renderer->SetProgressBarDirect(static_cast<int>(ProgressBarDirect::RightToLeft));
+		HPBar_Renderer->SetPercent(0.5f);
 
-		SPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		SPBar_Renderer = CreateTransformComponent<GameEngineProgressBarRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
 		SPBar_Renderer->SetImage("SPBar_UI.png", "PointSmp");
+		SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);
 		SPBar_Renderer->GetTransform()->SetLocalScaling(SpBarSize);
+		SPBar_Renderer->SetProgressBarDirect(static_cast<int>(ProgressBarDirect::RightToLeft));
 
 		EmptyBar_Renderer = CreateTransformComponent<GameEngineProgressBarRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
 		EmptyBar_Renderer->SetImage("EmptyBar_UI.png", "PointSmp");
 		EmptyBar_Renderer->GetTransform()->SetLocalScaling(EmptyBarSize);
+		EmptyBar_Renderer->GetTransform()->SetLocalPosition(EmptyBarPos);
 		EmptyBar_Renderer->SetProgressBarDirect(static_cast<int>(ProgressBarDirect::RightToLeft));
-		EmptyBar_Renderer->SetPercent(0.5f);
 	}
 
 
@@ -78,5 +82,17 @@ void UI_CharFollow::Update(float _DeltaTime)
 
 void UI_CharFollow::SetFollowInfo(float4 _Pos, CharacterStat* _Stat) 
 {
+	float HPPercent = _Stat->HP / _Stat->HPMax;
+	float SPPercent = _Stat->SP / _Stat->SPMax;
 
+	HPBar_Renderer->SetPercent(HPPercent);
+	SPBar_Renderer->SetPercent(SPPercent);
+
+	HpBarPos = _Pos;
+	SpBarPos = HpBarPos + float4{ 0.0f, -7.f, 0.f,0.f };
+	EmptyBarPos = HpBarPos + float4{ 0.f, -2.f, 0.f,0.f };
+
+	HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
+	SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);
+	EmptyBar_Renderer->GetTransform()->SetLocalPosition(EmptyBarPos);
 }
