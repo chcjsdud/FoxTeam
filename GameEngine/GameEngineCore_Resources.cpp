@@ -591,8 +591,6 @@ void GameEngineCore::EngineResourcesLoad()
 		for (auto& ShaderFile : AllShader)
 		{
 			GameEngineShader::AutoCompile(ShaderFile);
-
-
 		}
 
 		// GameEngineVertexShader* Ptr = GameEngineVertexShaderManager::GetInst().Find("Texture_VS");
@@ -1029,6 +1027,16 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
 		Pipe->SetVertexShader("Blur_VS");
 		Pipe->SetPixelShader("Blur_PS");
+		Pipe->SetOutputMergerDepthStencil("BaseDepthOff");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
+
+	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("FogOfWar");
+		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
+		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
+		Pipe->SetVertexShader("FogOfWar_VS");
+		Pipe->SetPixelShader("FogOfWar_PS");
 		Pipe->SetOutputMergerDepthStencil("BaseDepthOff");
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}

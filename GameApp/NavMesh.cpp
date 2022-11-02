@@ -1,6 +1,8 @@
 #include "PreCompile.h"
 #include "NavMesh.h"
 
+#include "GameEngine/GameEngineRendererBase.h"
+
 NavMesh::NavMesh()
 	: NaviRenderer(nullptr)
 	, NewVertex(nullptr)

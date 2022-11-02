@@ -16,61 +16,28 @@ class CameraComponent : public GameEngineTransformComponent
 	friend class CameraActor;
 	friend class GameEngineLevel;
 	friend class GameEngineRenderer;
-
-private:	// member Var
-	ProjectionMode				ProjectionMode_;			// 
-	float						FovAngleY_;					// 
-	float4						CamSize_;					// 
-	float						NearZ_;						// 
-	float						FarZ_;						// 
-	float						ZoomValue;
-
-private:
-	LightsData LightData_;
-	std::list<GameEngineLightComponent*> Lights_;
-	std::map<int, std::list<GameEngineRendererBase*>> RendererList_;
-	std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>> PreprocessingRendererList_;
-	std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>> ShadowRendererList_;
-
-private:
-	int DebugRenderCount_;
-	float ZoomValue_;
-	std::vector<GameEngineDebugRenderData> DebugVector_;
-	GameEngineRenderTarget* CameraBufferTarget_;
-
-	GameEngineRenderTarget* CameraForwardTarget_;
-
-	GameEngineRenderTarget* CameraDeferredGBufferTarget;
-	GameEngineRenderTarget* CameraDeferredLightTarget;
-	GameEngineRenderTarget* CameraDeferredTarget_;
-
-	GameEngineRenderTarget* CameraPreprocessingTarget_;				// ¼±Ã³¸®·»´õ·¯(¿Ü°û¼±, ½Ç·ç¿§) Å¸°Ù : ±íÀÌ¹öÆÛ ¾øÀ½
-	GameEngineRenderTarget* CameraShadowTarget_;
-
 public:
 	CameraComponent();
 	~CameraComponent();
-
-protected:		// delete constructer
 	CameraComponent(const CameraComponent& _other) = delete;
 	CameraComponent(CameraComponent&& _other) noexcept = delete;
-
-private:		//delete operator
 	CameraComponent& operator=(const CameraComponent& _other) = delete;
 	CameraComponent& operator=(const CameraComponent&& _other) = delete;
 
-private:
-	void ClearCameraTarget();
+public:
 	void CameraTransformUpdate();
-	void Render(float _DeltaTime);
-	void DebugRender();
-	void ReleaseRenderer();
+	void CameraZoomReset();
+	void CameraZoomSetting(float _Value);
 
-	void NextLevelMoveRenderer(CameraComponent* _NextCamera, GameEngineActor* _Actor);
+public:
+	void SetProjectionMode(ProjectionMode _ProjectionMode);
+	void PushRenderer(int _Order, GameEngineRendererBase* _Renderer);
+	void PushLight(GameEngineLightComponent* _Light);
+	void PushPreprocessingRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _PreprocessingRenderer);
 
-	void RenderForward(float _DeltaTime);
-	void RenderDeffered(float _DeltaTime);
-	void RenderShadow(float _DeltaTime);
+public:
+	void PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color = float4::GREEN);
+	void ChangeRendererGroup(int _Group, GameEngineRendererBase* _Renderer);
 
 public:
 	inline const LightsData& GetLightData() const
@@ -126,22 +93,54 @@ public:
 	DeferredCalLightEffect CalLightEffect;
 	DeferredMerge DeferredMergeEffect;
 
-public:
-	void CameraZoomReset();
-	void CameraZoomSetting(float _Value);
 
-public:
-	void SetProjectionMode(ProjectionMode _ProjectionMode);
-	void PushRenderer(int _Order, GameEngineRendererBase* _Renderer);
-	void PushLight(GameEngineLightComponent* _Light);
-	void PushPreprocessingRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _PreprocessingRenderer);
-
-public:
-	void PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color = float4::GREEN);
-	void ChangeRendererGroup(int _Group, GameEngineRendererBase* _Renderer);
 
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
+
+private:
+	void ClearCameraTarget();
+	void Render(float _DeltaTime);
+	void DebugRender();
+	void ReleaseRenderer();
+
+	void NextLevelMoveRenderer(CameraComponent* _NextCamera, GameEngineActor* _Actor);
+
+	void RenderForward(float _DeltaTime);
+	void RenderDeffered(float _DeltaTime);
+	void RenderShadow(float _DeltaTime);
+
+private:
+	private:	// member Var
+		ProjectionMode				ProjectionMode_;			// 
+		float						FovAngleY_;					// 
+		float4						CamSize_;					// 
+		float						NearZ_;						// 
+		float						FarZ_;						// 
+		float						ZoomValue;
+
+private:
+	LightsData LightData_;
+	std::list<GameEngineLightComponent*> Lights_;
+	std::map<int, std::list<GameEngineRendererBase*>> RendererList_;
+	std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>> PreprocessingRendererList_;
+	std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>> ShadowRendererList_;
+
+private:
+	int DebugRenderCount_;
+	float ZoomValue_;
+	std::vector<GameEngineDebugRenderData> DebugVector_;
+	GameEngineRenderTarget* CameraBufferTarget_;
+
+	GameEngineRenderTarget* CameraForwardTarget_;
+
+	GameEngineRenderTarget* CameraDeferredGBufferTarget;
+	GameEngineRenderTarget* CameraDeferredLightTarget;
+	GameEngineRenderTarget* CameraDeferredTarget_;
+
+	GameEngineRenderTarget* CameraPreprocessingTarget_;				// ¼±Ã³¸®·»´õ·¯(¿Ü°û¼±, ½Ç·ç¿§) Å¸°Ù : ±íÀÌ¹öÆÛ ¾øÀ½
+	GameEngineRenderTarget* CameraShadowTarget_;
+
 };
 

@@ -7,12 +7,6 @@
     <Filter Include="User">
       <UniqueIdentifier>{e1b02f76-f02a-49ba-a95c-243bbf00577f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="User\PJW">
-      <UniqueIdentifier>{1b58d1c0-a523-4f6f-a991-4b4c95fcc444}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="User\SJH">
-      <UniqueIdentifier>{a2d39d7e-13f3-4064-a15c-8e40307ea60d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="EngineResources\Shader\Color.fx">
@@ -66,9 +60,6 @@
     <FxCompile Include="EngineResources\Shader\DeferredCalLight.fx">
       <Filter>Engine</Filter>
     </FxCompile>
-    <FxCompile Include="EngineResources\Shader\PJWAni.fx">
-      <Filter>User\PJW</Filter>
-    </FxCompile>
     <FxCompile Include="EngineResources\Shader\TextureDeferredLightAni.fx">
       <Filter>Engine</Filter>
     </FxCompile>
@@ -91,6 +82,12 @@
       <Filter>Engine</Filter>
     </FxCompile>
     <FxCompile Include="EngineResources\Shader\Shadow.fx">
+      <Filter>Engine</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shader\PJWAni.fx">
+      <Filter>User</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shader\FogOfWar.fx">
       <Filter>Engine</Filter>
     </FxCompile>
   </ItemGroup>

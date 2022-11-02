@@ -1,6 +1,7 @@
 #include "PreCompile.h"
 
 #include <GameEngine/GameEngineCollision.h>
+#include "UserGame.h"
 
 #include "Character.h"
 #include "LumiaLevel.h"
@@ -75,6 +76,10 @@ Character::Character()
 	, MainOutLineRenderer_(nullptr)
 	, WeaponOutLineRenderer1_(nullptr)
 	, WeaponOutLineRenderer2_(nullptr)
+	, eyeSightVertex_(nullptr)
+	, eyeSightIndex_(nullptr)
+	, fowRenderTarget_(nullptr)
+	, fowTexture_(nullptr)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -82,7 +87,29 @@ Character::Character()
 
 Character::~Character()
 {
+	if (nullptr != eyeSightVertex_)
+	{
+		delete eyeSightVertex_;
+		eyeSightVertex_ = nullptr;
+	}
 
+	if (nullptr != eyeSightIndex_)
+	{
+		delete eyeSightIndex_;
+		eyeSightIndex_ = nullptr;
+	}
+
+	if (nullptr != fowRenderTarget_)
+	{
+		delete fowRenderTarget_;
+		fowRenderTarget_ = nullptr;
+	}
+
+	if (nullptr != fowTexture_)
+	{
+		delete fowTexture_;
+		fowTexture_ = nullptr;
+	}
 }
 
 void Character::SetCurrentNavMesh(NavMesh* _NavMesh)
@@ -127,7 +154,7 @@ void Character::Start()
 	initInput();
 	initState();
 	initBasicEffect();
-	initEyeSight();
+	//initEyeSight();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
@@ -273,6 +300,11 @@ void Character::Update(float _DeltaTime)
 		coolTimer_D_ = 0.5f;
 	}
 
+	if (eyeSightRenderer_ == nullptr)
+	{
+		return;
+	}
+
 	static float sightUpdateTime = 0.0f;
 	sightUpdateTime += _DeltaTime;
 	if (bFocused_ && sightUpdateTime > 0.066f)
@@ -294,6 +326,15 @@ void Character::Update(float _DeltaTime)
 		memcpy(subResource.pData, &vertices_[0], subResource.RowPitch);
 		dc->Unmap(eyeSightVertex_->Buffer_, 0);
 	}
+
+	CameraComponent* cam = level_->GetMainCamera();
+	cam->CameraTransformUpdate();
+
+	float4x4 View = cam->GetTransform()->GetTransformData().View_;
+	float4x4 Projection = cam->GetTransform()->GetTransformData().Projection_;
+
+	
+
 }
 
 
@@ -1138,6 +1179,11 @@ void Character::initEyeSight()
 	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
 	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
+	fowRenderTarget_ = new GameEngineRenderTarget;
+	fowTexture_ = new GameEngineTexture;
+	fowTexture_->Create(float4(1280.f, 720.f), DXGI_FORMAT_R8G8B8A8_UNORM);
+	fowRenderTarget_->Create(fowTexture_, float4::BLACK);
+	fowRenderTarget_->Clear();
 }
 
 void Character::initBasicEffect()

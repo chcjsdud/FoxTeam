@@ -85,6 +85,7 @@ public:
 	NavFace* GetCurrentNavFace() { return currentNavFace_; }
 	std::vector<ItemBase*> GetInventory() { return inventory_; }
 	PlayerUIController* GetUIController() { return uiController_; }
+	GameEngineVertexBuffer* GetEyeSightVertexBuffer() { return eyeSightVertex_; }
 
 	void SetDirection(float4 _dir) { direction_ = _dir; }
 	void SetCurrentNavFace(NavFace* _Navi) { currentNavFace_ = _Navi; }
@@ -343,6 +344,8 @@ protected:
 	GameEngineIndexBuffer* eyeSightIndex_;
 	std::vector<GameEngineVertex> vertices_;
 	std::vector<UINT> indices_;
+	GameEngineRenderTarget* fowRenderTarget_;
+	GameEngineTexture* fowTexture_;
 
 	// ∏ , ¿Ãµø
 	LumiaMap* currentMap_;
