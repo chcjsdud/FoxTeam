@@ -315,6 +315,10 @@
       </SubType>
     </ClCompile>
     <ClCompile Include="UI_CalculateHelper.cpp" />
+    <ClCompile Include="UI_CharFollow.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="UI_FOW.cpp">
       <SubType>
       </SubType>
@@ -758,6 +762,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="UI_CalculateHelper.h" />
+    <ClInclude Include="UI_CharFollow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="UI_FOW.h">
       <SubType>
       </SubType>

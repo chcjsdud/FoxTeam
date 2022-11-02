@@ -5,7 +5,6 @@
 using namespace std;
 // Ό³Έν :
 class GameEngineUIRenderer;
-class Player;
 class UI_HPBars : public GameEngineActor
 {
 public:
