@@ -1,5 +1,4 @@
 #pragma once
-
 #include "RenderSet.h"
 #include "FBXAnimation.h"
 
@@ -71,6 +70,9 @@ public:
 	void Update(float _DeltaTime) override;
 	void Render(float _DeltaTime, bool _IsDeferred) override;
 
+protected: // 221102 SJH ADD : 그림자 버텍스 & 픽셀셰이더 셋팅
+	void ShadowInit(GameEngineRenderingPipeLine* _ShadowPipe) override;
+
 private:
 	std::vector<RenderSet> RenderSets;
 	GameEngineFBXMesh* FBXMesh;
@@ -86,5 +88,8 @@ private:
 	GameEngineFBXRenderer* parentBoneRenderer_;
 	int parentBoneIndex_;
 	float4 customOffest_;
+
+private:
+	std::string PipeLineName_;										// 221102 SJH ADD : 파이프라인 탐색용
 };
 

@@ -41,8 +41,6 @@ GameEngineFBXRenderer::~GameEngineFBXRenderer()
 	{
 		delete Animation.second;
 	}
-
-
 }
 
 
@@ -71,6 +69,19 @@ void GameEngineFBXRenderer::Render(float _DeltaTime, bool _IsDeferred)
 			RenderSets[i].PipeLine_->Reset();
 		}
 	}
+}
+
+void GameEngineFBXRenderer::ShadowInit(GameEngineRenderingPipeLine* _ShadowPipe)
+{
+	if (true == PipeLineName_.empty())
+	{
+		GameEngineDebug::MsgBoxError("현재 렌더러의 렌더링파이프라인명을 알수없습니다!!!!");
+		return;
+	}
+
+	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find(PipeLineName_);
+	_ShadowPipe->SetInputAssembler1VertexBufferSetting(Pipe->GetVertexBuffer());
+	_ShadowPipe->SetInputAssembler2IndexBufferSetting(Pipe->GetIndexBuffer());
 }
 
 void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::string _PipeLine, int _MeshIndex)
@@ -366,6 +377,7 @@ void GameEngineFBXRenderer::SetFBXMesh(const std::string& _Value, std::string _P
 		GameEngineDebug::MsgBoxError("존재하지 않는 fbx매쉬를 세팅했습니다.");
 	}
 
+	PipeLineName_ = _PipeLine;
 	GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Find(_PipeLine);
 
 	std::vector<FbxMeshSet>& AllMeshSet = FBXMesh->GetAllMeshMap();
