@@ -53,6 +53,7 @@ public: // 221025 SJH ADD : Functions related to outline activation and deactiva
 
 public:
 	void InitSpawnPoint(const float4& _position);
+	void InitEyeSight();
 
 	void Move(const float4& _position);
 	void MoveWithPathFind(const float4& _position);
@@ -181,7 +182,7 @@ protected:
 private:
 	void initInput();
 	void initState();
-	void initEyeSight();
+
 
 
 

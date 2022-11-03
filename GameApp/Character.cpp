@@ -155,7 +155,7 @@ void Character::Start()
 	initInput();
 	initState();
 	initBasicEffect();
-	//initEyeSight();
+	//InitEyeSight();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
@@ -1121,7 +1121,7 @@ void Character::initState()
 	deathState_ << "PlayerAlive";
 }
 
-void Character::initEyeSight()
+void Character::InitEyeSight()
 {
 	vertices_.reserve(37);
 	indices_.reserve(36 * 3);
