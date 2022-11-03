@@ -7,7 +7,7 @@
 #include <GameEngine/GameEngineProgressBarRenderer.h>
 
 UI_CharFollow::UI_CharFollow()
-	: UIOn(false)
+	: UIOn(true)
 {
 }
 
@@ -89,6 +89,8 @@ void UI_CharFollow::SetFollowInfo(float4 _Pos, CharacterStat* _Stat)
 	SPBar_Renderer->SetPercent(SPPercent);
 
 	HpBarPos = _Pos;
+	//계산된 플레이어의 위치에 맞춰서 피봇을 맞춘다
+	HpBarPos = HpBarPos + float4{0.f, 80.f, 0.f ,0.f};
 	SpBarPos = HpBarPos + float4{ 0.0f, -7.f, 0.f,0.f };
 	EmptyBarPos = HpBarPos + float4{ 0.f, -2.f, 0.f,0.f };
 

@@ -92,8 +92,9 @@ void PlayerUIController::Update(float _DeltaTime)
 	status_UI->SetStatus(pm->GetMyPlayer().stat_);
 	skill_UI->SetStatus(pm->GetMyPlayer().stat_);
 	hpbars_UI->SetStatus(pm->GetMyPlayer().stat_);
-	float4 pos = pm->GetMyPlayer().curPos_;
-	float4 playerpos = calhelper_->Cal3Dto2D(pm->GetMyPlayer().curPos_);
-	charfollow_UI->SetFollowInfo(playerpos, pm->GetMyPlayer().stat_);
+	float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
+	charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
+
+	
 }
 
