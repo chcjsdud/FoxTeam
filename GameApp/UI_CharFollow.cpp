@@ -27,14 +27,14 @@ void UI_CharFollow::Start()
 	EmptyBarSize = {72.f, 14.f};
 
 	{
-		HPBar_Renderer = CreateTransformComponent<GameEngineProgressBarRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		HPBar_Renderer = CreateTransformComponent<GameEngineProgressBarRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL0);
 		HPBar_Renderer->SetImage("HPBar_UI.png", "PointSmp");
 		HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
 		HPBar_Renderer->GetTransform()->SetLocalScaling(HpBarSize);
 		HPBar_Renderer->SetProgressBarDirect(static_cast<int>(ProgressBarDirect::RightToLeft));
 		HPBar_Renderer->SetPercent(0.5f);
 
-		SPBar_Renderer = CreateTransformComponent<GameEngineProgressBarRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		SPBar_Renderer = CreateTransformComponent<GameEngineProgressBarRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL0);
 		SPBar_Renderer->SetImage("SPBar_UI.png", "PointSmp");
 		SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);
 		SPBar_Renderer->GetTransform()->SetLocalScaling(SpBarSize);

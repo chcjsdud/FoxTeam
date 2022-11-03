@@ -18,7 +18,7 @@ void UI_HyperMap::Start()
 	MapPos = { 0.f, 0.f, -1.f };
 		
 	{
-		fullMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
+		fullMapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL1);
 		fullMapRenderer_->SetImage("Map_Full.png", "PointSmp");
 		fullMapRenderer_->GetTransform()->SetLocalPosition(MapPos);
 		fullMapRenderer_->GetTransform()->SetLocalScaling(fullMapRenderer_->GetCurrentTexture()->GetTextureSize());
