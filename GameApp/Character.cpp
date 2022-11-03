@@ -25,6 +25,7 @@
 #include "LevelUpEffect.h"
 #include "UI_Skill.h"
 #include "CharCrowdControlPacket.h"
+#include <GameEngine/GameEngineRenderWindow.h>
 
 Character::Character()
 	: collision_(nullptr)
@@ -154,7 +155,7 @@ void Character::Start()
 	initInput();
 	initState();
 	initBasicEffect();
-	//initEyeSight();
+	initEyeSight();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
@@ -305,36 +306,7 @@ void Character::Update(float _DeltaTime)
 		return;
 	}
 
-	static float sightUpdateTime = 0.0f;
-	sightUpdateTime += _DeltaTime;
-	if (bFocused_ && sightUpdateTime > 0.066f)
-	{
-		sightUpdateTime = 0.0f;
-		ID3D11DeviceContext* dc = GameEngineDevice::GetContext();
-
-		D3D11_MAPPED_SUBRESOURCE subResource;
-		ZeroMemory(&subResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
-
-		std::vector result = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition());
-
-		for (size_t i = 0; i < vertices_.size(); i++)
-		{
-			vertices_[i].POSITION = result[i];
-		}
-
-		dc->Map(eyeSightVertex_->Buffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
-		memcpy(subResource.pData, &vertices_[0], subResource.RowPitch);
-		dc->Unmap(eyeSightVertex_->Buffer_, 0);
-	}
-
-	CameraComponent* cam = level_->GetMainCamera();
-	cam->CameraTransformUpdate();
-
-	float4x4 View = cam->GetTransform()->GetTransformData().View_;
-	float4x4 Projection = cam->GetTransform()->GetTransformData().Projection_;
-
-	
-
+	updateFOW(_DeltaTime);
 }
 
 
@@ -1151,21 +1123,27 @@ void Character::initState()
 
 void Character::initEyeSight()
 {
-	vertices_.reserve(36);
-	indices_.reserve(36);
+	vertices_.reserve(37);
+	indices_.reserve(36 * 3);
 
-	for (size_t i = 0; i < 36; i++)
+	for (size_t i = 0; i < 37; i++)
 	{
 		GameEngineVertex v;
 		v.POSITION = { 0.0f, 0.0f, 0.0f, 1.0f };
-		v.COLOR = float4::BLACK;
+		v.COLOR = float4::WHITE;
 		vertices_.push_back(v);
 	}
 
-	for (size_t i = 0; i < 36; i++)
+	for (size_t i = 0; i < 36 - 1; i++)
 	{
-		indices_.push_back(i);
+		indices_.push_back(i + 0);
+		indices_.push_back(i + 1);
+		indices_.push_back(36);
 	}
+
+	indices_.push_back(35);
+	indices_.push_back(0);
+	indices_.push_back(36);
 
 	eyeSightVertex_ = new GameEngineVertexBuffer();
 	eyeSightIndex_ = new GameEngineIndexBuffer();
@@ -1174,16 +1152,67 @@ void Character::initEyeSight()
 	eyeSightIndex_->Create(indices_, D3D11_USAGE::D3D11_USAGE_DEFAULT);
 
 	eyeSightRenderer_ = CreateTransformComponent<GameEngineRenderer>(nullptr);
-	eyeSightRenderer_->SetRenderingPipeLine("DeferredNavTile");
+	eyeSightRenderer_->SetRenderingPipeLine("Color");
 	eyeSightRenderer_->SetMesh(eyeSightVertex_, eyeSightIndex_);
 	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
-	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	eyeSightRenderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", fowColor_);
 
 	fowRenderTarget_ = new GameEngineRenderTarget;
 	fowTexture_ = new GameEngineTexture;
 	fowTexture_->Create(float4(1280.f, 720.f), DXGI_FORMAT_R8G8B8A8_UNORM);
 	fowRenderTarget_->Create(fowTexture_, float4::BLACK);
 	fowRenderTarget_->Clear();
+
+	GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+	if (Window != nullptr)
+	{
+		float4 Size = { 128, 72 };
+		Window->PushRenderTarget("FOW", fowRenderTarget_, Size * 3);
+	}
+}
+
+void Character::updateFOW(float _deltaTime)
+{
+	static float sightUpdateTime = 0.0f;
+	sightUpdateTime += _deltaTime;
+	if (bFocused_ && sightUpdateTime > 0.066f)
+	{
+		sightUpdateTime = 0.0f;
+		ID3D11DeviceContext* dc = GameEngineDevice::GetContext();
+
+		D3D11_MAPPED_SUBRESOURCE subResource;
+		ZeroMemory(&subResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
+
+		std::vector result = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition());
+
+		for (size_t i = 0; i < result.size(); i++)
+		{
+			vertices_[i].POSITION = result[i];
+		}
+
+		vertices_.back().POSITION = transform_.GetWorldPosition();
+
+		dc->Map(eyeSightVertex_->Buffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+		memcpy(subResource.pData, &vertices_[0], subResource.RowPitch);
+		dc->Unmap(eyeSightVertex_->Buffer_, 0);
+	}
+
+	CameraComponent* cam = level_->GetMainCamera();
+	cam->CameraTransformUpdate();
+
+	float4x4 View = cam->GetTransform()->GetTransformData().View_;
+	float4x4 Projection = cam->GetTransform()->GetTransformData().Projection_;
+
+	fowRenderTarget_->Clear();
+	fowRenderTarget_->Setting();
+	eyeSightRenderer_->GetTransform()->GetTransformData().Projection_ = Projection;
+	eyeSightRenderer_->GetTransform()->GetTransformData().View_ = View;
+
+	eyeSightRenderer_->GetTransform()->GetTransformData().WVPCalculation();
+	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerNone");
+	eyeSightRenderer_->Render(_deltaTime, false);
+	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
 }
 
 void Character::initBasicEffect()

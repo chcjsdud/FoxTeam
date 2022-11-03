@@ -236,7 +236,7 @@ void CameraComponent::RenderForward(float _DeltaTime)
 	{
 		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
 
-		Renderers.sort(ZSort);
+		//Renderers.sort(ZSort);
 
 		for (GameEngineRendererBase* Renderer : Renderers)
 		{

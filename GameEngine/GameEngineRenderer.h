@@ -30,7 +30,6 @@ public:
 	void SetMesh(const std::string& _VtxName, const std::string& _IdxName);
 	void SetMesh(GameEngineVertexBuffer* _VtxBuffer, GameEngineIndexBuffer* _IdxBuffer);
 
-protected:
 	void Render(float _DeltaTime, bool _IsDeferred) override;
 
 protected: // Protected Shadow Initalize Related Function

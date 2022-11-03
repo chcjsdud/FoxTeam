@@ -616,7 +616,7 @@ void LumiaLevel::InitIMGUIWindow()
 	if (nullptr != GameEngineGUI::GetInst()->FindGUIWindow("RenderWindow"))
 	{
 		GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
-		Window->ClaerRenderTarget();
+		//Window->ClaerRenderTarget();
 		float4 Size = { 128, 72 };
 		Window->PushRenderTarget("메인 카메라 타겟", GetMainCamera()->GetCameraRenderTarget(), Size);
 		Window->PushRenderTarget("UI 카메라 타겟", GetUICamera()->GetCameraRenderTarget(), Size);

@@ -85,7 +85,7 @@ public:
 	NavFace* GetCurrentNavFace() { return currentNavFace_; }
 	std::vector<ItemBase*> GetInventory() { return inventory_; }
 	PlayerUIController* GetUIController() { return uiController_; }
-	GameEngineVertexBuffer* GetEyeSightVertexBuffer() { return eyeSightVertex_; }
+	GameEngineRenderTarget* GetFOWRenderTarget() { return fowRenderTarget_; }
 
 	void SetDirection(float4 _dir) { direction_ = _dir; }
 	void SetCurrentNavFace(NavFace* _Navi) { currentNavFace_ = _Navi; }
@@ -183,6 +183,8 @@ private:
 	void initState();
 	void initEyeSight();
 
+
+
 private:
 	void moveTick(float _deltaTime, const float4& _startPosition);
 
@@ -197,6 +199,7 @@ private:
 	void SetEquipBuildItem(const std::string& _itemName, EquipmentType _type);
 	void checkBuildItems();
 	void checkBuildItemsRecursive(ItemBase* _item);
+	void updateFOW(float _deltaTime);
 
 #pragma region DebuffCheck
 	void DebuffCheck(float _DeltaTime);
@@ -354,7 +357,7 @@ protected:
 	float4 destination_;
 	float4 direction_;
 	std::vector<float4> destinations_;
-
+	float4 fowColor_ = float4::WHITE;
 
 	// æ∆¿Ã≈€
 	ItemBoxManager* itemBoxmanager_;
