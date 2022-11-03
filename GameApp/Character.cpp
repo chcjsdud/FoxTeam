@@ -519,6 +519,11 @@ void Character::getItem(const std::string& _itemName)
 	checkItemRecipes();
 }
 
+void Character::gatherItem(ItemBase* _item)
+{
+	int a = 0;
+}
+
 void Character::checkItemBox()
 {
 	if (itemBoxmanager_ == nullptr)
@@ -546,32 +551,35 @@ void Character::checkItemBox()
 
 	GameEngineCollision* OtherCol = collision_->GetCollision(static_cast<int>(eCollisionGroup::ItemBox));
 
-	if (nullptr != OtherCol)
+	if (nullptr == OtherCol)
 	{
-		ItemBox* Box = GetLevelConvert<LumiaLevel>()->GetItemBoxManager()->GetSelectBox();
+		itemBoxmanager_->CloseItemBox();
+		return;
+	}
 
-		if (nullptr == Box)
-		{
-			return;
-		}
+	ItemBox* Box = GetLevelConvert<LumiaLevel>()->GetItemBoxManager()->GetSelectBox();
 
-		if (OtherCol != Box->GetCollision())
-		{
-			return;
-		}
+	if (nullptr == Box)
+	{
+		return;
+	}
 
-		// 현재 박스를 누른 후에 커서를 SelectBox 바깥으로 옮기면 박스가 열리지 않음
-		// Player가 조건이 만족하는 경우 박스를 연다.
-		// ItemBox UI 를 열음
+	if (OtherCol != Box->GetCollision())
+	{
+		return;
+	}
+
+	if (false == Box->IsGatherBox())
+	{
 		itemBoxmanager_->OpenItemBox();
 		return;
 	}
 
+	// 채집물인 경우 인벤토리로 바로 획득
+	gatherItem(Box->GetItem(0));
 
-
-	itemBoxmanager_->CloseItemBox();
-
-
+	// 현재 박스를 누른 후에 커서를 SelectBox 바깥으로 옮기면 박스가 열리지 않음
+	// bool isClicked 사용
 	// CloseItemBox
 	// Player가 아이템박스로부터 멀어진 경우
 	// UI가 닫힌다.

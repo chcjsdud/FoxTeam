@@ -4,6 +4,7 @@
 
 ItemBox::ItemBox()
 	: col(nullptr)
+	, isGatherBox(false)
 {
 
 }

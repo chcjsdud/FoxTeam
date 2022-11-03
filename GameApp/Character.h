@@ -194,6 +194,7 @@ private:
 	void getItem(int _index);
 	void getEquipItem(EquipmentItem* _item, int _index);
 	void getItem(const std::string& _itemName);
+	void gatherItem(ItemBase* _item);
 	void checkItemBox();
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
 	void mixingItem();

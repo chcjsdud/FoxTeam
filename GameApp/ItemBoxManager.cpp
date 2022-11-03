@@ -432,29 +432,15 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 		NewFile.Read(Data->info.Scale);
 		NewFile.Read(Data->area);
 
-		if (std::string::npos != Data->info.BoxType.find("Fishing"))
+		// Ã¤Áý¹°
+		if (std::string::npos != Data->info.BoxType.find("Fishing") ||
+			std::string::npos != Data->info.BoxType.find("Potato") ||
+			std::string::npos != Data->info.BoxType.find("TreeofLife") ||
+			std::string::npos != Data->info.BoxType.find("Pebbles") ||
+			std::string::npos != Data->info.BoxType.find("Flower") ||
+			std::string::npos != Data->info.BoxType.find("Branch") )
 		{
-			int a = 0;
-		}
-		else if (std::string::npos != Data->info.BoxType.find("Potato"))
-		{
-			int a = 0;
-		}
-		else if (std::string::npos != Data->info.BoxType.find("TreeofLife"))
-		{
-			int a = 0;
-		}
-		else if (std::string::npos != Data->info.BoxType.find("Pebbles"))
-		{
-			int a = 0;
-		}
-		else if (std::string::npos != Data->info.BoxType.find("Flower"))
-		{
-			int a = 0;
-		}
-		else if (std::string::npos != Data->info.BoxType.find("Branch"))
-		{
-			int a = 0;
+			Data->isGatherBox = true;
 		}
 
 		Data->col = CreateTransformComponent<GameEngineCollision>(static_cast<int>(eCollisionGroup::ItemBox));

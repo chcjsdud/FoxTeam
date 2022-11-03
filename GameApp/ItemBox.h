@@ -34,6 +34,11 @@ public:
 	ItemBase* GetItem(int _index);
 	bool DeleteItem(int _index);
 
+	bool IsGatherBox()
+	{
+		return isGatherBox;
+	}
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
@@ -44,5 +49,7 @@ private:
 	std::string area;
 
 	std::list<ItemBase*> itemList;
+
+	bool isGatherBox;
 };
 
