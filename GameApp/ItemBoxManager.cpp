@@ -212,7 +212,7 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 			bool Check = false;
 
 			// 아이템 최대 갯수
-			if (curList.size() >= 8)
+			if (curList.size() > 6)
 			{
 				Check = true;
 			}
@@ -237,6 +237,11 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 			}
 
 			++Count;
+
+			if (Count > 100000)
+			{
+				GameEngineDebug::MsgBox("if (Count > 100000)");
+			}
 		}
 
 		if (false == SameItem)
@@ -332,8 +337,7 @@ void ItemBoxManager::Start()
 
 	tempDir.MoveParent("FoxTeam");
 	tempDir.MoveChild("Resources");
-	tempDir.MoveChild("FBX");
-	tempDir.MoveChild("YSJ");
+	tempDir.MoveChild("Texture");
 	tempDir.MoveChild("ItemBox");
 
 	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile(".FBX");
