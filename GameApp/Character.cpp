@@ -155,7 +155,7 @@ void Character::Start()
 	initInput();
 	initState();
 	initBasicEffect();
-	initEyeSight();
+	//initEyeSight();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
