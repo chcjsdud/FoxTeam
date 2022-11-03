@@ -53,7 +53,7 @@ void HyperLoop::Start()
 
 void HyperLoop::Update(float _DeltaTime)
 {
-	Location SelectedArea = Location::NONE;
+	SelectedArea = Location::NONE;
 
 	if (nullptr != collision_ &&
 		collision_->IsUpdate())
@@ -66,6 +66,11 @@ void HyperLoop::Update(float _DeltaTime)
 	{
 		// 하이퍼루프 UI가 나오고, 특정 지역을 선택하면 해당 지역으로 이동
 
+	}
+
+
+	if (true == collision_->Collision(eCollisionGroup::Player))
+	{
 		//이건호 : 맵 UI를 킨다 
 		// MapOff(); 함수를 사용하면 Map뜬거를 끌수 있습니다
 		mapUI_->MapOn();
@@ -73,9 +78,11 @@ void HyperLoop::Update(float _DeltaTime)
 		//이건호 : 내가 맵에서 우클릭으로 클릭한 지역을 enum class Location으로 받을 수 있습니다
 		SelectedArea = mapUI_->ReturnSelectedLocation();
 	}
-	else
+
+	if (false == collision_->Collision(eCollisionGroup::Player))
 	{
 		mapUI_->MapOff();
+		SelectedArea = Location::NONE;
 	}
 
 	if (Location::NONE != SelectedArea)
@@ -88,6 +95,7 @@ void HyperLoop::Update(float _DeltaTime)
 
 		player->GetTransform()->SetWorldPosition(spawnPoints[point]);
 		mapUI_->MapOff();
+		SelectedArea = Location::NONE;
 	}
 }
 

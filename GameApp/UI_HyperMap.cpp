@@ -26,10 +26,9 @@ void UI_HyperMap::Start()
 
 	{
 		selectAreaRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		selectAreaRenderer_->SetImage("Map_Alley_Pin.png", "PointSmp");
+		selectAreaRenderer_->SetImage("Map_Empty.png", "PointSmp");
 		selectAreaRenderer_->GetTransform()->SetLocalPosition(MapPos + float4{0.f,0.f,-1.f,0.f});
 		selectAreaRenderer_->GetTransform()->SetLocalScaling(selectAreaRenderer_->GetCurrentTexture()->GetTextureSize());
-		selectAreaRenderer_->Off();
 	}
 
 
@@ -66,7 +65,7 @@ void UI_HyperMap::Update(float _DeltaTime)
 			switch (SelectedLocation)
 			{
 			case Location::NONE:
-				selectAreaRenderer_->Off();
+				selectAreaRenderer_->SetImage("Map_Empty.png", "PointSmp");
 				break;
 			case Location::DOCK:
 				selectAreaRenderer_->On();
@@ -133,14 +132,19 @@ void UI_HyperMap::Update(float _DeltaTime)
 				selectAreaRenderer_->SetImage("Map_Laboratory_Pin.png", "PointSmp");
 				break;
 			case Location::ESCAPE_DOCK:
-				selectAreaRenderer_->Off();
+				selectAreaRenderer_->SetImage("Map_Empty.png", "PointSmp");
 				break;
 			case Location::MAX:
-				selectAreaRenderer_->Off();
+				selectAreaRenderer_->SetImage("Map_Empty.png", "PointSmp");
 				break;
 			default:
 				break;
 			}
+		}
+		else
+		{
+			selectAreaRenderer_->SetImage("Map_Empty.png", "PointSmp");
+			SelectedLocation = Location::NONE;
 		}
 	}
 }
@@ -278,6 +282,10 @@ Location UI_HyperMap::GetSelectLocation(float4 _Position)
 			SelectedLocation = Location::SCHOOL;
 		}
 	}
+	else
+	{
+		SelectedLocation = Location::NONE;
+	}
 
 
 	return SelectedLocation;
@@ -285,11 +293,11 @@ Location UI_HyperMap::GetSelectLocation(float4 _Position)
 
 Location UI_HyperMap::ReturnSelectedLocation()
 {
-	if (SelectedLocation == Location::NONE)
-	{
-		//하이퍼루프가 먼저 업데이트 되서 맵에 정보가 없으면
-		GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
-	}
+	//if (SelectedLocation == Location::NONE)
+	//{
+	//	//하이퍼루프가 먼저 업데이트 되서 맵에 정보가 없으면
+	//	GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
+	//}
 
 	return SelectedLocation;
 }
@@ -301,6 +309,7 @@ void UI_HyperMap::MapOff()
 	selectAreaRenderer_->Off();
 
 	textureCollision_->Off();
+	SelectedLocation = Location::NONE;
 	MapOnFlag = false;
 }
 
@@ -311,5 +320,6 @@ void UI_HyperMap::MapOn()
 	selectAreaRenderer_->On();
 
 	textureCollision_->On();
+	//SelectedLocation = Location::NONE;
 	MapOnFlag = true;
 }

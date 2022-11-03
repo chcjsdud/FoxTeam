@@ -25,6 +25,8 @@ private:
 
 	UI_HyperMap* mapUI_;
 
+	Location SelectedArea;
+
 	
 };
 
