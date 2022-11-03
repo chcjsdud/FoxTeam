@@ -1,6 +1,9 @@
 #include "PreCompile.h"
 #include "HyperLoop.h"
 #include <GameEngine/GameEngineCollision.h>
+#include "LumiaLevel.h"
+#include "LumiaMap.h"
+#include "PlayerInfoManager.h"
 
 HyperLoop::HyperLoop()
 	: renderer_(nullptr)
@@ -50,6 +53,8 @@ void HyperLoop::Start()
 
 void HyperLoop::Update(float _DeltaTime)
 {
+	Location SelectedArea = Location::NONE;
+
 	if (nullptr != collision_ &&
 		collision_->IsUpdate())
 	{
@@ -66,8 +71,23 @@ void HyperLoop::Update(float _DeltaTime)
 		mapUI_->MapOn();
 
 		//이건호 : 내가 맵에서 우클릭으로 클릭한 지역을 enum class Location으로 받을 수 있습니다
-		Location SelectedArea = mapUI_->ReturnSelectedLocation();
+		SelectedArea = mapUI_->ReturnSelectedLocation();
+	}
+	else
+	{
+		mapUI_->MapOff();
 	}
 
+	if (Location::NONE != SelectedArea)
+	{
+		Character* player = PlayerInfoManager::GetInstance()->GetMainCharacter();
+
+		std::vector<float4> spawnPoints = GetLevelConvert<LumiaLevel>()->GetMap()->GetCharacterSpawnPoints(static_cast<int>(SelectedArea));
+		GameEngineRandom random;
+		int point = random.RandomInt(0, spawnPoints.size() - 1);
+
+		player->GetTransform()->SetWorldPosition(spawnPoints[point]);
+		mapUI_->MapOff();
+	}
 }
 
