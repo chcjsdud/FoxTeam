@@ -395,7 +395,7 @@ std::vector<float4> LumiaMap::GetEyeSightPolygon(const float4& _position, const 
 	float degreeInterval = 10.f;
 	int count = 360 / static_cast<int>(degreeInterval);
 
-	result.resize(count + 1);
+	result.resize(count);
 
 	for (size_t i = 0; i < count; i++)
 	{

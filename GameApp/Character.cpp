@@ -82,6 +82,7 @@ Character::Character()
 	, eyeSightIndex_(nullptr)
 	, fowRenderTarget_(nullptr)
 	, fowTexture_(nullptr)
+	, fowDataThread_(nullptr)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -156,7 +157,7 @@ void Character::Start()
 	initInput();
 	initState();
 	initBasicEffect();
-	InitEyeSight();
+	//InitEyeSight();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
@@ -1203,21 +1204,57 @@ void Character::updateFOW(float _deltaTime)
 		eyeSightRenderer_->On();
 	}
 
-	static float sightUpdateTime = 0.0f;
-	sightUpdateTime += _deltaTime;
-	if (bFocused_ && sightUpdateTime > 0.033f)
+	static bool bCalc = false;
+
+	if (bCalc)
 	{
-		sightUpdateTime = 0.0f;
+		return;
+	}
+	else
+	{
+		static float sightUpdateTime = 0.0f;
+		sightUpdateTime += _deltaTime;
+
+		if (sightUpdateTime > 0.0416f)
+		{
+			if (nullptr != fowDataThread_)
+			{
+				fowDataThread_->join();
+				delete fowDataThread_;
+				fowDataThread_ = nullptr;
+			}
+
+			std::function<void(std::vector<float4>&, bool&)> func = std::bind(&Character::getFOWData, this, std::placeholders::_1, std::placeholders::_2);
+
+			fowDataThread_ = new std::thread(func, std::ref(fowData_), std::ref(bCalc));
+
+			bCalc = true;
+
+			sightUpdateTime = 0.0f;
+		}
+		else
+		{
+			return;
+		}
+	}
+
+	if (bFocused_)
+	{
 		ID3D11DeviceContext* dc = GameEngineDevice::GetContext();
 
 		D3D11_MAPPED_SUBRESOURCE subResource;
 		ZeroMemory(&subResource, sizeof(D3D11_MAPPED_SUBRESOURCE));
 
-		std::vector result = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition());
+		//std::vector<float4> result = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition());
 
-		for (size_t i = 0; i < result.size(); i++)
+		//for (size_t i = 0; i < result.size(); i++)
+		//{
+		//	vertices_[i].POSITION = result[i];
+		//}
+
+		for (size_t i = 0; i < fowData_.size(); i++)
 		{
-			vertices_[i].POSITION = result[i];
+			vertices_[i].POSITION = fowData_[i];
 		}
 
 		vertices_.back().POSITION = transform_.GetWorldPosition();
@@ -1242,6 +1279,13 @@ void Character::updateFOW(float _deltaTime)
 	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerNone");
 	eyeSightRenderer_->Render(_deltaTime, false);
 	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
+}
+
+void Character::getFOWData(std::vector<float4>& _data, bool& _bCalc)
+{
+	_data.clear();
+	_data = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition());
+	_bCalc = false;
 }
 
 void Character::initBasicEffect()
@@ -1995,15 +2039,15 @@ void Character::startPlayerDeath()
 
 		if (fraggerIndex_ == -1)
 		{
-			uiController_->GetWinLoseUI()->SetText("플레이어가 자살했습니다." + std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
+			uiController_->GetWinLoseUI()->SetText("플레이어가 자살했습니다." + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
 		}
 		else if (-2 == fraggerIndex_)
 		{
-			uiController_->GetWinLoseUI()->SetText("플레이어가 몬스터에게 살해당했습니다." + std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
+			uiController_->GetWinLoseUI()->SetText("플레이어가 몬스터에게 살해당했습니다." + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
 		}
 		else
 		{
-			uiController_->GetWinLoseUI()->SetText(pm->GetPlayerList()[fraggerIndex_].playerNickname_ + " 에게 살해당했습니다.\n" + std::to_string(myRank) + " \/ " + std::to_string(pm->GetPlayerList().size()));
+			uiController_->GetWinLoseUI()->SetText(pm->GetPlayerList()[fraggerIndex_].playerNickname_ + " 에게 살해당했습니다.\n" + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
 		}
 
 		uiController_->GetWinLoseUI()->Activate();

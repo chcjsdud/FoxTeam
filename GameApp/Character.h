@@ -202,6 +202,7 @@ private:
 	void checkBuildItems();
 	void checkBuildItemsRecursive(ItemBase* _item);
 	void updateFOW(float _deltaTime);
+	void getFOWData(std::vector<float4>& _data, bool& _bCalc);
 
 #pragma region DebuffCheck
 	void DebuffCheck(float _DeltaTime);
@@ -351,6 +352,9 @@ protected:
 	std::vector<UINT> indices_;
 	GameEngineRenderTarget* fowRenderTarget_;
 	GameEngineTexture* fowTexture_;
+	std::vector<float4> fowData_;
+	std::thread* fowDataThread_;
+	std::mutex mutex_;
 
 	// 맵, 이동
 	LumiaMap* currentMap_;
@@ -417,7 +421,7 @@ protected:
 
 
 	// 비 군중 제어 but 스탯 관여
-	float bSlowFlag_;
+	bool bSlowFlag_;
 	float slowTimer_;
 	float slowRatio_;
 	float originalMovementSpeed_;
