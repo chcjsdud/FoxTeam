@@ -26,6 +26,7 @@
 #include "UI_Skill.h"
 #include "CharCrowdControlPacket.h"
 #include <GameEngine/GameEngineRenderWindow.h>
+#include "FogOfWar.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -155,7 +156,7 @@ void Character::Start()
 	initInput();
 	initState();
 	initBasicEffect();
-	//InitEyeSight();
+	InitEyeSight();
 
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->GetTransform()->SetLocalScaling(150.0f);
@@ -1131,6 +1132,11 @@ void Character::initState()
 
 void Character::InitEyeSight()
 {
+	if (eyeSightVertex_ != nullptr)
+	{
+		return;
+	}
+
 	vertices_.reserve(37);
 	indices_.reserve(36 * 3);
 
@@ -1172,6 +1178,12 @@ void Character::InitEyeSight()
 	fowRenderTarget_->Create(fowTexture_, float4::BLACK);
 	fowRenderTarget_->Clear();
 
+
+	FogOfWar* fow = level_->AddPostProcessCameraMergePrev<FogOfWar>();
+	fow->SetTarget(level_->GetMainCamera()->GetCameraRenderTarget());
+	fow->SetFilter(fowRenderTarget_);
+
+
 	GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
 	if (Window != nullptr)
 	{
@@ -1182,9 +1194,18 @@ void Character::InitEyeSight()
 
 void Character::updateFOW(float _deltaTime)
 {
+	if (level_->GetMainCamera()->IsDebugCheck())
+	{
+		eyeSightRenderer_->Off();
+	}
+	else
+	{
+		eyeSightRenderer_->On();
+	}
+
 	static float sightUpdateTime = 0.0f;
 	sightUpdateTime += _deltaTime;
-	if (bFocused_ && sightUpdateTime > 0.066f)
+	if (bFocused_ && sightUpdateTime > 0.033f)
 	{
 		sightUpdateTime = 0.0f;
 		ID3D11DeviceContext* dc = GameEngineDevice::GetContext();

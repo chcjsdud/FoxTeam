@@ -23,5 +23,7 @@ public:
 	virtual void Initialize() override;
 	virtual void Effect(float _DeltaTime) override;
 
+public:
+	void SetFilter(GameEngineRenderTarget* _renderTarget);
 };
 

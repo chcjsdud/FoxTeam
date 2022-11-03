@@ -30,12 +30,12 @@ const char* enum_MapName[15] = {
 };
 
 const char* enum_MonsterName[6] = {
-		"CHICKEN",		
-		"WILDDOG",		
+		"CHICKEN",
+		"WILDDOG",
 		"BEAR",
-		"BOAR",		
-		"BAT",			
-		"WOLF",			
+		"BOAR",
+		"BAT",
+		"WOLF",
 };
 
 LumiaMap::LumiaMap()
@@ -178,11 +178,11 @@ void LumiaMap::Update(float _deltaTime)
 				//float Length = float4::Calc_Len3D(PlayerPos, RenderSets[j].LocalPos * mapRenderers[i]->GetTransform()->GetTransformData().WorldWorld_);
 				float4 RenderSetPos = RenderSets[j].LocalPos * mapRenderers[i]->GetTransform()->GetTransformData().WorldWorld_;
 
-				float Length = float4::Calc_Len2D(PlayerPos.x, PlayerPos.z, 
+				float Length = float4::Calc_Len2D(PlayerPos.x, PlayerPos.z,
 					RenderSetPos.x, RenderSetPos.z);
 
 				tmp.push_back(RenderSets[j].Radius);
-				
+
 				if (RenderSets[j].Radius > 1.0f)
 				{
 					if (Length >= RENDER_RANGE * RenderSets[j].Radius)
@@ -389,13 +389,13 @@ std::vector<float4> LumiaMap::GetEyeSightPolygon(const float4& _position, const 
 		return std::vector<float4>();
 	}
 
-	float4 direction = {0.0f, 0.0f, 1.0f};
+	float4 direction = { 0.0f, 0.0f, 1.0f };
 	float degree = 0.f;
 	float interval = _length / 15.f;
 	float degreeInterval = 10.f;
 	int count = 360 / static_cast<int>(degreeInterval);
 
-	result.reserve(count + 1);
+	result.resize(count + 1);
 
 	for (size_t i = 0; i < count; i++)
 	{
@@ -419,7 +419,7 @@ std::vector<float4> LumiaMap::GetEyeSightPolygon(const float4& _position, const 
 			}
 		}
 
-		result.push_back(checkPosition);
+		result[i] = checkPosition;
 	}
 
 	return result;
@@ -890,7 +890,7 @@ void LumiaMap::setAllItem()
 	itembox->PushRandomItem("HARBOR", "Slippers", 11);
 	itembox->PushRandomItem("HARBOR", "Ramen", 6);
 	itembox->PushRandomItem("HARBOR", "Coffee", 7);
-	
+
 }
 
 void LumiaMap::setCharacterSpawnPoints(GameEngineDirectory _dir)
