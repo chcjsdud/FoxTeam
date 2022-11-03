@@ -758,28 +758,31 @@ void Character::checkBuildItemsRecursive(ItemBase* _item)
 
 IUnit* Character::getMousePickedCharacter()
 {
-	GameEngineCollision* mousePickedCollision = mouse_->GetRayCollision()->GetCollision(eCollisionGroup::Player);
-	GameEngineActor* mousePickedActor = nullptr;
-	IUnit* mousePickedCharacter = nullptr;
-	if (nullptr != mousePickedCollision)
 	{
-		mousePickedActor = mousePickedCollision->GetActor();
-		if (nullptr != mousePickedActor)
+		std::list<GameEngineCollision*> mousePickedCollision = mouse_->GetRayCollision()->GetCollisionList(eCollisionGroup::Player);
+		GameEngineActor* mousePickedActor = nullptr;
+		for (GameEngineCollision* c : mousePickedCollision)
 		{
-			return mousePickedCharacter = dynamic_cast<IUnit*>(mousePickedActor);
+			mousePickedActor = c->GetActor();
+			if (nullptr != mousePickedActor && mousePickedActor != this)
+			{
+				return dynamic_cast<IUnit*>(mousePickedActor);
+			}
 		}
 	}
 
+
+
+
 	{
-		GameEngineCollision* mousePickedCollision = mouse_->GetRayCollision()->GetCollision(eCollisionGroup::Monster);
+		std::list<GameEngineCollision*> mousePickedCollision = mouse_->GetRayCollision()->GetCollisionList(eCollisionGroup::Monster);
 		GameEngineActor* mousePickedActor = nullptr;
-		IUnit* mousePickedMonster = nullptr;
-		if (nullptr != mousePickedCollision)
+		for (GameEngineCollision* c : mousePickedCollision)
 		{
-			mousePickedActor = mousePickedCollision->GetActor();
+			mousePickedActor = c->GetActor();
 			if (nullptr != mousePickedActor)
 			{
-				return mousePickedMonster = dynamic_cast<IUnit*>(mousePickedActor);
+				return dynamic_cast<IUnit*>(mousePickedActor);
 			}
 		}
 	}
