@@ -440,6 +440,9 @@ void GameEngineLevel::ReleaseShadowTarget()
 		Depths_[i] = nullptr;
 	}
 	Depths_.clear();
+
+	// ¸ðµç ±¤¿ø(ºû) ÄÄÆ÷³ÍÆ®¸ñ·Ï Á¦°Å
+	AllLights_.clear();
 }
 
 GameEngineLevel::GameEngineLevel()

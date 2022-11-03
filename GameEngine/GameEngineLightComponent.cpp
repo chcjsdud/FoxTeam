@@ -43,22 +43,23 @@ void GameEngineLightComponent::Start()
 	GetLevel()->ShadowTexture_->Create(DepthTextureInfo, false);
 	GetLevel()->ShadowTexture_->CreateShaderResourceView();
 
-	// 1-2. 각 광원(빛)의 렌더타겟리소스와 깊이/스텐실버퍼 리소스를 생성
-	int LightCount = static_cast<int>(GetLevel()->AllLights_.size());
-	for (int LightNum = 0; LightNum < LightCount; ++LightNum)
-	{
-		// 렌더타겟 리소스 배열
-		ID3D11RenderTargetView* Result = GetLevel()->ShadowTexture_->CreateRenderTargetViewArrayIndex(LightNum);
+	// 221103 SJH 임시주석 : 그림자 완전히 적용전 메모리릭 발생으로 인한 임시주석처리
+	//// 1-2. 각 광원(빛)의 렌더타겟리소스와 깊이/스텐실버퍼 리소스를 생성
+	//int LightCount = static_cast<int>(GetLevel()->AllLights_.size());
+	//for (int LightNum = 0; LightNum < LightCount; ++LightNum)
+	//{
+	//	// 렌더타겟 리소스 배열
+	//	ID3D11RenderTargetView* Result = GetLevel()->ShadowTexture_->CreateRenderTargetViewArrayIndex(LightNum);
 
-		// 깊이/스텐실버퍼 리소스 배열
-		GameEngineDepthBuffer* DepthBuffer_ = new GameEngineDepthBuffer();
-		DepthBuffer_->Create({ 4096, 4096 });
+	//	// 깊이/스텐실버퍼 리소스 배열
+	//	GameEngineDepthBuffer* DepthBuffer_ = new GameEngineDepthBuffer();
+	//	DepthBuffer_->Create({ 4096, 4096 });
 
-		GetLevel()->AllLights_[LightNum]->ShadowTargetView_ = Result;
-		GetLevel()->AllLights_[LightNum]->ShadowTargetDepth_ = DepthBuffer_->GetDepthStencilView();
-		GetLevel()->Depths_.push_back(DepthBuffer_);
-		GetLevel()->RenderTargets_.push_back(Result);
-	}
+	//	GetLevel()->AllLights_[LightNum]->ShadowTargetView_ = Result;
+	//	GetLevel()->AllLights_[LightNum]->ShadowTargetDepth_ = DepthBuffer_->GetDepthStencilView();
+	//	GetLevel()->Depths_.push_back(DepthBuffer_);
+	//	GetLevel()->RenderTargets_.push_back(Result);
+	//}
 }
 
 void GameEngineLightComponent::Update(float _DeltaTime)
