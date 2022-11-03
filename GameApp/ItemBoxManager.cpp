@@ -432,6 +432,31 @@ void ItemBoxManager::UserLoad(const std::string& _Path)
 		NewFile.Read(Data->info.Scale);
 		NewFile.Read(Data->area);
 
+		if (std::string::npos != Data->info.BoxType.find("Fishing"))
+		{
+			int a = 0;
+		}
+		else if (std::string::npos != Data->info.BoxType.find("Potato"))
+		{
+			int a = 0;
+		}
+		else if (std::string::npos != Data->info.BoxType.find("TreeofLife"))
+		{
+			int a = 0;
+		}
+		else if (std::string::npos != Data->info.BoxType.find("Pebbles"))
+		{
+			int a = 0;
+		}
+		else if (std::string::npos != Data->info.BoxType.find("Flower"))
+		{
+			int a = 0;
+		}
+		else if (std::string::npos != Data->info.BoxType.find("Branch"))
+		{
+			int a = 0;
+		}
+
 		Data->col = CreateTransformComponent<GameEngineCollision>(static_cast<int>(eCollisionGroup::ItemBox));
 		Data->col->GetTransform()->SetLocalPosition(Data->info.Pos);
 		Data->col->GetTransform()->SetLocalScaling(Data->info.Scale);

@@ -265,6 +265,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="GatherItemBox.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="HyperLoop.cpp">
       <SubType>
       </SubType>
@@ -717,6 +721,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="FogOfWar.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="GatherItemBox.h">
       <SubType>
       </SubType>
     </ClInclude>
