@@ -29,27 +29,29 @@ void FBXAnimation::Update(float _DeltaTime)
 {
 	CurFrameTime += _DeltaTime;
 
-	if (CurFrameTime >= FrameTime)
+	while (CurFrameTime >= FrameTime)
 	{
 		CurFrameTime -= FrameTime;
 
 		++CurFrame;
+
+		if (CurFrame >= End) // 현 프레임이 끝 프레임에 다다랐을 때
+		{
+			// 0805 박종원 : 루프 애니메이션이 아니면 더 이상의 프레임 갱신을 하지 않습니다.
+			if (false == isLoop_)
+			{
+				bEnd_ = true;
+				return;
+			}
+
+			CurFrame = Start;
+		}
 	}
 
 	int NextFrame = CurFrame;
 	++NextFrame;
 
-	if (CurFrame >= End) // 현 프레임이 끝 프레임에 다다랐을 때
-	{
-		// 0805 박종원 : 루프 애니메이션이 아니면 더 이상의 프레임 갱신을 하지 않습니다.
-		if (false == isLoop_)
-		{
-			bEnd_ = true;
-			return;
-		}
 
-		CurFrame = Start;
-	}
 
 	if (NextFrame >= End)
 	{
@@ -126,49 +128,54 @@ void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnima
 	CurFrameTime += _deltaTime;
 
 
-	if (CurFrameTime >= FrameTime)
+	while (CurFrameTime >= FrameTime)
 	{
 		CurFrameTime -= FrameTime;
 		++CurFrame;
+
+		if (CurFrame >= End)
+		{
+			if (false == isLoop_)
+			{
+				bEnd_ = true;
+				return;
+			}
+
+			CurFrame = Start;
+		}
 	}
 
 	int NextFrame = CurFrame;
 	++NextFrame;
 
-	if (CurFrame >= End)
-	{
-		if (false == isLoop_)
-		{
-			bEnd_ = true;
-			return;
-		}
 
-		CurFrame = Start;
-	}
+
 	if (NextFrame >= End)
 	{
 		NextFrame = 0;
 	}
 
 	oa->CurFrameTime += _deltaTime;
-	if (oa->CurFrameTime >= oa->FrameTime)
+	while (oa->CurFrameTime >= oa->FrameTime)
 	{
 		oa->CurFrameTime -= oa->FrameTime;
 		++oa->CurFrame;
+
+		if (oa->CurFrame >= oa->End)
+		{
+			if (false == oa->isLoop_)
+			{
+				oa->bEnd_ = true;
+				return;
+			}
+
+			oa->CurFrame = oa->Start;
+		}
 	}
 	int oaNextFrame = oa->CurFrame;
 	++oaNextFrame;
 
-	if (oa->CurFrame >= oa->End)
-	{
-		if (false == oa->isLoop_)
-		{
-			oa->bEnd_ = true;
-			return;
-		}
 
-		oa->CurFrame = oa->Start;
-	}
 	if (oaNextFrame >= oa->End)
 	{
 		oaNextFrame = 0;
