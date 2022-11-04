@@ -77,6 +77,8 @@ public: // Public Pure Virtual Function
 	int GetIndex() override;															// 인덱스 Get
 	void Damage(float _Amount, IUnit* _Target) override;								// 외부에서 호출하며 해당 몬스터에 데미지줄때 호출되는 함수
 
+
+
 public: // 패킷수신시 호출되는 함수들
 	void rcvAttack01(MonsterStateInfo _rcvStatInfo);									// 패킷수신으로 공격 처리(동기화처리)
 	void rcvAttack02(MonsterStateInfo _rcvStatInfo);									// 패킷수신으로 공격 처리(동기화처리)
@@ -101,10 +103,10 @@ public: // Public About Stat Update Function
 	void UpdateAllStat(MonsterStateInfo _UpdateStat);									// 전체 스텟을 수신하여 갱신
 
 public: // Public CC Related Function
-	void Stun(float _StunTime);															// 스턴상태로 전환 및 정보셋팅
-	void Knockback(float _KnockbackTime, float4 _KnockbackSpeed);						// 넉백상태로 전환 및 정보셋팅
-	void WallSlam(float _KnockbackTime, float4 _KnockbackSpeed, float _StunTime);		// 벽스턴상태로 전환 및 정보셋팅
-
+	void Stun(float _stunTime) override;
+	void Knockback(float _knockbackTime, float4 _knockbackSpeed) override;
+	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime) override;
+	void Slow(float _slowTime, float _slowRatio) override;
 public:
 protected: // Protected Pure Virtual Function
 	virtual void InitalizeStateInfo() = 0;												// 몬스터 상태정보 초기화

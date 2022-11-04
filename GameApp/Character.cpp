@@ -83,6 +83,8 @@ Character::Character()
 	, fowRenderTarget_(nullptr)
 	, fowTexture_(nullptr)
 	, fowDataThread_(nullptr)
+	, isInfight_(false)
+	, infightTimer_(0.0f)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -233,7 +235,7 @@ void Character::Update(float _DeltaTime)
 	CoolTimeCheck(_DeltaTime);
 	DebuffCheck(_DeltaTime);		// CC가 아닌 디버프(출혈, 슬로우 등) 체크
 	EffectTransformCheck(_DeltaTime);
-
+	
 	if (true == isPlayerDead_)
 	{
 		collision_->Off();
@@ -284,6 +286,10 @@ void Character::Update(float _DeltaTime)
 	checkCurrentNavFace();
 	checkItemBox();
 
+	if (true == isInfight_)
+	{
+		InfightCheck(_DeltaTime);
+	}
 
 
 	attackCooldown_ += _DeltaTime;
@@ -875,6 +881,7 @@ void Character::ChangeOverrideAnimation(const std::string& _animationName, const
 
 void Character::Damage(float _Amount, IUnit* _Target)
 {
+	ResetInfight();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 
 	if (0.0f >= _Amount)
@@ -946,7 +953,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 void Character::LevelUP(LevelUPData _Data)
 {
 	// 레벨이없네!!!!!
-	//stat_.Level += 1;
+	stat_.level += 1;
 	stat_.AttackPower += _Data.AttackPower_;					// 공격력
 	stat_.HPMax += _Data.HP_;									// 체력(최대체력)
 	stat_.HPRegeneration += _Data.HPRegeneration_;				// 체력재생
@@ -968,6 +975,7 @@ void Character::LevelUP(LevelUPData _Data)
 	if (3 > stat_.Level_r)
 	{
 		stat_.Level_r++;
+		stat_.Level_passive++;
 	}
 
 	if (2 > stat_.Level_d)
@@ -1017,6 +1025,8 @@ void Character::PickingOutLineOff()
 
 void Character::Stun(float _stunTime)
 {
+	ResetInfight();
+
 	if (true == stat_.isUnstoppable_)
 	{
 		return;
@@ -1033,6 +1043,8 @@ void Character::Stun(float _stunTime)
 
 void Character::Knockback(float _knockbackTime, float4 _knockbackSpeed)
 {
+	ResetInfight();
+
 	if (true == stat_.isUnstoppable_)
 	{
 		return;
@@ -1046,6 +1058,8 @@ void Character::Knockback(float _knockbackTime, float4 _knockbackSpeed)
 
 void Character::WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime)
 {
+	ResetInfight();
+
 	if (true == stat_.isUnstoppable_)
 	{
 		return;
@@ -1060,6 +1074,8 @@ void Character::WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _st
 
 void Character::Slow(float _slowTime, float _slowRatio)
 {
+	ResetInfight();
+
 	if (true == stat_.isUnstoppable_)
 	{
 		return;
@@ -1895,6 +1911,7 @@ void Character::updateWallSlam(float _deltaTime)
 void Character::startBasicAttack()
 {
 	attackTime_ = 0.0f;
+	ResetInfight();
 	changeAnimationBasicAttack();
 	currentAnimation_ = eCurrentAnimation::BasicAttack;
 }
@@ -1940,6 +1957,7 @@ void Character::updateBasicAttack(float _deltaTime)
 
 void Character::startBasicAttacking()
 {
+	ResetInfight();
 	onStartBasicAttacking(target_);
 }
 
@@ -1958,7 +1976,7 @@ void Character::updateBasicAttacking(float _deltaTime)
 
 void Character::startQSkill()
 {
-
+	ResetInfight();
 	onStartQSkill();
 }
 
@@ -1969,6 +1987,7 @@ void Character::updateQSkill(float _deltaTime)
 
 void Character::startWSkill()
 {
+	ResetInfight();
 	onStartWSkill();
 }
 
@@ -1979,6 +1998,7 @@ void Character::updateWSkill(float _deltaTime)
 
 void Character::startESkill()
 {
+	ResetInfight();
 	onStartESkill();
 }
 
@@ -1989,6 +2009,7 @@ void Character::updateESkill(float _deltaTime)
 
 void Character::startRSkill()
 {
+	ResetInfight();
 	onStartRSkill();
 }
 
@@ -1999,6 +2020,7 @@ void Character::updateRSkill(float _deltaTime)
 
 void Character::startDSkill()
 {
+	ResetInfight();
 	onStartDSkill();
 }
 
@@ -2140,6 +2162,26 @@ void Character::RandomSoundPlay(const std::string& _sound0, const std::string& _
 	}
 
 
+}
+
+void Character::InfightCheck(float _DeltaTime)
+{
+	infightTimer_ += _DeltaTime;
+
+	if (5.0f <= infightTimer_)
+	{
+		// 비전투 상태 전환
+		infightTimer_ = 0.0f;
+		isInfight_ = false;
+		return;
+	}
+
+}
+
+void Character::ResetInfight()
+{
+	infightTimer_ = 0.0f;
+	isInfight_ = true;
 }
 
 void Character::DebuffCheck(float _DeltaTime)

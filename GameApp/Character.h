@@ -65,12 +65,12 @@ public:
 	void ChangeAnimation(const std::string& _animationName, bool _bForce = false);
 	void ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect, bool _bForce = false);
 
-	void Stun(float _stunTime);
+	void Stun(float _stunTime) override;
 
-	void Knockback(float _knockbackTime, float4 _knockbackSpeed);
-	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime);
+	void Knockback(float _knockbackTime, float4 _knockbackSpeed) override;
+	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime) override;
 
-	void Slow(float _slowTime, float _slowRatio);
+	void Slow(float _slowTime, float _slowRatio) override;
 
 	bool IsDead() { return isPlayerDead_; }
 
@@ -179,6 +179,7 @@ protected:
 
 	void initBasicEffect();
 
+
 private:
 	void initInput();
 	void initState();
@@ -203,6 +204,13 @@ private:
 	void checkBuildItemsRecursive(ItemBase* _item);
 	void updateFOW(float _deltaTime);
 	void getFOWData(std::vector<float4>& _data, bool& _bCalc);
+
+
+
+#pragma region InfightCheck
+	void InfightCheck(float _DeltaTime);
+	void ResetInfight();
+#pragma endregion
 
 #pragma region DebuffCheck
 	void DebuffCheck(float _DeltaTime);
@@ -450,6 +458,11 @@ protected:
 
 	// 1004 이건호 : UI컨트롤러 멤버변수화
 	PlayerUIController* uiController_;
+
+
+	// 전투 중 유무의 표시용 변수
+	bool isInfight_;
+	float infightTimer_;
 
 private:
 	enum class eCurrentAnimation

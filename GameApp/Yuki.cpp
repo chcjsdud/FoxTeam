@@ -20,7 +20,7 @@
 
 Yuki::Yuki() // default constructer 디폴트 생성자
 	: b_isQ_(false), timer_Q(0.0f), rEffect_(nullptr), timer_R(0.0f), b_RHit_(false)
-	, swordRenderer_(nullptr), rExplodeTimer_(1.0f)
+	, swordRenderer_(nullptr), rExplodeTimer_(1.0f), passiveToken_(4), passiveDamage_(0.0f)
 {
 
 }
@@ -169,13 +169,21 @@ void Yuki::Start()
 	stat_.Cooltime_e = 18.0f;
 	stat_.Cooltime_r = 100.0f;
 
-
+	passiveDamage_ = 15.0f;
+	passiveToken_ = 4;
 }
 
 void Yuki::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
 
+	// 패시브 체크
+	if (passiveToken_ < 4 && false == isInfight_)
+	{
+		passiveToken_ = 4;
+	}
+
+	// Q 온힛 체크
 	if (true == b_isQ_)
 	{
 		timer_Q -= _deltaTime;
@@ -188,7 +196,7 @@ void Yuki::Update(float _deltaTime)
 		}
 	}
 
-
+	// R 피격자 체크
 	if (rUnitList_.size() != 0)
 	{
 		rExplodeTimer_ -= _deltaTime;
@@ -209,6 +217,12 @@ void Yuki::Update(float _deltaTime)
 			rExplodeTimer_ = 1.0f;
 			rUnitList_.clear();
 		}
+	}
+
+	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	if (nullptr != controlWindow)
+	{
+		controlWindow->AddText("Yuki Passive Token Count : " + std::to_string(passiveToken_));
 	}
 }
 
@@ -430,7 +444,28 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 	{
 		RandomSoundPlay("Yuki_PlaySkill1011200seq1_1_ko.wav", "Yuki_PlaySkill1011200seq1_2_ko.wav", "Yuki_PlaySkill1011200seq1_3_ko.wav");
 
-		target_->Damage(stat_.AttackPower * 1.6f + 20.0f, this);
+		if (passiveToken_ <= 0)
+		{
+			target_->Damage(stat_.AttackPower * 1.6f + (20.0f * stat_.Level_q), this);
+
+			target_->Slow(1.0f, 0.5f);
+			CharCrowdControlPacket ccPacket;
+			ccPacket.SetTargetIndex(target_->GetIndex());
+			ccPacket.SetSlow(1.0f, 0.5f);
+			FT::SendPacket(ccPacket);
+		}
+		else
+		{
+			passiveToken_--;
+			target_->Damage(stat_.AttackPower * 1.6f + (20.0f * stat_.Level_q) + (passiveDamage_ * stat_.Level_passive), this);
+
+			target_->Stun(0.5f);
+			CharCrowdControlPacket ccPacket;
+			ccPacket.SetTargetIndex(target_->GetIndex());
+			ccPacket.SetStun(0.5f);
+			FT::SendPacket(ccPacket);
+		}
+
 
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Attack.wav");
 		PacketSoundPlay packet0;
@@ -473,26 +508,21 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 	pack.SetAnimationName("BasicAttack");
 	pack.SetVictimIndex(_target->GetIndex());
 	FT::SendPacket(pack);
-	// 여기 이펙트 패킷 하나
 }
 
 void Yuki::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 {
-	//if (true == basicAttackEffectRenderer_->IsCurAnimationEnd())
-	//{
-	//	basicAttackEffectRenderer_->Off();
-	//}
+
 }
 
 void Yuki::onStartQSkill()
 {
-	
-	// 검에 이팩트 재생
 	qEffect_->GetTransform()->SetWorldPosition(swordRenderer_->GetTransform()->GetWorldPosition());
 	qEffect_->PlayAwake();
 	b_isQ_ = true;
 	timer_Q = 2.0f;
-	
+
+
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Active.wav");
 	PacketSoundPlay packet;
 	packet.SetSound("Yuki_Skill01_Active.wav", transform_.GetWorldPosition());
@@ -515,6 +545,8 @@ void Yuki::onUpdateQSkill(float _deltaTime)
 
 void Yuki::onStartWSkill()
 {
+	coolTimer_E_-=3.0f;
+
 	// 바닥에 벚꽃 이펙트 재생
 	RandomSoundPlay("Yuki_PlaySkill1011300seq0_1_ko.wav", "Yuki_PlaySkill1011300seq0_2_ko.wav", "Yuki_PlaySkill1011300seq0_3_ko.wav");
 	if ("Wait" == curAnimationName_)
@@ -547,8 +579,6 @@ void Yuki::onUpdateWSkill(float _deltaTime)
 
 void Yuki::onStartESkill()
 {
-
-
 	timer_Dash_E = 0.0f;
 	b_Ehit_ = false;
 	collision_E->On();
@@ -724,7 +754,6 @@ void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 {
 	if ("BasicAttack" == _effectName)
 	{
-
 		if (_victim != nullptr)
 		{
 			float4 wp = _victim->GetTransform()->GetWorldPosition();

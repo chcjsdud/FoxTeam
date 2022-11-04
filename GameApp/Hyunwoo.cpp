@@ -204,17 +204,7 @@ void Hyunwoo::Update(float _deltaTime)
 		}
 	}
 
-	//GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
-	//if (nullptr != controlWindow)
-	//{
-	//	GetLevel()->PushDebugRender(collision_Q->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
-	//	controlWindow->AddText("P1Dir" + std::to_string(direction_.x) + ", " + std::to_string(direction_.z));
-	//	controlWindow->AddText("P1Pos " + std::to_string(collision_->GetTransform()->GetWorldPosition().x) + " , " + std::to_string(collision_->GetTransform()->GetWorldPosition().z));
-	//	controlWindow->AddText("StunRenderPos " + std::to_string(slowEffect_->GetTransform()->GetWorldPosition().x) + ", " + std::to_string(slowEffect_->GetTransform()->GetWorldPosition().z));
-	//
-	//	float4 position = mouse_->GetIntersectionYAxisPlane(0, 50000.f);
-	//	controlWindow->AddText("MPos : " + std::to_string(position.x) + ", " + std::to_string(position.z));
-	//}
+
 }
 
 void Hyunwoo::initRendererAndAnimation()

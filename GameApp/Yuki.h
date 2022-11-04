@@ -76,6 +76,7 @@ protected:
 
 	virtual void onEffectTransformCheck(float _deltaTime) override;
 
+
 	// customstate
 	void startCustomRStandBy();
 	void updateCustomRStandBy(float _deltaTime);
@@ -117,4 +118,9 @@ private:
 
 	std::vector<Character*> rUnitList_;
 	float rExplodeTimer_;
+
+
+	int passiveToken_; // 단추 수
+	float passiveDamage_; // 단추로 적용되는 추가 고정 대미지
+
 };

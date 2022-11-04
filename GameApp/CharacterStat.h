@@ -3,6 +3,7 @@
 class CharacterStat
 {
 public:
+	int level;
 	// 기본 스탯
 	float HPMax;
 	float HP;
@@ -57,6 +58,7 @@ public:
 	int Level_e;
 	int Level_r;
 	int Level_d;
+	int Level_passive;
 
 	// 1103 박종원 : CC기 무시 bool 값
 	bool isUnstoppable_;
@@ -64,7 +66,8 @@ public:
 public:
 	// 기본 세팅은 리오 기준으로 되어있음
 	CharacterStat()
-		: HPMax(782.f)
+		: level(1)
+		, HPMax(782.f)
 		, HP(782.f)
 		, SPMax(420.f)
 		, SP(420.f)
@@ -101,6 +104,7 @@ public:
 		, Level_e(1)
 		, Level_r(1)
 		, Level_d(1)
+		, Level_passive(1)
 		, isUnstoppable_(false)
 	{
 

@@ -528,6 +528,10 @@ void Monsters::WallSlam(float _KnockbackTime, float4 _KnockbackSpeed, float _Stu
 	FT::SendPacket(Packet);
 }
 
+void Monsters::Slow(float _slowTime, float _slowRatio)
+{
+}
+
 void Monsters::InitalizeFSMState()
 {
 #pragma region MainState
