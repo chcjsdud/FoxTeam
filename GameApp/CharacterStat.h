@@ -63,6 +63,9 @@ public:
 	// 1103 박종원 : CC기 무시 bool 값
 	bool isUnstoppable_;
 
+	// 1104 박종원 : 현재 위치값
+	int curLocation;
+
 public:
 	// 기본 세팅은 리오 기준으로 되어있음
 	CharacterStat()
@@ -106,6 +109,7 @@ public:
 		, Level_d(1)
 		, Level_passive(1)
 		, isUnstoppable_(false)
+		, curLocation(-1)
 	{
 
 	}

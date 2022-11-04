@@ -122,6 +122,7 @@ enum class eCollisionGroup
 	MonsterAttack,
 	Item,
 	ItemBox,
+	Trigger,
 	UI,
 
 	Unit,

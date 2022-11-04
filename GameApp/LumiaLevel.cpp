@@ -32,6 +32,7 @@
 #include "CharDeathPacket.h"
 #include "MonsterCrowdControlPacket.h"
 
+
 //======================== Level
 #include "LoadingLevel.h"
 
@@ -62,6 +63,9 @@
 #include "Dog.h"
 #include "Weekline.h"
 #include "Aya.h"
+
+//======================== Area
+#include "ProhibitedArea.h"
 
 Character* LumiaLevel::GetSpecificCharacter(int _Index)
 {
@@ -378,22 +382,23 @@ void LumiaLevel::CharacterCreationCommand()
 		}
 
 		// 
-		PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].stat_ = NewCharacter->GetStat();
-
-		int spawnArea = PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].startPoint_;
+		pm->GetPlayerList()[PlayerNum].stat_ = NewCharacter->GetStat();
+		int spawnArea = pm->GetPlayerList()[PlayerNum].startPoint_;
+		NewCharacter->GetStat()->curLocation = pm->GetPlayerList()[PlayerNum].startPoint_;
 
 		// 지역 선택 안하면 디폴트로 스폰
 		if (-1 == spawnArea)
 		{
-			PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = float4(-2500.f, 0.0f, 10000.f);
+			pm->GetPlayerList()[PlayerNum].curPos_ = float4(-2500.f, 0.0f, 10000.f);
 			NewCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
+			NewCharacter->GetStat()->curLocation = static_cast<int>(Location::AVENUE);
 		}
 		else
 		{
 			std::vector<float4> spawnPoints = CurMap_->GetCharacterSpawnPoints(spawnArea);
 			GameEngineRandom random;
 			int point = random.RandomInt(0, spawnPoints.size() - 1);
-			PlayerInfoManager::GetInstance()->GetPlayerList()[PlayerNum].curPos_ = spawnPoints[point];
+			pm->GetPlayerList()[PlayerNum].curPos_ = spawnPoints[point];
 			NewCharacter->InitSpawnPoint(spawnPoints[point]);
 		}
 
@@ -407,7 +412,7 @@ void LumiaLevel::CharacterCreationCommand()
 		if (PlayerNum == pm->GetMyNumber() && JobType::DUMMY != CurCharacterType)
 		{
 			CharacterActorList_[PlayerNum]->Focus();
-			PlayerInfoManager::GetInstance()->SetMainCharacter(NewCharacter);
+			pm->SetMainCharacter(NewCharacter);
 		}
 	}
 
@@ -652,6 +657,72 @@ void LumiaLevel::CameraAdjustment()
 	GetMainCameraActor()->GetCamera()->SetFov(50.f);
 	GetMainCameraActor()->GetTransform()->SetWorldPosition({ 0.0f, 100.f, -200.f });
 	//GetMainCameraActor()->FreeCameraModeSwitch();
+}
+
+void LumiaLevel::CreateProhibitedSystem()
+{
+	//for (int i = 0; i < 16; i++)
+	{
+		ProhibitedArea* area = CreateActor<ProhibitedArea>();
+		
+		Location locaName = static_cast<Location>(6);
+		GameEngineDirectory dir;
+
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "FBX" / "Prohibited";
+		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_AVENUE.fbx"));
+		mesh->CreateRenderingBuffer();
+		switch (locaName)
+		{
+		case Location::NONE:
+			break;
+		case Location::DOCK:
+
+			break;
+		case Location::POND:
+			break;
+		case Location::BEACH:
+			break;
+		case Location::UPTOWN:
+			break;
+		case Location::ALLEY:
+			break;
+		case Location::HOTEL:
+			break;
+		case Location::AVENUE:
+			area->Init(locaName, "Prohibited_AVENUE.fbx", {0.0f, 50.0f, 0.0f});
+			area->SetProhibited(false);
+			break;
+		case Location::HOSPITAL:
+			break;
+		case Location::TEMPLE:
+			break;
+		case Location::ARCHERY_RANGE:
+			break;
+		case Location::CEMETERY:
+			break;
+		case Location::FOREST:
+			break;
+		case Location::FACTORY:
+			break;
+		case Location::CHAPEL:
+			break;
+		case Location::SCHOOL:
+			break;
+		case Location::RESERCH_CENTRE:
+			break;
+		case Location::ESCAPE_DOCK:
+			break;
+		case Location::MAX:
+			break;
+		default:
+			break;
+		}
+	}
+
+
+
+
 }
 
 void LumiaLevel::GameTimeUpdatePacketSend()
@@ -1175,6 +1246,8 @@ void LumiaLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 		// MainCamera Adjustment
 		CameraAdjustment();
+
+		CreateProhibitedSystem();
 	}
 }
 

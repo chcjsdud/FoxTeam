@@ -85,6 +85,8 @@ Character::Character()
 	, fowDataThread_(nullptr)
 	, isInfight_(false)
 	, infightTimer_(0.0f)
+	, isInProhibited_(false)
+	, prohibitedCounter_(20.0f)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -236,6 +238,8 @@ void Character::Update(float _DeltaTime)
 	DebuffCheck(_DeltaTime);		// CC가 아닌 디버프(출혈, 슬로우 등) 체크
 	EffectTransformCheck(_DeltaTime);
 	
+
+
 	if (true == isPlayerDead_)
 	{
 		collision_->Off();
@@ -250,14 +254,13 @@ void Character::Update(float _DeltaTime)
 
 	if (false == bFocused_)
 	{
-		// direction 에 따라 로테이션을 바꿔 주고
-		// 적절한 애니메이션으로 바꿔 주는 코드가 여기에도 존재해야 함.
-
-
 		return;
 	}
 
-	// 이 밑에서부터는 Focued 된 내 캐릭터에만 해당되는 행위들이다.
+	if (true == isInProhibited_)
+	{
+		ProhibitedAreaCheck(_DeltaTime);
+	}
 
 	if (uiController_ != nullptr)
 	{
@@ -2400,4 +2403,36 @@ void Character::EffectTransformCheck(float _DeltaTime)
 {
 	levelUpEffect_->GetTransform()->SetWorldPosition(transform_.GetWorldPosition());
 	onEffectTransformCheck(_DeltaTime);
+}
+
+void Character::ProhibitedAreaCheck(float _DeltaTime)
+{
+	prohibitedCounter_ -= _DeltaTime;
+
+	if (0.0f >= prohibitedCounter_)
+	{
+		stat_.HP = 0.0f;
+
+			if (GameServer::GetInstance()->IsOpened())
+			{
+				this->SetCharacterDeath();
+
+				CharDeathPacket deathpacket;
+				deathpacket.SetTargetIndex(myIndex_);
+				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
+				deathpacket.SetFraggerIndex(-3);
+				FT::SendPacket(deathpacket);
+
+			}
+			else if (GameClient::GetInstance()->IsConnected())
+			{
+				CharDeathPacket deathpacket;
+				deathpacket.SetTargetIndex(myIndex_);
+				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
+				deathpacket.SetFraggerIndex(-3);
+				FT::SendPacket(deathpacket);
+			}
+		
+	}
+
 }

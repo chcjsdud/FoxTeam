@@ -908,6 +908,17 @@ void GameEngineCore::EngineResourcesCreate()
 	}
 
 	{
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("ColorProhibitedArea");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("ColorProhibitedArea_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerFront");
+		Pipe->SetPixelShader("ColorProhibitedArea_PS");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
+
+	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("ColorAni");
 		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
 		Pipe->SetVertexShader("ColorAni_VS");

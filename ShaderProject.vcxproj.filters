@@ -84,11 +84,11 @@
     <FxCompile Include="EngineResources\Shader\Shadow.fx">
       <Filter>Engine</Filter>
     </FxCompile>
-    <FxCompile Include="EngineResources\Shader\PJWAni.fx">
-      <Filter>User</Filter>
-    </FxCompile>
     <FxCompile Include="EngineResources\Shader\FogOfWar.fx">
       <Filter>Engine</Filter>
+    </FxCompile>
+    <FxCompile Include="EngineResources\Shader\ColorProhibitedArea.fx">
+      <Filter>User</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

@@ -302,6 +302,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ProhibitedArea.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="RioWSkillWind.cpp">
       <SubType>
       </SubType>
@@ -759,6 +763,10 @@
     </ClInclude>
     <ClInclude Include="OutLineTestMap.h" />
     <ClInclude Include="OutLineTestWindow.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ProhibitedArea.h">
       <SubType>
       </SubType>
     </ClInclude>

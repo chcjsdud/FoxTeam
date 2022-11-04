@@ -74,7 +74,7 @@ public:
 
 	bool IsDead() { return isPlayerDead_; }
 
-
+	void SetTriggerProhibit(bool _tf) { isInProhibited_ = _tf; }
 
 #pragma region GetterSetter
 public:
@@ -224,6 +224,10 @@ private:
 #pragma region EffectTransformCheck
 	void EffectTransformCheck(float _DeltaTime);
 	virtual void onEffectTransformCheck(float _DeltaTime) = 0;
+#pragma endregion
+
+#pragma region ProhibitedAreaCheck
+	void ProhibitedAreaCheck(float _DeltaTime);
 #pragma endregion
 	//------------------------------------------------------------------------------------------------------------------
 	// State
@@ -463,6 +467,10 @@ protected:
 	// 전투 중 유무의 표시용 변수
 	bool isInfight_;
 	float infightTimer_;
+
+	// 금지구역관련
+	bool isInProhibited_;
+	float prohibitedCounter_;
 
 private:
 	enum class eCurrentAnimation

@@ -24,6 +24,7 @@
     <FxCompile Include="EngineResources\Shader\CbufferHeader.fx" />
     <FxCompile Include="EngineResources\Shader\Color.fx" />
     <FxCompile Include="EngineResources\Shader\ColorAni.fx" />
+    <FxCompile Include="EngineResources\Shader\ColorProhibitedArea.fx" />
     <FxCompile Include="EngineResources\Shader\ColorSpectrum.fx" />
     <FxCompile Include="EngineResources\Shader\DeferredCalLight.fx" />
     <FxCompile Include="EngineResources\Shader\DeferredColor.fx" />
@@ -34,7 +35,6 @@
     <FxCompile Include="EngineResources\Shader\LightHeader.fx" />
     <FxCompile Include="EngineResources\Shader\Preprocessing.fx" />
     <FxCompile Include="EngineResources\Shader\PreprocessingAni.fx" />
-    <FxCompile Include="EngineResources\Shader\PJWAni.fx" />
     <FxCompile Include="EngineResources\Shader\ProgressBar.fx" />
     <FxCompile Include="EngineResources\Shader\Shadow.fx" />
     <FxCompile Include="EngineResources\Shader\TargetMerge.fx" />
