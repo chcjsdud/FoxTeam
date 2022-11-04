@@ -40,7 +40,7 @@ void PlayerUIController::InitUI()
 	calhelper_ = GetLevel()->CreateActor<UI_CalculateHelper>();
 
 	//테스트용
-	notice_UI->SetText("알림 UI 테스트용 텍스트입니다", 5.f);
+	//notice_UI->SetText("알림 UI 테스트용 텍스트입니다", 5.f);
 }
 
 
@@ -95,6 +95,11 @@ void PlayerUIController::Update(float _DeltaTime)
 	float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
 	charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
 
+
+	//if (true == GameEngineInput::GetInst().Down("L"))
+	//{
+	//	notice_UI->SetText("알림 UI 테스트용 텍스트입니다", 2.f);
+	//}
 	
 }
 

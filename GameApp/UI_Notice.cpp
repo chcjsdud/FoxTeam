@@ -75,6 +75,14 @@ void UI_Notice::Update(float _Time)
 	//	}
 	//}
 
+
+	if (Changing_Flag == false)
+	{
+		//플래그가 on이 아니면 실행되지 않습니다
+		return;
+	}
+
+
 	if (FadeWaitTime <= 0.0f)
 	{
 		FontRenderer->Off();
