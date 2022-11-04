@@ -1,6 +1,6 @@
 #pragma once
 #include "Enums.h"
-
+#include <GameEngineBase/GameEngineRandom.h>
 // 일차별 낮/밤시간
 struct DailyTime
 {
@@ -98,5 +98,11 @@ private: // 몬스터첫등장 관련
 
 private: // 테스트용
 	float TestTime_;
+
+private:	// 금지구역 랜덤생성용
+	GameEngineRandom randomGenerator_;
+
+
+
 };
 

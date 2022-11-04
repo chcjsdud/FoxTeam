@@ -5,7 +5,7 @@
 #include "GameTimeController.h"
 
 UI_Time::UI_Time()
-	: Time(1.0f), UIOn(true)
+	: Time(1.0f), UIOn(true), ProhibitedTimeRenderer_(nullptr)
 {
 }
 
@@ -27,20 +27,21 @@ void UI_Time::Start()
 
 	UI_Pos = { 0.0f, 326.0f, 0.0f };
 	Day_Pos = { -35.0f, 330.0f, 0.0f };
-	Time_Pos = { -10.0f, 344.0f, 0.0f };
-	Clock_Pos = { -30.f, 303.f, 0.0f };
+	Time_Pos = { -20.0f, 344.0f, 0.0f };
+	Clock_Pos = { -40.f, 303.f, 0.0f };
+	Prohibit_Pos = { 10.f, 303.f, 0.0f };
 	ClockTime_Pos = { -10.f, 318.f, 0.0f };
 	DayCount_Pos = { -20.f, 361.f, 0.0f };
 
 	{
 		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		BackGroundRenderer->SetImage("UI_TimeBg_Test.png", "PointSmp");
+		BackGroundRenderer->SetImage("UI_TimeBg_Test.png", "LinerSmp");
 		BackGroundRenderer->GetTransform()->SetLocalPosition(UI_Pos);
 		//BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize() * 0.8f);
 		BackGroundRenderer->GetTransform()->SetLocalScaling(BackGroundRenderer->GetCurrentTexture()->GetTextureSize());
 
 		DayNightRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL0);
-		DayNightRenderer->SetImage("UI_Sun.png", "PointSmp");
+		DayNightRenderer->SetImage("UI_Sun.png", "LinerSmp");
 		DayNightRenderer->GetTransform()->SetLocalPosition(Day_Pos);
 		DayNightRenderer->GetTransform()->SetLocalScaling(DayNightRenderer->GetCurrentTexture()->GetTextureSize());
 
@@ -50,7 +51,7 @@ void UI_Time::Start()
 
 	{
 		NightChangeClockRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL0);
-		NightChangeClockRenderer->SetImage("UI_Clock.png", "PointSmp");
+		NightChangeClockRenderer->SetImage("UI_Clock.png", "LinerSmp");
 		NightChangeClockRenderer->GetTransform()->SetLocalPosition(Clock_Pos);
 		NightChangeClockRenderer->GetTransform()->SetLocalScaling({ 21.f,21.f });
 
@@ -63,6 +64,13 @@ void UI_Time::Start()
 		DayCountRenderer->GetTransform()->SetLocalPosition(DayCount_Pos);
 	}
 
+	{
+		ProhibitedTimeRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::FONT));
+		ProhibitedTimeRenderer_->SetImage("UI_Prohibited.png", "LinerSmp");
+		ProhibitedTimeRenderer_->GetTransform()->SetLocalScaling({ 21.0f, 21.0f });
+		ProhibitedTimeRenderer_->GetTransform()->SetLocalPosition(Prohibit_Pos);
+		ProhibitedTimeRenderer_->TextSetting("HMKMRHD", "20", 20, FW1_RIGHT, float4::WHITE, { 34.0f, 15.0f, 0.0f });
+	}
 }
 
 void UI_Time::Update(float _Time)
@@ -147,7 +155,7 @@ void UI_Time::TimeSetting()
 		int Second = ClockTime.tm_sec;
 	//	string Time = to_string(Minute) + ":" + to_string(Second);
 		string Time = to_string(static_cast<int>(NightChangeTime));
-		NightChangeTimeRenderer->TextSetting("HMKMRHD", Time, 20);
+		NightChangeTimeRenderer->TextSetting("HMKMRHD", Time, 20, FW1_RIGHT, float4::WHITE, {8.0f ,0.0f, 0.0f});
 	}
 
 	{

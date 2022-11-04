@@ -661,55 +661,120 @@ void LumiaLevel::CameraAdjustment()
 
 void LumiaLevel::CreateProhibitedSystem()
 {
-	//for (int i = 0; i < 16; i++)
+	{
+		GameEngineDirectory dir;
+		dir.MoveParent("FoxTeam");
+		dir / "Resources" / "FBX" / "Prohibited";
+
+		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_AVENUE.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_ALLEY.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_ARCHERY.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_BEACH.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_CEMETERY.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_CHAPEL.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_DOCK.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_FACTORY.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_HOSPITAL.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_HOTEL.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_FOREST.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_POND.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_RESERCH_CENTRE.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_SCHOOL.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_TEMPLE.fbx"));
+		mesh->CreateRenderingBuffer();
+
+		mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_UPTOWN.fbx"));
+		mesh->CreateRenderingBuffer();
+	}
+
+
+	for (int i = 0; i < 16; i++)
 	{
 		ProhibitedArea* area = CreateActor<ProhibitedArea>();
 		
-		Location locaName = static_cast<Location>(6);
-		GameEngineDirectory dir;
-
-		dir.MoveParent("FoxTeam");
-		dir / "Resources" / "FBX" / "Prohibited";
-		GameEngineFBXMesh* mesh = GameEngineFBXMeshManager::GetInst().Load(dir.PathToPlusFileName("Prohibited_AVENUE.fbx"));
-		mesh->CreateRenderingBuffer();
+		Location locaName = static_cast<Location>(i);
 		switch (locaName)
 		{
 		case Location::NONE:
 			break;
 		case Location::DOCK:
-
+			area->Init(locaName, "Prohibited_DOCK.fbx", { 0.0f, 50.0f, 0.0f }, "항구");
 			break;
 		case Location::POND:
+			area->Init(locaName, "Prohibited_POND.fbx", { 0.0f, 50.0f, 0.0f }, "연못");
 			break;
 		case Location::BEACH:
+			area->Init(locaName, "Prohibited_BEACH.fbx", { 0.0f, 50.0f, 0.0f }, "모래사장");
 			break;
 		case Location::UPTOWN:
+			area->Init(locaName, "Prohibited_UPTOWN.fbx", { 0.0f, 50.0f, 0.0f }, "고급 주택가");
 			break;
 		case Location::ALLEY:
+			area->Init(locaName, "Prohibited_ALLEY.fbx", { 0.0f, 50.0f, 0.0f }, "골목길");
 			break;
 		case Location::HOTEL:
+			area->Init(locaName, "Prohibited_HOTEL.fbx", { 0.0f, 50.0f, 0.0f }, "호텔");
 			break;
 		case Location::AVENUE:
-			area->Init(locaName, "Prohibited_AVENUE.fbx", {0.0f, 50.0f, 0.0f});
-			area->SetProhibited(false);
+			area->Init(locaName, "Prohibited_AVENUE.fbx", {0.0f, 50.0f, 0.0f} , "번화가");
+			area->AddTriggerCollision({ -4797.0f,  0.0f, 6292.0f }, { 1500.0f , 10.0f, 300.0f });
+
 			break;
 		case Location::HOSPITAL:
+			area->Init(locaName, "Prohibited_HOSPITAL.fbx", { 0.0f, 50.0f, 0.0f }, "병원");
 			break;
 		case Location::TEMPLE:
+			area->Init(locaName, "Prohibited_TEMPLE.fbx", { 0.0f, 50.0f, 0.0f }, "절");
 			break;
 		case Location::ARCHERY_RANGE:
+			area->Init(locaName, "Prohibited_ARCHERY.fbx", { 0.0f, 50.0f, 0.0f }, "양궁장");
 			break;
 		case Location::CEMETERY:
+			area->Init(locaName, "Prohibited_CEMETERY.fbx", { 0.0f, 50.0f, 0.0f }, "묘지");
 			break;
 		case Location::FOREST:
+			area->Init(locaName, "Prohibited_FOREST.fbx", { 0.0f, 50.0f, 0.0f }, "숲");
+			area->AddTriggerCollision({ -4789.0f, 0.0f ,5976.0f }, { 1500.0f , 10.0f , 300.0f });
 			break;
 		case Location::FACTORY:
+			area->Init(locaName, "Prohibited_FACTORY.fbx", { 0.0f, 50.0f, 0.0f }, "공장");
 			break;
 		case Location::CHAPEL:
+			area->Init(locaName, "Prohibited_CHAPEL.fbx", { 0.0f, 50.0f, 0.0f }, "성당");
 			break;
 		case Location::SCHOOL:
+			area->Init(locaName, "Prohibited_SCHOOL.fbx", { 0.0f, 50.0f, 0.0f }, "학교");
 			break;
 		case Location::RESERCH_CENTRE:
+			area->Init(locaName, "Prohibited_RESERCH_CENTRE.fbx", { 0.0f, 50.0f, 0.0f }, "연구소");
 			break;
 		case Location::ESCAPE_DOCK:
 			break;
@@ -718,11 +783,10 @@ void LumiaLevel::CreateProhibitedSystem()
 		default:
 			break;
 		}
+
+		area->SetProhibited(false);
+		prohitivedAreaList_.push_back(area);
 	}
-
-
-
-
 }
 
 void LumiaLevel::GameTimeUpdatePacketSend()

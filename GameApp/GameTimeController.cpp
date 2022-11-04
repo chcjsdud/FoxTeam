@@ -10,6 +10,7 @@
 #include "LumiaLevel.h"
 #include "PlayerUIController.h"
 #include "LevelUpSystem.h"
+#include "ProhibitedArea.h"
 
 GameTimeController* GameTimeController::GetInstance()
 {
@@ -146,22 +147,22 @@ void GameTimeController::CreateDailytimes()
 	//OneDay.DayTime_ = 170.0f;
 	//OneDay.NightTime_ = 140.0f;
 
-	OneDay.DayTime_ = 10.0f;
-	OneDay.NightTime_ = 10.0f;
+	OneDay.DayTime_ = 60.0f;
+	OneDay.NightTime_ = 60.0f;
 
 	DailyTime TwoDay = {};
 	//TwoDay.DayTime_ = 140.0f;
 	//TwoDay.NightTime_ = 140.0f;
 
-	TwoDay.DayTime_ = 10.0f;
-	TwoDay.NightTime_ = 10.0f;
+	TwoDay.DayTime_ = 60.0f;
+	TwoDay.NightTime_ = 60.0f;
 
 	DailyTime ThreeDay = {};
 	//ThreeDay.DayTime_ = 125.0f;
 	//ThreeDay.NightTime_ = 125.0f;
 
-	ThreeDay.DayTime_ = 10.0f;
-	ThreeDay.NightTime_ = 10.0f;
+	ThreeDay.DayTime_ = 60.0f;
+	ThreeDay.NightTime_ = 60.0f;
 
 	DailyTime FourDay = {};
 	FourDay.DayTime_ = 110.0f;
@@ -203,6 +204,35 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 
 			// 현재 밤일때 전환시간을 현재전환시간으로 설정
 			DayAndNightTime_ = Dailytimes_[DayAndNightIndex].NightTime_;
+
+			// 금지구역 설정
+
+			int tmpAreaIndex0;
+			int tmpAreaIndex1;
+
+			for (int i = 0; i < 2; i++)
+			{
+				int dice0 = randomGenerator_.RandomInt(0, 14);
+
+				if (true == PlayLevel->GetProhibitedAreaList()[dice0]->IsProhibited())
+				{
+					i--;
+					continue;
+				}
+				PlayLevel->GetProhibitedAreaList()[dice0]->SetProhibited(true);
+
+				if (i == 0)
+				{
+					tmpAreaIndex0 = dice0;
+				}
+				else if (i == 1)
+				{
+					tmpAreaIndex1 = dice0;
+				}
+			}
+
+			PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+			PlayLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText("금지 구역이 설정되었습니다 : " + PlayLevel->GetProhibitedAreaList()[tmpAreaIndex0]->GetKoreanName() + " & " + PlayLevel->GetProhibitedAreaList()[tmpAreaIndex1]->GetKoreanName(), 5.f);
 		}
 		else if (DayAndNightType::NIGHT == CurDayOrNight_)	// 현재 밤일때
 		{
@@ -228,6 +258,35 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 
 			// 일차 증가로 현재 게임에 배치된 모든 유닛에게 레벨업명령(서버전용)
 			LevelUpSystem::GetInstance()->AllUnitLevelUP();
+
+
+			// 금지구역 설정
+			int tmpAreaIndex0;
+			int tmpAreaIndex1;
+
+			for (int i = 0; i < 2; i++)
+			{
+				int dice0 = randomGenerator_.RandomInt(0, 14);
+
+				if (true == PlayLevel->GetProhibitedAreaList()[dice0]->IsProhibited())
+				{
+					i--;
+					continue;
+				}
+				PlayLevel->GetProhibitedAreaList()[dice0]->SetProhibited(true);
+
+				if (i == 0)
+				{
+					tmpAreaIndex0 = dice0;
+				}
+				else if (i == 1)
+				{
+					tmpAreaIndex1 = dice0;
+				}
+			}
+
+			PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+			PlayLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText("금지 구역이 설정되었습니다 : " + PlayLevel->GetProhibitedAreaList()[tmpAreaIndex0]->GetKoreanName() + " & " + PlayLevel->GetProhibitedAreaList()[tmpAreaIndex1]->GetKoreanName(), 5.f);
 		}
 	}
 }

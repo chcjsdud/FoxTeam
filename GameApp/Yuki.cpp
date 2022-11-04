@@ -223,6 +223,9 @@ void Yuki::Update(float _deltaTime)
 	if (nullptr != controlWindow)
 	{
 		controlWindow->AddText("Yuki Passive Token Count : " + std::to_string(passiveToken_));
+
+		controlWindow->AddText("WorldPos : " + std::to_string(transform_.GetWorldPosition().x) + " " + std::to_string(transform_.GetWorldPosition().z));
+		controlWindow->AddText("CurLocation : " + std::to_string(stat_.curLocation));
 	}
 }
 

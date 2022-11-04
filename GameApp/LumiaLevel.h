@@ -44,6 +44,11 @@ public: // Inline Get Function
 		return MonsterActorList_;
 	}
 
+	inline std::vector<ProhibitedArea*> GetProhibitedAreaList() const
+	{
+		return prohitivedAreaList_;
+	}
+
 public: // Inline Set Function
 
 public: // Public Get Function
@@ -145,14 +150,14 @@ private:
 private:
 	std::vector<Character*> CharacterActorList_;													// 캐릭터 목록
 	std::vector<Monsters*> MonsterActorList_;														// 몬스터 목록
-	std::vector<ProhibitedArea*> ProhibitedAreaList_;
-
+	std::vector<ProhibitedArea*> prohitivedAreaList_;
 private:
 	std::vector<Monsters*> MonsterActorByTypeList_[static_cast<int>(MonsterType::MAX)];				// 몬스터 목록(같은 타입의 몬스터를 일괄처리할때 편하도록 목록작성)
 
 private:
 	LumiaMap* CurMap_;																				// 맵
 	ItemBoxManager* ItemBoxManager_;																// 아이템박스 매니저
+
 
 private:
 	GameEngineLevelControlWindow* DebugAndControlWindow_;											// 레벨관련 디버그 & 강제레벨체인지 윈도우

@@ -65,7 +65,7 @@ float4 ColorProhibitedArea_PS(VertexOut _In) : SV_Target0
         Color *= (DiffuseLight + SpacularLight + AmbientLight);
     }
     
-    Color.w = 0.2f;
+    Color.w = 0.1f;
     
     return Color;
 }

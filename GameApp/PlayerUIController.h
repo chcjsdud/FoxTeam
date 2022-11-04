@@ -94,6 +94,11 @@ public:
 		return charfollow_UI;
 	}
 
+	UI_Time* GetTimeUI()
+	{
+		return time_UI;
+	}
+
 
 	//UI_HyperMap* GetHyperMap()
 	//{

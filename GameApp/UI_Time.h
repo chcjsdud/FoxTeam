@@ -20,6 +20,8 @@ public:
 
 	bool UIOn;
 
+	GameEngineUIRenderer* GetProhibitedRenderer() { return ProhibitedTimeRenderer_; }
+
 protected:
 	GameEngineUIRenderer* BackGroundRenderer;
 	GameEngineUIRenderer* DayNightRenderer;
@@ -31,6 +33,8 @@ protected:
 	GameEngineUIRenderer* DayCountRenderer;
 	float Time;
 
+
+	GameEngineUIRenderer* ProhibitedTimeRenderer_;
 
 private:
 	void Start() override;
@@ -46,5 +50,6 @@ private:
 	float4 ClockTime_Pos;
 
 	float4 DayCount_Pos;
+	float4 Prohibit_Pos;
 };
 

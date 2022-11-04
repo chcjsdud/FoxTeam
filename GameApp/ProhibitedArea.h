@@ -18,15 +18,19 @@ public:
 	ProhibitedArea& operator=(const ProhibitedArea&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
 
 public:
-	void Init(Location _location, const std::string& _fbxName, float4 _pos);
+	void Init(Location _location, const std::string& _fbxName, float4 _pos, const std::string& _name);
 	void AddTriggerCollision(float4 _pos, float4 _scale);
 	void SetProhibited(bool _tf);
+	bool IsProhibited() { return isProhibited_; }
+
+	const std::string& GetKoreanName() { return locationName_; }
 
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
 	Location location_;
+	std::string locationName_;
 	bool isProhibited_;
 
 	GameEngineFBXRenderer* renderer_;

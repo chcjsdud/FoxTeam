@@ -2408,6 +2408,13 @@ void Character::EffectTransformCheck(float _DeltaTime)
 void Character::ProhibitedAreaCheck(float _DeltaTime)
 {
 	prohibitedCounter_ -= _DeltaTime;
+	int adjustedCounter = static_cast<int>(prohibitedCounter_);
+	uiController_->GetTimeUI()->GetProhibitedRenderer()->TextSetting("HMKMRHD", std::to_string(adjustedCounter), 20, FW1_RIGHT, float4::RED, {34.0f, 15.0f, 0.0f});
+
+	if (adjustedCounter % 10 == 0)
+	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("RestrictedCount.wav");
+	}
 
 	if (0.0f >= prohibitedCounter_)
 	{

@@ -473,7 +473,7 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClCompile>
     <ClCompile Include="ProhibitedArea.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Trigger</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\98.Trigger</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -723,7 +723,7 @@
     <Filter Include="01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI\Effect">
       <UniqueIdentifier>{8280ee57-7128-4098-a502-f708eefd5efc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Trigger">
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\98.Trigger">
       <UniqueIdentifier>{7e5102bd-96bc-45b1-9d7a-b0537ab4d7a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -1209,7 +1209,7 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClInclude>
     <ClInclude Include="ProhibitedArea.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Trigger</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\98.Trigger</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
