@@ -51,7 +51,17 @@ void FBXAnimation::Update(float _DeltaTime)
 	int NextFrame = CurFrame;
 	++NextFrame;
 
+	if (CurFrame >= End) // 현 프레임이 끝 프레임에 다다랐을 때
+	{
+		// 0805 박종원 : 루프 애니메이션이 아니면 더 이상의 프레임 갱신을 하지 않습니다.
+		if (false == isLoop_)
+		{
+			bEnd_ = true;
+			return;
+		}
 
+		CurFrame = Start;
+	}
 
 	if (NextFrame >= End)
 	{
@@ -148,7 +158,16 @@ void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnima
 	int NextFrame = CurFrame;
 	++NextFrame;
 
+	if (CurFrame >= End)
+	{
+		if (false == isLoop_)
+		{
+			bEnd_ = true;
+			return;
+		}
 
+		CurFrame = Start;
+	}
 
 	if (NextFrame >= End)
 	{
@@ -175,6 +194,16 @@ void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnima
 	int oaNextFrame = oa->CurFrame;
 	++oaNextFrame;
 
+	if (oa->CurFrame >= oa->End)
+	{
+		if (false == oa->isLoop_)
+		{
+			oa->bEnd_ = true;
+			return;
+		}
+
+		oa->CurFrame = oa->Start;
+	}
 
 	if (oaNextFrame >= oa->End)
 	{

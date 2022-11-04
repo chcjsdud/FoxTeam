@@ -113,6 +113,13 @@ Character::~Character()
 		delete fowTexture_;
 		fowTexture_ = nullptr;
 	}
+
+	if (nullptr != fowDataThread_)
+	{
+		fowDataThread_->join();
+		delete fowDataThread_;
+		fowDataThread_ = nullptr;
+	}
 }
 
 void Character::SetCurrentNavMesh(NavMesh* _NavMesh)
