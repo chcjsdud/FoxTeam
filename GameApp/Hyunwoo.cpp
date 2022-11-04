@@ -16,6 +16,7 @@
 #include "CharEffectPacket.h"
 #include "HyunwooQEffect.h"
 #include "HyunwooEffect.h"
+#include "HyunwooWEffect.h"
 #include "HyunwooREffect.h"
 #include "SlowEffect.h"
 #include "MonsterCrowdControlPacket.h"
@@ -24,7 +25,7 @@
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
 	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), basicAttackEffect_(nullptr), QGroundCrackEffectRenderer_(nullptr), qEffect_(nullptr),
-	rEffect_(nullptr), b_isW_(false)
+	rEffect_(nullptr), b_isW_(false), wEffect_(nullptr)
 {
 
 }
@@ -339,6 +340,9 @@ void Hyunwoo::initEffectRenderer()
 	qEffect_ = GetLevel()->CreateActor<HyunwooQEffect>();
 	qEffect_->SetParent(this);
 
+	wEffect_ = GetLevel()->CreateActor<HyunwooWEffect>();
+	wEffect_->SetParent(this);
+
 	rEffect_ = GetLevel()->CreateActor<HyunwooREffect>();
 	rEffect_->SetParent(this);
 }
@@ -508,8 +512,15 @@ void Hyunwoo::onStartWSkill()
 	GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill02_Activation.wav");
 	PacketSoundPlay packet;
 	packet.SetSound("hyunwoo_Skill02_Activation.wav", transform_.GetWorldPosition());
-
 	FT::SendPacket(packet);
+
+	wEffect_->PlayAwake();
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillW");
+	FT::SendPacket(pack);
+
+
 	timer_unstoppable_ = 1.0f;
 	timer_w_ = 2.5f;
 	b_isW_ = true;
@@ -521,7 +532,14 @@ void Hyunwoo::onUpdateWSkill(float _deltaTime)
 {
 	// W 스킬은 일시적인 방어력 증강과
 	// 모든 군중 제어기 면역을 일시적으로 부여하는 스테이트입니다.
-	changeAnimationWait();
+
+	if ("Run" != curAnimationName_)
+	{
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Run", true);
+		return;
+	}
+
 	mainState_.ChangeState("NormalState", true);
 	normalState_.ChangeState("Watch", true);
 	return;
@@ -839,6 +857,15 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 		return;
 	}
 
+	if ("SkillW" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		wEffect_->GetTransform()->SetLocalPosition(wp);
+		wEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		wEffect_->PlayAwake();
+		return;
+	}
+
 	if ("SkillE" == _effectName)
 	{
 		rearEffectRenderer_->On();
@@ -874,6 +901,8 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 
 void Hyunwoo::onEffectTransformCheck(float _deltaTime)
 {
+	float4 wp = transform_.GetWorldPosition();
+	wEffect_->GetTransform()->SetWorldPosition(wp);
 }
 
 void Hyunwoo::startCustomRSkill()
@@ -888,7 +917,7 @@ void Hyunwoo::startCustomRSkill()
 	packet.SetSound("hyunwoo_Skill04_Charging.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
 
-	float4 wp = GetTransform()->GetWorldPosition();
+	float4 wp = transform_.GetWorldPosition();
 	rEffect_->GetTransform()->SetLocalPosition(wp);
 	rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 	rEffect_->PlayAwake();

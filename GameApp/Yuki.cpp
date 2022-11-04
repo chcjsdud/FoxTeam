@@ -540,7 +540,7 @@ void Yuki::onStartWSkill()
 
 void Yuki::onUpdateWSkill(float _deltaTime)
 {
-	changeAnimationWait();
+	//changeAnimationWait();
 	mainState_.ChangeState("NormalState", true);
 	normalState_.ChangeState("Watch", true);
 }

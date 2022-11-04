@@ -9,6 +9,7 @@
 
 
 class HyunwooQEffect;
+class HyunwooWEffect;
 class HyunwooREffect;
 class Hyunwoo : public Character
 {
@@ -80,6 +81,7 @@ protected:
 
 private:
 	HyunwooQEffect* qEffect_;
+	HyunwooWEffect* wEffect_;
 	HyunwooREffect* rEffect_;
 	
 	BasicAttackEffect* basicAttackEffect_;
@@ -104,6 +106,7 @@ private:
 
 	// 캐릭터의 고유한 상태를 처리하고 싶을 때 사용
 	GameEngineFSM customState_;
+
 
 
 	bool b_Rhit_;
