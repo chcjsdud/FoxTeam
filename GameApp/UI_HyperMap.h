@@ -17,6 +17,8 @@ public:
 	void MapOff();
 	void MapOn();
 
+	void SelectedAreaRender(float4 _Position);
+
 	bool MapOnFlag;
 
 public:
