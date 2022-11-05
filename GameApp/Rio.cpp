@@ -119,6 +119,26 @@ void Rio::ReleaseResource()
 	GameEngineFBXMeshManager::GetInst().Delete("Rio_Short_Run.fbx");
 }
 
+void Rio::Show()
+{
+	Character::Show();
+	if (bLongBow_)
+	{
+		longBow_->On();
+	}
+	else
+	{
+		shortBow_->On();
+	}
+}
+
+void Rio::Hide()
+{
+	Character::Hide();
+	longBow_->Off();
+	shortBow_->Off();
+}
+
 void Rio::Start()
 {
 	Character::Start();
@@ -444,13 +464,19 @@ void Rio::onUpdateQSkill(float _deltaTime)
 
 		if (bLongBow_)
 		{
-			longBow_->On();
-			shortBow_->Off();
+			if (!bHided_)
+			{
+				longBow_->On();
+				shortBow_->Off();
+			}
 		}
 		else
 		{
-			longBow_->Off();
-			shortBow_->On();
+			if (!bHided_)
+			{
+				longBow_->Off();
+				shortBow_->On();
+			}
 		}
 
 		overrideAnimationName_ = "";

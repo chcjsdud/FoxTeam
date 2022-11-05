@@ -26,6 +26,8 @@ public:
 
 public:
 	bool IsLongBow() { return bLongBow_; }
+	void Show() override;
+	void Hide() override;
 
 protected:
 	void Start() override;

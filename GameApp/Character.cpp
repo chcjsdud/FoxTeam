@@ -780,15 +780,18 @@ IUnit* Character::getMousePickedCharacter()
 		for (GameEngineCollision* c : mousePickedCollision)
 		{
 			mousePickedActor = c->GetActor();
+			Character* chracter = dynamic_cast<Character*>(mousePickedActor);
+			if (nullptr != chracter && chracter->IsHide())
+			{
+				continue;
+			}
+
 			if (nullptr != mousePickedActor && mousePickedActor != this)
 			{
 				return dynamic_cast<IUnit*>(mousePickedActor);
 			}
 		}
 	}
-
-
-
 
 	{
 		std::list<GameEngineCollision*> mousePickedCollision = mouse_->GetRayCollision()->GetCollisionList(eCollisionGroup::Monster);
@@ -862,12 +865,14 @@ void Character::Show()
 {
 	renderer_->On();
 	shadow_->On();
+	bHided_ = false;
 }
 
 void Character::Hide()
 {
 	renderer_->Off();
 	shadow_->Off();
+	bHided_ = true;
 }
 
 void Character::ChangeAnimation(const std::string& _animationName, bool _bForce)

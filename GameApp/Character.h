@@ -62,6 +62,10 @@ public:
 	void UnFocus() { bFocused_ = false; }
 	bool IsFocused() { return bFocused_; }
 
+	virtual void Show();
+	virtual void Hide();
+	bool IsHide() { return bHided_; }
+
 	void ChangeAnimation(const std::string& _animationName, bool _bForce = false);
 	void ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect, bool _bForce = false);
 
@@ -127,8 +131,6 @@ public:
 #pragma region VirtualFunc
 public:
 	virtual JobType GetJobType() = 0;
-	virtual void Show();
-	virtual void Hide();
 
 protected:
 	virtual void initRendererAndAnimation() = 0;
@@ -170,8 +172,6 @@ protected:
 
 #pragma endregion
 
-
-
 protected:
 	void inputProcess(float _deltaTime);
 	void moveProcess(float _deltaTime);
@@ -179,6 +179,7 @@ protected:
 
 	void setRotationTo(const float4& _destination, const float4 _startPosition);
 	void setRotationToMouse();
+
 	IUnit* getMousePickedCharacter();
 
 	void initBasicEffect();
@@ -187,9 +188,6 @@ protected:
 private:
 	void initInput();
 	void initState();
-
-
-
 
 private:
 	void moveTick(float _deltaTime, const float4& _startPosition);
@@ -362,6 +360,8 @@ protected:
 	GameEngineCollision* collision_;
 	GameEngineEffectRenderer* shadow_;
 	GameEngineRenderer* eyesightRenderer_;
+
+	// 시야 판별용
 	GameEngineVertexBuffer* eyesightVertexBuffer_;
 	GameEngineIndexBuffer* eyesightIndexBuffer_;
 	std::vector<GameEngineVertex> eyesightVertices_;
@@ -370,6 +370,7 @@ protected:
 	GameEngineTexture* fowTexture_;
 	std::vector<float4> fowData_;
 	std::thread* fowDataThread_;
+	bool bHided_;
 
 	// 맵, 이동
 	LumiaMap* currentMap_;

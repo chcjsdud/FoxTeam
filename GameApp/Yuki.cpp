@@ -142,6 +142,18 @@ void Yuki::ReleaseResource()
 	}
 }
 
+void Yuki::Show()
+{
+	Character::Show();
+	swordRenderer_->On();
+}
+
+void Yuki::Hide()
+{
+	Character::Hide();
+	swordRenderer_->Off();
+}
+
 void Yuki::Start()
 {
 	Character::Start();

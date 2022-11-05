@@ -52,6 +52,7 @@ void AyaBullet::Start()
 
 	renderer_->GetTransform()->SetLocalScaling(float4{4.5f,4.5f,9.0f} * 0.0005f);
 	renderer_->GetTransform()->SetLocalPosition(float4{0.0f,500.0f,0.0f } *0.0005f);
+	renderer_->Off();
 
 	GetTransform()->SetLocalScaling(scale_);
 
@@ -124,6 +125,7 @@ void AyaBullet::updateWait(float _deltaTime)
 void AyaBullet::startChase()
 {
 	collision_->On();
+	renderer_->On();
 }
 
 void AyaBullet::updateChase(float _deltaTime)
@@ -168,6 +170,7 @@ void AyaBullet::startFly()
 {
 	transform_.SetLocalRotationDegree({ 0.0f, rotationY_, 0.0f });
 	collision_->On();
+	renderer_->On();
 }
 
 void AyaBullet::updateFly(float _deltaTime)

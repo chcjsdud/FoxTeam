@@ -30,6 +30,10 @@ public:
 	static void ReleaseResource();
 
 public:
+	void Show() override;
+	void Hide() override;
+
+public:
 	virtual JobType GetJobType() { return JobType::YUKI; }
 
 protected:

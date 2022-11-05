@@ -25,8 +25,13 @@ public:
 	static void ReleaseResource();
 
 public:
+	void Show() override;
+	void Hide() override;
+
+public:
 	void Start() override;
 	void Update(float _deltaTime) override;
+
 
 	// Character을(를) 통해 상속됨
 	virtual JobType GetJobType() override;

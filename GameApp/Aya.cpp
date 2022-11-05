@@ -122,6 +122,18 @@ void Aya::ReleaseResource()
 	GameEngineFBXMeshManager::GetInst().Delete("Aya_Idle.fbx");
 }
 
+void Aya::Show()
+{
+	Character::Show();
+	pistolRenderer_->On();
+}
+
+void Aya::Hide()
+{
+	Character::Hide();
+	pistolRenderer_->Off();
+}
+
 void Aya::Start()
 {
 	Character::Start();
