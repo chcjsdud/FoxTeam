@@ -782,7 +782,7 @@ IUnit* Character::getMousePickedCharacter()
 		{
 			mousePickedActor = c->GetActor();
 			Character* chracter = dynamic_cast<Character*>(mousePickedActor);
-			if (nullptr != chracter && chracter->IsHide())
+			if (nullptr != chracter && chracter->IsHidden())
 			{
 				continue;
 			}
