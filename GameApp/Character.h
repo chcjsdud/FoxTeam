@@ -366,7 +366,6 @@ protected:
 	GameEngineTexture* fowTexture_;
 	std::vector<float4> fowData_;
 	std::thread* fowDataThread_;
-	std::mutex mutex_;
 
 	// ∏ , ¿Ãµø
 	LumiaMap* currentMap_;
