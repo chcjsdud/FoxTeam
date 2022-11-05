@@ -77,17 +77,34 @@ void RioDSkill::updateFalling(float _deltaTime)
 
 void RioDSkill::startFall()
 {
-	auto list = collision_->GetCollisionList(eCollisionGroup::Player);
-	for (GameEngineCollision* col : list)
 	{
-		IUnit* unit = dynamic_cast<IUnit*>(col->GetActor());
-
-		if (unit == owner_)
+		auto list = collision_->GetCollisionList(eCollisionGroup::Player);
+		for (GameEngineCollision* col : list)
 		{
-			continue;
-		}
+			IUnit* unit = dynamic_cast<IUnit*>(col->GetActor());
 
-		unit->Damage(damage_, owner_);
+			if (unit == owner_)
+			{
+				continue;
+			}
+
+			unit->Damage(damage_, owner_);
+		}
+	}
+
+	{
+		auto list = collision_->GetCollisionList(eCollisionGroup::Monster);
+		for (GameEngineCollision* col : list)
+		{
+			IUnit* unit = dynamic_cast<IUnit*>(col->GetActor());
+
+			if (unit == owner_)
+			{
+				continue;
+			}
+
+			unit->Damage(damage_, owner_);
+		}
 	}
 }
 

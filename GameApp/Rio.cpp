@@ -963,6 +963,17 @@ void Rio::updateSkillEBegin(float _deltaTime)
 	{
 		transform_.SetWorldPosition(float4::Lerp(startPosition_, landingPosition_, skillETime_ / 0.5f));
 	}
+	else
+	{
+		float4 moveSpeed = (direction_ * stat_.MovementSpeed * 2.0f) * _deltaTime;
+		float4 nextMovePosition = transform_.GetWorldPosition() + moveSpeed;
+
+		float temp;
+		if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+		{
+			GetTransform()->SetWorldPosition(nextMovePosition);
+		}
+	}
 }
 
 void Rio::startSkillEShot()
@@ -974,54 +985,102 @@ void Rio::startSkillEShot()
 	packet.SetSound("Rio_Bow_Skill03_Start.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
 
-	auto list = skillECollision_->GetCollisionList(eCollisionGroup::Player);
-
-
-
-	float doubleStrikeDelay = (stat_.AttackEndTime - stat_.AttackStartTime) / stat_.AttackSpeed / 2.0f;
-
-	//float4 offset = { 20.f, 120.f, 30.f, 0.f };
-	//offset = offset * transform_.GetTransformData().WorldWorld_;
-	float4 startPosition = transform_.GetWorldPosition();
-	startPosition.y += 300.f;
-	//startPosition += offset;
-
-	float arrowSpeed = 1500.f;
-
-	for (GameEngineCollision* col : list)
 	{
-		Character* c = dynamic_cast<Character*>(col->GetActor());
-		if (nullptr != c)
+		auto list = skillECollision_->GetCollisionList(eCollisionGroup::Player);
+
+		float doubleStrikeDelay = (stat_.AttackEndTime - stat_.AttackStartTime) / stat_.AttackSpeed / 2.0f;
+
+		//float4 offset = { 20.f, 120.f, 30.f, 0.f };
+		//offset = offset * transform_.GetTransformData().WorldWorld_;
+		float4 startPosition = transform_.GetWorldPosition();
+		startPosition.y += 300.f;
+		//startPosition += offset;
+
+		float arrowSpeed = 1500.f;
+
+		for (GameEngineCollision* col : list)
 		{
-			if (c == this)
+			Character* c = dynamic_cast<Character*>(col->GetActor());
+			if (nullptr != c)
 			{
-				continue;
-			}
-			{
-				PacketCreateProjectile packetArrow;
-				packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
-				packetArrow.SetType(eProjectileType::RioTargetArrow);
-				FT::SendPacket(packetArrow);
-			}
-			{
-				PacketCreateProjectile packetArrow;
-				packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
-				packetArrow.SetWaitTime(doubleStrikeDelay);
-				packetArrow.SetType(eProjectileType::RioTargetArrow);
-				FT::SendPacket(packetArrow);
-			}
+				if (c == this)
+				{
+					continue;
+				}
+				{
+					PacketCreateProjectile packetArrow;
+					packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+					packetArrow.SetType(eProjectileType::RioTargetArrow);
+					FT::SendPacket(packetArrow);
+				}
+				{
+					PacketCreateProjectile packetArrow;
+					packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+					packetArrow.SetWaitTime(doubleStrikeDelay);
+					packetArrow.SetType(eProjectileType::RioTargetArrow);
+					FT::SendPacket(packetArrow);
+				}
 
-			if (GameServer::GetInstance()->IsOpened())
-			{
-				RioArrow* arrow = level_->CreateActor<RioArrow>();
-				arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+				if (GameServer::GetInstance()->IsOpened())
+				{
+					RioArrow* arrow = level_->CreateActor<RioArrow>();
+					arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
 
-				arrow = level_->CreateActor<RioArrow>();
-				arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
-				arrow->SetWaitTime(doubleStrikeDelay);
+					arrow = level_->CreateActor<RioArrow>();
+					arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+					arrow->SetWaitTime(doubleStrikeDelay);
+				}
 			}
 		}
+	}
 
+	{
+		auto list = skillECollision_->GetCollisionList(eCollisionGroup::Monster);
+
+		float doubleStrikeDelay = (stat_.AttackEndTime - stat_.AttackStartTime) / stat_.AttackSpeed / 2.0f;
+
+		//float4 offset = { 20.f, 120.f, 30.f, 0.f };
+		//offset = offset * transform_.GetTransformData().WorldWorld_;
+		float4 startPosition = transform_.GetWorldPosition();
+		startPosition.y += 300.f;
+		//startPosition += offset;
+
+		float arrowSpeed = 1500.f;
+
+		for (GameEngineCollision* col : list)
+		{
+			IUnit* c = dynamic_cast<IUnit*>(col->GetActor());
+			if (nullptr != c)
+			{
+				if (c == this)
+				{
+					continue;
+				}
+				{
+					PacketCreateProjectile packetArrow;
+					packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+					packetArrow.SetType(eProjectileType::RioTargetArrow);
+					FT::SendPacket(packetArrow);
+				}
+				{
+					PacketCreateProjectile packetArrow;
+					packetArrow.MakeTargetProjectile(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+					packetArrow.SetWaitTime(doubleStrikeDelay);
+					packetArrow.SetType(eProjectileType::RioTargetArrow);
+					FT::SendPacket(packetArrow);
+				}
+
+				if (GameServer::GetInstance()->IsOpened())
+				{
+					RioArrow* arrow = level_->CreateActor<RioArrow>();
+					arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+
+					arrow = level_->CreateActor<RioArrow>();
+					arrow->MakeTargetArrow(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *c);
+					arrow->SetWaitTime(doubleStrikeDelay);
+				}
+			}
+		}
 	}
 }
 
