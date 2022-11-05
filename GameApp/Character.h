@@ -64,7 +64,7 @@ public:
 
 	virtual void Show();
 	virtual void Hide();
-	bool IsHide() { return bHidden_; }
+	bool IsHidden() { return bHidden_; }
 
 	void ChangeAnimation(const std::string& _animationName, bool _bForce = false);
 	void ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect, bool _bForce = false);

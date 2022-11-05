@@ -464,7 +464,7 @@ void Rio::onUpdateQSkill(float _deltaTime)
 
 		if (bLongBow_)
 		{
-			if (!bHided_)
+			if (!bHidden_)
 			{
 				longBow_->On();
 				shortBow_->Off();
@@ -472,7 +472,7 @@ void Rio::onUpdateQSkill(float _deltaTime)
 		}
 		else
 		{
-			if (!bHided_)
+			if (!bHidden_)
 			{
 				longBow_->Off();
 				shortBow_->On();
