@@ -77,7 +77,8 @@ public: // Public Pure Virtual Function
 	int GetIndex() override;															// 인덱스 Get
 	void Damage(float _Amount, IUnit* _Target) override;								// 외부에서 호출하며 해당 몬스터에 데미지줄때 호출되는 함수
 
-
+	void Show();
+	void Hide();
 
 public: // 패킷수신시 호출되는 함수들
 	void rcvAttack01(MonsterStateInfo _rcvStatInfo);									// 패킷수신으로 공격 처리(동기화처리)

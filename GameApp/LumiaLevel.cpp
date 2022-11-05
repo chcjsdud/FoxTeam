@@ -920,6 +920,7 @@ void LumiaLevel::UpdateCharacterVisibility()
 
 	const std::vector<GameEngineVertex> eyesightVertices = focusedCharacter->GetEyesightVertices();
 	const std::vector<UINT> eyesightIndices = focusedCharacter->GetEysightIndices();
+	float4 focusedCharacterPosition = focusedCharacter->GetTransform()->GetWorldPosition();
 
 	for (Character* c : CharacterActorList_)
 	{
@@ -927,8 +928,15 @@ void LumiaLevel::UpdateCharacterVisibility()
 		{
 			continue;
 		}
+
 		c->Hide();
 		float4 position = c->GetTransform()->GetWorldPosition();
+
+		if (FT::Char::DEFAULT_HIDE_RANGE < float4::Calc_Len3D(position, focusedCharacterPosition))
+		{
+			continue;
+		}
+
 		position.y = FT::Map::MAX_HEIGHT;
 		float temp;
 
@@ -945,6 +953,37 @@ void LumiaLevel::UpdateCharacterVisibility()
 			if (bIntersection)
 			{
 				c->Show();
+				break;
+			}
+		}
+	}
+
+	for (Monsters* m : MonsterActorList_)
+	{
+		m->Hide();
+		float4 position = m->GetTransform()->GetWorldPosition();
+
+		if (FT::Char::DEFAULT_HIDE_RANGE < float4::Calc_Len3D(position, focusedCharacterPosition))
+		{
+			continue;
+		}
+
+		position.y = FT::Map::MAX_HEIGHT;
+		float temp;
+
+		int indexCount = eyesightIndices.size() / 3;
+		for (int i = 0; i < indexCount; ++i)
+		{
+			float4 v1 = eyesightVertices[eyesightIndices[i * 3]].POSITION;
+			float4 v2 = eyesightVertices[eyesightIndices[i * 3 + 1]].POSITION;
+			float4 v3 = eyesightVertices[eyesightIndices[i * 3 + 2]].POSITION;
+
+			bool bIntersection = DirectX::TriangleTests::Intersects(position.DirectVector, float4::DOWN.DirectVector,
+				v1.DirectVector, v2.DirectVector, v3.DirectVector, temp);
+
+			if (bIntersection)
+			{
+				m->Show();
 				break;
 			}
 		}

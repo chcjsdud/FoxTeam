@@ -146,6 +146,16 @@ void Monsters::Damage(float _Amount, IUnit* _Target)
 	}
 }
 
+void Monsters::Show()
+{
+	MainRenderer_->On();
+}
+
+void Monsters::Hide()
+{
+	MainRenderer_->Off();
+}
+
 void Monsters::rcvAttack01(MonsterStateInfo _rcvStatInfo)
 {
 	// 상태정보 갱신
