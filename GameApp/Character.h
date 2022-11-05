@@ -74,19 +74,19 @@ public:
 
 	bool IsDead() { return isPlayerDead_; }
 
-	void SetTriggerProhibit(bool _tf) { isInProhibited_ = _tf; }
-
 #pragma region GetterSetter
 public:
 	CharacterStat* GetStat() { return &stat_; }
-	float4 GetDirection() { return direction_; }
-	std::string GetCurAnimation() { return curAnimationName_; }
-	std::string GetOverrideAnimationName() { return overrideAnimationName_; }
-	std::string GetOverrideAnimationBoneName() { return overrideAnimationBoneName_; }
-	NavFace* GetCurrentNavFace() { return currentNavFace_; }
-	std::vector<ItemBase*> GetInventory() { return inventory_; }
-	PlayerUIController* GetUIController() { return uiController_; }
-	GameEngineRenderTarget* GetFOWRenderTarget() { return fowRenderTarget_; }
+	float4 GetDirection() const { return direction_; }
+	std::string GetCurAnimation() const { return curAnimationName_; }
+	std::string GetOverrideAnimationName() const { return overrideAnimationName_; }
+	std::string GetOverrideAnimationBoneName() const { return overrideAnimationBoneName_; }
+	NavFace* GetCurrentNavFace() const { return currentNavFace_; }
+	std::vector<ItemBase*> GetInventory() const { return inventory_; }
+	PlayerUIController* GetUIController() const { return uiController_; }
+	GameEngineRenderTarget* GetFOWRenderTarget() const { return fowRenderTarget_; }
+	const std::vector<GameEngineVertex>& GetEyesightVertices() { return eyesightVertices_; }
+	const std::vector<UINT>& GetEysightIndices() { return eyesightIndices_; }
 
 	void SetDirection(float4 _dir) { direction_ = _dir; }
 	void SetCurrentNavFace(NavFace* _Navi) { currentNavFace_ = _Navi; }
@@ -98,6 +98,8 @@ public:
 
 	void SetCharacterDeath();
 	void SetFraggerIndex(int _index);
+
+	void SetTriggerProhibit(bool _tf) { isInProhibited_ = _tf; }
 
 
 	// 스탯 내 기준점이 되는 쿨타임 변수
@@ -125,6 +127,8 @@ public:
 #pragma region VirtualFunc
 public:
 	virtual JobType GetJobType() = 0;
+	virtual void Show();
+	virtual void Hide();
 
 protected:
 	virtual void initRendererAndAnimation() = 0;
@@ -357,11 +361,11 @@ protected:
 	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* collision_;
 	GameEngineEffectRenderer* shadow_;
-	GameEngineRenderer* eyeSightRenderer_;
-	GameEngineVertexBuffer* eyeSightVertex_;
-	GameEngineIndexBuffer* eyeSightIndex_;
-	std::vector<GameEngineVertex> vertices_;
-	std::vector<UINT> indices_;
+	GameEngineRenderer* eyesightRenderer_;
+	GameEngineVertexBuffer* eyesightVertexBuffer_;
+	GameEngineIndexBuffer* eyesightIndexBuffer_;
+	std::vector<GameEngineVertex> eyesightVertices_;
+	std::vector<UINT> eyesightIndices_;
 	GameEngineRenderTarget* fowRenderTarget_;
 	GameEngineTexture* fowTexture_;
 	std::vector<float4> fowData_;

@@ -78,8 +78,8 @@ Character::Character()
 	, MainOutLineRenderer_(nullptr)
 	, WeaponOutLineRenderer1_(nullptr)
 	, WeaponOutLineRenderer2_(nullptr)
-	, eyeSightVertex_(nullptr)
-	, eyeSightIndex_(nullptr)
+	, eyesightVertexBuffer_(nullptr)
+	, eyesightIndexBuffer_(nullptr)
 	, fowRenderTarget_(nullptr)
 	, fowTexture_(nullptr)
 	, fowDataThread_(nullptr)
@@ -94,16 +94,16 @@ Character::Character()
 
 Character::~Character()
 {
-	if (nullptr != eyeSightVertex_)
+	if (nullptr != eyesightVertexBuffer_)
 	{
-		delete eyeSightVertex_;
-		eyeSightVertex_ = nullptr;
+		delete eyesightVertexBuffer_;
+		eyesightVertexBuffer_ = nullptr;
 	}
 
-	if (nullptr != eyeSightIndex_)
+	if (nullptr != eyesightIndexBuffer_)
 	{
-		delete eyeSightIndex_;
-		eyeSightIndex_ = nullptr;
+		delete eyesightIndexBuffer_;
+		eyesightIndexBuffer_ = nullptr;
 	}
 
 	if (nullptr != fowRenderTarget_)
@@ -319,7 +319,7 @@ void Character::Update(float _DeltaTime)
 		coolTimer_D_ = 0.5f;
 	}
 
-	if (eyeSightRenderer_ == nullptr)
+	if (eyesightRenderer_ == nullptr)
 	{
 		return;
 	}
@@ -858,6 +858,18 @@ void Character::MoveWithPathFind(const float4& _position)
 	}
 }
 
+void Character::Show()
+{
+	renderer_->On();
+	shadow_->On();
+}
+
+void Character::Hide()
+{
+	renderer_->Off();
+	shadow_->Off();
+}
+
 void Character::ChangeAnimation(const std::string& _animationName, bool _bForce)
 {
 	if ("" == _animationName)
@@ -1162,45 +1174,45 @@ void Character::initState()
 
 void Character::InitEyeSight()
 {
-	if (eyeSightVertex_ != nullptr)
+	if (eyesightVertexBuffer_ != nullptr)
 	{
 		return;
 	}
 
-	vertices_.reserve(37);
-	indices_.reserve(36 * 3);
+	eyesightVertices_.reserve(37);
+	eyesightIndices_.reserve(36 * 3);
 
 	for (size_t i = 0; i < 37; i++)
 	{
 		GameEngineVertex v;
 		v.POSITION = { 0.0f, 0.0f, 0.0f, 1.0f };
 		v.COLOR = float4::WHITE;
-		vertices_.push_back(v);
+		eyesightVertices_.push_back(v);
 	}
 
 	for (size_t i = 0; i < 36 - 1; i++)
 	{
-		indices_.push_back(i + 0);
-		indices_.push_back(i + 1);
-		indices_.push_back(36);
+		eyesightIndices_.push_back(i + 0);
+		eyesightIndices_.push_back(i + 1);
+		eyesightIndices_.push_back(36);
 	}
 
-	indices_.push_back(35);
-	indices_.push_back(0);
-	indices_.push_back(36);
+	eyesightIndices_.push_back(35);
+	eyesightIndices_.push_back(0);
+	eyesightIndices_.push_back(36);
 
-	eyeSightVertex_ = new GameEngineVertexBuffer();
-	eyeSightIndex_ = new GameEngineIndexBuffer();
+	eyesightVertexBuffer_ = new GameEngineVertexBuffer();
+	eyesightIndexBuffer_ = new GameEngineIndexBuffer();
 
-	eyeSightVertex_->Create(vertices_, D3D11_USAGE::D3D11_USAGE_DYNAMIC);
-	eyeSightIndex_->Create(indices_, D3D11_USAGE::D3D11_USAGE_DEFAULT);
+	eyesightVertexBuffer_->Create(eyesightVertices_, D3D11_USAGE::D3D11_USAGE_DYNAMIC);
+	eyesightIndexBuffer_->Create(eyesightIndices_, D3D11_USAGE::D3D11_USAGE_DEFAULT);
 
-	eyeSightRenderer_ = CreateTransformComponent<GameEngineRenderer>(nullptr);
-	eyeSightRenderer_->SetRenderingPipeLine("Color");
-	eyeSightRenderer_->SetMesh(eyeSightVertex_, eyeSightIndex_);
-	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
-	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	eyeSightRenderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", fowColor_);
+	eyesightRenderer_ = CreateTransformComponent<GameEngineRenderer>(nullptr);
+	eyesightRenderer_->SetRenderingPipeLine("Color");
+	eyesightRenderer_->SetMesh(eyesightVertexBuffer_, eyesightIndexBuffer_);
+	eyesightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
+	eyesightRenderer_->GetGameEngineRenderingPipeLine()->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	eyesightRenderer_->ShaderHelper.SettingConstantBufferLink("ResultColor", fowColor_);
 
 	fowRenderTarget_ = new GameEngineRenderTarget;
 	fowTexture_ = new GameEngineTexture;
@@ -1226,11 +1238,11 @@ void Character::updateFOW(float _deltaTime)
 {
 	if (level_->GetMainCamera()->IsDebugCheck())
 	{
-		eyeSightRenderer_->Off();
+		eyesightRenderer_->Off();
 	}
 	else
 	{
-		eyeSightRenderer_->On();
+		eyesightRenderer_->On();
 	}
 
 	static bool bCalc = false;
@@ -1278,19 +1290,19 @@ void Character::updateFOW(float _deltaTime)
 
 		//for (size_t i = 0; i < result.size(); i++)
 		//{
-		//	vertices_[i].POSITION = result[i];
+		//	eyesightVertices_[i].POSITION = result[i];
 		//}
 
 		for (size_t i = 0; i < fowData_.size(); i++)
 		{
-			vertices_[i].POSITION = fowData_[i];
+			eyesightVertices_[i].POSITION = fowData_[i];
 		}
 
-		vertices_.back().POSITION = transform_.GetWorldPosition();
+		eyesightVertices_.back().POSITION = transform_.GetWorldPosition();
 
-		dc->Map(eyeSightVertex_->Buffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
-		memcpy(subResource.pData, &vertices_[0], subResource.RowPitch);
-		dc->Unmap(eyeSightVertex_->Buffer_, 0);
+		dc->Map(eyesightVertexBuffer_->Buffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+		memcpy(subResource.pData, &eyesightVertices_[0], subResource.RowPitch);
+		dc->Unmap(eyesightVertexBuffer_->Buffer_, 0);
 	}
 
 	CameraComponent* cam = level_->GetMainCamera();
@@ -1301,13 +1313,13 @@ void Character::updateFOW(float _deltaTime)
 
 	fowRenderTarget_->Clear();
 	fowRenderTarget_->Setting();
-	eyeSightRenderer_->GetTransform()->GetTransformData().Projection_ = Projection;
-	eyeSightRenderer_->GetTransform()->GetTransformData().View_ = View;
+	eyesightRenderer_->GetTransform()->GetTransformData().Projection_ = Projection;
+	eyesightRenderer_->GetTransform()->GetTransformData().View_ = View;
 
-	eyeSightRenderer_->GetTransform()->GetTransformData().WVPCalculation();
-	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerNone");
-	eyeSightRenderer_->Render(_deltaTime, false);
-	eyeSightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
+	eyesightRenderer_->GetTransform()->GetTransformData().WVPCalculation();
+	eyesightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerNone");
+	eyesightRenderer_->Render(_deltaTime, false);
+	eyesightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
 }
 
 void Character::getFOWData(std::vector<float4>& _data, bool& _bCalc)

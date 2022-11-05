@@ -106,6 +106,7 @@ private: // State Update Function
 	void CharactersTransformUpdate();										// Character ManagerList Transform Update Function
 	void MonsterStateUpdatePacketSend();									// Monster State Update Packet Send Function
 	void MonstersTransformUpdate();											// Monster ManagerList Transform Update Function
+	void UpdateCharacterVisibility();
 
 private: // Debug Function
 	void DebugWindowUpdate();												// Debug Window Update Function

@@ -901,6 +901,56 @@ void LumiaLevel::MonstersTransformUpdate()
 
 }
 
+void LumiaLevel::UpdateCharacterVisibility()
+{
+	Character* focusedCharacter = nullptr;
+	for (Character* c : CharacterActorList_)
+	{
+		if (c->IsFocused())
+		{
+			focusedCharacter = c;
+			break;
+		}
+	}
+
+	if (nullptr == focusedCharacter)
+	{
+		return;
+	}
+
+	const std::vector<GameEngineVertex> eyesightVertices = focusedCharacter->GetEyesightVertices();
+	const std::vector<UINT> eyesightIndices = focusedCharacter->GetEysightIndices();
+
+	for (Character* c : CharacterActorList_)
+	{
+		if (c == focusedCharacter)
+		{
+			continue;
+		}
+		c->Hide();
+		float4 position = c->GetTransform()->GetWorldPosition();
+		position.y = FT::Map::MAX_HEIGHT;
+		float temp;
+
+		int indexCount = eyesightIndices.size() / 3;
+		for (int i = 0; i < indexCount; ++i)
+		{
+			float4 v1 = eyesightVertices[eyesightIndices[i * 3]].POSITION;
+			float4 v2 = eyesightVertices[eyesightIndices[i * 3 + 1]].POSITION;
+			float4 v3 = eyesightVertices[eyesightIndices[i * 3 + 2]].POSITION;
+
+			bool bIntersection = DirectX::TriangleTests::Intersects(position.DirectVector, float4::DOWN.DirectVector, 
+				v1.DirectVector, v2.DirectVector, v3.DirectVector, temp);
+
+			if (bIntersection)
+			{
+				c->Show();
+				break;
+			}
+		}
+	}
+}
+
 void LumiaLevel::DebugWindowUpdate()
 {
 	// DebugAndControlWindow
@@ -1204,6 +1254,8 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 
 	// 몬스터 목록의 트랜스폼 데이터 갱신
 	MonstersTransformUpdate();
+
+	UpdateCharacterVisibility();
 
 	// Switching FreeCamMode
 	if (true == GameEngineInput::GetInst().Down("O"))

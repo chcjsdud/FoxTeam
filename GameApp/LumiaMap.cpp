@@ -412,7 +412,7 @@ std::vector<float4> LumiaMap::GetEyeSightPolygon(const float4& _position, const 
 			checkPosition = _position + temp;
 			float height;
 			NavFace* face = navMesh_->GetNavFaceFromPositionXZ(checkPosition, float4::DOWN, height);
-			checkPosition.y = 100.0f;
+			//checkPosition.y = 100.0f;
 			if (nullptr == face)
 			{
 				break;
