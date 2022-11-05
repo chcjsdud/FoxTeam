@@ -87,6 +87,7 @@ Character::Character()
 	, infightTimer_(0.0f)
 	, isInProhibited_(false)
 	, prohibitedCounter_(20.0f)
+	, bHidden_(false)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -865,14 +866,14 @@ void Character::Show()
 {
 	renderer_->On();
 	shadow_->On();
-	bHided_ = false;
+	bHidden_ = false;
 }
 
 void Character::Hide()
 {
 	renderer_->Off();
 	shadow_->Off();
-	bHided_ = true;
+	bHidden_ = true;
 }
 
 void Character::ChangeAnimation(const std::string& _animationName, bool _bForce)

@@ -64,7 +64,7 @@ public:
 
 	virtual void Show();
 	virtual void Hide();
-	bool IsHide() { return bHided_; }
+	bool IsHide() { return bHidden_; }
 
 	void ChangeAnimation(const std::string& _animationName, bool _bForce = false);
 	void ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect, bool _bForce = false);
@@ -370,7 +370,7 @@ protected:
 	GameEngineTexture* fowTexture_;
 	std::vector<float4> fowData_;
 	std::thread* fowDataThread_;
-	bool bHided_;
+	bool bHidden_;
 
 	// ∏ , ¿Ãµø
 	LumiaMap* currentMap_;
