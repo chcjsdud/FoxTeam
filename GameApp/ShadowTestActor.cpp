@@ -70,6 +70,11 @@ void ShadowTestActor::Update(float _deltaTime)
 				{
 					float4 Size = { 128, 72 };
 					Window->PushRenderTarget("Shadow", ShadowRenderTarget_, Size * 3);
+					Window->PushRenderTarget("메인 카메라 타겟", GetLevel()->GetMainCamera()->GetCameraRenderTarget(), Size * 3);
+					Window->PushRenderTarget("UI 카메라 타겟", GetLevel()->GetUICamera()->GetCameraRenderTarget(), Size * 3);
+					Window->PushRenderTarget("메인 카메라 G-Buffer", GetLevel()->GetMainCamera()->GetCameraDeferredGBufferTarget(), Size * 3);
+					Window->PushRenderTarget("메인 카메라 디퍼드 라이트", GetLevel()->GetMainCamera()->GetCameraDeferredLightTarget(), Size * 3);
+					Window->PushRenderTarget("메인 카메라 디퍼드 타겟", GetLevel()->GetMainCamera()->GetCameraDeferredTarget(), Size * 3);
 				}
 			}
 			First_ = true;
