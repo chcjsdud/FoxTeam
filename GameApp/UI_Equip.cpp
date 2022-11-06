@@ -81,3 +81,22 @@ void UI_Equip::Update(float _Time)
 	}
 }
 
+void UI_Equip::EmptySlotReturn(ItemBase* _TargetSlot)
+{
+}
+
+void UI_Equip::EmptySlot()
+{
+}
+
+void UI_Equip::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
+{
+}
+
+void UI_Equip::GetInventoryInfo(vector<ItemBase*> _ItemVector)
+{
+}
+
+void UI_Equip::ItemRenderCheck()
+{
+}

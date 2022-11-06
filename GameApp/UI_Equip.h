@@ -4,7 +4,9 @@
 using namespace std;
 // 설명 :
 class GameEngineUIRenderer;
-class Player;
+class ItemBase;
+class ItemBox;
+
 class UI_Equip : public GameEngineActor
 {
 public:
@@ -21,10 +23,13 @@ public:
 	bool UIOn;
 
 public:
-	void SetPlayer(Player* _Player)
-	{
-		Player_ = _Player;
-	}
+
+	void EmptySlot();
+	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
+	void GetInventoryInfo(vector<ItemBase*> _ItemVector);
+
+	//슬롯에 아이템이 들어있을때 이미지 렌더를 위한 함수
+	void ItemRenderCheck();
 
 protected:
 	GameEngineUIRenderer* Renderer;
@@ -35,10 +40,8 @@ private:
 	void Start() override;
 	void Update(float _Time) override;
 
-	//이현
-private:
-	Player* Player_;
-
+	//자동으로 빈슬롯을 찾아서 ItemBase를 세팅해주는 함수
+	void EmptySlotReturn(ItemBase* _TargetSlot);
 	
 };
 

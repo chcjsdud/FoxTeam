@@ -420,7 +420,7 @@ void UI_Skill::SetJobType(JobType _myjob)
 		Icon_E->SetImage("Aya_E_Icon.png", "PointSmp");
 		Icon_R->SetImage("Aya_R_Icon.png", "PointSmp");
 		Icon_Passive->SetImage("Aya_Passive_Icon.png", "PointSmp");
-		Icon_Weapon->SetImage("Weapon_TwoHandedBlade_Icon.png", "PointSmp");
+		Icon_Weapon->SetImage("Weapon_Gun_Icon.png", "PointSmp");
 	}
 		break;
 	case JobType::DUMMY:
