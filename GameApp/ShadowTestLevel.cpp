@@ -30,11 +30,12 @@ void ShadowTestLevel::CreateBasicActor()
 
 	// 테스트 라이트액터
 	TestLightActor_ = CreateActor<LightActor>();
-	//TestLightActor_->GetLight()->SetDiffusePower(1.0f);
-	TestLightActor_->GetLight()->SetAmbientPower(3.0f);
-	TestLightActor_->GetLight()->SetSpacularLightPow(10.0f);
+	TestLightActor_->GetLight()->SetDiffusePower(1.f);
+	TestLightActor_->GetLight()->SetAmbientPower(10.f);
+	TestLightActor_->GetLight()->SetSpacularLightPow(10.f);
 	TestLightActor_->GetLight()->SetShadowClipingRange({ 1000.f, 1000.f });
 	TestLightActor_->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, 0.0f });
+	TestLightActor_->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f, 45.0f });
 	TestLightActor_->GetTransform()->SetWorldPosition(TestLightActor_->GetTransform()->GetWorldBackVector() * 500.0f);
 
 	// 테스트 맵

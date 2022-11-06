@@ -49,6 +49,7 @@ public: // Public Get Function
 	CameraComponent* GetMainCamera();
 	CameraActor* GetUICameraActor();
 	CameraComponent* GetUICamera();
+	GameEngineTexture* GetShadowTexture();
 
 public: // Public Set Function
 	void SetLevelActorMove(GameEngineLevel* _NextLevel, GameEngineActor* _Actor);

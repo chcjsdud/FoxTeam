@@ -1,6 +1,9 @@
 #include "PreCompile.h"
 #include "ShadowTestActor.h"
 
+#include <GameEngine/GameEngineWindow.h>
+#include <GameEngine/GameEngineRenderWindow.h>
+
 void ShadowTestActor::TestResourceLoad()
 {
 	GameEngineDirectory dir;
@@ -56,15 +59,40 @@ void ShadowTestActor::Update(float _deltaTime)
 			TestBaseRenderer_->ChangeFBXAnimation("Run_Short");
 			IsChange_ = false;
 		}
+
+		if (false == First_)
+		{
+			ShadowRenderTarget_ = new GameEngineRenderTarget;
+			GameEngineTexture* ShadowTexture = GetLevel()->GetShadowTexture();
+			if (nullptr != ShadowTexture)
+			{
+				ShadowRenderTarget_->Create(ShadowTexture, float4::BLUE);
+
+				GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+				if (Window != nullptr)
+				{
+					float4 Size = { 128, 72 };
+					Window->PushRenderTarget("Shadow", ShadowRenderTarget_, Size * 3);
+				}
+			}
+			First_ = true;
+		}
 	}
 }
 
 ShadowTestActor::ShadowTestActor()
 	: IsChange_(false)
+	, First_(false)
 	, TestBaseRenderer_(nullptr)
+	, ShadowRenderTarget_(nullptr)
 {
 }
 
 ShadowTestActor::~ShadowTestActor()
 {
+	if (nullptr != ShadowRenderTarget_)
+	{
+		delete ShadowRenderTarget_;
+		ShadowRenderTarget_ = nullptr;
+	}
 }

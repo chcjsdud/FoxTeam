@@ -4,6 +4,7 @@
 // 분류 : 
 // 용도 : 
 // 설명 : 
+class GameEngineRenderTarget;
 class GameEngineFBXRenderer;
 class GameEnginePreprocessingRenderer;
 class ShadowTestActor : public GameEngineActor
@@ -33,8 +34,10 @@ public:
 protected:
 private:
 	bool IsChange_;
+	bool First_;
 
 private:
 	GameEngineFBXRenderer* TestBaseRenderer_;
+	GameEngineRenderTarget* ShadowRenderTarget_;
 };
 

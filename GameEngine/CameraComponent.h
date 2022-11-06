@@ -139,6 +139,6 @@ private:
 	GameEngineRenderTarget* CameraDeferredTarget_;
 
 	GameEngineRenderTarget* CameraPreprocessingTarget_;				// 선처리렌더러(외곽선, 실루엣) 타겟 : 깊이버퍼 없음
-
+	GameEngineRenderTarget* ShadowRenderTarget_;					// 그림자처리 타겟
 };
 

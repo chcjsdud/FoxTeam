@@ -17,7 +17,7 @@ void GameEngineLightComponent::Start()
 {
 	GetLevel()->GetMainCamera()->PushLight(this);													// 메인카메라의 광원(빛)목록에 자신을 추가
 
-	// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
+	//// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
 	//GetLevel()->AllLights_.push_back(this);															// 현재 레벨에서 관리하는 광원(빛)목록에 자신을 추가
 
 	////================================= 그림자처리
@@ -97,7 +97,7 @@ GameEngineLightComponent::GameEngineLightComponent()
 	ShadowClipingRange_.x = 4096.0f;
 	ShadowClipingRange_.y = 4096.0f;
 	ShadowClipingNear_ = 0.1f;
-	ShadowClipingFar_ = 1000.0f;
+	ShadowClipingFar_ = 10000.0f;
 }
 
 GameEngineLightComponent::~GameEngineLightComponent()

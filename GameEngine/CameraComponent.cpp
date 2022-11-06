@@ -59,6 +59,12 @@ CameraComponent::~CameraComponent()
 		delete CameraPreprocessingTarget_;
 		CameraPreprocessingTarget_ = nullptr;
 	}
+
+	if (nullptr != ShadowRenderTarget_)
+	{
+		delete ShadowRenderTarget_;
+		ShadowRenderTarget_ = nullptr;
+	}
 }
 
 void CameraComponent::ClearCameraTarget()

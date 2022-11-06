@@ -35,6 +35,11 @@ CameraComponent* GameEngineLevel::GetUICamera()
 	return UICameraActor_->GetCamera();
 }
 
+GameEngineTexture* GameEngineLevel::GetShadowTexture()
+{
+	return ShadowTexture_;
+}
+
 void GameEngineLevel::SetLevelActorMove(GameEngineLevel* _NextLevel, GameEngineActor* _Actor)
 {
 	NextLevelActorsData_.push_back({ _Actor , _NextLevel });
