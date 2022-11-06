@@ -432,6 +432,7 @@ void Character::getEquipItem(EquipmentItem* _item, int _index)
 			equipedItem_[static_cast<size_t>(_item->GetEquipType())] = reinterpret_cast<EquipmentItem*>(_item);
 			itemBoxmanager_->DeleteItemFromItemBox(_index);
 			allMyBuildItems_.erase(iter);
+			uiController_->GetEquipUI()->PushItem(_item, _item->GetEquipType());
 			return;
 		}
 
