@@ -85,13 +85,13 @@ LightOutPut DeferredCalLight_PS(VertexOut _In)
 
     if (0 != Count)
     {
-        Out.DifLight *= 0.1f;
-        Out.SpcLight *= 0.1f;
+        Out.DifLight *= 0.5f;
+        Out.SpcLight *= 0.5f;
     }
     
-    for (int ShadowNum = 1; ShadowNum < Count; ++ShadowNum)
+    for (int ShadowNum = 0; ShadowNum < Count; ++ShadowNum)
     {
-        Out.DifLight -= float4(0.1f, 0.1f, 0.1f, 0.1f);
+        Out.DifLight -= float4(0.5f, 0.5f, 0.5f, 0.1f);
     }
     
     //============================================================= 그림자 계산

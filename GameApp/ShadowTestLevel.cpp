@@ -2,6 +2,7 @@
 #include "ShadowTestLevel.h"
 
 #include <GameEngine/LightActor.h>
+#include <GameEngine/GameEngineRenderWindow.h>
 
 #include "Enums.h"
 #include "UserGame.h"
@@ -32,11 +33,11 @@ void ShadowTestLevel::CreateBasicActor()
 	TestLightActor_ = CreateActor<LightActor>();
 	TestLightActor_->GetLight()->SetDiffusePower(1.f);
 	TestLightActor_->GetLight()->SetAmbientPower(10.f);
-	TestLightActor_->GetLight()->SetSpacularLightPow(10.f);
+	TestLightActor_->GetLight()->SetSpacularLightPow(1.f);
 	TestLightActor_->GetLight()->SetShadowClipingRange({ 1000.f, 1000.f });
+	TestLightActor_->GetTransform()->SetWorldPosition(float4(0.0f, 500.0f, 0.0f));
 	TestLightActor_->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, 0.0f });
-	TestLightActor_->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f, 45.0f });
-	TestLightActor_->GetTransform()->SetWorldPosition(TestLightActor_->GetTransform()->GetWorldBackVector() * 500.0f);
+	//TestLightActor_->GetTransform()->SetWorldPosition(TestLightActor_->GetTransform()->GetWorldBackVector() * 500.0f);
 
 	// Å×½ºÆ® ¸Ê
 	TestShadowMap_ = CreateActor<ShadowTestMap>();
@@ -74,6 +75,13 @@ void ShadowTestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Perspective);
 	GetMainCameraActor()->GetTransform()->SetWorldPosition({ 0.0f, 500.f, -500.f });
 	GetMainCameraActor()->GetTransform()->SetWorldRotationDegree({ 70.f, 0.0f, 0.0f });
+
+	// ·»´õÅ¸°Ù À©µµ¿ì on
+	GameEngineRenderWindow* RenderWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
+	if (nullptr != RenderWindow)
+	{
+		RenderWindow->On();
+	}
 }
 
 ShadowTestLevel::ShadowTestLevel()

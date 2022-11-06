@@ -343,15 +343,13 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	}
 
 	// Shadow Render
-	//RenderShadow(_DeltaTime);								// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
+	RenderShadow(_DeltaTime);								// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
 	CalLightEffect.Effect(_DeltaTime);
 	DeferredMergeEffect.Effect(_DeltaTime);
 }
 
 void CameraComponent::RenderShadow(float _DeltaTime)
 {
-	CameraDeferredGBufferTarget->Setting();
-
 	// Shadow Rendering
 	std::list<GameEngineLightComponent*>::iterator LightStartIter = Lights_.begin();
 	std::list<GameEngineLightComponent*>::iterator LightEndIter = Lights_.end();

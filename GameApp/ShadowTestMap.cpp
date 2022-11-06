@@ -131,6 +131,8 @@ void ShadowTestMap::Start()
 
 	for (UINT i = 0; i < navMeshRenderer_->GetRenderSetCount(); i++)
 	{
+		//navMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4(0.0f, 0.0f, 0.0f, 0.0f));
+
 		navMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
 		//navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 		//navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
