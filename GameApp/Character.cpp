@@ -1262,7 +1262,7 @@ void Character::updateFOW(float _deltaTime)
 		static float sightUpdateTime = 0.0f;
 		sightUpdateTime += _deltaTime;
 
-		if (sightUpdateTime > 0.0416f)
+		if (sightUpdateTime > 0.0166f)
 		{
 			if (nullptr != fowDataThread_)
 			{
@@ -1331,7 +1331,7 @@ void Character::updateFOW(float _deltaTime)
 void Character::getFOWData(std::vector<float4>& _data, bool& _bCalc)
 {
 	_data.clear();
-	_data = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition());
+	_data = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition(), 800.f);
 	_bCalc = false;
 }
 

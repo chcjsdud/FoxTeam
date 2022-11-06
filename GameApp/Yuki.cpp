@@ -786,6 +786,7 @@ void Yuki::onStartRSkill()
 {
 	mainState_.ChangeState("CustomState", true);
 	customState_.ChangeState("CustomRStandBy", true);
+	setRotationToMouse();
 }
 
 void Yuki::onUpdateRSkill(float _deltaTime)

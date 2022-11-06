@@ -715,6 +715,7 @@ void LumiaLevel::CreateProhibitedSystem()
 		mesh->CreateRenderingBuffer();
 	}
 
+	float4 position = { 0.0f, 5.0f, 0.0f };
 
 	for (int i = 0; i < 16; i++)
 	{
@@ -726,55 +727,55 @@ void LumiaLevel::CreateProhibitedSystem()
 		case Location::NONE:
 			break;
 		case Location::DOCK:
-			area->Init(locaName, "Prohibited_DOCK.fbx", { 0.0f, 50.0f, 0.0f }, "항구");
+			area->Init(locaName, "Prohibited_DOCK.fbx", position, "항구");
 			break;
 		case Location::POND:
-			area->Init(locaName, "Prohibited_POND.fbx", { 0.0f, 50.0f, 0.0f }, "연못");
+			area->Init(locaName, "Prohibited_POND.fbx", position, "연못");
 			break;
 		case Location::BEACH:
-			area->Init(locaName, "Prohibited_BEACH.fbx", { 0.0f, 50.0f, 0.0f }, "모래사장");
+			area->Init(locaName, "Prohibited_BEACH.fbx", position, "모래사장");
 			break;
 		case Location::UPTOWN:
-			area->Init(locaName, "Prohibited_UPTOWN.fbx", { 0.0f, 50.0f, 0.0f }, "고급 주택가");
+			area->Init(locaName, "Prohibited_UPTOWN.fbx", position, "고급 주택가");
 			break;
 		case Location::ALLEY:
-			area->Init(locaName, "Prohibited_ALLEY.fbx", { 0.0f, 50.0f, 0.0f }, "골목길");
+			area->Init(locaName, "Prohibited_ALLEY.fbx", position, "골목길");
 			break;
 		case Location::HOTEL:
-			area->Init(locaName, "Prohibited_HOTEL.fbx", { 0.0f, 50.0f, 0.0f }, "호텔");
+			area->Init(locaName, "Prohibited_HOTEL.fbx", position, "호텔");
 			break;
 		case Location::AVENUE:
-			area->Init(locaName, "Prohibited_AVENUE.fbx", {0.0f, 50.0f, 0.0f} , "번화가");
+			area->Init(locaName, "Prohibited_AVENUE.fbx", position, "번화가");
 			area->AddTriggerCollision({ -4797.0f,  0.0f, 6292.0f }, { 1500.0f , 10.0f, 300.0f });
 
 			break;
 		case Location::HOSPITAL:
-			area->Init(locaName, "Prohibited_HOSPITAL.fbx", { 0.0f, 50.0f, 0.0f }, "병원");
+			area->Init(locaName, "Prohibited_HOSPITAL.fbx", position, "병원");
 			break;
 		case Location::TEMPLE:
-			area->Init(locaName, "Prohibited_TEMPLE.fbx", { 0.0f, 50.0f, 0.0f }, "절");
+			area->Init(locaName, "Prohibited_TEMPLE.fbx", position, "절");
 			break;
 		case Location::ARCHERY_RANGE:
-			area->Init(locaName, "Prohibited_ARCHERY.fbx", { 0.0f, 50.0f, 0.0f }, "양궁장");
+			area->Init(locaName, "Prohibited_ARCHERY.fbx", position, "양궁장");
 			break;
 		case Location::CEMETERY:
-			area->Init(locaName, "Prohibited_CEMETERY.fbx", { 0.0f, 50.0f, 0.0f }, "묘지");
+			area->Init(locaName, "Prohibited_CEMETERY.fbx", position, "묘지");
 			break;
 		case Location::FOREST:
-			area->Init(locaName, "Prohibited_FOREST.fbx", { 0.0f, 50.0f, 0.0f }, "숲");
+			area->Init(locaName, "Prohibited_FOREST.fbx", position, "숲");
 			area->AddTriggerCollision({ -4789.0f, 0.0f ,5976.0f }, { 1500.0f , 10.0f , 300.0f });
 			break;
 		case Location::FACTORY:
-			area->Init(locaName, "Prohibited_FACTORY.fbx", { 0.0f, 50.0f, 0.0f }, "공장");
+			area->Init(locaName, "Prohibited_FACTORY.fbx", position, "공장");
 			break;
 		case Location::CHAPEL:
-			area->Init(locaName, "Prohibited_CHAPEL.fbx", { 0.0f, 50.0f, 0.0f }, "성당");
+			area->Init(locaName, "Prohibited_CHAPEL.fbx", position, "성당");
 			break;
 		case Location::SCHOOL:
-			area->Init(locaName, "Prohibited_SCHOOL.fbx", { 0.0f, 50.0f, 0.0f }, "학교");
+			area->Init(locaName, "Prohibited_SCHOOL.fbx", position, "학교");
 			break;
 		case Location::RESERCH_CENTRE:
-			area->Init(locaName, "Prohibited_RESERCH_CENTRE.fbx", { 0.0f, 50.0f, 0.0f }, "연구소");
+			area->Init(locaName, "Prohibited_RESERCH_CENTRE.fbx", position, "연구소");
 			break;
 		case Location::ESCAPE_DOCK:
 			break;

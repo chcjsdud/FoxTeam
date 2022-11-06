@@ -90,7 +90,7 @@ void LumiaMap::Start()
 	// 모든 메쉬를 네비메쉬로
 	navMesh_->CreateNaviMesh(navMeshRenderer_);
 
-	makeAStarNode(200.f, 200.f);
+	makeAStarNode(100.f, 100.f);
 	checkASterNodeObstacle();
 	//UpdateAStarNodeVertexInfo();
 
