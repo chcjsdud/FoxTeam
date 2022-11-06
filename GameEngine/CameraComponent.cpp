@@ -350,6 +350,8 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 
 void CameraComponent::RenderShadow(float _DeltaTime)
 {
+	CameraDeferredGBufferTarget->Setting();
+
 	// Shadow Rendering
 	std::list<GameEngineLightComponent*>::iterator LightStartIter = Lights_.begin();
 	std::list<GameEngineLightComponent*>::iterator LightEndIter = Lights_.end();

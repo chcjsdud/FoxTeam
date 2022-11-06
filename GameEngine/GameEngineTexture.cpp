@@ -123,7 +123,7 @@ ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetView()
 		return RenderTargetView_;
 	}
 
-	D3D11_RENDER_TARGET_VIEW_DESC Desc = {};
+	D3D11_RENDER_TARGET_VIEW_DESC Desc;
 	Desc.Format = TextureDesc_.Format;
 	if (TextureDesc_.ArraySize == 1)
 	{
@@ -292,6 +292,8 @@ void GameEngineTexture::Load(const std::string& _Path)
 
 	TextureDesc_.Width = static_cast<unsigned int>(Image_.GetMetadata().width);
 	TextureDesc_.Height = static_cast<unsigned int>(Image_.GetMetadata().height);
+	TextureDesc_.ArraySize = 1;
+	TextureDesc_.Format = Image_.GetMetadata().format;
 }
 
 void GameEngineTexture::PushCutIndex(const float4& _Size, const float4& _Pos)

@@ -14,6 +14,7 @@
 #include "GameEngineUIRenderer.h"
 #include "GameEngineGUI.h"
 #include "GameEnginePostProcessRender.h"
+#include "GameEngineDepthBuffer.h"
 
 CameraActor* GameEngineLevel::GetMainCameraActor()
 {
@@ -435,6 +436,7 @@ void GameEngineLevel::ReleaseShadowTarget()
 	for (int i = 0; i < static_cast<int>(RenderTargets_.size()); ++i)
 	{
 		RenderTargets_[i]->Release();
+		RenderTargets_[i] = nullptr;
 	}
 	RenderTargets_.clear();
 
@@ -442,6 +444,7 @@ void GameEngineLevel::ReleaseShadowTarget()
 	for (int i = 0; i < static_cast<int>(Depths_.size()); ++i)
 	{
 		delete Depths_[i];
+		Depths_[i] = nullptr;
 	}
 	Depths_.clear();
 }

@@ -32,8 +32,7 @@ void GameEngineRenderTarget::AllTargetRelease()
 		delete ReleaseTextures_[i];
 	}
 
-	if (nullptr != DepthBuffer_
-		&& this == DepthBuffer_->GetParent())
+	if (nullptr != DepthBuffer_ && this == DepthBuffer_->GetParent())
 	{
 		delete DepthBuffer_;
 	}
@@ -59,7 +58,6 @@ void GameEngineRenderTarget::Clear(bool _Death /*= true*/)
 
 void GameEngineRenderTarget::Create(const std::string _TextureName, float4 _ClearColor)
 {
-
 	GameEngineTexture* FindTexture = GameEngineTextureManager::GetInst().Find(_TextureName);
 	if (nullptr == FindTexture)
 	{
@@ -108,7 +106,6 @@ void GameEngineRenderTarget::Create(GameEngineTexture* _Texture, float4 _ClearCo
 	ShaderResourcesViews_.push_back(*_Texture->GetShaderResourcesView());
 	ClearColor_.push_back(_ClearColor);
 }
-
 
 void GameEngineRenderTarget::Setting(int _Index) 
 {
@@ -165,7 +162,6 @@ void GameEngineRenderTarget::Merge(GameEngineRenderTarget* _Other, int _Index)
 	Pipe_->Reset();
 	Res_.ReSet();
 }
-
 
 void GameEngineRenderTarget::Copy(GameEngineRenderTarget* _Other) 
 {

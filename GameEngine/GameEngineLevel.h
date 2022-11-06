@@ -17,6 +17,7 @@ class GameEngineDebugRenderData;
 class GameEnginePostProcessRender;
 class GameEngineLightComponent;
 class GameEngineLevelControlWindow;
+class GameEngineDepthBuffer;
 class GameEngineLevel : public GameEngineObjectNameBase
 {
 	friend GameEngineLevelControlWindow;

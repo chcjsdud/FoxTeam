@@ -19,8 +19,6 @@ void GameEngineDepthBuffer::Create(float4 _Scale)
 {
 	DepthTexture_ = new GameEngineTexture();
 
-	D3D11_TEXTURE2D_DESC Info = { 0 };
-
 	D3D11_TEXTURE2D_DESC TextureInfo = { 0, };
 	TextureInfo.ArraySize = 1;
 	TextureInfo.Width = _Scale.uix();
