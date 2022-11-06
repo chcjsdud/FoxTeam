@@ -62,12 +62,9 @@ void ShadowTestActor::Update(float _deltaTime)
 
 		if (false == First_)
 		{
-			ShadowRenderTarget_ = new GameEngineRenderTarget;
-			GameEngineTexture* ShadowTexture = GetLevel()->GetShadowTexture();
-			if (nullptr != ShadowTexture)
+			ShadowRenderTarget_ = GetLevel()->GetMainCamera()->GetShadowRenderTarget();;
+			if (nullptr != ShadowRenderTarget_)
 			{
-				ShadowRenderTarget_->Create(ShadowTexture, float4::BLUE);
-
 				GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");
 				if (Window != nullptr)
 				{
@@ -90,9 +87,4 @@ ShadowTestActor::ShadowTestActor()
 
 ShadowTestActor::~ShadowTestActor()
 {
-	if (nullptr != ShadowRenderTarget_)
-	{
-		delete ShadowRenderTarget_;
-		ShadowRenderTarget_ = nullptr;
-	}
 }

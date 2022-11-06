@@ -350,6 +350,8 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 
 void CameraComponent::RenderShadow(float _DeltaTime)
 {
+	CameraDeferredGBufferTarget->Setting();
+
 	// Shadow Rendering
 	std::list<GameEngineLightComponent*>::iterator LightStartIter = Lights_.begin();
 	std::list<GameEngineLightComponent*>::iterator LightEndIter = Lights_.end();
@@ -396,9 +398,10 @@ void CameraComponent::RenderShadow(float _DeltaTime)
 	}
 
 	GameEngineTexture* ShadowTexture = GetLevel()->ShadowTexture_;
-	if (nullptr != ShadowTexture)
+	if (nullptr != ShadowTexture && nullptr == ShadowRenderTarget_)
 	{
-		CalLightEffect.GetShaderRes().SettingTexture("ShadowTex", ShadowTexture);
+		ShadowRenderTarget_ = new GameEngineRenderTarget();
+		ShadowRenderTarget_->Create(ShadowTexture, float4::BLUE);
 	}
 }
 

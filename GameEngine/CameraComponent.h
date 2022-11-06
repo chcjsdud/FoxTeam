@@ -70,6 +70,11 @@ public:
 		return CameraBufferTarget_;
 	}
 
+	inline GameEngineRenderTarget* GetShadowRenderTarget() const
+	{
+		return ShadowRenderTarget_;
+	}
+
 	inline float GetZoomValue()
 	{
 		return ZoomValue_;

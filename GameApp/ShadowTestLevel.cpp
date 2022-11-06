@@ -39,6 +39,8 @@ void ShadowTestLevel::CreateBasicActor()
 	TestLightActor_->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, 0.0f });
 	//TestLightActor_->GetTransform()->SetWorldPosition(TestLightActor_->GetTransform()->GetWorldBackVector() * 500.0f);
 
+	
+
 	// Å×½ºÆ® ¸Ê
 	TestShadowMap_ = CreateActor<ShadowTestMap>();
 }
