@@ -15,45 +15,28 @@ GameEngineThreadQueue GameEngineCore::ThreadQueue = GameEngineThreadQueue("GameE
 GameEngineCore* GameEngineCore::MainCore_ = nullptr;
 bool GameEngineCore::bActivate_ = false;
 
-GameEngineCore::GameEngineCore() // default constructer 디폴트 생성자
+GameEngineCore::GameEngineCore()
 {
-
 }
 
-GameEngineCore::~GameEngineCore() // default destructer 디폴트 소멸자
+GameEngineCore::~GameEngineCore()
 {
-
 }
 
-GameEngineCore::GameEngineCore(GameEngineCore&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
+GameEngineCore::GameEngineCore(GameEngineCore&& _other) noexcept
 {
-
-
 }
-
-/// <summary>
-/// /////////////////////////// member
-/// </summary>
 
 void GameEngineCore::EngineInitialize()
 {
-
 	GameEngineDevice::GetInst().Initialize();
 	EngineResourcesLoad();
 	EngineResourcesCreate();
 	GameEngineDevice::GetInst().CreateSwapChain();
-	// 엔진용 파이프라인
-
-
 	GameEngineGUI::GetInst()->Initialize();
-	// 기본 엔진 수준 리소스를 로드할 겁니다.
-
 	GameEngineCollision::Init();
-
-
 	GameEngineSoundManager::GetInstance()->Initialize();
 }
-
 
 void GameEngineCore::EngineDestroy()
 {
@@ -76,10 +59,6 @@ void GameEngineCore::EngineDestroy()
 	GameEngineWindow::Destroy();
 	GameEngineDevice::Destroy();
 }
-
-/// <summary>
-/// /////////////////////////// static
-/// </summary>
 
 void GameEngineCore::MainLoop()
 {
@@ -128,13 +107,6 @@ void GameEngineCore::MainLoop()
 	CurrentLevel_->ActorUpdate(Time);
 	CurrentLevel_->Render(Time);
 	CurrentLevel_->Release(Time);
-
-
-
-
-	// 오브젝트 루프
-
-	//MainCore_->GameLoop();
 }
 
 
@@ -142,9 +114,6 @@ void GameEngineCore::MainLoop()
 void GameEngineCore::WindowCreate(GameEngineCore& _RuntimeCore)
 {
 	GameEngineWindow::GetInst().CreateMainWindow("Eternal Return - FOXTEAM Mockup Project", _RuntimeCore.StartWindowSize(), _RuntimeCore.StartWindowPos());
-
-	// 디바이스가 만들어져야 합니다.
-	// HWND 윈도우에서 제공하는 3D 라이브러리니까 WINDOW API를 기반으로 처리되어 있습니다.
 }
 
 void GameEngineCore::LevelDestroy(const std::string& _Level)

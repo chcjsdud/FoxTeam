@@ -75,6 +75,11 @@ void GameEngineFBXRenderer::ShadowRender(float _DeltaTime)
 {
 	for (size_t i = 0; i < RenderSets.size(); i++)
 	{
+		if (false == RenderSets[i].isRender)
+		{
+			continue;
+		}
+
 		// Shadow PipeLine Vertex Buffer & Index Buffer Setting
 		DefaultShadowPipeLine_->SetInputAssembler1VertexBufferSetting(RenderSets[i].PipeLine_->GetVertexBuffer());
 		DefaultShadowPipeLine_->SetInputAssembler2IndexBufferSetting(RenderSets[i].PipeLine_->GetIndexBuffer());

@@ -107,6 +107,7 @@ void CameraComponent::Render(float _DeltaTime)
 		LightData_.Lights[LightIndex].ViewLightDir *= View;
 		LightData_.Lights[LightIndex].ViewNegLightDir = -(LightData_.Lights[LightIndex].ViewLightDir);
 		LightData_.Lights[LightIndex].ViewLightPosition *= View;
+		LightData_.Lights[LightIndex].CameraViewInverse = GetTransform()->GetTransformData().View_.InverseReturn();
 		++LightIndex;
 	}
 
@@ -116,7 +117,6 @@ void CameraComponent::Render(float _DeltaTime)
 	CameraBufferTarget_->Clear();
 	CameraBufferTarget_->Merge(CameraDeferredTarget_);
 	CameraBufferTarget_->Merge(CameraForwardTarget_);
-
 
 	GameEngineStructuredBufferSetting::ResetLastSetting();
 }
@@ -158,7 +158,6 @@ void CameraComponent::ReleaseRenderer()
 
 		std::list<GameEngineRendererBase*>::iterator BeginIter = Renderers.begin();
 		std::list<GameEngineRendererBase*>::iterator EndIter = Renderers.end();
-
 		for (; BeginIter != EndIter; )
 		{
 			GameEngineRendererBase* ReleaseRenderer = *BeginIter;
@@ -174,9 +173,7 @@ void CameraComponent::ReleaseRenderer()
 
 				continue;
 			}
-
 			++BeginIter;
-
 		}
 	}
 }
@@ -191,7 +188,6 @@ void CameraComponent::NextLevelMoveRenderer(CameraComponent* _NextCamera, GameEn
 
 		std::list<GameEngineRendererBase*>::iterator BeginIter = Renderers.begin();
 		std::list<GameEngineRendererBase*>::iterator EndIter = Renderers.end();
-
 		for (; BeginIter != EndIter; )
 		{
 			GameEngineRendererBase* ReleaseRenderer = *BeginIter;
@@ -210,9 +206,7 @@ void CameraComponent::NextLevelMoveRenderer(CameraComponent* _NextCamera, GameEn
 
 				continue;
 			}
-
 			++BeginIter;
-
 		}
 	}
 }
@@ -240,14 +234,11 @@ void CameraComponent::RenderForward(float _DeltaTime)
 
 			Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
 			Renderer->GetTransform()->GetTransformData().View_ = View;
-
 			Renderer->GetTransform()->GetTransformData().WVPCalculation();
 
 			Renderer->Render(_DeltaTime, false);
-
 		}
 	}
-
 }
 
 void CameraComponent::RenderDeffered(float _DeltaTime)
@@ -346,67 +337,63 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	}
 
 	// Shadow Render
-	RenderShadow(_DeltaTime);
+	//RenderShadow(_DeltaTime);								// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
+	CalLightEffect.Effect(_DeltaTime);
 	DeferredMergeEffect.Effect(_DeltaTime);
 }
 
 void CameraComponent::RenderShadow(float _DeltaTime)
 {
-	// 221103 SJH 임시주석 : 그림자 완전히 적용전 메모리릭 발생으로 인한 임시주석처리
-	//// Shadow Rendering
-	//std::list<GameEngineLightComponent*>::iterator LightStartIter = Lights_.begin();
-	//std::list<GameEngineLightComponent*>::iterator LightEndIter = Lights_.end();
-	//for (; LightStartIter != LightEndIter; ++LightStartIter)
-	//{
-	//	// Current Light Shadow RenderTarget Setting
-	//	(*LightStartIter)->ShadowTargetSetting();
+	// Shadow Rendering
+	std::list<GameEngineLightComponent*>::iterator LightStartIter = Lights_.begin();
+	std::list<GameEngineLightComponent*>::iterator LightEndIter = Lights_.end();
+	for (; LightStartIter != LightEndIter; ++LightStartIter)
+	{
+		// Current Light Shadow RenderTarget Setting
+		(*LightStartIter)->ShadowTargetSetting();
 
-	//	// RenderList를 순회하며 그림자렌더링 활성화가 되어있는 렌더러를 타겟에 렌더링
-	//	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
-	//	{
-	//		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
-	//		for (GameEngineRendererBase* Renderer : Renderers)
-	//		{
-	//			if (false == Renderer->IsUpdate())
-	//			{
-	//				continue;
-	//			}
+		// RenderList를 순회하며 그림자렌더링 활성화가 되어있는 렌더러를 타겟에 렌더링
+		for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
+		{
+			std::list<GameEngineRendererBase*>& Renderers = Pair.second;
+			for (GameEngineRendererBase* Renderer : Renderers)
+			{
+				if (false == Renderer->IsUpdate())
+				{
+					continue;
+				}
 
-	//			if (1 != Renderer->RendererDataInst.IsShadow)
-	//			{
-	//				continue;
-	//			}
+				if (1 != Renderer->RendererDataInst.IsShadow)
+				{
+					continue;
+				}
 
-	//			if (static_cast<unsigned int>(Lights_.size()) != LightData_.LightCount)
-	//			{
-	//				GameEngineDebug::MsgBoxError("라이트 정보가 손상되었습니다.");
-	//				return;
-	//			}
+				if (static_cast<unsigned int>(Lights_.size()) != LightData_.LightCount)
+				{
+					GameEngineDebug::MsgBoxError("라이트 정보가 손상되었습니다.");
+					return;
+				}
 
-	//			// Get Light View & Light Projection
-	//			float4x4 LightView = float4x4();
-	//			float4x4 LightProj = float4x4();
-	//			LightView = (*LightStartIter)->GetTransform()->GetTransformData().View_;
-	//			LightProj = (*LightStartIter)->GetTransform()->GetTransformData().Projection_;
+				// Get Light View & Light Projection
+				float4x4 LightView = (*LightStartIter)->GetTransform()->GetTransformData().View_;
+				float4x4 LightProj = (*LightStartIter)->GetTransform()->GetTransformData().Projection_;
 
-	//			// Calculation Light WorldViewProjection Matrix
-	//			Renderer->GetTransform()->GetTransformData().Projection_ = LightProj;
-	//			Renderer->GetTransform()->GetTransformData().View_ = LightView;
-	//			Renderer->GetTransform()->GetTransformData().WVPCalculation();
+				// Calculation Light WorldViewProjection Matrix
+				Renderer->GetTransform()->GetTransformData().View_ = LightView;
+				Renderer->GetTransform()->GetTransformData().Projection_ = LightProj;
+				Renderer->GetTransform()->GetTransformData().WVPCalculation();
 
-	//			// Shadow Rendering
-	//			Renderer->ShadowRender(_DeltaTime);
-	//		}
-	//	}
-	//}
+				// Shadow Rendering
+				Renderer->ShadowRender(_DeltaTime);
+			}
+		}
+	}
 
-	// 221103 SJH 임시주석 : 그림자 완전히 적용전 메모리릭 발생으로 인한 임시주석처리
-	//if (nullptr != GetLevel()->ShadowTexture_)
-	//{
-	//	CalLightEffect.GetShaderRes().SettingTexture("ShadowTex", GetLevel()->ShadowTexture_);
-	//}
-
-	CalLightEffect.Effect(_DeltaTime);
+	GameEngineTexture* ShadowTexture = GetLevel()->ShadowTexture_;
+	if (nullptr != ShadowTexture)
+	{
+		CalLightEffect.GetShaderRes().SettingTexture("ShadowTex", ShadowTexture);
+	}
 }
 
 void CameraComponent::CameraZoomReset()

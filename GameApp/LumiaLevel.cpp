@@ -5,6 +5,7 @@
 #include <GameEngine/SKySphereActor.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
 #include <GameEngine/LightActor.h>
+#include <GameEngine/GameEngineLightComponent.h>
 #include <GameEngine/GameEngineFBXMesh.h>
 
 #include "ItemBoxWindow.h"
@@ -490,6 +491,7 @@ void LumiaLevel::CreateBasicActor()
 	DefaultLight->GetLight()->SetDiffusePower(1.f);
 	DefaultLight->GetLight()->SetAmbientPower(10.f);
 	DefaultLight->GetLight()->SetSpacularLightPow(10.f);
+	DefaultLight->GetLight()->SetShadowClipingRange({ 300, 300 });
 }
 
 void LumiaLevel::CreateLevelInput()

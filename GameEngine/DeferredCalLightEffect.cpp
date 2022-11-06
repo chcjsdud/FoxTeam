@@ -29,6 +29,5 @@ void DeferredCalLightEffect::Effect(float _DeltaTime)
 	Effect_->Rendering();
 	Res_.ReSet();
 	Effect_->Reset();
-	// 빛타겟을 텍스처로 사용이 가능하다.
 	Result_->Reset();
 }

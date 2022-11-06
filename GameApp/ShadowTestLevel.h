@@ -5,6 +5,8 @@
 // 용도 : 테스트
 // 설명 : 그림자 적용 테스트 레벨
 class LightActor;
+class ShadowTestMap;
+class ShadowTestActor;
 class ShadowTestLevel : public GameEngineLevel
 {
 public:
@@ -39,5 +41,7 @@ public:
 protected:
 private:
 	LightActor* TestLightActor_;
+	ShadowTestMap* TestShadowMap_;
+	ShadowTestActor* TestShadowActor_;
 };
 

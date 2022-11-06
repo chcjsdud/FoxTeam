@@ -18,21 +18,30 @@ GameEngineRenderTarget::GameEngineRenderTarget() // default constructer 디폴트 �
 
 GameEngineRenderTarget::~GameEngineRenderTarget() // default destructer 디폴트 소멸자
 {
+	AllTargetRelease();
+}
+
+GameEngineRenderTarget::GameEngineRenderTarget(GameEngineRenderTarget&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
+{
+}
+
+void GameEngineRenderTarget::AllTargetRelease()
+{
 	for (size_t i = 0; i < ReleaseTextures_.size(); i++)
 	{
 		delete ReleaseTextures_[i];
 	}
-	
+
 	if (nullptr != DepthBuffer_
 		&& this == DepthBuffer_->GetParent())
 	{
 		delete DepthBuffer_;
 	}
-}
 
-GameEngineRenderTarget::GameEngineRenderTarget(GameEngineRenderTarget&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
-{
-
+	ReleaseTextures_.clear();
+	Textures_.clear();
+	RenderTargetViews_.clear();
+	ShaderResourcesViews_.clear();
 }
 
 void GameEngineRenderTarget::Clear(bool _Death /*= true*/) 
@@ -66,11 +75,16 @@ void GameEngineRenderTarget::Create(const std::string _TextureName, float4 _Clea
 void GameEngineRenderTarget::Create(float4 _Size, float4 _ClearColor)
 {
 	GameEngineTexture* NewTexture = new GameEngineTexture();
-
 	NewTexture->Create(_Size, DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT);
-
 	ReleaseTextures_.push_back(NewTexture);
+	Create(NewTexture, _ClearColor);
+}
 
+void GameEngineRenderTarget::Create(D3D11_TEXTURE2D_DESC _TextureDesc, float4 _ClearColor)
+{
+	GameEngineTexture* NewTexture = new GameEngineTexture();
+	NewTexture->Create(_TextureDesc);
+	ReleaseTextures_.push_back(NewTexture);
 	Create(NewTexture, _ClearColor);
 }
 
@@ -98,7 +112,6 @@ void GameEngineRenderTarget::Create(GameEngineTexture* _Texture, float4 _ClearCo
 
 void GameEngineRenderTarget::Setting(int _Index) 
 {
-
 	if (0 >= RenderTargetViews_.size())
 	{
 		GameEngineDebug::MsgBoxError("Render Target Setting Error Size Zero");
@@ -126,7 +139,6 @@ void GameEngineRenderTarget::Setting(int _Index)
 
 void GameEngineRenderTarget::Reset(int _Index /*= -1*/) 
 {
-
 	if (0 >= RenderTargetViews_.size())
 	{
 		GameEngineDebug::MsgBoxError("Render Target Setting Error Size Zero");
@@ -146,7 +158,6 @@ void GameEngineRenderTarget::Reset(int _Index /*= -1*/)
 
 void GameEngineRenderTarget::Merge(GameEngineRenderTarget* _Other, int _Index) 
 {
-	// 나한테 그려라
 	Setting();
 	Res_.SettingTexture("Tex", _Other->Textures_[_Index]);
 	Res_.Setting();

@@ -9,7 +9,6 @@ struct VertexIn
 
 struct VertexOut
 {
-    // 
     float4 Position : SV_POSITION;
     float4 ViewPosition : POSITION;
     float4 ViewNormal : NORMAL;
@@ -17,12 +16,7 @@ struct VertexOut
 
 VertexOut DeferredColor_VS(VertexIn _In)
 {
-    VertexOut Out = (VertexOut)0;
-    
-    // [][][][]
-    // [][][][]
-    // [][][][1]
-    // [][][][]
+    VertexOut Out = (VertexOut) 0;
     
     _In.Position.w = 1.0f;
     Out.Position = mul(_In.Position, WVP_);
@@ -39,7 +33,7 @@ cbuffer ResultColor : register(b0)
     float4 vDiffuseColor;
 };
 
-struct DeferredOutPut 
+struct DeferredOutPut
 {
     float4 ViewDif : SV_Target0; // ÅØ½ºÃ³ »ö±ò
     float4 ViewPos : SV_Target1;
@@ -48,14 +42,13 @@ struct DeferredOutPut
 
 DeferredOutPut DeferredColor_PS(VertexOut _In)
 {
-    //DiffuseLight += CalculateDirectionDiffuseLight(_In.ViewNormal, Lights[i]);
-    //SpacularLight += CalculateDirectionSpacularLight(_In.ViewPosition, _In.ViewNormal, Lights[i]);
-    
     DeferredOutPut Out;
     
     Out.ViewDif = vDiffuseColor;
     Out.ViewNor = _In.ViewNormal;
+    Out.ViewNor.w = 1.0f;
     Out.ViewPos = _In.ViewPosition;
+    Out.ViewPos.w = 1.0f;
     
     
     return Out;

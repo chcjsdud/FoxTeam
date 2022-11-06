@@ -437,12 +437,8 @@ void GameEngineLevel::ReleaseShadowTarget()
 	for (int i = 0; i < static_cast<int>(Depths_.size()); ++i)
 	{
 		delete Depths_[i];
-		Depths_[i] = nullptr;
 	}
 	Depths_.clear();
-
-	// ¸ðµç ±¤¿ø(ºû) ÄÄÆ÷³ÍÆ®¸ñ·Ï Á¦°Å
-	AllLights_.clear();
 }
 
 GameEngineLevel::GameEngineLevel()

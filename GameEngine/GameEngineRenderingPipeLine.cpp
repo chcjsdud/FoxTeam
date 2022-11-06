@@ -176,7 +176,7 @@ void GameEngineRenderingPipeLine::CreateLayOut()
 		GameEngineDebug::MsgBoxError("인풋 레이아웃 정보가 없습니다.");
 	}
 
-	std::vector<D3D11_INPUT_ELEMENT_DESC>& InputLayoutDesc_ = *(VertexBuffer_->InputLayoutDesc_);
+	std::vector<D3D11_INPUT_ELEMENT_DESC>& InputLayoutDesc_ = *VertexBuffer_->InputLayoutDesc_;
 	if (S_OK != GameEngineDevice::GetInst().GetDevice()->CreateInputLayout(&InputLayoutDesc_[0], static_cast<unsigned int>(InputLayoutDesc_.size()), VertexShader_->CodeBlob_->GetBufferPointer(), VertexShader_->CodeBlob_->GetBufferSize(), &LayOut_))
 	{
 		GameEngineDebug::MsgBoxError("인풋레이아웃 생성에 실패했습니다.");

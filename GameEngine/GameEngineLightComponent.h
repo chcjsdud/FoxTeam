@@ -63,6 +63,11 @@ public: // Public Inline Set Function
 		LightDataObject_.LightPower.z = _Power;
 	}
 
+	inline void SetShadowClipingRange(float4 _ShadowClipingRange)
+	{
+		ShadowClipingRange_ = _ShadowClipingRange;
+	}
+
 public: // Public ShadowTarget Related Function
 	void ShadowTargetSetting();
 
@@ -88,7 +93,6 @@ private: // Light Related Value
 
 private: // Shadow Related Value
 	ProjectionMode ProjectionMode_;											// 광원(빛)이 그림자를 렌더링할때 직교투영을 통해 ShadowRenderTarget_에 렌더링
-	GameEngineRenderTarget* ShadowRenderTarget_;							// 광원(빛)은 그림자를 렌더링하려는 렌더타겟을 1개 보유
 	ID3D11RenderTargetView* ShadowTargetView_;								// ShadowRenderTarget_의 리소스뷰
 	ID3D11DepthStencilView* ShadowTargetDepth_;								// ShadowRenderTarget_에 적용하는 깊이/스텐실 리소스뷰
 

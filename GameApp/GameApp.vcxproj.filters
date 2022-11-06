@@ -67,6 +67,9 @@
     <ClCompile Include="LumiaLevel.cpp">
       <Filter>01.GameObject\03.Level</Filter>
     </ClCompile>
+    <ClCompile Include="LobbyLevel.cpp">
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel</Filter>
+    </ClCompile>
     <ClCompile Include="LumiaLevel.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClCompile>
@@ -89,19 +92,19 @@
       <Filter>00.GameApp</Filter>
     </ClCompile>
     <ClCompile Include="TempLobbyRenderer.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel</Filter>
     </ClCompile>
     <ClCompile Include="CharSelectPacket.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="PlayerNumberPacket.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="GameJoinPacket.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="ReadyPacket.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="GameServer.cpp">
       <Filter>02.GameServer</Filter>
@@ -110,13 +113,13 @@
       <Filter>02.GameServer</Filter>
     </ClCompile>
     <ClCompile Include="GameJoinPacket2.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="SetPlayerNumberPacket.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="LoadingLumiaPacket.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="LumiaLoadingManager.cpp">
       <Filter>02.GameServer</Filter>
@@ -125,7 +128,7 @@
       <Filter>01.GameObject\03.Level\TitleLevel</Filter>
     </ClCompile>
     <ClCompile Include="LobbyToLumiaPacket.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="TitleUIController.cpp">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
@@ -149,28 +152,28 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClCompile>
     <ClCompile Include="Lobby_ButtonOne.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="Lobby_ButtonTwo.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="Lobby_CharFull.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="Lobby_Map.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="Lobby_PortraitBg.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="Lobby_StartButton.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="LobbyBackground.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="LobbyUIController.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="UI_CharPicture.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
@@ -197,7 +200,7 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
     <ClCompile Include="StartPointSelectPacket.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClCompile>
     <ClCompile Include="CharMovementPacket.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
@@ -224,10 +227,10 @@
       <Filter>01.GameObject\02.GlobalActor\UI\Button</Filter>
     </ClCompile>
     <ClCompile Include="Lobby_GameStartButton.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI\GameStartButton</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI\GameStartButton</Filter>
     </ClCompile>
     <ClCompile Include="GameStartPacket.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet\GameStartPacket</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet\GameStartPacket</Filter>
     </ClCompile>
     <ClCompile Include="Dummy.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Dummy</Filter>
@@ -434,7 +437,7 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\99.CommonEffect</Filter>
     </ClCompile>
     <ClCompile Include="CharFullSelectEffect.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI\Effect</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI\Effect</Filter>
     </ClCompile>
     <ClCompile Include="YukiQEffect.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Yuki</Filter>
@@ -470,10 +473,13 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClCompile>
     <ClCompile Include="ProhibitedArea.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\98.Trigger</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Trigger</Filter>
     </ClCompile>
-    <ClCompile Include="LobbyLevel.cpp">
-      <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
+    <ClCompile Include="ShadowTestActor.cpp">
+      <Filter>01.GameObject\03.Level\ShadowTestLevel\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowTestMap.cpp">
+      <Filter>01.GameObject\03.Level\ShadowTestLevel\Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -705,26 +711,26 @@
     <Filter Include="01.GameObject\04.PostProcess">
       <UniqueIdentifier>{08fe365c-7991-44b7-8b0c-2abfb2e89b4e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\98.Trigger">
-      <UniqueIdentifier>{7e5102bd-96bc-45b1-9d7a-b0537ab4d7a9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01.GameObject\03.Level\LobbyLevel">
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\LobbyLevel">
       <UniqueIdentifier>{97963e10-a8e1-4463-b375-61dadcec8113}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LobbyLevel\Packet">
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet">
       <UniqueIdentifier>{066b3202-ccb9-4468-bec0-025f8d829ffa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LobbyLevel\Packet\GameStartPacket">
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet\GameStartPacket">
       <UniqueIdentifier>{9828b190-3e45-49ae-a9b7-a665bffc7713}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LobbyLevel\UI">
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI">
       <UniqueIdentifier>{14b5c0b5-bfb6-48ba-8869-0f7f3dd66096}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LobbyLevel\UI\GameStartButton">
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI\GameStartButton">
       <UniqueIdentifier>{b0d712a7-dae6-4137-b8a7-dcf8f8a584a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.GameObject\03.Level\LobbyLevel\UI\Effect">
+    <Filter Include="01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI\Effect">
       <UniqueIdentifier>{8280ee57-7128-4098-a502-f708eefd5efc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Trigger">
+      <UniqueIdentifier>{7e5102bd-96bc-45b1-9d7a-b0537ab4d7a9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -797,6 +803,9 @@
     <ClInclude Include="LumiaLevel.h">
       <Filter>01.GameObject\03.Level</Filter>
     </ClInclude>
+    <ClInclude Include="LobbyLevel.h">
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel</Filter>
+    </ClInclude>
     <ClInclude Include="LumiaLevel.h">
       <Filter>01.GameObject\03.Level\LumiaLevel</Filter>
     </ClInclude>
@@ -816,22 +825,22 @@
       <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
     </ClInclude>
     <ClInclude Include="TempLobbyRenderer.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel</Filter>
     </ClInclude>
     <ClInclude Include="ePacketID.h">
       <Filter>01.GameObject\00.Constant</Filter>
     </ClInclude>
     <ClInclude Include="CharSelectPacket.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="PlayerNumberPacket.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="GameJoinPacket.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="ReadyPacket.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="GameServer.h">
       <Filter>02.GameServer</Filter>
@@ -840,13 +849,13 @@
       <Filter>02.GameServer</Filter>
     </ClInclude>
     <ClInclude Include="GameJoinPacket2.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="SetPlayerNumberPacket.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="LoadingLumiaPacket.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="LumiaLoadingManager.h">
       <Filter>02.GameServer</Filter>
@@ -855,7 +864,7 @@
       <Filter>01.GameObject\03.Level\TitleLevel</Filter>
     </ClInclude>
     <ClInclude Include="LobbyToLumiaPacket.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="TitleUIController.h">
       <Filter>01.GameObject\03.Level\TitleLevel\UI</Filter>
@@ -879,28 +888,28 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\NavMesh</Filter>
     </ClInclude>
     <ClInclude Include="Lobby_ButtonOne.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="Lobby_ButtonTwo.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="Lobby_CharFull.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="Lobby_Map.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="Lobby_PortraitBg.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="Lobby_StartButton.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="LobbyBackground.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="LobbyUIController.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="UI_CharPicture.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
@@ -927,7 +936,7 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="StartPointSelectPacket.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet</Filter>
     </ClInclude>
     <ClInclude Include="CharMovementPacket.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Packet</Filter>
@@ -957,10 +966,10 @@
       <Filter>01.GameObject\02.GlobalActor\UI\Button</Filter>
     </ClInclude>
     <ClInclude Include="Lobby_GameStartButton.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI\GameStartButton</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI\GameStartButton</Filter>
     </ClInclude>
     <ClInclude Include="GameStartPacket.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\Packet\GameStartPacket</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\Packet\GameStartPacket</Filter>
     </ClInclude>
     <ClInclude Include="Dummy.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Dummy</Filter>
@@ -1170,7 +1179,7 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\99.CommonEffect</Filter>
     </ClInclude>
     <ClInclude Include="CharFullSelectEffect.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel\UI\Effect</Filter>
+      <Filter>01.GameObject\03.Level\LoadingLevel\LobbyLevel\UI\Effect</Filter>
     </ClInclude>
     <ClInclude Include="YukiQEffect.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Yuki</Filter>
@@ -1206,10 +1215,13 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Hyunwoo</Filter>
     </ClInclude>
     <ClInclude Include="ProhibitedArea.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\98.Trigger</Filter>
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Trigger</Filter>
     </ClInclude>
-    <ClInclude Include="LobbyLevel.h">
-      <Filter>01.GameObject\03.Level\LobbyLevel</Filter>
+    <ClInclude Include="ShadowTestActor.h">
+      <Filter>01.GameObject\03.Level\ShadowTestLevel\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowTestMap.h">
+      <Filter>01.GameObject\03.Level\ShadowTestLevel\Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

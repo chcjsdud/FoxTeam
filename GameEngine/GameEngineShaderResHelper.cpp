@@ -168,6 +168,11 @@ void GameEngineShaderResHelper::Setting()
 
 	for (auto& Setting : AllStructuredBufferData_)
 	{
+		if (nullptr == Setting.second.Res_)
+		{
+			continue;
+		}
+
 		Setting.second.ChangeData();
 		Setting.second.ShaderSetting();
 	}

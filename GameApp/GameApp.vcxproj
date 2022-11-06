@@ -310,7 +310,15 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ShadowTestActor.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ShadowTestLevel.cpp" />
+    <ClCompile Include="ShadowTestMap.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="SlowEffect.cpp">
       <SubType>
       </SubType>
@@ -774,7 +782,15 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ShadowTestActor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ShadowTestLevel.h" />
+    <ClInclude Include="ShadowTestMap.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="SlowEffect.h">
       <SubType>
       </SubType>

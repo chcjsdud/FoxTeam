@@ -631,19 +631,20 @@ void GameEngineCore::EngineResourcesCreate()
 
 	{
 		D3D11_BLEND_DESC BlendInfo = { 0 };
-
 		BlendInfo.AlphaToCoverageEnable = FALSE;
-		BlendInfo.IndependentBlendEnable = TRUE;
-		BlendInfo.RenderTarget[0].BlendEnable = true;
-		BlendInfo.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-		BlendInfo.RenderTarget[0].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		BlendInfo.RenderTarget[0].SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
-		BlendInfo.RenderTarget[0].DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
-		BlendInfo.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
-		BlendInfo.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
-		BlendInfo.RenderTarget[0].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
-
-		GameEngineBlendManager::GetInst().Create("DeferredAlphaBlend", BlendInfo);
+		BlendInfo.IndependentBlendEnable = true;
+		for (size_t i = 0; i < 8; i++)
+		{
+			BlendInfo.RenderTarget[i].BlendEnable = true;
+			BlendInfo.RenderTarget[i].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+			BlendInfo.RenderTarget[i].BlendOp = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+			BlendInfo.RenderTarget[i].SrcBlend = D3D11_BLEND::D3D11_BLEND_SRC_ALPHA;
+			BlendInfo.RenderTarget[i].DestBlend = D3D11_BLEND::D3D11_BLEND_INV_SRC_ALPHA;
+			BlendInfo.RenderTarget[i].BlendOpAlpha = D3D11_BLEND_OP::D3D11_BLEND_OP_ADD;
+			BlendInfo.RenderTarget[i].SrcBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+			BlendInfo.RenderTarget[i].DestBlendAlpha = D3D11_BLEND::D3D11_BLEND_ONE;
+		}
+		GameEngineBlendManager::GetInst().Create("DefferdAlphaBlend", BlendInfo);
 	}
 
 	{
@@ -978,13 +979,13 @@ void GameEngineCore::EngineResourcesCreate()
 
 	{
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DeferredColor");
-		Pipe->SetInputAssembler1VertexBufferSetting("Box");
-		Pipe->SetVertexShader("TestColor_VS");
-		Pipe->SetInputAssembler2IndexBufferSetting("Box");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("DeferredColor_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		Pipe->SetRasterizer("EngineBaseRasterizerBack");
-		Pipe->SetPixelShader("TestColor_PS");
-		Pipe->SetOutputMergerBlend("AlphaBlend");
+		Pipe->SetPixelShader("DeferredColor_PS");
+		Pipe->SetOutputMergerBlend("DefferdAlphaBlend");
 	}
 
 	{
@@ -1150,12 +1151,11 @@ void GameEngineCore::EngineResourcesCreate()
 	  // -> ¾ÕµÞ¸é »ó°ü¾øÀÌ ·»´õ¸µ
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DepthShadow");
 		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
-		Pipe->SetVertexShader("Shadow_VS");
 		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
-		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetVertexShader("Shadow_VS");
+		Pipe->SetPixelShader("Shadow_PS");
 		Pipe->SetOutputMergerDepthStencil("ShadowDepth");
 		Pipe->SetRasterizer("EngineBaseRasterizerNone");
-		Pipe->SetPixelShader("Shadow_PS");
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
 }

@@ -13,7 +13,6 @@ private:	// member Var
 
 	// 텍스처에게서 빌려오는 겁니다.
 	std::vector<GameEngineTexture*> Textures_;
-	// std::vector<D3D11_VIEWPORT> ViewPort_;
 	std::vector<ID3D11RenderTargetView*> RenderTargetViews_;
 	std::vector<ID3D11RenderTargetView*> RenderTargetViewsReset_;
 	std::vector<ID3D11ShaderResourceView*> ShaderResourcesViews_;
@@ -55,18 +54,18 @@ public:
 		return Textures_[_Index];
 	}
 
-
+	void AllTargetRelease();
 	void Clear(bool _Death = true);
 
-	// -1이면 전부다 세팅하라는 의미가 됩니다.
-	// 0~n은 그 인덱스 1개를 세팅하라는 의미가 됩니다.
+	// -1이면 전부다 세팅
+	// 0~n은 그 인덱스 1개를 세팅
 	void Setting(int _Index = -1);
 	void Reset(int _Index = -1);
 
 public:
 	void Create(const std::string _TextureName, float4 _ClearColor);
-
 	void Create(float4 _Scale, float4 _ClearColor);
+	void Create(D3D11_TEXTURE2D_DESC _TextureDesc, float4 _ClearColor);
 	void Create(GameEngineTexture* _Texture, float4 _ClearColor);
 
 	void CreateDepthBuffer(float4 _Scale);

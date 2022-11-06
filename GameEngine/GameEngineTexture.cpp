@@ -5,16 +5,17 @@
 
 #pragma comment(lib, "DirectXTex.lib")
 
-GameEngineTexture::GameEngineTexture() // default constructer 디폴트 생성자
-	: Texture2D_(nullptr)
+GameEngineTexture::GameEngineTexture()
+	: TextureDesc_{}
+	, Texture2D_(nullptr)
 	, RenderTargetView_(nullptr)
 	, ShaderResourceView_(nullptr)
 	, DepthStencilView_(nullptr)
+	, Image_{}
 {
-
 }
 
-GameEngineTexture::~GameEngineTexture() // default destructer 디폴트 소멸자
+GameEngineTexture::~GameEngineTexture()
 {
 	if (nullptr != DepthStencilView_)
 	{
@@ -45,10 +46,8 @@ void GameEngineTexture::Create(
 	float4 _TextureSize,
 	DXGI_FORMAT _Format,
 	D3D11_USAGE _Usage /*= D3D11_USAGE::D3D11_USAGE_DEFAULT*/,
-	unsigned int _BindFlag /*= D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE*/
-)
+	unsigned int _BindFlag /*= D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET | D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE*/)
 {
-
 	D3D11_TEXTURE2D_DESC TextureInfo = {0,};
 	TextureInfo.ArraySize = 1;
 	TextureInfo.Width = _TextureSize.uix();
@@ -113,64 +112,18 @@ void GameEngineTexture::Create(ID3D11Texture2D* _Texture2D)
 		GameEngineDebug::MsgBoxError("Texture Is null GameEngine Texture Create Error");
 	}
 
-
 	Texture2D_ = _Texture2D;
-
 	Texture2D_->GetDesc(&TextureDesc_);
 }
-
 
 ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetView()
 {
 	if (nullptr != RenderTargetView_)
 	{
-		// GameEngineDebug::MsgBoxError("RenderTargetView OverLap Create Error");
 		return RenderTargetView_;
 	}
-	
-	if (S_OK != GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D_, nullptr, &RenderTargetView_))
-	{
-		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
-	}
-	
-	return RenderTargetView_;
-}
 
-ID3D11ShaderResourceView* GameEngineTexture::CreateShaderResourceView()
-{
-	if (nullptr != ShaderResourceView_)
-	{
-		// GameEngineDebug::MsgBoxError("RenderTargetView OverLap Create Error");
-		return ShaderResourceView_;
-	}
-
-	if (S_OK != GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D_, nullptr, &ShaderResourceView_))
-	{
-		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
-	}
-
-	return ShaderResourceView_;
-}
-
-ID3D11DepthStencilView* GameEngineTexture::CreateDepthStencilView() 
-{
-	if (nullptr != DepthStencilView_)
-	{
-		// GameEngineDebug::MsgBoxError("RenderTargetView OverLap Create Error");
-		return DepthStencilView_;
-	}
-
-	if (S_OK != GameEngineDevice::GetDevice()->CreateDepthStencilView(Texture2D_, nullptr, &DepthStencilView_))
-	{
-		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
-	}
-
-	return DepthStencilView_;
-}
-
-ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetViewArrayIndex(int _Index)
-{
-	D3D11_RENDER_TARGET_VIEW_DESC Desc;
+	D3D11_RENDER_TARGET_VIEW_DESC Desc = {};
 	Desc.Format = TextureDesc_.Format;
 	if (TextureDesc_.ArraySize == 1)
 	{
@@ -180,8 +133,82 @@ ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetViewArrayIndex(int 
 	else
 	{
 		Desc.ViewDimension = D3D11_RTV_DIMENSION::D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
-		Desc.Texture2DArray.ArraySize = 1;// 3
-		Desc.Texture2DArray.FirstArraySlice = _Index; // 0 3
+		Desc.Texture2DArray.ArraySize = TextureDesc_.ArraySize;// 3
+		Desc.Texture2DArray.FirstArraySlice = 0; // 0 3
+		Desc.Texture2DArray.MipSlice = -1;
+	}
+
+	if (S_OK != GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D_, &Desc, &RenderTargetView_))
+	{
+		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
+	}
+
+	return RenderTargetView_;
+}
+
+ID3D11ShaderResourceView* GameEngineTexture::CreateShaderResourceView()
+{
+	if (nullptr != ShaderResourceView_)
+	{
+		return ShaderResourceView_;
+	}
+
+	D3D11_SHADER_RESOURCE_VIEW_DESC Desc;
+	Desc.Format = TextureDesc_.Format;
+	if (TextureDesc_.ArraySize == 1)
+	{
+		Desc.ViewDimension = D3D11_SRV_DIMENSION::D3D11_SRV_DIMENSION_TEXTURE2D;
+		Desc.Texture2D.MipLevels = 1;
+		Desc.Texture2D.MostDetailedMip = 0;
+	}
+	else
+	{
+		Desc.ViewDimension = D3D11_SRV_DIMENSION::D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+		Desc.Texture2DArray.ArraySize = TextureDesc_.ArraySize;
+		Desc.Texture2DArray.FirstArraySlice = 0;
+		Desc.Texture2DArray.MipLevels = 1;
+		Desc.Texture2DArray.MostDetailedMip = 0;
+	}
+
+	if (S_OK != GameEngineDevice::GetDevice()->CreateShaderResourceView(Texture2D_, &Desc, &ShaderResourceView_))
+	{
+		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
+		return nullptr;
+	}
+
+	return ShaderResourceView_;
+}
+
+ID3D11DepthStencilView* GameEngineTexture::CreateDepthStencilView() 
+{
+	if (nullptr != DepthStencilView_)
+	{
+		return DepthStencilView_;
+	}
+
+	if (S_OK != GameEngineDevice::GetDevice()->CreateDepthStencilView(Texture2D_, nullptr, &DepthStencilView_))
+	{
+		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
+		return nullptr;
+	}
+
+	return DepthStencilView_;
+}
+
+ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetViewArrayIndex(int _Index)
+{
+	D3D11_RENDER_TARGET_VIEW_DESC Desc = {};
+	Desc.Format = TextureDesc_.Format;
+	if (TextureDesc_.ArraySize == 1)
+	{
+		Desc.ViewDimension = D3D11_RTV_DIMENSION::D3D11_RTV_DIMENSION_TEXTURE2D;
+		Desc.Texture2D.MipSlice = 0;
+	}
+	else
+	{
+		Desc.ViewDimension = D3D11_RTV_DIMENSION::D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+		Desc.Texture2DArray.ArraySize = 1;
+		Desc.Texture2DArray.FirstArraySlice = _Index;
 		Desc.Texture2DArray.MipSlice = 0;
 	}
 
@@ -189,7 +216,7 @@ ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetViewArrayIndex(int 
 	if (S_OK != GameEngineDevice::GetDevice()->CreateRenderTargetView(Texture2D_, &Desc, &Result))
 	{
 		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
-		return nullptr;
+		return Result;
 	}
 
 	return Result;
@@ -197,7 +224,7 @@ ID3D11RenderTargetView* GameEngineTexture::CreateRenderTargetViewArrayIndex(int 
 
 ID3D11DepthStencilView* GameEngineTexture::CreateDepthStencilViewArrayIndex(int _Index)
 {
-	D3D11_DEPTH_STENCIL_VIEW_DESC Desc;
+	D3D11_DEPTH_STENCIL_VIEW_DESC Desc = {};
 	Desc.Format = TextureDesc_.Format;
 	Desc.Flags = 0;
 	if (TextureDesc_.ArraySize == 1)
@@ -217,7 +244,7 @@ ID3D11DepthStencilView* GameEngineTexture::CreateDepthStencilViewArrayIndex(int 
 	if (S_OK != GameEngineDevice::GetDevice()->CreateDepthStencilView(Texture2D_, &Desc, &Result))
 	{
 		GameEngineDebug::MsgBoxError("RenderTargetView Create Error");
-		return nullptr;
+		return Result;
 	}
 
 	return Result;

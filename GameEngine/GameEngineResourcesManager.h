@@ -64,8 +64,6 @@ public:
 		GameEngineBlendManager::Destroy();
 		GameEngineDepthStencilManager::Destroy();
 		GameEngineDepthBufferManager::Destroy();
-		GameEngineFBXAnimationManager::Destroy();
-		GameEngineFBXMeshManager::Destroy();
 		GameEngineStructuredBufferManager::Destroy();
 	}
 };

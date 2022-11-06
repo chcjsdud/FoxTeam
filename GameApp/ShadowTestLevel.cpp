@@ -6,11 +6,14 @@
 #include "Enums.h"
 #include "UserGame.h"
 #include "MousePointer.h"
+#include "ShadowTestMap.h"
+#include "ShadowTestActor.h"
 
 bool ShadowTestLevel::ThreadLoadingEnd = false;
 
 void ShadowTestLevel::LoadBasicActorResrouce()
 {
+	ShadowTestActor::TestResourceLoad();
 }
 
 void ShadowTestLevel::CreateBasicActor()
@@ -22,11 +25,20 @@ void ShadowTestLevel::CreateBasicActor()
 		MousePointer::InGameMouse->GetTransform()->SetLocalPosition(GameEngineInput::GetInst().GetMouse3DPos());
 	}
 
+	// 테스트 그림자액터
+	TestShadowActor_ = CreateActor<ShadowTestActor>();
+
 	// 테스트 라이트액터
 	TestLightActor_ = CreateActor<LightActor>();
-	TestLightActor_->GetLight()->SetDiffusePower(1.0f);
-	TestLightActor_->GetLight()->SetAmbientPower(10.0f);
+	//TestLightActor_->GetLight()->SetDiffusePower(1.0f);
+	TestLightActor_->GetLight()->SetAmbientPower(3.0f);
 	TestLightActor_->GetLight()->SetSpacularLightPow(10.0f);
+	TestLightActor_->GetLight()->SetShadowClipingRange({ 1000.f, 1000.f });
+	TestLightActor_->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, 0.0f });
+	TestLightActor_->GetTransform()->SetWorldPosition(TestLightActor_->GetTransform()->GetWorldBackVector() * 500.0f);
+
+	// 테스트 맵
+	TestShadowMap_ = CreateActor<ShadowTestMap>();
 }
 
 void ShadowTestLevel::LevelStart()
@@ -65,6 +77,8 @@ void ShadowTestLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 ShadowTestLevel::ShadowTestLevel()
 	: TestLightActor_(nullptr)
+	, TestShadowMap_(nullptr)
+	, TestShadowActor_(nullptr)
 {
 }
 

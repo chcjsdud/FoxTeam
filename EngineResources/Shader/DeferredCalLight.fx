@@ -34,7 +34,6 @@ struct LightOutPut
     float4 AmbLight : SV_Target2;
 };
 
-
 LightOutPut DeferredCalLight_PS(VertexOut _In)
 {
     LightOutPut Out = (LightOutPut) 0.0f;
@@ -60,11 +59,42 @@ LightOutPut DeferredCalLight_PS(VertexOut _In)
     }
     
     //============================================================= 그림자 계산
+    int Count = 0;
+    for (int LightNum = 0; LightNum < LightCount; ++LightNum)
+    {
+        if (Out.DifLight.x > 0.0f)
+        {
+            float4 WorldPosition = mul(float4(ViewPosition.xyz, 1.0f), Lights[LightNum].CameraViewInverse);
+            float4 ShaodwPos = mul(WorldPosition, Lights[LightNum].LightVP);
+            float fDepth = ShaodwPos.z / ShaodwPos.w;
+            float fUvX = ShaodwPos.x / ShaodwPos.w;
+            float fUvY = ShaodwPos.y / ShaodwPos.w;
+            
+            float2 ShadowUv = float2(fUvX * 0.5f + 0.5f, fUvY * -0.5f + 0.5f);
+            if (0.001f < ShadowUv.x && 0.999f > ShadowUv.x && 0.001f < ShadowUv.y && 0.999f > ShadowUv.y)
+            {
+                float fShadowDepth = ShadowTex.Sample(Smp, float3(ShadowUv.x, ShadowUv.y, LightNum)).r;
+                
+                if (0.0f < fShadowDepth && fDepth > fShadowDepth + 0.001f)
+                {
+                    Count++;
+                }
+            }
+        }
+    }
+
+    if (0 != Count)
+    {
+        Out.DifLight *= 0.5f;
+        Out.SpcLight *= 0.5f;
+    }
     
+    for (int ShadowNum = 1; ShadowNum < Count; ++ShadowNum)
+    {
+        Out.DifLight -= float4(0.5f, 0.5f, 0.5f, 0.5f);
+    }
     
-    
-    
-    
+    //============================================================= 그림자 계산
     
     return Out;
 }
