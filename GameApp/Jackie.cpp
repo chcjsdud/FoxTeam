@@ -616,6 +616,8 @@ void Jackie::onStartQSkill()
 	timer_end_Q = 0.0f;
 	b_Qhit_ = false;
 
+	setRotationToMouse();
+
 	curAnimationName_ = "SkillQ";
 	renderer_->ChangeFBXAnimation("SkillQ", true);
 
@@ -684,35 +686,72 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 		//pack.SetAnimationName("SkillQ");
 		//FT::SendPacket(pack);
 
-		auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
-
-		for (GameEngineCollision* col : collisionList)
 		{
-			GameEngineActor* actor = col->GetActor();
-			Character* character = nullptr;
-			if (nullptr != actor && actor != this)
+			auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
+
+			for (GameEngineCollision* col : collisionList)
 			{
-				character = dynamic_cast<Character*>(actor);
-
-				if (nullptr != character)
+				GameEngineActor* actor = col->GetActor();
+				Character* character = nullptr;
+				if (nullptr != actor && actor != this)
 				{
-					if (true == isR_)
-					{
-						GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
-						PacketSoundPlay packet;
-						packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
-						FT::SendPacket(packet);
-					}
-					else
-					{
-						GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
-						PacketSoundPlay packet;
-						packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
-						FT::SendPacket(packet);
-					}
-				
+					character = dynamic_cast<Character*>(actor);
 
-					character->Damage(150.0f, this);
+					if (nullptr != character)
+					{
+						if (true == isR_)
+						{
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+						}
+						else
+						{
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+						}
+
+
+						character->Damage(150.0f, this);
+					}
+				}
+			}
+		}
+
+		{
+			auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Monster);
+
+			for (GameEngineCollision* col : collisionList)
+			{
+				GameEngineActor* actor = col->GetActor();
+				IUnit* character = nullptr;
+				if (nullptr != actor)
+				{
+					character = dynamic_cast<IUnit*>(actor);
+
+					if (nullptr != character)
+					{
+						if (true == isR_)
+						{
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+						}
+						else
+						{
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+						}
+
+
+						character->Damage(150.0f, this);
+					}
 				}
 			}
 		}
@@ -740,36 +779,71 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 		//pack.SetAnimationName("SkillQ");
 		//FT::SendPacket(pack);
 
-		auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
-
-		for (GameEngineCollision* col : collisionList)
 		{
-			GameEngineActor* actor = col->GetActor();
-			Character* character = nullptr;
-			if (nullptr != actor && actor != this)
-			{
-				character = dynamic_cast<Character*>(actor);
+			auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
 
-				if (nullptr != character)
+			for (GameEngineCollision* col : collisionList)
+			{
+				GameEngineActor* actor = col->GetActor();
+				Character* character = nullptr;
+				if (nullptr != actor && actor != this)
 				{
-					if (true == isR_)
+					character = dynamic_cast<Character*>(actor);
+
+					if (nullptr != character)
 					{
-						GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
-						PacketSoundPlay packet;
-						packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
-						FT::SendPacket(packet);
+						if (true == isR_)
+						{
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+						}
+						else
+						{
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+						}
+						character->Damage(150.0f, this);
 					}
-					else
-					{
-						GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
-						PacketSoundPlay packet;
-						packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
-						FT::SendPacket(packet);
-					}
-					character->Damage(150.0f, this);
 				}
 			}
 		}
+		{
+			auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Monster);
+
+			for (GameEngineCollision* col : collisionList)
+			{
+				GameEngineActor* actor = col->GetActor();
+				IUnit* character = nullptr;
+				if (nullptr != actor)
+				{
+					character = dynamic_cast<IUnit*>(actor);
+
+					if (nullptr != character)
+					{
+						if (true == isR_)
+						{
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+						}
+						else
+						{
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+						}
+						character->Damage(150.0f, this);
+					}
+				}
+			}
+		}
+
 
 		b_Qhit_++;
 	}
@@ -1031,6 +1105,28 @@ void Jackie::updateSkillEEnd(float _deltaTime)
 			if (nullptr != actor && actor != this)
 			{
 				character = dynamic_cast<Character*>(actor);
+
+				if (nullptr != character)
+				{
+					character->Damage(120.0f, this);
+				}
+			}
+		}
+
+		b_Ehit_ = true;
+	}
+
+	if (false == b_Ehit_)
+	{
+		auto collisionList = collision_E->GetCollisionList(eCollisionGroup::Monster);
+
+		for (GameEngineCollision* col : collisionList)
+		{
+			GameEngineActor* actor = col->GetActor();
+			IUnit* character = nullptr;
+			if (nullptr != actor)
+			{
+				character = dynamic_cast<IUnit*>(actor);
 
 				if (nullptr != character)
 				{

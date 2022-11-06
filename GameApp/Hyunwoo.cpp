@@ -385,6 +385,8 @@ void Hyunwoo::onStartQSkill()
 	timer_end_Q = 0.0f;
 	b_Qhit_ = false;
 
+	setRotationToMouse();
+
 	curAnimationName_ = "SkillQ";
 
 	renderer_->ChangeFBXAnimation("SkillQ", true);
@@ -468,6 +470,38 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 
 					FT::SendPacket(ccPacket);
 				//	FT::SendPacket(effectPacket);
+				}
+			}
+		}
+
+		{
+			auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Monster);
+
+			for (GameEngineCollision* col : collisionList)
+			{
+				GameEngineActor* actor = col->GetActor();
+				IUnit* character = nullptr;
+				if (nullptr != actor)
+				{
+					character = dynamic_cast<IUnit*>(actor);
+
+					if (nullptr != character)
+					{
+						character->Damage((stat_.AttackPower * 0.4f) + (50.0f * stat_.Level_q), this);
+						character->Slow(2.0f, 0.4f);
+
+						CharCrowdControlPacket ccPacket;
+						ccPacket.SetTargetIndex(character->GetIndex());
+						ccPacket.SetSlow(2.0f, 0.4f);
+
+						//CharEffectPacket effectPacket;
+						//effectPacket.SetTargetIndex(character->GetIndex());
+						//effectPacket.SetAnimationName("SlowEffect");
+
+
+						FT::SendPacket(ccPacket);
+						//	FT::SendPacket(effectPacket);
+					}
 				}
 			}
 		}
@@ -660,6 +694,55 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 			}
 		}
 
+		{
+			auto collisionList = collision_E->GetCollisionList(eCollisionGroup::Monster);
+
+			if (false == b_Ehit_)
+			{
+				for (GameEngineCollision* col : collisionList)
+				{
+					GameEngineActor* actor = col->GetActor();
+					IUnit* character = nullptr;
+
+					if (nullptr != actor)
+					{
+						character = dynamic_cast<IUnit*>(actor);
+
+						if (nullptr != character)
+						{
+							character->Damage((stat_.AttackPower * 0.7f), this);
+							CharCrowdControlPacket ccPacket;
+							ccPacket.SetTargetIndex(character->GetIndex());
+							ccPacket.SetWallSlam(0.2f, direction_ * 3000.f, 1.0f);
+
+							// 여기선 못하고, 월 슬램 이후 그 캐릭터 클래스 내부에서 자체적으로 스턴 이펙트를 띄울 방법...
+							// 야 니네 컴퓨터의 내 캐릭터 인덱스 캐릭터에게 이팩트 띄워 줘
+
+
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill03_Hit.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("hyunwoo_Skill03_Hit.wav", transform_.GetWorldPosition());
+
+							FT::SendPacket(packet);
+
+							if (true == GameServer::GetInstance()->IsOpened())
+							{
+								GameServer::GetInstance()->Send(&ccPacket);
+								//GameServer::GetInstance()->Send(&packet);
+							}
+							else if (true == GameClient::GetInstance()->IsConnected())
+							{
+								GameClient::GetInstance()->Send(&ccPacket);
+								//GameClient::GetInstance()->Send(&packet);
+							}
+
+							b_Ehit_ = true;
+						}
+					}
+				}
+			}
+		}
+
 		//// 221024 SJH ADD : 몬스터 데미지 및 CC 상태 테스트용
 		//auto MonstercollisionList = collision_E->GetCollisionList(eCollisionGroup::Monster);
 		//if (false == b_Ehit_)
@@ -722,7 +805,7 @@ void Hyunwoo::onStartRSkill()
 {
 	mainState_.ChangeState("CustomState", true);
 	customState_.ChangeState("CustomRSkill", true);
-
+	setRotationToMouse();
 }
 
 void Hyunwoo::onUpdateRSkill(float _deltaTime)
@@ -982,8 +1065,31 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 				}
 			}
 			b_Rhit_ = true;
+		}
+
+		if (false == b_Rhit_)
+		{
+			// 여기서 피격 충돌 판정이 나옴
+			auto collisionList = collision_R->GetCollisionList(eCollisionGroup::Monster);
+
+			for (GameEngineCollision* col : collisionList)
+			{
+				GameEngineActor* actor = col->GetActor();
+				IUnit* character = nullptr;
+				if (nullptr != actor)
+				{
+					character = dynamic_cast<IUnit*>(actor);
+
+					if (nullptr != character)
+					{
 
 
+						character->Damage((stat_.Level_r * (80.0f + (collisionRRate_ * 100.0f))) + (stat_.AttackPower * 0.75f), this);
+
+					}
+				}
+			}
+			b_Rhit_ = true;
 		}
 
 		if (curAnimationName_ != "SkillR_end")

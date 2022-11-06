@@ -120,7 +120,7 @@ private:
 	float timer_R;
 	bool b_RHit_;
 
-	std::vector<Character*> rUnitList_;
+	std::vector<IUnit*> rUnitList_;
 	float rExplodeTimer_;
 
 

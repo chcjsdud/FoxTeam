@@ -407,6 +407,8 @@ void Aya::onStartQSkill()
 		return;
 	}
 
+	coolTimer_Q_ = 8.0f;
+
 	float4 targetPosition = target_->GetTransform()->GetWorldPosition();
 	float4 playerPosition = transform_.GetWorldPosition();
 

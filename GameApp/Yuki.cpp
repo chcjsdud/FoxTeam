@@ -17,6 +17,7 @@
 #include "YukiREffect.h"
 #include "YukiQEffect.h"
 #include "YukiQSlashEffect.h"
+#include "Monsters.h"
 
 Yuki::Yuki() // default constructer 디폴트 생성자
 	: b_isQ_(false), timer_Q(0.0f), rEffect_(nullptr), timer_R(0.0f), b_RHit_(false)
@@ -161,7 +162,7 @@ void Yuki::Start()
 	initYukiCustomState();
 	initEffectRenderer();
 
-	stat_.HPMax = 835.0f; 
+	stat_.HPMax = 835.0f;
 	stat_.HP = 835.0f;
 	stat_.SPMax = 410.0f;
 	stat_.SP = 410.0f;
@@ -219,11 +220,24 @@ void Yuki::Update(float _deltaTime)
 			{
 				FT::PlaySoundAndSendPacket("Yuki_Skill04_Debuff.wav", transform_.GetWorldPosition());
 				FT::PlaySoundAndSendPacket("Yuki_Skill04_Debuff_Hit.wav", transform_.GetWorldPosition());
-				rUnitList_[i]->Damage(rUnitList_[i]->GetStat()->HPMax * (0.125f + (0.025f * stat_.Level_r)), this);
+
+				Character* character = dynamic_cast<Character*>(rUnitList_[i]);
+				if (nullptr != character)
+				{
+					rUnitList_[i]->Damage(character->GetStat()->HPMax * (0.125f + (0.025f * stat_.Level_r)), this);
+					continue;
+				}
+
+				Monsters* monster = dynamic_cast<Monsters*>(rUnitList_[i]);
+				if (nullptr != monster)
+				{
+					rUnitList_[i]->Damage(monster->GetMonsterStateInfo().HPMax_ * (0.125f + (0.025f * stat_.Level_r)), this);
+					continue;
+				}
 
 				// 여기에 이펙트 배치
 				// 잔상 이펙트는 캐릭터 수 만큼 있어야 할 것...
-		
+
 			}
 
 			rExplodeTimer_ = 1.0f;
@@ -345,7 +359,7 @@ void Yuki::initYukiCollision()
 
 	collision_R = CreateTransformComponent<GameEngineCollision>(GetTransform());
 	collision_R->GetTransform()->SetLocalPosition({ 0.f,10.f,200.f });
-	collision_R->GetTransform()->SetLocalScaling({768.0f, 10.0f, 512.0f});
+	collision_R->GetTransform()->SetLocalScaling({ 768.0f, 10.0f, 512.0f });
 	collision_R->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_R->SetCollisionType(CollisionType::OBBBox3D);
 	collision_R->Off();
@@ -441,7 +455,7 @@ void Yuki::changeAnimationBasicAttack()
 	case 1:
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("attackTwoHandSword_r2.wav");
 		packet0.SetSound("attackTwoHandSword_r2.wav", transform_.GetWorldPosition());
-
+		break;
 	default:
 		break;
 	}
@@ -560,7 +574,7 @@ void Yuki::onUpdateQSkill(float _deltaTime)
 
 void Yuki::onStartWSkill()
 {
-	coolTimer_E_-=3.0f;
+	coolTimer_E_ -= 3.0f;
 
 	// 바닥에 벚꽃 이펙트 재생
 	RandomSoundPlay("Yuki_PlaySkill1011300seq0_1_ko.wav", "Yuki_PlaySkill1011300seq0_2_ko.wav", "Yuki_PlaySkill1011300seq0_3_ko.wav");
@@ -669,42 +683,82 @@ void Yuki::onUpdateESkill(float _deltaTime)
 		}
 
 
-		// 여기서 피격 충돌 판정이 나옴
-		auto collisionList = collision_E->GetCollisionList(eCollisionGroup::Player);
-
-		if (false == b_Ehit_)
 		{
-			for (GameEngineCollision* col : collisionList)
+			// 여기서 피격 충돌 판정이 나옴
+			auto collisionList = collision_E->GetCollisionList(eCollisionGroup::Player);
+
+			if (false == b_Ehit_)
 			{
-				GameEngineActor* actor = col->GetActor();
-				Character* character = nullptr;
-
-				if (nullptr != actor && actor != this)
+				for (GameEngineCollision* col : collisionList)
 				{
-					character = dynamic_cast<Character*>(actor);
+					GameEngineActor* actor = col->GetActor();
+					Character* character = nullptr;
 
-					if (nullptr != character)
+					if (nullptr != actor && actor != this)
 					{
-						character->Damage(stat_.AttackPower * 0.65f + 60.0f, this);
+						character = dynamic_cast<Character*>(actor);
 
-						GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Attack.wav");
-						PacketSoundPlay packet0;
-						packet0.SetSound("Yuki_Skill01_Attack.wav", transform_.GetWorldPosition());
-						FT::SendPacket(packet0);
+						if (nullptr != character)
+						{
+							character->Damage(stat_.AttackPower * 0.65f + 60.0f, this);
 
-						GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Passive_Hit_r2.wav");
-						PacketSoundPlay packet;
-						packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
-						FT::SendPacket(packet);
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Attack.wav");
+							PacketSoundPlay packet0;
+							packet0.SetSound("Yuki_Skill01_Attack.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet0);
 
-						b_Ehit_ = true;
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Passive_Hit_r2.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+
+							b_Ehit_ = true;
+						}
 					}
 				}
+				curAnimationName_ = "SkillE_attack";
+				renderer_->ChangeFBXAnimation("SkillE_attack", true);
 			}
-			curAnimationName_ = "SkillE_attack";
-			renderer_->ChangeFBXAnimation("SkillE_attack", true);
-
 		}
+
+		{
+			// 여기서 피격 충돌 판정이 나옴
+			auto collisionList = collision_E->GetCollisionList(eCollisionGroup::Monster);
+
+			if (false == b_Ehit_)
+			{
+				for (GameEngineCollision* col : collisionList)
+				{
+					GameEngineActor* actor = col->GetActor();
+					IUnit* character = nullptr;
+
+					if (nullptr != actor)
+					{
+						character = dynamic_cast<IUnit*>(actor);
+
+						if (nullptr != character)
+						{
+							character->Damage(stat_.AttackPower * 0.65f + 60.0f, this);
+
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Attack.wav");
+							PacketSoundPlay packet0;
+							packet0.SetSound("Yuki_Skill01_Attack.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet0);
+
+							GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Passive_Hit_r2.wav");
+							PacketSoundPlay packet;
+							packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
+							FT::SendPacket(packet);
+
+							b_Ehit_ = true;
+						}
+					}
+				}
+				curAnimationName_ = "SkillE_attack";
+				renderer_->ChangeFBXAnimation("SkillE_attack", true);
+			}
+		}
+
 
 		GetTransform()->SetWorldPosition(nextMovePosition);
 	}
@@ -823,7 +877,7 @@ void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 
 void Yuki::onEffectTransformCheck(float _deltaTime)
 {
-	float4 wp = GetTransform()->GetWorldPosition();	
+	float4 wp = GetTransform()->GetWorldPosition();
 	rEffect_->GetTransform()->SetLocalPosition(wp);
 	rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 
@@ -918,15 +972,15 @@ void Yuki::updateCustomRSlash(float _deltaTime)
 		for (GameEngineCollision* col : collisionList)
 		{
 			GameEngineActor* actor = col->GetActor();
-			Character* character = nullptr;
+			IUnit* character = nullptr;
 			if (nullptr != actor && actor != this)
 			{
-				character = dynamic_cast<Character*>(actor);
+				character = dynamic_cast<IUnit*>(actor);
 
 				if (nullptr != character)
 				{
 					character->Damage((stat_.AttackPower * 2.0f) + 250.0f, this);
-					
+
 					rUnitList_.push_back(character);
 					character->Slow(1.0f, 0.7f);
 
@@ -939,9 +993,35 @@ void Yuki::updateCustomRSlash(float _deltaTime)
 			}
 		}
 
+		{
+			auto collisionList = collision_R->GetCollisionList(eCollisionGroup::Monster);
+
+			for (GameEngineCollision* col : collisionList)
+			{
+				GameEngineActor* actor = col->GetActor();
+				IUnit* character = nullptr;
+				if (nullptr != actor)
+				{
+					character = dynamic_cast<IUnit*>(actor);
+
+					if (nullptr != character)
+					{
+						character->Damage((stat_.AttackPower * 2.0f) + 250.0f, this);
+
+						rUnitList_.push_back(character);
+
+						//CharCrowdControlPacket ccPacket;
+						//ccPacket.SetTargetIndex(character->GetIndex());
+						//ccPacket.SetSlow(1.0f, 0.7f);
+					}
+				}
+			}
+		}
+
 		b_RHit_ = true;
 
 	}
+
 
 	timer_R += _deltaTime;
 }
