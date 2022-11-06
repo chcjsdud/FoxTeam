@@ -39,7 +39,7 @@ void Lobby_GameStartButton::ButtonClickFunction()
 				PlayerInfo DummyPlayerInfo = {};
 				DummyPlayerInfo.playerNumber_ = 1;
 				DummyPlayerInfo.startPoint_ = -1;
-				DummyPlayerInfo.character_ = 8;
+				DummyPlayerInfo.character_ = static_cast<int>(JobType::DUMMY);
 				DummyPlayerInfo.curAnimation_ = "";
 				DummyPlayerInfo.isReady_ = 1;
 				DummyPlayerInfo.IsLoading_ = 1;

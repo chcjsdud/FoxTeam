@@ -84,12 +84,12 @@ void CharFullSelectEffect::SetCharImage(JobType _type)
 	case JobType::YUKI:
 		charStencilRenderer_->SetImage("Lobby_CharFull_Yuki.png", "PointSmp");
 		break;
-	case JobType::FIORA:
-		break;
-	case JobType::ZAHIR:
-		break;
-	case JobType::NADINE:
-		break;
+	//case JobType::FIORA:
+	//	break;
+	//case JobType::ZAHIR:
+	//	break;
+	//case JobType::NADINE:
+	//	break;
 	case JobType::HYUNWOO:
 		charStencilRenderer_->SetImage("Lobby_CharFull_Hyunwoo.png", "PointSmp");
 		break;

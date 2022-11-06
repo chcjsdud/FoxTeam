@@ -207,6 +207,11 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 
 			// 금지구역 설정
 
+			if (CurDay_ != 1)
+			{
+				return;
+			}
+
 			int tmpAreaIndex0;
 			int tmpAreaIndex1;
 
@@ -259,6 +264,10 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 			// 일차 증가로 현재 게임에 배치된 모든 유닛에게 레벨업명령(서버전용)
 			LevelUpSystem::GetInstance()->AllUnitLevelUP();
 
+			if (CurDay_ != 1)
+			{
+				return;
+			}
 
 			// 금지구역 설정
 			int tmpAreaIndex0;

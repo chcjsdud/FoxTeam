@@ -79,34 +79,34 @@ void Lobby_CharFull::Update(float _DeltaTime)
 		rDescription_->TextSetting("굴림", "R : 넓은 범위 공격을 가합니다.\n     후속타는 최대 체력 비례 고정 피해를 입힙니다.", 16.0f, FW1_LEFT, { 0.85f, 0.85f, 1.0f, 1.0f }, { 40.0f, 20.0f });
 		rDescription_->On();
 		break;
-	case JobType::FIORA:
-		CharFull_Renderer->Off();
-		break;
-	case JobType::ZAHIR:
-		CharFull_Renderer->Off();
-		break;
-	case JobType::NADINE:
-		CharFull_Renderer->On();
-		CharFull_Renderer->SetImage("Lobby_CharFull_Nadine.png", "PointSmp");
-		CharFull_Renderer->TextSetting("굴림", "나딘", 40.0f, FW1_CENTER, { 0.85f, 0.85f, 1.0f, 1.0f }, { 0.0f, -240.0f });
-		CharFull_Renderer->On();
-
-		qDescription_->SetImage("Nadine_Q_Icon.png", "PointSmp");
-		qDescription_->TextSetting("굴림", "Q : 힘을 모아 화살을 발사합니다.\n     모을수록 공격력과 사거리가 증가합니다.", 16.0f, FW1_LEFT, { 0.85f, 0.85f, 1.0f, 1.0f }, { 40.0f, 20.0f });
-		qDescription_->On();
-
-		wDescription_->SetImage("Nadine_W_Icon.png", "PointSmp");
-		wDescription_->TextSetting("굴림", "W : 덫을 설치해 경로를 봉쇄하고 피해를 입힙니다.\n     덫에 걸리면 이동속도가 감소합니다.", 16.0f, FW1_LEFT, { 0.85f, 0.85f, 1.0f, 1.0f }, { 40.0f, 20.0f });
-		wDescription_->On();
-
-		eDescription_->SetImage("Nadine_E_Icon.png", "PointSmp");
-		eDescription_->TextSetting("굴림", "E : 지정한 위치에 와이어를 발사합니다.\n     해당 방향으로 빠르게 타고 이동할 수 있습니다.", 16.0f, FW1_LEFT, { 0.85f, 0.85f, 1.0f, 1.0f }, { 40.0f, 20.0f });
-		eDescription_->On();
-
-		rDescription_->SetImage("Nadine_R_Icon.png", "PointSmp");
-		rDescription_->TextSetting("굴림", "R : 매 3번째 공격마다 늑대를 소환해 적을 공격합니다.", 16.0f, FW1_LEFT, { 0.85f, 0.85f, 1.0f, 1.0f }, { 40.0f, 20.0f });
-		rDescription_->On();
-		break;
+	//case JobType::FIORA:
+	//	CharFull_Renderer->Off();
+	//	break;
+	//case JobType::ZAHIR:
+	//	CharFull_Renderer->Off();
+	//	break;
+	//case JobType::NADINE:
+	//	CharFull_Renderer->On();
+	//	CharFull_Renderer->SetImage("Lobby_CharFull_Nadine.png", "PointSmp");
+	//	CharFull_Renderer->TextSetting("굴림", "나딘", 40.0f, FW1_CENTER, { 0.85f, 0.85f, 1.0f, 1.0f }, { 0.0f, -240.0f });
+	//	CharFull_Renderer->On();
+	//
+	//	qDescription_->SetImage("Nadine_Q_Icon.png", "PointSmp");
+	//	qDescription_->TextSetting("굴림", "Q : 힘을 모아 화살을 발사합니다.\n     모을수록 공격력과 사거리가 증가합니다.", 16.0f, FW1_LEFT, { 0.85f, 0.85f, 1.0f, 1.0f }, { 40.0f, 20.0f });
+	//	qDescription_->On();
+	//
+	//	wDescription_->SetImage("Nadine_W_Icon.png", "PointSmp");
+	//	wDescription_->TextSetting("굴림", "W : 덫을 설치해 경로를 봉쇄하고 피해를 입힙니다.\n     덫에 걸리면 이동속도가 감소합니다.", 16.0f, FW1_LEFT, { 0.85f, 0.85f, 1.0f, 1.0f }, { 40.0f, 20.0f });
+	//	wDescription_->On();
+	//
+	//	eDescription_->SetImage("Nadine_E_Icon.png", "PointSmp");
+	//	eDescription_->TextSetting("굴림", "E : 지정한 위치에 와이어를 발사합니다.\n     해당 방향으로 빠르게 타고 이동할 수 있습니다.", 16.0f, FW1_LEFT, { 0.85f, 0.85f, 1.0f, 1.0f }, { 40.0f, 20.0f });
+	//	eDescription_->On();
+	//
+	//	rDescription_->SetImage("Nadine_R_Icon.png", "PointSmp");
+	//	rDescription_->TextSetting("굴림", "R : 매 3번째 공격마다 늑대를 소환해 적을 공격합니다.", 16.0f, FW1_LEFT, { 0.85f, 0.85f, 1.0f, 1.0f }, { 40.0f, 20.0f });
+	//	rDescription_->On();
+	//	break;
 	case JobType::HYUNWOO:
 		CharFull_Renderer->On();
 		CharFull_Renderer->SetImage("Lobby_CharFull_Hyunwoo.png", "PointSmp");

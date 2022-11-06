@@ -135,16 +135,13 @@ enum class eCollisionGroup
 enum class JobType // 직업타입
 {
 	NONE = -1,
-	YUKI,		// 유키(기본)
-	FIORA,		// 피오라
-	ZAHIR,		// 자히르
-	NADINE,		// 나딘
+	YUKI,
 	HYUNWOO,
 	JACKIE,
 	RIO,
 	AYA,
 	// ....
-	DUMMY,		// 더미
+	DUMMY,
 	MAX
 };
 

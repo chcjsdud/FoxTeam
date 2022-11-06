@@ -2138,6 +2138,11 @@ void Character::updatePlayerWinner(float _deltaTime)
 
 void Character::PlayEffect(const std::string& _effectName, IUnit* _victim)
 {
+	if (true == bHidden_)
+	{
+		return;
+	}
+
 	if ("StunEffect" == _effectName)
 	{
 		float4 wp = GetTransform()->GetWorldPosition();

@@ -1,4 +1,4 @@
-#include "Precompile.h"
+ #include "Precompile.h"
 #include "LumiaLevel.h"
 
 #include <GameEngine/GameEngineRenderWindow.h>
@@ -340,11 +340,6 @@ void LumiaLevel::CharacterCreationCommand()
 		case JobType::YUKI:
 		{
 			NewCharacter = CreateActor<Yuki>();
-			break;
-		}
-		case JobType::FIORA:
-		{
-			//NewCharacter = CreateActor<Fiora>();
 			break;
 		}
 		case JobType::HYUNWOO:

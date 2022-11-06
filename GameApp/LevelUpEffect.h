@@ -17,6 +17,8 @@ public:
 public:
 	void PlayAwake();
 
+	void Hide(bool _tf);
+
 protected:
 	void Start() override;
 	void Update(float _deltaTime) override;

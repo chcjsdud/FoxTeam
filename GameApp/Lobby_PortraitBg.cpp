@@ -62,15 +62,15 @@ void Lobby_PortraitBg::SetChar(JobType _Character)
 	case JobType::YUKI:
 		CharPortraitRenderer->SetImage("Lobby_Portrait_Yuki.png", "PointSmp");
 		break;
-	case JobType::FIORA:
-		CharPortraitRenderer->SetImage("Lobby_Portrait_Anon.png", "PointSmp");
-		break;
-	case JobType::ZAHIR:
-		CharPortraitRenderer->SetImage("Lobby_Portrait_Anon.png", "PointSmp");
-		break;
-	case JobType::NADINE:
-		CharPortraitRenderer->SetImage("Lobby_Portrait_Nadine.png", "PointSmp");
-		break;
+	//ase JobType::FIORA:
+	//	CharPortraitRenderer->SetImage("Lobby_Portrait_Anon.png", "PointSmp");
+	//	break;
+	//ase JobType::ZAHIR:
+	//	CharPortraitRenderer->SetImage("Lobby_Portrait_Anon.png", "PointSmp");
+	//	break;
+	//ase JobType::NADINE:
+	//	CharPortraitRenderer->SetImage("Lobby_Portrait_Nadine.png", "PointSmp");
+	//	break;
 	case JobType::HYUNWOO:
 		CharPortraitRenderer->SetImage("Lobby_Portrait_Hyunwoo.png", "PointSmp");
 		break;

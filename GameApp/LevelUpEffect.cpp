@@ -22,6 +22,13 @@ void LevelUpEffect::PlayAwake()
 	renderState_ << "Awake";
 }
 
+void LevelUpEffect::Hide(bool _tf)
+{
+	levelUpRenderer_->SetAlpha(0.0f);
+	glowLineRenderer_->SetAlpha(0.0f);
+	ringRenderer_->SetAlpha(0.0f);
+}
+
 void LevelUpEffect::Start()
 {
 	levelUpRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());

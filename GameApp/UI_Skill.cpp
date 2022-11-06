@@ -352,36 +352,36 @@ void UI_Skill::SetJobType(JobType _myjob)
 		Icon_Weapon->SetImage("Weapon_TwoHandedBlade_Icon.png", "PointSmp");
 	}
 		break;
-	case JobType::FIORA:
-	{
-		Icon_Q->SetImage("Fiora_Q_Icon.png", "PointSmp");
-		Icon_W->SetImage("Fiora_W_Icon.png", "PointSmp");
-		Icon_E->SetImage("Fiora_E_Icon.png", "PointSmp");
-		Icon_R->SetImage("Fiora_R_Icon.png", "PointSmp");
-		Icon_Passive->SetImage("Fiora_Passive_Icon.png", "PointSmp");
-		Icon_Weapon->SetImage("Weapon_TwoHandedBlade_Icon.png", "PointSmp");
-	}
-		break;
-	case JobType::ZAHIR:
-	{
-		Icon_Q->SetImage("Zahir_Q_Icon.png", "PointSmp");
-		Icon_W->SetImage("Zahir_W_Icon.png", "PointSmp");
-		Icon_E->SetImage("Zahir_E_Icon.png", "PointSmp");
-		Icon_R->SetImage("Zahir_R_Icon.png", "PointSmp");
-		Icon_Passive->SetImage("Zahir_Passive_Icon.png", "PointSmp");
-		Icon_Weapon->SetImage("Weapon_TwoHandedBlade_Icon.png", "PointSmp");
-	}
-		break;
-	case JobType::NADINE:
-	{
-		Icon_Q->SetImage("Nadine_Q_Icon.png", "PointSmp");
-		Icon_W->SetImage("Nadine_W_Icon.png", "PointSmp");
-		Icon_E->SetImage("Nadine_E_Icon.png", "PointSmp");
-		Icon_R->SetImage("Nadine_R_Icon.png", "PointSmp");
-		Icon_Passive->SetImage("Nadine_Passive_Icon.png", "PointSmp");
-		Icon_Weapon->SetImage("Weapon_TwoHandedBlade_Icon.png", "PointSmp");
-	}
-		break;
+	//case JobType::FIORA:
+	//{
+	//	Icon_Q->SetImage("Fiora_Q_Icon.png", "PointSmp");
+	//	Icon_W->SetImage("Fiora_W_Icon.png", "PointSmp");
+	//	Icon_E->SetImage("Fiora_E_Icon.png", "PointSmp");
+	//	Icon_R->SetImage("Fiora_R_Icon.png", "PointSmp");
+	//	Icon_Passive->SetImage("Fiora_Passive_Icon.png", "PointSmp");
+	//	Icon_Weapon->SetImage("Weapon_TwoHandedBlade_Icon.png", "PointSmp");
+	//}
+	//	break;
+	//case JobType::ZAHIR:
+	//{
+	//	Icon_Q->SetImage("Zahir_Q_Icon.png", "PointSmp");
+	//	Icon_W->SetImage("Zahir_W_Icon.png", "PointSmp");
+	//	Icon_E->SetImage("Zahir_E_Icon.png", "PointSmp");
+	//	Icon_R->SetImage("Zahir_R_Icon.png", "PointSmp");
+	//	Icon_Passive->SetImage("Zahir_Passive_Icon.png", "PointSmp");
+	//	Icon_Weapon->SetImage("Weapon_TwoHandedBlade_Icon.png", "PointSmp");
+	//}
+	//	break;
+	//case JobType::NADINE:
+	//{
+	//	Icon_Q->SetImage("Nadine_Q_Icon.png", "PointSmp");
+	//	Icon_W->SetImage("Nadine_W_Icon.png", "PointSmp");
+	//	Icon_E->SetImage("Nadine_E_Icon.png", "PointSmp");
+	//	Icon_R->SetImage("Nadine_R_Icon.png", "PointSmp");
+	//	Icon_Passive->SetImage("Nadine_Passive_Icon.png", "PointSmp");
+	//	Icon_Weapon->SetImage("Weapon_TwoHandedBlade_Icon.png", "PointSmp");
+	//}
+	//	break;
 	case JobType::HYUNWOO:
 	{
 		Icon_Q->SetImage("HyunWoo_Q_Icon.png", "PointSmp");

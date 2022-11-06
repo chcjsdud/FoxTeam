@@ -45,7 +45,7 @@ void LobbyUIController::InitUI()
 	}
 
 	{
-		for (int x = 0; x < (int)JobType::MAX; x++)
+		for (int x = 0; x < (int)JobType::DUMMY; x++)
 		{
 			Lobby_PortraitBg* Portrait = GetLevel()->CreateActor<Lobby_PortraitBg>();
 

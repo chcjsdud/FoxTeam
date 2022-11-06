@@ -38,12 +38,12 @@ void UI_WinLose::SetPortrait(JobType _jobtype, bool _isWin)
 		}
 		portraitRenderer_->SetImage("Death_CharFull_Yuki.png", "PointSmp");
 		break;
-	case JobType::FIORA:
-		break;
-	case JobType::ZAHIR:
-		break;
-	case JobType::NADINE:
-		break;
+	//case JobType::FIORA:
+	//	break;
+	//case JobType::ZAHIR:
+	//	break;
+	//case JobType::NADINE:
+	//	break;
 	case JobType::HYUNWOO:
 		if (true == _isWin)
 		{

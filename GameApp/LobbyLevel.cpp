@@ -149,28 +149,6 @@ void LobbyLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 		}
 	}
 
-
-	//{
-	//	BackgroundRenderer = CreateActor<LobbyBackground>();
-	//	ButtonLeft = CreateActor<Lobby_ButtonOne>();
-	//	ButtonRight = CreateActor<Lobby_ButtonTwo>();
-	//}
-
-	//{
-	//	for (int x = 0; x < (int)JobType::MAX; x++)
-	//	{
-	//		Lobby_PortraitBg* Portrait = CreateActor<Lobby_PortraitBg>();
-	//		float4 BasicPosition = { -580.0f, 200.0f, -102.0f };
-	//		
-	//		int Vertical = (x/4);
-	//		int Horizonal = x - (Vertical * 4);
-	//		Portrait->GetTransform()->SetLocalPosition(BasicPosition + float4{ float(Horizonal) * 72.0f, (float(Vertical) * -115.0f), 0.0f});
-	//		Portrait->SetChar(static_cast<JobType>(x));
-	//
-	//		PortraitBg.emplace_back(Portrait);
-	//	}
-	//}
-
 	{
 		UIController_ = CreateActor<LobbyUIController>();
 	}
@@ -350,7 +328,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		serverSocket_->ProcessPacket();
 
 		// 캐릭터 선택시 패킷 보내는 코드블록
-		for (int x = 0; x < (int)JobType::MAX; x++)
+		for (int x = 0; x < (int)JobType::DUMMY; x++)
 		{
 			//PortraitBg[x]->GetCollision()->Collision(eCollisionGroup::MousePointer)
 			
@@ -370,7 +348,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 					pm->GetPlayerList()[pm->GetMyNumber()].character_ = static_cast<int>(UIController_->GetPortraitVector(x)->GetChar());
 					
 
-					for (int o = 0; o < (int)JobType::MAX; o++)
+					for (int o = 0; o < (int)JobType::DUMMY; o++)
 					{
 						if (o == x)
 						{
@@ -423,7 +401,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 		playerCount_ = static_cast<int>(pm->GetPlayerList().size());
 
 		// 캐릭터 선택시 패킷 보내는 코드블록
-		for (int x = 0; x < (int)JobType::MAX; x++)
+		for (int x = 0; x < (int)JobType::DUMMY; x++)
 		{
 			if (UIController_->GetPortraitVector(x)->GetCollision()->Collision(eCollisionGroup::MousePointer))
 			{
@@ -439,7 +417,7 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 					//packet.SetStartPoint(static_cast<int>(Location::DOCK)); // 나의 스타팅 포인트 지역을 알려준다
 					clientSocket_->Send(&packet);
 
-					for (int o = 0; o < (int)JobType::MAX; o++)
+					for (int o = 0; o < (int)JobType::DUMMY; o++)
 					{
 						if (o == x)
 						{
@@ -510,15 +488,6 @@ void LobbyLevel::UpdateSelect(float _DeltaTime)
 			break;
 		case JobType::YUKI:
 			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Yuki.png");
-			break;
-		case JobType::FIORA:
-			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
-			break;
-		case JobType::ZAHIR:
-			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
-			break;
-		case JobType::NADINE:
-			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Nadine.png");
 			break;
 		case JobType::HYUNWOO:
 			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Hyunwoo.png");
@@ -606,15 +575,15 @@ void LobbyLevel::UpdateJoin(float _DeltaTime)
 		case JobType::YUKI:
 			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Yuki.png");
 			break;
-		case JobType::FIORA:
-			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
-			break;
-		case JobType::ZAHIR:
-			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
-			break;
-		case JobType::NADINE:
-			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Nadine.png");
-			break;
+		//case JobType::FIORA:
+		//	tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
+		//	break;
+		//case JobType::ZAHIR:
+		//	tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Anon.png");
+		//	break;
+		//case JobType::NADINE:
+		//	tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Nadine.png");
+		//	break;
 		case JobType::HYUNWOO:
 			tempLobbyRenderers_[i]->SetImage("Down_Lobby_Portrait_Hyunwoo.png");
 			break;
@@ -671,12 +640,12 @@ void LobbyLevel::PlaySelectedCharVoice(JobType _type)
 	case JobType::YUKI:
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_selected_1_ko.wav");
 		break;
-	case JobType::FIORA:
-		break;
-	case JobType::ZAHIR:
-		break;
-	case JobType::NADINE:
-		break;
+	//case JobType::FIORA:
+	//	break;
+	//case JobType::ZAHIR:
+	//	break;
+	//case JobType::NADINE:
+	//	break;
 	case JobType::HYUNWOO:
 		GameEngineSoundManager::GetInstance()->PlaySoundByName("Hyunwoo_selected_1_ko.wav");
 		break;
