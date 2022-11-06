@@ -4,7 +4,6 @@
 using namespace std;
 // ¼³¸í :
 class GameEngineUIRenderer;
-class Player;
 class ItemBase;
 class UI_Inventory : public GameEngineActor
 {
@@ -22,11 +21,6 @@ public:
 	bool UIOn;
 
 public:
-	void SetPlayer(Player* _Player)
-	{
-		Player_ = _Player;
-	}
-
 	void EmptySlot();
 	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
 	void GetInventoryInfo(vector<ItemBase*> _ItemVector);
@@ -47,7 +41,6 @@ private:
 	void EmptySlotReturn(ItemBase* _TargetSlot);
 
 private:
-	Player* Player_;
 
 #pragma region ½½·Ô float4 ÇÇº¿°ª
 
