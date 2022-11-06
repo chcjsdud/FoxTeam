@@ -502,7 +502,7 @@ void UI_ItemBox::ItemRenderCheck()
 	{		
 		Slot3_BGRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 		Slot3_BGRenderer->GetTransform()->SetLocalScaling(SlotSize);
-		UI_ItemSettingHelper::SetItemRenderValue(Slot2_BGRenderer, Slot2_Item);
+		UI_ItemSettingHelper::SetItemRenderValue(Slot3_BGRenderer, Slot3_Item);
 
 		Slot3_IconRenderer->SetImage(UI_ItemSettingHelper::GetItemTextureName(Slot3_Item));
 		Slot3_IconRenderer->GetTransform()->SetLocalScaling(Slot3_IconRenderer->GetCurrentTexture()->GetTextureSize());
