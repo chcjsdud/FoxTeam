@@ -27,6 +27,7 @@
 #include "CharCrowdControlPacket.h"
 #include <GameEngine/GameEngineRenderWindow.h>
 #include "FogOfWar.h"
+#include <GameEngine/SmallPostBlur.h>
 
 Character::Character()
 	: collision_(nullptr)
@@ -1326,6 +1327,18 @@ void Character::updateFOW(float _deltaTime)
 	eyesightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerNone");
 	eyesightRenderer_->Render(_deltaTime, false);
 	eyesightRenderer_->GetGameEngineRenderingPipeLine()->SetRasterizer("EngineBaseRasterizerWireFrame");
+
+	//	SmallPostBlur* BlurEffect = AddPostProcessCameraMergeNext<SmallPostBlur>();
+//	BlurEffect->SetTarget(GameEngineDevice::GetBackBufferTarget());
+//	BlurEffect->SetFilter("BlurFilter.png");
+
+	SmallPostBlur blur;
+	blur.Initialize();
+	blur.SetTarget(fowRenderTarget_);
+	blur.SetFilter("BlurFilter.png");
+	blur.Effect(_deltaTime);
+	blur.Effect(_deltaTime);
+	blur.Effect(_deltaTime);
 }
 
 void Character::getFOWData(std::vector<float4>& _data, bool& _bCalc)

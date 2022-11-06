@@ -33,7 +33,7 @@ public:
 	SmallPostBlur& operator=(SmallPostBlur&& _Other) noexcept = delete;
 	void SetFilter(std::string _TextureName);
 
-protected:
+public:
 	void Effect(float _DeltaTime) override;
 	void Initialize() override;
 

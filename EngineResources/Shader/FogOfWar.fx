@@ -29,12 +29,8 @@ SamplerState PointSmp : register(s0);
 float4 FogOfWar_PS(VertexOut _in) : SV_Target0
 {
 
-    float4 filterColor = Filter.Sample(PointSmp, _in.Texcoord.xy);
     float4 targetColor = Target.Sample(PointSmp, _in.Texcoord.xy);
-    if (filterColor.x <= 0.0f)
-    {
-        return float4(targetColor.xyz * 0.8f, 1.0f);
-    }
+    float4 filterColor = Filter.Sample(PointSmp, _in.Texcoord.xy);
 
-    return targetColor;
+    return float4(targetColor.xyz * (0.8f + 0.2f * filterColor.x), 1.0f);
 }
