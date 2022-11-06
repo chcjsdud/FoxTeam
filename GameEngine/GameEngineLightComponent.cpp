@@ -35,8 +35,8 @@ void GameEngineLightComponent::Start()
 	// 1-1. 모든 광원(빛) 갯수만큼의 깊이버퍼 텍스쳐를 생성
 	D3D11_TEXTURE2D_DESC DepthTextureInfo = { 0, };
 	DepthTextureInfo.ArraySize = static_cast<unsigned int>(GetLevel()->AllLights_.size());			// 현재레벨에서 관리하는 모든 광원의 수만큼 깊이버퍼텍스쳐배열 생성
-	DepthTextureInfo.Width = ShadowClipingRange_.x;
-	DepthTextureInfo.Height = ShadowClipingRange_.y;
+	DepthTextureInfo.Width = ShadowClipingRange_.uix();
+	DepthTextureInfo.Height = ShadowClipingRange_.uiy();
 	DepthTextureInfo.Format = DXGI_FORMAT::DXGI_FORMAT_R32_FLOAT;
 	DepthTextureInfo.SampleDesc.Count = 1;
 	DepthTextureInfo.SampleDesc.Quality = 0;

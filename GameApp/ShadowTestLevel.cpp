@@ -34,7 +34,7 @@ void ShadowTestLevel::CreateBasicActor()
 	TestLightActor_->GetLight()->SetDiffusePower(1.f);
 	TestLightActor_->GetLight()->SetAmbientPower(10.f);
 	TestLightActor_->GetLight()->SetSpacularLightPow(1.f);
-	TestLightActor_->GetLight()->SetShadowClipingRange({ 1000.f, 1000.f });
+	TestLightActor_->GetLight()->SetShadowClipingRange({ 300.f, 300.f });
 	TestLightActor_->GetTransform()->SetWorldPosition(float4(0.0f, 500.0f, 0.0f));
 	TestLightActor_->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, 0.0f });
 	//TestLightActor_->GetTransform()->SetWorldPosition(TestLightActor_->GetTransform()->GetWorldBackVector() * 500.0f);

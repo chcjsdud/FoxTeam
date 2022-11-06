@@ -343,14 +343,22 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	}
 
 	// Shadow Render
-	RenderShadow(_DeltaTime);								// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
+	if (nullptr != GetLevel()->ShadowTexture_)
+	{
+		RenderShadow(_DeltaTime);								// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
+	}
+
 	CalLightEffect.Effect(_DeltaTime);
 	DeferredMergeEffect.Effect(_DeltaTime);
 }
 
 void CameraComponent::RenderShadow(float _DeltaTime)
 {
-	CameraDeferredGBufferTarget->Setting();
+	if (nullptr == ShadowRenderTarget_)
+	{
+		ShadowRenderTarget_ = new GameEngineRenderTarget();
+		ShadowRenderTarget_->Create(GetLevel()->ShadowTexture_, float4::BLUE);
+	}
 
 	// Shadow Rendering
 	std::list<GameEngineLightComponent*>::iterator LightStartIter = Lights_.begin();
@@ -397,12 +405,7 @@ void CameraComponent::RenderShadow(float _DeltaTime)
 		}
 	}
 
-	GameEngineTexture* ShadowTexture = GetLevel()->ShadowTexture_;
-	if (nullptr != ShadowTexture && nullptr == ShadowRenderTarget_)
-	{
-		ShadowRenderTarget_ = new GameEngineRenderTarget();
-		ShadowRenderTarget_->Create(ShadowTexture, float4::BLUE);
-	}
+	CalLightEffect.GetShaderRes().SettingTexture("ShadowTex", GetLevel()->ShadowTexture_);
 }
 
 void CameraComponent::CameraZoomReset()
