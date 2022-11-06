@@ -43,7 +43,7 @@ UserGame::UserGame(UserGame&& _other) noexcept
 void UserGame::Initialize()
 {
 	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineLevelControlWindow>("LevelControlWindow");
-	GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
+	//GameEngineGUI::GetInst()->CreateGUIWindow<GameEngineRenderWindow>("RenderWindow");
 	
 
 	//LevelCreate<MeshLoadLevel>("MeshLoadLevel");

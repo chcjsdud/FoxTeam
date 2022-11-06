@@ -32,5 +32,5 @@ float4 FogOfWar_PS(VertexOut _in) : SV_Target0
     float4 targetColor = Target.Sample(PointSmp, _in.Texcoord.xy);
     float4 filterColor = Filter.Sample(PointSmp, _in.Texcoord.xy);
 
-    return float4(targetColor.xyz * (0.8f + 0.2f * filterColor.x), 1.0f);
+    return float4(targetColor.xyz * (0.85f + 0.15f * filterColor.x), 1.0f);
 }
