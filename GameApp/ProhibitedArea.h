@@ -19,7 +19,6 @@ public:
 
 public:
 	void Init(Location _location, const std::string& _fbxName, float4 _pos, const std::string& _name);
-	void AddTriggerCollision(float4 _pos, float4 _scale);
 	void SetProhibited(bool _tf);
 	bool IsProhibited() { return isProhibited_; }
 
@@ -34,6 +33,5 @@ private:
 	bool isProhibited_;
 
 	GameEngineFBXRenderer* renderer_;
-	std::vector<GameEngineCollision*> triggerList_;
 };
 

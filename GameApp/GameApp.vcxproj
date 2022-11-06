@@ -184,6 +184,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Appmain.cpp" />
+    <ClCompile Include="AreaChangeTrigger.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="Aya.cpp">
       <SubType>
       </SubType>
@@ -655,6 +659,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AreaChangeTrigger.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="Aya.h">
       <SubType>
       </SubType>

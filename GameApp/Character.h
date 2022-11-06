@@ -105,7 +105,6 @@ public:
 
 	void SetTriggerProhibit(bool _tf) { isInProhibited_ = _tf; }
 
-
 	// 스탯 내 기준점이 되는 쿨타임 변수
 	float GetCooltimeQSkill() { return stat_.Cooltime_q; }
 	float GetCooltimeWSkill() { return stat_.Cooltime_w; }

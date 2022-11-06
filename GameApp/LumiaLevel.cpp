@@ -67,6 +67,7 @@
 
 //======================== Area
 #include "ProhibitedArea.h"
+#include "AreaChangeTrigger.h"
 
 Character* LumiaLevel::GetSpecificCharacter(int _Index)
 {
@@ -743,8 +744,7 @@ void LumiaLevel::CreateProhibitedSystem()
 			break;
 		case Location::AVENUE:
 			area->Init(locaName, "Prohibited_AVENUE.fbx", position, "번화가");
-			area->AddTriggerCollision({ -4797.0f,  0.0f, 6292.0f }, { 1500.0f , 10.0f, 300.0f });
-
+			//area->AddTriggerCollision({ -4797.0f,  0.0f, 6292.0f }, { 1500.0f , 10.0f, 300.0f });
 			break;
 		case Location::HOSPITAL:
 			area->Init(locaName, "Prohibited_HOSPITAL.fbx", position, "병원");
@@ -760,7 +760,7 @@ void LumiaLevel::CreateProhibitedSystem()
 			break;
 		case Location::FOREST:
 			area->Init(locaName, "Prohibited_FOREST.fbx", position, "숲");
-			area->AddTriggerCollision({ -4789.0f, 0.0f ,5976.0f }, { 1500.0f , 10.0f , 300.0f });
+		//	area->AddTriggerCollision({ -4789.0f, 0.0f ,5976.0f }, { 1500.0f , 10.0f , 300.0f });
 			break;
 		case Location::FACTORY:
 			area->Init(locaName, "Prohibited_FACTORY.fbx", position, "공장");
@@ -784,6 +784,14 @@ void LumiaLevel::CreateProhibitedSystem()
 
 		area->SetProhibited(false);
 		prohitivedAreaList_.push_back(area);
+	}
+
+	{
+		// 번화가 ->
+		AreaChangeTrigger* avenueToForest = CreateActor<AreaChangeTrigger>();
+		avenueToForest->SetLocations(Location::AVENUE, "번화가", Location::FOREST, "숲");
+		avenueToForest->SetCollision({ -4797.0f,  0.0f, 6292.0f }, { 1500.0f , 10.0f, 300.0f });
+
 	}
 }
 
