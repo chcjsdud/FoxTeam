@@ -898,6 +898,143 @@ void LumiaLevel::CreateProhibitedSystem()
 		school_hotel->SetLocations(Location::SCHOOL, "학교", Location::HOTEL, "호텔");
 		school_hotel->SetCollision({ -7813.0f,  0.0f, 3173.0f }, { 2000.0f , 100.0f, 10.0f }, { -7813.0f, 0.0f, 3050.0f });
 	}
+
+	{
+		// 양궁장
+		AreaChangeTrigger* archery_alley = CreateActor<AreaChangeTrigger>();
+		archery_alley->SetLocations(Location::ARCHERY_RANGE, "양궁장", Location::ALLEY, "골목길");
+		archery_alley->SetCollision({ -13126.0f,  0.0f, 10329.0f }, { 800.0f , 100.0f, 10.0f }, { -13126.0f, 0.0f, 10568.0f });
+
+		AreaChangeTrigger* archery_hotel = CreateActor<AreaChangeTrigger>();
+		archery_hotel->SetLocations(Location::ARCHERY_RANGE, "양궁장", Location::HOTEL, "호텔");
+		archery_hotel->SetCollision({ -11899.0f,  0.0f, 3224.0f }, { 500.0f , 100.0f, 10.0f }, { -11899.0f, 0.0f, 3065.0f });
+	}
+
+	{
+		// 호텔
+		AreaChangeTrigger* hotel_beach = CreateActor<AreaChangeTrigger>();
+		hotel_beach->SetLocations(Location::HOTEL, "호텔", Location::BEACH, "모래사장");
+		hotel_beach->SetCollision({ -7675.0f,  0.0f, -3372.0f }, { 600.0f , 100.0f, 10.0f }, { -7675.0f, 0.0f, -3505.0f });
+
+		AreaChangeTrigger* hotel_beach1 = CreateActor<AreaChangeTrigger>();
+		hotel_beach1->SetLocations(Location::HOTEL, "호텔", Location::BEACH, "모래사장");
+		hotel_beach1->SetCollision({ -8875.0f,  0.0f, -3980.0f }, { 1000.0f , 100.0f, 10.0f }, { -8875.0f, 0.0f, -4107.0f });
+
+	}
+
+	{
+		// 모래사장
+		AreaChangeTrigger* hotel_uptown = CreateActor<AreaChangeTrigger>();
+		hotel_uptown->SetLocations(Location::BEACH, "모래사장", Location::UPTOWN, "고급 주택가");
+		hotel_uptown->SetCollision({ -1884.0f,  0.0f, -2879.0f }, { 10.0f , 100.0f, 1200.0f }, { -1715.0f, 0.0f, -2879.0f });
+
+		AreaChangeTrigger* hotel_uptown1 = CreateActor<AreaChangeTrigger>();
+		hotel_uptown1->SetLocations(Location::BEACH, "모래사장", Location::UPTOWN, "고급 주택가");
+		hotel_uptown1->SetCollision({ -1900.0f,  0.0f, -4677.0f }, { 10.0f , 100.0f, 1200.0f }, { -1738.0f, 0.0f, -4677.0f });
+	}
+
+	{
+		// 고급 주택가
+		AreaChangeTrigger* uptown_chapel = CreateActor<AreaChangeTrigger>();
+		uptown_chapel->SetLocations(Location::UPTOWN, "고급 주택가", Location::CHAPEL, "성당");
+		uptown_chapel->SetCollision({ 6271.0f,  0.0f, -1614.0f }, { 500.0f , 100.0f, 10.0f }, { 6271.0f, 0.0f, -1406.0f });
+	
+		AreaChangeTrigger* uptown_dock = CreateActor<AreaChangeTrigger>();
+		uptown_dock->SetLocations(Location::UPTOWN, "고급 주택가", Location::DOCK, "항구");
+		uptown_dock->SetCollision({ 6493.0f,  0.0f, -2530.0f }, { 10.0f , 100.0f, 1900.0f }, { 6686.0f, 0.0f, -2530.0f });
+	}
+
+	{
+		// 항구
+		AreaChangeTrigger* dock_chapel = CreateActor<AreaChangeTrigger>();
+		dock_chapel->SetLocations(Location::DOCK, "항구", Location::CHAPEL, "성당");
+		dock_chapel->SetCollision({ 9081.0f,  0.0f, -1586.0f }, { 500.0f , 100.0f, 10.0f }, { 9081.0f, 0.0f, -1424.0f });
+
+		AreaChangeTrigger* dock_factory = CreateActor<AreaChangeTrigger>();
+		dock_factory->SetLocations(Location::DOCK, "항구", Location::FACTORY, "공장");
+		dock_factory->SetCollision({ 12666.0f,  0.0f, 416.0f }, { 1700.0f , 100.0f, 10.0f }, { 12666.0f, 0.0f, 639.0f });
+	}
+
+	{
+		// 성당
+		AreaChangeTrigger* chapel_factory = CreateActor<AreaChangeTrigger>();
+		chapel_factory->SetLocations(Location::CHAPEL, "성당", Location::FACTORY, "공장");
+		chapel_factory->SetCollision({ 11633.0f,  0.0f, 981.0f }, { 10.0f , 100.0f, 500.0f }, { 11872.0f, 0.0f, 981.0f });
+
+		AreaChangeTrigger* chapel_cemetry = CreateActor<AreaChangeTrigger>();
+		chapel_cemetry->SetLocations(Location::CHAPEL, "성당", Location::CEMETERY, "묘지");
+		chapel_cemetry->SetCollision({ 4502.0f,  0.0f, 2851.0f }, { 2000.0f , 100.0f, 10.0f }, { 4502.0f, 0.0f, 3018.0f });
+
+		AreaChangeTrigger* chapel_cemetry1 = CreateActor<AreaChangeTrigger>();
+		chapel_cemetry1->SetLocations(Location::CHAPEL, "성당", Location::CEMETERY, "묘지");
+		chapel_cemetry1->SetCollision({ 6279.0f,  0.0f, 2835.0f }, { 2000.0f , 100.0f, 10.0f }, { 6279.0f, 0.0f, 3028.0f });
+
+		AreaChangeTrigger* chapel_cemetry2 = CreateActor<AreaChangeTrigger>();
+		chapel_cemetry2->SetLocations(Location::CHAPEL, "성당", Location::CEMETERY, "묘지");
+		chapel_cemetry2->SetCollision({ 9257.0f,  0.0f, 3938.0f }, { 2000.0f , 100.0f, 10.0f }, { 9257.0f, 0.0f, 4015.0f });
+	}
+
+	{
+		// 공장
+		AreaChangeTrigger* factory_cemetery = CreateActor<AreaChangeTrigger>();
+		factory_cemetery->SetLocations(Location::FACTORY, "공장", Location::CEMETERY, "묘지");
+		factory_cemetery->SetCollision({ 11891.0f,  0.0f, 5000.0f }, { 10.0f , 100.0f, 5000.0f }, { 11709.0f, 0.0f, 5000.0f });
+
+		AreaChangeTrigger* factory_hospital = CreateActor<AreaChangeTrigger>();
+		factory_hospital->SetLocations(Location::FACTORY, "공장", Location::HOSPITAL, "병원");
+		factory_hospital->SetCollision({ 11864.0f,  0.0f, 9216.0f }, { 10.0f , 100.0f, 1000.0f }, { 11750.0f, 0.0f, 9216.0f });
+	}
+
+	{
+		// 묘지
+		AreaChangeTrigger* cemetery_hospital = CreateActor<AreaChangeTrigger>();
+		cemetery_hospital->SetLocations(Location::CEMETERY, "묘지", Location::HOSPITAL, "병원");
+		cemetery_hospital->SetCollision({ 9415.0f,  0.0f, 8699.0f }, { 3000.0f , 100.0f, 10.0f }, { 9415.0f, 0.0f, 8901.0f });
+	}
+
+	{
+		// 병원
+		AreaChangeTrigger* hospital_pond = CreateActor<AreaChangeTrigger>();
+		hospital_pond->SetLocations(Location::HOSPITAL, "병원", Location::POND, "연못");
+		hospital_pond->SetCollision({ 7891.0f,  0.0f, 9260.0f }, { 10.0f , 100.0f, 600.0f }, { 7701.0f, 0.0f, 9260.0f });
+		
+		AreaChangeTrigger* hospital_pond1 = CreateActor<AreaChangeTrigger>();
+		hospital_pond1->SetLocations(Location::HOSPITAL, "병원", Location::POND, "연못");
+		hospital_pond1->SetCollision({ 7276.0f,  0.0f, 15099.0f }, { 10.0f , 100.0f, 1000.0f }, { 7130.0f, 0.0f, 15099.0f });
+	}
+
+	{
+		// 연못
+		AreaChangeTrigger* pond_temple = CreateActor<AreaChangeTrigger>();
+		pond_temple->SetLocations(Location::POND, "연못", Location::TEMPLE, "절");
+		pond_temple->SetCollision({ 1267.0f,  0.0f, 16782.0f }, { 500.0f , 100.0f, 10.0f }, { 1267.0f, 0.0f, 16904.0f });
+
+		AreaChangeTrigger* pond_temple1 = CreateActor<AreaChangeTrigger>();
+		pond_temple1->SetLocations(Location::POND, "연못", Location::TEMPLE, "절");
+		pond_temple1->SetCollision({ 5314.0f,  0.0f, 17625.0f }, { 500.0f , 100.0f, 10.0f }, { 5314.0f, 0.0f, 17742.0f });
+	}
+
+	{
+		// 절
+		AreaChangeTrigger* temple_alley = CreateActor<AreaChangeTrigger>();
+		temple_alley->SetLocations(Location::TEMPLE, "절", Location::ALLEY, "골목길");
+		temple_alley->SetCollision({ -4233.0f,  0.0f, 18827.0f }, { 10.0f , 100.0f, 800.0f }, { -4385.0f, 0.0f, 18827.0f });
+	}
+
+	{
+		// 연구소
+		AreaChangeTrigger* research_forest = CreateActor<AreaChangeTrigger>();
+		research_forest->SetLocations(Location::RESERCH_CENTRE, "연구소", Location::FOREST, "숲");
+		research_forest->SetCollision({ -3606.0f,  0.0f, 5402.0f }, { 10.0f , 300.0f, 800.0f }, { -3702.0f, 0.0f, 5402.0f });
+
+		AreaChangeTrigger* research_forest1 = CreateActor<AreaChangeTrigger>();
+		research_forest1->SetLocations(Location::RESERCH_CENTRE, "연구소", Location::FOREST, "숲");
+		research_forest1->SetCollision({ -934.0f,  0.0f, 2673.0f }, { 800.0f , 300.0f, 10.0f }, { -934.0f, 0.0f, 2516.0f });
+
+		AreaChangeTrigger* research_forest2 = CreateActor<AreaChangeTrigger>();
+		research_forest2->SetLocations(Location::RESERCH_CENTRE, "연구소", Location::FOREST, "묘지");
+		research_forest2->SetCollision({ 1845.0f,  0.0f, 5384.0f }, { 10.0f , 300.0f, 400.0f }, { 1985.0f, 0.0f, 5384.0f });
+	}
 }
 
 void LumiaLevel::GameTimeUpdatePacketSend()

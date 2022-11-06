@@ -286,6 +286,12 @@ void Jackie::Update(float _deltaTime)
 		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 	}
 
+	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
+	if (nullptr != controlWindow)
+	{
+		controlWindow->AddText("WorldPos : " + std::to_string(transform_.GetWorldPosition().x) + " " + std::to_string(transform_.GetWorldPosition().z));
+		controlWindow->AddText("CurLocation : " + std::to_string(stat_.curLocation));
+	}
 }
 
 void Jackie::initRendererAndAnimation()
