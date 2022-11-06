@@ -718,7 +718,7 @@ void LumiaLevel::CreateProhibitedSystem()
 	for (int i = 0; i < 16; i++)
 	{
 		ProhibitedArea* area = CreateActor<ProhibitedArea>();
-		
+
 		Location locaName = static_cast<Location>(i);
 		switch (locaName)
 		{
@@ -760,7 +760,7 @@ void LumiaLevel::CreateProhibitedSystem()
 			break;
 		case Location::FOREST:
 			area->Init(locaName, "Prohibited_FOREST.fbx", position, "숲");
-		//	area->AddTriggerCollision({ -4789.0f, 0.0f ,5976.0f }, { 1500.0f , 10.0f , 300.0f });
+			//	area->AddTriggerCollision({ -4789.0f, 0.0f ,5976.0f }, { 1500.0f , 10.0f , 300.0f });
 			break;
 		case Location::FACTORY:
 			area->Init(locaName, "Prohibited_FACTORY.fbx", position, "공장");
@@ -794,7 +794,7 @@ void LumiaLevel::CreateProhibitedSystem()
 
 		AreaChangeTrigger* avenue_School = CreateActor<AreaChangeTrigger>();
 		avenue_School->SetLocations(Location::AVENUE, "번화가", Location::SCHOOL, "학교");
-		avenue_School->SetCollision({ -5407.0f,  30.0f, 9889.0f }, { 50.0f , 100.0f, 300.0f }, { -5602.0f, 30.0f, 9900.0f}); // -5537, 9909, 300 20
+		avenue_School->SetCollision({ -5407.0f,  30.0f, 9889.0f }, { 50.0f , 100.0f, 300.0f }, { -5602.0f, 30.0f, 9900.0f }); // -5537, 9909, 300 20
 
 		AreaChangeTrigger* avenue_School1 = CreateActor<AreaChangeTrigger>();
 		avenue_School1->SetLocations(Location::AVENUE, "번화가", Location::SCHOOL, "학교");
@@ -802,39 +802,39 @@ void LumiaLevel::CreateProhibitedSystem()
 
 		AreaChangeTrigger* avenue_Alley0 = CreateActor<AreaChangeTrigger>();
 		avenue_Alley0->SetLocations(Location::AVENUE, "번화가", Location::ALLEY, "골목길");
-		avenue_Alley0->SetCollision({ -7859.0f,  0.0f, 11188.0f }, { 1.0f , 100.0f, 1500.0f }, {-7894.0f, 0.0f, 11182.0f});
-	
+		avenue_Alley0->SetCollision({ -7859.0f,  0.0f, 11188.0f }, { 1.0f , 100.0f, 1500.0f }, { -7894.0f, 0.0f, 11182.0f });
+
 		AreaChangeTrigger* avenue_Alley1 = CreateActor<AreaChangeTrigger>();
 		avenue_Alley1->SetLocations(Location::AVENUE, "번화가", Location::ALLEY, "골목길");
-		avenue_Alley1->SetCollision({ -7697.0f,  0.0f, 14594.0f }, { 1.0f , 100.0f, 800.0f },{-7745.0f, 0.0f, 14581.0f} );
-		
+		avenue_Alley1->SetCollision({ -7697.0f,  0.0f, 14594.0f }, { 1.0f , 100.0f, 800.0f }, { -7745.0f, 0.0f, 14581.0f });
+
 		AreaChangeTrigger* avenue_Alley2 = CreateActor<AreaChangeTrigger>();
 		avenue_Alley2->SetLocations(Location::AVENUE, "번화가", Location::ALLEY, "골목길");
-		avenue_Alley2->SetCollision({ -4795.0f,  0.0f, 18029.0f }, { 1000.0f , 100.0f, 1.0f }, {-4802.0f, 0.0f, 18110.0f});
-		
+		avenue_Alley2->SetCollision({ -4795.0f,  0.0f, 18029.0f }, { 1000.0f , 100.0f, 1.0f }, { -4802.0f, 0.0f, 18110.0f });
+
 		AreaChangeTrigger* avenue_Temple = CreateActor<AreaChangeTrigger>();
 		avenue_Temple->SetLocations(Location::AVENUE, "번화가", Location::TEMPLE, "절");
-		avenue_Temple->SetCollision({ -324.0f,  0.0f, 16756.0f }, { 800.0f , 100.0f, 10.0f }, {-317.0f, 0.0f, 16842.0f}); // -349, 16842 z 값 10 완
-		
+		avenue_Temple->SetCollision({ -324.0f,  0.0f, 16756.0f }, { 800.0f , 100.0f, 10.0f }, { -317.0f, 0.0f, 16842.0f }); // -349, 16842 z 값 10 완
+
 		AreaChangeTrigger* avenue_Pond = CreateActor<AreaChangeTrigger>();
 		avenue_Pond->SetLocations(Location::AVENUE, "번화가", Location::POND, "연못");
-		avenue_Pond->SetCollision({ 362.0f,  0.0f, 15892.0f }, { 10.0f , 100.0f, 300.0f }, {417.0f, 0.0f, 15888.0f}); // 위치 397, 15883 크기 300 10 완
-		
+		avenue_Pond->SetCollision({ 362.0f,  0.0f, 15892.0f }, { 10.0f , 100.0f, 300.0f }, { 417.0f, 0.0f, 15888.0f }); // 위치 397, 15883 크기 300 10 완
+
 		AreaChangeTrigger* avenue_Pond1 = CreateActor<AreaChangeTrigger>();
 		avenue_Pond1->SetLocations(Location::AVENUE, "번화가", Location::POND, "연못");
-		avenue_Pond1->SetCollision({ 368.0f,  0.0f, 13734.0f }, { 10.0f , 100.0f, 500.0f }, {422.0f, 0.0f, 13720.0f}); // 위치 439 13677 크기 300 10 완
-		
+		avenue_Pond1->SetCollision({ 368.0f,  0.0f, 13734.0f }, { 10.0f , 100.0f, 500.0f }, { 422.0f, 0.0f, 13720.0f }); // 위치 439 13677 크기 300 10 완
+
 		AreaChangeTrigger* avenue_Pond2 = CreateActor<AreaChangeTrigger>();
 		avenue_Pond2->SetLocations(Location::AVENUE, "번화가", Location::POND, "연못");
-		avenue_Pond2->SetCollision({ -134.0f,  0.0f, 11177.0f }, { 10.0f , 100.0f, 300.0f }, {-57.0f, 0.0f, 11178.0f}); // 완
-		
+		avenue_Pond2->SetCollision({ -134.0f,  0.0f, 11177.0f }, { 10.0f , 100.0f, 300.0f }, { -57.0f, 0.0f, 11178.0f }); // 완
+
 		AreaChangeTrigger* avenue_Pond3 = CreateActor<AreaChangeTrigger>();
 		avenue_Pond3->SetLocations(Location::AVENUE, "번화가", Location::POND, "연못");
-		avenue_Pond3->SetCollision({ -153.0f,  0.0f, 9545.0f }, { 1.0f , 100.0f, 1500.0f }, {-75.0f, 0.0f, 9539.0f});
-		
+		avenue_Pond3->SetCollision({ -153.0f,  0.0f, 9545.0f }, { 1.0f , 100.0f, 1500.0f }, { -75.0f, 0.0f, 9539.0f });
+
 		AreaChangeTrigger* avenue_Research = CreateActor<AreaChangeTrigger>();
 		avenue_Research->SetLocations(Location::AVENUE, "번화가", Location::RESERCH_CENTRE, "연구소");
-		avenue_Research->SetCollision({ -884.0f,  0.0f, 8306.0f }, { 500.0f , 300.0f, 10.0f }, {-883.0f, 0.0f, 8250.0f}); // -891 8269 z10 완
+		avenue_Research->SetCollision({ -884.0f,  0.0f, 8306.0f }, { 500.0f , 300.0f, 10.0f }, { -883.0f, 0.0f, 8250.0f }); // -891 8269 z10 완
 	}
 
 	{
@@ -845,7 +845,7 @@ void LumiaLevel::CreateProhibitedSystem()
 
 		AreaChangeTrigger* forest_school1 = CreateActor<AreaChangeTrigger>();
 		forest_school1->SetLocations(Location::FOREST, "숲", Location::SCHOOL, "학교");
-		forest_school1->SetCollision({ -5326.0f,  0.0f, 3601.0f }, { 10.0f , 100.0f, 350.0f }, { -5476.0f, 0.0f, 3596.0f });
+		forest_school1->SetCollision({ -5326.0f,  0.0f, 3601.0f }, { 10.0f , 100.0f, 1200.0f }, { -5476.0f, 0.0f, 3596.0f });
 
 		AreaChangeTrigger* forest_hotel = CreateActor<AreaChangeTrigger>();
 		forest_hotel->SetLocations(Location::FOREST, "숲", Location::HOTEL, "호텔");
@@ -868,8 +868,35 @@ void LumiaLevel::CreateProhibitedSystem()
 		forest_uptown->SetCollision({ 2114.0f,  0.0f, -2106.0f }, { 500.0f , 100.0f, 10.0f }, { 2108.0f, 0.0f, -2316.0f });
 
 		AreaChangeTrigger* forest_chapel = CreateActor<AreaChangeTrigger>();
-		forest_chapel->SetLocations(Location::FOREST, "숲", Location::UPTOWN, "성당");
+		forest_chapel->SetLocations(Location::FOREST, "숲", Location::CHAPEL, "성당");
 		forest_chapel->SetCollision({ 3511.0f,  0.0f, 340.0f }, { 10.0f , 100.0f, 700.0f }, { 3678.0f, 0.0f, 340.0f });
+	}
+
+	{
+		// 학교 
+		AreaChangeTrigger* school_alley = CreateActor<AreaChangeTrigger>();
+		school_alley->SetLocations(Location::SCHOOL, "학교", Location::ALLEY, "골목길");
+		school_alley->SetCollision({ -8342.0f,  0.0f, 10357.0f }, { 800.0f , 100.0f, 10.0f }, { -8339.0f, 0.0f, 10533.0f });
+
+		AreaChangeTrigger* school_alley1 = CreateActor<AreaChangeTrigger>();
+		school_alley1->SetLocations(Location::SCHOOL, "학교", Location::ALLEY, "골목길");
+		school_alley1->SetCollision({ -10366.0f,  0.0f, 10290.0f }, { 1200.0f , 100.0f, 10.0f }, { -10390.0f, 0.0f, 10485.0f });
+
+		AreaChangeTrigger* school_archery = CreateActor<AreaChangeTrigger>();
+		school_archery->SetLocations(Location::SCHOOL, "학교", Location::ARCHERY_RANGE, "양궁장");
+		school_archery->SetCollision({ -11731.0f,  0.0f, 9518.0f }, { 10.0f , 100.0f, 200.0f }, { -11872.0f, 0.0f, 9496.0f });
+
+		AreaChangeTrigger* school_archery1 = CreateActor<AreaChangeTrigger>();
+		school_archery1->SetLocations(Location::SCHOOL, "학교", Location::ARCHERY_RANGE, "양궁장");
+		school_archery1->SetCollision({ -10618.0f,  0.0f, 7205.0f }, { 10.0f , 100.0f, 500.0f }, { -10779.0f, 0.0f, 7200.0f });
+
+		AreaChangeTrigger* school_archery2 = CreateActor<AreaChangeTrigger>();
+		school_archery2->SetLocations(Location::SCHOOL, "학교", Location::ARCHERY_RANGE, "양궁장");
+		school_archery2->SetCollision({ -10610.0f,  0.0f, 4077.0f }, { 10.0f , 100.0f, 500.0f }, { -10773.0f, 0.0f, 4075.0f });
+
+		AreaChangeTrigger* school_hotel = CreateActor<AreaChangeTrigger>();
+		school_hotel->SetLocations(Location::SCHOOL, "학교", Location::HOTEL, "호텔");
+		school_hotel->SetCollision({ -7813.0f,  0.0f, 3173.0f }, { 2000.0f , 100.0f, 10.0f }, { -7813.0f, 0.0f, 3050.0f });
 	}
 }
 
