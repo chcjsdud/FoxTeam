@@ -28,6 +28,7 @@ void ProhibitedArea::Init(Location _location, const std::string& _fbxName, float
 	renderer_->GetRenderSet(0).ShaderHelper->SettingConstantBufferSet("ResultColor", float4{ 1.0f, 0.0f, 0.0f, 0.1f });
 	renderer_->GetTransform()->SetLocalPosition(_pos);
 	renderer_->GetTransform()->SetLocalScaling(100.0f);
+
 }
 
 
@@ -52,6 +53,7 @@ void ProhibitedArea::Start()
 
 void ProhibitedArea::Update(float _DeltaTime)
 {
+
 
 }
 
