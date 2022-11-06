@@ -28,6 +28,7 @@
 #include <GameEngine/GameEngineRenderWindow.h>
 #include "FogOfWar.h"
 #include <GameEngine/SmallPostBlur.h>
+#include "GameTimeController.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -1286,6 +1287,16 @@ void Character::updateFOW(float _deltaTime)
 		}
 	}
 
+	DayAndNightType dayType = GameTimeController::GetInstance()->GetCurrentDayType();
+	if (dayType == DayAndNightType::DAY)
+	{
+		stat_.VisionRange = FT::Char::DEFAULT_VISION_RANGE_DAY;
+	}
+	else if (dayType == DayAndNightType::NIGHT)
+	{
+		stat_.VisionRange = FT::Char::DEFAULT_VISION_RANGE_NIGHT;
+	}
+
 	if (bFocused_)
 	{
 		ID3D11DeviceContext* dc = GameEngineDevice::GetContext();
@@ -1344,7 +1355,7 @@ void Character::updateFOW(float _deltaTime)
 void Character::getFOWData(std::vector<float4>& _data, bool& _bCalc)
 {
 	_data.clear();
-	_data = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition(), 800.f);
+	_data = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition(), stat_.VisionRange);
 	_bCalc = false;
 }
 

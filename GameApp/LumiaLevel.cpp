@@ -713,7 +713,7 @@ void LumiaLevel::CreateProhibitedSystem()
 		mesh->CreateRenderingBuffer();
 	}
 
-	float4 position = { 0.0f, 5.0f, 0.0f };
+	float4 position = { 0.0f, 20.0f, 0.0f };
 
 	for (int i = 0; i < 16; i++)
 	{
