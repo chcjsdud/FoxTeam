@@ -366,7 +366,7 @@ void CameraComponent::RenderLightShadow(float _DeltaTime)
 	for (; LightStartIter != LightEndIter; ++LightStartIter)
 	{
 		// Current Light Shadow RenderTarget Setting
-		(*LightStartIter)->ShadowTargetSetting();
+		(*LightStartIter)->LightShadowTargetSetting();
 
 		// RenderList를 순회하며 그림자렌더링 활성화가 되어있는 렌더러를 타겟에 렌더링
 		for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)

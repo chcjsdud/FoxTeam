@@ -3,7 +3,7 @@
 #include "GameEngineDepthBuffer.h"
 #include "GameEngineWindow.h"
 
-void GameEngineLightComponent::ShadowTargetSetting()
+void GameEngineLightComponent::LightShadowTargetSetting()
 {
 	float4 ClearColor = float4::RED;
 

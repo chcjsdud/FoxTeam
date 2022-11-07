@@ -69,7 +69,7 @@ public: // Public Inline Set Function
 	}
 
 public: // Public ShadowTarget Related Function
-	void ShadowTargetSetting();
+	void LightShadowTargetSetting();
 
 protected:
 	void Start() override;
