@@ -60,10 +60,10 @@ CameraComponent::~CameraComponent()
 		CameraPreprocessingTarget_ = nullptr;
 	}
 
-	if (nullptr != ShadowRenderTarget_)
+	if (nullptr != LightShadowRenderTarget_)
 	{
-		delete ShadowRenderTarget_;
-		ShadowRenderTarget_ = nullptr;
+		delete LightShadowRenderTarget_;
+		LightShadowRenderTarget_ = nullptr;
 	}
 }
 
@@ -345,19 +345,19 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	// Shadow Render
 	if (nullptr != GetLevel()->ShadowTexture_)
 	{
-		RenderShadow(_DeltaTime);								// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
+		RenderLightShadow(_DeltaTime);
 	}
 
 	CalLightEffect.Effect(_DeltaTime);
 	DeferredMergeEffect.Effect(_DeltaTime);
 }
 
-void CameraComponent::RenderShadow(float _DeltaTime)
+void CameraComponent::RenderLightShadow(float _DeltaTime)
 {
-	if (nullptr == ShadowRenderTarget_)
+	if (nullptr == LightShadowRenderTarget_)
 	{
-		ShadowRenderTarget_ = new GameEngineRenderTarget();
-		ShadowRenderTarget_->Create(GetLevel()->ShadowTexture_, float4::BLUE);
+		LightShadowRenderTarget_ = new GameEngineRenderTarget();
+		LightShadowRenderTarget_->Create(GetLevel()->ShadowTexture_, float4::BLUE);
 	}
 
 	// Shadow Rendering

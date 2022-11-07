@@ -72,7 +72,7 @@ public:
 
 	inline GameEngineRenderTarget* GetShadowRenderTarget() const
 	{
-		return ShadowRenderTarget_;
+		return LightShadowRenderTarget_;
 	}
 
 	inline float GetZoomValue()
@@ -114,7 +114,7 @@ private:
 
 	void RenderForward(float _DeltaTime);
 	void RenderDeffered(float _DeltaTime);
-	void RenderShadow(float _DeltaTime);
+	void RenderLightShadow(float _DeltaTime);
 
 private:
 	private:	// member Var
@@ -144,6 +144,6 @@ private:
 	GameEngineRenderTarget* CameraDeferredTarget_;
 
 	GameEngineRenderTarget* CameraPreprocessingTarget_;				// 선처리렌더러(외곽선, 실루엣) 타겟 : 깊이버퍼 없음
-	GameEngineRenderTarget* ShadowRenderTarget_;					// 그림자처리 타겟
+	GameEngineRenderTarget* LightShadowRenderTarget_;				// 그림자처리 타겟 : 광원(빛) 기준 그림자 렌더타겟 -> 현재 게임에서 사용못함 : 현재 맵에 노말텍스쳐가 매칭되어있지않으므로 사용불가
 };
 

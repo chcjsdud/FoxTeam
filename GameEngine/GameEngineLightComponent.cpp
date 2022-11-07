@@ -17,7 +17,6 @@ void GameEngineLightComponent::Start()
 {
 	GetLevel()->GetMainCamera()->PushLight(this);													// 메인카메라의 광원(빛)목록에 자신을 추가
 
-	// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
 	GetLevel()->AllLights_.push_back(this);															// 현재 레벨에서 관리하는 광원(빛)목록에 자신을 추가
 
 	//================================= 그림자처리
