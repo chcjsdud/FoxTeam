@@ -276,6 +276,8 @@ int UI_ItemBox::SlotMouseCollisionCheck()
 		return 7;
 	}
 
+	//충돌중이 아님
+	return -1;
 
 }
 
