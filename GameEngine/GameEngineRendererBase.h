@@ -92,6 +92,6 @@ protected: // Preprocessing Related Value
 	bool IsPreprocessing_;
 
 protected: // Shadow Related Value
-	GameEngineRenderingPipeLine* DefaultShadowPipeLine_;
-	GameEngineShaderResHelper ShadowHelper_;
+	GameEngineRenderingPipeLine* DefaultLightShadowPipeLine_;
+	GameEngineShaderResHelper LightShadowHelper_;
 };
