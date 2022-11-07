@@ -37,6 +37,8 @@ void GameEngineShadowRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRende
 	// 베이스렌더러의 트랜스폼데이터를 이용하여 해당 렌더러를 회전하여 그림자형태처럼 눕힘
 	GetTransform()->SetLocalScaling(BaseRenderer_->GetTransform()->GetLocalScaling());			// 크기
 
+	// 렌더러의 UpVector와 현재 위치벡터를 외적하여 z축을 알아내고 렌더러의 y축이 알아낸 z축방향으로 회전시켜보자!!! -> 아직처리 안함
+
 	float4 CalcRotation = float4::ZERO;
 	CalcRotation = BaseRenderer_->GetTransform()->GetLocalRotation();
 	CalcRotation.y = 20.0f;
