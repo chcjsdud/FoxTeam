@@ -14,7 +14,7 @@ struct VertexOut
     float4 ProjectionPosition : POSITION;
 };
 
-VertexOut Shadow_VS(VertexIn _In)
+VertexOut LightShadow_VS(VertexIn _In)
 {
     VertexOut Out = (VertexOut)0;
     
@@ -32,7 +32,7 @@ VertexOut Shadow_VS(VertexIn _In)
     return Out;
 }
 
-float4 Shadow_PS(VertexOut _In) : SV_Target0
+float4 LightShadow_PS(VertexOut _In) : SV_Target0
 {
     return float4(_In.ProjectionPosition.z / _In.ProjectionPosition.w, 0.0f, 0.0f, 1.0f);
 }

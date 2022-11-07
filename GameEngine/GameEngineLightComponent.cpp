@@ -8,9 +8,9 @@ void GameEngineLightComponent::ShadowTargetSetting()
 	float4 ClearColor = float4::RED;
 
 	// RenderingPipeLine RenderTarget Clear & RenderTarget Setting
-	GameEngineDevice::GetContext()->ClearRenderTargetView(ShadowTargetView_, ClearColor.Arr1D);
-	GameEngineDevice::GetContext()->ClearDepthStencilView(ShadowTargetDepth_, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	GameEngineDevice::GetContext()->OMSetRenderTargets(1, &ShadowTargetView_, ShadowTargetDepth_);
+	GameEngineDevice::GetContext()->ClearRenderTargetView(LightShadowTargetView_, ClearColor.Arr1D);
+	GameEngineDevice::GetContext()->ClearDepthStencilView(LightShadowTargetDepth_, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	GameEngineDevice::GetContext()->OMSetRenderTargets(1, &LightShadowTargetView_, LightShadowTargetDepth_);
 }
 
 void GameEngineLightComponent::Start()
@@ -34,8 +34,8 @@ void GameEngineLightComponent::Start()
 	// 1-1. 모든 광원(빛) 갯수만큼의 깊이버퍼 텍스쳐를 생성
 	D3D11_TEXTURE2D_DESC DepthTextureInfo = { 0, };
 	DepthTextureInfo.ArraySize = static_cast<unsigned int>(GetLevel()->AllLights_.size());			// 현재레벨에서 관리하는 모든 광원의 수만큼 깊이버퍼텍스쳐배열 생성
-	DepthTextureInfo.Width = ShadowClipingRange_.uix();
-	DepthTextureInfo.Height = ShadowClipingRange_.uiy();
+	DepthTextureInfo.Width = LightShadowClipingRange_.uix();
+	DepthTextureInfo.Height = LightShadowClipingRange_.uiy();
 	DepthTextureInfo.Format = DXGI_FORMAT::DXGI_FORMAT_R32_FLOAT;
 	DepthTextureInfo.SampleDesc.Count = 1;
 	DepthTextureInfo.SampleDesc.Quality = 0;
@@ -54,10 +54,10 @@ void GameEngineLightComponent::Start()
 
 		// 깊이/스텐실버퍼 리소스 배열
 		GameEngineDepthBuffer* DepthBuffer = new GameEngineDepthBuffer();
-		DepthBuffer->Create({ ShadowClipingRange_.x, ShadowClipingRange_.y });
+		DepthBuffer->Create({ LightShadowClipingRange_.x, LightShadowClipingRange_.y });
 
-		GetLevel()->AllLights_[LightNum]->ShadowTargetView_ = Result;
-		GetLevel()->AllLights_[LightNum]->ShadowTargetDepth_ = DepthBuffer->GetDepthStencilView();
+		GetLevel()->AllLights_[LightNum]->LightShadowTargetView_ = Result;
+		GetLevel()->AllLights_[LightNum]->LightShadowTargetDepth_ = DepthBuffer->GetDepthStencilView();
 		GetLevel()->LightShadowDepths_.push_back(DepthBuffer);
 		GetLevel()->LightShadowRenderTargets_.push_back(Result);
 	}
@@ -71,9 +71,9 @@ void GameEngineLightComponent::Update(float _DeltaTime)
 
 	//=================================== 그림자처리 : 상수버퍼 데이터 갱신
 	GetTransform()->GetTransformData().View_.ViewToLH(GetTransform()->GetWorldPosition(), GetTransform()->GetWorldForwardVector(), GetTransform()->GetWorldUpVector());
-	if (ProjectionMode::Orthographic == ProjectionMode_)
+	if (ProjectionMode::Orthographic == LightShadowProjectionMode_)
 	{
-		GetTransform()->GetTransformData().Projection_.OrthographicLH(ShadowClipingRange_.x, ShadowClipingRange_.y, ShadowClipingNear_, ShadowClipingFar_);
+		GetTransform()->GetTransformData().Projection_.OrthographicLH(LightShadowClipingRange_.x, LightShadowClipingRange_.y, LightShadowClipingNear_, LightShadowClipingFar_);
 	}
 
 	LightDataObject_.LightView = GetTransform()->GetTransformData().View_;
@@ -92,11 +92,11 @@ GameEngineLightComponent::GameEngineLightComponent()
 	LightDataObject_.LightPower = float4::ONE;
 
 	// Initalize Shadow Data
-	ProjectionMode_ = ProjectionMode::Orthographic;
-	ShadowClipingRange_.x = 4096.0f;
-	ShadowClipingRange_.y = 4096.0f;
-	ShadowClipingNear_ = 0.1f;
-	ShadowClipingFar_ = 10000.0f;
+	LightShadowProjectionMode_ = ProjectionMode::Orthographic;
+	LightShadowClipingRange_.x = 4096.0f;
+	LightShadowClipingRange_.y = 4096.0f;
+	LightShadowClipingNear_ = 0.1f;
+	LightShadowClipingFar_ = 10000.0f;
 }
 
 GameEngineLightComponent::~GameEngineLightComponent()

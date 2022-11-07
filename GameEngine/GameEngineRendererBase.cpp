@@ -12,42 +12,42 @@
 
 void GameEngineRendererBase::LightShadowOff()
 {
-	RendererDataInst.IsShadow = 0;
+	RendererDataInst.IsLightShadow = 0;
 }
 
 void GameEngineRendererBase::LightShadowOn()
 {
-	//// 221107 SJH EDIT : 주석처리(현재 게임 사용불가로 처리안함)
-	//// 그림자처리 렌더링 파이프라인이 지정되어있지않다면 지정 후
-	//if (nullptr == DefaultShadowPipeLine_)
-	//{
-	//	DefaultShadowPipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("DepthShadow");		// Find DepthShadow PipeLine
-	//	DefaultShadowPipeLine_->CreateLayOut();															// Create InputLayout
+	// 221107 SJH EDIT : 주석처리(현재 게임 사용불가로 처리안함)
+	// 그림자처리 렌더링 파이프라인이 지정되어있지않다면 지정 후
+	if (nullptr == DefaultShadowPipeLine_)
+	{
+		DefaultShadowPipeLine_ = GameEngineRenderingPipeLineManager::GetInst().Find("LightShadow");		// Find DepthShadow PipeLine
+		DefaultShadowPipeLine_->CreateLayOut();															// Create InputLayout
 
-	//	ShadowHelper_.ShaderResourcesCheck(DefaultShadowPipeLine_);										// DefaultShadowPipeLine_의 상수버퍼를 체크			: 동일한 명칭 상수버퍼 체크, 쉐이더헬퍼에 상수버퍼와 동일한 크기의 메모리할당
-	//	
-	//	// 상수버퍼 링크
-	//	if (true == ShadowHelper_.IsConstantBuffer("RendererData"))
-	//	{
-	//		ShadowHelper_.SettingConstantBufferLink("RendererData", RendererDataInst);
-	//	}
+		ShadowHelper_.ShaderResourcesCheck(DefaultShadowPipeLine_);										// DefaultShadowPipeLine_의 상수버퍼를 체크			: 동일한 명칭 상수버퍼 체크, 쉐이더헬퍼에 상수버퍼와 동일한 크기의 메모리할당
+		
+		// 상수버퍼 링크
+		if (true == ShadowHelper_.IsConstantBuffer("RendererData"))
+		{
+			ShadowHelper_.SettingConstantBufferLink("RendererData", RendererDataInst);
+		}
 
-	//	if (true == ShadowHelper_.IsConstantBuffer("TransformData"))
-	//	{
-	//		ShadowHelper_.SettingConstantBufferLink("TransformData", GetTransform()->GetTransformData());
-	//	}
+		if (true == ShadowHelper_.IsConstantBuffer("TransformData"))
+		{
+			ShadowHelper_.SettingConstantBufferLink("TransformData", GetTransform()->GetTransformData());
+		}
 
-	//	if (true == ShadowHelper_.IsConstantBuffer("LightsData"))
-	//	{
-	//		const LightsData& AllLightData = GetLevel()->GetMainCamera()->GetLightData();
-	//		ShadowHelper_.SettingConstantBufferLink("LightsData", AllLightData);
-	//	}
+		if (true == ShadowHelper_.IsConstantBuffer("LightsData"))
+		{
+			const LightsData& AllLightData = GetLevel()->GetMainCamera()->GetLightData();
+			ShadowHelper_.SettingConstantBufferLink("LightsData", AllLightData);
+		}
 
-	//	DefaultShadowPipeLine_->SetViewPort(4096, 4096, 0, 0);
-	//}
+		DefaultShadowPipeLine_->SetViewPort(4096, 4096, 0, 0);
+	}
 
-	//// 그림자사용 Flag On
-	//RendererDataInst.IsShadow = 1;
+	// 그림자사용 Flag On
+	RendererDataInst.IsLightShadow = 1;
 }
 
 void GameEngineRendererBase::Start()

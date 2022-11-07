@@ -379,7 +379,7 @@ void CameraComponent::RenderLightShadow(float _DeltaTime)
 					continue;
 				}
 
-				if (1 != Renderer->RendererDataInst.IsShadow)
+				if (1 != Renderer->RendererDataInst.IsLightShadow)
 				{
 					continue;
 				}
@@ -405,7 +405,7 @@ void CameraComponent::RenderLightShadow(float _DeltaTime)
 		}
 	}
 
-	CalLightEffect.GetShaderRes().SettingTexture("ShadowTex", GetLevel()->LightShadowTexture_);
+	CalLightEffect.GetShaderRes().SettingTexture("LightShadowTex", GetLevel()->LightShadowTexture_);
 }
 
 void CameraComponent::CameraZoomReset()

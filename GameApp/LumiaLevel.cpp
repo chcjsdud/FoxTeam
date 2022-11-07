@@ -498,7 +498,7 @@ void LumiaLevel::CreateBasicActor()
 	DefaultLight->GetLight()->SetDiffusePower(1.f);
 	DefaultLight->GetLight()->SetAmbientPower(10.f);
 	DefaultLight->GetLight()->SetSpacularLightPow(10.f);
-	DefaultLight->GetLight()->SetShadowClipingRange({ 300, 300 });
+	DefaultLight->GetLight()->SetLightShadowClipingRange({ 300, 300 });
 }
 
 void LumiaLevel::CreateLevelInput()

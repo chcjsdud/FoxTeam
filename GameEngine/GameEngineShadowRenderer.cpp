@@ -179,7 +179,7 @@ void GameEngineShadowRenderer::ParallelogramAlgorithm()
 
 void GameEngineShadowRenderer::Start()
 {
-	PipeLineName_ = "DepthShadow";
+	PipeLineName_ = "LightShadow";
 	SetRenderingPipeLine(PipeLineName_);
 }
 

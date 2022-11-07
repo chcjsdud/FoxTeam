@@ -23,7 +23,7 @@ VertexOut DeferredCalLight_VS(VertexIn _In)
 
 Texture2D PositionTex : register(t1);
 Texture2D NormalTex : register(t2);
-Texture2DArray ShadowTex : register(t3);                                        // 1장의 텍스쳐에 레벨에서 사용하는 모든 빛의 깊이데이터를 기록한 텍스쳐
+Texture2DArray LightShadowTex : register(t3);                                        // 1장의 텍스쳐에 레벨에서 사용하는 모든 빛의 깊이데이터를 기록한 텍스쳐
 
 SamplerState Smp : register(s0);
 
@@ -73,7 +73,7 @@ LightOutPut DeferredCalLight_PS(VertexOut _In)
             float2 ShadowUv = float2(fUvX * 0.5f + 0.5f, fUvY * -0.5f + 0.5f);
             if (0.001f < ShadowUv.x && 0.999f > ShadowUv.x && 0.001f < ShadowUv.y && 0.999f > ShadowUv.y)
             {
-                float fShadowDepth = ShadowTex.Sample(Smp, float3(ShadowUv.x, ShadowUv.y, LightNum)).r;
+                float fShadowDepth = LightShadowTex.Sample(Smp, float3(ShadowUv.x, ShadowUv.y, LightNum)).r;
                 
                 if (0.0f < fShadowDepth && fDepth > fShadowDepth + 0.001f)
                 {

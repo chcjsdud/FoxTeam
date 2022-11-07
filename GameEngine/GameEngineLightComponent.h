@@ -63,9 +63,9 @@ public: // Public Inline Set Function
 		LightDataObject_.LightPower.z = _Power;
 	}
 
-	inline void SetShadowClipingRange(float4 _ShadowClipingRange)
+	inline void SetLightShadowClipingRange(float4 _LightShadowClipingRange)
 	{
-		ShadowClipingRange_ = _ShadowClipingRange;
+		LightShadowClipingRange_ = _LightShadowClipingRange;
 	}
 
 public: // Public ShadowTarget Related Function
@@ -92,13 +92,13 @@ private: // Light Related Value
 	LightData LightDataObject_;
 
 private: // Shadow Related Value
-	ProjectionMode ProjectionMode_;											// 광원(빛)이 그림자를 렌더링할때 직교투영을 통해 ShadowRenderTarget_에 렌더링
-	ID3D11RenderTargetView* ShadowTargetView_;								// ShadowRenderTarget_의 리소스뷰
-	ID3D11DepthStencilView* ShadowTargetDepth_;								// ShadowRenderTarget_에 적용하는 깊이/스텐실 리소스뷰
+	ProjectionMode LightShadowProjectionMode_;								// 광원(빛)이 그림자를 렌더링할때 직교투영을 통해 ShadowRenderTarget_에 렌더링
+	ID3D11RenderTargetView* LightShadowTargetView_;							// ShadowRenderTarget_의 리소스뷰
+	ID3D11DepthStencilView* LightShadowTargetDepth_;						// ShadowRenderTarget_에 적용하는 깊이/스텐실 리소스뷰
 
 private: // Shadow RenderTarget Related Value
-	float4 ShadowClipingRange_;													// 클리핑평면의 범위(너비,높이)
-	float ShadowClipingNear_;													// Near
-	float ShadowClipingFar_;													// Far
+	float4 LightShadowClipingRange_;										// 클리핑평면의 범위(너비,높이)
+	float LightShadowClipingNear_;											// Near
+	float LightShadowClipingFar_;											// Far
 };
 

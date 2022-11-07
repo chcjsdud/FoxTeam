@@ -6,7 +6,7 @@
 struct RendererData
 {
 	int IsBump;
-	int IsShadow;
+	int IsLightShadow;
 	int IsAni;
 	int Temp2;
 	int Temp3;
@@ -17,7 +17,7 @@ struct RendererData
 public:
 	RendererData()
 		: IsBump(0)
-		, IsShadow(0)
+		, IsLightShadow(0)
 		, IsAni(0)
 		, Temp2(0)
 		, Temp3(0)

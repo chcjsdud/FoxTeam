@@ -81,7 +81,7 @@
     <FxCompile Include="EngineResources\Shader\ColorSpectrum.fx">
       <Filter>Engine</Filter>
     </FxCompile>
-    <FxCompile Include="EngineResources\Shader\Shadow.fx">
+    <FxCompile Include="EngineResources\Shader\LightShadow.fx">
       <Filter>Engine</Filter>
     </FxCompile>
     <FxCompile Include="EngineResources\Shader\FogOfWar.fx">
