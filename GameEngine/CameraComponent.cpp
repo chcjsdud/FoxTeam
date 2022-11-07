@@ -65,6 +65,12 @@ CameraComponent::~CameraComponent()
 		delete CameraPreprocessingTarget_;
 		CameraPreprocessingTarget_ = nullptr;
 	}
+
+	if (nullptr != CameraRendererShadowTarget_)
+	{
+		delete CameraRendererShadowTarget_;
+		CameraRendererShadowTarget_ = nullptr;
+	}
 }
 
 void CameraComponent::ClearCameraTarget()
@@ -299,6 +305,9 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 		}
 	}
 
+	// ±×¸²ÀÚ·»´õ·¯¸¦ ·»´õ¸µÇÏ°í,
+	RenderShadow(_DeltaTime);
+
 	// ¼±Ã³¸®·»´õ·¯¸¦ ¸ÕÀú±×¸®°í,
 	for (GameEngineRendererBase* Renderer : OutLineList)
 	{
@@ -408,6 +417,14 @@ void CameraComponent::RenderLightShadow(float _DeltaTime)
 	CalLightEffect.GetShaderRes().SettingTexture("LightShadowTex", GetLevel()->LightShadowTexture_);
 }
 
+void CameraComponent::RenderShadow(float _DeltaTime)
+{
+	// 
+
+
+
+}
+
 void CameraComponent::CameraZoomReset()
 {
 	if (ProjectionMode_ == ProjectionMode::Orthographic) // Á÷±³Åõ¿µÀÏ¶§
@@ -448,6 +465,11 @@ void CameraComponent::PushLight(GameEngineLightComponent* _Light)
 void CameraComponent::PushPreprocessingRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _PreprocessingRenderer)
 {
 	PreprocessingRendererList_[_BaseRenderer].push_back(_PreprocessingRenderer);
+}
+
+void CameraComponent::PushShadowRenderer(GameEngineRendererBase* _BaseRenderer, GameEngineShadowRenderer* _ShadowRenderer)
+{
+	ShadowRendererList_[_BaseRenderer] = _ShadowRenderer;
 }
 
 void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color)
@@ -570,6 +592,10 @@ void CameraComponent::Start()
 
 	CameraPreprocessingTarget_ = new GameEngineRenderTarget();
 	CameraPreprocessingTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
+
+	CameraRendererShadowTarget_ = new GameEngineRenderTarget();										// 221107 SJH ADD : ±×¸²ÀÚ·»´õ·¯ ·»´õ¸µ Å¸°Ù
+	CameraRendererShadowTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
+	CameraRendererShadowTarget_->SetDepthBuffer(CameraBufferTarget_->GetDepthBuffer());
 }
 
 void CameraComponent::Update(float _DeltaTime)

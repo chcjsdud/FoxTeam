@@ -54,6 +54,16 @@ public: // Public Inline Set Function
 		IsPreprocessing_ = false; 
 	}
 
+	inline void RendererShadowOn()
+	{
+		IsRendererShadow_ = true;
+	}
+
+	inline void RendererShadowOff()
+	{
+		IsRendererShadow_ = false;
+	}
+
 public: // Public Light Shadow Processing Related Function(기존 그림자처리)
 	void LightShadowOff();
 	void LightShadowOn();
@@ -91,7 +101,10 @@ protected:
 protected: // Preprocessing Related Value
 	bool IsPreprocessing_;
 
-protected: // Shadow Related Value
+protected: // Renderer Shadow Related Value
+	bool IsRendererShadow_;
+
+protected: // Light Shadow Related Value
 	GameEngineRenderingPipeLine* DefaultLightShadowPipeLine_;
 	GameEngineShaderResHelper LightShadowHelper_;
 };

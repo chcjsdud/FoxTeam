@@ -82,6 +82,7 @@ void GameEngineRendererBase::LightShadowRender(float _DeltaTime)
 
 GameEngineRendererBase::GameEngineRendererBase()
 	: IsPreprocessing_(false)
+	, IsRendererShadow_(false)
 	, DefaultLightShadowPipeLine_(nullptr)
 	, LightShadowHelper_()
 {
