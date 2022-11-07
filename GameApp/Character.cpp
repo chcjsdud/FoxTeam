@@ -24,6 +24,7 @@
 #include "StunEffect.h"
 #include "LevelUpEffect.h"
 #include "UI_Skill.h"
+#include "UI_ItemBox.h"
 #include "CharCrowdControlPacket.h"
 #include <GameEngine/GameEngineRenderWindow.h>
 #include "FogOfWar.h"
@@ -565,6 +566,41 @@ void Character::checkItemBox()
 
 	if (true == itemBoxmanager_->isOpen())
 	{
+		//int SlotNum = itemBoxmanager_->GetItemBoxUI()->SlotMouseCollisionCheck();
+		//
+		//if (true == GameEngineInput::GetInst().Down("RButton"))
+		//{
+		//	switch (SlotNum)
+		//	{
+		//	case 0:
+		//		getItem(0);
+		//		break;
+		//	case 1:
+		//		getItem(1);
+		//		break;
+		//	case 2:
+		//		getItem(2);
+		//		break;
+		//	case 3:
+		//		getItem(3);
+		//		break;
+		//	case 4:
+		//		getItem(4);
+		//		break;
+		//	case 5:
+		//		getItem(5);
+		//		break;
+		//	case 6:
+		//		getItem(6);
+		//		break;
+		//	case 7:
+		//		getItem(7);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+
 		if (true == GameEngineInput::GetInst().Down("1"))
 		{
 			getItem(0);
