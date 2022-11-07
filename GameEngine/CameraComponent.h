@@ -70,7 +70,7 @@ public:
 		return CameraBufferTarget_;
 	}
 
-	inline GameEngineRenderTarget* GetShadowRenderTarget() const
+	inline GameEngineRenderTarget* GetLightShadowRenderTarget() const
 	{
 		return LightShadowRenderTarget_;
 	}
@@ -143,7 +143,8 @@ private:
 	GameEngineRenderTarget* CameraDeferredLightTarget;
 	GameEngineRenderTarget* CameraDeferredTarget_;
 
+	GameEngineRenderTarget* LightShadowRenderTarget_;				// 그림자처리 타겟(기존) : 광원(빛) 기준 그림자 렌더타겟 -> 현재 게임에서 사용못함 : 현재 맵에 노말텍스쳐가 매칭되어있지않으므로 사용불가
 	GameEngineRenderTarget* CameraPreprocessingTarget_;				// 선처리렌더러(외곽선, 실루엣) 타겟 : 깊이버퍼 없음
-	GameEngineRenderTarget* LightShadowRenderTarget_;				// 그림자처리 타겟 : 광원(빛) 기준 그림자 렌더타겟 -> 현재 게임에서 사용못함 : 현재 맵에 노말텍스쳐가 매칭되어있지않으므로 사용불가
+
 };
 

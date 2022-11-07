@@ -10,12 +10,12 @@
 #include "GameEnginePixelShader.h"
 #include "CameraComponent.h"
 
-void GameEngineRendererBase::ShadowOff()
+void GameEngineRendererBase::LightShadowOff()
 {
 	RendererDataInst.IsShadow = 0;
 }
 
-void GameEngineRendererBase::ShadowOn()
+void GameEngineRendererBase::LightShadowOn()
 {
 	//// 221107 SJH EDIT : 주석처리(현재 게임 사용불가로 처리안함)
 	//// 그림자처리 렌더링 파이프라인이 지정되어있지않다면 지정 후
@@ -64,19 +64,19 @@ void GameEngineRendererBase::Render(float _DeltaTime, bool _IsDeferred)
 {
 }
 
-void GameEngineRendererBase::ShadowInit(GameEngineRenderingPipeLine* _ShadowPipe)
+void GameEngineRendererBase::LightShadowInit(GameEngineRenderingPipeLine* _ShadowPipe)
 {
 	// 하위에서 받아서 처리할꺼임
 }
 
-void GameEngineRendererBase::ShadowRender(float _DeltaTime)
+void GameEngineRendererBase::LightShadowRender(float _DeltaTime)
 {
 	if (nullptr == DefaultShadowPipeLine_)
 	{
 		return;
 	}
 
-	ShadowInit(DefaultShadowPipeLine_);
+	LightShadowInit(DefaultShadowPipeLine_);
 	ShadowHelper_.Setting();
 	DefaultShadowPipeLine_->Rendering();
 }

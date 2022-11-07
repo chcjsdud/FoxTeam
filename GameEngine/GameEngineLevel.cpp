@@ -38,7 +38,7 @@ CameraComponent* GameEngineLevel::GetUICamera()
 
 GameEngineTexture* GameEngineLevel::GetShadowTexture()
 {
-	return ShadowTexture_;
+	return LightShadowTexture_;
 }
 
 void GameEngineLevel::SetLevelActorMove(GameEngineLevel* _NextLevel, GameEngineActor* _Actor)
@@ -237,7 +237,7 @@ void GameEngineLevel::ClearAll()
 	CollisionList_.clear();
 
 	//=================== 그림자관련
-	ReleaseShadowTarget();
+	ReleaseLightShadowTarget();
 }
 
 void GameEngineLevel::PushCollision(GameEngineCollision* _Collision, int _Group)
@@ -423,36 +423,36 @@ void GameEngineLevel::TimeEventUpdate()
 	}
 }
 
-void GameEngineLevel::ReleaseShadowTarget()
+void GameEngineLevel::ReleaseLightShadowTarget()
 {
 	// 그림자 렌더타겟 존재시 삭제
-	if (nullptr != ShadowTexture_)
+	if (nullptr != LightShadowTexture_)
 	{
-		delete ShadowTexture_;
-		ShadowTexture_ = nullptr;
+		delete LightShadowTexture_;
+		LightShadowTexture_ = nullptr;
 	}
 
 	// 그림자렌더타겟의 리소스 삭제
-	for (int i = 0; i < static_cast<int>(RenderTargets_.size()); ++i)
+	for (int i = 0; i < static_cast<int>(LightShadowRenderTargets_.size()); ++i)
 	{
-		RenderTargets_[i]->Release();
-		RenderTargets_[i] = nullptr;
+		LightShadowRenderTargets_[i]->Release();
+		LightShadowRenderTargets_[i] = nullptr;
 	}
-	RenderTargets_.clear();
+	LightShadowRenderTargets_.clear();
 
 	// 깊이/스텐실버퍼 리소스 삭제
-	for (int i = 0; i < static_cast<int>(Depths_.size()); ++i)
+	for (int i = 0; i < static_cast<int>(LightShadowDepths_.size()); ++i)
 	{
-		delete Depths_[i];
-		Depths_[i] = nullptr;
+		delete LightShadowDepths_[i];
+		LightShadowDepths_[i] = nullptr;
 	}
-	Depths_.clear();
+	LightShadowDepths_.clear();
 }
 
 GameEngineLevel::GameEngineLevel()
 	: MainCameraActor_(nullptr)
 	, UICameraActor_(nullptr)
-	, ShadowTexture_(nullptr)
+	, LightShadowTexture_(nullptr)
 {
 	PostRender["CameraMergePrev"];
 	PostRender["CameraMergeNext"];

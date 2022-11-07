@@ -71,7 +71,7 @@ void GameEngineFBXRenderer::Render(float _DeltaTime, bool _IsDeferred)
 	}
 }
 
-void GameEngineFBXRenderer::ShadowRender(float _DeltaTime)
+void GameEngineFBXRenderer::LightShadowRender(float _DeltaTime)
 {
 	for (size_t i = 0; i < RenderSets.size(); i++)
 	{

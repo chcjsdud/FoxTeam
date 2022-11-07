@@ -23,13 +23,13 @@ void GameEngineLightComponent::Start()
 
 	// 0. 현재 레벨에서 관리하는 그림자텍스쳐가 이미 존재한다면 기존 텍스쳐를 삭제
 	// -> 새로운 광원(빛)의 추가로 텍스쳐배열을 갱신해야하므로 기존 텍스쳐를 삭제
-	if (nullptr != GetLevel()->ShadowTexture_)
+	if (nullptr != GetLevel()->LightShadowTexture_)
 	{
-		GetLevel()->ReleaseShadowTarget();
+		GetLevel()->ReleaseLightShadowTarget();
 	}
 
 	// 1. 새로운 광원(빛)이 추가되었으므로 해당 광원을 추가한 텍스쳐배열을 생성
-	GetLevel()->ShadowTexture_ = new GameEngineTexture();
+	GetLevel()->LightShadowTexture_ = new GameEngineTexture();
 
 	// 1-1. 모든 광원(빛) 갯수만큼의 깊이버퍼 텍스쳐를 생성
 	D3D11_TEXTURE2D_DESC DepthTextureInfo = { 0, };
@@ -42,15 +42,15 @@ void GameEngineLightComponent::Start()
 	DepthTextureInfo.MipLevels = 1;
 	DepthTextureInfo.Usage = D3D11_USAGE::D3D11_USAGE_DEFAULT;
 	DepthTextureInfo.BindFlags = D3D11_BIND_FLAG::D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_FLAG::D3D11_BIND_RENDER_TARGET;
-	GetLevel()->ShadowTexture_->Create(DepthTextureInfo, false);
-	GetLevel()->ShadowTexture_->CreateShaderResourceView();
+	GetLevel()->LightShadowTexture_->Create(DepthTextureInfo, false);
+	GetLevel()->LightShadowTexture_->CreateShaderResourceView();
 
 	// 1-2. 각 광원(빛)의 렌더타겟리소스와 깊이/스텐실버퍼 리소스를 생성
 	int LightCount = static_cast<int>(GetLevel()->AllLights_.size());
 	for (int LightNum = 0; LightNum < LightCount; ++LightNum)
 	{
 		// 렌더타겟 리소스 배열
-		ID3D11RenderTargetView* Result = GetLevel()->ShadowTexture_->CreateRenderTargetViewArrayIndex(LightNum);
+		ID3D11RenderTargetView* Result = GetLevel()->LightShadowTexture_->CreateRenderTargetViewArrayIndex(LightNum);
 
 		// 깊이/스텐실버퍼 리소스 배열
 		GameEngineDepthBuffer* DepthBuffer = new GameEngineDepthBuffer();
@@ -58,8 +58,8 @@ void GameEngineLightComponent::Start()
 
 		GetLevel()->AllLights_[LightNum]->ShadowTargetView_ = Result;
 		GetLevel()->AllLights_[LightNum]->ShadowTargetDepth_ = DepthBuffer->GetDepthStencilView();
-		GetLevel()->Depths_.push_back(DepthBuffer);
-		GetLevel()->RenderTargets_.push_back(Result);
+		GetLevel()->LightShadowDepths_.push_back(DepthBuffer);
+		GetLevel()->LightShadowRenderTargets_.push_back(Result);
 	}
 }
 

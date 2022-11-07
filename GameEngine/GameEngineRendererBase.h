@@ -54,10 +54,11 @@ public: // Public Inline Set Function
 		IsPreprocessing_ = false; 
 	}
 
-public: // Public Shadow Processing Related Function
-	void ShadowOff();
-	void ShadowOn();
+public: // Public Light Shadow Processing Related Function(기존 그림자처리)
+	void LightShadowOff();
+	void LightShadowOn();
 
+public:
 protected:
 	void Start() override;
 
@@ -65,10 +66,11 @@ protected:
 	virtual void SetRenderGroup(int _Order);
 	virtual void Render(float _DeltaTime, bool _IsDeferred);
 
-protected: // Protected Shadow Processing Related Function
-	virtual void ShadowInit(class GameEngineRenderingPipeLine* _ShadowPipe);
-	virtual void ShadowRender(float _DeltaTime);
+protected: // Protected Shadow Processing Related Function(기존 그림자처리)
+	virtual void LightShadowInit(class GameEngineRenderingPipeLine* _ShadowPipe);
+	virtual void LightShadowRender(float _DeltaTime);
 
+protected:
 private:
 public:
 	GameEngineRendererBase();

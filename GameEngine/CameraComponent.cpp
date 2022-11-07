@@ -54,16 +54,16 @@ CameraComponent::~CameraComponent()
 		CameraDeferredTarget_ = nullptr;
 	}
 
-	if (nullptr != CameraPreprocessingTarget_)
-	{
-		delete CameraPreprocessingTarget_;
-		CameraPreprocessingTarget_ = nullptr;
-	}
-
 	if (nullptr != LightShadowRenderTarget_)
 	{
 		delete LightShadowRenderTarget_;
 		LightShadowRenderTarget_ = nullptr;
+	}
+
+	if (nullptr != CameraPreprocessingTarget_)
+	{
+		delete CameraPreprocessingTarget_;
+		CameraPreprocessingTarget_ = nullptr;
 	}
 }
 
@@ -343,7 +343,7 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	}
 
 	// Shadow Render
-	if (nullptr != GetLevel()->ShadowTexture_)
+	if (nullptr != GetLevel()->LightShadowTexture_)
 	{
 		RenderLightShadow(_DeltaTime);
 	}
@@ -357,7 +357,7 @@ void CameraComponent::RenderLightShadow(float _DeltaTime)
 	if (nullptr == LightShadowRenderTarget_)
 	{
 		LightShadowRenderTarget_ = new GameEngineRenderTarget();
-		LightShadowRenderTarget_->Create(GetLevel()->ShadowTexture_, float4::BLUE);
+		LightShadowRenderTarget_->Create(GetLevel()->LightShadowTexture_, float4::BLUE);
 	}
 
 	// Shadow Rendering
@@ -400,12 +400,12 @@ void CameraComponent::RenderLightShadow(float _DeltaTime)
 				Renderer->GetTransform()->GetTransformData().WVPCalculation();
 
 				// Shadow Rendering
-				Renderer->ShadowRender(_DeltaTime);
+				Renderer->LightShadowRender(_DeltaTime);
 			}
 		}
 	}
 
-	CalLightEffect.GetShaderRes().SettingTexture("ShadowTex", GetLevel()->ShadowTexture_);
+	CalLightEffect.GetShaderRes().SettingTexture("ShadowTex", GetLevel()->LightShadowTexture_);
 }
 
 void CameraComponent::CameraZoomReset()
