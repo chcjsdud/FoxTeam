@@ -311,11 +311,13 @@ void GameTimeController::CreateMonsterFirstAppearInfo()
 
 	// BEAR(곰): 1일차 밤 02:20
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].AppearTime_ = 140.0f;
+	//MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].AppearTime_ = 140.0f;
+	MonsterFirstAppearList_[static_cast<int>(MonsterType::BEAR)].AppearTime_ = 40.0f;						// 221107 SJHD EDIT : 낮/밤 시간 제한 변경으로 인한 수정
 
 	// BAT(박쥐): 1일차 낮 01:40
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].AppearTime_ = 100.0f;
+	//MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].AppearTime_ = 100.0f;
+	MonsterFirstAppearList_[static_cast<int>(MonsterType::BAT)].AppearTime_ = 40.0f;						// 221107 SJHD EDIT : 낮/밤 시간 제한 변경으로 인한 수정
 
 	// DOG(들개): 1일차 낮 00:40
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::DOG)].IsAppear_ = false;
@@ -327,7 +329,8 @@ void GameTimeController::CreateMonsterFirstAppearInfo()
 
 	// BOAR(멧돼지): 1일차 낮 01:40
 	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].IsAppear_ = false;
-	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].AppearTime_ = 100.0f;
+	//MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].AppearTime_ = 100.0f;
+	MonsterFirstAppearList_[static_cast<int>(MonsterType::BOAR)].AppearTime_ = 40.0f;						// 221107 SJHD EDIT : 낮/밤 시간 제한 변경으로 인한 수정
 }
 
 void GameTimeController::UpdateMonsterFirstAppearTime(float _DeltaTime)
