@@ -1,29 +1,18 @@
 #pragma once
 #include "GameEngineRenderer.h"
 
-enum class ShadowDir
-{
-	NONE = -1,
-	TOP,
-	RIGHTTOP,
-	RIGHT,
-	RIGHTBOTTOM,
-	BOTTOM,
-	LEFTBOTTOM,
-	LEFT,
-	LEFTTOP,
-	MAX
-};
-
 // 분류 : 렌더러
 // 용도 : 그림자처리
-// 설명 : FBXRenderer가 가지고있으며 RendererShadowOn() 호출시 해당 렌더러가 생성되는 방식???
+// 설명 : 베이스렌더러를 회전시켜 그림자형태로 렌더링하는 렌더러
 class GameEngineFBXRenderer;
 class GameEngineShadowRenderer : public GameEngineRenderer
 {
 public:
+	void SetBaseRenderer(GameEngineFBXRenderer* _BaseRenderer, std::string _PipeLineName);
+
 protected:
 private:
+	void SetFBXMeshRender(std::string _PipeLineName, int _MeshIndex);
 
 private:
 	void Start() override;
@@ -45,6 +34,8 @@ private:
 public:
 protected:
 private:
-
+	GameEngineFBXRenderer* BaseRenderer_;
+	GameEngineFBXMesh* FBXMesh_;
+	std::vector<RenderSet> RenderSets_;
 };
 

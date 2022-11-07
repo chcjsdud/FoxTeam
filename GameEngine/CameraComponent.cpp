@@ -60,16 +60,16 @@ CameraComponent::~CameraComponent()
 		LightShadowRenderTarget_ = nullptr;
 	}
 
-	if (nullptr != CameraPreprocessingTarget_)
-	{
-		delete CameraPreprocessingTarget_;
-		CameraPreprocessingTarget_ = nullptr;
-	}
-
 	if (nullptr != CameraRendererShadowTarget_)
 	{
 		delete CameraRendererShadowTarget_;
 		CameraRendererShadowTarget_ = nullptr;
+	}
+
+	if (nullptr != CameraPreprocessingTarget_)
+	{
+		delete CameraPreprocessingTarget_;
+		CameraPreprocessingTarget_ = nullptr;
 	}
 }
 
@@ -261,8 +261,9 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	CameraDeferredGBufferTarget->Clear();
 	CameraDeferredGBufferTarget->Setting();
 
-	// 선처리가 필요없는 렌더러를 먼저 그리고,
-	std::list<GameEngineRendererBase*> OutLineList;
+	// 선처리 및 그림자가 필요없는 렌더러를 먼저 그리고,
+	std::list<GameEngineRendererBase*> ShadowList;
+	std::list<GameEngineRendererBase*> PreprocessingList;
 	for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
 	{
 		std::list<GameEngineRendererBase*>& Renderers = Pair.second;
@@ -276,29 +277,50 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 				continue;
 			}
 
-			if (false == Renderer->IsPreprocessing())
+			// 선처리와 그림자처리가 필요없는 렌더러들을 먼저 렌더링
+			if (false == Renderer->IsPreprocessing() && false == Renderer->IsRendererShadow())
 			{
 				Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
 				Renderer->GetTransform()->GetTransformData().View_ = View;
 				Renderer->GetTransform()->GetTransformData().WVPCalculation();
 				Renderer->Render(_DeltaTime, true);
 			}
-			// 선처리가 필요한 렌더러를 사용하는 렌더러들의 각각의 선처리 렌더러를 수집
+			// 선처리 or 그림자처리가 필요한 렌더러들을 수집
 			// -> CameraDeferredGBufferTarget에 먼저 렌더링하기 위하여 리스트 수집
 			else
 			{
-				std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>>::iterator FindIter = PreprocessingRendererList_.find(Renderer);
-				if (PreprocessingRendererList_.end() != FindIter)
+				// 선처리 렌더러 수집
+				if (true == Renderer->IsPreprocessing())
 				{
-					for (GameEngineRendererBase* PreRenderer : (*FindIter).second)
+					std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>>::iterator FindIter = PreprocessingRendererList_.find(Renderer);
+					if (PreprocessingRendererList_.end() != FindIter)
+					{
+						for (GameEngineRendererBase* PreRenderer : (*FindIter).second)
+						{
+							// Off 상태라면 그리지않는다.
+							if (false == PreRenderer->IsUpdate())
+							{
+								continue;
+							}
+
+							PreprocessingList.push_back(PreRenderer);
+						}
+					}
+				}
+				
+				// 그림자 렌더러 수집
+				if (true == Renderer->IsRendererShadow())
+				{
+					std::map<GameEngineRendererBase*, GameEngineRendererBase*>::iterator FindIter = ShadowRendererList_.find(Renderer);
+					if (ShadowRendererList_.end() != FindIter)
 					{
 						// Off 상태라면 그리지않는다.
-						if (false == PreRenderer->IsUpdate())
+						if (false == (*FindIter).second->IsUpdate())
 						{
 							continue;
 						}
 
-						OutLineList.push_back(PreRenderer);
+						ShadowList.push_back((*FindIter).second);
 					}
 				}
 			}
@@ -306,10 +328,25 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	}
 
 	// 그림자렌더러를 렌더링하고,
-	RenderShadow(_DeltaTime);
+	for (GameEngineRendererBase* Renderer : ShadowList)
+	{
+		// 그림자렌더러 타겟 셋팅
+		CameraRendererShadowTarget_->Clear(false);
+		CameraRendererShadowTarget_->Setting();
 
-	// 선처리렌더러를 먼저그리고,
-	for (GameEngineRendererBase* Renderer : OutLineList)
+		// 그림자렌더러 그리고나서
+		Renderer->GetTransform()->GetTransformData().Projection_ = Projection;
+		Renderer->GetTransform()->GetTransformData().View_ = View;
+		Renderer->GetTransform()->GetTransformData().WVPCalculation();
+		Renderer->Render(_DeltaTime, true);
+
+		// 본래타겟에 합치고
+		CameraDeferredGBufferTarget->Merge(CameraRendererShadowTarget_);
+	}
+	ShadowList.clear();
+
+	// 선처리렌더러를 렌더링하고,
+	for (GameEngineRendererBase* Renderer : PreprocessingList)
 	{
 		// 선처리렌더러 타겟 셋팅
 		CameraPreprocessingTarget_->Clear(false);
@@ -324,7 +361,7 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 		// 본래타겟에 합치고
 		CameraDeferredGBufferTarget->Merge(CameraPreprocessingTarget_);
 	}
-	OutLineList.clear();
+	PreprocessingList.clear();
 
 	// 선처리렌더러를 가지고있는 렌더러들을 그린다.
 	CameraDeferredGBufferTarget->Setting();
@@ -415,14 +452,6 @@ void CameraComponent::RenderLightShadow(float _DeltaTime)
 	}
 
 	CalLightEffect.GetShaderRes().SettingTexture("LightShadowTex", GetLevel()->LightShadowTexture_);
-}
-
-void CameraComponent::RenderShadow(float _DeltaTime)
-{
-	// 
-
-
-
 }
 
 void CameraComponent::CameraZoomReset()

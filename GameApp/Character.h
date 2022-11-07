@@ -22,6 +22,7 @@ class ItemBase;
 class EquipmentItem;
 class PlayerUIController;
 class GameEngineFBXRenderer;
+class GameEngineShadowRenderer;
 class GameEnginePreprocessingRenderer;
 class Character : public IUnit
 {
@@ -515,6 +516,12 @@ protected:
 	SlowEffect* slowEffect_;
 	StunEffect* stunEffect_;
 	LevelUpEffect* levelUpEffect_;
+
+// 弊覆磊 贸府
+protected:
+	GameEngineShadowRenderer* MainShadowRenderer_;
+	GameEngineShadowRenderer* WeaponShadowRenderer1_;
+	GameEngineShadowRenderer* WeaponShadowRenderer2_;
 
 // 角风咖 贸府
 protected:

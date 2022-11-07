@@ -474,6 +474,15 @@ void GameEngineFBXRenderer::SetPreprocessingRenderer(GameEnginePreprocessingRend
 	PreprocessingOn();
 }
 
+void GameEngineFBXRenderer::SetShadowRenderer(GameEngineShadowRenderer* _ShadowRenderer)
+{
+	// 카메라 렌더링 목록에 추가
+	GetLevel()->GetMainCamera()->PushShadowRenderer(this, _ShadowRenderer);
+
+	// 그림자 렌더러 사용
+	RendererShadowOn();
+}
+
 void GameEngineFBXRenderer::Start()
 {
 	GetLevel()->GetMainCamera()->PushRenderer(GetOrder(), this);

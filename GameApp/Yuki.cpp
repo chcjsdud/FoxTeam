@@ -303,6 +303,13 @@ void Yuki::initRendererAndAnimation()
 	swordRenderer_->CreateFBXAnimation("Idle", "Weapon_TwoHandSword_01.fbx");
 	swordRenderer_->ChangeFBXAnimation("Idle");
 
+	//// 221107 SJH ADD : 그림자렌더러 추가 -> 임시주석 현재 처리중
+	//// 그림자 
+	//{
+	//	MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
+	//	MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
+	//}
+
 	// 외곽선
 	{
 		// Main

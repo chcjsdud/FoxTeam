@@ -43,6 +43,11 @@ public: // Public Inline Get Function
 		return IsPreprocessing_; 
 	}
 
+	inline bool IsRendererShadow()
+	{
+		return IsRendererShadow_;
+	}
+
 public: // Public Inline Set Function
 	inline void PreprocessingOn() 
 	{

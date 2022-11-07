@@ -117,7 +117,6 @@ private:
 	void RenderForward(float _DeltaTime);
 	void RenderDeffered(float _DeltaTime);
 	void RenderLightShadow(float _DeltaTime);
-	void RenderShadow(float _DeltaTime);
 
 private:
 	private:	// member Var

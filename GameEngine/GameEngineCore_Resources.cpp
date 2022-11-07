@@ -1125,6 +1125,17 @@ void GameEngineCore::EngineResourcesCreate()
 
 	// =============================================== 특수기능 관련 =============================================== //
 
+	{ // 221107 SJH ADD : 그림자 렌더링파이프라인(애니메이션)
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("RendererShadow");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetVertexShader("RendererShadow_VS");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		Pipe->SetRasterizer("EngineBaseRasterizerNone");
+		Pipe->SetPixelShader("RendererShadow_PS");
+		Pipe->SetOutputMergerBlend("AlphaToCoverage");
+	}
+
 	{ // 221027 SJH ADD : 선처리 렌더링파이프라인(애니메이션)
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("PreprocessingAni");
 		Pipe->SetInputAssembler1VertexBufferSetting("Rect");

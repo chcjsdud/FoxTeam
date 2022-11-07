@@ -8,6 +8,7 @@ class GameEngineIndexBuffer;
 class GameEngineVertexBuffer;
 class GameEngineRenderingPipeLine;
 class GameEnginePreprocessingRenderer;
+class GameEngineShadowRenderer;
 class GameEngineFBXRenderer : public GameEngineRendererBase
 {
 	friend FBXAnimation;
@@ -63,7 +64,8 @@ public:
 	void ClearParentBone();
 
 public:
-	void SetPreprocessingRenderer(GameEnginePreprocessingRenderer* _OutLineRenderer);
+	void SetPreprocessingRenderer(GameEnginePreprocessingRenderer* _PreprocessingRenderer);
+	void SetShadowRenderer(GameEngineShadowRenderer* _ShadowRenderer);
 
 public:
 	void Start() override;
