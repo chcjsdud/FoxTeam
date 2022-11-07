@@ -474,6 +474,8 @@ protected:
 	// 금지구역관련
 	bool isInProhibited_;
 	float prohibitedCounter_;
+	float prohibitTimer_;
+
 
 private:
 	enum class eCurrentAnimation

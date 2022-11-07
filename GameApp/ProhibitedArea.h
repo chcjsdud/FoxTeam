@@ -20,7 +20,10 @@ public:
 public:
 	void Init(Location _location, const std::string& _fbxName, float4 _pos, const std::string& _name);
 	void SetProhibited(bool _tf);
+	Location GetLocation() { return location_; }
 	bool IsProhibited() { return isProhibited_; }
+
+
 
 	const std::string& GetKoreanName() { return locationName_; }
 

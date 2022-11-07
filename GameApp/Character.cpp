@@ -29,6 +29,7 @@
 #include "FogOfWar.h"
 #include <GameEngine/SmallPostBlur.h>
 #include "GameTimeController.h"
+#include "ProhibitedArea.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -90,6 +91,7 @@ Character::Character()
 	, isInProhibited_(false)
 	, prohibitedCounter_(20.0f)
 	, bHidden_(false)
+	, prohibitTimer_(0.0f)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -260,10 +262,7 @@ void Character::Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == isInProhibited_)
-	{
-		ProhibitedAreaCheck(_DeltaTime);
-	}
+
 
 	if (uiController_ != nullptr)
 	{
@@ -288,6 +287,12 @@ void Character::Update(float _DeltaTime)
 			deathState_.ChangeState("PlayerWinner", true);
 		}
 	}
+
+	if (false == isPlayerDead_)
+	{
+		ProhibitedAreaCheck(_DeltaTime);
+	}
+
 
 	checkCurrentNavFace();
 	checkItemBox();
@@ -2455,23 +2460,33 @@ void Character::EffectTransformCheck(float _DeltaTime)
 
 void Character::ProhibitedAreaCheck(float _DeltaTime)
 {
-	prohibitedCounter_ -= _DeltaTime;
-	int adjustedCounter = static_cast<int>(prohibitedCounter_);
-	uiController_->GetTimeUI()->GetProhibitedRenderer()->TextSetting("HMKMRHD", std::to_string(adjustedCounter), 20, FW1_RIGHT, float4::RED, {34.0f, 15.0f, 0.0f});
+	LumiaLevel* lv = dynamic_cast<LumiaLevel*>(GetLevel());
 
-	if (adjustedCounter % 10 == 0)
+	if (true == lv->GetProhibitedAreaList()[static_cast<int>(stat_.curLocation)]->IsProhibited())
 	{
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("RestrictedCount.wav");
-	}
+		prohibitedCounter_ -= _DeltaTime;
+		int adjustedCounter = static_cast<int>(prohibitedCounter_);
+		
 
-	if (0.0f >= prohibitedCounter_)
-	{
-		stat_.HP = 0.0f;
+		uiController_->GetTimeUI()->GetProhibitedRenderer()->TextSetting("HMKMRHD", std::to_string(adjustedCounter), 20, FW1_RIGHT, float4::RED, { 34.0f, 15.0f, 0.0f });
+
+		prohibitTimer_ += _DeltaTime;
+		
+		if (1.0f <= prohibitTimer_)
+		{
+			prohibitTimer_ = 0.0f;
+			FT::PlaySoundAndSendPacket("RestrictedCount.wav", transform_.GetWorldPosition());
+		}
+
+		if (0.0f >= prohibitedCounter_)
+		{
+			stat_.HP = 0.0f;
 
 			if (GameServer::GetInstance()->IsOpened())
 			{
 				this->SetCharacterDeath();
-
+				
+				FT::PlaySoundAndSendPacket("Sfx_RestrictedDamage.wav", transform_.GetWorldPosition());
 				CharDeathPacket deathpacket;
 				deathpacket.SetTargetIndex(myIndex_);
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
@@ -2481,13 +2496,17 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 			}
 			else if (GameClient::GetInstance()->IsConnected())
 			{
+				FT::PlaySoundAndSendPacket("Sfx_RestrictedDamage.wav", transform_.GetWorldPosition());
 				CharDeathPacket deathpacket;
 				deathpacket.SetTargetIndex(myIndex_);
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
 				deathpacket.SetFraggerIndex(-3);
 				FT::SendPacket(deathpacket);
 			}
-		
+
+		}
 	}
+
+	
 
 }
