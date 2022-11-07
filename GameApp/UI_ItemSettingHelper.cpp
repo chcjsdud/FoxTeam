@@ -19,9 +19,9 @@ string UI_ItemSettingHelper::GetItemTextureName(ItemBase* _Item)
 	string name = _Item->GetName();
 	string Ext = ".png";
 
-	return "KitchenKnife.png";
+	//return "KitchenKnife.png";
 
-	//return name + Ext;
+	return name + Ext;
 }
 
 void UI_ItemSettingHelper::SetItemRenderValue(GameEngineUIRenderer* _Renderer, ItemBase* _Item)
