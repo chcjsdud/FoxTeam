@@ -2128,6 +2128,10 @@ void Character::startPlayerDeath()
 		{
 			uiController_->GetWinLoseUI()->SetText("플레이어가 몬스터에게 살해당했습니다." + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
 		}
+		else if (-3 == fraggerIndex_)
+		{
+			uiController_->GetWinLoseUI()->SetText("금지구역에서 " + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
+		}
 		else
 		{
 			uiController_->GetWinLoseUI()->SetText(pm->GetPlayerList()[fraggerIndex_].playerNickname_ + " 에게 살해당했습니다.\n" + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
@@ -2468,7 +2472,8 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 		int adjustedCounter = static_cast<int>(prohibitedCounter_);
 		
 
-		uiController_->GetTimeUI()->GetProhibitedRenderer()->TextSetting("HMKMRHD", std::to_string(adjustedCounter), 20, FW1_RIGHT, float4::RED, { 34.0f, 15.0f, 0.0f });
+		uiController_->GetTimeUI()->GetProhibitedRenderer()->SetTextColor(float4::RED);
+		uiController_->GetTimeUI()->GetProhibitedRenderer()->SetPrintText(std::to_string(adjustedCounter));
 
 		prohibitTimer_ += _DeltaTime;
 		
