@@ -93,7 +93,10 @@ void HyperLoop::Update(float _DeltaTime)
 		GameEngineRandom random;
 		int point = random.RandomInt(0, spawnPoints.size() - 1);
 
-		player->GetTransform()->SetWorldPosition(spawnPoints[point]);
+		//player->GetTransform()->SetWorldPosition(spawnPoints[point]);
+
+		player->Hyperloop(spawnPoints[point]);
+
 		mapUI_->MapOff();
 		SelectedArea = Location::NONE;
 	}

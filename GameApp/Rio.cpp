@@ -208,6 +208,12 @@ void Rio::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("Rio_CraftFood", "Rio_CraftFood." + ext, 0, false);
 	renderer_->CreateFBXAnimation("Rio_CraftMetal", "Rio_CraftMetal." + ext, 0, false);
 
+	renderer_->CreateFBXAnimation("Operate", "Rio_Operate.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Arrive", "Rio_Arrive.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestStart", "Rio_Rest_Start.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestLoop", "Rio_Rest_Loop.UserAnimation", 0, true);
+	renderer_->CreateFBXAnimation("RestEnd", "Rio_Rest_End.UserAnimation", 0, false);
+
 	renderer_->CreateFBXAnimation("Death", "Rio_Death." + ext, 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait_Short");
@@ -1130,5 +1136,30 @@ void Rio::updateSkillEEnd(float _deltaTime)
 			transform_.SetWorldPosition(float4::Lerp(startPosition_, landingPosition_, skillETime_ / 0.5f));
 		}
 	}
+}
+
+void Rio::changeAnimationOperate()
+{
+	ChangeAnimation("Operate");
+}
+
+void Rio::changeAnimationArrive()
+{
+	ChangeAnimation("Arrive");
+}
+
+void Rio::changeAnimationRestStart()
+{
+	ChangeAnimation("RestStart");
+}
+
+void Rio::changeAnimationRestLoop()
+{
+	ChangeAnimation("RestLoop");
+}
+
+void Rio::changeAnimationRestEnd()
+{
+	ChangeAnimation("RestEnd");
 }
 
