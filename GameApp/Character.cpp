@@ -131,6 +131,17 @@ Character::~Character()
 	}
 }
 
+void Character::SetUIController()
+{
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
+	if (nullptr == uiController_)
+	{
+		uiController_ = GetLevel()->CreateActor<PlayerUIController>();
+		uiController_->SetJobType((JobType)(pm->GetMyPlayer().character_));
+	}
+}
+
 void Character::SetCurrentNavMesh(NavMesh* _NavMesh)
 {
 	currentNavMesh_ = _NavMesh;
@@ -212,13 +223,7 @@ void Character::Start()
 	}
 
 
-	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-	if (nullptr == uiController_)
-	{
-		uiController_ = GetLevel()->CreateActor<PlayerUIController>();
-	}
-	uiController_->SetJobType((JobType)(pm->GetMyPlayer().character_));
 
 	equipedItem_.resize(static_cast<int>(EquipmentType::MAX));
 	equipBuildItem_.resize(static_cast<int>(EquipmentType::MAX));
@@ -288,7 +293,7 @@ void Character::Update(float _DeltaTime)
 		}
 	}
 
-	if (false == isPlayerDead_)
+	if (false == isPlayerDead_ && true == IsFocused())
 	{
 		ProhibitedAreaCheck(_DeltaTime);
 	}
@@ -2473,6 +2478,7 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 		
 
 		uiController_->GetTimeUI()->GetProhibitedRenderer()->SetTextColor(float4::RED);
+		uiController_->GetTimeUI()->GetProhibitedRenderer()->AllDelText();
 		uiController_->GetTimeUI()->GetProhibitedRenderer()->SetPrintText(std::to_string(adjustedCounter));
 
 		prohibitTimer_ += _DeltaTime;

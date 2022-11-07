@@ -92,6 +92,8 @@ public:
 	const std::vector<GameEngineVertex>& GetEyesightVertices() { return eyesightVertices_; }
 	const std::vector<UINT>& GetEysightIndices() { return eyesightIndices_; }
 
+
+	void SetUIController();
 	void SetDirection(float4 _dir) { direction_ = _dir; }
 	void SetCurrentNavFace(NavFace* _Navi) { currentNavFace_ = _Navi; }
 	void SetCurrentNavMesh(NavMesh* _NaviMesh);

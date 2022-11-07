@@ -401,6 +401,12 @@ void LumiaLevel::CharacterCreationCommand()
 
 		NewCharacter->SetIndex(PlayerNum);
 		NewCharacter->UnitType_ = UnitType::CHARACTER;
+
+		if (pm->GetMyNumber() == PlayerNum)
+		{
+			NewCharacter->SetUIController();
+		}
+
 		// 관리목록에 추가
 		CharacterActorList_.emplace_back(NewCharacter);
 
