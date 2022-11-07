@@ -5,7 +5,7 @@
 #include <GameEngine/EngineVertex.h>
 #include <GameEngine/GameEngineCollision.h>
 #include <GameEngine/GameEngineCore.h>
-
+#include <GameEngine/GameEngineEffectRenderer.h>
 #include "LumiaLevel.h"
 
 #include "NavMesh.h"

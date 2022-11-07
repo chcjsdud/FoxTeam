@@ -35,7 +35,7 @@ void PlayerUIController::InitUI()
 	winLose_UI = GetLevel()->CreateActor<UI_WinLose>();
 	hpbars_UI = GetLevel()->CreateActor<UI_HPBars>();
 	charfollow_UI = GetLevel()->CreateActor<UI_CharFollow>();
-
+	minimap_UI = GetLevel()->CreateActor<UI_Minimap>();
 
 	calhelper_ = GetLevel()->CreateActor<UI_CalculateHelper>();
 

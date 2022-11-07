@@ -40,6 +40,7 @@
 //======================== Controller
 #include "GameTimeController.h"
 #include "LevelUpSystem.h"
+#include "PlayerUIController.h"
 
 //======================== Map
 #include "LumiaMap.h"
@@ -417,6 +418,11 @@ void LumiaLevel::CharacterCreationCommand()
 			CharacterActorList_[PlayerNum]->Focus();
 			pm->SetMainCharacter(NewCharacter);
 		}
+	}
+
+	{
+		CharacterActorList_[pm->GetMyNumber()]->GetUIController()->GetMinimapUI()->InitCharList();
+		CharacterActorList_[pm->GetMyNumber()]->GetUIController()->GetMinimapUI()->InitAreaRenderList();
 	}
 
 	//#ifdef _DEBUG

@@ -17,6 +17,7 @@
 #include "YukiREffect.h"
 #include "YukiQEffect.h"
 #include "YukiQSlashEffect.h"
+#include "PlayerUIController.h"
 #include "Monsters.h"
 
 Yuki::Yuki() // default constructer 디폴트 생성자
@@ -252,6 +253,8 @@ void Yuki::Update(float _deltaTime)
 
 		controlWindow->AddText("WorldPos : " + std::to_string(transform_.GetWorldPosition().x) + " " + std::to_string(transform_.GetWorldPosition().z));
 		controlWindow->AddText("CurLocation : " + std::to_string(stat_.curLocation));
+
+		controlWindow->AddText("MinimapLocation : " + std::to_string(GetUIController()->GetMinimapUI()->GetIconList()[myIndex_]->GetTransform()->GetWorldPosition().x + ',' + GetUIController()->GetMinimapUI()->GetIconList()[myIndex_]->GetTransform()->GetWorldPosition().y));
 	}
 }
 

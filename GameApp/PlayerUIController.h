@@ -4,7 +4,7 @@
 // 용도 : 로비레벨에 들어갈 UI액터를 모아두는 곳
 // 설명 : 
 
-
+#include "UI_Minimap.h"
 #include "UI_CharPicture.h"
 #include "UI_Equip.h"
 #include "UI_Inventory.h"
@@ -99,7 +99,10 @@ public:
 		return time_UI;
 	}
 
-
+	UI_Minimap* GetMinimapUI()
+	{
+		return minimap_UI;
+	}
 	//UI_HyperMap* GetHyperMap()
 	//{
 	//	return hypermap_UI;
@@ -126,7 +129,7 @@ private:
 	UI_Notice* notice_UI;
 	UI_HPBars* hpbars_UI;
 	UI_CharFollow* charfollow_UI;
-
+	UI_Minimap* minimap_UI;
 	UI_CalculateHelper* calhelper_;
 
 	UI_FOW* FOW_UI;

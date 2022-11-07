@@ -5,6 +5,7 @@
 
 #include <queue>
 
+class GameEngineEffectRenderer;
 class GameEngineFBXRenderer;
 class NavMesh;
 class LumiaMap : public GameEngineActor
@@ -70,6 +71,7 @@ protected:
 	GameEngineFBXRenderer* downTownRenderer_;
 	GameEngineRenderer* navTileRenderer_;
 	std::vector<GameEngineFBXRenderer*> mapRenderers;
+	GameEngineEffectRenderer* areaOutlineRenderer_;
 
 private:
 	std::map<std::string, std::vector<float4>> characterSpawnPoints_;	// Area, Position

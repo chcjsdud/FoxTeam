@@ -332,6 +332,13 @@ void Character::Update(float _DeltaTime)
 		coolTimer_D_ = 0.5f;
 	}
 
+	if (GameEngineInput::Down("M"))
+	{
+		GetUIController()->GetMinimapUI()->Toggle();
+	}
+
+
+
 	if (eyesightRenderer_ == nullptr)
 	{
 		return;
