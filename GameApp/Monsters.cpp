@@ -858,6 +858,8 @@ void Monsters::CalcMoveDir(const float4& _Position)
 	if (MonsterType::DOG == Type_)
 	{
 		MainRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+		MainOutLineRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+		MainSilhouetteRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 	}
 }
 
