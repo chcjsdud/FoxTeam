@@ -6,7 +6,7 @@
 
 
 PlayerUIController::PlayerUIController()
-	: MyJob(JobType::HYUNWOO), winLoseFlag_(false), blood_UI(nullptr)
+	: MyJob(JobType::HYUNWOO), winLoseFlag_(false), blood_UI(nullptr), followcreateflag(false)
 {
 
 }
@@ -34,7 +34,7 @@ void PlayerUIController::InitUI()
 	notice_UI = GetLevel()->CreateActor<UI_Notice>();
 	winLose_UI = GetLevel()->CreateActor<UI_WinLose>();
 	hpbars_UI = GetLevel()->CreateActor<UI_HPBars>();
-	charfollow_UI = GetLevel()->CreateActor<UI_CharFollow>();
+	//charfollow_UI = GetLevel()->CreateActor<UI_CharFollow>();
 	minimap_UI = GetLevel()->CreateActor<UI_Minimap>();
 
 	calhelper_ = GetLevel()->CreateActor<UI_CalculateHelper>();
@@ -92,8 +92,31 @@ void PlayerUIController::Update(float _DeltaTime)
 	status_UI->SetStatus(pm->GetMyPlayer().stat_);
 	skill_UI->SetStatus(pm->GetMyPlayer().stat_);
 	hpbars_UI->SetStatus(pm->GetMyPlayer().stat_);
-	float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
-	charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
+	//float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
+	//charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
+
+
+	if (false == followcreateflag)
+	{
+		//딱 한번만 실행되게 설정
+		for (size_t i = 0; i < lumiaLevel->GetCharacterActorList().size(); i++)
+		{
+			UI_CharFollow* follow_UI = GetLevel()->CreateActor<UI_CharFollow>();
+			//float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
+			//follow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetPlayerList()[i].stat_);
+			//lumiaLevel->GetCharacterActorList()[i]->GetTransform();
+			charfollows_.push_back(follow_UI);
+		}
+		followcreateflag = true;
+	}
+
+	for (size_t i = 0; i < lumiaLevel->GetCharacterActorList().size(); i++)
+	{
+		float4 pos = lumiaLevel->GetCharacterActorList()[i]->GetTransform()->GetLocalPosition();
+		charfollows_[i]->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetPlayerList()[i].stat_);
+		//charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
+		//lumiaLevel->GetCharacterActorList()[i]->GetTransform();
+	}
 
 
 	//if (true == GameEngineInput::GetInst().Down("L"))

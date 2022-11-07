@@ -140,5 +140,8 @@ private:
 
 	JobType MyJob;
 
+	vector<UI_CharFollow*> charfollows_;
+	bool followcreateflag;
+
 };
 
