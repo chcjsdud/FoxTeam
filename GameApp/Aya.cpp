@@ -237,6 +237,13 @@ void Aya::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("SkillW_Wait", "Aya_SkillW_Wait." + ext, 0);
 	renderer_->CreateFBXAnimation("Death", "Aya_Death." + ext, 0, false);
 
+	renderer_->CreateFBXAnimation("Craft", "Aya_Craft.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Operate", "Aya_Operate.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Arrive", "Aya_Arrive.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestStart", "Aya_Rest_Start.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestLoop", "Aya_Rest_Loop.UserAnimation", 0, true);
+	renderer_->CreateFBXAnimation("RestEnd", "Aya_Rest_End.UserAnimation", 0, false);
+
 	renderer_->ChangeFBXAnimation("Idle");
 
 	pistolRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
@@ -329,6 +336,36 @@ void Aya::changeAnimationBasicAttack()
 void Aya::changeDeathAnimation()
 {
 	ChangeAnimation("Death");
+}
+
+void Aya::changeAnimationOperate()
+{
+	ChangeAnimation("Operate");
+}
+
+void Aya::changeAnimationArrive()
+{
+	ChangeAnimation("Arrive");
+}
+
+void Aya::changeAnimationRestStart()
+{
+	ChangeAnimation("RestStart");
+}
+
+void Aya::changeAnimationRestLoop()
+{
+	ChangeAnimation("RestLoop");
+}
+
+void Aya::changeAnimationRestEnd()
+{
+	ChangeAnimation("RestEnd");
+}
+
+void Aya::changeAnimationCraft()
+{
+	ChangeAnimation("Craft");
 }
 
 void Aya::onStartBasicAttacking(IUnit* _target)

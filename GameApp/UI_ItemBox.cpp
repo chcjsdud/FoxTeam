@@ -234,6 +234,53 @@ void UI_ItemBox::EmptySlot()
 
 }
 
+int UI_ItemBox::SlotMouseCollisionCheck()
+{
+	if (true == Slot0Collision->Collision(CollisionType::AABBBox3D))
+	{
+		return 0;
+	}
+
+	if (true == Slot1Collision->Collision(CollisionType::AABBBox3D))
+	{
+		return 1;
+	}
+
+	if (true == Slot2Collision->Collision(CollisionType::AABBBox3D))
+	{
+		return 2;
+	}
+
+	if (true == Slot3Collision->Collision(CollisionType::AABBBox3D))
+	{
+		return 3;
+	}
+
+	if (true == Slot4Collision->Collision(CollisionType::AABBBox3D))
+	{
+		return 4;
+	}
+
+	if (true == Slot5Collision->Collision(CollisionType::AABBBox3D))
+	{
+		return 5;
+	}
+
+	if (true == Slot6Collision->Collision(CollisionType::AABBBox3D))
+	{
+		return 6;
+	}
+
+	if (true == Slot7Collision->Collision(CollisionType::AABBBox3D))
+	{
+		return 7;
+	}
+
+	//충돌중이 아님
+	return -1;
+
+}
+
 void UI_ItemBox::GetItemBoxInfo(list<ItemBase*> _ItemList)
 {
 	list<ItemBase*>::iterator listiter = _ItemList.begin();

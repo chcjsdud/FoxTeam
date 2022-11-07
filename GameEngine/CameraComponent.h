@@ -3,6 +3,7 @@
 #include "GameEngineDebugRenderData.h"
 #include "GameEngineLightComponent.h"
 #include "GameEnginePreprocessingRenderer.h"
+#include "GameEngineShadowRenderer.h"
 #include "DeferredCalLightEffect.h"
 #include "DeferredMerge.h"
 #include "Enums.h"
@@ -34,6 +35,7 @@ public:
 	void PushRenderer(int _Order, GameEngineRendererBase* _Renderer);
 	void PushLight(GameEngineLightComponent* _Light);
 	void PushPreprocessingRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _PreprocessingRenderer);
+	void PushShadowRenderer(GameEngineRendererBase* _BaseRenderer, GameEngineShadowRenderer* _ShadowRenderer);
 
 public:
 	void PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color = float4::GREEN);
@@ -70,9 +72,9 @@ public:
 		return CameraBufferTarget_;
 	}
 
-	inline GameEngineRenderTarget* GetShadowRenderTarget() const
+	inline GameEngineRenderTarget* GetLightShadowRenderTarget() const
 	{
-		return ShadowRenderTarget_;
+		return LightShadowRenderTarget_;
 	}
 
 	inline float GetZoomValue()
@@ -114,6 +116,7 @@ private:
 
 	void RenderForward(float _DeltaTime);
 	void RenderDeffered(float _DeltaTime);
+	void RenderLightShadow(float _DeltaTime);
 	void RenderShadow(float _DeltaTime);
 
 private:
@@ -130,6 +133,7 @@ private:
 	std::list<GameEngineLightComponent*> Lights_;
 	std::map<int, std::list<GameEngineRendererBase*>> RendererList_;
 	std::map<GameEngineRendererBase*, std::list<GameEngineRendererBase*>> PreprocessingRendererList_;
+	std::map<GameEngineRendererBase*, GameEngineRendererBase*> ShadowRendererList_;
 
 private:
 	int DebugRenderCount_;
@@ -143,7 +147,8 @@ private:
 	GameEngineRenderTarget* CameraDeferredLightTarget;
 	GameEngineRenderTarget* CameraDeferredTarget_;
 
+	GameEngineRenderTarget* LightShadowRenderTarget_;				// 그림자처리 타겟(기존) : 광원(빛) 기준 그림자 렌더타겟 -> 현재 게임에서 사용못함 : 현재 맵에 노말텍스쳐가 매칭되어있지않으므로 사용불가
 	GameEngineRenderTarget* CameraPreprocessingTarget_;				// 선처리렌더러(외곽선, 실루엣) 타겟 : 깊이버퍼 없음
-	GameEngineRenderTarget* ShadowRenderTarget_;					// 그림자처리 타겟
+	GameEngineRenderTarget* CameraRendererShadowTarget_;			// 그림자처리 타겟(변경) : 하나의 메쉬를 기준으로 타겟에 렌더링 후 해당타겟의 텍스쳐를 회전하여 메인타겟에 합치는 타겟
 };
 

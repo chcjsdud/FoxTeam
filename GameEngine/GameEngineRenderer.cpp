@@ -110,7 +110,7 @@ void GameEngineRenderer::Render(float _DeltaTime, bool _IsDeferred)
 	}
 }
 
-void GameEngineRenderer::ShadowInit(GameEngineRenderingPipeLine* _ShadowPipe)
+void GameEngineRenderer::LightShadowInit(GameEngineRenderingPipeLine* _ShadowPipe)
 {
 	_ShadowPipe->SetInputAssembler1VertexBufferSetting(PipeLine_->GetVertexBuffer());
 	_ShadowPipe->SetInputAssembler2IndexBufferSetting(PipeLine_->GetIndexBuffer());

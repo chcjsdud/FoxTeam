@@ -321,6 +321,13 @@ void Jackie::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("R_SkillW", "Jackie_R_skillW.UserAnimation", 0);
 	renderer_->CreateFBXAnimation("R_SkillE", "Jackie_R_skillE.UserAnimation", 0, false);
 
+	renderer_->CreateFBXAnimation("Craft", "Jackie_Craft.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Operate", "Jackie_Operate.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Arrive", "Jackie_Arrive.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestStart", "Jackie_Rest_Start.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestLoop", "Jackie_Rest_Loop.UserAnimation", 0, true);
+	renderer_->CreateFBXAnimation("RestEnd", "Jackie_Rest_End.UserAnimation", 0, false);
+
 	renderer_->ChangeFBXAnimation("Wait");
 
 	renderer_->GetRenderSet(1).isRender = false;
@@ -562,6 +569,36 @@ void Jackie::changeAnimationBasicAttack()
 void Jackie::changeDeathAnimation()
 {
 	ChangeAnimation("Death", true);
+}
+
+void Jackie::changeAnimationOperate()
+{
+	ChangeAnimation("Operate");
+}
+
+void Jackie::changeAnimationArrive()
+{
+	ChangeAnimation("Arrive");
+}
+
+void Jackie::changeAnimationRestStart()
+{
+	ChangeAnimation("RestStart");
+}
+
+void Jackie::changeAnimationRestLoop()
+{
+	ChangeAnimation("RestLoop");
+}
+
+void Jackie::changeAnimationRestEnd()
+{
+	ChangeAnimation("RestEnd");
+}
+
+void Jackie::changeAnimationCraft()
+{
+	ChangeAnimation("Craft");
 }
 
 void Jackie::onStartBasicAttacking(IUnit* _target)

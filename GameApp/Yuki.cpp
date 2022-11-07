@@ -280,6 +280,13 @@ void Yuki::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("SkillR_loop", "Yuki_skillr_loop.UserAnimation", 0, false);
 	renderer_->CreateFBXAnimation("SkillW", "Yuki_skillw_upper_wait.UserAnimation", 0, false);
 
+	renderer_->CreateFBXAnimation("Craft", "Yuki_Craft.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Operate", "Yuki_Operate.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Arrive", "Yuki_Arrive.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestStart", "Yuki_Rest_Start.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestLoop", "Yuki_Rest_Loop.UserAnimation", 0, true);
+	renderer_->CreateFBXAnimation("RestEnd", "Yuki_Rest_End.UserAnimation", 0, false);
+
 	renderer_->ChangeFBXAnimation("Wait");
 
 	renderer_->GetRenderSet(1).isRender = false;
@@ -468,6 +475,36 @@ void Yuki::changeAnimationBasicAttack()
 void Yuki::changeDeathAnimation()
 {
 	ChangeAnimation("Death", true);
+}
+
+void Yuki::changeAnimationOperate()
+{
+	ChangeAnimation("Operate");
+}
+
+void Yuki::changeAnimationArrive()
+{
+	ChangeAnimation("Arrive");
+}
+
+void Yuki::changeAnimationRestStart()
+{
+	ChangeAnimation("RestStart");
+}
+
+void Yuki::changeAnimationRestLoop()
+{
+	ChangeAnimation("RestLoop");
+}
+
+void Yuki::changeAnimationRestEnd()
+{
+	ChangeAnimation("RestEnd");
+}
+
+void Yuki::changeAnimationCraft()
+{
+	ChangeAnimation("Craft");
 }
 
 void Yuki::onStartBasicAttacking(IUnit* _target)

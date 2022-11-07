@@ -71,7 +71,7 @@ public:
 	void Render(float _DeltaTime, bool _IsDeferred) override;
 
 private: // 221102 SJH ADD : 그림자 렌더링
-	void ShadowRender(float _DeltaTime) override;
+	void LightShadowRender(float _DeltaTime) override;
 
 private:
 	std::vector<RenderSet> RenderSets;

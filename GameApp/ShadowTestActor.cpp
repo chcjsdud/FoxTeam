@@ -29,7 +29,7 @@ void ShadowTestActor::Start()
 	TestBaseRenderer_->ChangeFBXAnimation("Run_Short");
 	TestBaseRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	TestBaseRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
-	TestBaseRenderer_->ShadowOn();
+	TestBaseRenderer_->LightShadowOn();
 
 	GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
 	Renderer->SetRenderingPipeLine("DeferredColor");
@@ -37,7 +37,7 @@ void ShadowTestActor::Start()
 	Renderer->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });
 	Renderer->GetTransform()->SetLocalPosition({ 100.0f, 300.0f, 100.0f });
 	Renderer->ShaderHelper.SettingConstantBufferSet("ResultColor", float4(0.0f, 1.0f, 0.0f));
-	Renderer->ShadowOn();
+	Renderer->LightShadowOn();
 
 	if (false == GameEngineInput::GetInst().IsKey("TestChangeKey"))
 	{
@@ -62,7 +62,7 @@ void ShadowTestActor::Update(float _deltaTime)
 
 		if (false == First_)
 		{
-			ShadowRenderTarget_ = GetLevel()->GetMainCamera()->GetShadowRenderTarget();
+			ShadowRenderTarget_ = GetLevel()->GetMainCamera()->GetLightShadowRenderTarget();
 			if (nullptr != ShadowRenderTarget_)
 			{
 				GameEngineRenderWindow* Window = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineRenderWindow>("RenderWindow");

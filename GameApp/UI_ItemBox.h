@@ -5,7 +5,6 @@
 using namespace std;
 // 설명 :
 class GameEngineUIRenderer;
-class Player;
 class ItemBase;
 class ItemBox;
 
@@ -24,10 +23,6 @@ public:
 	UI_ItemBox& operator=(UI_ItemBox&& _Other) noexcept = delete;
 
 public:
-	void SetPlayer(Player* _Player)
-	{
-		Player_ = _Player;
-	}
 
 	void RenderOff();
 	
@@ -43,6 +38,8 @@ public:
 	void PushItem(ItemBase* _OriginItemBase, int _SlotNumber = 0);
 
 	void EmptySlot();
+
+	int SlotMouseCollisionCheck();
 
 protected:
 	GameEngineUIRenderer* ItemBoxBackGround_Renderer;
@@ -66,9 +63,7 @@ private:
 	//슬롯에 아이템이 들어있을때 이미지 렌더를 위한 함수
 	void ItemRenderCheck();
 
-	//이현
 private:
-	Player* Player_;
 
 #pragma region 아이템 출력용 렌더러 + 아이템베이스 모음
 

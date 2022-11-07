@@ -229,6 +229,13 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("SkillR_loop", "Hyunwoo_skillR_loop.UserAnimation", 0);
 	renderer_->CreateFBXAnimation("SkillR_end", "Hyunwoo_skillR_end.UserAnimation", 0, false);
 
+	renderer_->CreateFBXAnimation("Craft", "Hyunwoo_Craft.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Operate", "Hyunwoo_Operate.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("Arrive", "Hyunwoo_Arrive.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestStart", "Hyunwoo_Rest_Start.UserAnimation", 0, false);
+	renderer_->CreateFBXAnimation("RestLoop", "Hyunwoo_Rest_Loop.UserAnimation", 0, true);
+	renderer_->CreateFBXAnimation("RestEnd", "Hyunwoo_Rest_End.UserAnimation", 0, false);
+
 	renderer_->ChangeFBXAnimation("Wait");
 
 	renderer_->GetRenderSet(1).isRender = false;
@@ -377,6 +384,36 @@ void Hyunwoo::changeDeathAnimation()
 	ChangeAnimation("Death", true);
 	//curAnimationName_ = "Death";
 	//renderer_->ChangeFBXAnimation("Death", true);
+}
+
+void Hyunwoo::changeAnimationOperate()
+{
+	ChangeAnimation("Operate");
+}
+
+void Hyunwoo::changeAnimationArrive()
+{
+	ChangeAnimation("Arrive");
+}
+
+void Hyunwoo::changeAnimationRestStart()
+{
+	ChangeAnimation("RestStart");
+}
+
+void Hyunwoo::changeAnimationRestLoop()
+{
+	ChangeAnimation("RestLoop");
+}
+
+void Hyunwoo::changeAnimationRestEnd()
+{
+	ChangeAnimation("RestEnd");
+}
+
+void Hyunwoo::changeAnimationCraft()
+{
+	ChangeAnimation("Craft");
 }
 
 void Hyunwoo::onStartQSkill()

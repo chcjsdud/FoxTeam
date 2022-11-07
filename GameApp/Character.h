@@ -58,6 +58,8 @@ public:
 	void Move(const float4& _position);
 	void MoveWithPathFind(const float4& _position);
 
+	void Hyperloop(const float4& _position);
+
 	void Focus() { bFocused_ = true; }
 	void UnFocus() { bFocused_ = false; }
 	bool IsFocused() { return bFocused_; }
@@ -70,10 +72,8 @@ public:
 	void ChangeOverrideAnimation(const std::string& _animationName, const std::string& _boneNameToAffect, bool _bForce = false);
 
 	void Stun(float _stunTime) override;
-
 	void Knockback(float _knockbackTime, float4 _knockbackSpeed) override;
 	void WallSlam(float _knockbackTime, float4 _knockbackSpeed, float _stunTime) override;
-
 	void Slow(float _slowTime, float _slowRatio) override;
 
 	bool IsDead() { return isPlayerDead_; }
@@ -140,7 +140,12 @@ protected:
 	virtual void changeAnimationWait() = 0;
 	virtual void changeAnimationBasicAttack() = 0;
 	virtual void changeAnimationCook() {}
-	virtual void changeAnimationCraft() {}
+	virtual void changeAnimationCraft() = 0;
+	virtual void changeAnimationOperate() = 0;
+	virtual void changeAnimationArrive() = 0;
+	virtual void changeAnimationRestStart() = 0;
+	virtual void changeAnimationRestLoop() = 0;
+	virtual void changeAnimationRestEnd() = 0;
 	virtual void changeDeathAnimation() = 0;
 
 	// Main(AttackState)
@@ -288,6 +293,21 @@ private:
 
 	void startCook();
 	void updateCook(float _deltaTime);
+
+	void startHyperloopBegin();
+	void updateHyperloopBegin(float _deltaTime);
+
+	void startHyperloopEnd();
+	void updateHyperloopEnd(float _deltaTime);
+
+	void startRestBegin();
+	void updateRestBegin(float _deltaTime);
+
+	void startRestLoop();
+	void updateRestLoop(float _deltaTime);
+
+	void startRestEnd();
+	void updateRestEnd(float _deltaTime);
 #pragma endregion
 
 
@@ -379,6 +399,7 @@ protected:
 	NavMesh* currentNavMesh_;
 	float4 destination_;
 	float4 direction_;
+	float4 hyperloopDest_;
 	std::vector<float4> destinations_;
 	float4 fowColor_ = float4::WHITE;
 

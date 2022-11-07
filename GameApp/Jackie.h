@@ -45,6 +45,12 @@ protected:
 	virtual void changeAnimationWait() override;
 	virtual void changeAnimationBasicAttack() override;
 	virtual void changeDeathAnimation() override;
+	virtual void changeAnimationOperate() override;
+	virtual void changeAnimationArrive() override;
+	virtual void changeAnimationRestStart() override;
+	virtual void changeAnimationRestLoop() override;
+	virtual void changeAnimationRestEnd() override;
+	virtual void changeAnimationCraft() override;
 
 	virtual void onStartBasicAttacking(IUnit* _target) override;
 	virtual void onUpdateBasicAttacking(IUnit* _target, float _deltaTime) override;

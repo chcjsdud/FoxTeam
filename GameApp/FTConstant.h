@@ -12,7 +12,7 @@ namespace FT
 		const float DEFAULT_VISION_RANGE_DAY = 800.f;
 		const float DEFAULT_VISION_RANGE_NIGHT = 600.f;
 		const float DEFAULT_HIDE_RANGE = 2000.f;
-		const float MAXIMUM_DISTANCE_TO_HEAR = 2000.f;
+		const float MAXIMUM_DISTANCE_TO_HEAR = 1000.f;
 	};
 
 	namespace Map

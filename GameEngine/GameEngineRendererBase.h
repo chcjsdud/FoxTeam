@@ -6,7 +6,7 @@
 struct RendererData
 {
 	int IsBump;
-	int IsShadow;
+	int IsLightShadow;
 	int IsAni;
 	int Temp2;
 	int Temp3;
@@ -17,7 +17,7 @@ struct RendererData
 public:
 	RendererData()
 		: IsBump(0)
-		, IsShadow(0)
+		, IsLightShadow(0)
 		, IsAni(0)
 		, Temp2(0)
 		, Temp3(0)
@@ -54,10 +54,21 @@ public: // Public Inline Set Function
 		IsPreprocessing_ = false; 
 	}
 
-public: // Public Shadow Processing Related Function
-	void ShadowOff();
-	void ShadowOn();
+	inline void RendererShadowOn()
+	{
+		IsRendererShadow_ = true;
+	}
 
+	inline void RendererShadowOff()
+	{
+		IsRendererShadow_ = false;
+	}
+
+public: // Public Light Shadow Processing Related Function(기존 그림자처리)
+	void LightShadowOff();
+	void LightShadowOn();
+
+public:
 protected:
 	void Start() override;
 
@@ -65,10 +76,11 @@ protected:
 	virtual void SetRenderGroup(int _Order);
 	virtual void Render(float _DeltaTime, bool _IsDeferred);
 
-protected: // Protected Shadow Processing Related Function
-	virtual void ShadowInit(class GameEngineRenderingPipeLine* _ShadowPipe);
-	virtual void ShadowRender(float _DeltaTime);
+protected: // Protected Shadow Processing Related Function(기존 그림자처리)
+	virtual void LightShadowInit(class GameEngineRenderingPipeLine* _ShadowPipe);
+	virtual void LightShadowRender(float _DeltaTime);
 
+protected:
 private:
 public:
 	GameEngineRendererBase();
@@ -89,7 +101,10 @@ protected:
 protected: // Preprocessing Related Value
 	bool IsPreprocessing_;
 
-protected: // Shadow Related Value
-	GameEngineRenderingPipeLine* DefaultShadowPipeLine_;
-	GameEngineShaderResHelper ShadowHelper_;
+protected: // Renderer Shadow Related Value
+	bool IsRendererShadow_;
+
+protected: // Light Shadow Related Value
+	GameEngineRenderingPipeLine* DefaultLightShadowPipeLine_;
+	GameEngineShaderResHelper LightShadowHelper_;
 };

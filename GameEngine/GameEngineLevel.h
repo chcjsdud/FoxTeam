@@ -111,8 +111,8 @@ private: // Private Actor Level Move Related Function
 private: // Private TimeEventer Update Function
 	void TimeEventUpdate();
 
-private: // Private ShadowTarget Release Function
-	void ReleaseShadowTarget();
+private: // Private ShadowTarget Release Function(기존그림자처리)
+	void ReleaseLightShadowTarget();
 
 public:
 	GameEngineLevel();
@@ -140,11 +140,13 @@ private:
 	std::list<TimeEvent*> AllEvent_;
 	std::list<TimeEvent*> AddEvent_;
 
-private: // Shadow Processing Related Value
-	GameEngineTexture* ShadowTexture_;													// 현재 레벨에서 사용하는 모든 광원(빛)의 데이터의 배열을 가진 텍스쳐 1장			: 광원(빛) 생성마다 삭제되었다가 재생성
+private: // Shadow Processing Related Value(기존 그림자 처리)
+	GameEngineTexture* LightShadowTexture_;												// 현재 레벨에서 사용하는 모든 광원(빛)의 데이터의 배열을 가진 텍스쳐 1장			: 광원(빛) 생성마다 삭제되었다가 재생성
 	std::vector<GameEngineLightComponent*> AllLights_;									// 현재 레벨에서 사용하는 모든 광원(빛)의 목록									: 각 카메라에서 원본관리
-	std::vector<ID3D11RenderTargetView*> RenderTargets_;								// 현재 레벨에서 사용하는 모든 광원(빛)이 가지는 렌더타겟의 리소스				: 
-	std::vector<GameEngineDepthBuffer*> Depths_;										// 현재 레벨에서 사용하는 모든 광원(빛)이 가지는 렌더타겟의 깊이/스텐실 리소스	: 
+	std::vector<ID3D11RenderTargetView*> LightShadowRenderTargets_;						// 현재 레벨에서 사용하는 모든 광원(빛)이 가지는 렌더타겟의 리소스				: 
+	std::vector<GameEngineDepthBuffer*> LightShadowDepths_;								// 현재 레벨에서 사용하는 모든 광원(빛)이 가지는 렌더타겟의 깊이/스텐실 리소스	: 
+
+private:
 };
 
 template<typename UserEnumType>

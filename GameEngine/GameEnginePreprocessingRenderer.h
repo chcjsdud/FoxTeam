@@ -30,8 +30,6 @@ public:
 
 protected:
 private:
-
-private:
 	void SetMesh(std::string _PipeLineName, bool _IsCharacter);
 	void SetFBXMeshRenderSet(std::string _PipeLineName, int _MeshIndex);
 	void SetFBXMeshRenderSetCharacter(std::string _PipeLineName, int _MeshIndex);

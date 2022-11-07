@@ -33,7 +33,7 @@ public:
 	void Render(float _DeltaTime, bool _IsDeferred) override;
 
 protected: // Protected Shadow Initalize Related Function
-	void ShadowInit(GameEngineRenderingPipeLine* _ShadowPipe) override;
+	void LightShadowInit(GameEngineRenderingPipeLine* _ShadowPipe) override;
 
 private:
 	void Update(float _DeltaTime) override;

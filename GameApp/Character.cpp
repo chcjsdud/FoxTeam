@@ -24,6 +24,7 @@
 #include "StunEffect.h"
 #include "LevelUpEffect.h"
 #include "UI_Skill.h"
+#include "UI_ItemBox.h"
 #include "CharCrowdControlPacket.h"
 #include <GameEngine/GameEngineRenderWindow.h>
 #include "FogOfWar.h"
@@ -572,6 +573,41 @@ void Character::checkItemBox()
 
 	if (true == itemBoxmanager_->isOpen())
 	{
+		//int SlotNum = itemBoxmanager_->GetItemBoxUI()->SlotMouseCollisionCheck();
+		//
+		//if (true == GameEngineInput::GetInst().Down("RButton"))
+		//{
+		//	switch (SlotNum)
+		//	{
+		//	case 0:
+		//		getItem(0);
+		//		break;
+		//	case 1:
+		//		getItem(1);
+		//		break;
+		//	case 2:
+		//		getItem(2);
+		//		break;
+		//	case 3:
+		//		getItem(3);
+		//		break;
+		//	case 4:
+		//		getItem(4);
+		//		break;
+		//	case 5:
+		//		getItem(5);
+		//		break;
+		//	case 6:
+		//		getItem(6);
+		//		break;
+		//	case 7:
+		//		getItem(7);
+		//		break;
+		//	default:
+		//		break;
+		//	}
+		//}
+
 		if (true == GameEngineInput::GetInst().Down("1"))
 		{
 			getItem(0);
@@ -882,6 +918,14 @@ void Character::MoveWithPathFind(const float4& _position)
 	}
 }
 
+void Character::Hyperloop(const float4& _position)
+{
+	mainState_ << "NormalState";
+	normalState_ << "HyperloopBegin";
+
+	hyperloopDest_ = _position;
+}
+
 void Character::Show()
 {
 	renderer_->On();
@@ -1171,6 +1215,11 @@ void Character::initState()
 	normalState_.CreateState(MakeState(Character, MixItem));
 	normalState_.CreateState(MakeState(Character, Craft));
 	normalState_.CreateState(MakeState(Character, Cook));
+	normalState_.CreateState(MakeState(Character, HyperloopBegin));
+	normalState_.CreateState(MakeState(Character, HyperloopEnd));
+	normalState_.CreateState(MakeState(Character, RestBegin));
+	normalState_.CreateState(MakeState(Character, RestLoop));
+	normalState_.CreateState(MakeState(Character, RestEnd));
 
 	attackState_.CreateState(MakeState(Character, BasicAttack));
 	attackState_.CreateState(MakeState(Character, BasicAttacking));
@@ -1883,6 +1932,90 @@ void Character::updateCook(float _deltaTime)
 		mixingItem();
 		normalState_ << "Watch";
 		return;
+	}
+}
+
+void Character::startHyperloopBegin()
+{
+	changeAnimationOperate();
+	FT::PlaySoundAndSendPacket("hyperLoopWorking.wav", transform_.GetWorldPosition());
+}
+
+void Character::updateHyperloopBegin(float _deltaTime)
+{
+	if (renderer_->IsCurrentAnimationEnd())
+	{
+		transform_.SetWorldPosition(hyperloopDest_);
+		FT::PlaySoundAndSendPacket("hyperloop_arrive.wav", transform_.GetWorldPosition());
+		normalState_ << "HyperloopEnd";
+	}
+}
+
+void Character::startHyperloopEnd()
+{
+	changeAnimationArrive();
+}
+
+void Character::updateHyperloopEnd(float _deltaTime)
+{
+	if (renderer_->IsCurrentAnimationEnd())
+	{
+		normalState_ << "Watch";
+	}
+}
+
+void Character::startRestBegin()
+{
+	changeAnimationRestStart();
+}
+
+void Character::updateRestBegin(float _deltaTime)
+{
+	if (renderer_->IsCurrentAnimationEnd())
+	{
+		normalState_ << "RestLoop";
+	}
+}
+
+void Character::startRestLoop()
+{
+	changeAnimationRestLoop();
+}
+
+void Character::updateRestLoop(float _deltaTime)
+{
+	if (GameEngineInput::Up("X"))
+	{
+		normalState_ << "RestEnd";
+	}
+
+	if (normalState_.GetTime() > 3.0f)
+	{
+		normalState_.GetCurrentState()->Time_ = 0.0f;
+		stat_.HP += stat_.HPMax * 0.1f;
+		stat_.SP += stat_.SPMax * 0.1f;
+		if (stat_.HP > stat_.HPMax)
+		{
+			stat_.HP = stat_.HPMax;
+		}
+
+		if (stat_.SP > stat_.SPMax)
+		{
+			stat_.SP = stat_.SPMax;
+		}
+	}
+}
+
+void Character::startRestEnd()
+{
+	changeAnimationRestEnd();
+}
+
+void Character::updateRestEnd(float _deltaTime)
+{
+	if (renderer_->IsCurrentAnimationEnd())
+	{
+		normalState_ << "Watch";
 	}
 }
 

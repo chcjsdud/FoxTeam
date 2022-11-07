@@ -71,7 +71,7 @@ void GameEngineFBXRenderer::Render(float _DeltaTime, bool _IsDeferred)
 	}
 }
 
-void GameEngineFBXRenderer::ShadowRender(float _DeltaTime)
+void GameEngineFBXRenderer::LightShadowRender(float _DeltaTime)
 {
 	for (size_t i = 0; i < RenderSets.size(); i++)
 	{
@@ -81,16 +81,16 @@ void GameEngineFBXRenderer::ShadowRender(float _DeltaTime)
 		}
 
 		// Shadow PipeLine Vertex Buffer & Index Buffer Setting
-		DefaultShadowPipeLine_->SetInputAssembler1VertexBufferSetting(RenderSets[i].PipeLine_->GetVertexBuffer());
-		DefaultShadowPipeLine_->SetInputAssembler2IndexBufferSetting(RenderSets[i].PipeLine_->GetIndexBuffer());
+		DefaultLightShadowPipeLine_->SetInputAssembler1VertexBufferSetting(RenderSets[i].PipeLine_->GetVertexBuffer());
+		DefaultLightShadowPipeLine_->SetInputAssembler2IndexBufferSetting(RenderSets[i].PipeLine_->GetIndexBuffer());
 
 		// Shadow ShaderHelper StructuredBuffer Setting & Link
-		ShadowHelper_.SettingStructuredBufferSetting("ArrAniMationMatrix", RenderSets[i].ShaderHelper->GetStructuredBufferSetting("ArrAniMationMatrix"));
-		ShadowHelper_.SettingStructuredBufferLink("ArrAniMationMatrix", &RenderSets[i].BoneData[0], sizeof(float4x4) * RenderSets[i].BoneData.size());
-		ShadowHelper_.Setting();
+		LightShadowHelper_.SettingStructuredBufferSetting("ArrAniMationMatrix", RenderSets[i].ShaderHelper->GetStructuredBufferSetting("ArrAniMationMatrix"));
+		LightShadowHelper_.SettingStructuredBufferLink("ArrAniMationMatrix", &RenderSets[i].BoneData[0], sizeof(float4x4) * RenderSets[i].BoneData.size());
+		LightShadowHelper_.Setting();
 
 		// Shadow Rendering
-		DefaultShadowPipeLine_->Rendering();
+		DefaultLightShadowPipeLine_->Rendering();
 	}
 }
 

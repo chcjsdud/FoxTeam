@@ -1149,11 +1149,11 @@ void GameEngineCore::EngineResourcesCreate()
 
 	{ // 221101 SJH ADD : 그림자처리 렌더링파이프라인
 	  // -> 앞뒷면 상관없이 렌더링
-		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DepthShadow");
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("LightShadow");
 		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
 		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
-		Pipe->SetVertexShader("Shadow_VS");
-		Pipe->SetPixelShader("Shadow_PS");
+		Pipe->SetVertexShader("LightShadow_VS");
+		Pipe->SetPixelShader("LightShadow_PS");
 		Pipe->SetOutputMergerDepthStencil("ShadowDepth");
 		Pipe->SetRasterizer("EngineBaseRasterizerNone");
 		Pipe->SetOutputMergerBlend("AlphaBlend");

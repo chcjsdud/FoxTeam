@@ -54,16 +54,22 @@ CameraComponent::~CameraComponent()
 		CameraDeferredTarget_ = nullptr;
 	}
 
+	if (nullptr != LightShadowRenderTarget_)
+	{
+		delete LightShadowRenderTarget_;
+		LightShadowRenderTarget_ = nullptr;
+	}
+
 	if (nullptr != CameraPreprocessingTarget_)
 	{
 		delete CameraPreprocessingTarget_;
 		CameraPreprocessingTarget_ = nullptr;
 	}
 
-	if (nullptr != ShadowRenderTarget_)
+	if (nullptr != CameraRendererShadowTarget_)
 	{
-		delete ShadowRenderTarget_;
-		ShadowRenderTarget_ = nullptr;
+		delete CameraRendererShadowTarget_;
+		CameraRendererShadowTarget_ = nullptr;
 	}
 }
 
@@ -299,6 +305,9 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 		}
 	}
 
+	// 그림자렌더러를 렌더링하고,
+	RenderShadow(_DeltaTime);
+
 	// 선처리렌더러를 먼저그리고,
 	for (GameEngineRendererBase* Renderer : OutLineList)
 	{
@@ -343,21 +352,21 @@ void CameraComponent::RenderDeffered(float _DeltaTime)
 	}
 
 	// Shadow Render
-	if (nullptr != GetLevel()->ShadowTexture_)
+	if (nullptr != GetLevel()->LightShadowTexture_)
 	{
-		RenderShadow(_DeltaTime);								// 221106 SJH : 임시주석(그림자 적용 안되는 이유 찾는중....)
+		RenderLightShadow(_DeltaTime);
 	}
 
 	CalLightEffect.Effect(_DeltaTime);
 	DeferredMergeEffect.Effect(_DeltaTime);
 }
 
-void CameraComponent::RenderShadow(float _DeltaTime)
+void CameraComponent::RenderLightShadow(float _DeltaTime)
 {
-	if (nullptr == ShadowRenderTarget_)
+	if (nullptr == LightShadowRenderTarget_)
 	{
-		ShadowRenderTarget_ = new GameEngineRenderTarget();
-		ShadowRenderTarget_->Create(GetLevel()->ShadowTexture_, float4::BLUE);
+		LightShadowRenderTarget_ = new GameEngineRenderTarget();
+		LightShadowRenderTarget_->Create(GetLevel()->LightShadowTexture_, float4::BLUE);
 	}
 
 	// Shadow Rendering
@@ -366,7 +375,7 @@ void CameraComponent::RenderShadow(float _DeltaTime)
 	for (; LightStartIter != LightEndIter; ++LightStartIter)
 	{
 		// Current Light Shadow RenderTarget Setting
-		(*LightStartIter)->ShadowTargetSetting();
+		(*LightStartIter)->LightShadowTargetSetting();
 
 		// RenderList를 순회하며 그림자렌더링 활성화가 되어있는 렌더러를 타겟에 렌더링
 		for (std::pair<int, std::list<GameEngineRendererBase*>> Pair : RendererList_)
@@ -379,7 +388,7 @@ void CameraComponent::RenderShadow(float _DeltaTime)
 					continue;
 				}
 
-				if (1 != Renderer->RendererDataInst.IsShadow)
+				if (1 != Renderer->RendererDataInst.IsLightShadow)
 				{
 					continue;
 				}
@@ -400,12 +409,20 @@ void CameraComponent::RenderShadow(float _DeltaTime)
 				Renderer->GetTransform()->GetTransformData().WVPCalculation();
 
 				// Shadow Rendering
-				Renderer->ShadowRender(_DeltaTime);
+				Renderer->LightShadowRender(_DeltaTime);
 			}
 		}
 	}
 
-	CalLightEffect.GetShaderRes().SettingTexture("ShadowTex", GetLevel()->ShadowTexture_);
+	CalLightEffect.GetShaderRes().SettingTexture("LightShadowTex", GetLevel()->LightShadowTexture_);
+}
+
+void CameraComponent::RenderShadow(float _DeltaTime)
+{
+	// 
+
+
+
 }
 
 void CameraComponent::CameraZoomReset()
@@ -448,6 +465,11 @@ void CameraComponent::PushLight(GameEngineLightComponent* _Light)
 void CameraComponent::PushPreprocessingRenderer(GameEngineRendererBase* _BaseRenderer, GameEnginePreprocessingRenderer* _PreprocessingRenderer)
 {
 	PreprocessingRendererList_[_BaseRenderer].push_back(_PreprocessingRenderer);
+}
+
+void CameraComponent::PushShadowRenderer(GameEngineRendererBase* _BaseRenderer, GameEngineShadowRenderer* _ShadowRenderer)
+{
+	ShadowRendererList_[_BaseRenderer] = _ShadowRenderer;
 }
 
 void CameraComponent::PushDebugRender(GameEngineTransform* _Trans, CollisionType _Type, float4 _Color)
@@ -570,6 +592,10 @@ void CameraComponent::Start()
 
 	CameraPreprocessingTarget_ = new GameEngineRenderTarget();
 	CameraPreprocessingTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
+
+	CameraRendererShadowTarget_ = new GameEngineRenderTarget();										// 221107 SJH ADD : 그림자렌더러 렌더링 타겟
+	CameraRendererShadowTarget_->Create(GameEngineWindow::GetInst().GetSize(), float4::NONE);
+	CameraRendererShadowTarget_->SetDepthBuffer(CameraBufferTarget_->GetDepthBuffer());
 }
 
 void CameraComponent::Update(float _DeltaTime)
