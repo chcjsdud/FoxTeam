@@ -440,12 +440,12 @@ void Rio::onStartQSkill()
 	if (bLongBow_)
 	{
 		overrideAnimationName_ = "SkillQ_Long";
-		stat_.AttackRange = 550.f;
+		stat_.AttackRange = 450.0f;
 	}
 	else
 	{
 		overrideAnimationName_ = "SkillQ_Short";
-		stat_.AttackRange = 450.0f;
+		stat_.AttackRange = 550.0f;
 	}
 
 	renderer_->OverrideFBXAnimation(overrideAnimationName_, overrideAnimationBoneName_);
