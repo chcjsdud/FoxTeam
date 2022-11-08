@@ -109,7 +109,7 @@ void ItemBoxManager::BoxSelectUpdate()
 
 	if (nullptr == col)
 	{
-		selectBox_ = nullptr;
+		//selectBox_ = nullptr;
 		return;
 	}
 
@@ -177,7 +177,6 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 	
 	if (nullptr == findItem)
 	{
-		GameEngineDebug::MsgBoxError("아이템을 찾지 못했습니다.");
 		return;
 	}
 	

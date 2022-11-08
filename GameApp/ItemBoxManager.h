@@ -116,6 +116,11 @@ public:
 		return bOpen_;
 	}
 
+	void ResetSelectBox()
+	{
+		selectBox_ = nullptr;
+	}
+
 	void OpenItemBox();
 	void CloseItemBox();
 	ItemBase* GetItemFromItemBox(int _index);

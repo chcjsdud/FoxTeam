@@ -384,7 +384,6 @@ void Character::getItem(int _index)
 
 	if (nullptr == Item)
 	{
-		GameEngineDebug::MsgBox("아이템을 찾지 못했습니다.");
 		return;
 	}
 
@@ -633,6 +632,7 @@ void Character::checkItemBox()
 	if (nullptr == OtherCol)
 	{
 		itemBoxmanager_->CloseItemBox();
+		itemBoxmanager_->ResetSelectBox();
 		return;
 	}
 
