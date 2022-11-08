@@ -1,6 +1,9 @@
 #include "PreCompile.h"
 #include "HyperLoop.h"
+
 #include <GameEngine/GameEngineCollision.h>
+#include <GameEngine/GameEngineFBXRenderer.h>
+
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
 #include "PlayerInfoManager.h"
@@ -68,23 +71,36 @@ void HyperLoop::Update(float _DeltaTime)
 
 	}
 
+	std::list<GameEngineCollision*> list = collision_->GetCollisionList(eCollisionGroup::Player);
 
-	if (true == collision_->Collision(eCollisionGroup::Player) 
-		&& !PlayerInfoManager::GetInstance()->GetMainCharacter()->IsOperating())
-	{
-		//이건호 : 맵 UI를 킨다 
-		// MapOff(); 함수를 사용하면 Map뜬거를 끌수 있습니다
-		mapUI_->MapOn();
-
-		//이건호 : 내가 맵에서 우클릭으로 클릭한 지역을 enum class Location으로 받을 수 있습니다
-		SelectedArea = mapUI_->ReturnSelectedLocation();
-	}
-
-	if (false == collision_->Collision(eCollisionGroup::Player))
+	if (list.size() <= 0)
 	{
 		mapUI_->MapOff();
 		SelectedArea = Location::NONE;
 	}
+
+
+	for (GameEngineCollision* col : list)
+	{
+		Character* colCharacter = static_cast<Character*>(col->GetActor());
+		Character* player = PlayerInfoManager::GetInstance()->GetMainCharacter();
+		if (colCharacter == player && !player->IsOperating())
+		{
+			//이건호 : 맵 UI를 킨다 
+			// MapOff(); 함수를 사용하면 Map뜬거를 끌수 있습니다
+			mapUI_->MapOn();
+
+			//이건호 : 내가 맵에서 우클릭으로 클릭한 지역을 enum class Location으로 받을 수 있습니다
+			SelectedArea = mapUI_->ReturnSelectedLocation();
+		}
+		else
+		{
+			mapUI_->MapOff();
+			SelectedArea = Location::NONE;
+		}
+	}
+
+
 
 	if (Location::NONE != SelectedArea)
 	{
