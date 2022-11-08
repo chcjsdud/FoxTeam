@@ -100,6 +100,7 @@ Character::Character()
 	, bHidden_(false)
 	, prohibitTimer_(0.0f)
 	, curLocation_(Location::NONE)
+	, hyperLocation_(Location::NONE)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -917,12 +918,13 @@ void Character::MoveWithPathFind(const float4& _position)
 	}
 }
 
-void Character::Hyperloop(const float4& _position)
+void Character::Hyperloop(const float4& _position, Location _location)
 {
 	mainState_ << "NormalState";
 	normalState_ << "HyperloopBegin";
 
 	hyperloopDest_ = _position;
+	hyperLocation_ = _location;
 }
 
 void Character::Show()
@@ -1963,6 +1965,8 @@ void Character::updateHyperloopBegin(float _deltaTime)
 		transform_.SetWorldPosition(hyperloopDest_);
 		destination_ = hyperloopDest_;
 		FT::PlaySoundAndSendPacket("hyperloop_arrive.wav", transform_.GetWorldPosition());
+		curLocation_ = hyperLocation_;
+		hyperLocation_ = Location::NONE;
 		normalState_ << "HyperloopEnd";
 	}
 }
@@ -2657,6 +2661,7 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 		if (0.0f >= prohibitedCounter_)
 		{
 			FT::PlaySoundAndSendPacket("Sfx_RestrictedDamage.wav", transform_.GetWorldPosition());
+			fraggerIndex_ = -3;
 			Damage(10000.0f, nullptr);
 		}
 	}

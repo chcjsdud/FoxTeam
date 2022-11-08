@@ -112,7 +112,7 @@ void HyperLoop::Update(float _DeltaTime)
 
 		//player->GetTransform()->SetWorldPosition(spawnPoints[point]);
 
-		player->Hyperloop(spawnPoints[point]);
+		player->Hyperloop(spawnPoints[point], SelectedArea);
 
 		mapUI_->MapOff();
 		SelectedArea = Location::NONE;

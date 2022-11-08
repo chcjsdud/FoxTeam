@@ -59,7 +59,7 @@ public:
 	void Move(const float4& _position);
 	void MoveWithPathFind(const float4& _position);
 
-	void Hyperloop(const float4& _position);
+	void Hyperloop(const float4& _position, Location _location);
 	bool IsOperating() { return normalState_.GetCurrentStateName() == "HyperloopBegin"; }
 
 	void Focus() { bFocused_ = true; }
@@ -403,6 +403,7 @@ protected:
 	float4 destination_;
 	float4 direction_;
 	float4 hyperloopDest_;
+	Location hyperLocation_;
 	std::vector<float4> destinations_;
 	float4 fowColor_ = float4::WHITE;
 
@@ -460,7 +461,6 @@ protected:
 
 	GameEngineFSM deathState_;
 
-
 	// 비 군중 제어 but 스탯 관여
 	bool bSlowFlag_;
 	float slowTimer_;
@@ -502,6 +502,7 @@ protected:
 	float prohibitedCounter_;
 	float prohibitTimer_;
 	Location curLocation_;
+
 
 private:
 	enum class eCurrentAnimation
