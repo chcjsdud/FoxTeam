@@ -39,7 +39,7 @@ void UI_ItemBox::Start()
 	BasicSlotPos = { -77.0f, -93.0f, 0.0f };
 	SlotXPivot = { 52.0f, 0.0f, 0.0f };
 	SlotYPivot = { 0.0f, -37.0f, 0.0f };
-	SlotSize = { 44.0f,27.0f };
+	SlotSize = { 44.0f,27.0f, 1.f };
 
 		//z값을 이용해 앞에오는 이미지/뒤에오는 이미지 순서를 정하고 있습니다.
 		//위치정보가 될 float도 양이 늘어나면 map이나 vector로 관리할 예정입니다.
@@ -59,54 +59,54 @@ void UI_ItemBox::Start()
 
 	{
 		//마우스와의 충돌을 위해서 aabbbox3d로 충돌
-		ItemBoxCollision = CreateTransformComponent<GameEngineCollision>();
-		ItemBoxCollision->GetTransform()->SetLocalPosition(BackgroundPos);
-		ItemBoxCollision->GetTransform()->SetLocalScaling(ItemBoxBackGround_Renderer->GetCurrentTexture()->GetTextureSize());
-		ItemBoxCollision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
-	}
-
-	{
-		//마우스와의 충돌을 위해서 aabbbox3d로 충돌
 
 		Slot0Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot0Collision->GetTransform()->SetLocalPosition(BasicSlotPos);
 		Slot0Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot0Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot0Collision->SetCollisionGroup(eCollisionGroup::UI);
+		Slot0Collision->SetCollisionType(CollisionType::Rect);
 
 		Slot1Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot1Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotXPivot);
 		Slot1Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot1Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot1Collision->SetCollisionGroup(eCollisionGroup::UI);
+		Slot1Collision->SetCollisionType(CollisionType::Rect);
 
 		Slot2Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot2Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 2.0f));
 		Slot2Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot2Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot2Collision->SetCollisionGroup(eCollisionGroup::UI);
+		Slot2Collision->SetCollisionType(CollisionType::Rect);
 
 		Slot3Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot3Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 3.0f));
 		Slot3Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot3Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot3Collision->SetCollisionGroup(eCollisionGroup::UI);
+		Slot3Collision->SetCollisionType(CollisionType::Rect);
 
 		Slot4Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot4Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotYPivot);
 		Slot4Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot4Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot4Collision->SetCollisionGroup(eCollisionGroup::UI);
+		Slot4Collision->SetCollisionType(CollisionType::Rect);
 
 		Slot5Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot5Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotXPivot + SlotYPivot);
 		Slot5Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot5Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot5Collision->SetCollisionGroup(eCollisionGroup::UI);
+		Slot5Collision->SetCollisionType(CollisionType::Rect);
 
 		Slot6Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot6Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 2.0f) + SlotYPivot);
 		Slot6Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot6Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot6Collision->SetCollisionGroup(eCollisionGroup::UI);
+		Slot6Collision->SetCollisionType(CollisionType::Rect);
 
 		Slot7Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot7Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 3.0f) + SlotYPivot);
 		Slot7Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot7Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+		Slot7Collision->SetCollisionGroup(eCollisionGroup::UI);
+		Slot7Collision->SetCollisionType(CollisionType::Rect);
 	}
 
 	{
@@ -165,14 +165,14 @@ void UI_ItemBox::Update(float _Time)
 		{
 			ItemBoxBackGround_Renderer->On();
 			BoxtypeFont_Renderer->On();
-		//	GetLevel()->PushDebugRenderUI(Slot0Collision->GetTransform(), CollisionType::AABBBox3D);
-		//	GetLevel()->PushDebugRenderUI(Slot1Collision->GetTransform(), CollisionType::AABBBox3D);
-		//	GetLevel()->PushDebugRenderUI(Slot2Collision->GetTransform(), CollisionType::AABBBox3D);
-		//	GetLevel()->PushDebugRenderUI(Slot3Collision->GetTransform(), CollisionType::AABBBox3D);
-		//	GetLevel()->PushDebugRenderUI(Slot4Collision->GetTransform(), CollisionType::AABBBox3D);
-		//	GetLevel()->PushDebugRenderUI(Slot5Collision->GetTransform(), CollisionType::AABBBox3D);
-		//	GetLevel()->PushDebugRenderUI(Slot6Collision->GetTransform(), CollisionType::AABBBox3D);
-		//	GetLevel()->PushDebugRenderUI(Slot7Collision->GetTransform(), CollisionType::AABBBox3D);
+			//GetLevel()->PushDebugRenderUI(Slot0Collision->GetTransform(), CollisionType::AABBBox3D);
+			//GetLevel()->PushDebugRenderUI(Slot1Collision->GetTransform(), CollisionType::AABBBox3D);
+			//GetLevel()->PushDebugRenderUI(Slot2Collision->GetTransform(), CollisionType::AABBBox3D);
+			//GetLevel()->PushDebugRenderUI(Slot3Collision->GetTransform(), CollisionType::AABBBox3D);
+			//GetLevel()->PushDebugRenderUI(Slot4Collision->GetTransform(), CollisionType::AABBBox3D);
+			//GetLevel()->PushDebugRenderUI(Slot5Collision->GetTransform(), CollisionType::AABBBox3D);
+			//GetLevel()->PushDebugRenderUI(Slot6Collision->GetTransform(), CollisionType::AABBBox3D);
+			//GetLevel()->PushDebugRenderUI(Slot7Collision->GetTransform(), CollisionType::AABBBox3D);
 		}
 	}
 
@@ -236,42 +236,43 @@ void UI_ItemBox::EmptySlot()
 
 int UI_ItemBox::SlotMouseCollisionCheck()
 {
-	if (true == Slot0Collision->Collision(CollisionType::AABBBox3D))
+	
+	if (true == Slot0Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		return 0;
 	}
 
-	if (true == Slot1Collision->Collision(CollisionType::AABBBox3D))
+	if (true == Slot1Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		return 1;
 	}
 
-	if (true == Slot2Collision->Collision(CollisionType::AABBBox3D))
+	if (true == Slot2Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		return 2;
 	}
 
-	if (true == Slot3Collision->Collision(CollisionType::AABBBox3D))
+	if (true == Slot3Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		return 3;
 	}
 
-	if (true == Slot4Collision->Collision(CollisionType::AABBBox3D))
+	if (true == Slot4Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		return 4;
 	}
 
-	if (true == Slot5Collision->Collision(CollisionType::AABBBox3D))
+	if (true == Slot5Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		return 5;
 	}
 
-	if (true == Slot6Collision->Collision(CollisionType::AABBBox3D))
+	if (true == Slot6Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		return 6;
 	}
 
-	if (true == Slot7Collision->Collision(CollisionType::AABBBox3D))
+	if (true == Slot7Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		return 7;
 	}
@@ -304,17 +305,6 @@ void UI_ItemBox::GetItemBoxInfo(ItemBox* _ItemBox)
 	}
 }
 
-bool UI_ItemBox::MouseCollisionCheck()
-{
-	if (true == ItemBoxCollision->Collision((int)eCollisionGroup::MousePointer))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
 
 void UI_ItemBox::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 {

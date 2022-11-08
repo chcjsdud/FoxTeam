@@ -28,8 +28,6 @@ public:
 	
 	void RenderOn();
 
-	bool MouseCollisionCheck();
-
 	//아이템 리스트를 받아서 pushitem을 해주는 함수
 	void GetItemBoxInfo(list<ItemBase*> _ItemList);
 
@@ -51,7 +49,6 @@ protected:
 private:
 	float Time;
 	bool UI_On;
-	GameEngineCollision* ItemBoxCollision;
 
 private:
 	void Start() override;
