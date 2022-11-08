@@ -3,6 +3,7 @@
 
 #include <GameEngine/GameEngineWindow.h>
 #include <GameEngine/GameEngineRenderWindow.h>
+#include <GameEngine/GameEngineShadowRenderer.h>
 
 void ShadowTestActor::TestResourceLoad()
 {
@@ -29,15 +30,21 @@ void ShadowTestActor::Start()
 	TestBaseRenderer_->ChangeFBXAnimation("Run_Short");
 	TestBaseRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	TestBaseRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
-	TestBaseRenderer_->LightShadowOn();
+	//TestBaseRenderer_->LightShadowOn();
 
-	GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
-	Renderer->SetRenderingPipeLine("DeferredColor");
-	Renderer->SetMesh("Sphere");
-	Renderer->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });
-	Renderer->GetTransform()->SetLocalPosition({ 100.0f, 300.0f, 100.0f });
-	Renderer->ShaderHelper.SettingConstantBufferSet("ResultColor", float4(0.0f, 1.0f, 0.0f));
-	Renderer->LightShadowOn();
+	ShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
+	ShadowRenderer_->SetBaseRenderer(TestBaseRenderer_, "RendererShadow");
+	ShadowRenderer_->GetTransform()->SetLocalPosition({ 200.0f, 0.0f, 0.0f });
+	ShadowRenderer_->GetTransform()->SetLocalScaling(TestBaseRenderer_->GetTransform()->GetLocalScaling());
+	ShadowRenderer_->GetTransform()->SetLocalRotationDegree(TestBaseRenderer_->GetTransform()->GetLocalRotation());
+
+	//GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
+	//Renderer->SetRenderingPipeLine("DeferredColor");
+	//Renderer->SetMesh("Sphere");
+	//Renderer->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });
+	//Renderer->GetTransform()->SetLocalPosition({ 100.0f, 300.0f, 100.0f });
+	//Renderer->ShaderHelper.SettingConstantBufferSet("ResultColor", float4(0.0f, 1.0f, 0.0f));
+	//Renderer->LightShadowOn();
 
 	if (false == GameEngineInput::GetInst().IsKey("TestChangeKey"))
 	{
@@ -86,6 +93,7 @@ ShadowTestActor::ShadowTestActor()
 	: IsChange_(false)
 	, First_(false)
 	, TestBaseRenderer_(nullptr)
+	, ShadowRenderer_(nullptr)
 	, ShadowRenderTarget_(nullptr)
 {
 }

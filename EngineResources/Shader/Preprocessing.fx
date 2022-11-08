@@ -45,28 +45,14 @@ VertexOut Preprocessing_VS(VertexIn _In)
     return Out;
 }
 
-
-struct DeferredOutPut
-{
-    float4 ViewDif : SV_Target0;
-};
-
-Texture2D DiffuseTex : register(t0);
-Texture2D NormalTex : register(t1);
-SamplerState Smp : register(s0);
-
 cbuffer OutLineData : register(b1)
 {
     float4 LineColor;
     float LineThickness;
 };
 
-DeferredOutPut Preprocessing_PS(VertexOut _In)
+float4 Preprocessing_PS(VertexOut _In) : SV_Target0
 {
-    DeferredOutPut Out;
-
-    Out.ViewDif = LineColor;
-    
-    return Out;
+    return LineColor;
 }
 

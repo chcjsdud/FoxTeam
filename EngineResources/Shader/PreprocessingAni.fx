@@ -23,15 +23,6 @@ struct VertexOut
     float4 ViewTangent : TANGENT;
 };
 
-struct DeferredOutPut
-{
-    float4 ViewDif : SV_Target0;
-};
-
-Texture2D DiffuseTex : register(t0);
-Texture2D NormalTex : register(t1);
-SamplerState Smp : register(s0);
-
 cbuffer OutLineData : register(b1)
 {
     float4 LineColor;
@@ -64,11 +55,7 @@ VertexOut PreprocessingAni_VS(VertexIn _In)
     return Out;
 }
 
-DeferredOutPut PreprocessingAni_PS(VertexOut _In)
+float4 PreprocessingAni_PS(VertexOut _In) : SV_Target0
 {
-    DeferredOutPut Out;
-
-    Out.ViewDif = LineColor;
-    
-    return Out;
+    return LineColor;
 }

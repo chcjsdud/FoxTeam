@@ -23,15 +23,6 @@ struct VertexOut
     float4 ViewTangent : TANGENT;
 };
 
-struct DeferredOutPut
-{
-    float4 ViewDif : SV_Target0;
-};
-
-Texture2D DiffuseTex : register(t0);
-Texture2D NormalTex : register(t1);
-SamplerState Smp : register(s0);
-
 VertexOut RendererShadow_VS(VertexIn _In)
 {
     VertexOut Out = (VertexOut) 0;
@@ -58,11 +49,7 @@ VertexOut RendererShadow_VS(VertexIn _In)
     return Out;
 }
 
-DeferredOutPut RendererShadow_PS(VertexOut _In)
+float4 RendererShadow_PS(VertexOut _In) : SV_Target0
 {
-    DeferredOutPut Out;
-
-    Out.ViewDif = float4(0.0f, 0.0f, 0.0f, 0.5f);
-    
-    return Out;
+    return float4(0.0f, 0.0f, 0.0f, 0.5f);
 }

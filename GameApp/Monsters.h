@@ -252,6 +252,9 @@ protected: // 기본 컴포넌트
 	GameEngineCollision* SkillAtkReadyCollider_;										// 스킬공격준비 충돌체(서브 -> 스킬공격감지(준비))
 	GameEngineCollision* SkillAtkCollider_;												// 스킬공격 충돌체(서브 -> 스킬공격충돌체)
 
+protected: // 그림자 컴포넌트
+	GameEngineShadowRenderer* MainShadowRenderer_;										// 메인렌더러의 그림자 렌더러 : 메인렌더러가 Off 상태라면 그림자렌더러 Off상태
+
 protected: // 선처리 컴포넌트
 	GameEnginePreprocessingRenderer* MainOutLineRenderer_;								// 메인렌더러의 선처리 렌더러(외곽선) : 메인렌더러가 Off 상태라면 외곽선렌더러 Off상태
 	GameEnginePreprocessingRenderer* MainSilhouetteRenderer_;							// 메인렌더러의 선처리 렌더러(실루엣) : 메인렌더러가 Off 상태라면 실루엣렌더러 Off상태

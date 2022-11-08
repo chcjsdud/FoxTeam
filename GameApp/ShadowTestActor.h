@@ -6,6 +6,7 @@
 // Ό³Έν : 
 class GameEngineRenderTarget;
 class GameEngineFBXRenderer;
+class GameEngineShadowRenderer;
 class GameEnginePreprocessingRenderer;
 class ShadowTestActor : public GameEngineActor
 {
@@ -38,6 +39,7 @@ private:
 
 private:
 	GameEngineFBXRenderer* TestBaseRenderer_;
+	GameEngineShadowRenderer* ShadowRenderer_;
 	GameEngineRenderTarget* ShadowRenderTarget_;
 };
 
