@@ -131,9 +131,19 @@ void PlayerUIController::Update(float _DeltaTime)
 	
 	for (size_t i = 0; i < lumiaLevel->GetCharacterActorList().size(); i++)
 	{
-		float4 pos = lumiaLevel->GetCharacterActorList()[i]->GetTransform()->GetLocalPosition();
-		pos = calhelper_->Cal3Dto2D(pos);
-		pos = calhelper_->CalRound(pos);
+		float4 pos;
+
+		if (i == pm->GetMyNumber() && false == GetLevel()->GetMainCameraActor()->IsFreeCameraMode())
+		{
+			pos = { 0.0f, 0.0f };
+		}
+		else
+		{
+			pos = lumiaLevel->GetCharacterActorList()[i]->GetTransform()->GetLocalPosition();
+			pos = calhelper_->Cal3Dto2D(pos);
+			pos = calhelper_->CalRound(pos);
+		}
+
 
 		bool hidden = lumiaLevel->GetCharacterActorList()[i]->IsHidden();
 

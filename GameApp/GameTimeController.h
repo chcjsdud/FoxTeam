@@ -119,5 +119,7 @@ private:	// 금지구역 랜덤생성용
 
 	bool isReserved_;
 
+private: // 게임 시작 
+
 };
 

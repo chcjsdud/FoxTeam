@@ -503,10 +503,10 @@ void GameTimeController::MakeNextProhibitedArea()
 	}
 
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
-	PlayLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText("60초 후 새 금지 구역이 지정됩니다 : " + PlayLevel->GetProhibitedAreaList()[nextProhibitArea0_]->GetKoreanName() + " & " + PlayLevel->GetProhibitedAreaList()[nextProhibitArea1_]->GetKoreanName(), 5.f);
+	PlayLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText("다음 금지 구역이 예정되었습니다 : " + PlayLevel->GetProhibitedAreaList()[nextProhibitArea0_]->GetKoreanName() + " & " + PlayLevel->GetProhibitedAreaList()[nextProhibitArea1_]->GetKoreanName(), 5.f);
 
 	NoticeBroadcastPacket packet;
-	packet.SetString("60초 후 새 금지 구역이 지정됩니다 : " + PlayLevel->GetProhibitedAreaList()[nextProhibitArea0_]->GetKoreanName() + " & " + PlayLevel->GetProhibitedAreaList()[nextProhibitArea1_]->GetKoreanName());
+	packet.SetString("다음 금지 구역이 예정되었습니다 : " + PlayLevel->GetProhibitedAreaList()[nextProhibitArea0_]->GetKoreanName() + " & " + PlayLevel->GetProhibitedAreaList()[nextProhibitArea1_]->GetKoreanName());
 	packet.SetTimer(5.0f);
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
