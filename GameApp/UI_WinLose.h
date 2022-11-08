@@ -40,6 +40,9 @@ protected:
 	void startNoAppear();
 	void updateNoAppear(float _DeltaTime);
 
+	void startInterval();
+	void updateInterval(float _DeltaTime);
+
 	void startAppear();
 	void updateAppear(float _DeltaTime);
 
@@ -65,11 +68,14 @@ private:
 	GameEngineUIRenderer* exitBtnRenderer_;
 	GameEngineCollision* exitBtnCollision_;
 
+	float intervalTimer_;
+
 	bool isActivated_;
 	float appearTimer_;
 	bool isAllAppeared_;
 	float TIME_APPEAR_DEFAULT = 1.5f;
 	bool isWinner_;
+
 
 	GameEngineFSM UIstate_;
 };

@@ -202,6 +202,7 @@ void UI_WinLose::Start()
 	exitBtnCollision_->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 
 	UIstate_.CreateState(MakeState(UI_WinLose, NoAppear));
+	UIstate_.CreateState(MakeState(UI_WinLose, Interval));
 	UIstate_.CreateState(MakeState(UI_WinLose, Appear));
 	UIstate_.CreateState(MakeState(UI_WinLose, StandBy));
 
@@ -224,6 +225,23 @@ void UI_WinLose::updateNoAppear(float _DeltaTime)
 {
 	if (true == isActivated_)
 	{
+		UIstate_.ChangeState("Interval", true);
+		return;
+	}
+}
+
+void UI_WinLose::startInterval()
+{
+	intervalTimer_ = 0.0f;
+}
+
+void UI_WinLose::updateInterval(float _DeltaTime)
+{
+	intervalTimer_ += _DeltaTime;
+
+	if (intervalTimer_ >= 2.0f)
+	{
+		intervalTimer_ = 0.0f;
 		UIstate_.ChangeState("Appear", true);
 		return;
 	}
