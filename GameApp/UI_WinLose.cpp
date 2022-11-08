@@ -258,8 +258,12 @@ void UI_WinLose::startAppear()
 	{
 		bloodStainRenderer_->On();
 		bloodStainRendererUp_->On();
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Announce_GameLose_02.wav");
 	}
-
+	else if (true == isWinner_)
+	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("Announce_Win_Game_02.wav");
+	}
 
 	winLosePanelRenderer_->On();
 	rankPanelRenderer_->On();
@@ -312,12 +316,13 @@ void UI_WinLose::updateStandBy(float _DeltaTime)
 		if (true == GameEngineInput::GetInst().Press("LBUTTON"))
 		{
 			SetImageByIndex(1);
+			
 		}
 		else if (true == GameEngineInput::GetInst().Up("LBUTTON"))
 		{
 			SetImageByIndex(0);
 
-
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_btnClick_v1.wav");
 
 			GameEngineCore::LevelChange("EndingLevel");
 		}
