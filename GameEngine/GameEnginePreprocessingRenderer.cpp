@@ -159,42 +159,6 @@ void GameEnginePreprocessingRenderer::SetFBXMeshRenderSet(std::string _PipeLineN
 				RenderSetData.ShaderHelper->SettingConstantBufferLink("OutLineData", OutLineData_);
 			}
 
-			if (true == RenderSetData.ShaderHelper->IsTextureSetting("DiffuseTex"))
-			{
-				GameEngineTexture* Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
-
-				if ("" != MatData->DifTexturePath)
-				{
-					if (Tex == nullptr && true == GameEnginePath::IsExist(MatData->DifTexturePath))
-					{
-						GameEngineTextureManager::GetInst().Load(MatData->DifTexturePath);
-						Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
-					}
-
-					if (Tex != nullptr)
-					{
-						RenderSetData.ShaderHelper->SettingTexture("DiffuseTex", Tex);
-					}
-				}
-			}
-
-
-			if (true == RenderSetData.ShaderHelper->IsTextureSetting("NormalTex"))
-			{
-				GameEngineTexture* Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
-
-				if ("" != MatData->NorTexturePath)
-				{
-					if (Tex == nullptr && true == GameEnginePath::IsExist(MatData->NorTexturePath))
-					{
-						GameEngineTextureManager::GetInst().Load(MatData->NorTexturePath);
-						Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
-						RenderSetData.ShaderHelper->SettingTexture("NormalTex", Tex);
-						RendererDataInst.IsBump = 1;
-					}
-				}
-			}
-
 			if (true == RenderSetData.ShaderHelper->IsStructuredBuffer("ArrAniMationMatrix"))
 			{
 				// 베이스렌더러의 본데이터를 링크
@@ -288,42 +252,6 @@ void GameEnginePreprocessingRenderer::SetFBXMeshRenderSetCharacter(std::string _
 				RenderSetData.ShaderHelper->SettingConstantBufferLink("OutLineData", OutLineData_);
 			}
 
-			if (true == RenderSetData.ShaderHelper->IsTextureSetting("DiffuseTex"))
-			{
-				GameEngineTexture* Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
-
-				if ("" != MatData->DifTexturePath)
-				{
-					if (Tex == nullptr && true == GameEnginePath::IsExist(MatData->DifTexturePath))
-					{
-						GameEngineTextureManager::GetInst().Load(MatData->DifTexturePath);
-						Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->DifTexturePath));
-					}
-
-					if (Tex != nullptr)
-					{
-						RenderSetData.ShaderHelper->SettingTexture("DiffuseTex", Tex);
-					}
-				}
-			}
-
-
-			if (true == RenderSetData.ShaderHelper->IsTextureSetting("NormalTex"))
-			{
-				GameEngineTexture* Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
-
-				if ("" != MatData->NorTexturePath)
-				{
-					if (Tex == nullptr && true == GameEnginePath::IsExist(MatData->NorTexturePath))
-					{
-						GameEngineTextureManager::GetInst().Load(MatData->NorTexturePath);
-						Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
-						RenderSetData.ShaderHelper->SettingTexture("NormalTex", Tex);
-						RendererDataInst.IsBump = 1;
-					}
-				}
-			}
-
 			if (true == RenderSetData.ShaderHelper->IsStructuredBuffer("ArrAniMationMatrix"))
 			{
 				// 베이스렌더러의 본데이터를 링크
@@ -367,20 +295,10 @@ void GameEnginePreprocessingRenderer::Render(float _DeltaTime, bool _IsDeferred)
 			continue;
 		}
 
-		if (true == _IsDeferred && true == RenderSets_[i].PipeLine_->IsDeferred())
-		{
-			RenderSets_[i].ShaderHelper->Setting();
-			RenderSets_[i].PipeLine_->Rendering();
-			RenderSets_[i].ShaderHelper->ReSet();
-			RenderSets_[i].PipeLine_->Reset();
-		}
-		else if (false == RenderSets_[i].PipeLine_->IsDeferred())
-		{
-			RenderSets_[i].ShaderHelper->Setting();
-			RenderSets_[i].PipeLine_->Rendering();
-			RenderSets_[i].ShaderHelper->ReSet();
-			RenderSets_[i].PipeLine_->Reset();
-		}
+		RenderSets_[i].ShaderHelper->Setting();
+		RenderSets_[i].PipeLine_->Rendering();
+		RenderSets_[i].ShaderHelper->ReSet();
+		RenderSets_[i].PipeLine_->Reset();
 	}
 }
 
