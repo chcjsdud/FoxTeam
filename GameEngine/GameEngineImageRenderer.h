@@ -133,6 +133,14 @@ public:
 		CorrectResultColor_.vPlusColor = _Color;
 	}
 
+	inline void SetMulColor(float4 _RGB)
+	{
+		CorrectResultColor_.vMulColor.r = _RGB.r;
+		CorrectResultColor_.vMulColor.g = _RGB.g;
+		CorrectResultColor_.vMulColor.b = _RGB.b;
+	}
+
+
 	inline void AnimationStop()
 	{
 		IsPlay_ = false;

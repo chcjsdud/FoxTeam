@@ -71,6 +71,94 @@ void UI_Minimap::InitCharList()
 
 void UI_Minimap::InitAreaRenderList()
 {
+
+
+
+	for (int i = 0; i < 16; i++)
+	{
+		GameEngineUIRenderer* renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UIICON));
+
+		Location loca = static_cast<Location>(i);
+
+		switch (loca)
+		{
+		case Location::NONE:
+			break;
+		case Location::DOCK:
+			renderer->SetImage("Img_Map_01_Select_Dock.png", "LinerSmp");
+			break;
+		case Location::POND:
+			renderer->SetImage("Img_Map_01_Select_Pond.png", "LinerSmp");
+			break;
+		case Location::BEACH:
+			renderer->SetImage("Img_Map_01_Select_SandyBeach.png", "LinerSmp");
+			break;
+		case Location::UPTOWN:
+			renderer->SetImage("Img_Map_01_Select_Uptown.png", "LinerSmp");
+			break;
+		case Location::ALLEY:
+			renderer->SetImage("Img_Map_01_Select_Alley.png", "LinerSmp");
+			break;
+		case Location::HOTEL:
+			renderer->SetImage("Img_Map_01_Select_Hotel.png", "LinerSmp");
+			break;
+		case Location::AVENUE:
+			renderer->SetImage("Img_Map_01_Select_Avenue.png", "LinerSmp");
+			break;
+		case Location::HOSPITAL:
+			renderer->SetImage("Img_Map_01_Select_Hospital.png", "LinerSmp");
+			break;
+		case Location::TEMPLE:
+			renderer->SetImage("Img_Map_01_Select_Temple.png", "LinerSmp");
+			break;
+		case Location::ARCHERY_RANGE:
+			renderer->SetImage("Img_Map_01_Select_Archery.png", "LinerSmp");
+			break;
+		case Location::CEMETERY:
+			renderer->SetImage("Img_Map_01_Select_Cemetery.png", "LinerSmp");
+			break;
+		case Location::FOREST:
+			renderer->SetImage("Img_Map_01_Select_Forest.png", "LinerSmp");
+			break;
+		case Location::FACTORY:
+			renderer->SetImage("Img_Map_01_Select_Factory.png", "LinerSmp");
+			break;
+		case Location::CHAPEL:
+			renderer->SetImage("Img_Map_01_Select_Chapel.png", "LinerSmp");
+			break;
+		case Location::SCHOOL:
+			renderer->SetImage("Img_Map_01_Select_School.png", "LinerSmp");
+			break;
+		case Location::RESERCH_CENTRE:
+			renderer->SetImage("Img_Map_01_Select_Laboratory.png", "LinerSmp");
+			break;
+		case Location::ESCAPE_DOCK:
+			break;
+		case Location::MAX:
+			break;
+		default:
+			break;
+		}
+
+		if (Location::RESERCH_CENTRE == loca)
+		{
+			renderer->SetMulColor({1.0f , 0.0f , 0.0f});
+		}
+		else
+		{
+	
+		}
+
+		renderer->GetTransform()->SetLocalScaling(renderer->GetCurrentTexture()->GetTextureSize() * 0.5f);
+		renderer->GetTransform()->SetLocalPosition({ 400.0f, 0.0f });
+		renderer->Off();
+		areaRenderList_.push_back(renderer);
+
+
+	}
+	
+
+
 }
 
 void UI_Minimap::Toggle()
@@ -94,10 +182,29 @@ void UI_Minimap::Toggle()
 
 void UI_Minimap::SetNextProhibitedArea(Location _location)
 {
+	int index = static_cast<int>(_location);
+
+	if (15 <= index)
+	{
+		GameEngineDebug::MsgBoxError("연구소와 오래된 선창은 지정 할 수 있는 지역이 아닙니다.");
+		return;
+	}
+
+	areaRenderList_[index]->SetMulColor({ 1.0f, 0.8f, 0.0f });
+
 }
 
 void UI_Minimap::SetProhibitedArea(Location _location)
 {
+	int index = static_cast<int>(_location);
+
+	if (15 <= index)
+	{
+		GameEngineDebug::MsgBoxError("연구소와 오래된 선창은 지정 할 수 있는 지역이 아닙니다.");
+		return;
+	}
+
+	areaRenderList_[index]->SetMulColor({ 1.0f, 0.0f, 0.0f });
 }
 
 void UI_Minimap::CheckCharPos()
@@ -127,12 +234,19 @@ void UI_Minimap::Update(float _deltaTime)
 
 void UI_Minimap::startSleep()
 {
-	minimapRenderer_->Off();
+
 	
 	for (int i = 0; i < charIconList_.size(); i++)
 	{
 		charIconList_[i]->Off();
 	}
+
+	for (int i = 0; i < areaRenderList_.size(); i++)
+	{
+		areaRenderList_[i]->Off();
+	}
+
+	minimapRenderer_->Off();
 }
 
 void UI_Minimap::updateSleep(float _deltaTime)
@@ -145,6 +259,11 @@ void UI_Minimap::startAwake()
 	LumiaLevel* lv = dynamic_cast<LumiaLevel*>(GetLevel());
 
 	minimapRenderer_->On();
+
+	for (int i = 0; i < areaRenderList_.size(); i++)
+	{
+		areaRenderList_[i]->On();
+	}
 
 	for (int i = 0; i < charIconList_.size(); i++)
 	{

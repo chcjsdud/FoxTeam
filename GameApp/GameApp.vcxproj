@@ -314,6 +314,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ProhibitedAreaPacket.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="RioWSkillWind.cpp">
       <SubType>
       </SubType>
@@ -795,6 +799,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ProhibitedArea.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ProhibitedAreaPacket.h">
       <SubType>
       </SubType>
     </ClInclude>

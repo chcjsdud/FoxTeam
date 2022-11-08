@@ -284,11 +284,11 @@ void UI_Skill::Update(float _Time)
 			Icon_Passive->Off();
 			Icon_Weapon->Off();
 
-			Icon_Q_CoolCounter->SetAlpha(0.0f);
-			Icon_W_CoolCounter->SetAlpha(0.0f);
-			Icon_E_CoolCounter->SetAlpha(0.0f);
-			Icon_R_CoolCounter->SetAlpha(0.0f);
-			Icon_Weapon_CoolCounter->SetAlpha(0.0f);
+			//Icon_Q_CoolCounter->SetAlpha(0.0f);
+			//Icon_W_CoolCounter->SetAlpha(0.0f);
+			//Icon_E_CoolCounter->SetAlpha(0.0f);
+			//Icon_R_CoolCounter->SetAlpha(0.0f);
+			//Icon_Weapon_CoolCounter->SetAlpha(0.0f);
 
 			Icon_Q_LevelCounter->Off();
 			Icon_W_LevelCounter->Off();
@@ -308,11 +308,11 @@ void UI_Skill::Update(float _Time)
 			Icon_Passive->On();
 			Icon_Weapon->On();
 
-			Icon_Q_CoolCounter->SetAlpha(1.0f);
-			Icon_W_CoolCounter->SetAlpha(1.0f);
-			Icon_E_CoolCounter->SetAlpha(1.0f);
-			Icon_R_CoolCounter->SetAlpha(1.0f);
-			Icon_Weapon_CoolCounter->SetAlpha(1.0f);
+			//Icon_Q_CoolCounter->SetAlpha(1.0f);
+			//Icon_W_CoolCounter->SetAlpha(1.0f);
+			//Icon_E_CoolCounter->SetAlpha(1.0f);
+			//Icon_R_CoolCounter->SetAlpha(1.0f);
+			//Icon_Weapon_CoolCounter->SetAlpha(1.0f);
 
 			Icon_Q_LevelCounter->On();
 			Icon_W_LevelCounter->On();

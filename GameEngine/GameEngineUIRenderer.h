@@ -26,6 +26,7 @@ public:
 	}
 
 public:
+
 	inline void SetTextColor(const float4& _Color)
 	{
 		Color_ = _Color;

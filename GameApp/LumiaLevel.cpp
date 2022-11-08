@@ -32,7 +32,8 @@
 #include "GameTimeSyncPacket.h"
 #include "CharDeathPacket.h"
 #include "MonsterCrowdControlPacket.h"
-
+#include "NoticeBroadcastPacket.h"
+#include "ProhibitedAreaPacket.h"
 
 //======================== Level
 #include "LoadingLevel.h"
@@ -607,6 +608,8 @@ void LumiaLevel::AddSocketHandle()
 		server->AddPacketHandler(ePacketID::CharDeathPacket, new CharDeathPacket);
 		server->AddPacketHandler(ePacketID::MonsterDamagePacket, new MonsterStateChangePacket);
 		server->AddPacketHandler(ePacketID::MonsterCCPacket, new MonsterCrowdControlPacket);
+		server->AddPacketHandler(ePacketID::NoticeBroadcastPacket, new NoticeBroadcastPacket);
+		server->AddPacketHandler(ePacketID::ProhibitedAreaPacket, new ProhibitedAreaPacket);
 	}
 
 	if (true == client->IsConnected())
@@ -623,6 +626,8 @@ void LumiaLevel::AddSocketHandle()
 		client->AddPacketHandler(ePacketID::CharDeathPacket, new CharDeathPacket);
 		client->AddPacketHandler(ePacketID::MonsterDamagePacket, new MonsterStateChangePacket);
 		client->AddPacketHandler(ePacketID::MonsterCCPacket, new MonsterCrowdControlPacket);
+		client->AddPacketHandler(ePacketID::NoticeBroadcastPacket, new NoticeBroadcastPacket);
+		client->AddPacketHandler(ePacketID::ProhibitedAreaPacket, new ProhibitedAreaPacket);
 	}
 }
 

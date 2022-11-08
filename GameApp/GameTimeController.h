@@ -68,6 +68,13 @@ private: // Private Function : Monster Related Function
 	void UpdateMonsterFirstAppearTime(float _DeltaTime);												// 몬스터타입별 첫등장에 필요한 조건에 따른 첫등장타임 체크
 	void FirstAppearMonsters(MonsterType _MonsterType);													// 특정시간에 따른 최초등장해야하는 몬스터 타입을 한번에 등장처리
 
+
+private: // 금지 구역 관련
+	void MakeNextProhibitedArea();																	// 랜덤으로 두 군데 지정
+	void MakeNextProhibitedArea(Location _location0, Location _location1);							// 특정 지역 두 군데 지정
+	void SetProhibitedArea();																			// 저장된 다음 금지구역들 실제로 금지구역으로 만드는 지점
+
+
 public:
 	GameTimeController();
 	~GameTimeController();
@@ -101,8 +108,10 @@ private: // 테스트용
 
 private:	// 금지구역 랜덤생성용
 	GameEngineRandom randomGenerator_;
+	int nextProhibitArea0_;
+	int nextProhibitArea1_;
 
-
+	bool isReserved_;
 
 };
 
