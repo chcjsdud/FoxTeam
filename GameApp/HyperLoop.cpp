@@ -69,7 +69,8 @@ void HyperLoop::Update(float _DeltaTime)
 	}
 
 
-	if (true == collision_->Collision(eCollisionGroup::Player))
+	if (true == collision_->Collision(eCollisionGroup::Player) 
+		&& !PlayerInfoManager::GetInstance()->GetMainCharacter()->IsOperating())
 	{
 		//이건호 : 맵 UI를 킨다 
 		// MapOff(); 함수를 사용하면 Map뜬거를 끌수 있습니다

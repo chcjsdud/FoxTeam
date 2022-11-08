@@ -60,6 +60,7 @@ public:
 	void MoveWithPathFind(const float4& _position);
 
 	void Hyperloop(const float4& _position);
+	bool IsOperating() { return normalState_.GetCurrentStateName() == "HyperloopBegin"; }
 
 	void Focus() { bFocused_ = true; }
 	void UnFocus() { bFocused_ = false; }

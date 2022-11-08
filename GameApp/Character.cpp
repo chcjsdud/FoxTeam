@@ -1,7 +1,12 @@
 #include "PreCompile.h"
 
 #include <GameEngine/GameEngineCollision.h>
+#include <GameEngine/GameEngineLevelControlWindow.h>
+#include <GameEngine/GameEngineRenderWindow.h>
+#include <GameEngine/SmallPostBlur.h>
+#include <GameEngine/GameEngineFBXRenderer.h>
 #include "UserGame.h"
+
 
 #include "Character.h"
 #include "LumiaLevel.h"
@@ -12,7 +17,6 @@
 #include "EquipmentItem.h"
 #include "PlayerInfoManager.h"
 #include "PlayerUIController.h"
-#include <GameEngine/GameEngineLevelControlWindow.h>
 #include "CharStatPacket.h"
 #include "CharEffectPacket.h"
 #include "GameServer.h"
@@ -26,9 +30,7 @@
 #include "UI_Skill.h"
 #include "UI_ItemBox.h"
 #include "CharCrowdControlPacket.h"
-#include <GameEngine/GameEngineRenderWindow.h>
 #include "FogOfWar.h"
-#include <GameEngine/SmallPostBlur.h>
 #include "GameTimeController.h"
 #include "ProhibitedArea.h"
 
@@ -1949,6 +1951,7 @@ void Character::updateHyperloopBegin(float _deltaTime)
 	if (renderer_->IsCurrentAnimationEnd())
 	{
 		transform_.SetWorldPosition(hyperloopDest_);
+		destination_ = hyperloopDest_;
 		FT::PlaySoundAndSendPacket("hyperloop_arrive.wav", transform_.GetWorldPosition());
 		normalState_ << "HyperloopEnd";
 	}
