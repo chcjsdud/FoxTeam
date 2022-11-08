@@ -2005,6 +2005,11 @@ void Character::updateRestLoop(float _deltaTime)
 		{
 			stat_.SP = stat_.SPMax;
 		}
+
+		CharStatPacket packet;
+		packet.SetTargetIndex(GetIndex());
+		packet.SetStat(stat_);
+		FT::SendPacket(packet);
 	}
 }
 
