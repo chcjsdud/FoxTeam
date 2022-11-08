@@ -1015,7 +1015,13 @@ void Character::Damage(float _Amount, IUnit* _Target)
 			CharDeathPacket deathpacket;
 			deathpacket.SetTargetIndex(myIndex_);
 
-			if (_Target->UnitType_ == UnitType::CHARACTER)
+			if (_Target == nullptr)
+			{
+				// 陛瘤备开 气荤
+				deathpacket.SetFraggerType(static_cast<int>(UnitType::NONE));
+				deathpacket.SetFraggerIndex(-3);
+			}
+			else if (_Target->UnitType_ == UnitType::CHARACTER)
 			{
 				Character* charTmp = dynamic_cast<Character*>(_Target);
 				int tmpIndex = charTmp->GetIndex();
@@ -1028,12 +1034,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::MONSTER));
 				deathpacket.SetFraggerIndex(-2);
 			}
-			else if (_Target == nullptr)
-			{
-				// 陛瘤备开 气荤
-				deathpacket.SetFraggerType(static_cast<int>(UnitType::NONE));
-				deathpacket.SetFraggerIndex(-3);
-			}
+
 
 			FT::SendPacket(deathpacket);
 		}
