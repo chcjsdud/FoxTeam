@@ -55,6 +55,11 @@ public: // inline Get Function
 		return CurTarget_;
 	}
 
+	inline bool IsHidden() 
+	{
+		return bHidden_; 
+	}
+
 public: // inline Set Function
 	inline void SetMonsterIndex(int _Index)
 	{
@@ -77,9 +82,9 @@ public: // Public Pure Virtual Function
 	int GetIndex() override;															// 인덱스 Get
 	void Damage(float _Amount, IUnit* _Target) override;								// 외부에서 호출하며 해당 몬스터에 데미지줄때 호출되는 함수
 
-	void Show();
-	void Hide();
-	bool IsHidden() { return bHidden_; }
+public: // Public Monster Show & Hide Function
+	void Show();																		// 몬스터가 보유한 모든 렌더러를 On
+	void Hide();																		// 몬스터가 보유한 모든 렌더러를 Off
 
 public: // 패킷수신시 호출되는 함수들
 	void rcvAttack01(MonsterStateInfo _rcvStatInfo);									// 패킷수신으로 공격 처리(동기화처리)
@@ -248,8 +253,8 @@ protected: // 기본 컴포넌트
 	GameEngineCollision* SkillAtkCollider_;												// 스킬공격 충돌체(서브 -> 스킬공격충돌체)
 
 protected: // 선처리 컴포넌트
-	GameEnginePreprocessingRenderer* MainOutLineRenderer_;								// 메인렌더러의 선처리 렌더러(외곽선)
-	GameEnginePreprocessingRenderer* MainSilhouetteRenderer_;							// 메인렌더러의 선처리 렌더러(실루엣)
+	GameEnginePreprocessingRenderer* MainOutLineRenderer_;								// 메인렌더러의 선처리 렌더러(외곽선) : 메인렌더러가 Off 상태라면 외곽선렌더러 Off상태
+	GameEnginePreprocessingRenderer* MainSilhouetteRenderer_;							// 메인렌더러의 선처리 렌더러(실루엣) : 메인렌더러가 Off 상태라면 실루엣렌더러 Off상태
 
 protected: // 생성정보(탐색용)
 	int Index_;																			// 생성 인덱스

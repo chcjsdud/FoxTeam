@@ -148,13 +148,29 @@ void Monsters::Damage(float _Amount, IUnit* _Target)
 
 void Monsters::Show()
 {
-	MainRenderer_->On();
+	if (nullptr != MainRenderer_)
+	{
+		MainRenderer_->On();
+	}
+	
+	if (nullptr != EffectRenderer_)
+	{
+		EffectRenderer_->On();
+	}
 	bHidden_ = false;
 }
 
 void Monsters::Hide()
 {
-	MainRenderer_->Off();
+	if (nullptr != MainRenderer_)
+	{
+		MainRenderer_->Off();
+	}
+
+	if (nullptr != EffectRenderer_)
+	{
+		EffectRenderer_->Off();
+	}
 	bHidden_ = true;
 }
 
