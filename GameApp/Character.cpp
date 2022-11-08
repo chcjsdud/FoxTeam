@@ -27,6 +27,7 @@
 #include "SlowEffect.h"
 #include "StunEffect.h"
 #include "LevelUpEffect.h"
+#include "DeathEffect.h"
 #include "UI_Skill.h"
 #include "UI_ItemBox.h"
 #include "CharCrowdControlPacket.h"
@@ -335,10 +336,12 @@ void Character::Update(float _DeltaTime)
 		coolTimer_E_ = 0.5f;
 		coolTimer_R_ = 0.5f;
 		coolTimer_D_ = 0.5f;
+
 	}
 
 	if (GameEngineInput::Down("M"))
 	{
+		
 		GetUIController()->GetMinimapUI()->Toggle();
 	}
 
@@ -981,7 +984,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 
 	if (stat_.HP <= 0.f && false == isPlayerDead_)
 	{
-		FT::PlaySoundAndSendPacket("death.wav", transform_.GetWorldPosition());
+	//e	FT::PlaySoundAndSendPacket("death.wav", transform_.GetWorldPosition());
 
 		if (GameServer::GetInstance()->IsOpened())
 		{
@@ -993,21 +996,40 @@ void Character::Damage(float _Amount, IUnit* _Target)
 			if (_Target == nullptr)
 			{
 				// 陛瘤备开 气荤
+				deathEffect_->PlayAwake(true);
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::NONE));
 				deathpacket.SetFraggerIndex(-3);
+
+				CharEffectPacket pack;
+				pack.SetTargetIndex(myIndex_);
+				pack.SetAnimationName("Death_Explode");
+				FT::SendPacket(pack);
+
 			}
 			else if (_Target->UnitType_ == UnitType::CHARACTER)
 			{
+				deathEffect_->PlayAwake(false);
 				Character* charTmp = dynamic_cast<Character*>(_Target);
 				int tmpIndex = charTmp->GetIndex();
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
 				deathpacket.SetFraggerIndex(tmpIndex);
+
+				CharEffectPacket pack;
+				pack.SetTargetIndex(myIndex_);
+				pack.SetAnimationName("Death");
+				FT::SendPacket(pack);
 			}
 			else if (_Target->UnitType_ == UnitType::MONSTER)
 			{
 				// animal
+				deathEffect_->PlayAwake(false);
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::MONSTER));
 				deathpacket.SetFraggerIndex(-2);
+
+				CharEffectPacket pack;
+				pack.SetTargetIndex(myIndex_);
+				pack.SetAnimationName("Death");
+				FT::SendPacket(pack);
 			}
 
 
@@ -1022,21 +1044,37 @@ void Character::Damage(float _Amount, IUnit* _Target)
 			if (_Target == nullptr)
 			{
 				// 陛瘤备开 气荤
+				deathEffect_->PlayAwake(true);
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::NONE));
 				deathpacket.SetFraggerIndex(-3);
+
+				CharEffectPacket pack;
+				pack.SetTargetIndex(myIndex_);
+				pack.SetAnimationName("Death_Explode");
+				FT::SendPacket(pack);
 			}
 			else if (_Target->UnitType_ == UnitType::CHARACTER)
 			{
+				deathEffect_->PlayAwake(false);
 				Character* charTmp = dynamic_cast<Character*>(_Target);
 				int tmpIndex = charTmp->GetIndex();
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
 				deathpacket.SetFraggerIndex(tmpIndex);
+				CharEffectPacket pack;
+				pack.SetTargetIndex(myIndex_);
+				pack.SetAnimationName("Death");
+				FT::SendPacket(pack);
 			}
 			else if (_Target->UnitType_ == UnitType::MONSTER)
 			{
 				// animal
+				deathEffect_->PlayAwake(false);
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::MONSTER));
 				deathpacket.SetFraggerIndex(-2);
+				CharEffectPacket pack;
+				pack.SetTargetIndex(myIndex_);
+				pack.SetAnimationName("Death");
+				FT::SendPacket(pack);
 			}
 
 
@@ -1456,6 +1494,10 @@ void Character::initBasicEffect()
 	levelUpEffect_ = GetLevel()->CreateActor<LevelUpEffect>();
 	levelUpEffect_->GetTransform()->SetLocalPosition(this->GetTransform()->GetLocalPosition());
 	levelUpEffect_->SetParent(this);
+
+	deathEffect_ = GetLevel()->CreateActor<DeathEffect>();
+	deathEffect_->GetTransform()->SetLocalPosition(this->GetTransform()->GetLocalPosition());
+	deathEffect_->SetParent(this);
 }
 
 
@@ -2357,6 +2399,22 @@ void Character::PlayEffect(const std::string& _effectName, IUnit* _victim)
 		return;
 	}
 
+	if ("Death" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		deathEffect_->GetTransform()->SetWorldPosition(wp);
+		deathEffect_->PlayAwake(false);
+		return;
+	}
+
+	if ("Death_Explode" == _effectName)
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		deathEffect_->GetTransform()->SetWorldPosition(wp);
+		deathEffect_->PlayAwake(true);
+		return;
+	}
+
 	onPlayEffect(_effectName, _victim);
 }
 
@@ -2631,6 +2689,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 void Character::EffectTransformCheck(float _DeltaTime)
 {
 	levelUpEffect_->GetTransform()->SetWorldPosition(transform_.GetWorldPosition());
+	deathEffect_->GetTransform()->SetWorldPosition(transform_.GetWorldPosition());
 	onEffectTransformCheck(_DeltaTime);
 }
 
@@ -2662,8 +2721,9 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 
 		if (0.0f >= prohibitedCounter_)
 		{
-			FT::PlaySoundAndSendPacket("Sfx_RestrictedDamage.wav", transform_.GetWorldPosition());
+			//
 			fraggerIndex_ = -3;
+		
 			Damage(10000.0f, nullptr);
 		}
 	}

@@ -261,6 +261,10 @@
     </ClCompile>
     <ClCompile Include="Chicken.cpp" />
     <ClCompile Include="CreateItemDB.cpp" />
+    <ClCompile Include="DeathEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="EndingUIController.cpp">
       <SubType>
       </SubType>
@@ -748,6 +752,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="Chicken.h" />
+    <ClInclude Include="DeathEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="EndingUIController.h">
       <SubType>
       </SubType>

@@ -15,6 +15,7 @@ struct QueueItem;
 class StunEffect;
 class LevelUpEffect;
 class SlowEffect;
+class DeathEffect;
 class ItemBoxManager;
 class MousePointer;
 class LumiaMap;
@@ -514,11 +515,12 @@ private:
 	};
 	eCurrentAnimation currentAnimation_;
 
-// 기본 군중 제어 이팩트
+// 기본 이팩트
 protected:
 	SlowEffect* slowEffect_;
 	StunEffect* stunEffect_;
 	LevelUpEffect* levelUpEffect_;
+	DeathEffect* deathEffect_;
 
 // 그림자 처리
 protected:
