@@ -141,6 +141,23 @@ void GameTimeController::GuestUpdate(float _GameTime, DayAndNightType _Type, int
 	}
 }
 
+void GameTimeController::DayAndNightForecedConversion()
+{
+	// 강제로 낮/밤 전환시 이전 정보를 저장
+
+
+
+	// 낮/밤 전환
+
+
+
+
+	// 강제전환 Flag On
+
+
+
+}
+
 void GameTimeController::CreateDailytimes()
 {
 	// 4일 낮/밤시간 정의
@@ -545,7 +562,8 @@ void GameTimeController::SetProhibitedArea()
 }
 
 GameTimeController::GameTimeController()
-	: DayAndNightTime_(0.0f)
+	: IsForcedConversion_(false)
+	, DayAndNightTime_(0.0f)
 	, CurGameTime_(0.0f)
 	, PrevDay_(0)
 	, CurDay_(0)

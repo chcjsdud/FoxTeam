@@ -56,6 +56,9 @@ public: // Public Function(Host)
 public: // Public Function(Guest)
 	void GuestUpdate(float _GameTime, DayAndNightType _Type, int _CurDay, float _DayAndNightTime);		// GameTimeSyncPacket 수신시 호출 : Guest Controller Update
 
+public: // Public Day/Night Forced Conversion Function
+	void DayAndNightForecedConversion();																// 낮/밤 강제전환 함수
+
 protected: // Protected Function
 private: // Private Fcuntion
 
@@ -89,6 +92,9 @@ private:
 
 public:
 protected:
+private: // Day/Night Forced Conversion Related Value
+	bool IsForcedConversion_;																			// 강제전환 실행 Flag
+
 private:
 	float DayAndNightTime_;																				// 낮과밤이 바뀌는 시점(초) :낮/밤 전환까지 남은시간(초기화시점: 낮/밤전환시)
 	float CurGameTime_;																					// 현재 게임진행시간(누적) : 낮과밤이 변경되는시점에 초기화

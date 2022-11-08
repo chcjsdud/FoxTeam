@@ -30,13 +30,11 @@ void ShadowTestActor::Start()
 	TestBaseRenderer_->ChangeFBXAnimation("Run_Short");
 	TestBaseRenderer_->GetTransform()->SetLocalScaling({ 100.f, 100.f, 100.f });
 	TestBaseRenderer_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+	TestBaseRenderer_->GetRenderSet(1).isRender = false;
 	//TestBaseRenderer_->LightShadowOn();
 
 	ShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
 	ShadowRenderer_->SetBaseRenderer(TestBaseRenderer_, "RendererShadow");
-	ShadowRenderer_->GetTransform()->SetLocalPosition({ 200.0f, 0.0f, 0.0f });
-	ShadowRenderer_->GetTransform()->SetLocalScaling(TestBaseRenderer_->GetTransform()->GetLocalScaling());
-	ShadowRenderer_->GetTransform()->SetLocalRotationDegree(TestBaseRenderer_->GetTransform()->GetLocalRotation());
 
 	//GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
 	//Renderer->SetRenderingPipeLine("DeferredColor");

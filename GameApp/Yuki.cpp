@@ -308,9 +308,6 @@ void Yuki::initRendererAndAnimation()
 	//{
 	//	MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
 	//	MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
-	//	MainShadowRenderer_->GetTransform()->SetLocalScaling(renderer_->GetTransform()->GetLocalScaling());
-	//	MainShadowRenderer_->GetTransform()->SetLocalRotationDegree(renderer_->GetTransform()->GetLocalRotation());
-	//	MainShadowRenderer_->GetTransform()->SetLocalPosition(renderer_->GetTransform()->GetLocalPosition());
 	//}
 
 	// ¿Ü°û¼±

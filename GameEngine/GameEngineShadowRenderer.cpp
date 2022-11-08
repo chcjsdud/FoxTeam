@@ -34,14 +34,16 @@ void GameEngineShadowRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRende
 		}
 	}
 
-	// 베이스렌더러의 트랜스폼데이터를 이용하여 해당 렌더러를 회전하여 그림자형태처럼 눕힘
-	//GetTransform()->SetLocalScaling(BaseRenderer_->GetTransform()->GetLocalScaling());			// 크기
-	//GetTransform()->SetLocalPosition(BaseRenderer_->GetTransform()->GetLocalPosition());		// 위치
+	// 베이스렌더러의 트랜스폼데이터를 이용하여 해당 렌더러를 회전하여 그림자형태처럼 눕힘 - 처리중...
+	float4 BaseForwardVector = BaseRenderer_->GetTransform()->GetLocalForwardVector();
 
-	// 렌더러의 UpVector와 현재 위치벡터를 외적하여 z축을 알아내고 렌더러의 y축이 알아낸 z축방향으로 회전시켜보자!!! -> 아직처리 안함
-	//GetTransform()->SetLocalRotationDegree(BaseRenderer_->GetTransform()->GetLocalRotation());	// 회전(베이스와 맞추고)
-	//GetTransform()->AddLocalRotationDegreeY(90.0f);												// 회전(y축으로 90도 회전)
-	//GetTransform()->AddLocalRotationDegreeZ(90.0f);												// 회전(z축으로 90도 회전)
+
+
+	GetTransform()->SetLocalScaling(BaseRenderer_->GetTransform()->GetLocalScaling());			// 크기
+	//GetTransform()->SetLocalPosition(BaseRenderer_->GetTransform()->GetLocalPosition() + float4(200.0f, 0.0f, 0.0f));		// 위치
+	GetTransform()->SetLocalPosition(BaseRenderer_->GetTransform()->GetLocalPosition());		// 위치
+
+	GetTransform()->SetLocalRotationDegree(BaseRenderer_->GetTransform()->GetLocalRotation());	// 회전
 
 	
 
