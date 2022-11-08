@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include "CharacterStat.h"
+#include "MonsterStateInfo.h"
 
 using namespace std;
 
@@ -14,6 +15,7 @@ public:
 	~UI_CharFollow();
 
 	void SetFollowInfo(float4 _Pos, CharacterStat* _Stat);
+	void SetFollowInfoMonster(float4 _Pos, MonsterStateInfo _Stat);
 
 
 public:

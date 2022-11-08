@@ -2,6 +2,9 @@
 #include "PlayerUIController.h"
 #include "PlayerInfoManager.h"
 #include "LumiaLevel.h"
+#include "GameTimeController.h"
+#include "Monsters.h"
+#include "MonsterInfoManager.h"
 
 
 
@@ -75,6 +78,7 @@ void PlayerUIController::Start()
 void PlayerUIController::Update(float _DeltaTime)
 {
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
 	// 현재 레벨이 루미아 레벨이 아닌 경우 처리하지 않음
 	LumiaLevel* lumiaLevel = GetLevelConvert<LumiaLevel>();
@@ -88,17 +92,20 @@ void PlayerUIController::Update(float _DeltaTime)
 		return;
 	}
 
-	//스테이터스를 상시 받아야함
 	status_UI->SetStatus(pm->GetMyPlayer().stat_);
 	skill_UI->SetStatus(pm->GetMyPlayer().stat_);
 	hpbars_UI->SetStatus(pm->GetMyPlayer().stat_);
 	//float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
 	//charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
 
-
+	DayAndNightType SunMoon = GameTimeController::GetInstance()->GetCurrentDayType();
+	float DayVision = (FT::Char::DEFAULT_VISION_RANGE_DAY / 2.f) + 50.f;
+	float NightVision = (FT::Char::DEFAULT_VISION_RANGE_NIGHT / 2.f) + 50.f;
+	
 	if (false == followcreateflag)
 	{
-		//딱 한번만 실행되게 설정
+		
+		//플레이어들 HP바
 		for (size_t i = 0; i < lumiaLevel->GetCharacterActorList().size(); i++)
 		{
 			UI_CharFollow* follow_UI = GetLevel()->CreateActor<UI_CharFollow>();
@@ -107,17 +114,64 @@ void PlayerUIController::Update(float _DeltaTime)
 			//lumiaLevel->GetCharacterActorList()[i]->GetTransform();
 			charfollows_.push_back(follow_UI);
 		}
+
+		//몬스터들 HP바
+		for (size_t i = 0; i < lumiaLevel->GetMonsterActorList().size(); i++)
+		{
+			UI_CharFollow* follow_UI = GetLevel()->CreateActor<UI_CharFollow>();
+			//float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
+			//follow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetPlayerList()[i].stat_);
+			//lumiaLevel->GetCharacterActorList()[i]->GetTransform();
+			Monstercharfollows_.push_back(follow_UI);
+		}
+
+		//딱 한번만 실행되게 설정
 		followcreateflag = true;
 	}
-
+	
 	for (size_t i = 0; i < lumiaLevel->GetCharacterActorList().size(); i++)
 	{
 		float4 pos = lumiaLevel->GetCharacterActorList()[i]->GetTransform()->GetLocalPosition();
-		charfollows_[i]->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetPlayerList()[i].stat_);
-		//charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
-		//lumiaLevel->GetCharacterActorList()[i]->GetTransform();
+		pos = calhelper_->Cal3Dto2D(pos);
+
+		bool hidden = lumiaLevel->GetCharacterActorList()[i]->IsHidden();
+
+		if (true == hidden)
+		{
+			charfollows_[i]->Off();
+		}
+		else
+		{
+			charfollows_[i]->On();
+			charfollows_[i]->SetFollowInfo(pos, pm->GetPlayerList()[i].stat_);
+		}
+
 	}
 
+	for (size_t i = 0; i < lumiaLevel->GetMonsterActorList().size(); i++)
+	{
+		float4 pos = lumiaLevel->GetMonsterActorList()[i]->GetTransform()->GetLocalPosition();
+		pos = calhelper_->Cal3Dto2D(pos);
+	
+		bool hidden = lumiaLevel->GetMonsterActorList()[i]->IsHidden();
+
+		if (true == hidden)
+		{
+			Monstercharfollows_[i]->Off();
+		}
+		else
+		{
+			Monstercharfollows_[i]->On();
+			Monstercharfollows_[i]->SetFollowInfoMonster(pos, lumiaLevel->GetMonsterActorList()[i]->GetMonsterStateInfo());
+		}
+	
+		if (false == lumiaLevel->GetMonsterActorList()[i]->IsUpdate())
+		{
+			//아직 안나온 몬스터들은 체력바 안보임
+			Monstercharfollows_[i]->Off();
+		}
+
+	}
 
 	//if (true == GameEngineInput::GetInst().Down("L"))
 	//{

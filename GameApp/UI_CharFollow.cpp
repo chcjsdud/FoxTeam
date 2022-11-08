@@ -82,6 +82,11 @@ void UI_CharFollow::Update(float _DeltaTime)
 
 void UI_CharFollow::SetFollowInfo(float4 _Pos, CharacterStat* _Stat) 
 {
+	if (_Stat->HP <= 0.0f)
+	{
+		this->Off();
+	}
+
 	float HPPercent = _Stat->HP / _Stat->HPMax;
 	float SPPercent = _Stat->SP / _Stat->SPMax;
 
@@ -97,4 +102,36 @@ void UI_CharFollow::SetFollowInfo(float4 _Pos, CharacterStat* _Stat)
 	HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
 	SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);
 	EmptyBar_Renderer->GetTransform()->SetLocalPosition(EmptyBarPos);
+}
+
+void UI_CharFollow::SetFollowInfoMonster(float4 _Pos, MonsterStateInfo _Stat)
+{
+	SPBar_Renderer->SetImage("ReturnBar_UI.png", "PointSmp");
+
+	float HPPercent = _Stat.HP_ / _Stat.HPMax_;
+	float SPPercent = _Stat.HomingInstinctValue_ / _Stat.HomingInstinctValueMax_;
+
+	HPBar_Renderer->SetPercent(HPPercent);
+	SPBar_Renderer->SetPercent(SPPercent);
+
+	HpBarPos = _Pos;
+	//계산된 플레이어의 위치에 맞춰서 피봇을 맞춘다
+	HpBarPos = HpBarPos + float4{ 0.f, 60.f, 0.f ,0.f };
+	SpBarPos = HpBarPos + float4{ 0.0f, -7.f, 0.f,0.f };
+	EmptyBarPos = HpBarPos + float4{ 0.f, -2.f, 0.f,0.f };
+
+	HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
+	SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);
+	EmptyBar_Renderer->GetTransform()->SetLocalPosition(EmptyBarPos);
+
+	if (_Stat.HP_ <= 0.0f)
+	{
+		this->Off();
+	}
+
+
+	//if (_Stat.RegenTime_ > 0.0f)
+	//{
+	//	this->Off();
+	//}
 }
