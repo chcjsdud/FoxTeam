@@ -133,6 +133,7 @@ void PlayerUIController::Update(float _DeltaTime)
 	{
 		float4 pos = lumiaLevel->GetCharacterActorList()[i]->GetTransform()->GetLocalPosition();
 		pos = calhelper_->Cal3Dto2D(pos);
+		pos = calhelper_->CalRound(pos);
 
 		bool hidden = lumiaLevel->GetCharacterActorList()[i]->IsHidden();
 

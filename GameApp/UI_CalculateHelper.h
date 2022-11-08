@@ -38,6 +38,12 @@ public:
 		return ReturnPosition;
 	}
 
+	float4 CalRound(float4 _origin)
+	{
+		float4 returnfloat4 = { round(_origin.x), round(_origin.y), _origin.z, _origin.w };
+		return returnfloat4;
+	}
+
 private:
 	UI_CalculateHelper(const UI_CalculateHelper& _Other) = delete;
 	UI_CalculateHelper(UI_CalculateHelper&& _Other) noexcept = delete;
