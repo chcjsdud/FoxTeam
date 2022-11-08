@@ -492,6 +492,12 @@ void GameTimeController::MakeNextProhibitedArea()
 		}
 		else if (i == 1)
 		{
+			if (nextProhibitArea0_ == dice0)
+			{
+				i = 0;
+				continue;
+			}
+
 			nextProhibitArea1_ = dice0;
 		}
 	}
