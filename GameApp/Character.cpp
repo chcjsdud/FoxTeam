@@ -977,7 +977,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 
 	if (stat_.HP <= 0.f && false == isPlayerDead_)
 	{
-
+		FT::PlaySoundAndSendPacket("death.wav", transform_.GetWorldPosition());
 
 		if (GameServer::GetInstance()->IsOpened())
 		{
@@ -986,7 +986,13 @@ void Character::Damage(float _Amount, IUnit* _Target)
 			CharDeathPacket deathpacket;
 			deathpacket.SetTargetIndex(myIndex_);
 
-			if (_Target->UnitType_ == UnitType::CHARACTER)
+			if (_Target == nullptr)
+			{
+				// 금지구역 폭사
+				deathpacket.SetFraggerType(static_cast<int>(UnitType::NONE));
+				deathpacket.SetFraggerIndex(-3);
+			}
+			else if (_Target->UnitType_ == UnitType::CHARACTER)
 			{
 				Character* charTmp = dynamic_cast<Character*>(_Target);
 				int tmpIndex = charTmp->GetIndex();
@@ -999,6 +1005,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::MONSTER));
 				deathpacket.SetFraggerIndex(-2);
 			}
+
 
 			FT::SendPacket(deathpacket);
 
@@ -1020,6 +1027,12 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				// animal
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::MONSTER));
 				deathpacket.SetFraggerIndex(-2);
+			}
+			else if (_Target == nullptr)
+			{
+				// 금지구역 폭사
+				deathpacket.SetFraggerType(static_cast<int>(UnitType::NONE));
+				deathpacket.SetFraggerIndex(-3);
 			}
 
 			FT::SendPacket(deathpacket);
@@ -2623,13 +2636,11 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 
-	// 대미지를 주는 순간 클라이언트 한정 CURlOCATION 이 -1 로 초기화되는 현상 발생...
 	if (true == level->GetProhibitedAreaList()[static_cast<int>(curLocation_)]->IsProhibited())
 	{
 		prohibitedCounter_ -= _DeltaTime;
 		int adjustedCounter = static_cast<int>(prohibitedCounter_) + 1;
 		
-
 		uiController_->GetTimeUI()->GetProhibitedRenderer()->SetTextColor(float4::RED);
 		uiController_->GetTimeUI()->GetProhibitedRenderer()->AllDelText();
 		uiController_->GetTimeUI()->GetProhibitedRenderer()->SetPrintText(std::to_string(adjustedCounter));
@@ -2644,34 +2655,8 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 
 		if (0.0f >= prohibitedCounter_)
 		{
-			stat_.HP = 0.0f;
-
-			if (GameServer::GetInstance()->IsOpened())
-			{
-				this->SetCharacterDeath();
-				fraggerIndex_ = -3;
-				FT::PlaySoundAndSendPacket("Sfx_RestrictedDamage.wav", transform_.GetWorldPosition());
-				CharDeathPacket deathpacket;
-				deathpacket.SetTargetIndex(myIndex_);
-				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
-				deathpacket.SetFraggerIndex(-3);
-				FT::SendPacket(deathpacket);
-
-			}
-			else if (GameClient::GetInstance()->IsConnected())
-			{
-				FT::PlaySoundAndSendPacket("Sfx_RestrictedDamage.wav", transform_.GetWorldPosition());
-				fraggerIndex_ = -3;
-				CharDeathPacket deathpacket;
-				deathpacket.SetTargetIndex(myIndex_);
-				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));
-				deathpacket.SetFraggerIndex(-3);
-				FT::SendPacket(deathpacket);
-			}
-
+			FT::PlaySoundAndSendPacket("Sfx_RestrictedDamage.wav", transform_.GetWorldPosition());
+			Damage(10000.0f, nullptr);
 		}
 	}
-
-	
-
 }
