@@ -151,7 +151,7 @@ void Rio::Start()
 	customState_.CreateState(MakeState(Rio, SkillEShot));
 	customState_.CreateState(MakeState(Rio, SkillEEnd));
 
-	//stat_.AttackPower = 300.0f;
+	stat_.AttackRange= 450.0f;
 
 	basicHitEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
 	basicHitEffect_->GetAttackRenderer()->SetImage("rioHit2.png", "PointSmp");
@@ -440,10 +440,12 @@ void Rio::onStartQSkill()
 	if (bLongBow_)
 	{
 		overrideAnimationName_ = "SkillQ_Long";
+		stat_.AttackRange = 550.f;
 	}
 	else
 	{
 		overrideAnimationName_ = "SkillQ_Short";
+		stat_.AttackRange = 450.0f;
 	}
 
 	renderer_->OverrideFBXAnimation(overrideAnimationName_, overrideAnimationBoneName_);

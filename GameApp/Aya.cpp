@@ -144,7 +144,7 @@ void Aya::Start()
 	skillRCol_->GetTransform()->SetLocalScaling(700.f);
 
 	stat_.AttackSpeed = 0.8f;
-	stat_.AttackRange = 550.f;
+	stat_.AttackRange = 450.f;
 
 
 	// 평타 상대 피격 이펙트
