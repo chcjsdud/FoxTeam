@@ -79,6 +79,7 @@ public: // Public Pure Virtual Function
 
 	void Show();
 	void Hide();
+	bool IsHidden() { return bHidden_; }
 
 public: // 패킷수신시 호출되는 함수들
 	void rcvAttack01(MonsterStateInfo _rcvStatInfo);									// 패킷수신으로 공격 처리(동기화처리)
@@ -284,6 +285,7 @@ protected: // 상태정보
 protected: // 기타
 	bool IsDeath_;																		// 몬스터사망시 피격판정무시 Flag(사망시 On)
 	bool IsAttack_;																		// ATK01, ATK02, SKILLATTACK 상태시 활성화
+	bool bHidden_;
 
 protected: // CC Value
 	float StunTime_;																	// 스턴시간

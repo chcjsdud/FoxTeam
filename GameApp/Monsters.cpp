@@ -149,11 +149,13 @@ void Monsters::Damage(float _Amount, IUnit* _Target)
 void Monsters::Show()
 {
 	MainRenderer_->On();
+	bHidden_ = false;
 }
 
 void Monsters::Hide()
 {
 	MainRenderer_->Off();
+	bHidden_ = true;
 }
 
 void Monsters::rcvAttack01(MonsterStateInfo _rcvStatInfo)
@@ -969,6 +971,7 @@ Monsters::Monsters()
 	, StunTime_(0.0f)
 	, KnockbackTime_(0.0f)
 	, KnockbackSpeed_(float4::ZERO)
+	, bHidden_(false)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::MONSTER;

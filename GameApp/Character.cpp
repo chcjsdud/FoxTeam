@@ -33,6 +33,7 @@
 #include "FogOfWar.h"
 #include "GameTimeController.h"
 #include "ProhibitedArea.h"
+#include "Monsters.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -843,12 +844,7 @@ IUnit* Character::getMousePickedCharacter()
 		{
 			mousePickedActor = c->GetActor();
 			Character* chracter = dynamic_cast<Character*>(mousePickedActor);
-			if (nullptr != chracter && chracter->IsHidden())
-			{
-				continue;
-			}
-
-			if (nullptr != mousePickedActor && mousePickedActor != this)
+			if (nullptr != chracter && !chracter->IsHidden())
 			{
 				return dynamic_cast<IUnit*>(mousePickedActor);
 			}
@@ -861,7 +857,8 @@ IUnit* Character::getMousePickedCharacter()
 		for (GameEngineCollision* c : mousePickedCollision)
 		{
 			mousePickedActor = c->GetActor();
-			if (nullptr != mousePickedActor)
+			Monsters* monster = dynamic_cast<Monsters*>(mousePickedActor);
+			if (nullptr != monster || !monster->IsHidden())
 			{
 				return dynamic_cast<IUnit*>(mousePickedActor);
 			}
@@ -1502,8 +1499,10 @@ void Character::inputProcess(float _deltaTime)
 		}
 	}
 
-
-
+	if (GameEngineInput::Up("X"))
+	{
+		normalState_ << "RestBegin";
+	}
 }
 
 void Character::moveProcess(float _deltaTime)
