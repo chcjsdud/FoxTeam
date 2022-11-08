@@ -240,6 +240,12 @@ void Hyunwoo::initRendererAndAnimation()
 
 	renderer_->GetRenderSet(1).isRender = false;
 
+	// 그림자 
+	{
+		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
+	}
+
 	// 외곽선
 	{
 		// Main

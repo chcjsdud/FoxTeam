@@ -245,6 +245,18 @@ void Rio::initRendererAndAnimation()
 	longBow_->GetRenderSet(0).isRender = false;
 	longBow_->Off();
 
+	// 그림자 
+	{
+		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
+
+		WeaponShadowRenderer1_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		WeaponShadowRenderer1_->SetBaseRenderer(shortBow_, "RendererShadow");
+
+		WeaponShadowRenderer2_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		WeaponShadowRenderer2_->SetBaseRenderer(longBow_, "RendererShadow");
+	}
+
 	// 외곽선
 	{
 		// Main

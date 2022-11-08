@@ -1131,7 +1131,7 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetVertexShader("RendererShadow_VS");
 		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
 		Pipe->SetInputAssembler2TopologySetting(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-		Pipe->SetRasterizer("EngineBaseRasterizerNone");
+		Pipe->SetRasterizer("EngineBaseRasterizerFront");
 		Pipe->SetPixelShader("RendererShadow_PS");
 		Pipe->SetOutputMergerBlend("AlphaToCoverage");
 	}

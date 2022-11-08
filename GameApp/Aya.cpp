@@ -256,6 +256,15 @@ void Aya::initRendererAndAnimation()
 	pistolRenderer_->CreateFBXAnimation("Idle", "Weapon_Pistol_01.fbx");
 	pistolRenderer_->ChangeFBXAnimation("Idle");
 
+	// 그림자 
+	{
+		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
+
+		WeaponShadowRenderer1_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		WeaponShadowRenderer1_->SetBaseRenderer(pistolRenderer_, "RendererShadow");
+	}
+
 	// 외곽선
 	{
 		// Main

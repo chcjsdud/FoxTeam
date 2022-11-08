@@ -109,6 +109,13 @@ void Bat::InitalizeRenderAndAnimation()
 	// 기본상태 셋팅
 	ChangeAnimationAndState(MonsterStateType::APPEAR);
 
+	//============================== 그림자 렌더러 셋팅
+
+	{
+		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		MainShadowRenderer_->SetBaseRenderer(MainRenderer_, "RendererShadow");
+	}
+
 	//============================== 선처리 렌더러 셋팅
 
 	// 외곽선

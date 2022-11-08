@@ -51,5 +51,5 @@ VertexOut RendererShadow_VS(VertexIn _In)
 
 float4 RendererShadow_PS(VertexOut _In) : SV_Target0
 {
-    return float4(0.0f, 0.0f, 0.0f, 0.5f);
+    return float4(0.25f, 0.25f, 0.25f, 1.0f);
 }

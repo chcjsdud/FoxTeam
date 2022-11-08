@@ -34,24 +34,21 @@ void GameEngineShadowRenderer::SetBaseRenderer(GameEngineFBXRenderer* _BaseRende
 		}
 	}
 
-	// 베이스렌더러의 트랜스폼데이터를 이용하여 해당 렌더러를 회전하여 그림자형태처럼 눕힘 - 처리중...
+	// 베이스렌더러의 트랜스폼데이터를 이용하여 해당 렌더러를 회전하여 그림자형태처럼 눕힘
 	float4 BaseForwardVector = BaseRenderer_->GetTransform()->GetLocalForwardVector();
+	float4 BasePos = BaseRenderer_->GetTransform()->GetLocalPosition();
+	float4 BaseScale = BaseRenderer_->GetTransform()->GetLocalScaling();
+	float4 BaseRot = BaseRenderer_->GetTransform()->GetLocalRotation();
+
+	//float4 Cross = float4::Cross3D(BaseForwardVector, { 1.0f, 0.0f, 0.0f }).NormalizeReturn3D();
+	//float Angle = float4::DegreeDot3DToACosAngle(BaseForwardVector, { 1.0f, 0.0f, 0.0f });
+	//float4 BaseRot = float4(Angle * -Cross.x, 0.0f, 0.0f);
 
 
-
-	GetTransform()->SetLocalScaling(BaseRenderer_->GetTransform()->GetLocalScaling());			// 크기
-	//GetTransform()->SetLocalPosition(BaseRenderer_->GetTransform()->GetLocalPosition() + float4(200.0f, 0.0f, 0.0f));		// 위치
-	GetTransform()->SetLocalPosition(BaseRenderer_->GetTransform()->GetLocalPosition());		// 위치
-
-	GetTransform()->SetLocalRotationDegree(BaseRenderer_->GetTransform()->GetLocalRotation());	// 회전
-
+	GetTransform()->SetLocalScaling(BaseScale);			// 크기
+	GetTransform()->SetLocalPosition(BasePos);			// 위치
+	GetTransform()->SetLocalRotationDegree(BaseRot);	// 회전
 	
-
-
-
-	
-	
-
 	// 현재 렌더러가 속한 카메라의 목록에 해당 렌더러 추가
 	BaseRenderer_->SetShadowRenderer(this);
 }
@@ -165,6 +162,11 @@ void GameEngineShadowRenderer::Render(float _DeltaTime, bool _IsDeferred)
 	for (size_t i = 0; i < RenderSets_.size(); i++)
 	{
 		if (false == RenderSets_[i].isRender)
+		{
+			continue;
+		}
+
+		if (false == BaseRenderer_->GetRenderSet(i).isRender)
 		{
 			continue;
 		}

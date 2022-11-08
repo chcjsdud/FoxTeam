@@ -355,6 +355,18 @@ void Jackie::initRendererAndAnimation()
 	axeRenderer_->CreateFBXAnimation("Idle", "Weapon_Axe_01.fbx");
 	axeRenderer_->ChangeFBXAnimation("Idle");
 
+	// 그림자 
+	{
+		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
+
+		WeaponShadowRenderer1_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		WeaponShadowRenderer1_->SetBaseRenderer(axeRenderer_, "RendererShadow");
+
+		WeaponShadowRenderer2_ = CreateTransformComponent<GameEngineShadowRenderer>();
+		WeaponShadowRenderer2_->SetBaseRenderer(sawRenderer_, "RendererShadow");
+	}
+
 	// 외곽선
 	{
 		// Main

@@ -295,6 +295,11 @@ void GameEnginePreprocessingRenderer::Render(float _DeltaTime, bool _IsDeferred)
 			continue;
 		}
 
+		if (false == BaseRenderer_->GetRenderSet(i).isRender)
+		{
+			continue;
+		}
+
 		RenderSets_[i].ShaderHelper->Setting();
 		RenderSets_[i].PipeLine_->Rendering();
 		RenderSets_[i].ShaderHelper->ReSet();
