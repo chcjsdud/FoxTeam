@@ -93,7 +93,7 @@ public:
 	GameEngineRenderTarget* GetFOWRenderTarget() const { return fowRenderTarget_; }
 	const std::vector<GameEngineVertex>& GetEyesightVertices() { return eyesightVertices_; }
 	const std::vector<UINT>& GetEysightIndices() { return eyesightIndices_; }
-
+	Location GetCurLocation() { return curLocation_; }
 
 	void SetUIController();
 	void SetDirection(float4 _dir) { direction_ = _dir; }
@@ -108,6 +108,7 @@ public:
 	void SetFraggerIndex(int _index);
 
 	void SetTriggerProhibit(bool _tf) { isInProhibited_ = _tf; }
+	void SetCurLocation(Location _location) { curLocation_ = _location; }
 
 	// 스탯 내 기준점이 되는 쿨타임 변수
 	float GetCooltimeQSkill() { return stat_.Cooltime_q; }
@@ -500,7 +501,7 @@ protected:
 	bool isInProhibited_;
 	float prohibitedCounter_;
 	float prohibitTimer_;
-
+	Location curLocation_;
 
 private:
 	enum class eCurrentAnimation

@@ -290,7 +290,7 @@ void Jackie::Update(float _deltaTime)
 	if (nullptr != controlWindow)
 	{
 		controlWindow->AddText("WorldPos : " + std::to_string(transform_.GetWorldPosition().x) + " " + std::to_string(transform_.GetWorldPosition().z));
-		controlWindow->AddText("CurLocation : " + std::to_string(stat_.curLocation));
+		controlWindow->AddText("CurLocation : " + std::to_string(static_cast<int>(curLocation_)));
 	}
 }
 

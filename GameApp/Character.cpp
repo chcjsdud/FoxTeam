@@ -99,6 +99,7 @@ Character::Character()
 	, prohibitedCounter_(20.0f)
 	, bHidden_(false)
 	, prohibitTimer_(0.0f)
+	, curLocation_(Location::NONE)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -254,8 +255,6 @@ void Character::Update(float _DeltaTime)
 	CoolTimeCheck(_DeltaTime);
 	DebuffCheck(_DeltaTime);		// CC가 아닌 디버프(출혈, 슬로우 등) 체크
 	EffectTransformCheck(_DeltaTime);
-	
-
 
 	if (true == isPlayerDead_)
 	{
@@ -274,7 +273,7 @@ void Character::Update(float _DeltaTime)
 		return;
 	}
 
-
+	// 이 밑에서부터가 "자기 캐릭터" 에만 적용되는 업데이트입니다.
 
 	if (uiController_ != nullptr)
 	{
@@ -300,12 +299,8 @@ void Character::Update(float _DeltaTime)
 		}
 	}
 
-	if (false == isPlayerDead_ && true == IsFocused())
-	{
-		ProhibitedAreaCheck(_DeltaTime);
-	}
 
-
+	ProhibitedAreaCheck(_DeltaTime);
 	checkCurrentNavFace();
 	checkItemBox();
 
@@ -326,6 +321,8 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("NormalState : " + normalState_.GetCurrentStateName());
 		controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
+
+
 	}
 
 	if (GameEngineInput::Down("Z"))
@@ -2272,15 +2269,15 @@ void Character::startPlayerDeath()
 
 		if (fraggerIndex_ == -1)
 		{
-			uiController_->GetWinLoseUI()->SetText("플레이어가 자살했습니다." + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
+			uiController_->GetWinLoseUI()->SetText("플레이어가 자살했습니다.\n" + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
 		}
 		else if (-2 == fraggerIndex_)
 		{
-			uiController_->GetWinLoseUI()->SetText("플레이어가 몬스터에게 살해당했습니다." + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
+			uiController_->GetWinLoseUI()->SetText("플레이어가 몬스터에게 살해당했습니다.\n" + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
 		}
 		else if (-3 == fraggerIndex_)
 		{
-			uiController_->GetWinLoseUI()->SetText("금지구역에서 " + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
+			uiController_->GetWinLoseUI()->SetText("금지구역에서 벗어나지 못했습니다.\n" + std::to_string(myRank) + " / " + std::to_string(pm->GetPlayerList().size()));
 		}
 		else
 		{
@@ -2614,12 +2611,18 @@ void Character::EffectTransformCheck(float _DeltaTime)
 
 void Character::ProhibitedAreaCheck(float _DeltaTime)
 {
-	LumiaLevel* lv = dynamic_cast<LumiaLevel*>(GetLevel());
+	if (true == isPlayerDead_)
+	{
+		return;
+	}
 
-	if (true == lv->GetProhibitedAreaList()[static_cast<int>(stat_.curLocation)]->IsProhibited())
+	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
+
+	// 대미지를 주는 순간 클라이언트 한정 CURlOCATION 이 -1 로 초기화되는 현상 발생...
+	if (true == level->GetProhibitedAreaList()[static_cast<int>(curLocation_)]->IsProhibited())
 	{
 		prohibitedCounter_ -= _DeltaTime;
-		int adjustedCounter = static_cast<int>(prohibitedCounter_);
+		int adjustedCounter = static_cast<int>(prohibitedCounter_) + 1;
 		
 
 		uiController_->GetTimeUI()->GetProhibitedRenderer()->SetTextColor(float4::RED);
@@ -2641,7 +2644,7 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 			if (GameServer::GetInstance()->IsOpened())
 			{
 				this->SetCharacterDeath();
-				
+				fraggerIndex_ = -3;
 				FT::PlaySoundAndSendPacket("Sfx_RestrictedDamage.wav", transform_.GetWorldPosition());
 				CharDeathPacket deathpacket;
 				deathpacket.SetTargetIndex(myIndex_);
@@ -2653,6 +2656,7 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 			else if (GameClient::GetInstance()->IsConnected())
 			{
 				FT::PlaySoundAndSendPacket("Sfx_RestrictedDamage.wav", transform_.GetWorldPosition());
+				fraggerIndex_ = -3;
 				CharDeathPacket deathpacket;
 				deathpacket.SetTargetIndex(myIndex_);
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::CHARACTER));

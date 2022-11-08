@@ -252,9 +252,9 @@ void Yuki::Update(float _deltaTime)
 		controlWindow->AddText("Yuki Passive Token Count : " + std::to_string(passiveToken_));
 
 		controlWindow->AddText("WorldPos : " + std::to_string(transform_.GetWorldPosition().x) + " " + std::to_string(transform_.GetWorldPosition().z));
-		controlWindow->AddText("CurLocation : " + std::to_string(stat_.curLocation));
+		controlWindow->AddText("CurLocation : " + std::to_string(static_cast<int>(curLocation_)));
 
-		controlWindow->AddText("MinimapLocation : " + std::to_string(GetUIController()->GetMinimapUI()->GetIconList()[myIndex_]->GetTransform()->GetWorldPosition().x + ',' + GetUIController()->GetMinimapUI()->GetIconList()[myIndex_]->GetTransform()->GetWorldPosition().y));
+	//	controlWindow->AddText("MinimapLocation : " + std::to_string(GetUIController()->GetMinimapUI()->GetIconList()[myIndex_]->GetTransform()->GetWorldPosition().x + ',' + GetUIController()->GetMinimapUI()->GetIconList()[myIndex_]->GetTransform()->GetWorldPosition().y));
 	}
 }
 

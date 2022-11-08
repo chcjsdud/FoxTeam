@@ -382,14 +382,14 @@ void LumiaLevel::CharacterCreationCommand()
 		// 
 		pm->GetPlayerList()[PlayerNum].stat_ = NewCharacter->GetStat();
 		int spawnArea = pm->GetPlayerList()[PlayerNum].startPoint_;
-		NewCharacter->GetStat()->curLocation = pm->GetPlayerList()[PlayerNum].startPoint_;
+		NewCharacter->SetCurLocation(static_cast<Location>(pm->GetPlayerList()[PlayerNum].startPoint_));
 
 		// 지역 선택 안하면 디폴트로 스폰
 		if (-1 == spawnArea)
 		{
 			pm->GetPlayerList()[PlayerNum].curPos_ = float4(-2500.f, 0.0f, 10000.f);
 			NewCharacter->InitSpawnPoint({ -2500.f, 0.0f, 10000.f });
-			NewCharacter->GetStat()->curLocation = static_cast<int>(Location::AVENUE);
+			NewCharacter->SetCurLocation(Location::AVENUE);
 		}
 		else
 		{
@@ -1303,8 +1303,11 @@ void LumiaLevel::DebugWindowUpdate()
 
 		for (int i = 0; i < CharacterActorList_.size(); i++)
 		{
-			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->HP));
-			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
+			//DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->HP));
+			//DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
+
+			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Local) : " + std::to_string(static_cast<int>(CharacterActorList_[i]->GetCurLocation())));
+		//	DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->curLocation));
 		}
 	}
 

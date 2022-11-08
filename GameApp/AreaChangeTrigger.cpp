@@ -74,15 +74,14 @@ void AreaChangeTrigger::Update(float _DeltaTime)
 
 			if (nullptr != character && true == character->IsFocused())
 			{
-				if (entryPoint0_ == static_cast<Location>(character->GetStat()->curLocation))
+				if (entryPoint0_ == static_cast<Location>(character->GetCurLocation()))
 				{
-					character->GetStat()->curLocation = static_cast<int>(entryPoint0_);
+					character->SetCurLocation(entryPoint0_);
 				}
-				else if (entryPoint1_ == static_cast<Location>(character->GetStat()->curLocation))
+				else if (entryPoint1_ == static_cast<Location>(character->GetCurLocation()))
 				{
 					// 엔트리포인트 1 에 있다가 0으로 넘어간다는 코드블록
-
-					character->GetStat()->curLocation = static_cast<int>(entryPoint0_);
+					character->SetCurLocation(entryPoint0_);
 
 					if (false == bIsIn_)
 					{
@@ -120,11 +119,11 @@ void AreaChangeTrigger::Update(float _DeltaTime)
 
 			if (nullptr != character && true == character->IsFocused())
 			{
-				if (entryPoint0_ == static_cast<Location>(character->GetStat()->curLocation))
+				if (entryPoint0_ == static_cast<Location>(character->GetCurLocation()))
 				{
 					// 엔트리포인트 0 에 있다가 1로 넘어간다는 코드블록
 
-					character->GetStat()->curLocation = static_cast<int>(entryPoint1_);
+					character->SetCurLocation(entryPoint1_);
 
 					if (false == bIsIn2_)
 					{
@@ -133,11 +132,11 @@ void AreaChangeTrigger::Update(float _DeltaTime)
 						bIsIn_ = false;
 					}
 				}
-				else if (entryPoint1_ == static_cast<Location>(character->GetStat()->curLocation))
+				else if (entryPoint1_ == static_cast<Location>(character->GetCurLocation()))
 				{
 					// 엔트리포인트 1 에 있다가 0으로 넘어간다는 코드블록
 
-					character->GetStat()->curLocation = static_cast<int>(entryPoint1_);
+					character->SetCurLocation(entryPoint1_);
 				//	character->GetUIController()->GetNoticeUI()->SetText(entryPointName0_, 3.f);
 				}
 				//else
