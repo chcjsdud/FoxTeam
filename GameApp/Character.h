@@ -112,11 +112,11 @@ public:
 	void SetCurLocation(Location _location) { curLocation_ = _location; }
 
 	// 스탯 내 기준점이 되는 쿨타임 변수
-	float GetCooltimeQSkill() { return stat_.Cooltime_q; }
-	float GetCooltimeWSkill() { return stat_.Cooltime_w; }
-	float GetCooltimeESkill() { return stat_.Cooltime_e; }
-	float GetCooltimeRSkill() { return stat_.Cooltime_r; }
-	float GetCooltimeDSkill() { return stat_.Cooltime_d; }
+	//float GetCooltimeQSkill() { return stat_.Cooltime_q; }
+	//float GetCooltimeWSkill() { return stat_.Cooltime_w; }
+	//float GetCooltimeESkill() { return stat_.Cooltime_e; }
+	//float GetCooltimeRSkill() { return stat_.Cooltime_r; }
+	//float GetCooltimeDSkill() { return stat_.Cooltime_d; }
 
 	// "현재" 돌고 있는 스킬의 쿨타임 타이머
 	float GetCurCooltimeTimerQ() { return coolTimer_Q_; }
@@ -125,11 +125,11 @@ public:
 	float GetCurCooltimeTimerR() { return coolTimer_R_; }
 	float GetCurCooltimeTimerD() { return coolTimer_D_; }
 
-	void SetCooltimeQSkill(float _coolTime) { stat_.Cooltime_q = _coolTime; }
-	void SetCooltimeWSkill(float _coolTime) { stat_.Cooltime_w = _coolTime; }
-	void SetCooltimeESkill(float _coolTime) { stat_.Cooltime_e = _coolTime; }
-	void SetCooltimeRSkill(float _coolTime) { stat_.Cooltime_r = _coolTime; }
-	void SetCooltimeDSkill(float _coolTime) { stat_.Cooltime_d = _coolTime; }
+	//void SetCooltimeQSkill(float _coolTime) { stat_.Cooltime_q = _coolTime; }
+	//void SetCooltimeWSkill(float _coolTime) { stat_.Cooltime_w = _coolTime; }
+	//void SetCooltimeESkill(float _coolTime) { stat_.Cooltime_e = _coolTime; }
+	//void SetCooltimeRSkill(float _coolTime) { stat_.Cooltime_r = _coolTime; }
+	//void SetCooltimeDSkill(float _coolTime) { stat_.Cooltime_d = _coolTime; }
 
 #pragma endregion
 
@@ -180,6 +180,8 @@ protected:
 
 	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) = 0;
 
+	virtual void onLevelUp() = 0;
+
 #pragma endregion
 
 protected:
@@ -194,6 +196,8 @@ protected:
 
 	void initBasicEffect();
 
+	void SetEquipBuildItem(const std::string& _itemName, EquipmentType _type);
+	void checkBuildItems();
 
 private:
 	void initInput();
@@ -211,8 +215,6 @@ private:
 	void checkItemBox();
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
 	void mixingItem();
-	void SetEquipBuildItem(const std::string& _itemName, EquipmentType _type);
-	void checkBuildItems();
 	void checkBuildItemsRecursive(ItemBase* _item);
 	void updateFOW(float _deltaTime);
 	void getFOWData(std::vector<float4>& _data, bool& _bCalc);
@@ -423,6 +425,13 @@ protected:
 	std::string overrideAnimationName_;
 	std::string overrideAnimationBoneName_;
 	
+	// 초기화용 쿨타임 척도
+	float DefaultCool_Q_;
+	float DefaultCool_W_;
+	float DefaultCool_E_;
+	float DefaultCool_R_;
+	float DefaultCool_D_;
+
 	// 쿨타임 계산 버퍼와 플래그
 	float coolTimer_Q_;
 	float coolTimer_W_;
@@ -485,6 +494,8 @@ protected:
 	// characterList && pm 의 player 인덱스값과 동일한 변수값
 	int myIndex_;
 	//
+	// 플레이어 승리 판정
+	bool isPlayerWon_;
 
 	// 플레이어 죽음 판정
 	bool isPlayerDead_;

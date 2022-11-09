@@ -79,7 +79,7 @@ protected:
 	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) override;
 	virtual void onEffectTransformCheck(float _deltaTime) override;
 
-
+	virtual void onLevelUp() override;
 	// customstate
 	void startSkillEBegin();
 	void updateSkillEBegin(float _deltaTime);

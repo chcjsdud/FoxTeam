@@ -607,7 +607,7 @@ void ItemBoxManager::CreateItemRecipe(const std::string& _left,
 
 	if (false == pair.second)
 	{
-		GameEngineDebug::MsgBoxError("중복된 조합식이 이미 존재합니다!");
+		GameEngineDebug::MsgBoxError("중복된 조합식이 이미 존재합니다!" + _result);
 		return;
 	}
 }

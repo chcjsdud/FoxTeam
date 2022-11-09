@@ -153,6 +153,12 @@ void Rio::Start()
 
 	stat_.AttackRange= 450.0f;
 
+	DefaultCool_Q_ = 1.0f;
+	DefaultCool_W_ = 12.0f;
+	DefaultCool_E_ = 8.0f;
+	DefaultCool_R_ = 80.0f;
+	DefaultCool_D_ = 25.0f;
+
 	basicHitEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
 	basicHitEffect_->GetAttackRenderer()->SetImage("rioHit2.png", "PointSmp");
 	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, -10.0f });
@@ -164,6 +170,15 @@ void Rio::Start()
 	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, -120.0f });
 	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f,0.0f });
 	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHit0Effect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
+
+	SetEquipBuildItem("CrystalTiara", EquipmentType::HEAD);
+	SetEquipBuildItem("OpticalCamouflageSuit", EquipmentType::CHEST);
+	SetEquipBuildItem("Radar", EquipmentType::ARM);
+	SetEquipBuildItem("Bucephalus", EquipmentType::LEG);
+	SetEquipBuildItem("LacedQuiver", EquipmentType::ACCESSORY);
+	SetEquipBuildItem("JebesAlteredBow", EquipmentType::WEAPON);
+
+	checkBuildItems();
 }
 
 void Rio::Update(float _deltaTime)
@@ -951,6 +966,41 @@ void Rio::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 
 void Rio::onEffectTransformCheck(float _deltaTime)
 {
+}
+
+void Rio::onLevelUp()
+{
+	switch (stat_.Level_q)
+	{
+	case 1:
+		DefaultCool_Q_ = 1.0f;
+		DefaultCool_W_ = 12.0f;
+		DefaultCool_E_ = 8.0f;
+		DefaultCool_R_ = 80.0f;
+		DefaultCool_D_ = 25.0f;
+		break;
+	case 2:
+		DefaultCool_W_ = 11.0f;
+		DefaultCool_E_ = 7.0f;
+		DefaultCool_R_ = 70.0f;
+		DefaultCool_D_ = 15.0f;
+		break;
+	case 3:
+		DefaultCool_W_ = 10.0f;
+		DefaultCool_E_ = 6.0f;
+		DefaultCool_R_ = 60.0f;
+		break;
+	case 4:
+		DefaultCool_W_ = 9.0f;
+		DefaultCool_E_ = 5.0f;
+		break;
+	case 5:
+		DefaultCool_W_ = 8.0f;
+		DefaultCool_E_ = 4.0f;
+		break;
+	default:
+		break;
+	}
 }
 
 void Rio::startSkillEBegin()

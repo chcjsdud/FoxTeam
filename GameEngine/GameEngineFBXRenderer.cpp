@@ -208,6 +208,10 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 					{
 						GameEngineTextureManager::GetInst().Load(MatData->NorTexturePath);
 						Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
+					}
+
+					if (Tex != nullptr)
+					{
 						RenderSetData.ShaderHelper->SettingTexture("NormalTex", Tex);
 						RendererDataInst.IsBump = 1;
 					}
@@ -340,7 +344,6 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSetChar(const std::string& _Value, s
 				}
 			}
 
-
 			if (true == RenderSetData.ShaderHelper->IsTextureSetting("NormalTex"))
 			{
 				GameEngineTexture* Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
@@ -351,6 +354,10 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSetChar(const std::string& _Value, s
 					{
 						GameEngineTextureManager::GetInst().Load(MatData->NorTexturePath);
 						Tex = GameEngineTextureManager::GetInst().Find(GameEnginePath::GetFileName(MatData->NorTexturePath));
+					}
+
+					if (Tex != nullptr)
+					{
 						RenderSetData.ShaderHelper->SettingTexture("NormalTex", Tex);
 						RendererDataInst.IsBump = 1;
 					}
