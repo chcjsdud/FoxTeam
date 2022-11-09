@@ -228,6 +228,8 @@ void Jackie::Update(float _deltaTime)
 
 	static bool getWeapon = false;
 
+	equipedItem_;
+
 	if (nullptr != uiController_ && false == getWeapon)
 	{
 		getItem("Hatchet");

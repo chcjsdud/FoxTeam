@@ -601,51 +601,61 @@ void UI_Inventory::EmptySlot()
 
 	if (Slot0_Item != nullptr)
 	{
+		Slot0_Item->Release();
 		Slot0_Item = nullptr;
 	}
 
 	if (Slot1_Item != nullptr)
 	{
+		Slot1_Item->Release();
 		Slot1_Item = nullptr;
 	}
 
 	if (Slot2_Item != nullptr)
 	{
+		Slot2_Item->Release();
 		Slot2_Item = nullptr;
 	}
 
 	if (Slot3_Item != nullptr)
 	{
+		Slot3_Item->Release();
 		Slot3_Item = nullptr;
 	}
 
 	if (Slot4_Item != nullptr)
 	{
+		Slot4_Item->Release();
 		Slot4_Item = nullptr;
 	}
 
 	if (Slot5_Item != nullptr)
 	{
+		Slot5_Item->Release();
 		Slot5_Item = nullptr;
 	}
 
 	if (Slot6_Item != nullptr)
 	{
+		Slot6_Item->Release();
 		Slot6_Item = nullptr;
 	}
 
 	if (Slot7_Item != nullptr)
 	{
+		Slot7_Item->Release();
 		Slot7_Item = nullptr;
 	}
 
 	if (Slot8_Item != nullptr)
 	{
+		Slot8_Item->Release();
 		Slot8_Item = nullptr;
 	}
 
 	if (Slot9_Item != nullptr)
 	{
+		Slot9_Item->Release();
 		Slot9_Item = nullptr;
 	}
 }

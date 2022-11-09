@@ -5,6 +5,7 @@ using namespace std;
 // 설명 :
 class GameEngineUIRenderer;
 class ItemBase;
+class EquipmentItem;
 class ItemBox;
 
 class UI_Equip : public GameEngineActor
@@ -26,7 +27,7 @@ public:
 
 	void EmptySlot();
 	void PushItem(ItemBase* _OriginItemBase, EquipmentType _Type);
-	void GetInventoryInfo(vector<ItemBase*> _ItemVector);
+	void GetEquipInfo(vector<EquipmentItem*> _ItemVector);
 
 	//슬롯에 아이템이 들어있을때 이미지 렌더를 위한 함수
 	void ItemRenderCheck();

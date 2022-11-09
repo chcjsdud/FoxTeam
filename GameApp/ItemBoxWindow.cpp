@@ -94,4 +94,15 @@ void ItemBoxWindow::OnGUI()
 				static_cast<ImGuiID>(listName.size()));
 		}
 	}
+
+	char buf[255]{};
+	memcpy(buf, itemName.c_str(), sizeof(buf));
+	ImGui::InputText("##getiteminput", buf, sizeof(buf));
+	itemName = buf;
+
+	if (true == ImGui::Button("GetItem"))
+	{
+		Character* player = PlayerInfoManager::GetInstance()->GetMainCharacter();
+		player->getItem(itemName);
+	}
 }

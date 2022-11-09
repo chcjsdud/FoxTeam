@@ -942,6 +942,10 @@ void Character::mixingItem()
 		uiController_->GetInventoryUI()->EmptySlot();
 		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 
+		uiController_->GetEquipUI()->EmptySlot();
+		uiController_->GetEquipUI()->GetEquipInfo(equipedItem_);
+		uiController_->GetEquipUI()->ItemRenderCheck();
+
 		checkItemRecipes();
 		return;
 	}
@@ -966,8 +970,8 @@ void Character::SetEquipBuildItem(const std::string& _itemName, EquipmentType _t
 {
 	equipBuildItem_[static_cast<int>(_type)] = reinterpret_cast<EquipmentItem*>
 		(itemBoxmanager_->GetItemFromItemList(_itemName));
+	allMyBuildItems_.push_back(itemBoxmanager_->GetItemFromItemList(_itemName)->Copy());
 }
-
 
 void Character::checkBuildItems()
 {

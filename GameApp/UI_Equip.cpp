@@ -6,6 +6,7 @@
 #include "GameEngineBase/GameEngineDebug.h"
 #include "ItemBase.h"
 #include "UI_ItemSettingHelper.h"
+#include "EquipmentItem.h"
 
 UI_Equip::UI_Equip()
 	: Time(1.0f), UIOn(true) ,
@@ -139,31 +140,37 @@ void UI_Equip::EmptySlot()
 
 	if (Slot0_Item != nullptr)
 	{
+		Slot0_Item->Release();
 		Slot0_Item = nullptr;
 	}
 
 	if (Slot1_Item != nullptr)
 	{
+		Slot1_Item->Release();
 		Slot1_Item = nullptr;
 	}
 
 	if (Slot2_Item != nullptr)
 	{
+		Slot2_Item->Release();
 		Slot2_Item = nullptr;
 	}
 
 	if (Slot3_Item != nullptr)
 	{
+		Slot3_Item->Release();
 		Slot3_Item = nullptr;
 	}
 
 	if (Slot4_Item != nullptr)
 	{
+		Slot4_Item->Release();
 		Slot4_Item = nullptr;
 	}
 
 	if (Slot5_Item != nullptr)
 	{
+		Slot5_Item->Release();
 		Slot5_Item = nullptr;
 	}
 }
@@ -231,16 +238,19 @@ void UI_Equip::PushItem(ItemBase* _OriginItemBase, EquipmentType _Type)
 	}
 }
 
-void UI_Equip::GetInventoryInfo(vector<ItemBase*> _ItemVector)
+void UI_Equip::GetEquipInfo(vector<EquipmentItem*> _ItemVector)
 {
-	//vector<ItemBase*>::iterator listiter = _ItemVector.begin();
-	//
-	//for (listiter = _ItemVector.begin(); listiter != _ItemVector.end(); listiter++)
-	//{
-	//	PushItem(*listiter);
-	//}
-	//
-	//return;
+	vector<EquipmentItem*>::iterator listiter = _ItemVector.begin();
+	
+	for (; listiter != _ItemVector.end(); listiter++)
+	{
+		if (nullptr == (*listiter))
+		{
+			continue;
+		}
+		
+		PushItem(*listiter, (*listiter)->GetEquipType());
+	}
 }
 
 void UI_Equip::ItemRenderCheck()

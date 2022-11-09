@@ -27,6 +27,7 @@ class GameEngineShadowRenderer;
 class GameEnginePreprocessingRenderer;
 class Character : public IUnit
 {
+	friend class ItemBoxWindow;
 public:
 	Character();
 	~Character();
