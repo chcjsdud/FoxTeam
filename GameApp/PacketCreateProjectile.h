@@ -28,6 +28,7 @@ public:
 	void SetLifeTime(float _lifeTime) { lifeTime_ = _lifeTime; }
 	void SetScale(const float4& _scale) { scale_ = _scale; }
 	void SetType(eProjectileType _type) { projectileType_ = static_cast<int>(_type); }
+	void SetTargetType(UnitType _type) { targetType_ = static_cast<int>(_type); }
 
 protected:
 	virtual void initPacketID() override;
@@ -59,5 +60,6 @@ private:
 	int ownerIndex_;
 	int targetIndex_;
 	int projectileType_;
+	int targetType_;
 };
 
