@@ -485,17 +485,14 @@ void Yuki::changeAnimationBasicAttack()
 	switch (random)
 	{
 	case 0:
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("attackTwoHandSword_r1.wav");
-		packet0.SetSound("attackTwoHandSword_r1.wav", transform_.GetWorldPosition());
+		FT::PlaySoundAndSendPacket("attackTwoHandSword_r1.wav", transform_.GetWorldPosition());
 		break;
 	case 1:
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("attackTwoHandSword_r2.wav");
-		packet0.SetSound("attackTwoHandSword_r2.wav", transform_.GetWorldPosition());
+		FT::PlaySoundAndSendPacket("attackTwoHandSword_r2.wav", transform_.GetWorldPosition());
 		break;
 	default:
 		break;
 	}
-	FT::SendPacket(packet0);
 }
 
 void Yuki::changeDeathAnimation()
@@ -567,16 +564,9 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 			FT::SendPacket(ccPacket);
 		}
 
+		FT::PlaySoundAndSendPacket("Yuki_Skill01_Attack.wav", transform_.GetWorldPosition());
 
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Attack.wav");
-		PacketSoundPlay packet0;
-		packet0.SetSound("Yuki_Skill01_Attack.wav", transform_.GetWorldPosition());
-		FT::SendPacket(packet0);
-
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Passive_Hit_r2.wav");
-		PacketSoundPlay packet;
-		packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
-		FT::SendPacket(packet);
+		FT::PlaySoundAndSendPacket("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 
 		qSlashEffect_->PlayBurst(_target->GetTransform()->GetWorldPosition());
 		qSlashEffect_->GetTransform()->SetWorldPosition(_target->GetTransform()->GetWorldPosition());
@@ -595,10 +585,7 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 
 	target_->Damage(stat_.AttackPower, this);
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Passive_Hit_r2.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 
 	float4 wp = target_->GetTransform()->GetWorldPosition();
 	wp.y += 50.0f;
@@ -624,11 +611,7 @@ void Yuki::onStartQSkill()
 	b_isQ_ = true;
 	timer_Q = 2.0f;
 
-
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Active.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("Yuki_Skill01_Active.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("Yuki_Skill01_Active.wav", transform_.GetWorldPosition());
 
 	qEffect_->PlayAwake();
 
@@ -657,10 +640,7 @@ void Yuki::onStartWSkill()
 		renderer_->ChangeFBXAnimation("SkillW", true);
 	}
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill02_Active.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("Yuki_Skill02_Active.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("Yuki_Skill02_Active.wav", transform_.GetWorldPosition());
 
 	groundEffectRenderer_->On();
 	groundEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01SE", true);
@@ -701,10 +681,7 @@ void Yuki::onStartESkill()
 
 	RandomSoundPlay("Yuki_PlaySkill1011400seq0_1_ko.wav", "Yuki_PlaySkill1011400seq0_2_ko.wav", "");
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill03_Move.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("Yuki_Skill03_Move.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("Yuki_Skill03_Move.wav", transform_.GetWorldPosition());
 
 	rearEffectRenderer_->On();
 	rearEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01", true);
@@ -775,15 +752,8 @@ void Yuki::onUpdateESkill(float _deltaTime)
 						{
 							character->Damage(stat_.AttackPower * 0.65f + 60.0f, this);
 
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Attack.wav");
-							PacketSoundPlay packet0;
-							packet0.SetSound("Yuki_Skill01_Attack.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet0);
-
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Passive_Hit_r2.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("Yuki_Skill01_Attack.wav", transform_.GetWorldPosition());
+							FT::PlaySoundAndSendPacket("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 
 							b_Ehit_ = true;
 						}
@@ -813,15 +783,8 @@ void Yuki::onUpdateESkill(float _deltaTime)
 						{
 							character->Damage(stat_.AttackPower * 0.65f + 60.0f, this);
 
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill01_Attack.wav");
-							PacketSoundPlay packet0;
-							packet0.SetSound("Yuki_Skill01_Attack.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet0);
-
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Passive_Hit_r2.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("Yuki_Skill01_Attack.wav", transform_.GetWorldPosition());
+							FT::PlaySoundAndSendPacket("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 
 							b_Ehit_ = true;
 						}
@@ -1005,11 +968,7 @@ void Yuki::startCustomRStandBy()
 	collision_R->On();
 
 	RandomSoundPlay("Yuki_PlaySkill1011500seq0_1_ko.wav", "Yuki_PlaySkill1011500seq0_2_ko.wav", "Yuki_PlaySkill1011500seq0_1_ko.wav");
-
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill04_Active.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("Yuki_Skill04_Active.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("Yuki_Skill04_Active.wav", transform_.GetWorldPosition());
 
 	float4 wp = GetTransform()->GetWorldPosition();
 	rEffect_->GetTransform()->SetLocalPosition(wp);
@@ -1072,11 +1031,7 @@ void Yuki::updateCustomRSlash(float _deltaTime)
 	if (false == b_RHit_)
 	{
 		collision_R->On();
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("Yuki_Skill04_Attack.wav");
-		PacketSoundPlay packet;
-		packet.SetSound("Yuki_Skill04_Attack.wav", transform_.GetWorldPosition());
-
-		FT::SendPacket(packet);
+		FT::PlaySoundAndSendPacket("Yuki_Skill04_Attack.wav", transform_.GetWorldPosition());
 
 		auto collisionList = collision_R->GetCollisionList(eCollisionGroup::Player);
 
