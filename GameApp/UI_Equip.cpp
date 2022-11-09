@@ -30,14 +30,14 @@ void UI_Equip::Start()
 {
 
 	BackGroundPos = { -215.0f, -315.0f, 0.0f };
-	BasicSlotPos = { -257.0f, -315.0f, -1.0f };
+	BasicSlotPos = { -257.0f, -299.0f, -1.0f };
 	SlotXPivot = { 41.0f, 0.0f, 0.0f };
-	SlotYPivot = { 0.0f, -27.0f, 0.0f };
+	SlotYPivot = { 0.0f, -33.0f, 0.0f };
 	SlotSize = { 36.f,23.f };
 
 	{
 		Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Renderer->SetImage("Eqiup_BackGround.png", "PointSmp");
+		Renderer->SetImage("Equip_BackGround.png", "PointSmp");
 		Renderer->GetTransform()->SetLocalPosition(BackGroundPos);
 		Renderer->GetTransform()->SetLocalScaling(Renderer->GetCurrentTexture()->GetTextureSize());
 	}
@@ -49,32 +49,32 @@ void UI_Equip::Start()
 			Slot0Collision = CreateTransformComponent<GameEngineCollision>();
 			Slot0Collision->GetTransform()->SetLocalPosition(BasicSlotPos);
 			Slot0Collision->GetTransform()->SetLocalScaling(SlotSize);
-			Slot0Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+			Slot0Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 
 			Slot1Collision = CreateTransformComponent<GameEngineCollision>();
 			Slot1Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotXPivot);
 			Slot1Collision->GetTransform()->SetLocalScaling(SlotSize);
-			Slot1Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+			Slot1Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 
 			Slot2Collision = CreateTransformComponent<GameEngineCollision>();
 			Slot2Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 2.0f));
 			Slot2Collision->GetTransform()->SetLocalScaling(SlotSize);
-			Slot2Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+			Slot2Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 
 			Slot3Collision = CreateTransformComponent<GameEngineCollision>();
 			Slot3Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotYPivot);
 			Slot3Collision->GetTransform()->SetLocalScaling(SlotSize);
-			Slot3Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+			Slot3Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 
 			Slot4Collision = CreateTransformComponent<GameEngineCollision>();
 			Slot4Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotYPivot + SlotXPivot);
 			Slot4Collision->GetTransform()->SetLocalScaling(SlotSize);
-			Slot4Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+			Slot4Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 
 			Slot5Collision = CreateTransformComponent<GameEngineCollision>();
 			Slot5Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotYPivot + (SlotXPivot * 2.0f));
 			Slot5Collision->GetTransform()->SetLocalScaling(SlotSize);
-			Slot5Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::AABBBox3D);
+			Slot5Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 		}
 	}
 

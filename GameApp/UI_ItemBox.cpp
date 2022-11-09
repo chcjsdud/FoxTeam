@@ -36,7 +36,7 @@ void UI_ItemBox::Start()
 	//인게임정보(HP나 스태미너 상태, 착용장비여부)등을 받으면, UIRendererMap에서 이미지이름으로 Find해서 리소스를 바꿀 예정업니다.
 
 	BackgroundPos = { 0.0f, -100.0f, 0.0f };
-	BasicSlotPos = { -77.0f, -93.0f, 0.0f };
+	BasicSlotPos = { -78.0f, -93.0f, 0.0f };
 	SlotXPivot = { 52.0f, 0.0f, 0.0f };
 	SlotYPivot = { 0.0f, -37.0f, 0.0f };
 	SlotSize = { 44.0f,27.0f, 1.f };
