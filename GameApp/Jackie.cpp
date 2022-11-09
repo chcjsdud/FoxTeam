@@ -226,6 +226,14 @@ void Jackie::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
 
+	static bool getWeapon = false;
+
+	if (nullptr != uiController_ && false == getWeapon)
+	{
+		getItem("Hatchet");
+		getWeapon = true;
+	}
+
 	if (true == isPlayerDead_)
 	{
 		int a = 0;

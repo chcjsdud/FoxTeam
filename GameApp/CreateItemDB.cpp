@@ -554,24 +554,24 @@ void ItemBoxManager::CreateWeaponItemList()
 
 	// Two-handed Sword
 	CreateEquipmentItem("RustySword", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("Katana", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("Muramasa", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("Monohoshizao", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("Katana", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	CreateEquipmentItem("Muramasa", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	CreateEquipmentItem("Monohoshizao", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 
 	// Axe
 	CreateEquipmentItem("Hatchet", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("BattleAxe", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("LightHatchet", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("TheJuggernaut", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("BattleAxe", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::UNCOMMON);
+	CreateEquipmentItem("LightHatchet", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	CreateEquipmentItem("TheJuggernaut", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 
 	// Dual Swords
 	CreateEquipmentItem("TwinBlades", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
 	// Pistol
 	CreateEquipmentItem("WaltherPPK", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("BerettaM92F", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("FN57", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("Elegance", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("BerettaM92F", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::UNCOMMON);
+	CreateEquipmentItem("FN57", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	CreateEquipmentItem("Elegance", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 
 	// Assault Rifle
 	CreateEquipmentItem("Fedorova", EquipmentType::WEAPON, "ItemIcon_101101.png");
@@ -601,9 +601,9 @@ void ItemBoxManager::CreateWeaponItemList()
 
 	// Bow
 	CreateEquipmentItem("Bow", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("Longbow", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("MightyBow", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("JebesAlteredBow", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("Longbow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::UNCOMMON);
+	CreateEquipmentItem("MightyBow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	CreateEquipmentItem("JebesAlteredBow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 
 	// Crossbow
 	CreateEquipmentItem("ShortCrossbow", EquipmentType::WEAPON, "ItemIcon_101101.png");

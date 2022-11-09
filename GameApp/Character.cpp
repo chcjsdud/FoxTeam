@@ -518,11 +518,119 @@ void Character::getEquipItem(EquipmentItem* _item, int _index)
 	}
 }
 
+void Character::getEquipItem(EquipmentItem* _item)
+{
+	std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
+
+	for (; iter != allMyBuildItems_.end(); ++iter)
+	{
+		if ((*iter)->GetName() != _item->GetName())
+		{
+			continue;
+		}
+
+		break;
+	}
+
+	if (iter != allMyBuildItems_.end())
+	{
+		EquipmentItem* currentEquipItem = equipedItem_[static_cast<size_t>(_item->GetEquipType())];
+
+		if (nullptr == currentEquipItem)
+		{
+			equipedItem_[static_cast<size_t>(_item->GetEquipType())] = reinterpret_cast<EquipmentItem*>(_item);
+			allMyBuildItems_.erase(iter);
+			if (nullptr != uiController_)
+			{
+				uiController_->GetEquipUI()->PushItem(_item, _item->GetEquipType());
+			}
+			return;
+		}
+
+		if (currentEquipItem->GetItemTier() < _item->GetItemTier())
+		{
+			// 장착되있던 아이템은 인벤토리로 들어감
+			bool isFull = true;
+			for (auto& invenItem : inventory_)
+			{
+				if (nullptr != invenItem)
+				{
+					continue;
+				}
+
+				isFull = false;
+				invenItem = currentEquipItem;
+				//이건호 : 기존 UI를 비우고 인벤토리 벡터 전체를 받아오도록 설정
+				if (nullptr != uiController_)
+				{
+					uiController_->GetInventoryUI()->EmptySlot();
+					uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+				}
+
+				break;
+			}
+
+			if (true == isFull)
+			{
+				// 인벤토리가 가득찬 경우에는 바닥에 떨어짐
+			}
+
+			equipedItem_[static_cast<size_t>(_item->GetEquipType())] = reinterpret_cast<EquipmentItem*>(_item);
+			allMyBuildItems_.erase(iter);
+			return;
+		}
+	}
+
+	for (auto& invenItem : inventory_)
+	{
+		if (nullptr != invenItem)
+		{
+			continue;
+		}
+
+		invenItem = _item;
+		//이건호 : 기존 UI를 비우고 인벤토리 벡터 전체를 받아오도록 설정
+		if (nullptr != uiController_)
+		{
+			uiController_->GetInventoryUI()->EmptySlot();
+			uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+		}
+
+		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
+
+		for (; iter != allMyBuildItems_.end(); ++iter)
+		{
+			if ((*iter)->GetName() != _item->GetName())
+			{
+				continue;
+			}
+
+			break;
+		}
+
+		if (iter != allMyBuildItems_.end())
+		{
+			allMyBuildItems_.erase(iter);
+		}
+		break;
+	}
+}
+
 void Character::getItem(const std::string& _itemName)
 {
-	// 임의로 아이템을 인벤토리에 넣음
-
 	ItemBase* item = itemBoxmanager_->GetItemFromItemList(_itemName);
+
+	if (nullptr == item)
+	{
+		return;
+	}
+
+	if (ItemType::EQUIPMENT == item->GetItemType())
+	{
+		getEquipItem(reinterpret_cast<EquipmentItem*>(item));
+		checkItemRecipes();
+		return;
+	}
 
 	for (auto& invenItem : inventory_)
 	{
@@ -532,8 +640,11 @@ void Character::getItem(const std::string& _itemName)
 		}
 
 		invenItem = item;
-		uiController_->GetInventoryUI()->EmptySlot();
-		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+		if (nullptr != uiController_)
+		{
+			uiController_->GetInventoryUI()->EmptySlot();
+			uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+		}
 
 		std::list<ItemBase*>::iterator iter = allMyBuildItems_.begin();
 
@@ -800,10 +911,6 @@ void Character::checkBuildItems()
 	checkBuildItemsRecursive(reinterpret_cast<ItemBase*>(equipBuildItem_[static_cast<int>(EquipmentType::LEG)]));
 	checkBuildItemsRecursive(reinterpret_cast<ItemBase*>(equipBuildItem_[static_cast<int>(EquipmentType::ACCESSORY)]));
 	checkBuildItemsRecursive(reinterpret_cast<ItemBase*>(equipBuildItem_[static_cast<int>(EquipmentType::WEAPON)]));
-
-	allMyBuildItems_;
-
-	int a = 0;
 }
 
 void Character::checkBuildItemsRecursive(ItemBase* _item)
