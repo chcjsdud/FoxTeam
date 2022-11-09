@@ -22,6 +22,8 @@ public:
 		MyChar = _Char;
 	}
 
+	void SetPassiveUI(int _num);
+
 public:
 	GameEngineProgressBarRenderer* HPBar_Renderer;
 	GameEngineProgressBarRenderer* SPBar_Renderer;
