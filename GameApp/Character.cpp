@@ -928,7 +928,11 @@ void Character::Hide()
 {
 	renderer_->Off();
 	shadow_->Off();
+	
+	
+	
 	bHidden_ = true;
+
 }
 
 void Character::ChangeAnimation(const std::string& _animationName, bool _bForce)
@@ -2381,11 +2385,6 @@ void Character::updatePlayerWinner(float _deltaTime)
 
 void Character::PlayEffect(const std::string& _effectName, IUnit* _victim)
 {
-	if (true == bHidden_)
-	{
-		return;
-	}
-
 	if ("StunEffect" == _effectName)
 	{
 		float4 wp = GetTransform()->GetWorldPosition();

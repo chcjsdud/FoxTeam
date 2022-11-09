@@ -247,17 +247,6 @@ void Jackie::Update(float _deltaTime)
 	if (true == isR_)
 	{
 		timer_R -= _deltaTime;
-		sawRenderer_->On();
-		WeaponSilhouetteRenderer2_->On();
-		axeRenderer_->Off();
-		WeaponSilhouetteRenderer1_->Off();
-
-		sawRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
-		WeaponSilhouetteRenderer2_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
-
-		float x = debugX;
-		float y = debugY;
-		float z = debugZ;
 
 		if (0.0f >= timer_R)
 		{
@@ -266,14 +255,34 @@ void Jackie::Update(float _deltaTime)
 		}
 	}
 
-	if (false == isR_)
+
+	if (bHidden_ == true)
 	{
 		sawRenderer_->Off();
+		axeRenderer_->Off();
 		WeaponSilhouetteRenderer1_->Off();
-		axeRenderer_->On();
-		axeRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
-		WeaponSilhouetteRenderer2_->On();
-		WeaponSilhouetteRenderer2_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
+		WeaponSilhouetteRenderer2_->Off();
+	}
+	else
+	{
+		if (true == isR_)
+		{
+			sawRenderer_->On();
+			WeaponSilhouetteRenderer2_->On();
+			axeRenderer_->Off();
+			WeaponSilhouetteRenderer1_->Off();
+			sawRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
+			WeaponSilhouetteRenderer2_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
+		}
+		else
+		{
+			sawRenderer_->Off();
+			WeaponSilhouetteRenderer2_->Off();
+			axeRenderer_->On();
+			WeaponSilhouetteRenderer1_->On();
+			axeRenderer_->GetTransform()->GetTransformData().WorldWorld_* sawRenderer_->GetParentAffine();
+			WeaponSilhouetteRenderer2_->GetTransform()->GetTransformData().WorldWorld_* axeRenderer_->GetParentAffine();
+		}
 	}
 
 	if ("Run" == curAnimationName_)
@@ -967,9 +976,6 @@ void Jackie::onStartRSkill()
 
 	// timer_R = 12.0f;
 	timer_R = 12.0f;
-
-	axeRenderer_->Off();
-	sawRenderer_->On();
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
