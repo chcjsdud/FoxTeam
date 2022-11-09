@@ -250,13 +250,13 @@ void UI_Skill::SetStatus(CharacterStat* _Mystat)
 	switch (WeaponLevel)
 	{
 	case 0:
-		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Two.png", "PointSmp");
+		Icon_Weapon_LevelCounter->SetImage("UI_SkillLevelBg_Two.png", "PointSmp");
 		break;
 	case 1:
-		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Two_LV1.png", "PointSmp");
+		Icon_Weapon_LevelCounter->SetImage("UI_SkillLevelBg_Two_LV1.png", "PointSmp");
 		break;
 	case 2:
-		Icon_R_LevelCounter->SetImage("UI_SkillLevelBg_Two_LV2.png", "PointSmp");
+		Icon_Weapon_LevelCounter->SetImage("UI_SkillLevelBg_Two_LV2.png", "PointSmp");
 		break;
 	default:
 		break;

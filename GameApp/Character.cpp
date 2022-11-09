@@ -55,6 +55,11 @@ Character::Character()
 	, myIndex_(-1)
 	, uiController_(nullptr)
 	, overrideAnimationName_("")
+	, DefaultCool_Q_(1.0f)
+	, DefaultCool_W_(1.0f)
+	, DefaultCool_E_(1.0f)
+	, DefaultCool_R_(1.0f)
+	, DefaultCool_D_(1.0f)
 	, coolTimer_Q_(0.0f)
 	, coolTimer_W_(0.0f)
 	, coolTimer_E_(0.0f)
@@ -231,9 +236,6 @@ void Character::Start()
 	{
 		GameEngineDebug::MsgBoxError("level에 MousePointer 정보가 없습니다.");
 	}
-
-
-
 
 	equipedItem_.resize(static_cast<int>(EquipmentType::MAX));
 	equipBuildItem_.resize(static_cast<int>(EquipmentType::MAX));
@@ -1077,35 +1079,43 @@ void Character::Damage(float _Amount, IUnit* _Target)
 void Character::LevelUP(LevelUPData _Data)
 {
 	// 레벨이없네!!!!!
-	stat_.level += 1;
-	stat_.AttackPower += _Data.AttackPower_;					// 공격력
-	stat_.HPMax += _Data.HP_;									// 체력(최대체력)
-	stat_.HPRegeneration += _Data.HPRegeneration_;				// 체력재생
-	stat_.SPMax += _Data.SP_;									// 스태미나(최대스태미나)
-	stat_.SPRegeneration += _Data.SPRegeneration_;				// 스태미나재생
-	stat_.Defence += _Data.Defence_;							// 방어력
-	stat_.AttackSpeed += _Data.AttackSpeed_;					// 공격속도
-	stat_.CriticalChance += _Data.CriticalChance_;				// 치명타
-	stat_.MovementSpeed += _Data.MovementSpeed_;				// 이동속도
-	stat_.VisionRange += _Data.VisionRange_;					// 시야
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
-	if (5 > stat_.Level_q)										// 스킬 레벨은 각 최대 스킬 레벨(5,3) 만큼만 일괄적으로 오릅니다.
-	{
-		stat_.Level_q++;
-		stat_.Level_w++;
-		stat_.Level_e++;
-	}
 
-	if (3 > stat_.Level_r)
-	{
-		stat_.Level_r++;
-		stat_.Level_passive++;
-	}
+		stat_.level += 1;
+		stat_.AttackPower += _Data.AttackPower_;					// 공격력
+		stat_.HPMax += _Data.HP_;									// 체력(최대체력)
+		stat_.HPRegeneration += _Data.HPRegeneration_;				// 체력재생
+		stat_.SPMax += _Data.SP_;									// 스태미나(최대스태미나)
+		stat_.SPRegeneration += _Data.SPRegeneration_;				// 스태미나재생
+		stat_.Defence += _Data.Defence_;							// 방어력
+		stat_.AttackSpeed += _Data.AttackSpeed_;					// 공격속도
+		stat_.CriticalChance += _Data.CriticalChance_;				// 치명타
+		stat_.MovementSpeed += _Data.MovementSpeed_;				// 이동속도
+		stat_.VisionRange += _Data.VisionRange_;					// 시야
 
-	if (2 > stat_.Level_d)
-	{
-		stat_.Level_d++;
-	}
+		if (5 > stat_.Level_q)										// 스킬 레벨은 각 최대 스킬 레벨(5,3) 만큼만 일괄적으로 오릅니다.
+		{
+			stat_.Level_q++;
+			stat_.Level_w++;
+			stat_.Level_e++;
+		}
+
+		if (3 > stat_.Level_r)
+		{
+			stat_.Level_r++;
+			stat_.Level_passive++;
+		}
+
+		if (2 > stat_.Level_d)
+		{
+			stat_.Level_d++;
+		}
+		if (myIndex_ == pm->GetMyNumber())
+		{
+		uiController_->GetSkillUI()->SetStatus(&stat_);
+		}
+		onLevelUp();
 
 	levelUpEffect_->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 	levelUpEffect_->PlayAwake();
@@ -1656,7 +1666,7 @@ void Character::updateNormalState(float _deltaTime)
 				uiController_->GetSkillUI()->GetCoolTimeMaskQ()->On();
 			}
 			bCoolQ_ = true;
-			coolTimer_Q_ = stat_.Cooltime_q;
+			coolTimer_Q_ = DefaultCool_Q_;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("QSkill", true);
 
@@ -1677,7 +1687,7 @@ void Character::updateNormalState(float _deltaTime)
 				uiController_->GetSkillUI()->GetCoolTimeMaskW()->On();
 			}
 			bCoolW_ = true;
-			coolTimer_W_ = stat_.Cooltime_w;
+			coolTimer_W_ = DefaultCool_W_;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("WSkill", true);
 
@@ -1693,7 +1703,7 @@ void Character::updateNormalState(float _deltaTime)
 				uiController_->GetSkillUI()->GetCoolTimeMaskE()->On();
 			}
 			bCoolE_ = true;
-			coolTimer_E_ = stat_.Cooltime_e;
+			coolTimer_E_ = DefaultCool_E_;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("ESkill", true);
 
@@ -1710,7 +1720,7 @@ void Character::updateNormalState(float _deltaTime)
 				uiController_->GetSkillUI()->GetCoolTimeMaskR()->On();
 			}
 			bCoolR_ = true;
-			coolTimer_R_ = stat_.Cooltime_r;
+			coolTimer_R_ = DefaultCool_R_;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("RSkill", true);
 
@@ -1727,7 +1737,7 @@ void Character::updateNormalState(float _deltaTime)
 				uiController_->GetSkillUI()->GetCoolTimeMaskD()->On();
 			}
 			bCoolD_ = true;
-			coolTimer_D_ = stat_.Cooltime_d;
+			coolTimer_D_ = DefaultCool_D_;
 			mainState_.ChangeState("AttackState", true);
 			attackState_.ChangeState("DSkill", true);
 
@@ -2506,7 +2516,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 			uiController_->GetSkillUI()->GetCoolTimeMaskQ()->TextSetting("굴림", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
 			// 쿨타임 마스크 하얀색으로 교체 -> 알파값 급격히 낮아져서 투명화 -> OFF() -> 다시 블루 마스크로 이미지 바꿈 -> 알파값 1.0f
 
-			coolTimer_Q_ = stat_.Cooltime_q;
+			coolTimer_Q_ = DefaultCool_Q_;
 			bCoolQ_ = false;
 			bCoolWQ_ = true;
 		}
@@ -2543,7 +2553,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 			// 초기화
 			uiController_->GetSkillUI()->GetCoolTimeMaskW()->TextSetting("굴림", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
 
-			coolTimer_W_ = stat_.Cooltime_w;
+			coolTimer_W_ = DefaultCool_W_;
 
 			bCoolW_ = false;
 			bCoolWW_ = true;
@@ -2578,7 +2588,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 			// 초기화
 			uiController_->GetSkillUI()->GetCoolTimeMaskE()->TextSetting("굴림", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
 
-			coolTimer_E_ = stat_.Cooltime_e;
+			coolTimer_E_ = DefaultCool_E_;
 			bCoolE_ = false;
 			bCoolWE_ = true;
 		}
@@ -2612,7 +2622,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 			// 초기화
 			uiController_->GetSkillUI()->GetCoolTimeMaskR()->TextSetting("굴림", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
 
-			coolTimer_R_ = stat_.Cooltime_r;
+			coolTimer_R_ = DefaultCool_R_;
 			bCoolR_ = false;
 			bCoolWR_ = true;
 		}
@@ -2646,7 +2656,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 			// 초기화
 			uiController_->GetSkillUI()->GetCoolTimeMaskD()->TextSetting("굴림", " ", 20, FW1_CENTER, float4::WHITE, { 0.0f, 12.0f });
 
-			coolTimer_D_ = stat_.Cooltime_d;
+			coolTimer_D_ = DefaultCool_D_;
 			bCoolD_ = false;
 			bCoolWD_ = true;
 		}

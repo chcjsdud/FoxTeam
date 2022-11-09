@@ -174,11 +174,17 @@ void Jackie::Start()
 	stat_.MovementSpeed = 350.0f;
 	stat_.AttackRange = 280.f;
 
-	stat_.Cooltime_q = 9.0f;
-	stat_.Cooltime_w = 19.0f;
-	stat_.Cooltime_e = 24.0f;
-	stat_.Cooltime_r = 70.0f;
+	//stat_.Cooltime_q = 9.0f;
+	//stat_.Cooltime_w = 19.0f;
+	//stat_.Cooltime_e = 24.0f;
+	//stat_.Cooltime_r = 70.0f;
 
+	DefaultCool_Q_ = 9.0f;
+	DefaultCool_W_ = 19.0f;
+	DefaultCool_E_ = 24.0f;
+	DefaultCool_R_ = 70.0f;
+	DefaultCool_D_ = 0.5f;
+	
 	//GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
 	//hitBase->Cut(3, 3);
 	if (false == GameEngineInput::GetInst().IsKey("X"))
@@ -1059,6 +1065,50 @@ void Jackie::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 
 void Jackie::onEffectTransformCheck(float _deltaTime)
 {
+}
+
+void Jackie::onLevelUp()
+{
+	switch (stat_.Level_q)
+	{
+	case 1:
+		DefaultCool_Q_ = 9.0f;
+		DefaultCool_W_ = 19.0f;
+		DefaultCool_E_ = 24.0f;
+		DefaultCool_R_ = 70.0f;
+		DefaultCool_D_ = 0.5f;
+		break;
+	case 2:
+		DefaultCool_Q_ = 8.5f;
+		DefaultCool_W_ = 17.5f;
+		DefaultCool_E_ = 22.0f;
+		DefaultCool_R_ = 60.0f;
+		DefaultCool_D_ = 0.5f;
+		break;
+	case 3:
+		DefaultCool_Q_ = 8.0f;
+		DefaultCool_W_ = 16.0f;
+		DefaultCool_E_ = 20.0f;
+		DefaultCool_R_ = 50.0f;
+		DefaultCool_D_ = 0.5f;
+		break;
+	case 4:
+		DefaultCool_Q_ = 7.5f;
+		DefaultCool_W_ = 14.5f;
+		DefaultCool_E_ = 18.0f;
+		DefaultCool_R_ = 50.0f;
+		DefaultCool_D_ = 0.5f;
+		break;
+	case 5:
+		DefaultCool_Q_ = 7.0f;
+		DefaultCool_W_ = 13.0f;
+		DefaultCool_E_ = 16.0f;
+		DefaultCool_R_ = 50.0f;
+		DefaultCool_D_ = 0.5f;
+		break;
+	default:
+		break;
+	}
 }
 
 void Jackie::startSkillEBegin()

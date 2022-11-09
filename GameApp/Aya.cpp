@@ -146,7 +146,11 @@ void Aya::Start()
 	stat_.AttackSpeed = 0.8f;
 	stat_.AttackRange = 450.f;
 
-
+	DefaultCool_Q_ = 6.5f;
+	DefaultCool_W_ = 17.0f;
+	DefaultCool_E_ = 19.0f;
+	DefaultCool_R_ = 80.0f;
+	DefaultCool_D_ = 40.0f;
 	// 평타 상대 피격 이펙트
 	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Shoot_01.png");
 	hitBase->Cut(2, 2);
@@ -933,4 +937,43 @@ void Aya::onEffectTransformCheck(float _deltaTime)
 
 	//basicHitEffect_->GetTransform()->SetWorldPosition(wp);
 	//basicHitEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+}
+
+void Aya::onLevelUp()
+{
+	switch (stat_.Level_q)
+	{
+	case 1:
+		DefaultCool_Q_ = 6.5f;
+		DefaultCool_W_ = 17.0f;
+		DefaultCool_E_ = 19.0f;
+		DefaultCool_R_ = 80.0f;
+		DefaultCool_D_ = 40.0f;
+		break;
+	case 2:
+		DefaultCool_Q_ = 6.0f;
+		DefaultCool_W_ = 15.0f;
+		DefaultCool_E_ = 17.0f;
+		DefaultCool_R_ = 60.0f;
+		DefaultCool_D_ = 25.0f;
+		break;
+	case 3:
+		DefaultCool_Q_ = 5.5f;
+		DefaultCool_W_ = 13.0f;
+		DefaultCool_E_ = 15.0f;
+		DefaultCool_R_ = 40.0f;
+		break;
+	case 4:
+		DefaultCool_Q_ = 5.0f;
+		DefaultCool_W_ = 11.0f;
+		DefaultCool_E_ = 13.0f;
+		break;
+	case 5:
+		DefaultCool_Q_ = 4.5f;
+		DefaultCool_W_ = 9.0f;
+		DefaultCool_E_ = 11.0f;
+		break;
+	default:
+		break;
+	}
 }

@@ -173,11 +173,17 @@ void Hyunwoo::Start()
 	stat_.MovementSpeed = 355.0f;
 	stat_.AttackRange = 280.f;
 
-	stat_.Cooltime_q = 8.5f;
-	stat_.Cooltime_w = 28.0f;
-	stat_.Cooltime_e = 18.0f;
-	stat_.Cooltime_r = 65.0f;
-	stat_.Cooltime_d = 10.0f;
+	//stat_.Cooltime_q = 8.5f;
+	//stat_.Cooltime_w = 28.0f;
+	//stat_.Cooltime_e = 18.0f;
+	//stat_.Cooltime_r = 65.0f;
+	//stat_.Cooltime_d = 10.0f;
+	DefaultCool_Q_ = 8.5f;
+	DefaultCool_W_ = 28.0f;
+	DefaultCool_E_ = 18.0f;
+	DefaultCool_R_ = 65.0f;
+	DefaultCool_D_ = 10.0f;
+
 	
 	SetEquipBuildItem("ImperialBurgonet", EquipmentType::HEAD);
 	SetEquipBuildItem("CommandersArmor", EquipmentType::CHEST);
@@ -211,8 +217,6 @@ void Hyunwoo::Update(float _deltaTime)
 			b_isW_ = false;
 		}
 	}
-
-
 }
 
 void Hyunwoo::initRendererAndAnimation()
@@ -309,7 +313,6 @@ void Hyunwoo::initHyunwooCollision()
 	collision_R->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_R->SetCollisionType(CollisionType::OBBBox3D);
 	collision_R->Off();
-
 }
 
 void Hyunwoo::initHyunwooCustomState()
@@ -1027,6 +1030,50 @@ void Hyunwoo::onEffectTransformCheck(float _deltaTime)
 {
 	float4 wp = transform_.GetWorldPosition();
 	wEffect_->GetTransform()->SetWorldPosition(wp);
+}
+
+void Hyunwoo::onLevelUp()
+{
+	switch (stat_.Level_q)
+	{
+	case 1:
+		DefaultCool_Q_ = 8.5f;
+		DefaultCool_W_ = 28.0f;
+		DefaultCool_E_ = 18.0f;
+		DefaultCool_R_ = 65.0f;
+		DefaultCool_D_ = 10.0f;
+		break;
+	case 2:
+		DefaultCool_Q_ = 7.5f;
+		DefaultCool_W_ = 25.0f;
+		DefaultCool_E_ = 17.0f;
+		DefaultCool_R_ = 55.0f;
+		DefaultCool_D_ = 6.0f;
+		break;
+	case 3:
+		DefaultCool_Q_ = 6.5f;
+		DefaultCool_W_ = 22.0f;
+		DefaultCool_E_ = 16.0f;
+		DefaultCool_R_ = 50.0f;
+		DefaultCool_D_ = 6.0f;
+		break;
+	case 4:
+		DefaultCool_Q_ = 5.5f;
+		DefaultCool_W_ = 19.0f;
+		DefaultCool_E_ = 15.0f;
+		DefaultCool_R_ = 50.0f;
+		DefaultCool_D_ = 6.0f;
+		break;
+	case 5:
+		DefaultCool_Q_ = 4.5f;
+		DefaultCool_W_ = 16.0f;
+		DefaultCool_E_ = 14.0f;
+		DefaultCool_R_ = 50.0f;
+		DefaultCool_D_ = 6.0f;
+		break;
+	default:
+		break;
+	}
 }
 
 void Hyunwoo::startCustomRSkill()

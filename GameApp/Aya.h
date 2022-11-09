@@ -67,6 +67,8 @@ public:
 
 	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) override;
 	virtual void onEffectTransformCheck(float _deltaTime) override;
+
+	virtual void onLevelUp() override;
 private:
 	float reloadTime_;
 	int ammo_;

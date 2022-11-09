@@ -45,13 +45,6 @@ public:
 	float AttackRange; // 기본 공격 거리
 	float VisionRange; // 시야
 
-	// 쿨타임 기준
-	float Cooltime_q;
-	float Cooltime_w;
-	float Cooltime_e;
-	float Cooltime_r;
-	float Cooltime_d;
-
 	// 스킬 레벨
 	int Level_q;
 	int Level_w;
@@ -94,11 +87,6 @@ public:
 		, AttackRange(425.f)
 		, VisionRange(FT::Char::DEFAULT_VISION_RANGE_DAY)
 		, MovementRatio(1.0f)
-		, Cooltime_q(1.0f)
-		, Cooltime_w(12.0f)
-		, Cooltime_e(8.0f)
-		, Cooltime_r(80.0f)
-		, Cooltime_d(30.0f)
 		, Level_q(1)
 		, Level_w(1)
 		, Level_e(1)

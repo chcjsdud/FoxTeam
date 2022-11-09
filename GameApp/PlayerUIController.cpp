@@ -5,7 +5,7 @@
 #include "GameTimeController.h"
 #include "Monsters.h"
 #include "MonsterInfoManager.h"
-
+#include "Character.h"
 
 
 PlayerUIController::PlayerUIController()
@@ -42,6 +42,7 @@ void PlayerUIController::InitUI()
 
 	calhelper_ = GetLevel()->CreateActor<UI_CalculateHelper>();
 
+
 	//테스트용
 	//notice_UI->SetText("알림 UI 테스트용 텍스트입니다", 5.f);
 }
@@ -73,6 +74,9 @@ void PlayerUIController::UIOff()
 void PlayerUIController::Start()
 {
 	InitUI();
+
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+	skill_UI->SetStatus(pm->GetMyPlayer().stat_);
 }
 
 void PlayerUIController::Update(float _DeltaTime)
@@ -92,9 +96,9 @@ void PlayerUIController::Update(float _DeltaTime)
 		return;
 	}
 
-	status_UI->SetStatus(pm->GetMyPlayer().stat_);
-	skill_UI->SetStatus(pm->GetMyPlayer().stat_);
-	hpbars_UI->SetStatus(pm->GetMyPlayer().stat_);
+	Character* myChar = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()];
+	status_UI->SetStatus(myChar->GetStat());
+	hpbars_UI->SetStatus(myChar->GetStat());
 	//float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
 	//charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
 

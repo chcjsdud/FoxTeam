@@ -178,10 +178,16 @@ void Yuki::Start()
 	stat_.MovementSpeed = 355.0f;
 	stat_.AttackRange = 280.f;
 
-	stat_.Cooltime_q = 5.0f;
-	stat_.Cooltime_w = 14.0f;
-	stat_.Cooltime_e = 18.0f;
-	stat_.Cooltime_r = 100.0f;
+	//stat_.Cooltime_q = 5.0f;
+	//stat_.Cooltime_w = 14.0f;
+	//stat_.Cooltime_e = 18.0f;
+	//stat_.Cooltime_r = 100.0f;
+
+	DefaultCool_Q_ = 5.0f;
+	DefaultCool_W_ = 14.0f;
+	DefaultCool_E_ = 18.0f;
+	DefaultCool_R_ = 100.0f;
+	DefaultCool_D_ = 30.0f;
 
 	passiveDamage_ = 15.0f;
 	passiveToken_ = 4;
@@ -943,6 +949,40 @@ void Yuki::onEffectTransformCheck(float _deltaTime)
 	qEffect_->GetTransform()->SetLocalPosition(wp);
 	qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 
+}
+
+void Yuki::onLevelUp()
+{
+	switch (stat_.Level_q)
+	{
+	case 1:
+		DefaultCool_W_ = 14.0f;
+		DefaultCool_E_ = 18.0f;
+		DefaultCool_R_ = 100.0f;
+		break;
+	case 2:
+		DefaultCool_W_ = 13.0f;
+		DefaultCool_E_ = 17.0f;
+		DefaultCool_R_ = 90.0f;
+		break;
+	case 3:
+		DefaultCool_W_ = 12.0f;
+		DefaultCool_E_ = 16.0f;
+		DefaultCool_R_ = 80.0f;
+		break;
+	case 4:
+		DefaultCool_W_ = 11.0f;
+		DefaultCool_E_ = 15.0f;
+		DefaultCool_R_ = 80.0f;
+		break;
+	case 5:
+		DefaultCool_W_ = 10.0f;
+		DefaultCool_E_ = 14.0f;
+		DefaultCool_R_ = 80.0f;
+		break;
+	default:
+		break;
+	}
 }
 
 void Yuki::startCustomRStandBy()
