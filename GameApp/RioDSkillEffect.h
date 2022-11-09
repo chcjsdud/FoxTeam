@@ -45,6 +45,8 @@ private:
 
 	float4 impactScaleContainer_;
 	float4 impactOriginalScale_;
+	float4 targetScaleContainer_;
+	float4 targetOriginalScale_;
 
 	float shotTimer_;
 };

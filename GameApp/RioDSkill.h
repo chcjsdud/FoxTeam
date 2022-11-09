@@ -4,6 +4,7 @@
 #include <GameEngine/GameEngineFSM.h>
 #include "IUnit.h"
 
+class RioDSkillEffect;
 class GameEngineCollision;
 class RioDSkill : public GameEngineActor
 {
@@ -41,5 +42,7 @@ private:
 	float waitTime_;
 	float damage_;
 	int soundCount_;
+
+	RioDSkillEffect* effect_;
 };
 

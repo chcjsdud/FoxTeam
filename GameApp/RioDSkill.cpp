@@ -3,7 +3,7 @@
 
 #include "GameEngine/GameEngineCollision.h"
 #include "IUnit.h"
-
+#include "RioDSkillEffect.h"
 RioDSkill::RioDSkill()
 	: waitTime_(0.0f)
 	, damage_(0.0f)
@@ -30,6 +30,9 @@ void RioDSkill::Start()
 	state_.CreateState(MakeState(RioDSkill, Fall));
 
 	state_ << "Wait";
+
+	effect_ = GetLevel()->CreateActor<RioDSkillEffect>();
+
 }
 
 void RioDSkill::Update(float _deltaTime)
@@ -41,6 +44,9 @@ void RioDSkill::Update(float _deltaTime)
 
 void RioDSkill::startWait()
 {
+	effect_->PlayAwake();
+	effect_->GetTransform()->SetWorldPosition(transform_.GetWorldPosition());
+
 	float4 skillPosition = transform_.GetWorldPosition();
 	float4 ownerPosition = owner_->GetTransform()->GetWorldPosition();
 	float length = float4::Calc_Len3D(skillPosition, ownerPosition);
@@ -65,6 +71,7 @@ void RioDSkill::updateWait(float _deltaTime)
 
 void RioDSkill::startFalling()
 {
+	effect_->PlayShot();
 }
 
 void RioDSkill::updateFalling(float _deltaTime)
