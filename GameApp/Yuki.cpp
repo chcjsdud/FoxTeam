@@ -583,7 +583,7 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 
 		CharEffectPacket pack;
 		pack.SetTargetIndex(myIndex_);
-		pack.SetVictimIndex(_target->GetIndex());
+		pack.SetVictimIndex(*_target);
 		pack.SetAnimationName("SkillQ_Slash");
 		FT::SendPacket(pack);
 
@@ -608,7 +608,7 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("BasicAttack");
-	pack.SetVictimIndex(_target->GetIndex());
+	pack.SetVictimIndex(*_target);
 	FT::SendPacket(pack);
 }
 

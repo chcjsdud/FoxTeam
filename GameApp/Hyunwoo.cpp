@@ -1233,7 +1233,7 @@ void Hyunwoo::onStartBasicAttacking(IUnit* _target)
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("BasicAttack");
-	pack.SetVictimIndex(_target->GetIndex());
+	pack.SetVictimIndex(*_target);
 	FT::SendPacket(pack);
 	// 여기 이펙트 패킷 하나
 }

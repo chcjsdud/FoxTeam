@@ -157,7 +157,7 @@ void AyaBullet::updateChase(float _deltaTime)
 			CharEffectPacket pack;
 			pack.SetTargetIndex(owner_->GetIndex());
 			pack.SetAnimationName("BasicAttack_Hit");
-			pack.SetVictimIndex(target_->GetIndex());
+			pack.SetVictimIndex(*target_);
 			FT::SendPacket(pack);
 	
 		
@@ -203,7 +203,7 @@ void AyaBullet::updateFly(float _deltaTime)
 				CharEffectPacket pack;
 				pack.SetTargetIndex(owner_->GetIndex());
 				pack.SetAnimationName("SkillW_Hit");
-				pack.SetVictimIndex(opponent->GetIndex());
+				pack.SetVictimIndex(*opponent);
 				FT::SendPacket(pack);
 		
 
@@ -237,7 +237,7 @@ void AyaBullet::updateFly(float _deltaTime)
 				CharEffectPacket pack;
 				pack.SetTargetIndex(owner_->GetIndex());
 				pack.SetAnimationName("SkillW_Hit");
-				pack.SetVictimIndex(opponent->GetIndex());
+				pack.SetVictimIndex(*opponent);
 				FT::SendPacket(pack);
 
 

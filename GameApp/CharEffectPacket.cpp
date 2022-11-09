@@ -6,8 +6,12 @@
 
 #include "ePacketID.h"
 #include "PlayerInfoManager.h"
+#include "Monsters.h"
+
+
 CharEffectPacket::CharEffectPacket() // default constructer 디폴트 생성자
 	: targetIndex_(-1), victimIndex_(-1)
+	, victimType_(static_cast<int>(UnitType::CHARACTER))
 {
 
 }
@@ -27,9 +31,10 @@ void CharEffectPacket::SetTargetIndex(int _index)
     targetIndex_ = _index;
 }
 
-void CharEffectPacket::SetVictimIndex(int _index)
+void CharEffectPacket::SetVictimIndex(IUnit& _unit)
 {
-	victimIndex_ = _index;
+	victimType_ = static_cast<int>(_unit.UnitType_);
+	victimIndex_ = _unit.GetIndex();
 }
 
 void CharEffectPacket::SetAnimationName(const std::string& _animation)
@@ -42,6 +47,7 @@ void CharEffectPacket::userSerialize()
 	serializer_ << targetIndex_;
 	serializer_ << effectAnimationName_;
 	serializer_ << victimIndex_;
+	serializer_ << victimType_;
 }
 
 void CharEffectPacket::userDeserialize()
@@ -49,6 +55,7 @@ void CharEffectPacket::userDeserialize()
 	serializer_ >> targetIndex_;
 	serializer_ >> effectAnimationName_;
 	serializer_ >> victimIndex_;
+	serializer_ >> victimType_;
 }
 
 void CharEffectPacket::initPacketID()
@@ -75,18 +82,37 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 		return;
 	}
 
-	Character* targetChar = level->GetCharacterActorList()[targetIndex_];
+	if (victimType_ == static_cast<int>(UnitType::CHARACTER))
+	{
+		Character* targetChar = level->GetCharacterActorList()[targetIndex_];
 
 
-	if (-1 != victimIndex_)
-	{
-		Character* victimChar = level->GetCharacterActorList()[victimIndex_];
-		targetChar->PlayEffect(effectAnimationName_, targetIndex_ , victimChar);
+		if (-1 != victimIndex_)
+		{
+			Character* victimChar = level->GetCharacterActorList()[victimIndex_];
+			targetChar->PlayEffect(effectAnimationName_, targetIndex_, victimChar);
+		}
+		else
+		{
+			targetChar->PlayEffect(effectAnimationName_, targetIndex_);
+		}
 	}
-	else 
+	else if (victimType_ == static_cast<int>(UnitType::MONSTER))
 	{
-		targetChar->PlayEffect(effectAnimationName_, targetIndex_);
+		Character* targetChar = level->GetCharacterActorList()[targetIndex_];
+
+		if (-1 != victimIndex_)
+		{
+			Monsters* victimChar = level->GetMonsterActorList()[victimIndex_];
+			targetChar->PlayEffect(effectAnimationName_, targetIndex_, victimChar);
+		}
+		else
+		{
+			targetChar->PlayEffect(effectAnimationName_, targetIndex_);
+		}
 	}
+
+
 
 
 	if (_bServer)

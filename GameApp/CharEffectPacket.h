@@ -1,8 +1,8 @@
 #pragma once
 #include <GameEngine/GameEnginePacketBase.h>
-// 분류 : 
-// 용도 : 
-// 설명 : 
+
+#include "IUnit.h"
+
 class CharEffectPacket : public GameEnginePacketBase
 {
 public:
@@ -14,7 +14,7 @@ public:
 	CharEffectPacket& operator=(const CharEffectPacket&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
 
 	void SetTargetIndex(int _index);
-	void SetVictimIndex(int _index);
+	void SetVictimIndex(IUnit& _unit);
 	void SetAnimationName(const std::string& _animation);
 
 protected:
@@ -28,5 +28,6 @@ private:
 	int targetIndex_;
 	int victimIndex_;
 	std::string effectAnimationName_;
+	int victimType_;
 };
 

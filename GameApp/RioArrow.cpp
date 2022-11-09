@@ -170,14 +170,14 @@ void RioArrow::updateChase(float _deltaTime)
 		CharEffectPacket pack0;
 		pack0.SetTargetIndex(owner_->GetIndex());
 		pack0.SetAnimationName("BasicAttack_Hit0");
-		pack0.SetVictimIndex(target_->GetIndex());
+		pack0.SetVictimIndex(*target_);
 		FT::SendPacket(pack0);
 
 
 		CharEffectPacket pack;
 		pack.SetTargetIndex(owner_->GetIndex());
 		pack.SetAnimationName("BasicAttack_Hit");
-		pack.SetVictimIndex(target_->GetIndex());
+		pack.SetVictimIndex(*target_);
 		FT::SendPacket(pack);
 
 
@@ -249,7 +249,7 @@ void RioArrow::updateFly(float _deltaTime)
 					CharEffectPacket pack;
 					pack.SetTargetIndex(owner_->GetIndex());
 					pack.SetAnimationName("wWind");
-					pack.SetVictimIndex(opponent->GetIndex());
+					pack.SetVictimIndex(*opponent);
 					FT::SendPacket(pack);
 				}
 
