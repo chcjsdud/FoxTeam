@@ -204,14 +204,6 @@ void Character::Start()
 	collision_->SetCollisionGroup(eCollisionGroup::Player);
 	collision_->SetCollisionType(CollisionType::OBBBox3D);
 
-	shadow_ = CreateTransformComponent<GameEngineEffectRenderer>();
-	shadow_->SetImage("shadow.png", "LINEARSmp");
-	shadow_->GetTransform()->SetLocalScaling({ 75.f, 75.f });
-	shadow_->GetTransform()->SetLocalRotationDegree({ 90.f, 0.0f });
-	shadow_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 0.0f });
-	shadow_->Off();
-	//shadow_->SetAlpha(0.5f);
-
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 	// 현재 레벨이 루미아 레벨이 아닌 경우 처리하지 않음
 	if (nullptr == level)
@@ -1098,14 +1090,12 @@ void Character::Hyperloop(const float4& _position, Location _location)
 void Character::Show()
 {
 	renderer_->On();
-	shadow_->On();
 	bHidden_ = false;
 }
 
 void Character::Hide()
 {
 	renderer_->Off();
-	shadow_->Off();
 	
 	
 	

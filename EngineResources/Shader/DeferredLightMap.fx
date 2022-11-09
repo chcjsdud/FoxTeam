@@ -41,7 +41,11 @@ VertexOut DeferredLightMap_VS(VertexIn _In)
     //Out.ViewTangent = normalize(mul(_In.Tangent, WV_));
     //Out.ViewTangent.w = 0.0f;
     
+    //Out.ViewTangent = normalize(mul(_In.Tangent, WV_));
+    //Out.ViewNormal = normalize(mul(_In.Normal, WV_));
+    //Out.ViewBiNormal = normalize(mul(_In.BiNormal, WV_));
     
+    // 현재게임전용 : Mesh파일내 존재하는 모든 Vertex가 범프계산에 필요한 데이터가 없으므로 강제로 셋팅
     float4 Tangent = _In.Tangent;
     Tangent.x = 1.0f;
     Tangent.y = 0.0f;
@@ -63,9 +67,6 @@ VertexOut DeferredLightMap_VS(VertexIn _In)
     Out.ViewTangent = normalize(mul(Tangent, WV_));
     Out.ViewNormal = normalize(mul(Normal, WV_));
     Out.ViewBiNormal = normalize(mul(BiNormal, WV_));
-    
-    
-    
     
     return Out;
 }

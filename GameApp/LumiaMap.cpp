@@ -110,23 +110,6 @@ void LumiaMap::Start()
 		mapRenderers[i]->GetTransform()->SetLocalScaling(mapScale_);
 	}
 
-	////============================================================ START
-	//// 221109 SJH ADD : 그림자처리를 위해 강제셋팅 추가
-	//int MapRendererCount = static_cast<int>(mapRenderers.size());
-	//for (int Num = 0; Num < MapRendererCount; ++Num)
-	//{
-	//	std::vector<RenderSet>& AllRenderSet = mapRenderers[Num]->GetAllRenderSet();
-	//	int RenderSetCount = static_cast<int>(AllRenderSet.size());
-	//	for (int RenderSetNum = 0; RenderSetNum < RenderSetCount; ++RenderSetNum)
-	//	{
-	//		AllRenderSet[RenderSetNum].ShaderHelper->SettingTexture("NormalTex", "TestNor.png");
-
-	//	}
-
-	//	mapRenderers[Num]->BumpOn();
-	//}
-	////============================================================ END
-
 	tempDir.MoveParent("UserMesh");
 	tempDir.MoveChild("ItemBox");
 	vecFile = tempDir.GetAllFile(".UserMesh");

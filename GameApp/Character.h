@@ -389,7 +389,6 @@ protected:
 	// 컴포넌트
 	GameEngineFBXRenderer* renderer_;
 	GameEngineCollision* collision_;
-	GameEngineEffectRenderer* shadow_;
 	GameEngineRenderer* eyesightRenderer_;
 
 	// 시야 판별용
