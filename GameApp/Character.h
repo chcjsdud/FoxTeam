@@ -194,6 +194,8 @@ protected:
 
 	void initBasicEffect();
 
+	void SetEquipBuildItem(const std::string& _itemName, EquipmentType _type);
+	void checkBuildItems();
 
 private:
 	void initInput();
@@ -211,8 +213,6 @@ private:
 	void checkItemBox();
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
 	void mixingItem();
-	void SetEquipBuildItem(const std::string& _itemName, EquipmentType _type);
-	void checkBuildItems();
 	void checkBuildItemsRecursive(ItemBase* _item);
 	void updateFOW(float _deltaTime);
 	void getFOWData(std::vector<float4>& _data, bool& _bCalc);

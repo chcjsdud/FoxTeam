@@ -237,16 +237,6 @@ void Character::Start()
 
 	equipedItem_.resize(static_cast<int>(EquipmentType::MAX));
 	equipBuildItem_.resize(static_cast<int>(EquipmentType::MAX));
-
-	// 현우아이템트리로 일단 고정
-	SetEquipBuildItem("ImperialBurgonet", EquipmentType::HEAD);
-	SetEquipBuildItem("CommandersArmor", EquipmentType::CHEST);
-	SetEquipBuildItem("TindalosBand", EquipmentType::ARM);
-	SetEquipBuildItem("TachyonBrace", EquipmentType::LEG);
-	SetEquipBuildItem("WhiteCraneFan", EquipmentType::ACCESSORY);
-	SetEquipBuildItem("PlasmaTonfa", EquipmentType::WEAPON);
-
-	checkBuildItems();
 }
 
 void Character::Update(float _DeltaTime)
@@ -661,14 +651,6 @@ void Character::checkItemBox()
 
 	// 채집물인 경우 인벤토리로 바로 획득
 	gatherItem(Box->GetItem(0));
-
-	// 현재 박스를 누른 후에 커서를 SelectBox 바깥으로 옮기면 박스가 열리지 않음
-	// bool isClicked 사용
-	// CloseItemBox
-	// Player가 아이템박스로부터 멀어진 경우
-	// UI가 닫힌다.
-	// SelectBox도 nullptr로 초기화
-	// 초기화하지 않으면 SelectBox 근처에 다가가면 UI가 계속 열리게 됨
 }
 
 bool sortItemQueue(QueueItem _left, QueueItem _right)

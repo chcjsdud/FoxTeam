@@ -205,6 +205,15 @@ void Jackie::Start()
 	{
 		GameEngineInput::GetInst().CreateKey("M", 'M');
 	}
+
+	SetEquipBuildItem("TacticalOPSHelmet", EquipmentType::HEAD);
+	SetEquipBuildItem("BattleSuit", EquipmentType::CHEST);
+	SetEquipBuildItem("SheathofShahJahan", EquipmentType::ARM);
+	SetEquipBuildItem("WhiteRhinos", EquipmentType::LEG);
+	SetEquipBuildItem("MusicBox", EquipmentType::ACCESSORY);
+	SetEquipBuildItem("TheJuggernaut", EquipmentType::WEAPON);
+
+	checkBuildItems();
 }
 
 void Jackie::Update(float _deltaTime)

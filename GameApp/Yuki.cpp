@@ -185,6 +185,15 @@ void Yuki::Start()
 
 	passiveDamage_ = 15.0f;
 	passiveToken_ = 4;
+
+	SetEquipBuildItem("TacticalOPSHelmet", EquipmentType::HEAD);
+	SetEquipBuildItem("Changpao", EquipmentType::CHEST);
+	SetEquipBuildItem("Radar", EquipmentType::ARM);
+	SetEquipBuildItem("Bucephalus", EquipmentType::LEG);
+	SetEquipBuildItem("BuccaneerDoubloon", EquipmentType::ACCESSORY);
+	SetEquipBuildItem("Monohoshizao", EquipmentType::WEAPON);
+
+	checkBuildItems();
 }
 
 void Yuki::Update(float _deltaTime)

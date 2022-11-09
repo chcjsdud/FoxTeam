@@ -169,6 +169,15 @@ void Aya::Start()
 	eSpectrum_ = GetLevel()->CreateActor<AyaESpectrum>();
 
 	rEffect_ = GetLevel()->CreateActor<AyaREffect>();
+
+	SetEquipBuildItem("ImperialBurgonet", EquipmentType::HEAD);
+	SetEquipBuildItem("CommandersArmor", EquipmentType::CHEST);
+	SetEquipBuildItem("CorruptingTouch", EquipmentType::ARM);
+	SetEquipBuildItem("StraitjacketSneakers", EquipmentType::LEG);
+	SetEquipBuildItem("Grimoire", EquipmentType::ACCESSORY);
+	SetEquipBuildItem("Elegance", EquipmentType::WEAPON);
+
+	checkBuildItems();
 }
 
 void Aya::Update(float _deltaTime)

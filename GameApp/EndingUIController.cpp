@@ -58,7 +58,7 @@ void EndingUIController::ResourceLoad()
 	creditTextRenderer_->SetTextColor(float4::WHITE);
 	creditTextRenderer_->GetTransform()->SetLocalPosition({ 450.0f, -400.0f, 0.0f });
 	//	creditTextRenderer_->GetTransform()->SetLocalScaling(creditTextRenderer_->GetCurrentTexture()->GetTextureSize());
-	creditTextRenderer_->TextSetting("±¼¸²", "CREDIT\n\nShin Jongha\nJo GyuHyeon\nPark Jongwon\nYoo Sukjin\nLee Gunho", 40, FW1_CENTER);
+	creditTextRenderer_->TextSetting("±¼¸²", "CREDIT\n\nShin Jongha\nJo GyuHyeon\nPark Jongwon\nYoo Seokjin\nLee Gunho", 40, FW1_CENTER);
 	creditTextRenderer_->Off();
 
 	foxTeamRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());

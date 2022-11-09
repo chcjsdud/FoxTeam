@@ -123,9 +123,6 @@ EquipmentItem* ItemBoxManager::CreateEquipmentItem(const std::string _Name,
 
 void ItemBoxManager::CreateAllItemRecipes()
 {
-	// 조합 Test용
-	CreateItemRecipe("Scissors", "FountainPen", "LongRifle");
-
 	// 현우 쿨감 스증 [공 - 숲 - 고 - 묘 - 학]
 	
 	// 플라즈마 톤파
@@ -160,6 +157,127 @@ void ItemBoxManager::CreateAllItemRecipes()
 	// 백우선
 	CreateItemRecipe("Fan", "Nail", "GildedQuillFan");
 	CreateItemRecipe("GildedQuillFan", "Feather", "WhiteCraneFan");
+
+
+
+	// 유키 [ 호 - 연 - 병 - 번 ]
+	
+	// 모노호시자오
+	CreateItemRecipe("RustySword", "IronSheet", "Katana");
+	CreateItemRecipe("Katana", "Gemstone", "Muramasa");
+	CreateItemRecipe("FountainPen", "Paper", "Blueprint");
+	CreateItemRecipe("Muramasa", "Blueprint", "Monohoshizao");
+
+	// 창파오
+	CreateItemRecipe("Cloth", "Scissors", "Dress");
+	CreateItemRecipe("Dress", "Razor", "Qipao");
+	CreateItemRecipe("Alcohol", "GlassBottle", "Baijiu");
+	CreateItemRecipe("Baijiu", "Flower", "FlowerLiquor");
+	CreateItemRecipe("Qipao", "FlowerLiquor", "Changpao");
+
+	// 전술-OPS 헬멧
+	CreateItemRecipe("Hat", "Scissors", "Beret");
+	CreateItemRecipe("Beret", "BikeHelmet", "BallisticHelmet");
+	CreateItemRecipe("BallisticHelmet", "ElectronicParts", "TacticalOPSHelmet");
+
+	// 레이더
+	CreateItemRecipe("Watch", "ElectronicParts", "VitalSignSensor");
+	CreateItemRecipe("GlassBottle", "Stone", "GlassPieces");
+	CreateItemRecipe("GlassPieces", "Glue", "GlassPanel");
+	CreateItemRecipe("VitalSignSensor", "GlassPanel", "Radar");
+
+	// 부케팔로스
+	CreateItemRecipe("Slippers", "ScrapMetal", "HighHeels");
+	CreateItemRecipe("HighHeels", "GlassPieces", "KillerHeels");
+	CreateItemRecipe("Tights", "SteelChain", "ChainLeggings");
+	CreateItemRecipe("KillerHeels", "ChainLeggings", "Bucephalus");
+
+	// 해적의 증표
+	CreateItemRecipe("WaltherPPK", "Ribbon", "DecorativeFlintlock");
+	CreateItemRecipe("DecorativeFlintlock", "KitchenKnife", "BuccaneerDoubloon");
+
+
+
+	// 재키 [ 절 - 호 - 골 - 번 - 연 ]
+	
+	// 저거너트
+	CreateItemRecipe("Hatchet", "Bamboo", "BattleAxe");
+	CreateItemRecipe("BattleAxe", "Feather", "LightHatchet");
+	CreateItemRecipe("LightHatchet", "Motor", "TheJuggernaut");
+
+	// 배틀슈트
+	CreateItemRecipe("Windbreaker", "Branch", "MilitarySuit");
+	CreateItemRecipe("ScrapMetal", "Hammer", "IronSheet");
+	CreateItemRecipe("MilitarySuit", "IronSheet", "BulletproofVest");
+	CreateItemRecipe("Wetsuit", "Rubber", "DivingSuit");
+	CreateItemRecipe("BulletproofVest", "DivingSuit", "BattleSuit");
+
+	// 전술 OPS 헬멧
+
+	// 샤자한의 검집
+	CreateItemRecipe("Leather", "IronSheet", "Sheath");
+	CreateItemRecipe("Hammer", "Gemstone", "Ruby");
+	CreateItemRecipe("Sheath", "Ruby", "SheathofShahJahan");
+
+	// 클링온 부츠
+	CreateItemRecipe("RunningShoes", "Oilcloth", "Boots");
+	CreateItemRecipe("Boots", "Leather", "CombatBoots");
+	CreateItemRecipe("CombatBoots", "Nail", "WhiteRhinos");
+
+	// 오르골
+	CreateItemRecipe("Box", "Motor", "MusicBox");
+
+
+
+	// 아야 [ 학 - 호 - 모 - 고 - 절 ]
+
+	// 엘레강스
+	CreateItemRecipe("WaltherPPK", "Leather", "BerettaM92F");
+	CreateItemRecipe("BerettaM92F", "LaserPointer", "FN57");
+	CreateItemRecipe("Paper", "Lighter", "Ash");
+	CreateItemRecipe("FN57", "Ash", "Elegance");
+
+	// 지휘관의 갑옷
+
+	// 황실 부르고넷
+
+	// 포이즌드
+	CreateItemRecipe("Ash", "Water", "Poison");
+	CreateItemRecipe("CottonGloves", "Poison", "CorruptingTouch");
+
+	// 풍화륜
+	CreateItemRecipe("Slippers", "Cloth", "RepairedSlippers");
+	CreateItemRecipe("RepairedSlippers", "Ash", "StraitjacketSneakers");
+
+	// 마도서
+	CreateItemRecipe("Paper", "Leather", "Hardcover");
+	CreateItemRecipe("Flower", "PlayingCards", "FlowerofFate");
+	CreateItemRecipe("Hardcover", "FlowerofFate", "Grimoire");
+
+
+
+	// 리오 [ 절 - 항 - 고 - 병 ]
+
+	// 제베의 활 + 궁기병의 화살통
+	CreateItemRecipe("Bow", "Rubber", "Longbow");
+	CreateItemRecipe("Longbow", "Gunpowder", "MightyBow");
+	CreateItemRecipe("Feather", "Bamboo", "Quiver");
+	CreateItemRecipe("Quiver", "ShortRod", "LacedQuiver");
+	CreateItemRecipe("MightyBow", "LacedQuiver", "JebesAlteredBow");
+
+	// 광학미채 슈트
+	CreateItemRecipe("DivingSuit", "GlassPanel", "OpticalCamouflageSuit");
+
+	// 수정 티아라
+	CreateItemRecipe("Hairband", "Branch", "Circlet");
+	CreateItemRecipe("Circlet", "StallionMedal", "Tiara");
+	CreateItemRecipe("Tiara", "GlassPieces", "CrystalTiara");
+
+	// 레이더
+
+	// 부케팔로스
+
+	// 궁기병의 화살통
 }
 
 void ItemBoxManager::CreateMiscItemList()
@@ -250,15 +368,15 @@ void ItemBoxManager::CreateUseableItemList()
 	CreateUseableItem("Coffee", "ItemIcon_101101.png");
 	CreateUseableItem("CarbonatedWater", "ItemIcon_101101.png");
 	CreateUseableItem("Milk", "ItemIcon_101101.png");
+	CreateUseableItem("Baijiu", "ItemIcon_101101.png");
+	CreateUseableItem("FlowerLiquor", "ItemIcon_101101.png");
 
 }
 
 void ItemBoxManager::CreateEquipmentItemList()
 {
 	// Head
-	EquipmentItem* item = CreateEquipmentItem("Hairband", EquipmentType::HEAD, "ItemIcon_101101.png");
-
-	EquipmentType type = item->GetEquipType();
+	CreateEquipmentItem("Hairband", EquipmentType::HEAD, "ItemIcon_101101.png");
 	CreateEquipmentItem("Hat", EquipmentType::HEAD, "ItemIcon_101101.png");
 	CreateEquipmentItem("BikeHelmet", EquipmentType::HEAD, "ItemIcon_101101.png");
 
@@ -430,59 +548,71 @@ void ItemBoxManager::CreateEquipmentItemList()
 
 void ItemBoxManager::CreateWeaponItemList()
 {
-	// Common Dagger
+	// Dagger
 	CreateEquipmentItem("Scissors", EquipmentType::WEAPON, "ItemIcon_101101.png");
 	CreateEquipmentItem("KitchenKnife", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Two-handed Sword
+	// Two-handed Sword
 	CreateEquipmentItem("RustySword", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("Katana", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("Muramasa", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("Monohoshizao", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Axe
+	// Axe
 	CreateEquipmentItem("Hatchet", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("BattleAxe", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("LightHatchet", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("TheJuggernaut", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Dual Swords
+	// Dual Swords
 	CreateEquipmentItem("TwinBlades", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Pistol
+	// Pistol
 	CreateEquipmentItem("WaltherPPK", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("BerettaM92F", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("FN57", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("Elegance", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Assault Rifle
+	// Assault Rifle
 	CreateEquipmentItem("Fedorova", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Sniper Rifle
+	// Sniper Rifle
 	CreateEquipmentItem("LongRifle", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Rapier
+	// Rapier
 	CreateEquipmentItem("Needle", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Spear
+	// Spear
 	CreateEquipmentItem("ShortSpear", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Hammer
+	// Hammer
 	CreateEquipmentItem("Hammer", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Bat
+	// Bat
 	CreateEquipmentItem("ShortRod", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Throw
+	// Throw
 	CreateEquipmentItem("IronBall", EquipmentType::WEAPON, "ItemIcon_101101.png");
 	CreateEquipmentItem("Baseball", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Shuriken
+	// Shuriken
 	CreateEquipmentItem("Razor", EquipmentType::WEAPON, "ItemIcon_101101.png");
 	CreateEquipmentItem("PlayingCards", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Bow
+	// Bow
 	CreateEquipmentItem("Bow", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("Longbow", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("MightyBow", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	CreateEquipmentItem("JebesAlteredBow", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Crossbow
+	// Crossbow
 	CreateEquipmentItem("ShortCrossbow", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Glove
+	// Glove
 	CreateEquipmentItem("BrassKnuckles", EquipmentType::WEAPON, "ItemIcon_101101.png");
 	CreateEquipmentItem("CottonGloves", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Tonfa
+	// Tonfa
 	CreateEquipmentItem("Bamboo", EquipmentType::WEAPON, "ItemIcon_101101.png");
 	CreateEquipmentItem("WoodenTonfa", EquipmentType::WEAPON, ItemTier::UNCOMMON);
 	CreateEquipmentItem("PoliceBaton", EquipmentType::WEAPON, ItemTier::RARE);
@@ -491,18 +621,18 @@ void ItemBoxManager::CreateWeaponItemList()
 	CreateEquipmentItem("MaiSok", EquipmentType::WEAPON, ItemTier::EPIC);
 	CreateEquipmentItem("PlasmaTonfa", EquipmentType::WEAPON, ItemTier::EPIC);
 
-	// Common Guitar
+	// Guitar
 	CreateEquipmentItem("StarterGuitar", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Nunchaku
+	// Nunchaku
 	CreateEquipmentItem("SteelChain", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Whip
+	// Whip
 	CreateEquipmentItem("Whip", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Camera
+	// Camera
 	CreateEquipmentItem("Lens", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
-	// Common Arcana
+	// Arcana
 	CreateEquipmentItem("GlassBead", EquipmentType::WEAPON, "ItemIcon_101101.png");
 }

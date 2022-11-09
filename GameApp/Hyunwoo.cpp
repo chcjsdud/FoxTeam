@@ -178,7 +178,15 @@ void Hyunwoo::Start()
 	stat_.Cooltime_e = 18.0f;
 	stat_.Cooltime_r = 65.0f;
 	stat_.Cooltime_d = 10.0f;
+	
+	SetEquipBuildItem("ImperialBurgonet", EquipmentType::HEAD);
+	SetEquipBuildItem("CommandersArmor", EquipmentType::CHEST);
+	SetEquipBuildItem("TindalosBand", EquipmentType::ARM);
+	SetEquipBuildItem("TachyonBrace", EquipmentType::LEG);
+	SetEquipBuildItem("WhiteCraneFan", EquipmentType::ACCESSORY);
+	SetEquipBuildItem("PlasmaTonfa", EquipmentType::WEAPON);
 
+	checkBuildItems();
 }
 
 void Hyunwoo::Update(float _deltaTime)

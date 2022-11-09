@@ -164,6 +164,15 @@ void Rio::Start()
 	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, -120.0f });
 	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f,0.0f });
 	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHit0Effect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
+
+	SetEquipBuildItem("CrystalTiara", EquipmentType::HEAD);
+	SetEquipBuildItem("OpticalCamouflageSuit", EquipmentType::CHEST);
+	SetEquipBuildItem("Radar", EquipmentType::ARM);
+	SetEquipBuildItem("Bucephalus", EquipmentType::LEG);
+	SetEquipBuildItem("LacedQuiver", EquipmentType::ACCESSORY);
+	SetEquipBuildItem("JebesAlteredBow", EquipmentType::WEAPON);
+
+	checkBuildItems();
 }
 
 void Rio::Update(float _deltaTime)
