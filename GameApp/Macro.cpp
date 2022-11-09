@@ -19,10 +19,20 @@ void FT::SendPacket(GameEnginePacketBase& packet)
 
 void FT::PlaySoundAndSendPacket(const std::string& _name, const float4& _position)
 {
-	GameEngineSoundManager::GetInstance()->PlaySoundByName(_name);
-	PacketSoundPlay packet;
-	packet.SetSound(_name, _position);
-	FT::SendPacket(packet);
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName(_name);
+		PacketSoundPlay packet;
+		packet.SetSound(_name, _position);
+		FT::SendPacket(packet);
+	}
+	else if (GameClient::GetInstance()->IsConnected())
+	{
+		PacketSoundPlay packet;
+		packet.SetSound(_name, _position);
+		FT::SendPacket(packet);
+	}
+
 }
 
 void FT::AddText(const std::string& _text)
