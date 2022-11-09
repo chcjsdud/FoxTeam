@@ -16,7 +16,11 @@ public:
 
 	void SetFollowInfo(float4 _Pos, CharacterStat* _Stat);
 	void SetFollowInfoMonster(float4 _Pos, MonsterStateInfo _Stat);
-
+	
+	void SetChar(JobType _Char)
+	{
+		MyChar = _Char;
+	}
 
 public:
 	GameEngineProgressBarRenderer* HPBar_Renderer;
@@ -32,7 +36,14 @@ public:
 	float4 EmptyBarPos;
 	float4 EmptyBarSize;
 
+	float4 PassiveCountPos;
+	float4 PassiveCountSize;
+
 	bool UIOn;
+
+	JobType MyChar;
+
+	GameEngineUIRenderer* PassiveRenderer;
 
 protected:
 	virtual void Start();

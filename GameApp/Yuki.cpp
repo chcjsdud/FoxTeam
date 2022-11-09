@@ -183,6 +183,8 @@ void Yuki::Start()
 	stat_.Cooltime_e = 18.0f;
 	stat_.Cooltime_r = 100.0f;
 
+	stat_.passive_Count = 0;
+
 	passiveDamage_ = 15.0f;
 	passiveToken_ = 4;
 }
@@ -196,6 +198,10 @@ void Yuki::Update(float _deltaTime)
 	{
 		passiveToken_ = 4;
 	}
+
+	//패시브를 stat_.passive_Count와 연동
+	stat_.passive_Count = passiveToken_;
+
 
 	// Q 온힛 체크
 	if (true == b_isQ_)

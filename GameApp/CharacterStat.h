@@ -62,6 +62,9 @@ public:
 
 	// 1103 박종원 : CC기 무시 bool 값
 	bool isUnstoppable_;
+	
+	//1109 이건호 : 유키나 아야같은 소모하는 패시브용 int
+	int passive_Count;
 
 public:
 	// 기본 세팅은 리오 기준으로 되어있음
@@ -106,6 +109,7 @@ public:
 		, Level_d(1)
 		, Level_passive(1)
 		, isUnstoppable_(false)
+		, passive_Count(0)
 	{
 
 	}

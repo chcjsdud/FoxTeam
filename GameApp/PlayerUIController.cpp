@@ -144,7 +144,6 @@ void PlayerUIController::Update(float _DeltaTime)
 			pos = calhelper_->CalRound(pos);
 		}
 
-
 		bool hidden = lumiaLevel->GetCharacterActorList()[i]->IsHidden();
 
 		if (true == hidden)
@@ -154,6 +153,7 @@ void PlayerUIController::Update(float _DeltaTime)
 		else
 		{
 			charfollows_[i]->On();
+			charfollows_[i]->SetChar(lumiaLevel->GetCharacterActorList()[i]->GetJobType());
 			charfollows_[i]->SetFollowInfo(pos, pm->GetPlayerList()[i].stat_);
 		}
 
