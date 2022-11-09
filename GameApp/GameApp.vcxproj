@@ -322,6 +322,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="RioDSkillEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="RioWSkillWind.cpp">
       <SubType>
       </SubType>
@@ -811,6 +815,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="ProhibitedAreaPacket.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="RioDSkillEffect.h">
       <SubType>
       </SubType>
     </ClInclude>
