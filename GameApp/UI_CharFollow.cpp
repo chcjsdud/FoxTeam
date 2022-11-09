@@ -139,68 +139,7 @@ void UI_CharFollow::SetFollowInfo(float4 _Pos, CharacterStat* _Stat)
 	SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);
 	EmptyBar_Renderer->GetTransform()->SetLocalPosition(EmptyBarPos);
 
-	switch (MyChar)
-	{
-	case JobType::NONE:
-		break;
-	case JobType::YUKI:
-	{
-		if (false == PassiveRenderer->IsUpdate())
-		{
-		PassiveRenderer->On();
-		PassiveRenderer->SetImage("Yuki_Gage_Zero.png", "PointSmp");
-		PassiveRenderer->GetTransform()->SetLocalScaling(PassiveRenderer->GetCurrentTexture()->GetTextureSize());
-		}
 
-		
-		PassiveCountPos = HpBarPos + float4{ -5.f, -15.f, 0.f,0.f };
-		int passiveCount = _Stat->passive_Count;
-
-		if (0 == passiveCount)
-		{
-			PassiveRenderer->SetImage("Yuki_Gage_Zero.png", "PointSmp");
-		}
-		else if (1 == passiveCount)
-		{
-			PassiveRenderer->SetImage("Yuki_Gage_One.png", "PointSmp");
-		}
-		else if (2 == passiveCount)
-		{
-			PassiveRenderer->SetImage("Yuki_Gage_Two.png", "PointSmp");
-		}
-		else if (3 == passiveCount)
-		{
-			PassiveRenderer->SetImage("Yuki_Gage_Three.png", "PointSmp");
-		}
-		else if (4 == passiveCount)
-		{
-			PassiveRenderer->SetImage("Yuki_Gage_Four.png", "PointSmp");
-		}
-
-		PassiveRenderer->GetTransform()->SetLocalPosition(PassiveCountPos);
-	}
-	break;
-	case JobType::HYUNWOO:
-	{
-		return;
-	}
-	break;
-	case JobType::JACKIE:
-	{
-		return;
-	}
-	break;
-	case JobType::RIO:
-		break;
-	case JobType::AYA:
-		break;
-	case JobType::DUMMY:
-		break;
-	case JobType::MAX:
-		break;
-	default:
-		break;
-	}
 
 }
 
@@ -234,4 +173,68 @@ void UI_CharFollow::SetFollowInfoMonster(float4 _Pos, MonsterStateInfo _Stat)
 	//{
 	//	this->Off();
 	//}
+}
+
+void UI_CharFollow::SetPassiveUI(int _num)
+{
+	switch (MyChar)
+	{
+	case JobType::NONE:
+		break;
+	case JobType::YUKI:
+	{
+		if (false == PassiveRenderer->IsUpdate())
+		{
+			PassiveRenderer->On();
+			PassiveRenderer->SetImage("Yuki_Gage_Zero.png", "PointSmp");
+			PassiveRenderer->GetTransform()->SetLocalScaling(PassiveRenderer->GetCurrentTexture()->GetTextureSize());
+		}
+
+		PassiveCountPos = HpBarPos + float4{ -5.f, -15.f, 0.f,0.f };
+
+		if (0 == _num)
+		{
+			PassiveRenderer->SetImage("Yuki_Gage_Zero.png", "PointSmp");
+		}
+		else if (1 == _num)
+		{
+			PassiveRenderer->SetImage("Yuki_Gage_One.png", "PointSmp");
+		}
+		else if (2 == _num)
+		{
+			PassiveRenderer->SetImage("Yuki_Gage_Two.png", "PointSmp");
+		}
+		else if (3 == _num)
+		{
+			PassiveRenderer->SetImage("Yuki_Gage_Three.png", "PointSmp");
+		}
+		else if (4 == _num)
+		{
+			PassiveRenderer->SetImage("Yuki_Gage_Four.png", "PointSmp");
+		}
+
+		PassiveRenderer->GetTransform()->SetLocalPosition(PassiveCountPos);
+	}
+	break;
+	case JobType::HYUNWOO:
+	{
+		return;
+	}
+	break;
+	case JobType::JACKIE:
+	{
+		return;
+	}
+	break;
+	case JobType::RIO:
+		break;
+	case JobType::AYA:
+		break;
+	case JobType::DUMMY:
+		break;
+	case JobType::MAX:
+		break;
+	default:
+		break;
+	}
 }
