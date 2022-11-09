@@ -179,6 +179,8 @@ void Jackie::Start()
 	//stat_.Cooltime_e = 24.0f;
 	//stat_.Cooltime_r = 70.0f;
 
+	charStat_ = stat_;
+
 	DefaultCool_Q_ = 9.0f;
 	DefaultCool_W_ = 19.0f;
 	DefaultCool_E_ = 24.0f;
@@ -228,8 +230,7 @@ void Jackie::Update(float _deltaTime)
 
 	static bool getWeapon = false;
 
-	equipedItem_;
-
+	
 	if (nullptr != uiController_ && false == getWeapon)
 	{
 		getItem("Hatchet");

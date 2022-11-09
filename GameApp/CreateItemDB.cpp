@@ -548,30 +548,63 @@ void ItemBoxManager::CreateEquipmentItemList()
 
 void ItemBoxManager::CreateWeaponItemList()
 {
+	EquipmentItem* item = nullptr;
+
 	// Dagger
 	CreateEquipmentItem("Scissors", EquipmentType::WEAPON, "ItemIcon_101101.png");
 	CreateEquipmentItem("KitchenKnife", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
 	// Two-handed Sword
-	CreateEquipmentItem("RustySword", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("Katana", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
-	CreateEquipmentItem("Muramasa", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
-	CreateEquipmentItem("Monohoshizao", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
+	item = CreateEquipmentItem("RustySword", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	item->stat_.AttackPower = 11.0f;
+
+	item = CreateEquipmentItem("Katana", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	item->stat_.AttackPower = 35.0f;
+
+	item = CreateEquipmentItem("Muramasa", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	item->stat_.AttackPower = 43.0f;
+
+	item = CreateEquipmentItem("Monohoshizao", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
+	item->stat_.AttackPower = 60.0f;
+	item->stat_.LifeSteel = 0.17f;
 
 	// Axe
-	CreateEquipmentItem("Hatchet", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("BattleAxe", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::UNCOMMON);
-	CreateEquipmentItem("LightHatchet", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
-	CreateEquipmentItem("TheJuggernaut", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
+	item = CreateEquipmentItem("Hatchet", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	item->stat_.AttackPower = 18.0f;
+
+	item = CreateEquipmentItem("BattleAxe", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::UNCOMMON);
+	item->stat_.AttackPower = 35.0f;
+
+	item = CreateEquipmentItem("LightHatchet", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	item->stat_.AttackPower = 44.0f;
+	item->stat_.MovementSpeed = 0.04f;
+
+	item = CreateEquipmentItem("TheJuggernaut", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
+	item->stat_.AttackPower = 60.0f;
+	item->stat_.MovementSpeed = 0.04f;
+	item->stat_.AttackSpeed = 0.20f;
 
 	// Dual Swords
 	CreateEquipmentItem("TwinBlades", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
 	// Pistol
-	CreateEquipmentItem("WaltherPPK", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("BerettaM92F", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::UNCOMMON);
-	CreateEquipmentItem("FN57", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
-	CreateEquipmentItem("Elegance", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
+	item = CreateEquipmentItem("WaltherPPK", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	item->stat_.AttackPower = 14.0f;
+
+	item = CreateEquipmentItem("BerettaM92F", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::UNCOMMON);
+	item->stat_.AttackPower = 23.0f;
+	item->stat_.MovementSpeed = 0.02f;
+
+	item = CreateEquipmentItem("FN57", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	item->stat_.AttackPower = 29.0f;
+	item->stat_.MovementSpeed = 0.04f;
+	item->stat_.VisionRange = 100.0f;
+
+	item = CreateEquipmentItem("Elegance", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
+	item->stat_.AttackPower = 40.0f;
+	item->stat_.MovementSpeed = 0.06f;
+	item->stat_.VisionRange = 100.0f;
+	item->stat_.SkillDamageAmplification = 48.0f;
 
 	// Assault Rifle
 	CreateEquipmentItem("Fedorova", EquipmentType::WEAPON, "ItemIcon_101101.png");
@@ -600,10 +633,19 @@ void ItemBoxManager::CreateWeaponItemList()
 	CreateEquipmentItem("PlayingCards", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
 	// Bow
-	CreateEquipmentItem("Bow", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("Longbow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::UNCOMMON);
-	CreateEquipmentItem("MightyBow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
-	CreateEquipmentItem("JebesAlteredBow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
+	item = CreateEquipmentItem("Bow", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	item->stat_.AttackPower = 11.0f;
+
+	item = CreateEquipmentItem("Longbow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::UNCOMMON);
+	item->stat_.AttackPower = 17.0f;
+
+	item = CreateEquipmentItem("MightyBow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::RARE);
+	item->stat_.AttackPower = 35.0f;
+
+	item = CreateEquipmentItem("JebesAlteredBow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
+	item->stat_.AttackPower = 62.0f;
+	item->stat_.AttackSpeed = 0.33f;
+	item->stat_.MovementSpeed = 0.06f;
 
 	// Crossbow
 	CreateEquipmentItem("ShortCrossbow", EquipmentType::WEAPON, "ItemIcon_101101.png");
@@ -613,13 +655,24 @@ void ItemBoxManager::CreateWeaponItemList()
 	CreateEquipmentItem("CottonGloves", EquipmentType::WEAPON, "ItemIcon_101101.png");
 
 	// Tonfa
-	CreateEquipmentItem("Bamboo", EquipmentType::WEAPON, "ItemIcon_101101.png");
-	CreateEquipmentItem("WoodenTonfa", EquipmentType::WEAPON, ItemTier::UNCOMMON);
+	item = CreateEquipmentItem("Bamboo", EquipmentType::WEAPON, "ItemIcon_101101.png");
+	item->stat_.AttackPower = 12.0f;
+
+	item = CreateEquipmentItem("WoodenTonfa", EquipmentType::WEAPON, ItemTier::UNCOMMON);
+	item->stat_.AttackPower = 23.0f;
+
 	CreateEquipmentItem("PoliceBaton", EquipmentType::WEAPON, ItemTier::RARE);
-	CreateEquipmentItem("RyukyuTonfa", EquipmentType::WEAPON, ItemTier::RARE);
+	item = CreateEquipmentItem("RyukyuTonfa", EquipmentType::WEAPON, ItemTier::RARE);
+	item->stat_.AttackPower = 38.0f;
+	item->stat_.Defence = 3.0f;
+
 	CreateEquipmentItem("TacticalTonfa", EquipmentType::WEAPON, ItemTier::EPIC);
 	CreateEquipmentItem("MaiSok", EquipmentType::WEAPON, ItemTier::EPIC);
-	CreateEquipmentItem("PlasmaTonfa", EquipmentType::WEAPON, ItemTier::EPIC);
+	item = CreateEquipmentItem("PlasmaTonfa", EquipmentType::WEAPON, ItemTier::EPIC);
+	item->stat_.AttackPower = 40.0f;
+	item->stat_.SkillDamageAmplification = 48.0f;
+	item->stat_.Defence = 6.0f;
+	item->stat_.VisionRange = 100.0f;
 
 	// Guitar
 	CreateEquipmentItem("StarterGuitar", EquipmentType::WEAPON, "ItemIcon_101101.png");

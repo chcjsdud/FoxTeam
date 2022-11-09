@@ -21,6 +21,7 @@ ItemBase* EquipmentItem::Copy()
 	CopyItem->tier_ = tier_;
 	CopyItem->index_ = index_;
 	CopyItem->equipType_ = equipType_;
+	CopyItem->stat_ = stat_;
 
 	return CopyItem;
 }
@@ -28,6 +29,7 @@ ItemBase* EquipmentItem::Copy()
 void EquipmentItem::Start()
 {
 	ItemBase::Start();
+	stat_.Clear();
 }
 
 void EquipmentItem::Update(float _DeltaTime)

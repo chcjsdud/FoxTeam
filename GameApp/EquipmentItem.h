@@ -1,9 +1,11 @@
 #pragma once
 #include "ItemBase.h"
+#include "CharacterStat.h"
 
 // Ό³Έν : 
 class EquipmentItem : public ItemBase
 {
+	friend class ItemBoxManager;
 public:
 	EquipmentItem();
 	~EquipmentItem();
@@ -23,6 +25,11 @@ public:
 		return equipType_;
 	}
 
+	CharacterStat GetStat()
+	{
+		return stat_;
+	}
+
 	ItemBase* Copy() override;
 
 protected:
@@ -31,5 +38,6 @@ protected:
 
 private:
 	EquipmentType equipType_;
+	CharacterStat stat_;
 };
 

@@ -344,6 +344,7 @@ void Character::Update(float _DeltaTime)
 	}
 
 	updateFOW(_DeltaTime);
+	updateFinalStat();
 }
 
 
@@ -1655,6 +1656,14 @@ void Character::getFOWData(std::vector<float4>& _data, bool& _bCalc)
 	_data.clear();
 	_data = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition(), stat_.VisionRange);
 	_bCalc = false;
+}
+
+void Character::updateFinalStat()
+{
+	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::WEAPON)])
+	{
+		stat_ = charStat_ + equipedItem_[static_cast<size_t>(EquipmentType::WEAPON)]->GetStat();
+	}
 }
 
 void Character::initBasicEffect()

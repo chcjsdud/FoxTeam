@@ -222,6 +222,7 @@ private:
 	void updateFOW(float _deltaTime);
 	void getFOWData(std::vector<float4>& _data, bool& _bCalc);
 
+	void updateFinalStat();
 
 
 #pragma region InfightCheck
@@ -423,7 +424,9 @@ protected:
 	std::list<ItemBase*>		allMyBuildItems_;	// 아이템을 완성하기 위한 모든 재료
 
 	// 캐릭터 상태, 능력치
-	CharacterStat stat_;
+	CharacterStat stat_;		// 장비아이템까지 합산된 최종능력치
+	CharacterStat charStat_;	// 기존 캐릭터 능력치
+
 	std::string curAnimationName_;
 	std::string overrideAnimationName_;
 	std::string overrideAnimationBoneName_;
