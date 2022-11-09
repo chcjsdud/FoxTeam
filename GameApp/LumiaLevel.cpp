@@ -499,14 +499,14 @@ void LumiaLevel::CreateBasicActor()
 	SKySphereActor* Actor = CreateActor<SKySphereActor>();
 
 	// Create Default Light
-	LightActor* DefaultLight = CreateActor<LightActor>();
-	DefaultLight->GetLight()->SetDiffusePower(1.f);
-	DefaultLight->GetLight()->SetAmbientPower(10.f);
-	DefaultLight->GetLight()->SetSpacularLightPow(50.f);
-	DefaultLight->GetLight()->SetLightShadowClipingRange({ 1280.0f, 720.0f });
-	DefaultLight->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, 0.0f });
-	DefaultLight->GetTransform()->SetWorldPosition({ -2500.f, 0.0f, 10000.f });
-	DefaultLight->GetTransform()->AddWorldPosition(DefaultLight->GetTransform()->GetWorldBackVector() * 200.0f);
+	MainLight_ = CreateActor<LightActor>();
+	MainLight_->GetLight()->SetDiffusePower(1.f);
+	MainLight_->GetLight()->SetAmbientPower(10.f);
+	MainLight_->GetLight()->SetSpacularLightPow(50.f);
+	MainLight_->GetLight()->SetLightShadowClipingRange({ 1280.0f, 720.0f });
+	MainLight_->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, 0.0f });
+	MainLight_->GetTransform()->SetWorldPosition({ -2500.f, 0.0f, 10000.f });
+	MainLight_->GetTransform()->AddWorldPosition(MainLight_->GetTransform()->GetWorldBackVector() * 200.0f);
 
 
 	//DefaultLight->GetTransform()->SetWorldPosition(DefaultLight->GetTransform()->GetWorldBackVector() * 500.0f);
@@ -1527,6 +1527,7 @@ void LumiaLevel::CheckLevelRelatedInputKey()
 LumiaLevel::LumiaLevel()
 	: CurMap_(nullptr)
 	, ItemBoxManager_(nullptr)
+	, MainLight_(nullptr)
 	, DebugAndControlWindow_(nullptr)
 	, MonsterDebugWindow_(nullptr)
 {
@@ -1611,6 +1612,14 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 		float4 playerPosition = CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetWorldPosition();
 		GetMainCameraActor()->GetTransform()->SetWorldPosition(playerPosition + float4(400.f, 1280.f, -600.f));
 		GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 60.f, -35.f, 0.0f });
+
+		// 221109 SJH ADD : 메인플레이어를 따라 다니는 광원(빛) 로직 추가
+		if (nullptr != MainLight_)
+		{
+			MainLight_->GetTransform()->SetWorldPosition(playerPosition);
+			MainLight_->GetTransform()->AddWorldPosition(MainLight_->GetTransform()->GetWorldBackVector() * 500.0f);
+			MainLight_->GetTransform()->SetLocalRotationDegree({ 60.0f, 45.0f, 0.0f });
+		}
 	}
 
 	//// 221011 SJH TEST : 몬스터 확인을위해 몬스터 포커싱

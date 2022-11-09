@@ -9,6 +9,7 @@
 // 분류 : 레벨(씬)
 // 용도 : 
 // 설명 : 플레이 레벨
+class LightActor;
 class LumiaMap;
 class NavMesh;
 class Character;
@@ -158,7 +159,7 @@ private:
 private:
 	LumiaMap* CurMap_;																				// 맵
 	ItemBoxManager* ItemBoxManager_;																// 아이템박스 매니저
-
+	LightActor* MainLight_;																			// 메인 광원(빛)
 
 private:
 	GameEngineLevelControlWindow* DebugAndControlWindow_;											// 레벨관련 디버그 & 강제레벨체인지 윈도우
