@@ -197,6 +197,7 @@ protected:
 
 	void initBasicEffect();
 
+	void getItem(const std::string& _itemName);
 	void SetEquipBuildItem(const std::string& _itemName, EquipmentType _type);
 	void checkBuildItems();
 
@@ -211,7 +212,7 @@ private:
 
 	void getItem(int _index);
 	void getEquipItem(EquipmentItem* _item, int _index);
-	void getItem(const std::string& _itemName);
+	void getEquipItem(EquipmentItem* _item);
 	void gatherItem(ItemBase* _item);
 	void checkItemBox();
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
