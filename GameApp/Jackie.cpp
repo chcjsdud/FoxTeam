@@ -659,10 +659,13 @@ void Jackie::onStartBasicAttacking(IUnit* _target)
 		FT::PlaySoundAndSendPacket("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
 	}
 
-	float4 wp = target_->GetTransform()->GetWorldPosition();
-	wp.y += 100.0f;
-	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
-	basicAttackEffect_->PlayAwake("FX_BI_SELine_10");
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		float4 wp = target_->GetTransform()->GetWorldPosition();
+		wp.y += 100.0f;
+		basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
+		basicAttackEffect_->PlayAwake("FX_BI_SELine_10");
+	}
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -691,24 +694,19 @@ void Jackie::onStartQSkill()
 
 	RandomSoundPlay("Jackie_PlaySkill1001200seq0_1_ko.wav", "Jackie_PlaySkill1001200seq0_2_ko.wav", "Jackie_PlaySkill1001200seq0_3_ko.wav");
 
-	float4 wp = GetTransform()->GetWorldPosition();
-	float4 wr = GetTransform()->GetLocalRotation();
-	qEffect_->GetTransform()->SetLocalPosition(wp);
-	qEffect_->GetTransform()->SetLocalRotationDegree(wr);
-	qEffect_->PlayAwake();
-
-	//float4 wp = GetTransform()->GetWorldPosition();
-	//qEffect_->GetTransform()->SetLocalPosition(wp);
-	//qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
-	//qEffect_->PlayAwake();
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		float4 wr = GetTransform()->GetLocalRotation();
+		qEffect_->GetTransform()->SetLocalPosition(wp);
+		qEffect_->GetTransform()->SetLocalRotationDegree(wr);
+		qEffect_->PlayAwake();
+	}
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("SkillQ");
 	FT::SendPacket(pack);
-	//skillQEffectRenderer_->On();
-	//skillQEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, this->GetTransform()->GetWorldPosition().y + 30.0f, collision_Q->GetTransform()->GetLocalPosition().z});
-	//skillQEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, GetTransform()->GetWorldRotation().z - 90.0f });
 }
 
 void Jackie::onUpdateQSkill(float _deltaTime)
@@ -747,10 +745,6 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 
 		FT::PlaySoundAndSendPacket("wskill_Axe_attack.wav", transform_.GetWorldPosition());
 
-		//CharEffectPacket pack;
-		//pack.SetTargetIndex(myIndex_);
-		//pack.SetAnimationName("SkillQ");
-		//FT::SendPacket(pack);
 
 		{
 			auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
@@ -819,17 +813,6 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 		collision_Q->On();
 
 		FT::PlaySoundAndSendPacket("wskill_Axe_attack.wav", transform_.GetWorldPosition());
-
-
-		//float4 wp = GetTransform()->GetWorldPosition();
-		//qEffect_->GetTransform()->SetLocalPosition(wp);
-		//qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
-		//qEffect_->PlayAwake();
-
-		//CharEffectPacket pack;
-		//pack.SetTargetIndex(myIndex_);
-		//pack.SetAnimationName("SkillQ");
-		//FT::SendPacket(pack);
 
 		{
 			auto collisionList = collision_Q->GetCollisionList(eCollisionGroup::Player);
@@ -1130,9 +1113,14 @@ void Jackie::updateSkillEShot(float _deltaTime)
 {
 	if (customState_.GetCurrentState()->Time_ > 0.2f)
 	{
-		eEffect_->GetTransform()->SetLocalPosition(eLandingPosition_);
-		eEffect_->On();
-		eEffect_->PlayAwake();
+
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			eEffect_->GetTransform()->SetLocalPosition(eLandingPosition_);
+			eEffect_->On();
+			eEffect_->PlayAwake();
+		}
+
 
 		CharEffectPacket pack;
 		pack.SetTargetIndex(myIndex_);

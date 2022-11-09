@@ -478,11 +478,14 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 		collision_Q->On();
 
 		FT::PlaySoundAndSendPacket("hyunwoo_Skill01_Hit.wav", transform_.GetWorldPosition());
-
-		float4 wp = GetTransform()->GetWorldPosition();
-		qEffect_->GetTransform()->SetLocalPosition(wp);
-		qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
-		qEffect_->PlayAwake();
+		
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			float4 wp = GetTransform()->GetWorldPosition();
+			qEffect_->GetTransform()->SetLocalPosition(wp);
+			qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+			qEffect_->PlayAwake();
+		}
 
 		CharEffectPacket pack;
 		pack.SetTargetIndex(myIndex_);
@@ -583,7 +586,11 @@ void Hyunwoo::onStartWSkill()
 	packet.SetSound("hyunwoo_Skill02_Activation.wav", transform_.GetWorldPosition());
 	FT::SendPacket(packet);
 
-	wEffect_->PlayAwake();
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		wEffect_->PlayAwake();
+	}
+
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("SkillW");
@@ -641,10 +648,12 @@ void Hyunwoo::onStartESkill()
 
 	FT::PlaySoundAndSendPacket("hyunwoo_Skill03_Slide.wav", transform_.GetWorldPosition());
 
-
-	rearEffectRenderer_->On();
-	rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
-	rearEffectRenderer_->AnimationPlay();
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		rearEffectRenderer_->On();
+		rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
+		rearEffectRenderer_->AnimationPlay();
+	}
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -972,9 +981,9 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 
 	if ("SkillW" == _effectName)
 	{
-		float4 wp = GetTransform()->GetWorldPosition();
-		wEffect_->GetTransform()->SetLocalPosition(wp);
-		wEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		//float4 wp = GetTransform()->GetWorldPosition();
+		//wEffect_->GetTransform()->SetWorldPosition(wp);
+		//wEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 		wEffect_->PlayAwake();
 		return;
 	}
@@ -993,8 +1002,6 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 		rEffect_->GetTransform()->SetLocalPosition(wp);
 		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 		rEffect_->PlayAwake();
-
-
 		return;
 	}
 
@@ -1073,10 +1080,14 @@ void Hyunwoo::startCustomRSkill()
 
 	FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Charging.wav", transform_.GetWorldPosition());
 
-	float4 wp = transform_.GetWorldPosition();
-	rEffect_->GetTransform()->SetLocalPosition(wp);
-	rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
-	rEffect_->PlayAwake();
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		float4 wp = transform_.GetWorldPosition();
+		rEffect_->GetTransform()->SetLocalPosition(wp);
+		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		rEffect_->PlayAwake();
+	}
+
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -1107,7 +1118,12 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 
 	if (true == GameEngineInput::GetInst().Down("R"))
 	{
-		rEffect_->PlayExplode();
+
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			rEffect_->PlayExplode();
+		}
+
 		CharEffectPacket pack;
 		pack.SetTargetIndex(myIndex_);
 		pack.SetAnimationName("SkillR_explode");
@@ -1211,11 +1227,14 @@ void Hyunwoo::onStartBasicAttacking(IUnit* _target)
 	FT::PlaySoundAndSendPacket("attackGlove_Normal_Hit_P.wav", transform_.GetWorldPosition());
 
 
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		float4 wp = target_->GetTransform()->GetWorldPosition();
+		wp.y += 50.0f;
 
-	float4 wp = target_->GetTransform()->GetWorldPosition();
-	wp.y += 50.0f;
-	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
-	basicAttackEffect_->PlayAwake("FX_BI_Hit_08");
+		basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
+		basicAttackEffect_->PlayAwake("FX_BI_Hit_08");
+	}
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);

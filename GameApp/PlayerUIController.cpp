@@ -101,7 +101,6 @@ void PlayerUIController::Update(float _DeltaTime)
 	hpbars_UI->SetStatus(myChar->GetStat());
 	//float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
 	//charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
-
 	DayAndNightType SunMoon = GameTimeController::GetInstance()->GetCurrentDayType();
 	float DayVision = (FT::Char::DEFAULT_VISION_RANGE_DAY / 2.f) + 50.f;
 	float NightVision = (FT::Char::DEFAULT_VISION_RANGE_NIGHT / 2.f) + 50.f;
@@ -159,6 +158,7 @@ void PlayerUIController::Update(float _DeltaTime)
 			charfollows_[i]->On();
 			charfollows_[i]->SetChar(lumiaLevel->GetCharacterActorList()[i]->GetJobType());
 			charfollows_[i]->SetFollowInfo(pos, lumiaLevel->GetCharacterActorList()[i]->GetStat());
+			charfollows_[i]->SetPassiveUI(lumiaLevel->GetCharacterActorList()[i]->GetStat()->passive_Count);
 		}
 
 	}

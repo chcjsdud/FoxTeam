@@ -209,10 +209,10 @@ void Yuki::Update(float _deltaTime)
 	Character::Update(_deltaTime);
 
 	// 패시브 체크
-	if (passiveToken_ < 4 && false == isInfight_)
-	{
-		passiveToken_ = 4;
-	}
+	//if (passiveToken_ < 4 && false == isInfight_)
+	//{
+	//	passiveToken_ = 4;
+	//}
 
 	//패시브를 stat_.passive_Count와 연동
 	stat_.passive_Count = passiveToken_;
@@ -548,11 +548,7 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 		}
 		else
 		{
-			if (GameServer::GetInstance()->IsOpened())
-			{
-				passiveToken_--;
-				stat_.passive_Count = passiveToken_;
-			}
+
 
 			target_->Damage(stat_.AttackPower * 1.6f + (20.0f * stat_.Level_q) + (passiveDamage_ * stat_.Level_passive), this);
 
@@ -568,8 +564,19 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 
 		FT::PlaySoundAndSendPacket("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 
-		qSlashEffect_->PlayBurst(_target->GetTransform()->GetWorldPosition());
-		qSlashEffect_->GetTransform()->SetWorldPosition(_target->GetTransform()->GetWorldPosition());
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			passiveToken_--;
+			stat_.passive_Count = passiveToken_;
+
+			qSlashEffect_->PlayBurst(_target->GetTransform()->GetWorldPosition());
+			qSlashEffect_->GetTransform()->SetWorldPosition(_target->GetTransform()->GetWorldPosition());
+		}
+
+		CharEffectPacket packtoken;
+		packtoken.SetTargetIndex(myIndex_);
+		packtoken.SetAnimationName("TokenLost");
+		FT::SendPacket(packtoken);
 
 		CharEffectPacket pack;
 		pack.SetTargetIndex(myIndex_);
@@ -587,10 +594,14 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 
 	FT::PlaySoundAndSendPacket("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 
-	float4 wp = target_->GetTransform()->GetWorldPosition();
-	wp.y += 50.0f;
-	basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
-	basicAttackEffect_->PlayAwake("Fx_SQ_Cut01");
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		float4 wp = target_->GetTransform()->GetWorldPosition();
+		wp.y += 50.0f;
+		basicAttackEffect_->GetTransform()->SetWorldPosition(wp);
+		basicAttackEffect_->PlayAwake("Fx_SQ_Cut01");
+	}
+
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -613,7 +624,11 @@ void Yuki::onStartQSkill()
 
 	FT::PlaySoundAndSendPacket("Yuki_Skill01_Active.wav", transform_.GetWorldPosition());
 
-	qEffect_->PlayAwake();
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		qEffect_->PlayAwake();
+	}
+
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -642,9 +657,23 @@ void Yuki::onStartWSkill()
 
 	FT::PlaySoundAndSendPacket("Yuki_Skill02_Active.wav", transform_.GetWorldPosition());
 
-	groundEffectRenderer_->On();
-	groundEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01SE", true);
-	groundEffectRenderer_->AnimationPlay();
+
+
+
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		groundEffectRenderer_->On();
+		groundEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01SE", true);
+		groundEffectRenderer_->AnimationPlay();
+
+		passiveToken_ = 4;
+		stat_.passive_Count = passiveToken_;
+	}
+
+	CharEffectPacket packtoken;
+	packtoken.SetTargetIndex(myIndex_);
+	packtoken.SetAnimationName("TokenRecover");
+	FT::SendPacket(packtoken);
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -683,11 +712,12 @@ void Yuki::onStartESkill()
 
 	FT::PlaySoundAndSendPacket("Yuki_Skill03_Move.wav", transform_.GetWorldPosition());
 
-	rearEffectRenderer_->On();
-	rearEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01", true);
-	rearEffectRenderer_->AnimationPlay();
-
-
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		rearEffectRenderer_->On();
+		rearEffectRenderer_->SetChangeAnimation("FX_BI_Yuki_01", true);
+		rearEffectRenderer_->AnimationPlay();
+	}
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -858,6 +888,22 @@ void Yuki::onUpdateCustomState(float _deltaTime)
 
 void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 {
+	if ("TokenLost" == _effectName)
+	{
+		if (passiveToken_ <= 0)
+		{
+			return;
+		}
+
+		passiveToken_--;
+		stat_.passive_Count = passiveToken_;
+	}
+
+	if ("TokenRecover" == _effectName)
+	{
+		passiveToken_ = 4;
+		stat_.passive_Count = passiveToken_;
+	}
 
 	if ("BasicAttack" == _effectName)
 	{
@@ -881,8 +927,6 @@ void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 	if ("SkillQ_Slash" == _effectName)
 	{
 		qSlashEffect_->PlayBurst(_victim->GetTransform()->GetWorldPosition());
-		passiveToken_--;
-		stat_.passive_Count = passiveToken_;
 		return;
 	}
 
@@ -969,12 +1013,14 @@ void Yuki::startCustomRStandBy()
 
 	RandomSoundPlay("Yuki_PlaySkill1011500seq0_1_ko.wav", "Yuki_PlaySkill1011500seq0_2_ko.wav", "Yuki_PlaySkill1011500seq0_1_ko.wav");
 	FT::PlaySoundAndSendPacket("Yuki_Skill04_Active.wav", transform_.GetWorldPosition());
-
-	float4 wp = GetTransform()->GetWorldPosition();
-	rEffect_->GetTransform()->SetLocalPosition(wp);
-	rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
-	rEffect_->PlayAwake();
-
+	
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		float4 wp = GetTransform()->GetWorldPosition();
+		rEffect_->GetTransform()->SetLocalPosition(wp);
+		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+		rEffect_->PlayAwake();
+	}
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("SkillR_awake");
@@ -1003,7 +1049,10 @@ void Yuki::startCustomRSlash()
 	curAnimationName_ = "SkillR_end";
 	renderer_->ChangeFBXAnimation("SkillR_end", true);
 
-	rEffect_->PlaySlash();
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		rEffect_->PlaySlash();
+	}
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
