@@ -42,6 +42,8 @@ public:
 
 	std::vector<float4> GetEyeSightPolygon(const float4& _position, const float _length = 600.f);
 
+	void ToggleNavMeshRender();
+
 protected:
 	void makeAStarNode(float _intervalX, float _intervalZ);
 	void checkASterNodeObstacle();

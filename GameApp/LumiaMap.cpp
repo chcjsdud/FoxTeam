@@ -76,7 +76,7 @@ void LumiaMap::Start()
 
 	for (UINT i = 0; i < navMeshRenderer_->GetRenderSetCount(); i++)
 	{
-		navMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Black.png");
+		navMeshRenderer_->GetRenderSet(i).ShaderHelper->SettingTexture("DiffuseTex", "Red.png");
 		navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerWireFrame");
 		//navMeshRenderer_->GetRenderSet(i).PipeLine_->SetRasterizer("EngineBaseRasterizerNone");
 	}
@@ -423,6 +423,18 @@ std::vector<float4> LumiaMap::GetEyeSightPolygon(const float4& _position, const 
 	}
 
 	return result;
+}
+
+void LumiaMap::ToggleNavMeshRender()
+{
+	if (navMeshRenderer_->IsUpdate())
+	{
+		navMeshRenderer_->Off();
+	}
+	else
+	{
+		navMeshRenderer_->On();
+	}
 }
 
 void LumiaMap::makeAStarNode(float _intervalX, float _intervalZ)

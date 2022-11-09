@@ -546,6 +546,11 @@ void LumiaLevel::CreateLevelInput()
 		GameEngineInput::GetInst().CreateKey("O", 'O');
 	}
 
+	if (false == GameEngineInput::GetInst().IsKey("N"))
+	{
+		GameEngineInput::GetInst().CreateKey("N", 'N');
+	}
+
 	if (false == GameEngineInput::GetInst().IsKey("L"))
 	{
 		GameEngineInput::GetInst().CreateKey("L", 'L');
@@ -1505,6 +1510,14 @@ void LumiaLevel::CheckLevelRelatedInputKey()
 	{
 		MonsterDebugWindow_->OnOffChange();
 	}
+
+	if (GameEngineInput::Up("N") && nullptr != CurMap_)
+	{
+		if (nullptr != CurMap_)
+		{
+			CurMap_->ToggleNavMeshRender();
+		}
+	}
 }
 
 LumiaLevel::LumiaLevel()
@@ -1523,7 +1536,7 @@ void LumiaLevel::LevelStart()
 {
 	// Create LumiaLevel Input
 	CreateLevelInput();
-
+	GetMainCamera()->DebugOn();
 
 
 }

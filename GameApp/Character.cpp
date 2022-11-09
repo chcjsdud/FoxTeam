@@ -2703,6 +2703,10 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 	}
 
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
+	if (nullptr == level)
+	{
+		return;
+	}
 
 	if (true == level->GetProhibitedAreaList()[static_cast<int>(curLocation_)]->IsProhibited())
 	{
