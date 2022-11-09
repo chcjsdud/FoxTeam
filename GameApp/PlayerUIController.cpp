@@ -158,7 +158,7 @@ void PlayerUIController::Update(float _DeltaTime)
 		{
 			charfollows_[i]->On();
 			charfollows_[i]->SetChar(lumiaLevel->GetCharacterActorList()[i]->GetJobType());
-			charfollows_[i]->SetFollowInfo(pos, pm->GetPlayerList()[i].stat_);
+			charfollows_[i]->SetFollowInfo(pos, lumiaLevel->GetCharacterActorList()[i]->GetStat());
 		}
 
 	}

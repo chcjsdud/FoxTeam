@@ -5,7 +5,7 @@
 #include "GameEngineBase/GameEngineDebug.h"
 #include "GameEngine/GameEngineUIRenderer.h"
 #include <GameEngine/GameEngineProgressBarRenderer.h>
-
+#include "LumiaLevel.h"
 UI_CharFollow::UI_CharFollow()
 	: UIOn(true), MyChar(JobType::NONE)
 {
@@ -152,6 +152,7 @@ void UI_CharFollow::SetFollowInfo(float4 _Pos, CharacterStat* _Stat)
 		PassiveRenderer->GetTransform()->SetLocalScaling(PassiveRenderer->GetCurrentTexture()->GetTextureSize());
 		}
 
+		
 		PassiveCountPos = HpBarPos + float4{ -5.f, -15.f, 0.f,0.f };
 		int passiveCount = _Stat->passive_Count;
 

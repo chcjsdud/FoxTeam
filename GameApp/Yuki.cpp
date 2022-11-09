@@ -558,8 +558,11 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 		}
 		else
 		{
-			passiveToken_--;
-			stat_.passive_Count = passiveToken_;
+			if (GameServer::GetInstance()->IsOpened())
+			{
+				passiveToken_--;
+				stat_.passive_Count = passiveToken_;
+			}
 
 			target_->Damage(stat_.AttackPower * 1.6f + (20.0f * stat_.Level_q) + (passiveDamage_ * stat_.Level_passive), this);
 
