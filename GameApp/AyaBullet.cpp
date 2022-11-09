@@ -143,11 +143,6 @@ void AyaBullet::updateChase(float _deltaTime)
 	{
 		if (damage_ > 0.0f)
 		{
-			//GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Hit_01.wav");
-			//PacketSoundPlay packet;
-			//packet.SetSound("Rio_ShortBow_Hit_01.wav", transform_.GetWorldPosition());
-			//FT::SendPacket(packet);
-
 			target_->Damage(damage_, owner_);
 
 			//atkEffect_->GetAttackRenderer()->SetColor({ 1.0f,1.0f,0.7f });

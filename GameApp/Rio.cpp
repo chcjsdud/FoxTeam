@@ -151,7 +151,7 @@ void Rio::Start()
 	customState_.CreateState(MakeState(Rio, SkillEShot));
 	customState_.CreateState(MakeState(Rio, SkillEEnd));
 
-	stat_.AttackRange= 450.0f;
+	stat_.AttackRange = 450.0f;
 
 	DefaultCool_Q_ = 1.0f;
 	DefaultCool_W_ = 12.0f;
@@ -471,10 +471,7 @@ void Rio::onStartQSkill()
 
 	//renderer_->OverrideFBXAnimation("SkillQ", "Bip001 L UpperArm");
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_Bow_Skill01_BowChange.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("Rio_Bow_Skill01_BowChange.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("Rio_Bow_Skill01_BowChange.wav", transform_.GetWorldPosition());
 
 	coolTimer_Q_ = 1.0f;
 	bShortRSkillExtra_ = false;
@@ -538,10 +535,7 @@ void Rio::onStartWSkill()
 	{
 		RandomSoundPlay("Rio_PlaySkill1031310Seq0_1_ko.wav", "Rio_PlaySkill1031310Seq0_2_ko.wav", "Rio_PlaySkill1031310Seq0_3_ko.wav");
 
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_Skill02_Shot.wav");
-		PacketSoundPlay packet;
-		packet.SetSound("Rio_LongBow_Skill02_Shot.wav", transform_.GetWorldPosition());
-		FT::SendPacket(packet);
+		FT::PlaySoundAndSendPacket("Rio_LongBow_Skill02_Shot.wav", transform_.GetWorldPosition());
 
 		float4 offset = { 20.f, 120.f, 30.f, 0.f };
 		offset = offset * transform_.GetTransformData().WorldWorld_;
@@ -570,10 +564,7 @@ void Rio::onStartWSkill()
 	{
 		RandomSoundPlay("Rio_PlaySkill1031300Seq0_1_ko.wav", "Rio_PlaySkill1031300Seq0_2_ko.wav", "Rio_PlaySkill1031300Seq0_3_ko.wav");
 
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill02_Shot.wav");
-		PacketSoundPlay packet;
-		packet.SetSound("Rio_ShortBow_Skill02_Shot.wav", transform_.GetWorldPosition());
-		FT::SendPacket(packet);
+		FT::PlaySoundAndSendPacket("Rio_ShortBow_Skill02_Shot.wav", transform_.GetWorldPosition());
 
 		float4 offset = { 20.f, 120.f, 30.f, 0.f };
 		offset = offset * transform_.GetTransformData().WorldWorld_;
@@ -652,14 +643,7 @@ void Rio::onStartRSkill()
 	{
 		ChangeAnimation("SkillR_Long");
 
-		{
-
-
-			GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_SKill04_01.wav");
-			PacketSoundPlay packet;
-			packet.SetSound("Rio_LongBow_SKill04_01.wav", transform_.GetWorldPosition());
-			FT::SendPacket(packet);
-		}
+		FT::PlaySoundAndSendPacket("Rio_LongBow_SKill04_01.wav", transform_.GetWorldPosition());
 
 		float4 offset = { 20.f, 120.f, 30.f, 0.f };
 		offset = offset * transform_.GetTransformData().WorldWorld_;
@@ -769,10 +753,7 @@ void Rio::onUpdateRSkill(float _deltaTime)
 	{
 		if (attackState_.GetCurrentState()->Time_ > 0.5f)
 		{
-			GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_LongBow_Skill04_02.wav");
-			PacketSoundPlay packet;
-			packet.SetSound("Rio_LongBow_Skill04_02.wav", transform_.GetWorldPosition());
-			FT::SendPacket(packet);
+			FT::PlaySoundAndSendPacket("Rio_LongBow_Skill04_02.wav", transform_.GetWorldPosition());
 
 			attackState_.GetCurrentState()->Time_ = -5.f;
 		}
@@ -784,10 +765,7 @@ void Rio::onUpdateRSkill(float _deltaTime)
 		{
 			if (attackState_.GetCurrentState()->Time_ > 0.3f)
 			{
-				GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill04_02.wav");
-				PacketSoundPlay packet;
-				packet.SetSound("Rio_ShortBow_Skill04_02.wav", transform_.GetWorldPosition());
-				FT::SendPacket(packet);
+				FT::PlaySoundAndSendPacket("Rio_ShortBow_Skill04_02.wav", transform_.GetWorldPosition());
 				attackState_.GetCurrentState()->Time_ = -5.f;
 				bShortRSkillExtra_ = false;
 			}
@@ -796,10 +774,7 @@ void Rio::onUpdateRSkill(float _deltaTime)
 		{
 			if (skillRTime_ > 0.12f)
 			{
-				GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_ShortBow_Skill04_02.wav");
-				PacketSoundPlay packet;
-				packet.SetSound("Rio_ShortBow_Skill04_02.wav", transform_.GetWorldPosition());
-				FT::SendPacket(packet);
+				FT::PlaySoundAndSendPacket("Rio_ShortBow_Skill04_02.wav", transform_.GetWorldPosition());
 				skillRTime_ = 0.0f;
 			}
 
@@ -1039,12 +1014,7 @@ void Rio::updateSkillEBegin(float _deltaTime)
 
 void Rio::startSkillEShot()
 {
-
-
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_Bow_Skill03_Start.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("Rio_Bow_Skill03_Start.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("Rio_Bow_Skill03_Start.wav", transform_.GetWorldPosition());
 
 	{
 		auto list = skillECollision_->GetCollisionList(eCollisionGroup::Player);
@@ -1165,10 +1135,7 @@ void Rio::updateSkillEShot(float _deltaTime)
 
 void Rio::startSkillEEnd()
 {
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("Rio_Bow_Skill03_End.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("Rio_Bow_Skill03_End.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("Rio_Bow_Skill03_End.wav", transform_.GetWorldPosition());
 }
 
 void Rio::updateSkillEEnd(float _deltaTime)
