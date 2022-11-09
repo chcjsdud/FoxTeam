@@ -494,6 +494,8 @@ protected:
 	// characterList && pm 의 player 인덱스값과 동일한 변수값
 	int myIndex_;
 	//
+	// 플레이어 승리 판정
+	bool isPlayerWon_;
 
 	// 플레이어 죽음 판정
 	bool isPlayerDead_;

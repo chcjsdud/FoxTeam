@@ -107,6 +107,7 @@ Character::Character()
 	, prohibitTimer_(0.0f)
 	, curLocation_(Location::NONE)
 	, hyperLocation_(Location::NONE)
+	, isPlayerWon_(false)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -2360,7 +2361,7 @@ void Character::updatePlayerDeath(float _deltaTime)
 
 void Character::startPlayerWinner()
 {
-
+	isPlayerWon_ = true;
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 
@@ -2689,7 +2690,7 @@ void Character::EffectTransformCheck(float _DeltaTime)
 
 void Character::ProhibitedAreaCheck(float _DeltaTime)
 {
-	if (true == isPlayerDead_)
+	if (true == isPlayerDead_ || true == isPlayerWon_)
 	{
 		return;
 	}
