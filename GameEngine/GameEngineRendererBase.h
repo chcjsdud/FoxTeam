@@ -69,6 +69,16 @@ public: // Public Inline Set Function
 		IsRendererShadow_ = false;
 	}
 
+	inline void BumpOn()
+	{
+		RendererDataInst.IsBump = 1;
+	}
+
+	inline void BumpOff()
+	{
+		RendererDataInst.IsBump = 0;
+	}
+
 public: // Public Light Shadow Processing Related Function(기존 그림자처리)
 	void LightShadowOff();
 	void LightShadowOn();

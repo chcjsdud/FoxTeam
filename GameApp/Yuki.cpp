@@ -312,6 +312,7 @@ void Yuki::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("RestEnd", "Yuki_Rest_End.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
+	renderer_->LightShadowOn();
 
 	renderer_->GetRenderSet(1).isRender = false;
 
@@ -326,15 +327,7 @@ void Yuki::initRendererAndAnimation()
 	swordRenderer_->SetCustomOffset({ -2.5f, 0.f, 0.f });
 	swordRenderer_->CreateFBXAnimation("Idle", "Weapon_TwoHandSword_01.fbx");
 	swordRenderer_->ChangeFBXAnimation("Idle");
-
-	// 그림자 
-	{
-		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
-
-		WeaponShadowRenderer1_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		WeaponShadowRenderer1_->SetBaseRenderer(swordRenderer_, "RendererShadow");
-	}
+	swordRenderer_->LightShadowOn();
 
 	// 외곽선
 	{

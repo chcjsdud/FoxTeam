@@ -361,6 +361,7 @@ void Jackie::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("RestEnd", "Jackie_Rest_End.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
+	renderer_->LightShadowOn();
 
 	renderer_->GetRenderSet(1).isRender = false;
 
@@ -376,6 +377,7 @@ void Jackie::initRendererAndAnimation()
 	sawRenderer_->CreateFBXAnimation("Idle", "Weapon_Special_Jackie_01.fbx");
 	sawRenderer_->ChangeFBXAnimation("Idle");
 	sawRenderer_->Off();
+	sawRenderer_->LightShadowOn();
 
 	axeRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	axeRenderer_->SetFBXMesh("Weapon_Axe_01.fbx", "TextureDeferredLightAni");
@@ -386,18 +388,7 @@ void Jackie::initRendererAndAnimation()
 
 	axeRenderer_->CreateFBXAnimation("Idle", "Weapon_Axe_01.fbx");
 	axeRenderer_->ChangeFBXAnimation("Idle");
-
-	// 그림자 
-	{
-		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
-
-		WeaponShadowRenderer1_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		WeaponShadowRenderer1_->SetBaseRenderer(axeRenderer_, "RendererShadow");
-
-		WeaponShadowRenderer2_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		WeaponShadowRenderer2_->SetBaseRenderer(sawRenderer_, "RendererShadow");
-	}
+	axeRenderer_->LightShadowOn();
 
 	// 외곽선
 	{

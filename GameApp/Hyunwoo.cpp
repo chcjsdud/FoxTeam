@@ -249,14 +249,9 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("RestEnd", "Hyunwoo_Rest_End.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait");
+	renderer_->LightShadowOn();
 
 	renderer_->GetRenderSet(1).isRender = false;
-
-	// 그림자 
-	{
-		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
-	}
 
 	// 외곽선
 	{

@@ -535,12 +535,6 @@ protected:
 	LevelUpEffect* levelUpEffect_;
 	DeathEffect* deathEffect_;
 
-// 弊覆磊 贸府
-protected:
-	GameEngineShadowRenderer* MainShadowRenderer_;
-	GameEngineShadowRenderer* WeaponShadowRenderer1_;
-	GameEngineShadowRenderer* WeaponShadowRenderer2_;
-
 // 角风咖 贸府
 protected:
 	GameEnginePreprocessingRenderer* MainSilhouetteRenderer_;

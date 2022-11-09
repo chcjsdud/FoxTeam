@@ -443,8 +443,6 @@ void LumiaLevel::MapResourceLoad()
 		Mesh->CreateRenderingBuffer();
 	}
 
-
-
 	GameEngineDirectory UserMapMeshDir;
 	UserMapMeshDir.MoveParent("FoxTeam");
 	UserMapMeshDir / "Resources" / "FBX" / "UserMesh" / "Map";
@@ -504,8 +502,14 @@ void LumiaLevel::CreateBasicActor()
 	LightActor* DefaultLight = CreateActor<LightActor>();
 	DefaultLight->GetLight()->SetDiffusePower(1.f);
 	DefaultLight->GetLight()->SetAmbientPower(10.f);
-	DefaultLight->GetLight()->SetSpacularLightPow(10.f);
-	DefaultLight->GetLight()->SetLightShadowClipingRange({ 300, 300 });
+	DefaultLight->GetLight()->SetSpacularLightPow(50.f);
+	DefaultLight->GetLight()->SetLightShadowClipingRange({ 1280.0f, 720.0f });
+	DefaultLight->GetTransform()->SetLocalRotationDegree({ 90.0f, 0.0f, 0.0f });
+	DefaultLight->GetTransform()->SetWorldPosition({ -2500.f, 0.0f, 10000.f });
+	DefaultLight->GetTransform()->AddWorldPosition(DefaultLight->GetTransform()->GetWorldBackVector() * 200.0f);
+
+
+	//DefaultLight->GetTransform()->SetWorldPosition(DefaultLight->GetTransform()->GetWorldBackVector() * 500.0f);
 }
 
 void LumiaLevel::CreateLevelInput()

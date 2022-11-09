@@ -232,6 +232,7 @@ void Rio::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("Death", "Rio_Death." + ext, 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait_Short");
+	renderer_->LightShadowOn();
 
 	renderer_->GetRenderSet(1).isRender = false;
 
@@ -245,6 +246,7 @@ void Rio::initRendererAndAnimation()
 
 	shortBow_->CreateFBXAnimation("ShortBow_Idle", "Rio_Bow_Short_Idle.fbx");
 	shortBow_->ChangeFBXAnimation("ShortBow_Idle");
+	shortBow_->LightShadowOn();
 
 	longBow_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	longBow_->SetFBXMesh("Rio_Bow_Long_Idle.fbx", "TextureDeferredLightAni");
@@ -258,19 +260,8 @@ void Rio::initRendererAndAnimation()
 	longBow_->ChangeFBXAnimation("LongBow_Idle");
 
 	longBow_->GetRenderSet(0).isRender = false;
+	longBow_->LightShadowOn();
 	longBow_->Off();
-
-	// 그림자 
-	{
-		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
-
-		WeaponShadowRenderer1_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		WeaponShadowRenderer1_->SetBaseRenderer(shortBow_, "RendererShadow");
-
-		WeaponShadowRenderer2_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		WeaponShadowRenderer2_->SetBaseRenderer(longBow_, "RendererShadow");
-	}
 
 	// 외곽선
 	{

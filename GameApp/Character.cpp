@@ -85,9 +85,6 @@ Character::Character()
 	, coolTimerW_E_(0.5f)
 	, coolTimerW_R_(0.5f)
 	, coolTimerW_D_(0.5f)
-	, MainShadowRenderer_(nullptr)
-	, WeaponShadowRenderer1_(nullptr)
-	, WeaponShadowRenderer2_(nullptr)
 	, MainSilhouetteRenderer_(nullptr)
 	, WeaponSilhouetteRenderer1_(nullptr)
 	, WeaponSilhouetteRenderer2_(nullptr)
@@ -212,6 +209,7 @@ void Character::Start()
 	shadow_->GetTransform()->SetLocalScaling({ 75.f, 75.f });
 	shadow_->GetTransform()->SetLocalRotationDegree({ 90.f, 0.0f });
 	shadow_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f, 0.0f });
+	shadow_->Off();
 	//shadow_->SetAlpha(0.5f);
 
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();

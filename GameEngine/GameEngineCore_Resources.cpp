@@ -149,10 +149,21 @@ void GameEngineCore::EngineResourcesCreate_Mesh()
 
 	// Box
 	{
+		/*
+		float4 POSITION;
+		float4 TEXTURECOORD;
+		float4 COLOR;
+		float4 NORMAL;
+		float4 TANGENT;
+		float4 BINORMAL;
+		float4 WEIGHT; // 가중치랑
+		int BLENDINDICES[4] = {0, }; // 12 51 78
+		*/
+
 		std::vector<GameEngineVertex> Vertex = std::vector<GameEngineVertex>(4 * 6);
 
 		{
-			Vertex[0] = { float4({ -0.5f, 0.5f, 0.5f }), {},{},{0.0f, 0.0f, 1.0f, 0.0f} };
+			Vertex[0] = { float4({ -0.5f, 0.5f, 0.5f }), {},{},{0.0f, 0.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f, 0.0f} };
 			Vertex[1] = { float4({ 0.5f, 0.5f, 0.5f }), {},{},{0.0f, 0.0f, 1.0f, 0.0f} };
 			Vertex[2] = { float4({ 0.5f, -0.5f, 0.5f }), {},{},{0.0f, 0.0f, 1.0f, 0.0f} };
 			Vertex[3] = { float4({ -0.5f, -0.5f, 0.5f }), {},{},{0.0f, 0.0f, 1.0f, 0.0f} };
@@ -1158,8 +1169,7 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetOutputMergerBlend("AlphaToCoverage");
 	}
 
-	{ // 221101 SJH ADD : 그림자처리 렌더링파이프라인
-	  // -> 앞뒷면 상관없이 렌더링
+	{ // 221101 SJH ADD : 광원(빛) 기준 그림자처리 렌더링파이프라인
 		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("LightShadow");
 		Pipe->SetInputAssembler1VertexBufferSetting("FullRect");
 		Pipe->SetInputAssembler2IndexBufferSetting("FullRect");
@@ -1167,6 +1177,15 @@ void GameEngineCore::EngineResourcesCreate()
 		Pipe->SetPixelShader("LightShadow_PS");
 		Pipe->SetOutputMergerDepthStencil("ShadowDepth");
 		Pipe->SetRasterizer("EngineBaseRasterizerNone");
+		Pipe->SetOutputMergerBlend("AlphaBlend");
+	}
+
+	{ // 221109 SJH ADD : 게임 맵전용 렌파
+		GameEngineRenderingPipeLine* Pipe = GameEngineRenderingPipeLineManager::GetInst().Create("DeferredLightMap");
+		Pipe->SetInputAssembler1VertexBufferSetting("Rect");
+		Pipe->SetInputAssembler2IndexBufferSetting("Rect");
+		Pipe->SetVertexShader("DeferredLightMap_VS");
+		Pipe->SetPixelShader("DeferredLightMap_PS");
 		Pipe->SetOutputMergerBlend("AlphaBlend");
 	}
 }

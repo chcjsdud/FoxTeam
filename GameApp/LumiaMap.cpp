@@ -106,9 +106,26 @@ void LumiaMap::Start()
 	for (size_t i = 0; i < mapRenderers.size(); i++)
 	{
 		mapRenderers[i] = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-		mapRenderers[i]->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
+		mapRenderers[i]->SetFBXMesh(vecFile[i].GetFileName(), "DeferredLightMap");
 		mapRenderers[i]->GetTransform()->SetLocalScaling(mapScale_);
 	}
+
+	////============================================================ START
+	//// 221109 SJH ADD : 그림자처리를 위해 강제셋팅 추가
+	//int MapRendererCount = static_cast<int>(mapRenderers.size());
+	//for (int Num = 0; Num < MapRendererCount; ++Num)
+	//{
+	//	std::vector<RenderSet>& AllRenderSet = mapRenderers[Num]->GetAllRenderSet();
+	//	int RenderSetCount = static_cast<int>(AllRenderSet.size());
+	//	for (int RenderSetNum = 0; RenderSetNum < RenderSetCount; ++RenderSetNum)
+	//	{
+	//		AllRenderSet[RenderSetNum].ShaderHelper->SettingTexture("NormalTex", "TestNor.png");
+
+	//	}
+
+	//	mapRenderers[Num]->BumpOn();
+	//}
+	////============================================================ END
 
 	tempDir.MoveParent("UserMesh");
 	tempDir.MoveChild("ItemBox");
@@ -116,7 +133,7 @@ void LumiaMap::Start()
 	for (size_t i = 0; i < vecFile.size(); i++)
 	{
 		GameEngineFBXRenderer* FBX = CreateTransformComponent<GameEngineFBXRenderer>(GetTransform());
-		FBX->SetFBXMesh(vecFile[i].GetFileName(), "TextureDeferredLight");
+		FBX->SetFBXMesh(vecFile[i].GetFileName(), "DeferredLightMap");
 		FBX->GetTransform()->SetLocalScaling(mapScale_);
 
 		mapRenderers.push_back(FBX);

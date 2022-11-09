@@ -127,16 +127,10 @@ void Boar::InitalizeRenderAndAnimation()
 	MainRenderer_->CreateFBXAnimation("SKILLATTACK", "Boar_skill_assault.UserAnimation", 0);			// 스킬시전중상태의 애니메이션(루프실행 : 타겟과 충돌할때까지 실행해야하기때문에)
 
 	MainRenderer_->ChangeFBXAnimation("IDLE");
+	MainRenderer_->LightShadowOn();
 
 	//============================= 기본상태 셋팅
 	ChangeAnimationAndState(MonsterStateType::APPEAR);
-
-	//============================== 그림자 렌더러 셋팅
-
-	{
-		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		MainShadowRenderer_->SetBaseRenderer(MainRenderer_, "RendererShadow");
-	}
 
 	//============================== 선처리 렌더러 셋팅
 

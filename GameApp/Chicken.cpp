@@ -104,16 +104,10 @@ void Chicken::InitalizeRenderAndAnimation()
 	MainRenderer_->CreateFBXAnimation("ATK01", "Chicken_atk01.UserAnimation", 0, false);			// 일반공격01상태의 애니메이션
 	MainRenderer_->CreateFBXAnimation("ATK02", "Chicken_atk02.UserAnimation", 0, false);			// 일반공격02상태의 애니메이션
 	MainRenderer_->ChangeFBXAnimation("IDLE");
+	MainRenderer_->LightShadowOn();
 
 	// 기본상태 셋팅
 	ChangeAnimationAndState(MonsterStateType::APPEAR);
-
-	//============================== 그림자 렌더러 셋팅
-
-	{
-		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		MainShadowRenderer_->SetBaseRenderer(MainRenderer_, "RendererShadow");
-	}
 
 	//============================== 선처리 렌더러 셋팅
 

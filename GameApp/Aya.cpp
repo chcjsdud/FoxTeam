@@ -258,6 +258,7 @@ void Aya::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("RestEnd", "Aya_Rest_End.UserAnimation", 0, false);
 
 	renderer_->ChangeFBXAnimation("Idle");
+	renderer_->LightShadowOn();
 
 	pistolRenderer_ = CreateTransformComponent<GameEngineFBXRenderer>(static_cast<int>(ObjectRenderOrder::WEAPON));
 	pistolRenderer_->SetFBXMesh("Weapon_Pistol_01.fbx", "TextureDeferredLightAni");
@@ -268,15 +269,7 @@ void Aya::initRendererAndAnimation()
 	pistolRenderer_->SetCustomOffset({ 2.7f, 0.f, -2.5f });
 	pistolRenderer_->CreateFBXAnimation("Idle", "Weapon_Pistol_01.fbx");
 	pistolRenderer_->ChangeFBXAnimation("Idle");
-
-	// 그림자 
-	{
-		MainShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		MainShadowRenderer_->SetBaseRenderer(renderer_, "RendererShadow");
-
-		WeaponShadowRenderer1_ = CreateTransformComponent<GameEngineShadowRenderer>();
-		WeaponShadowRenderer1_->SetBaseRenderer(pistolRenderer_, "RendererShadow");
-	}
+	pistolRenderer_->LightShadowOn();
 
 	// 외곽선
 	{
