@@ -2383,8 +2383,13 @@ void Character::updatePlayerWinner(float _deltaTime)
 {
 }
 
-void Character::PlayEffect(const std::string& _effectName, IUnit* _victim)
+void Character::PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim)
 {
+	//if (myIndex_ == _originIndex)
+	//{
+	//	return;
+	//}
+
 	if ("StunEffect" == _effectName)
 	{
 		float4 wp = GetTransform()->GetWorldPosition();

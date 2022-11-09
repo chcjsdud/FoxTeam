@@ -373,7 +373,7 @@ private:
 
 public:
 #pragma region EffectPlay
-	void PlayEffect(const std::string& _effectName, IUnit* _victim = nullptr);
+	void PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim = nullptr);
 #pragma endregion
 
 #pragma region RandomSoundPlay

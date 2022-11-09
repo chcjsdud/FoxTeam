@@ -66,6 +66,9 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 
 	LumiaLevel* level = dynamic_cast<LumiaLevel*>(GameEngineCore::CurrentLevel());
 
+	// 똑같이 나와야하는데
+	// 클라이언트에서 생성한 이 패킷은 
+
 	if (nullptr == level)
 	{
 		GameEngineDebug::MsgBoxError("이팩트 패킷 execute 도중 레벨을 가져오는 데 실패했습니다.");
@@ -78,11 +81,11 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 	if (-1 != victimIndex_)
 	{
 		Character* victimChar = level->GetCharacterActorList()[victimIndex_];
-		targetChar->PlayEffect(effectAnimationName_, victimChar);
+		targetChar->PlayEffect(effectAnimationName_, targetIndex_ , victimChar);
 	}
 	else 
 	{
-		targetChar->PlayEffect(effectAnimationName_);
+		targetChar->PlayEffect(effectAnimationName_, targetIndex_);
 	}
 
 
@@ -90,12 +93,4 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 	{
 		_network->Send(this);
 	}
-
-	// 이 패킷은 한번에 한 렌더러의 이펙트만을 접근할 수 있는가?
-	// 차라리 그렇게 만드는 게 편할려나?
-	// 이것도 실시간으로 process 하는 게 편할 것.
-
-	// 이펙트는 캐릭터마다 어떻게, 몇 개의 렌더러를 사용해서, 몇 초동안 표현할지가 각각 다를 것.
-	// 
-
 }

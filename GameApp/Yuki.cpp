@@ -189,7 +189,7 @@ void Yuki::Start()
 	DefaultCool_R_ = 100.0f;
 	DefaultCool_D_ = 30.0f;
 
-	stat_.passive_Count = 0;
+	stat_.passive_Count = 4;
 
 	passiveDamage_ = 15.0f;
 	passiveToken_ = 4;
@@ -218,6 +218,9 @@ void Yuki::Update(float _deltaTime)
 	stat_.passive_Count = passiveToken_;
 
 
+	// 내 쪽에서 패시브 토큰이 실제로 감산될 때
+	// 다른 쪽 컴퓨터의 내 꼭두각시도 그걸 알아야 한다...
+	// 
 	// Q 온힛 체크
 	if (true == b_isQ_)
 	{
@@ -271,7 +274,7 @@ void Yuki::Update(float _deltaTime)
 	if (nullptr != controlWindow)
 	{
 		controlWindow->AddText("Yuki Passive Token Count : " + std::to_string(passiveToken_));
-
+		controlWindow->AddText("Yuki Passive Token Count(Online) : " + std::to_string(PlayerInfoManager::GetInstance()->GetMyPlayer().stat_->passive_Count));
 		controlWindow->AddText("WorldPos : " + std::to_string(transform_.GetWorldPosition().x) + " " + std::to_string(transform_.GetWorldPosition().z));
 		controlWindow->AddText("CurLocation : " + std::to_string(static_cast<int>(curLocation_)));
 
@@ -556,9 +559,12 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 		else
 		{
 			passiveToken_--;
+			stat_.passive_Count = passiveToken_;
+
 			target_->Damage(stat_.AttackPower * 1.6f + (20.0f * stat_.Level_q) + (passiveDamage_ * stat_.Level_passive), this);
 
 			target_->Stun(0.5f);
+
 			CharCrowdControlPacket ccPacket;
 			ccPacket.SetTargetIndex(target_->GetIndex());
 			ccPacket.SetStun(0.5f);
@@ -575,6 +581,7 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 		PacketSoundPlay packet;
 		packet.SetSound("Yuki_Passive_Hit_r2.wav", transform_.GetWorldPosition());
 		FT::SendPacket(packet);
+
 		qSlashEffect_->PlayBurst(_target->GetTransform()->GetWorldPosition());
 		qSlashEffect_->GetTransform()->SetWorldPosition(_target->GetTransform()->GetWorldPosition());
 
@@ -892,6 +899,7 @@ void Yuki::onUpdateCustomState(float _deltaTime)
 
 void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 {
+
 	if ("BasicAttack" == _effectName)
 	{
 		if (_victim != nullptr)
@@ -914,6 +922,8 @@ void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 	if ("SkillQ_Slash" == _effectName)
 	{
 		qSlashEffect_->PlayBurst(_victim->GetTransform()->GetWorldPosition());
+		passiveToken_--;
+		stat_.passive_Count = passiveToken_;
 		return;
 	}
 
