@@ -1660,10 +1660,19 @@ void Character::getFOWData(std::vector<float4>& _data, bool& _bCalc)
 
 void Character::updateFinalStat()
 {
+	CharacterStat fianlstat = charStat_;
+
 	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::WEAPON)])
 	{
-		stat_ = charStat_ + equipedItem_[static_cast<size_t>(EquipmentType::WEAPON)]->GetStat();
+		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::WEAPON)]->GetStat();
 	}
+
+	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::CHEST)])
+	{
+		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::CHEST)]->GetStat();
+	}
+
+	stat_ = fianlstat;
 }
 
 void Character::initBasicEffect()

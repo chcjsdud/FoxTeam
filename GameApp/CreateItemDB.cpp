@@ -375,77 +375,138 @@ void ItemBoxManager::CreateUseableItemList()
 
 void ItemBoxManager::CreateEquipmentItemList()
 {
+	EquipmentItem* item = nullptr;
+
 	// Head
-	CreateEquipmentItem("Hairband", EquipmentType::HEAD, "ItemIcon_101101.png");
-	CreateEquipmentItem("Hat", EquipmentType::HEAD, "ItemIcon_101101.png");
-	CreateEquipmentItem("BikeHelmet", EquipmentType::HEAD, "ItemIcon_101101.png");
+	item = CreateEquipmentItem("Hairband", EquipmentType::HEAD, "ItemIcon_101101.png");
+	item->stat_.Defence = 2.0f;
+	item->stat_.SPMax = 100.0f;
 
-	CreateEquipmentItem("Mask", EquipmentType::HEAD, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Circlet", EquipmentType::HEAD, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Beret", EquipmentType::HEAD, ItemTier::UNCOMMON);
-	CreateEquipmentItem("ChainCoif", EquipmentType::HEAD, ItemTier::UNCOMMON);
-	CreateEquipmentItem("SafetyHelmet", EquipmentType::HEAD, ItemTier::UNCOMMON);
-	CreateEquipmentItem("CrownofBuds", EquipmentType::HEAD, ItemTier::UNCOMMON);
+	item = CreateEquipmentItem("Hat", EquipmentType::HEAD, "ItemIcon_101101.png");
+	item->stat_.Defence = 4.0f;
+	item->stat_.CooldownReduction = 0.02f;
 
-	CreateEquipmentItem("BallisticHelmet", EquipmentType::HEAD, ItemTier::RARE);
-	CreateEquipmentItem("FireHelmet", EquipmentType::HEAD, ItemTier::RARE);
-	CreateEquipmentItem("Tiara", EquipmentType::HEAD, ItemTier::RARE);
-	CreateEquipmentItem("Crown", EquipmentType::HEAD, ItemTier::RARE);
-	CreateEquipmentItem("CloseHelm", EquipmentType::HEAD, ItemTier::RARE);
-	CreateEquipmentItem("GarlandofPetals", EquipmentType::HEAD, ItemTier::RARE);
+	item = CreateEquipmentItem("BikeHelmet", EquipmentType::HEAD, "ItemIcon_101101.png");
+	item->stat_.HPMax = 30.0f;
 
-	CreateEquipmentItem("VirtuousOutlaw", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("CrystalTiara", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("MotorcycleHelmet", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("TacticalOPSHelmet", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("HelmofBanneret", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("ImperialCrown", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("ImperialBurgonet", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("MohawkHeadgear", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("Vigilante", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("Diadem", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("CrusaderHelmet", EquipmentType::HEAD, ItemTier::EPIC);
-	CreateEquipmentItem("HarmonyinFullBloom", EquipmentType::HEAD, ItemTier::EPIC);
+	item = CreateEquipmentItem("Mask", EquipmentType::HEAD, ItemTier::UNCOMMON);
+	item->stat_.Defence = 9.0f;
+	item->stat_.SPMax = 150.0f;
+	item->stat_.MovementSpeed = 0.04f;
+
+	item = CreateEquipmentItem("Circlet", EquipmentType::HEAD, ItemTier::UNCOMMON);
+	item->stat_.Defence = 4.0f;
+	item->stat_.SPMax = 270.0f;
+
+	item = CreateEquipmentItem("Beret", EquipmentType::HEAD, ItemTier::UNCOMMON);
+	item->stat_.Defence = 8.0f;
+	item->stat_.CooldownReduction = 0.06f;
+
+	item = CreateEquipmentItem("ChainCoif", EquipmentType::HEAD, ItemTier::UNCOMMON);
+	item->stat_.Defence = 12.0f;
+	item->stat_.CooldownReduction = 0.04f;
+	item->stat_.SkillDamageAmplification = 5.0f;
+
+	item = CreateEquipmentItem("BallisticHelmet", EquipmentType::HEAD, ItemTier::RARE);
+	item->stat_.Defence = 13.0f;
+	item->stat_.HPMax = 90.0f;
+	item->stat_.CooldownReduction = 0.08f;
+
+	item = CreateEquipmentItem("Tiara", EquipmentType::HEAD, ItemTier::RARE);
+	item->stat_.Defence = 10.0f;
+	item->stat_.SPMax = 400.0f;
+
+	item = CreateEquipmentItem("CloseHelm", EquipmentType::HEAD, ItemTier::RARE);
+	item->stat_.Defence = 13.0f;
+	item->stat_.SPMax = 200.0f;
+	item->stat_.CooldownReduction = 0.06f;
+	item->stat_.MovementSpeed = 0.06f;
+
+	item = CreateEquipmentItem("CrystalTiara", EquipmentType::HEAD, ItemTier::EPIC);
+	item->stat_.Defence = 14.0f;
+	item->stat_.SPMax = 400.0f;
+	item->stat_.CriticalChance = 0.23f;
+	item->stat_.CriticalDamageAmplification = 0.05f;
+
+	item = CreateEquipmentItem("TacticalOPSHelmet", EquipmentType::HEAD, ItemTier::EPIC);
+	item->stat_.Defence = 13.0f;
+	item->stat_.HPMax = 115.0f;
+	item->stat_.CooldownReduction = 0.10f;
+	item->stat_.AttackSpeed = 1.23f;
+
+	item = CreateEquipmentItem("ImperialBurgonet", EquipmentType::HEAD, ItemTier::EPIC);
+	item->stat_.Defence = 13.0f;
+	item->stat_.SPMax = 400.0f;
+	item->stat_.CooldownReduction = 0.06f;
+	item->stat_.SkillDamageAmplification = 60.0f;
+	item->stat_.MovementSpeed = 0.06f;
+
 
 	// Chest
-	CreateEquipmentItem("Windbreaker", EquipmentType::CHEST, "ItemIcon_101101.png");
-	CreateEquipmentItem("MonksRobe", EquipmentType::CHEST, "ItemIcon_101101.png");
-	CreateEquipmentItem("Wetsuit", EquipmentType::CHEST, "ItemIcon_101101.png");
-	CreateEquipmentItem("FabricArmor", EquipmentType::CHEST, "ItemIcon_101101.png");
+	item = CreateEquipmentItem("Windbreaker", EquipmentType::CHEST, "ItemIcon_101101.png");
+	item->stat_.AttackPower = 4.0f;
+	item->stat_.Defence = 3.0f;
 
-	CreateEquipmentItem("LeatherArmor", EquipmentType::CHEST, ItemTier::UNCOMMON);
-	CreateEquipmentItem("LeatherJacket", EquipmentType::CHEST, ItemTier::UNCOMMON);
-	CreateEquipmentItem("TurtleDobok", EquipmentType::CHEST, ItemTier::UNCOMMON);
-	CreateEquipmentItem("MilitarySuit", EquipmentType::CHEST, ItemTier::UNCOMMON);
-	CreateEquipmentItem("PatchedRobe", EquipmentType::CHEST, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Dress", EquipmentType::CHEST, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Bikini", EquipmentType::CHEST, ItemTier::UNCOMMON);
-	CreateEquipmentItem("DivingSuit", EquipmentType::CHEST, ItemTier::UNCOMMON);
-	CreateEquipmentItem("DeaconRobes", EquipmentType::CHEST, ItemTier::UNCOMMON);
+	item = CreateEquipmentItem("MonksRobe", EquipmentType::CHEST, "ItemIcon_101101.png");
+	item->stat_.Defence = 5.0f;
+	item->stat_.CooldownReduction = 0.05f;
 
-	CreateEquipmentItem("RiderJacket", EquipmentType::CHEST, ItemTier::RARE);
-	CreateEquipmentItem("ChainArmor", EquipmentType::CHEST, ItemTier::RARE);
-	CreateEquipmentItem("Suit", EquipmentType::CHEST, ItemTier::RARE);
-	CreateEquipmentItem("Qipao", EquipmentType::CHEST, ItemTier::RARE);
-	CreateEquipmentItem("SheetMetalArmor", EquipmentType::CHEST, ItemTier::RARE);
-	CreateEquipmentItem("Hanbok", EquipmentType::CHEST, ItemTier::RARE);
-	CreateEquipmentItem("BulletproofVest", EquipmentType::CHEST, ItemTier::RARE);
-	CreateEquipmentItem("CovertAgentUniform", EquipmentType::CHEST, ItemTier::RARE);
+	item = CreateEquipmentItem("Wetsuit", EquipmentType::CHEST, "ItemIcon_101101.png");
+	item->stat_.Defence = 5.0f;
+	item->stat_.SkillAttackDamageReduction = 0.01f;
 
-	CreateEquipmentItem("CardinalRobes", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("SunsetArmor", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("OpticalCamouflageSuit", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("RockersJacket", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("CrusaderArmor", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("AmazonessArmor", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("DragonDobok", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("CommandersArmor", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("ButlersSuit", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("BattleSuit", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("EODSuit", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("Tuxedo", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("HighPriestRobes", EquipmentType::CHEST, ItemTier::EPIC);
-	CreateEquipmentItem("Changpao", EquipmentType::CHEST, ItemTier::EPIC);
+	item = CreateEquipmentItem("FabricArmor", EquipmentType::CHEST, "ItemIcon_101101.png");
+	item->stat_.Defence = 9.0f;
+
+	item = CreateEquipmentItem("LeatherArmor", EquipmentType::CHEST, ItemTier::UNCOMMON);
+	item->stat_.Defence = 13.0f;
+
+	item = CreateEquipmentItem("MilitarySuit", EquipmentType::CHEST, ItemTier::UNCOMMON);
+	item->stat_.AttackPower = 4.0f;
+	item->stat_.Defence = 7.0f;
+	item->stat_.HPMax = 30.0f;
+
+	item = CreateEquipmentItem("Dress", EquipmentType::CHEST, ItemTier::UNCOMMON);
+	item->stat_.AttackPower = 3.0f;
+	item->stat_.Defence = 7.0f;
+	item->stat_.SPRegeneration = 0.80f;
+
+	item = CreateEquipmentItem("DivingSuit", EquipmentType::CHEST, ItemTier::UNCOMMON);
+	item->stat_.Defence = 9.0f;
+	item->stat_.SkillAttackDamageReduction = 0.02f;
+
+	item = CreateEquipmentItem("ChainArmor", EquipmentType::CHEST, ItemTier::RARE);
+	item->stat_.Defence = 16.0f;
+
+	item = CreateEquipmentItem("Qipao", EquipmentType::CHEST, ItemTier::RARE);
+	item->stat_.AttackPower = 5.0f;
+	item->stat_.Defence = 9.0f;
+	item->stat_.SPRegeneration = 1.0f;
+
+	item = CreateEquipmentItem("BulletproofVest", EquipmentType::CHEST, ItemTier::RARE);
+	item->stat_.Defence = 18.0f;
+	item->stat_.HPMax = 70.0f;
+
+	item = CreateEquipmentItem("OpticalCamouflageSuit", EquipmentType::CHEST, ItemTier::EPIC);
+	item->stat_.AttackPower = 15.0f;
+	item->stat_.Defence = 10.0f;
+	item->stat_.CriticalChance = 0.24f;
+
+	item = CreateEquipmentItem("CommandersArmor", EquipmentType::CHEST, ItemTier::EPIC);
+	item->stat_.Defence = 20.0f;
+	item->stat_.SkillDamageAmplification = 55.0f;
+
+	item = CreateEquipmentItem("BattleSuit", EquipmentType::CHEST, ItemTier::EPIC);
+	item->stat_.Defence = 20.0f;
+	item->stat_.HPMax = 140.0f;
+	item->stat_.BasicAttackDamageReduction = 0.06f;
+	item->stat_.SkillAttackDamageReduction = 0.04f;
+
+	item = CreateEquipmentItem("Changpao", EquipmentType::CHEST, ItemTier::EPIC);
+	item->stat_.AttackPower = 12.0f;
+	item->stat_.Defence = 9.0f;
+	item->stat_.SPRegeneration = 1.5f;
+	item->stat_.AttackSpeed = 1.28f;
 	
 	// Arm
 	CreateEquipmentItem("Watch", EquipmentType::ARM, "ItemIcon_101101.png");
@@ -582,7 +643,7 @@ void ItemBoxManager::CreateWeaponItemList()
 	item = CreateEquipmentItem("TheJuggernaut", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 	item->stat_.AttackPower = 60.0f;
 	item->stat_.MovementSpeed = 0.04f;
-	item->stat_.AttackSpeed = 0.20f;
+	item->stat_.AttackSpeed = 1.20f;
 
 	// Dual Swords
 	CreateEquipmentItem("TwinBlades", EquipmentType::WEAPON, "ItemIcon_101101.png");
@@ -644,7 +705,7 @@ void ItemBoxManager::CreateWeaponItemList()
 
 	item = CreateEquipmentItem("JebesAlteredBow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 	item->stat_.AttackPower = 62.0f;
-	item->stat_.AttackSpeed = 0.33f;
+	item->stat_.AttackSpeed = 1.33f;
 	item->stat_.MovementSpeed = 0.06f;
 
 	// Crossbow
