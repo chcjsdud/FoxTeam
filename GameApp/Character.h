@@ -180,8 +180,9 @@ protected:
 
 	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) = 0;
 
-	virtual void onLevelUp() = 0;
 
+	// LVUP
+	virtual void onLevelUp() = 0;
 #pragma endregion
 
 protected:
