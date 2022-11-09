@@ -781,8 +781,31 @@ bool sortItemQueue(QueueItem _left, QueueItem _right)
 
 void Character::checkItemRecipes()
 {
+	std::vector<ItemBase*> vecCheckItem;
+
+	for (const auto& inven : inventory_)
+	{
+		if (nullptr != inven)
+		{
+			vecCheckItem.push_back(inven);
+		}
+	}
+
+	for (const auto& equip : equipedItem_)
+	{
+		if (nullptr != equip)
+		{
+			vecCheckItem.push_back(equip);
+		}
+	}
+
+	if (2 > vecCheckItem.size())
+	{
+		return;
+	}
+
 	std::vector<std::vector<int>> cases =
-		GameEngineMath::Combination(static_cast<int>(inventory_.size()), 2);
+		GameEngineMath::Combination(static_cast<int>(vecCheckItem.size()), 2);
 
 	std::map<CombineItem, ItemBase*>& itemRecipes = itemBoxmanager_->GetAllItemRecipes();
 
@@ -793,8 +816,8 @@ void Character::checkItemRecipes()
 		int left = cases[i][0];
 		int right = cases[i][1];
 
-		if (nullptr == inventory_[left] ||
-			nullptr == inventory_[right])
+		if (nullptr == vecCheckItem[left] ||
+			nullptr == vecCheckItem[right])
 		{
 			continue;
 		}
@@ -802,7 +825,7 @@ void Character::checkItemRecipes()
 		// 아이템 조합가능여부를 판별
 		std::map<CombineItem, ItemBase*>::iterator iter = itemRecipes.end();
 
-		CombineItem CI = CombineItem(inventory_[left], inventory_[right]);
+		CombineItem CI = CombineItem(vecCheckItem[left], vecCheckItem[right]);
 
 		iter = itemRecipes.find(CI);
 
@@ -878,6 +901,51 @@ void Character::mixingItem()
 			invenItem = nullptr;
 			break;
 		}
+	}
+
+	bool isEquiped = false;
+	
+	for (auto& equipedItem : equipedItem_)
+	{
+		if (nullptr == equipedItem)
+		{
+			continue;
+		}
+
+		if (equipedItem == itemNames.left_)
+		{
+			equipedItem->Release();
+			equipedItem = nullptr;
+			isEquiped = true;
+			break;
+		}
+	}
+
+	for (auto& equipedItem : equipedItem_)
+	{
+		if (nullptr == equipedItem)
+		{
+			continue;
+		}
+
+		if (equipedItem == itemNames.right_)
+		{
+			equipedItem->Release();
+			equipedItem = nullptr;
+			isEquiped = true;
+			break;
+		}
+	}
+
+	if (true == isEquiped)
+	{
+		getEquipItem(reinterpret_cast<EquipmentItem*>(iter->second->Copy()));
+
+		uiController_->GetInventoryUI()->EmptySlot();
+		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+
+		checkItemRecipes();
+		return;
 	}
 
 	for (auto& invenItem : inventory_)
