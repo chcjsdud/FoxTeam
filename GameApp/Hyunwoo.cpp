@@ -477,11 +477,7 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 		// 여기서 피격 충돌 판정이 나옴
 		collision_Q->On();
 
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill01_Hit.wav");
-		PacketSoundPlay packet;
-		packet.SetSound("hyunwoo_Skill01_Hit.wav", transform_.GetWorldPosition());
-
-		FT::SendPacket(packet);
+		FT::PlaySoundAndSendPacket("hyunwoo_Skill01_Hit.wav", transform_.GetWorldPosition());
 
 		float4 wp = GetTransform()->GetWorldPosition();
 		qEffect_->GetTransform()->SetLocalPosition(wp);
@@ -642,11 +638,9 @@ void Hyunwoo::onStartESkill()
 	curAnimationName_ = "SkillE_start";
 	renderer_->ChangeFBXAnimation("SkillE_start", true);
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill03_Slide.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("hyunwoo_Skill03_Slide.wav", transform_.GetWorldPosition());
 
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("hyunwoo_Skill03_Slide.wav", transform_.GetWorldPosition());
+
 
 	rearEffectRenderer_->On();
 	rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
@@ -767,12 +761,9 @@ void Hyunwoo::onUpdateESkill(float _deltaTime)
 							// 여기선 못하고, 월 슬램 이후 그 캐릭터 클래스 내부에서 자체적으로 스턴 이펙트를 띄울 방법...
 							// 야 니네 컴퓨터의 내 캐릭터 인덱스 캐릭터에게 이팩트 띄워 줘
 
+							FT::PlaySoundAndSendPacket("hyunwoo_Skill03_Hit.wav", transform_.GetWorldPosition());
 
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill03_Hit.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("hyunwoo_Skill03_Hit.wav", transform_.GetWorldPosition());
 
-							FT::SendPacket(packet);
 
 							if (true == GameServer::GetInstance()->IsOpened())
 							{
@@ -1078,10 +1069,9 @@ void Hyunwoo::startCustomRSkill()
 	curAnimationName_ = "SkillR_start";
 	renderer_->ChangeFBXAnimation("SkillR_start", true);
 	collision_R->On();
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill04_Charging.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("hyunwoo_Skill04_Charging.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+
+
+	FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Charging.wav", transform_.GetWorldPosition());
 
 	float4 wp = transform_.GetWorldPosition();
 	rEffect_->GetTransform()->SetLocalPosition(wp);
@@ -1125,11 +1115,8 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 
 		GameEngineSoundManager::GetInstance()->StopSound();
 
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("hyunwoo_Skill04_Hit.wav");
 
-		PacketSoundPlay packet;
-		packet.SetSound("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
-		FT::SendPacket(packet);
+		FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
 
 		rearEffectRenderer_->On();
 		rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
@@ -1219,10 +1206,10 @@ void Hyunwoo::onStartBasicAttacking(IUnit* _target)
 {
 	target_->Damage(stat_.AttackPower, this);
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("attackGlove_Normal_Hit_P.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("attackGlove_Normal_Hit_P.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+
+
+	FT::PlaySoundAndSendPacket("attackGlove_Normal_Hit_P.wav", transform_.GetWorldPosition());
+
 
 
 	float4 wp = target_->GetTransform()->GetWorldPosition();

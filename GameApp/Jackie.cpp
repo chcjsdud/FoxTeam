@@ -562,20 +562,17 @@ void Jackie::changeAnimationBasicAttack()
 			curAnimationName_ = "R_Atk0";
 			renderer_->ChangeFBXAnimation("R_Atk0", true);
 			atkFlag_ = true;
-			GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Attack_v1.wav");
-			PacketSoundPlay packet;
-			packet.SetSound("jackie_ChainSaw_Attack_v1.wav", transform_.GetWorldPosition());
-			FT::SendPacket(packet);
+
+			FT::PlaySoundAndSendPacket("jackie_ChainSaw_Attack_v1.wav", transform_.GetWorldPosition());
 		}
 		else
 		{
 			curAnimationName_ = "R_Atk1";
 			renderer_->ChangeFBXAnimation("R_Atk1", true);
 			atkFlag_ = false;
-			GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Attack_v2.wav");
-			PacketSoundPlay packet;
-			packet.SetSound("jackie_ChainSaw_Attack_v2.wav", transform_.GetWorldPosition());
-			FT::SendPacket(packet);
+
+			FT::PlaySoundAndSendPacket("jackie_ChainSaw_Attack_v2.wav", transform_.GetWorldPosition());
+		
 		}
 	}
 	else
@@ -585,20 +582,16 @@ void Jackie::changeAnimationBasicAttack()
 			curAnimationName_ = "Atk0";
 			renderer_->ChangeFBXAnimation("Atk0", true);
 			atkFlag_ = true;
-			GameEngineSoundManager::GetInstance()->PlaySoundByName("attackAxe_r1.wav");
-			PacketSoundPlay packet;
-			packet.SetSound("attackAxe_r1.wav", transform_.GetWorldPosition());
-			FT::SendPacket(packet);
+
+			FT::PlaySoundAndSendPacket("attackAxe_r1.wav", transform_.GetWorldPosition());
 		}
 		else
 		{
 			curAnimationName_ = "Atk1";
 			renderer_->ChangeFBXAnimation("Atk1", true);
 			atkFlag_ = false;
-			GameEngineSoundManager::GetInstance()->PlaySoundByName("attackTwoHandSword_r2.wav");
-			PacketSoundPlay packet;
-			packet.SetSound("attackTwoHandSword_r2.wav", transform_.GetWorldPosition());
-			FT::SendPacket(packet);
+
+			FT::PlaySoundAndSendPacket("attackTwoHandSword_r2.wav", transform_.GetWorldPosition());
 		}
 	}
 }
@@ -658,17 +651,11 @@ void Jackie::onStartBasicAttacking(IUnit* _target)
 
 	if (true == isR_)
 	{
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
-		PacketSoundPlay packet;
-		packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
-		FT::SendPacket(packet);
+		FT::PlaySoundAndSendPacket("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
 	}
 	else
 	{
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
-		PacketSoundPlay packet;
-		packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
-		FT::SendPacket(packet);
+		FT::PlaySoundAndSendPacket("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
 	}
 
 	float4 wp = target_->GetTransform()->GetWorldPosition();
@@ -756,10 +743,8 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 	if (0 == b_Qhit_)
 	{
 		collision_Q->On();
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("wskill_Axe_attack.wav");
-		PacketSoundPlay packet;
-		packet.SetSound("wskill_Axe_attack.wav", transform_.GetWorldPosition());
-		FT::SendPacket(packet);
+
+		FT::PlaySoundAndSendPacket("wskill_Axe_attack.wav", transform_.GetWorldPosition());
 
 		//CharEffectPacket pack;
 		//pack.SetTargetIndex(myIndex_);
@@ -781,17 +766,12 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 					{
 						if (true == isR_)
 						{
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
+				
 						}
 						else
 						{
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
 						}
 
 
@@ -816,17 +796,11 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 					{
 						if (true == isR_)
 						{
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
 						}
 						else
 						{
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
 						}
 
 
@@ -843,10 +817,7 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 	{
 		collision_Q->On();
 
-		GameEngineSoundManager::GetInstance()->PlaySoundByName("wskill_Axe_attack.wav");
-		PacketSoundPlay packet;
-		packet.SetSound("wskill_Axe_attack.wav", transform_.GetWorldPosition());
-		FT::SendPacket(packet);
+		FT::PlaySoundAndSendPacket("wskill_Axe_attack.wav", transform_.GetWorldPosition());
 
 
 		//float4 wp = GetTransform()->GetWorldPosition();
@@ -874,17 +845,11 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 					{
 						if (true == isR_)
 						{
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
 						}
 						else
 						{
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
 						}
 						character->Damage(150.0f, this);
 					}
@@ -906,17 +871,12 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 					{
 						if (true == isR_)
 						{
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_ChainSaw_Hit_v1.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("jackie_ChainSaw_Hit_v1.wav", transform_.GetWorldPosition());
 						}
 						else
 						{
-							GameEngineSoundManager::GetInstance()->PlaySoundByName("hitSkillAxe_r1.wav");
-							PacketSoundPlay packet;
-							packet.SetSound("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
-							FT::SendPacket(packet);
+							FT::PlaySoundAndSendPacket("hitSkillAxe_r1.wav", transform_.GetWorldPosition());
+		
 						}
 						character->Damage(150.0f, this);
 					}
@@ -936,10 +896,7 @@ void Jackie::onStartWSkill()
 	RandomSoundPlay("Jackie_PlaySkill1001300seq0_1_ko.wav", "Jackie_PlaySkill1001300seq0_2_ko.wav", "Jackie_PlaySkill1001300seq0_3_ko.wav");
 
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill02_Activation.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("jackie_Skill02_Activation.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("jackie_Skill02_Activation.wav", transform_.GetWorldPosition());
 }
 
 void Jackie::onUpdateWSkill(float _deltaTime)
@@ -985,10 +942,8 @@ void Jackie::onStartRSkill()
 
 	RandomSoundPlay("Jackie_PlaySkill1001500seq0_1_ko.wav", "Jackie_PlaySkill1001500seq0_2_ko.wav", "Jackie_PlaySkill1001500seq0_3_ko.wav");
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill04_Activation_v1.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("jackie_Skill04_Activation_v1.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("jackie_Skill04_Activation_v1.wav", transform_.GetWorldPosition());
+
 }
 
 void Jackie::onUpdateRSkill(float _deltaTime)
@@ -1147,10 +1102,7 @@ void Jackie::startSkillEBegin()
 		ChangeAnimation("SkillE", true);
 	}
 
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill03_Jumping.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("jackie_Skill03_Jumping.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("jackie_Skill03_Jumping.wav", transform_.GetWorldPosition());
 
 	skillETime_ = 0.0f;
 }
@@ -1203,11 +1155,7 @@ void Jackie::updateSkillEShot(float _deltaTime)
 void Jackie::startSkillEEnd()
 {
 	collision_E->On();
-
-	GameEngineSoundManager::GetInstance()->PlaySoundByName("jackie_Skill03_Bump.wav");
-	PacketSoundPlay packet;
-	packet.SetSound("jackie_Skill03_Bump.wav", transform_.GetWorldPosition());
-	FT::SendPacket(packet);
+	FT::PlaySoundAndSendPacket("jackie_Skill03_Bump.wav", transform_.GetWorldPosition());
 
 }
 
