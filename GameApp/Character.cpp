@@ -336,11 +336,11 @@ void Character::Update(float _DeltaTime)
 		coolTimer_E_ = 0.5f;
 		coolTimer_R_ = 0.5f;
 		coolTimer_D_ = 0.5f;
-
 	}
 
 	if (GameEngineInput::Down("M"))
 	{
+		
 		
 		GetUIController()->GetMinimapUI()->Toggle();
 	}
@@ -989,6 +989,8 @@ void Character::Damage(float _Amount, IUnit* _Target)
 		if (GameServer::GetInstance()->IsOpened())
 		{
 			this->SetCharacterDeath();
+
+		//	GetUIController()->GetMinimapUI()->RemoveIcon(myIndex_);
 
 			CharDeathPacket deathpacket;
 			deathpacket.SetTargetIndex(myIndex_);

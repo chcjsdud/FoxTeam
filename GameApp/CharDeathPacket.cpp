@@ -5,6 +5,7 @@
 #include "Character.h"
 #include "ePacketID.h"
 #include <GameEngine/GameEngineCore.h>
+#include "PlayerUIController.h"
 
 CharDeathPacket::CharDeathPacket() // default constructer 디폴트 생성자
 	: targetIndex_(-1)
@@ -76,7 +77,6 @@ void CharDeathPacket::execute(SOCKET _sender, GameEngineSocketInterface* _networ
 
 	targetChar->SetFraggerIndex(fraggerIndex_);
 	targetChar->SetCharacterDeath();
-
 
 	if (_bServer)
 	{

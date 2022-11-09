@@ -211,6 +211,11 @@ void UI_Minimap::CheckCharPos()
 {
 }
 
+void UI_Minimap::RemoveIcon(int _index)
+{
+	charIconList_[_index]->SetAlpha(0.0f);
+}
+
 void UI_Minimap::Start()
 {
 	minimapRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), static_cast<int>(UIRenderOrder::UI));
@@ -267,7 +272,7 @@ void UI_Minimap::startAwake()
 
 	for (int i = 0; i < charIconList_.size(); i++)
 	{
-		
+
 		float4 beforePos = lv->GetCharacterActorList()[i]->GetTransform()->GetLocalPosition();
 
 		beforePos.Rotate3DDegree({0.12f, 69.9f ,0.0f});
@@ -302,7 +307,11 @@ void UI_Minimap::updateAwake(float _deltaTime)
 
 	for (int i = 0; i < charIconList_.size(); i++)
 	{
-
+		if (true == lv->GetCharacterActorList()[i]->IsDead())
+		{
+			charIconList_[i]->Off();
+			continue;
+		}
 
 
 		float4 beforePos = lv->GetCharacterActorList()[i]->GetTransform()->GetLocalPosition();

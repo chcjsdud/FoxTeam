@@ -29,6 +29,7 @@ public:
 
 	std::vector<GameEngineUIRenderer*> GetIconList() { return charIconList_; }
 
+	void RemoveIcon(int _index);
 protected:
 	void Start() override;
 	void Update(float _deltaTime) override;
