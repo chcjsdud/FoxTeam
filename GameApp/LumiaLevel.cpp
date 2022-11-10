@@ -1278,8 +1278,9 @@ void LumiaLevel::DebugWindowUpdate()
 		GameTimeController* gm = GameTimeController::GetInstance();
 		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
+		/*
+		// 221110 SJH DEL : 현재게임에 게임시간이 표시되므로 주석처리
 		// Game Time Debug Value
-
 		// 현재일차 낮/밤
 		int CurDay = gm->GetCurrentDay();
 		DayAndNightType CurType = gm->GetCurrentDayType();
@@ -1298,6 +1299,7 @@ void LumiaLevel::DebugWindowUpdate()
 		DebugAndControlWindow_->AddText(std::to_string(CurrentTimeMin.tm_min) + " MIN " + std::to_string(CurrentTimeMin.tm_sec) + " SEC");
 		DebugAndControlWindow_->AddText(std::to_string(CurrentTimeSec) + " SEC");
 		DebugAndControlWindow_->AddText(std::to_string(RemainTime) + "RemainTime");
+		*/
 
 		// InGameMouse Debug Value
 		float4 position = MousePointer::InGameMouse->GetIntersectionYAxisPlane(0, 50000.f);
