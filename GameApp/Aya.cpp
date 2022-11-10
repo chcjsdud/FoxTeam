@@ -420,12 +420,11 @@ void Aya::onStartBasicAttacking(IUnit* _target)
 		bullet0_ = level_->CreateActor<AyaBullet>();
 		bullet0_->MakeTarget(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
 
+		basicAttackEffect_->GetAttackRenderer()->SetColor({ 1.0f, 1.0f, 0.7f });
+		basicAttackEffect_->PlayAwake("FX_BI_Shoot_01");
 		//arrow = level_->CreateActor<AyaBullet>();
 		//bullet0_->MakeTarget(*this, stat_.AttackPower / 2.0f, startPosition, arrowSpeed, *target_);
 	}
-
-	basicAttackEffect_->GetAttackRenderer()->SetColor({ 1.0f, 1.0f, 0.7f });
-	basicAttackEffect_->PlayAwake("FX_BI_Shoot_01");
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -696,9 +695,13 @@ void Aya::onStartESkill()
 	RandomSoundPlay("Aya_PlaySkill1002400seq0_1_ko.wav", "Aya_PlaySkill1002400seq0_2_ko.wav", "Aya_PlaySkill1002400seq0_3_ko.wav");
 	FT::PlaySoundAndSendPacket("aya_Skill03_Activation.wav", wp);
 
-	eSpectrum_->GetTransform()->SetWorldPosition(wp);
-	eSpectrum_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
-	eSpectrum_->PlayAwake();
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		eSpectrum_->GetTransform()->SetWorldPosition(wp);
+		eSpectrum_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
+		eSpectrum_->PlayAwake();
+	}
+
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
@@ -741,8 +744,11 @@ void Aya::onStartRSkill()
 
 	RandomSoundPlay("Aya_PlaySkill1002500seq0_1_ko.wav", "Aya_PlaySkill1002500seq0_2_ko.wav", "Aya_PlaySkill1002500seq0_3_ko.wav");
 	FT::PlaySoundAndSendPacket("aya_Skill04_Ready.wav", transform_.GetWorldPosition());
-	rEffect_->PlayAwake();
 
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		rEffect_->PlayAwake();
+	}
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
