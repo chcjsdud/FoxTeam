@@ -65,9 +65,9 @@ void PlayerUIController::UIOff()
 	skill_UI->Off();
 	status_UI->Off();
 	time_UI->Off();
-	notice_UI->Off();
+	//notice_UI->Off();
 	hpbars_UI->Off();
-	charfollow_UI->Off();
+	//charfollow_UI->Off();
 }
 
 

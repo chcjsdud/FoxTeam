@@ -2547,6 +2547,7 @@ void Character::startPlayerDeath()
 
 	if (bFocused_)
 	{
+		uiController_->UIOff();
 		uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
 
 		if (fraggerIndex_ == -1)
@@ -2587,6 +2588,7 @@ void Character::startPlayerWinner()
 
 	int myRank = pm->GetPlayerList().size();
 
+	uiController_->UIOff();
 	uiController_->GetWinLoseUI()->SetWinner();
 	uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), true);
 	uiController_->GetWinLoseUI()->SetText("승리자 : " + pm->GetMyPlayer().playerNickname_ + "\n마지막까지 생존하였습니다.");

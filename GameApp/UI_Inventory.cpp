@@ -29,8 +29,8 @@ UI_Inventory::~UI_Inventory()
 
 void UI_Inventory::Start()
 {
-	BackGroundPos = { 248.0f, -315.0f, 0.0f };
-	BasicSlotPos = { 141.0f, -309.0f, -1.0f };
+	BackGroundPos = { 248.0f, -319.0f, 0.0f };
+	BasicSlotPos = { 141.0f, -313.0f, -1.0f };
 	SlotXPivot = { 47.0f, 0.0f, 0.0f };
 	SlotYPivot = { 0.0f, -32.0f, 0.0f };
 	SlotSize = { 44.0f,27.0f };

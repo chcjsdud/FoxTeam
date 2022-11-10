@@ -25,20 +25,20 @@ void UI_Skill::Start()
 	float4 Skill_IconSize = { 35.f,35.f };
 	float4 Passive_IconSize = { 29.f,29.f };
 	
-	Skill_BackGroundPos = { -20.0f, -315.0f, 0.0f };
-	Icon_Q_Pos = { -123.0f, -300.0f, -1.0f };
-	Icon_W_Pos = { -80.0f, -300.0f, -1.0f };
-	Icon_E_Pos = { -37.0f, -300.0f, -1.0f };
-	Icon_R_Pos = { 7.0f, -300.0f, -1.0f };
-	Icon_Weapon_Pos = { 50.0f, -300.0f, -1.0f };
-	Icon_Passive_Pos = { 89.0f, -300.0f, -1.0f };
+	Skill_BackGroundPos = { -20.0f, -319.0f, 0.0f };
+	Icon_Q_Pos = { -123.0f, -304.0f, -1.0f };
+	Icon_W_Pos = { -80.0f, -304.0f, -1.0f };
+	Icon_E_Pos = { -37.0f, -304.0f, -1.0f };
+	Icon_R_Pos = { 7.0f, -304.0f, -1.0f };
+	Icon_Weapon_Pos = { 50.0f, -304.0f, -1.0f };
+	Icon_Passive_Pos = { 89.0f, -304.0f, -1.0f };
 
-	Icon_Q_LevelCounterPos = { -123.0f, -320.0f, -1.0f };
-	Icon_W_LevelCounterPos = { -80.0f, -320.0f, -1.0f };
-	Icon_E_LevelCounterPos = { -37.0f, -320.0f, -1.0f };
-	Icon_R_LevelCounterPos = { 7.0f, -320.0f, -1.0f };
-	Icon_Weapon_LevelCounterPos = { 50.0f, -320.0f, -1.0f };
-	Icon_Passive_LevelCounterPos = { 89.0f, -316.0f, -1.0f };
+	Icon_Q_LevelCounterPos = { -123.0f, -324.0f, -1.0f };
+	Icon_W_LevelCounterPos = { -80.0f, -324.0f, -1.0f };
+	Icon_E_LevelCounterPos = { -37.0f, -324.0f, -1.0f };
+	Icon_R_LevelCounterPos = { 7.0f, -324.0f, -1.0f };
+	Icon_Weapon_LevelCounterPos = { 50.0f, -324.0f, -1.0f };
+	Icon_Passive_LevelCounterPos = { 89.0f, -320.0f, -1.0f };
 
 
 	{

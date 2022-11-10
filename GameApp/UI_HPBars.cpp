@@ -17,14 +17,14 @@ void UI_HPBars::Start()
 {
 	//Skill_BackGroundPos = { -20.0f, -315.0f, 0.0f };
 
-	HpBarPos = { -19.0f, -335.0f, -1.0f };
+	HpBarPos = { -19.0f, -339.0f, -1.0f };
 	HpBarSize = {246.0f, 11.0f};
 
-	SpBarPos = { -19.0f, -347.0f, -1.0f };
+	SpBarPos = { -19.0f, -351.0f, -1.0f };
 	SpBarSize = { 246.f, 11.f };
 
-	float4 HpBarFontPos = { -19.0f, -327.0f, -1.0f };
-	float4 SpBarFontPos = { -19.0f, -340.0f, -1.0f };
+	float4 HpBarFontPos = { -19.0f, -331.0f, -1.0f };
+	float4 SpBarFontPos = { -19.0f, -344.0f, -1.0f };
 
 	{
 		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);

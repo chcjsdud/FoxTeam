@@ -26,15 +26,15 @@ void UI_Status::Start()
 	//위치를 조정한 리소스들은 UIRenderMap에 String과 같이 insert됩니다.
 	//인게임정보(HP나 스태미너 상태, 착용장비여부)등을 받으면, UIRendererMap에서 이미지이름으로 Find해서 리소스를 바꿀 예정업니다.
 
-	float4 MainStatus_BackgroundPos = { -410.0f, -315.0f, 0.0f };
-	float4 SubStatus_BackgroundPos = { -525.0f, -315.0f, 0.0f };
+	float4 MainStatus_BackgroundPos = { -410.0f, -319.0f, 0.0f };
+	float4 SubStatus_BackgroundPos = { -525.0f, -319.0f, 0.0f };
 
 	Value_XPivot = {55.0f, 0.0f, 0.0f, 0.0f};
 	Value_YPivot = {0.0f, -19.0f, 0.0f, 0.0f};
 	float4 SubStat_XPivot = { 50.0f, 0.0f, 0.0f, 0.0f };
 
 
-	BasicValue_Pos = { -442.f, -279.f, -1.f };
+	BasicValue_Pos = { -442.f, -283.f, -1.f };
 	AttackSpeedValue_Pos = BasicValue_Pos + Value_YPivot;
 	CriticalValue_Pos = BasicValue_Pos + (Value_YPivot * 2.0f);
 	SkillDamageIncreaseValue_Pos = BasicValue_Pos + (Value_YPivot * 3.0f);
@@ -45,7 +45,7 @@ void UI_Status::Start()
 	SkillDamageReductionValue_Pos = BasicValue_Pos + (Value_YPivot * 3.0f) + Value_XPivot;
 
 
-	SubStatBasicValue_Pos = { -550.f, -279.f, -1.f };
+	SubStatBasicValue_Pos = { -550.f, -283.f, -1.f };
 	BasicAttackDamageReduction_Pos = SubStatBasicValue_Pos + Value_YPivot;
 	DefPenetration_Pos = SubStatBasicValue_Pos + (Value_YPivot * 2.0f);
 	HPRegeneration_Pos = SubStatBasicValue_Pos + (Value_YPivot * 3.0f);
