@@ -152,7 +152,7 @@ NavFace* NavMesh::GetNavFaceFromPositionXZ(const float4& _position, const float4
 
 		float4 V0 = face.info.Vertex[0] * matWorld;
 
-		if (3000.f < float4::Calc_Len3D(V0, _position))
+		if (4000.f < float4::Calc_Len3D(V0, _position))
 		{
 			continue;
 		}

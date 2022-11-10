@@ -1585,10 +1585,12 @@ void Character::updateFOW(float _deltaTime)
 	if (dayType == DayAndNightType::DAY)
 	{
 		stat_.VisionRange = FT::Char::DEFAULT_VISION_RANGE_DAY;
+		charStat_ = stat_;
 	}
 	else if (dayType == DayAndNightType::NIGHT)
 	{
 		stat_.VisionRange = FT::Char::DEFAULT_VISION_RANGE_NIGHT;
+		charStat_ = stat_;
 	}
 
 	if (bFocused_)

@@ -679,7 +679,7 @@ void LumiaLevel::InitIMGUIWindow()
 		ItemListWindow_->ItemBoxManager_ = ItemBoxManager_;
 	}
 
-	ItemListWindow_->Off();
+	//ItemListWindow_->Off();
 
 	if (nullptr != Window && nullptr != ItemBoxManager_)
 	{
