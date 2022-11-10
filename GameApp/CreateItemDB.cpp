@@ -345,6 +345,8 @@ void ItemBoxManager::CreateMiscItemList()
 
 void ItemBoxManager::CreateUseableItemList()
 {
+	UseableItem* item = nullptr;
+
 	// Common Food
 	CreateUseableItem("Potato", "ItemIcon_101101.png");
 	CreateUseableItem("Cod", "ItemIcon_101101.png");
@@ -358,18 +360,26 @@ void ItemBoxManager::CreateUseableItemList()
 	CreateUseableItem("OrientalHerb", "ItemIcon_101101.png");
 	CreateUseableItem("Chocolate", "ItemIcon_101101.png");
 
-
 	// Beverage À½·á
 	// Common 
-	CreateUseableItem("Honey", "ItemIcon_101101.png");
-	CreateUseableItem("Water", "ItemIcon_101101.png");
-	CreateUseableItem("Ice", "ItemIcon_101101.png");
-	CreateUseableItem("Whiskey", "ItemIcon_101101.png");
-	CreateUseableItem("Coffee", "ItemIcon_101101.png");
-	CreateUseableItem("CarbonatedWater", "ItemIcon_101101.png");
-	CreateUseableItem("Milk", "ItemIcon_101101.png");
-	CreateUseableItem("Baijiu", "ItemIcon_101101.png");
-	CreateUseableItem("FlowerLiquor", "ItemIcon_101101.png");
+	item = CreateUseableItem("Honey", "ItemIcon_101101.png");
+	item->SPRegen_ = 250.0f;
+	item = CreateUseableItem("Water", "ItemIcon_101101.png");
+	item->SPRegen_ = 225.0f;
+	item = CreateUseableItem("Ice", "ItemIcon_101101.png");
+	item->SPRegen_ = 200.0f;
+	item = CreateUseableItem("Whiskey", "ItemIcon_101101.png");
+	item->SPRegen_ = 450.0f;
+	item = CreateUseableItem("Coffee", "ItemIcon_101101.png");
+	item->SPRegen_ = 380.0f;
+	item = CreateUseableItem("CarbonatedWater", "ItemIcon_101101.png");
+	item->SPRegen_ = 380.0f;
+	item = CreateUseableItem("Milk", "ItemIcon_101101.png");
+	item->SPRegen_ = 200.0f;
+	item = CreateUseableItem("Baijiu", "ItemIcon_101101.png", ItemTier::UNCOMMON);
+	item->SPRegen_ = 400.0f;
+	item = CreateUseableItem("FlowerLiquor", "ItemIcon_101101.png", ItemTier::RARE);
+	item->SPRegen_ = 750.0f;
 
 }
 

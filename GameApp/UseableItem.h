@@ -1,9 +1,16 @@
 #pragma once
 #include "ItemBase.h"
 
+enum class UseableItemType
+{
+	HP,
+	SP
+};
+
 // Ό³Έν : 
 class UseableItem : public ItemBase
 {
+	friend class ItemBoxManager;
 public:
 	UseableItem();
 	~UseableItem();
@@ -18,6 +25,10 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+	UseableItemType Type;
 
+	float HPRegen_;
+	float SPRegen_;
+	float RegenTime_;
 };
 
