@@ -91,6 +91,11 @@ public:
 	void UserSave_ItemListInfo();
 	void UserLoad_ItemListInfo();
 
+	void SetItemBoxUI(UI_ItemBox* _ui)
+	{
+		itemBoxUI_ = _ui;
+	}
+
 	ItemBox* GetSelectBox()
 	{
 		return selectBox_;
@@ -128,6 +133,7 @@ public:
 	ItemBase* GetItemFromItemList(const std::string& _itemName);
 
 	void PushRandomItem(const std::string& _area, const std::string& _item, int _amount = 1);
+	void SetGatherItem();
 
 protected:
 	void Start() override;

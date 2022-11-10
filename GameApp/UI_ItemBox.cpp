@@ -56,6 +56,8 @@ void UI_ItemBox::Start()
 	//	BoxtypeFont_Renderer->GetTransform()->SetLocalPosition(BackgroundPos);
 	}
 
+	ItemBoxBackGround_Renderer->Off();
+	BoxtypeFont_Renderer->Off();
 
 	{
 		//마우스와의 충돌을 위해서 aabbbox3d로 충돌

@@ -126,7 +126,7 @@ void ItemBoxManager::CreateAllItemRecipes()
 	// Çö¿ì Äð°¨ ½ºÁõ [°ø - ½£ - °í - ¹¦ - ÇÐ]
 	
 	// ÇÃ¶óÁî¸¶ ÅæÆÄ
-	CreateItemRecipe("Stone", "Chalk", "WhitePowder");
+	CreateItemRecipe("Pebbles", "Chalk", "WhitePowder");
 	CreateItemRecipe("Branch", "Bamboo", "WoodenTonfa");
 	CreateItemRecipe("WhitePowder", "WoodenTonfa", "RyukyuTonfa");
 	CreateItemRecipe("RyukyuTonfa", "LaserPointer", "PlasmaTonfa");
@@ -182,7 +182,7 @@ void ItemBoxManager::CreateAllItemRecipes()
 
 	// ·¹ÀÌ´õ
 	CreateItemRecipe("Watch", "ElectronicParts", "VitalSignSensor");
-	CreateItemRecipe("GlassBottle", "Stone", "GlassPieces");
+	CreateItemRecipe("GlassBottle", "Pebbles", "GlassPieces");
 	CreateItemRecipe("GlassPieces", "Glue", "GlassPanel");
 	CreateItemRecipe("VitalSignSensor", "GlassPanel", "Radar");
 
@@ -286,7 +286,7 @@ void ItemBoxManager::CreateMiscItemList()
 	CreateMiscItem("FountainPen", "ItemIcon_101102.png");
 	CreateMiscItem("Pickaxe", "ItemIcon_101104.png");
 	CreateMiscItem("Branch", "ItemIcon_101104.png");
-	CreateMiscItem("Stone", "ItemIcon_101104.png");
+	CreateMiscItem("Pebbles", "ItemIcon_101104.png");
 	CreateMiscItem("GlassBottle", "ItemIcon_101104.png");
 	CreateMiscItem("Chalk", "ItemIcon_101104.png");
 	CreateMiscItem("Flower", "ItemIcon_101104.png");

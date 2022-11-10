@@ -660,11 +660,6 @@ void Character::getItem(const std::string& _itemName)
 	checkItemRecipes();
 }
 
-void Character::gatherItem(ItemBase* _item)
-{
-	int a = 0;
-}
-
 void Character::checkItemBox()
 {
 	if (itemBoxmanager_ == nullptr)
@@ -672,10 +667,13 @@ void Character::checkItemBox()
 		return;
 	}
 
+	if (nullptr == itemBoxmanager_->GetSelectBox())
+	{
+		return;
+	}
+
 	if (true == itemBoxmanager_->isOpen())
 	{
-		
-		
 		if (true == GameEngineInput::GetInst().Down("RButton"))
 		{
 			int SlotNum = itemBoxmanager_->GetItemBoxUI()->SlotMouseCollisionCheck();
@@ -742,7 +740,8 @@ void Character::checkItemBox()
 	}
 
 	// 채집물인 경우 인벤토리로 바로 획득
-	gatherItem(Box->GetItem(0));
+	gatherItem();
+
 }
 
 bool sortItemQueue(QueueItem _left, QueueItem _right)
@@ -944,6 +943,24 @@ void Character::mixingItem()
 	}
 
 	checkItemRecipes();
+}
+
+void Character::gatherItem()
+{
+	UI_ItemBox* ui = itemBoxmanager_->GetItemBoxUI();
+
+	if (ui != nullptr)
+	{
+		ui->Release();
+		ui = nullptr;
+	}
+
+	ui = GetLevel()->CreateActor<UI_ItemBox>();
+	ui->GetItemBoxInfo(itemBoxmanager_->GetSelectBox());
+
+	itemBoxmanager_->SetItemBoxUI(ui);
+
+	getItem(0);
 }
 
 void Character::SetEquipBuildItem(const std::string& _itemName, EquipmentType _type)

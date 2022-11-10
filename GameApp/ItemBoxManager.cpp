@@ -243,7 +243,6 @@ void ItemBoxManager::OpenItemBox()
 
 	if (itemBoxUI_ != nullptr)
 	{
-		//이건호: 아이템박스가 켜져있는 상태에서 다시 박스를 클릭하면 원래 켜져 있던 박스는 없어지도록 했습니다
 		itemBoxUI_->Release();
 		itemBoxUI_ = nullptr;
 	}
@@ -592,5 +591,75 @@ void ItemBoxManager::CreateItemRecipe(const std::string& _left,
 	{
 		GameEngineDebug::MsgBoxError("중복된 조합식이 이미 존재합니다!" + _result);
 		return;
+	}
+}
+
+void ItemBoxManager::SetGatherItem()
+{
+	ItemBase* Cod = nullptr;
+	ItemBase* Potato = nullptr;
+	ItemBase* TreeofLife = nullptr;
+	ItemBase* Pebbles = nullptr;
+	ItemBase* Flower = nullptr;
+	ItemBase* Branch = nullptr;
+
+	for (const auto& item : allItemList_)
+	{
+		if (std::string::npos != item->GetName().find("Cod"))
+		{
+			Cod = item;
+		}
+		else if (std::string::npos != item->GetName().find("Potato"))
+		{
+			Potato = item;
+		}
+		else if (std::string::npos != item->GetName().find("TreeofLife"))
+		{
+			TreeofLife = item;	
+		}
+		else if (std::string::npos != item->GetName().find("Pebbles"))
+		{
+			Pebbles = item;
+		}
+		else if (std::string::npos != item->GetName().find("Flower"))
+		{
+			Flower = item;
+		}
+		else if (std::string::npos != item->GetName().find("Branch"))
+		{
+			Branch = item;
+		}
+	}
+
+
+	for (auto& itembox : itemBoxs_)
+	{
+		for (size_t i = 0; i < itembox.second.size(); i++)
+		{
+			if (std::string::npos != itembox.second[i]->info.BoxType.find("Fishing"))
+			{
+				itembox.second[i]->itemList.push_back(Cod->Copy());
+			}
+			else if (std::string::npos != itembox.second[i]->info.BoxType.find("Potato"))
+			{
+				itembox.second[i]->itemList.push_back(Potato->Copy());
+			}
+			else if (std::string::npos != itembox.second[i]->info.BoxType.find("TreeofLife"))
+			{
+				itembox.second[i]->itemList.push_back(TreeofLife->Copy());
+			}
+			else if (std::string::npos != itembox.second[i]->info.BoxType.find("Pebbles"))
+			{
+				itembox.second[i]->itemList.push_back(Pebbles->Copy());
+			}
+			else if (std::string::npos != itembox.second[i]->info.BoxType.find("Flower"))
+			{
+				itembox.second[i]->itemList.push_back(Flower->Copy());
+			}
+			else if (std::string::npos != itembox.second[i]->info.BoxType.find("Branch"))
+			{
+				itembox.second[i]->itemList.push_back(Branch->Copy());
+			}
+		}
 	}
 }

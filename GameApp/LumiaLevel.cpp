@@ -474,6 +474,7 @@ void LumiaLevel::MapResourceLoad()
 	ItemBoxManager_ = CreateActor<ItemBoxManager>();
 	ItemBoxManager_->UserAllLoad(ItemBoxInfoDir);
 	ItemBoxManager_->GetTransform()->SetLocalScaling(100.0f);
+	ItemBoxManager_->SetGatherItem();
 }
 
 void LumiaLevel::CharacterResourceLoad()

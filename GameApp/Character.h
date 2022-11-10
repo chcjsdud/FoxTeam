@@ -214,10 +214,10 @@ private:
 	void getItem(int _index);
 	void getEquipItem(EquipmentItem* _item, int _index);
 	void getEquipItem(EquipmentItem* _item);
-	void gatherItem(ItemBase* _item);
 	void checkItemBox();
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
 	void mixingItem();
+	void gatherItem();
 	void checkBuildItemsRecursive(ItemBase* _item);
 	void updateFOW(float _deltaTime);
 	void getFOWData(std::vector<float4>& _data, bool& _bCalc);
