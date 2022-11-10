@@ -432,7 +432,7 @@ void ItemBoxManager::CreateEquipmentItemList()
 	item->stat_.Defence = 13.0f;
 	item->stat_.HPMax = 115.0f;
 	item->stat_.CooldownReduction = 0.10f;
-	item->stat_.AttackSpeed = 1.23f;
+	item->stat_.AttackSpeed = 0.23f;
 
 	item = CreateEquipmentItem("ImperialBurgonet", EquipmentType::HEAD, ItemTier::EPIC);
 	item->stat_.Defence = 13.0f;
@@ -506,105 +506,177 @@ void ItemBoxManager::CreateEquipmentItemList()
 	item->stat_.AttackPower = 12.0f;
 	item->stat_.Defence = 9.0f;
 	item->stat_.SPRegeneration = 1.5f;
-	item->stat_.AttackSpeed = 1.28f;
+	item->stat_.AttackSpeed = 0.28f;
 	
 	// Arm
-	CreateEquipmentItem("Watch", EquipmentType::ARM, "ItemIcon_101101.png");
-	CreateEquipmentItem("Bandage", EquipmentType::ARM, "ItemIcon_101101.png");
-	CreateEquipmentItem("Bracelet", EquipmentType::ARM, "ItemIcon_101101.png");
+	item = CreateEquipmentItem("Watch", EquipmentType::ARM, "ItemIcon_101101.png");
+	item->stat_.AttackSpeed = 0.08f;
 
-	CreateEquipmentItem("LeatherShield", EquipmentType::ARM, ItemTier::UNCOMMON);
-	CreateEquipmentItem("SquadLeaderArmband", EquipmentType::ARM, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Bracer", EquipmentType::ARM, ItemTier::UNCOMMON);
-	CreateEquipmentItem("BrokenWatch", EquipmentType::ARM, ItemTier::UNCOMMON);
+	item = CreateEquipmentItem("Bandage", EquipmentType::ARM, "ItemIcon_101101.png");
+	item->stat_.HPRegeneration = 0.20f;
 
-	CreateEquipmentItem("Sheath", EquipmentType::ARM, ItemTier::RARE);
-	CreateEquipmentItem("GoldenBracelet", EquipmentType::ARM, ItemTier::RARE);
-	CreateEquipmentItem("Bazuband", EquipmentType::ARM, ItemTier::RARE);
-	CreateEquipmentItem("CrimsonBracelet", EquipmentType::ARM, ItemTier::RARE);
-	CreateEquipmentItem("BarbedBlossom", EquipmentType::ARM, ItemTier::RARE);
-	CreateEquipmentItem("SteelShield", EquipmentType::ARM, ItemTier::RARE);
-	CreateEquipmentItem("VitalSignSensor", EquipmentType::ARM, ItemTier::RARE);
+	item = CreateEquipmentItem("Bracelet", EquipmentType::ARM, "ItemIcon_101101.png");
+	item->stat_.SPMax = 220.0f;
 
-	CreateEquipmentItem("CorruptingTouch", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("SwordStopper", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("Draupnir", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("CreedoftheKnight", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("SheathofShahJahan", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("BurnishedAegis", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("TindalosBand", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("Nightingale", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("PlasmaArc", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("SmartBand", EquipmentType::ARM, ItemTier::EPIC);
-	CreateEquipmentItem("Radar", EquipmentType::ARM, ItemTier::EPIC);
+	item = CreateEquipmentItem("BrokenWatch", EquipmentType::ARM, ItemTier::UNCOMMON);
+	item->stat_.CooldownReduction = 0.05f;
+
+	item = CreateEquipmentItem("Sheath", EquipmentType::ARM, ItemTier::RARE);
+	item->stat_.AttackPower = 18.0f;
+
+	item = CreateEquipmentItem("GoldenBracelet", EquipmentType::ARM, ItemTier::RARE);
+	item->stat_.SPMax = 220.0f;
+	item->stat_.SkillDamageAmplification = 25.0f;
+
+	item = CreateEquipmentItem("VitalSignSensor", EquipmentType::ARM, ItemTier::RARE);
+	item->stat_.Defence = 13.0f;
+	item->stat_.AttackSpeed = 0.22f;
+
+	item = CreateEquipmentItem("CorruptingTouch", EquipmentType::ARM, ItemTier::EPIC);
+	item->stat_.Defence = 13.0f;
+	item->stat_.SkillDamageAmplification = 37.0f;
+
+	item = CreateEquipmentItem("SheathofShahJahan", EquipmentType::ARM, ItemTier::EPIC);
+	item->stat_.AttackPower = 32.0f;
+	item->stat_.HPMax = 120.0f;
+	// ¹æ°ü 6%
+
+	item = CreateEquipmentItem("TindalosBand", EquipmentType::ARM, ItemTier::EPIC);
+	item->stat_.SkillDamageAmplification = 49.0f;
+	item->stat_.CooldownReduction = 0.12f;
+	item->stat_.SPMax = 300.0f;
+
+	item = CreateEquipmentItem("Radar", EquipmentType::ARM, ItemTier::EPIC);
+	item->stat_.Defence = 15.0f;
+	item->stat_.AttackSpeed = 0.30f;
+	item->stat_.CriticalChance = 0.20f;
 
 	// Leg
-	CreateEquipmentItem("Slippers", EquipmentType::LEG, "ItemIcon_101101.png");
-	CreateEquipmentItem("RunningShoes", EquipmentType::LEG, "ItemIcon_101101.png");
-	CreateEquipmentItem("Tights", EquipmentType::LEG, "ItemIcon_101101.png");
+	item = CreateEquipmentItem("Slippers", EquipmentType::LEG, "ItemIcon_101101.png");
+	item->stat_.MovementSpeed = 0.08f;
 
-	CreateEquipmentItem("KneePads", EquipmentType::LEG, ItemTier::UNCOMMON);
-	CreateEquipmentItem("ChainLeggings", EquipmentType::LEG, ItemTier::UNCOMMON);
-	CreateEquipmentItem("HighHeels", EquipmentType::LEG, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Heelys", EquipmentType::LEG, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Clogs", EquipmentType::LEG, ItemTier::UNCOMMON);
-	CreateEquipmentItem("RepairedSlippers", EquipmentType::LEG, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Boots", EquipmentType::LEG, ItemTier::UNCOMMON);
+	item = CreateEquipmentItem("RunningShoes", EquipmentType::LEG, "ItemIcon_101101.png");
+	item->stat_.MovementSpeed = 0.08f;
 
-	CreateEquipmentItem("HikingBoots", EquipmentType::LEG, ItemTier::RARE);
-	CreateEquipmentItem("GlacierCrampons", EquipmentType::LEG, ItemTier::RARE);
-	CreateEquipmentItem("SteelKneePads", EquipmentType::LEG, ItemTier::RARE);
-	CreateEquipmentItem("CombatBoots", EquipmentType::LEG, ItemTier::RARE);
-	CreateEquipmentItem("KillerHeels", EquipmentType::LEG, ItemTier::RARE);
+	item = CreateEquipmentItem("Tights", EquipmentType::LEG, "ItemIcon_101101.png");
+	item->stat_.MovementSpeed = 0.08f;
 
-	CreateEquipmentItem("FeatherBoots", EquipmentType::LEG, ItemTier::EPIC);
-	CreateEquipmentItem("MaverickRunner", EquipmentType::LEG, ItemTier::EPIC);
-	CreateEquipmentItem("StraitjacketSneakers", EquipmentType::LEG, ItemTier::EPIC);
-	CreateEquipmentItem("Bucephalus", EquipmentType::LEG, ItemTier::EPIC);
-	CreateEquipmentItem("EODBoots", EquipmentType::LEG, ItemTier::EPIC);
-	CreateEquipmentItem("WhiteRhinos", EquipmentType::LEG, ItemTier::EPIC);
-	CreateEquipmentItem("TachyonBrace", EquipmentType::LEG, ItemTier::EPIC);
-	CreateEquipmentItem("SCV", EquipmentType::LEG, ItemTier::EPIC);
+	item = CreateEquipmentItem("KneePads", EquipmentType::LEG, ItemTier::UNCOMMON);
+	item->stat_.Defence = 5.0f;
+	item->stat_.MovementSpeed = 0.14f;
+
+	item = CreateEquipmentItem("ChainLeggings", EquipmentType::LEG, ItemTier::UNCOMMON);
+	item->stat_.Defence = 3.0f;
+	item->stat_.MovementSpeed = 0.13f;
+
+	item = CreateEquipmentItem("HighHeels", EquipmentType::LEG, ItemTier::UNCOMMON);
+	item->stat_.AttackPower = 2.0f;
+	item->stat_.MovementSpeed = 0.13f;
+
+	item = CreateEquipmentItem("RepairedSlippers", EquipmentType::LEG, ItemTier::UNCOMMON);
+	item->stat_.SPRegeneration = 0.50f;
+	item->stat_.MovementSpeed = 0.13f;
+
+	item = CreateEquipmentItem("Boots", EquipmentType::LEG, ItemTier::UNCOMMON);
+	item->stat_.HPRegeneration = 0.10f;
+	item->stat_.MovementSpeed = 0.13f;
+
+	item = CreateEquipmentItem("CombatBoots", EquipmentType::LEG, ItemTier::RARE);
+	item->stat_.HPRegeneration = 0.15f;
+	item->stat_.AttackSpeed = 0.05f;
+	item->stat_.MovementSpeed = 0.18f;
+
+	item = CreateEquipmentItem("KillerHeels", EquipmentType::LEG, ItemTier::RARE);
+	item->stat_.AttackPower = 5.0f;
+	item->stat_.MovementSpeed = 0.18f;
+	item->stat_.CriticalChance = 0.10f;
+
+	item = CreateEquipmentItem("StraitjacketSneakers", EquipmentType::LEG, ItemTier::EPIC);
+	item->stat_.SPRegeneration = 1.0f;
+	item->stat_.MovementSpeed = 0.27f;
+	item->stat_.SkillDamageAmplification = 20.0f;
+
+	item = CreateEquipmentItem("Bucephalus", EquipmentType::LEG, ItemTier::EPIC);
+	item->stat_.AttackPower = 5.0f;
+	item->stat_.Defence = 5.0f;
+	item->stat_.MovementSpeed = 0.27f;
+	item->stat_.CriticalChance = 0.16f;
+
+	item = CreateEquipmentItem("WhiteRhinos", EquipmentType::LEG, ItemTier::EPIC);
+	item->stat_.HPRegeneration = 0.25f;
+	item->stat_.AttackSpeed = 0.05f;
+	item->stat_.MovementSpeed = 0.27f;
+
+	item = CreateEquipmentItem("TachyonBrace", EquipmentType::LEG, ItemTier::EPIC);
+	item->stat_.Defence = 5.0f;
+	item->stat_.MovementSpeed = 0.27f;
+	item->stat_.CooldownReduction = 0.08f;
 
 	// Accessory
-	CreateEquipmentItem("Feather", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
-	CreateEquipmentItem("Ribbon", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
-	CreateEquipmentItem("Fan", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
-	CreateEquipmentItem("BuddhistScripture", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
-	CreateEquipmentItem("Box", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
-	CreateEquipmentItem("HolyGrail", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
-	CreateEquipmentItem("Cross", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
-	CreateEquipmentItem("Binoculars", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	item = CreateEquipmentItem("Feather", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	item->stat_.MovementSpeed = 0.04f;
 
-	CreateEquipmentItem("SaintsRelic", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("FlowerofFate", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("GlassPieces", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Doll", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("SniperScope", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("BuddhaSarira", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("Quiver", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("FeatherDuster", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("GildedQuillFan", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("ShamansBronze", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("DecorativeFlintlock", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	CreateEquipmentItem("MarksmanHandbook", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
+	item = CreateEquipmentItem("Ribbon", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	item->stat_.LifeSteel = 0.05f;
 
-	CreateEquipmentItem("WhiteCraneFan", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("Uchiwa", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("Magazine", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("LacedQuiver", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("RevengeofGoujian", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("BuccaneerDoubloon", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("Hawkeye", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("JollyRoger", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("MusicBox", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("ActiveCamouflage", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("Grimoire", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("AetherFringe", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("PileBunker", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("SchrodingersBox", EquipmentType::ACCESSORY, ItemTier::RARE);
-	CreateEquipmentItem("VeritasLuxMea", EquipmentType::ACCESSORY, ItemTier::RARE);
-	
+	item = CreateEquipmentItem("Fan", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	item->stat_.SkillDamageAmplification = 8.0f;
+
+	item = CreateEquipmentItem("BuddhistScripture", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	item->stat_.SkillDamageAmplification = 8.0f;
+
+	item = CreateEquipmentItem("Box", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	item->stat_.HPMax = 45.0f;
+
+	item = CreateEquipmentItem("HolyGrail", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	item->stat_.HPRegeneration = 0.30f;
+
+	item = CreateEquipmentItem("Cross", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	item->stat_.AttackPower = 3.0f;
+
+	item = CreateEquipmentItem("Binoculars", EquipmentType::ACCESSORY, "ItemIcon_101101.png");
+	item->stat_.AttackPower = 2.0f;
+	item->stat_.VisionRange = 50.0f;
+
+	item = CreateEquipmentItem("FlowerofFate", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
+	item->stat_.CriticalChance = 0.07f;
+	item->stat_.CooldownReduction = 0.08f;
+
+	item = CreateEquipmentItem("GlassPieces", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
+	item->stat_.CriticalChance = 0.07f;
+
+	item = CreateEquipmentItem("Quiver", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
+	item->stat_.AttackSpeed = 0.12f;
+	item->stat_.MovementSpeed = 0.04f;
+
+	item = CreateEquipmentItem("GildedQuillFan", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
+	item->stat_.SkillDamageAmplification = 12.0f;
+
+	item = CreateEquipmentItem("DecorativeFlintlock", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
+	item->stat_.AttackSpeed = 0.10f;
+	item->stat_.LifeSteel = 0.06f;
+
+	item = CreateEquipmentItem("WhiteCraneFan", EquipmentType::ACCESSORY, ItemTier::RARE);
+	item->stat_.SkillDamageAmplification = 17.0f;
+	item->stat_.MovementSpeed = 0.04f;
+
+	item = CreateEquipmentItem("LacedQuiver", EquipmentType::ACCESSORY, ItemTier::RARE);
+	item->stat_.AttackPower = 10.0f;
+	item->stat_.AttackSpeed = 0.24f;
+	item->stat_.MovementSpeed = 0.04f;
+
+	item = CreateEquipmentItem("BuccaneerDoubloon", EquipmentType::ACCESSORY, ItemTier::RARE);
+	item->stat_.AttackPower = 15.0f;
+	item->stat_.LifeSteel = 0.08f;
+	item->stat_.CriticalChance = 0.12f;
+
+	item = CreateEquipmentItem("MusicBox", EquipmentType::ACCESSORY, ItemTier::RARE);
+	item->stat_.HPMax = 130.0f;
+	item->stat_.AttackSpeed = 0.28f;
+
+	item = CreateEquipmentItem("Grimoire", EquipmentType::ACCESSORY, ItemTier::RARE);
+	item->stat_.SkillDamageAmplification = 21.0f;
+
 }
 
 void ItemBoxManager::CreateWeaponItemList()
@@ -643,7 +715,7 @@ void ItemBoxManager::CreateWeaponItemList()
 	item = CreateEquipmentItem("TheJuggernaut", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 	item->stat_.AttackPower = 60.0f;
 	item->stat_.MovementSpeed = 0.04f;
-	item->stat_.AttackSpeed = 1.20f;
+	item->stat_.AttackSpeed = 0.20f;
 
 	// Dual Swords
 	CreateEquipmentItem("TwinBlades", EquipmentType::WEAPON, "ItemIcon_101101.png");
@@ -705,7 +777,7 @@ void ItemBoxManager::CreateWeaponItemList()
 
 	item = CreateEquipmentItem("JebesAlteredBow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 	item->stat_.AttackPower = 62.0f;
-	item->stat_.AttackSpeed = 1.33f;
+	item->stat_.AttackSpeed = 0.33f;
 	item->stat_.MovementSpeed = 0.06f;
 
 	// Crossbow

@@ -1662,6 +1662,26 @@ void Character::updateFinalStat()
 	{
 		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::CHEST)]->GetStat();
 	}
+	
+	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::HEAD)])
+	{
+		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::HEAD)]->GetStat();
+	}
+	
+	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::ARM)])
+	{
+		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::ARM)]->GetStat();
+	}
+	
+	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::LEG)])
+	{
+		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::LEG)]->GetStat();
+	}
+	
+	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::ACCESSORY)])
+	{
+		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::ACCESSORY)]->GetStat();
+	}
 
 	stat_ = fianlstat;
 }
