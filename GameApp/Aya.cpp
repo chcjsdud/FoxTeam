@@ -190,6 +190,8 @@ void Aya::Update(float _deltaTime)
 
 	level_->PushDebugRender(skillRCol_->GetTransform(), CollisionType::CirCle);
 
+	stat_.passive_Count = ammo_;
+
 	if (!bFocused_)
 	{
 		return;

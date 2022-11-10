@@ -229,6 +229,47 @@ void UI_CharFollow::SetPassiveUI(int _num)
 	case JobType::RIO:
 		break;
 	case JobType::AYA:
+	{
+		if (false == PassiveRenderer->IsUpdate())
+		{
+			PassiveRenderer->On();
+			PassiveRenderer->SetImage("Aya_Gage_Zero.png", "PointSmp");
+			PassiveRenderer->GetTransform()->SetLocalScaling(PassiveRenderer->GetCurrentTexture()->GetTextureSize());
+		}
+
+		PassiveCountPos = HpBarPos + float4{ 0.f, -15.f, 0.f,0.f };
+
+		if (0 == _num)
+		{
+			PassiveRenderer->SetImage("Aya_Gage_Zero.png", "PointSmp");
+		}
+		else if (1 == _num)
+		{
+			PassiveRenderer->SetImage("Aya_Gage_One.png", "PointSmp");
+		}
+		else if (2 == _num)
+		{
+			PassiveRenderer->SetImage("Aya_Gage_Two.png", "PointSmp");
+		}
+		else if (3 == _num)
+		{
+			PassiveRenderer->SetImage("Aya_Gage_Three.png", "PointSmp");
+		}
+		else if (4 == _num)
+		{
+			PassiveRenderer->SetImage("Aya_Gage_Four.png", "PointSmp");
+		}
+		else if (5 == _num)
+		{
+			PassiveRenderer->SetImage("Aya_Gage_Five.png", "PointSmp");
+		}
+		else if (6 == _num)
+		{
+			PassiveRenderer->SetImage("Aya_Gage_Six.png", "PointSmp");
+		}
+
+		PassiveRenderer->GetTransform()->SetLocalPosition(PassiveCountPos);
+	}
 		break;
 	case JobType::DUMMY:
 		break;
