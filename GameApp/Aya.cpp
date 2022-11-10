@@ -146,6 +146,8 @@ void Aya::Start()
 	stat_.AttackSpeed = 0.8f;
 	stat_.AttackRange = 450.f;
 
+	charStat_ = stat_;
+
 	DefaultCool_Q_ = 6.5f;
 	DefaultCool_W_ = 17.0f;
 	DefaultCool_E_ = 19.0f;

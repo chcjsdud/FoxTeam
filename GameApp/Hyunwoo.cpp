@@ -178,6 +178,9 @@ void Hyunwoo::Start()
 	//stat_.Cooltime_e = 18.0f;
 	//stat_.Cooltime_r = 65.0f;
 	//stat_.Cooltime_d = 10.0f;
+
+	charStat_ = stat_;
+
 	DefaultCool_Q_ = 8.5f;
 	DefaultCool_W_ = 28.0f;
 	DefaultCool_E_ = 18.0f;

@@ -211,14 +211,14 @@ void LumiaLevel::MapCreationCommand()
 		HyperLoops[i]->GetTransform()->SetWorldPosition(hyperLoopSpawnPoints[i] + float4(0.0f, 5.0f, 0.0f));
 	}
 
-	HyperLoops[0]->GetTransform()->SetWorldRotationDegree({ 0.0f, 0.0f, 0.0f });
+	HyperLoops[0]->GetTransform()->SetWorldRotationDegree({ 0.0f, 180.0f, 0.0f });
 	HyperLoops[1]->GetTransform()->SetWorldRotationDegree({ 0.0f, 90.0f, 0.0f });
 	HyperLoops[2]->GetTransform()->SetWorldRotationDegree({ 0.0f, 90.0f, 0.0f });
-	HyperLoops[3]->GetTransform()->SetWorldRotationDegree({ 0.0f, 0.0f, 0.0f });
-	HyperLoops[4]->GetTransform()->SetWorldRotationDegree({ 0.0f, 0.0f, 0.0f });
+	HyperLoops[3]->GetTransform()->SetWorldRotationDegree({ 0.0f, 180.0f, 0.0f });
+	HyperLoops[4]->GetTransform()->SetWorldRotationDegree({ 0.0f, 180.0f, 0.0f });
 	HyperLoops[5]->GetTransform()->SetWorldRotationDegree({ 0.0f, 90.0f, 0.0f });
 	HyperLoops[6]->GetTransform()->SetWorldRotationDegree({ 0.0f, 90.0f, 0.0f });
-	HyperLoops[7]->GetTransform()->SetWorldRotationDegree({ 0.0f, 0.0f, 0.0f });
+	HyperLoops[7]->GetTransform()->SetWorldRotationDegree({ 0.0f, 180.0f, 0.0f });
 
 
 	//#ifdef _DEBUG

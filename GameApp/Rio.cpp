@@ -153,6 +153,8 @@ void Rio::Start()
 
 	stat_.AttackRange = 450.0f;
 
+	charStat_ = stat_;
+
 	DefaultCool_Q_ = 1.0f;
 	DefaultCool_W_ = 12.0f;
 	DefaultCool_E_ = 8.0f;
