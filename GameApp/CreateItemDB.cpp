@@ -432,7 +432,7 @@ void ItemBoxManager::CreateEquipmentItemList()
 	item->stat_.Defence = 13.0f;
 	item->stat_.HPMax = 115.0f;
 	item->stat_.CooldownReduction = 0.10f;
-	item->stat_.AttackSpeed = 0.23f;
+	item->stat_.AttackSpeedRatio = 0.23f;
 
 	item = CreateEquipmentItem("ImperialBurgonet", EquipmentType::HEAD, ItemTier::EPIC);
 	item->stat_.Defence = 13.0f;
@@ -506,11 +506,11 @@ void ItemBoxManager::CreateEquipmentItemList()
 	item->stat_.AttackPower = 12.0f;
 	item->stat_.Defence = 9.0f;
 	item->stat_.SPRegeneration = 1.5f;
-	item->stat_.AttackSpeed = 0.28f;
+	item->stat_.AttackSpeedRatio = 0.28f;
 	
 	// Arm
 	item = CreateEquipmentItem("Watch", EquipmentType::ARM, "ItemIcon_101101.png");
-	item->stat_.AttackSpeed = 0.08f;
+	item->stat_.AttackSpeedRatio = 0.08f;
 
 	item = CreateEquipmentItem("Bandage", EquipmentType::ARM, "ItemIcon_101101.png");
 	item->stat_.HPRegeneration = 0.20f;
@@ -530,7 +530,7 @@ void ItemBoxManager::CreateEquipmentItemList()
 
 	item = CreateEquipmentItem("VitalSignSensor", EquipmentType::ARM, ItemTier::RARE);
 	item->stat_.Defence = 13.0f;
-	item->stat_.AttackSpeed = 0.22f;
+	item->stat_.AttackSpeedRatio = 0.22f;
 
 	item = CreateEquipmentItem("CorruptingTouch", EquipmentType::ARM, ItemTier::EPIC);
 	item->stat_.Defence = 13.0f;
@@ -548,7 +548,7 @@ void ItemBoxManager::CreateEquipmentItemList()
 
 	item = CreateEquipmentItem("Radar", EquipmentType::ARM, ItemTier::EPIC);
 	item->stat_.Defence = 15.0f;
-	item->stat_.AttackSpeed = 0.30f;
+	item->stat_.AttackSpeedRatio = 0.30f;
 	item->stat_.CriticalChance = 0.20f;
 
 	// Leg
@@ -583,7 +583,7 @@ void ItemBoxManager::CreateEquipmentItemList()
 
 	item = CreateEquipmentItem("CombatBoots", EquipmentType::LEG, ItemTier::RARE);
 	item->stat_.HPRegeneration = 0.15f;
-	item->stat_.AttackSpeed = 0.05f;
+	item->stat_.AttackSpeedRatio = 0.05f;
 	item->stat_.MovementSpeed = 0.18f;
 
 	item = CreateEquipmentItem("KillerHeels", EquipmentType::LEG, ItemTier::RARE);
@@ -604,7 +604,7 @@ void ItemBoxManager::CreateEquipmentItemList()
 
 	item = CreateEquipmentItem("WhiteRhinos", EquipmentType::LEG, ItemTier::EPIC);
 	item->stat_.HPRegeneration = 0.25f;
-	item->stat_.AttackSpeed = 0.05f;
+	item->stat_.AttackSpeedRatio = 0.05f;
 	item->stat_.MovementSpeed = 0.27f;
 
 	item = CreateEquipmentItem("TachyonBrace", EquipmentType::LEG, ItemTier::EPIC);
@@ -646,14 +646,14 @@ void ItemBoxManager::CreateEquipmentItemList()
 	item->stat_.CriticalChance = 0.07f;
 
 	item = CreateEquipmentItem("Quiver", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	item->stat_.AttackSpeed = 0.12f;
+	item->stat_.AttackSpeedRatio = 0.12f;
 	item->stat_.MovementSpeed = 0.04f;
 
 	item = CreateEquipmentItem("GildedQuillFan", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
 	item->stat_.SkillDamageAmplification = 12.0f;
 
 	item = CreateEquipmentItem("DecorativeFlintlock", EquipmentType::ACCESSORY, ItemTier::UNCOMMON);
-	item->stat_.AttackSpeed = 0.10f;
+	item->stat_.AttackSpeedRatio = 0.10f;
 	item->stat_.LifeSteel = 0.06f;
 
 	item = CreateEquipmentItem("WhiteCraneFan", EquipmentType::ACCESSORY, ItemTier::RARE);
@@ -662,7 +662,7 @@ void ItemBoxManager::CreateEquipmentItemList()
 
 	item = CreateEquipmentItem("LacedQuiver", EquipmentType::ACCESSORY, ItemTier::RARE);
 	item->stat_.AttackPower = 10.0f;
-	item->stat_.AttackSpeed = 0.24f;
+	item->stat_.AttackSpeedRatio = 0.24f;
 	item->stat_.MovementSpeed = 0.04f;
 
 	item = CreateEquipmentItem("BuccaneerDoubloon", EquipmentType::ACCESSORY, ItemTier::RARE);
@@ -672,7 +672,7 @@ void ItemBoxManager::CreateEquipmentItemList()
 
 	item = CreateEquipmentItem("MusicBox", EquipmentType::ACCESSORY, ItemTier::RARE);
 	item->stat_.HPMax = 130.0f;
-	item->stat_.AttackSpeed = 0.28f;
+	item->stat_.AttackSpeedRatio = 0.28f;
 
 	item = CreateEquipmentItem("Grimoire", EquipmentType::ACCESSORY, ItemTier::RARE);
 	item->stat_.SkillDamageAmplification = 21.0f;
@@ -715,7 +715,7 @@ void ItemBoxManager::CreateWeaponItemList()
 	item = CreateEquipmentItem("TheJuggernaut", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 	item->stat_.AttackPower = 60.0f;
 	item->stat_.MovementSpeed = 0.04f;
-	item->stat_.AttackSpeed = 0.20f;
+	item->stat_.AttackSpeedRatio = 0.20f;
 
 	// Dual Swords
 	CreateEquipmentItem("TwinBlades", EquipmentType::WEAPON, "ItemIcon_101101.png");
@@ -777,7 +777,7 @@ void ItemBoxManager::CreateWeaponItemList()
 
 	item = CreateEquipmentItem("JebesAlteredBow", EquipmentType::WEAPON, "ItemIcon_101101.png", ItemTier::EPIC);
 	item->stat_.AttackPower = 62.0f;
-	item->stat_.AttackSpeed = 0.33f;
+	item->stat_.AttackSpeedRatio = 0.33f;
 	item->stat_.MovementSpeed = 0.06f;
 
 	// Crossbow
