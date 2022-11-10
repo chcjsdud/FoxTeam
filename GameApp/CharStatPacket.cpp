@@ -35,6 +35,7 @@ void CharStatPacket::userSerialize()
     serializer_ << stat_.AttackPower;
     serializer_ << stat_.AttackRange;
     serializer_ << stat_.AttackSpeed;
+    serializer_ << stat_.AttackSpeedRatio;
     serializer_ << stat_.BasicAttackAmplification;
     serializer_ << stat_.BasicAttackDamageReduction;
     serializer_ << stat_.CooldownReduction;
@@ -65,6 +66,7 @@ void CharStatPacket::userDeserialize()
     serializer_ >> stat_.AttackPower;
     serializer_ >> stat_.AttackRange;
     serializer_ >> stat_.AttackSpeed;
+    serializer_ >> stat_.AttackSpeedRatio;
     serializer_ >> stat_.BasicAttackAmplification;
     serializer_ >> stat_.BasicAttackDamageReduction;
     serializer_ >> stat_.CooldownReduction;

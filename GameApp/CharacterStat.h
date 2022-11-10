@@ -34,6 +34,7 @@ public:
 	float OmniVamp; // 모든 피해 흡혈
 
 	// 속도
+	float AttackSpeedRatio = 1.0; // 공격속도배율
 	float AttackSpeed; // 초당 공격 속도
 	float AttackStartTime; // 실질적으로 공격이 나가는 시간
 	float AttackEndTime; // 공격이 끝나는 시간
