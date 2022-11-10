@@ -210,7 +210,16 @@ void Aya::Update(float _deltaTime)
 
 		if (renderer_->IsOverrideAnimationEnd() || reloadTime_ > 2.5f)
 		{
-			ammo_ = 6;
+			if (GameServer::GetInstance()->IsOpened())
+			{
+				ammo_ = 6;
+			}
+		
+			CharEffectPacket packtoken;
+			packtoken.SetTargetIndex(myIndex_);
+			packtoken.SetAnimationName("TokenRecover");
+			FT::SendPacket(packtoken);
+			
 			reloadTime_ = 0.0f;
 			renderer_->ClearOverrideAnimation();
 			overrideAnimationBoneName_ = "";
@@ -400,7 +409,15 @@ void Aya::onStartBasicAttacking(IUnit* _target)
 		ChangeAnimation("Attack");
 	}
 
-	--ammo_;
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		--ammo_;
+	}
+
+	CharEffectPacket packtoken;
+	packtoken.SetTargetIndex(myIndex_);
+	packtoken.SetAnimationName("TokenLost");
+	FT::SendPacket(packtoken);
 
 	float4 offset = { 20.f, 120.f, 30.f, 0.f };
 	offset = offset * transform_.GetTransformData().WorldWorld_;
@@ -832,7 +849,18 @@ void Aya::onUpdateDSkill(float _deltaTime)
 		overrideAnimationBoneName_ = "";
 		overrideAnimationName_ = "";
 		mainState_ << "NormalState";
-		ammo_ = 6;
+
+
+		if (GameServer::GetInstance()->IsOpened())
+		{
+			ammo_ = 6;
+		}
+	
+		CharEffectPacket packtoken;
+		packtoken.SetTargetIndex(myIndex_);
+		packtoken.SetAnimationName("TokenRecover");
+		FT::SendPacket(packtoken);
+		
 		return;
 	}
 
@@ -856,6 +884,23 @@ void Aya::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 {
 	float4 startPosition = transform_.GetWorldPosition();
 	float arrowSpeed = 1500.f;
+
+	if ("TokenLost" == _effectName)
+	{
+		if (ammo_ <= 0)
+		{
+			return;
+		}
+
+		ammo_--;
+		stat_.passive_Count = ammo_;
+	}
+
+	if ("TokenRecover" == _effectName)
+	{
+		ammo_ = 6;
+		stat_.passive_Count = ammo_;
+	}
 
 	if ("BasicAttack_Shot" == _effectName)
 	{
