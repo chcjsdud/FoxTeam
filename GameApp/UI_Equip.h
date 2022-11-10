@@ -32,6 +32,8 @@ public:
 	//슬롯에 아이템이 들어있을때 이미지 렌더를 위한 함수
 	void ItemRenderCheck();
 
+	int SlotMouseCollisionCheck();
+
 protected:
 	GameEngineUIRenderer* Renderer;
 	float Time;

@@ -128,7 +128,7 @@ void UI_WinLose::Start()
 	backRenderer_->SetAlpha(0.0f);
 	backRenderer_->Off();
 
-	portraitRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	portraitRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL1);
 	portraitRenderer_->SetImage("Death_CharFull_Hyunwoo.png", "PointSmp");
 	//	portraitRenderer_->GetTransform()->SetLocalPosition();
 	portraitRenderer_->GetTransform()->SetLocalScaling(portraitRenderer_->GetCurrentTexture()->GetTextureSize());
@@ -160,14 +160,14 @@ void UI_WinLose::Start()
 	bloodStainRendererUp_->SetAlpha(0.0f);
 	bloodStainRendererUp_->Off();
 
-	winLosePanelRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	winLosePanelRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL2);
 	winLosePanelRenderer_->SetImage("losePanel.png", "PointSmp");
 	winLosePanelRenderer_->GetTransform()->SetLocalScaling(winLosePanelRenderer_->GetCurrentTexture()->GetTextureSize());
 	winLosePanelRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 220.0f, 0.0f });
 	winLosePanelRenderer_->SetAlpha(0.0f);
 	winLosePanelRenderer_->Off();
 
-	winLoseTextRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	winLoseTextRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 	winLoseTextRenderer_->SetTextColor(float4::WHITE);
 	winLoseTextRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 250.0f, 0.0f });
 	winLoseTextRenderer_->TextSetting("±¼¸²", "½ÇÇè Á¾·á", 40, FW1_CENTER);
@@ -175,14 +175,14 @@ void UI_WinLose::Start()
 	winLoseTextRenderer_->Off();
 
 
-	rankPanelRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	rankPanelRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL2);
 	rankPanelRenderer_->SetImage("rankPanel.png", "PointSmp");
 	rankPanelRenderer_->GetTransform()->SetLocalScaling(rankPanelRenderer_->GetCurrentTexture()->GetTextureSize());
 	rankPanelRenderer_->GetTransform()->SetLocalPosition({ 0.0f,-240.0f,0.0f });
 	rankPanelRenderer_->SetAlpha(0.0f);
 	rankPanelRenderer_->Off();
 
-	textRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	textRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 	textRenderer_->SetTextColor(float4::WHITE);
 	textRenderer_->TextSetting("±¼¸²", " ", 40, FW1_CENTER);
 	textRenderer_->GetTransform()->SetLocalPosition({ 0.0f,-220.0f,0.0f });

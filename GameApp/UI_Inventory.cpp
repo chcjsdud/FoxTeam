@@ -143,16 +143,16 @@ void UI_Inventory::Update(float _Time)
 		else
 		{
 			Renderer->On();
-			//GetLevel()->PushDebugRenderUI(Slot0Collision->GetTransform(), CollisionType::AABBBox3D);
-			//GetLevel()->PushDebugRenderUI(Slot1Collision->GetTransform(), CollisionType::AABBBox3D);
-			//GetLevel()->PushDebugRenderUI(Slot2Collision->GetTransform(), CollisionType::AABBBox3D);
-			//GetLevel()->PushDebugRenderUI(Slot3Collision->GetTransform(), CollisionType::AABBBox3D);
-			//GetLevel()->PushDebugRenderUI(Slot4Collision->GetTransform(), CollisionType::AABBBox3D);
-			//GetLevel()->PushDebugRenderUI(Slot5Collision->GetTransform(), CollisionType::AABBBox3D);
-			//GetLevel()->PushDebugRenderUI(Slot6Collision->GetTransform(), CollisionType::AABBBox3D);
-			//GetLevel()->PushDebugRenderUI(Slot7Collision->GetTransform(), CollisionType::AABBBox3D);
-			//GetLevel()->PushDebugRenderUI(Slot8Collision->GetTransform(), CollisionType::AABBBox3D);
-			//GetLevel()->PushDebugRenderUI(Slot9Collision->GetTransform(), CollisionType::AABBBox3D);
+			//GetLevel()->PushDebugRenderUI(Slot0Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot1Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot2Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot3Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot4Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot5Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot6Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot7Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot8Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot9Collision->GetTransform(), CollisionType::Rect);
 		}
 	}
 
@@ -660,3 +660,61 @@ void UI_Inventory::EmptySlot()
 	}
 }
 
+int UI_Inventory::SlotMouseCollisionCheck()
+{
+
+	if (true == Slot0Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 0;
+	}
+
+	if (true == Slot1Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 1;
+	}
+
+	if (true == Slot2Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 2;
+	}
+
+	if (true == Slot3Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 3;
+	}
+
+	if (true == Slot4Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 4;
+	}
+
+	if (true == Slot5Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 5;
+	}
+
+	if (true == Slot6Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 6;
+	}
+
+	if (true == Slot7Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 7;
+	}
+
+	if (true == Slot8Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 8;
+	}
+
+	if (true == Slot9Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 9;
+	}
+
+
+	//충돌중이 아님
+	return -1;
+
+}

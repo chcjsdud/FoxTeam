@@ -373,3 +373,41 @@ void UI_Equip::ItemRenderCheck()
 		Slot5_IconRenderer->Off();
 	}
 }
+
+int UI_Equip::SlotMouseCollisionCheck()
+{
+
+	if (true == Slot0Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 0;
+	}
+
+	if (true == Slot1Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 1;
+	}
+
+	if (true == Slot2Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 2;
+	}
+
+	if (true == Slot3Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 3;
+	}
+
+	if (true == Slot4Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 4;
+	}
+
+	if (true == Slot5Collision->Collision(eCollisionGroup::MousePointer))
+	{
+		return 5;
+	}
+
+	//충돌중이 아님
+	return -1;
+
+}
