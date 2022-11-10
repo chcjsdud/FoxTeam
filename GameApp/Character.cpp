@@ -2103,7 +2103,7 @@ void Character::updateChase(float _deltaTime)
 	{
 		setRotationTo(targetPosition, playerPosition);
 
-		if (attackCooldown_ > 1.0f / stat_.AttackSpeed)
+		if (attackCooldown_ > stat_.AttackSpeedRatio / stat_.AttackSpeed)
 		{
 			mainState_ << "AttackState";
 			attackState_ << "BasicAttack";
@@ -2387,6 +2387,12 @@ void Character::startBasicAttack()
 	attackTime_ = 0.0f;
 	ResetInfight();
 	changeAnimationBasicAttack();
+	FBXAnimation* curAni = renderer_->GetCurrentAnimation();
+	if (nullptr != curAni)
+	{
+		curAni->FrameTime = 0.03333f / stat_.AttackSpeedRatio;
+	}
+
 	currentAnimation_ = eCurrentAnimation::BasicAttack;
 }
 

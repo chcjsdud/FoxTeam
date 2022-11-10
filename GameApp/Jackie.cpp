@@ -889,6 +889,7 @@ void Jackie::onUpdateWSkill(float _deltaTime)
 	mainState_.ChangeState("NormalState", true);
 	normalState_.ChangeState("Watch", true);
 	stat_.MovementSpeed += 100.0f;
+	charStat_ = stat_;
 }
 
 void Jackie::onStartESkill()

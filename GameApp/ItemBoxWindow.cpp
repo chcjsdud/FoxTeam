@@ -21,6 +21,7 @@ ItemBoxWindow::~ItemBoxWindow()
 
 void ItemBoxWindow::OnGUI()
 {
+	
 
 	ImGui::Text("Inventory");
 

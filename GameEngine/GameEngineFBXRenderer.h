@@ -45,6 +45,7 @@ public:
 
 
 	inline GameEngineFBXMesh* GetMesh() { return FBXMesh; }
+	FBXAnimation* GetCurrentAnimation() { return currentAnimation_; }
 	const std::string GetCurAnimationName() { return currentAnimation_->AnimationName_; }
 	const int GetCurAnimationCurFrame() { return currentAnimation_->CurFrame; }
 	const float GetCurAnimationFrameTime() { return currentAnimation_->CurFrameTime; }

@@ -28,6 +28,7 @@ class GameEnginePreprocessingRenderer;
 class Character : public IUnit
 {
 	friend class ItemBoxWindow;
+	friend class ItemListWindow;
 public:
 	Character();
 	~Character();

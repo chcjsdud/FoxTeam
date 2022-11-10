@@ -561,6 +561,11 @@ void LumiaLevel::CreateLevelInput()
 		GameEngineInput::GetInst().CreateKey("L", 'L');
 	}
 
+	if (false == GameEngineInput::GetInst().IsKey("I"))
+	{
+		GameEngineInput::GetInst().CreateKey("I", 'I');
+	}
+
 	if (false == GameEngineInput::GetInst().IsKey("LButton"))
 	{
 		GameEngineInput::GetInst().CreateKey("LButton", VK_LBUTTON);
@@ -662,6 +667,19 @@ void LumiaLevel::InitIMGUIWindow()
 	{
 		Window = GameEngineGUI::GetInst()->CreateGUIWindow<ItemBoxWindow>("ItemBoxWindow");
 	}
+
+	ItemListWindow_ = nullptr;
+	if (nullptr == GameEngineGUI::GetInst()->FindGUIWindow("ItemListWindow"))
+	{
+		ItemListWindow_ = GameEngineGUI::GetInst()->CreateGUIWindow<ItemListWindow>("ItemListWindow");
+	}
+
+	if (nullptr != ItemListWindow_ && nullptr != ItemBoxManager_)
+	{
+		ItemListWindow_->ItemBoxManager_ = ItemBoxManager_;
+	}
+
+	ItemListWindow_->Off();
 
 	if (nullptr != Window && nullptr != ItemBoxManager_)
 	{
@@ -1524,6 +1542,11 @@ void LumiaLevel::CheckLevelRelatedInputKey()
 		{
 			CurMap_->ToggleNavMeshRender();
 		}
+	}
+
+	if (GameEngineInput::Up("I") && nullptr != ItemListWindow_)
+	{
+		ItemListWindow_->On();
 	}
 }
 

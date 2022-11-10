@@ -3,6 +3,7 @@
 
 #include "MousePointer.h"
 #include "ItemBoxManager.h"
+#include "ItemListWindow.h"
 
 #define SERVER
 
@@ -159,6 +160,7 @@ private:
 private:
 	LumiaMap* CurMap_;																				// 맵
 	ItemBoxManager* ItemBoxManager_;																// 아이템박스 매니저
+	ItemListWindow* ItemListWindow_;
 	LightActor* MainLight_;																			// 메인 광원(빛)
 
 private:
