@@ -149,13 +149,19 @@ void AyaBullet::updateChase(float _deltaTime)
 			//atkEffect_->GetTransform()->SetWorldPosition(wp);
 			//atkEffect_->PlayAwake("Fx_ShootGlowSE_04");
 		}
+
+			CharEffectPacket pack0;
+			pack0.SetTargetIndex(owner_->GetIndex());
+			pack0.SetAnimationName("BasicAttack_Hit0");
+			pack0.SetVictimIndex(*target_);
+			FT::SendPacket(pack0);
+
+
 			CharEffectPacket pack;
 			pack.SetTargetIndex(owner_->GetIndex());
 			pack.SetAnimationName("BasicAttack_Hit");
 			pack.SetVictimIndex(*target_);
 			FT::SendPacket(pack);
-	
-		
 
 		Release();
 	}
@@ -191,15 +197,28 @@ void AyaBullet::updateFly(float _deltaTime)
 
 				opponent->Damage(damage_, owner_);
 
+				CharEffectPacket pack0;
+				pack0.SetTargetIndex(owner_->GetIndex());
+				pack0.SetAnimationName("BasicAttack_Hit0");
+				pack0.SetVictimIndex(*opponent);
+				FT::SendPacket(pack0);
+
+
+				CharEffectPacket pack;
+				pack.SetTargetIndex(owner_->GetIndex());
+				pack.SetAnimationName("BasicAttack_Hit");
+				pack.SetVictimIndex(*opponent);
+				FT::SendPacket(pack);
+
 				atkEffect_->GetAttackRenderer()->SetColor({ 0.8f,0.8f,1.0f });
 				//atkEffect_->GetTransform()->SetWorldPosition(wp);
 				atkEffect_->PlayAwake("Fx_ShootGlowSE_04");
 
-				CharEffectPacket pack;
-				pack.SetTargetIndex(owner_->GetIndex());
-				pack.SetAnimationName("SkillW_Hit");
-				pack.SetVictimIndex(*opponent);
-				FT::SendPacket(pack);
+				//CharEffectPacket pack;
+				//pack.SetTargetIndex(owner_->GetIndex());
+				//pack.SetAnimationName("SkillW_Hit");
+				//pack.SetVictimIndex(*opponent);
+				//FT::SendPacket(pack);
 		
 
 				// 여기 이펙트 패킷 하나
@@ -224,16 +243,28 @@ void AyaBullet::updateFly(float _deltaTime)
 
 				opponent->Damage(damage_, owner_);
 
+				CharEffectPacket pack0;
+				pack0.SetTargetIndex(owner_->GetIndex());
+				pack0.SetAnimationName("BasicAttack_Hit0");
+				pack0.SetVictimIndex(*opponent);
+				FT::SendPacket(pack0);
+
+
+				CharEffectPacket pack;
+				pack.SetTargetIndex(owner_->GetIndex());
+				pack.SetAnimationName("BasicAttack_Hit");
+				pack.SetVictimIndex(*opponent);
+				FT::SendPacket(pack);
 
 				atkEffect_->GetAttackRenderer()->SetColor({ 0.8f,0.8f,1.0f });
 				//atkEffect_->GetTransform()->SetWorldPosition(wp);
 				atkEffect_->PlayAwake("Fx_ShootGlowSE_04");
 
-				CharEffectPacket pack;
-				pack.SetTargetIndex(owner_->GetIndex());
-				pack.SetAnimationName("SkillW_Hit");
-				pack.SetVictimIndex(*opponent);
-				FT::SendPacket(pack);
+				//CharEffectPacket pack;
+				//pack.SetTargetIndex(owner_->GetIndex());
+				//pack.SetAnimationName("SkillW_Hit");
+				//pack.SetVictimIndex(*opponent);
+				//FT::SendPacket(pack);
 
 
 				// sound

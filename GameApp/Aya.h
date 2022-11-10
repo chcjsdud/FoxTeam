@@ -77,7 +77,7 @@ private:
 
 	BasicAttackEffect* basicAttackEffect_;
 	BasicAttackEffect* basicHitEffect_;
-
+	BasicAttackEffect* basicHit0Effect_;
 	GameEngineCollision* skillRCol_;
 	GameEngineFBXRenderer* pistolRenderer_;
 

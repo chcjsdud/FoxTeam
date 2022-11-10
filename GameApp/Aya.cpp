@@ -24,6 +24,10 @@ Aya::Aya()
 	, bullet0_(nullptr)
 	, bullet1_(nullptr)
 	, reloadTime_(0.0f)
+	, basicHit0Effect_(nullptr)
+	, basicHitEffect_(nullptr)
+	, eSpectrum_(nullptr)
+	, rEffect_(nullptr)
 {
 
 }
@@ -158,19 +162,23 @@ void Aya::Start()
 	hitBase->Cut(2, 2);
 
 	basicAttackEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
-	basicAttackEffect_->GetAttackRenderer()->SetImage("FX_BI_Shoot_01.png", "PointSmp");
+	basicAttackEffect_->GetAttackRenderer()->SetImage("FX_BI_Shoot_01.png", "LinerSmp");
 	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, 100.0f });
 	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 0.0f, 90.0f,0.0f });
 	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicAttackEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
 	basicAttackEffect_->GetAttackRenderer()->CreateAnimation("FX_BI_Shoot_01.png", "FX_BI_Shoot_01", 0, 3, 0.02f, false);
 
 	basicHitEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
-	basicHitEffect_->GetAttackRenderer()->SetImage("Fx_ShootGlowSE_04.png", "PointSmp");
-	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,50.0f,0.0f });
-	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 90.0f,0.0f,0.0f });
-	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHitEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
-	basicHitEffect_->GetAttackRenderer()->CreateAnimation("Fx_ShootGlowSE_04.png", "Fx_ShootGlowSE_04", 0, 3, 0.03f, false);
+	basicHitEffect_->GetAttackRenderer()->SetImage("ayahit2.png", "LinerSmp");
+	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, -10.0f });
+	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 0.0f, 0.0f,0.0f });
+	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHitEffect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize() * 0.25f);
 
+	basicHit0Effect_ = GetLevel()->CreateActor<BasicAttackEffect>();
+	basicHit0Effect_->GetAttackRenderer()->SetImage("ayahit.png", "LinerSmp");
+	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, -120.0f });
+	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f,0.0f });
+	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHit0Effect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
 
 	eSpectrum_ = GetLevel()->CreateActor<AyaESpectrum>();
 
@@ -918,43 +926,34 @@ void Aya::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 		if (_victim != nullptr)
 		{
 			float4 wp = _victim->GetTransform()->GetWorldPosition();
-			wp.y += 100.0f;
-		//	bullet0_ = level_->CreateActor<AyaBullet>();
-		//	bullet0_->SetDummy();
-		//	bullet0_->GetAttackEffect()->GetTransform()->SetWorldPosition(wp);
+			wp.y -= 50.0f;
+			//	bullet0_ = level_->CreateActor<AyaBullet>();
+			//	bullet0_->SetDummy();
+			//	bullet0_->GetAttackEffect()->GetTransform()->SetWorldPosition(wp);
 			basicHitEffect_->GetAttackRenderer()->SetColor({ 1.0f,1.0f,0.7f });
 			basicHitEffect_->GetTransform()->SetWorldPosition(wp);
-			basicHitEffect_->PlayAwake("Fx_ShootGlowSE_04");
+			basicHitEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+			basicHitEffect_->PlayFade(0.3f);
 		}
-		//bullet0_->GetAttackEffect()->PlayAwake("Fx_ShootGlowSE_04");
 		return;
 	}
 
-	if ("SkillQ_Hit" == _effectName)
+	if ("BasicAttack_Hit0" == _effectName)
 	{
 		if (_victim != nullptr)
 		{
 			float4 wp = _victim->GetTransform()->GetWorldPosition();
-			wp.y += 50.0f;
-			
-		}
+			wp.y -= 50.0f;
 
-		//bullet0_->GetAttackEffect()->GetAttackRenderer()->SetColor({ 0.8f, 0.8f, 1.0f });
+			//	bullet0_ = level_->CreateActor<AyaBullet>();
+			//	bullet0_->SetDummy();
+			//	bullet0_->GetAttackEffect()->GetTransform()->SetWorldPosition(wp);
+			basicHit0Effect_->GetAttackRenderer()->SetColor({ 1.0f,1.0f,0.7f });
+			basicHit0Effect_->GetTransform()->SetWorldPosition(wp);
+			basicHit0Effect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+			basicHit0Effect_->PlayFade(0.3f);
+		}
 		//bullet0_->GetAttackEffect()->PlayAwake("Fx_ShootGlowSE_04");
-		return;
-	}
-
-	if ("SkillW_Hit" == _effectName)
-	{
-		if (_victim != nullptr)
-		{
-			float4 wp = _victim->GetTransform()->GetWorldPosition();
-			wp.y += 50.0f;
-			//bullet0_->GetAttackEffect()->GetTransform()->SetWorldPosition(wp);
-		}
-
-	//bullet0_->GetAttackEffect()->GetAttackRenderer()->SetColor({ 0.8f, 0.8f, 1.0f });
-	//bullet0_->GetAttackEffect()->PlayAwake("Fx_ShootGlowSE_04");
 		return;
 	}
 
