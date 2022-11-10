@@ -496,11 +496,14 @@
     <ClCompile Include="DeathEffect.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\99.CommonEffect</Filter>
     </ClCompile>
-    <ClCompile Include="RioDSkillEffect.cpp">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
-    </ClCompile>
     <ClCompile Include="ItemListWindow.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\ItemBox\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="RioDSkillEffect.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio\DSkillEffects</Filter>
+    </ClCompile>
+    <ClCompile Include="RioDSkillArrow.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio\DSkillEffects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -752,6 +755,9 @@
     </Filter>
     <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Trigger">
       <UniqueIdentifier>{7e5102bd-96bc-45b1-9d7a-b0537ab4d7a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio\DSkillEffects">
+      <UniqueIdentifier>{49efc6c6-7e13-4c63-a772-98e1903910da}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1259,11 +1265,14 @@
     <ClInclude Include="DeathEffect.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\99.CommonEffect</Filter>
     </ClInclude>
-    <ClInclude Include="RioDSkillEffect.h">
-      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio</Filter>
-    </ClInclude>
     <ClInclude Include="ItemListWindow.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\Actor\ItemBox\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="RioDSkillEffect.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio\DSkillEffects</Filter>
+    </ClInclude>
+    <ClInclude Include="RioDSkillArrow.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\Actor\Character\Rio\DSkillEffects</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

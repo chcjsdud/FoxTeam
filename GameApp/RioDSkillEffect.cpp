@@ -81,12 +81,16 @@ void RioDSkillEffect::startSleep()
 	targetRenderer_->Off();
 	zoneRenderer_->SetAlpha(0.0f);
 	impactRenderer_->SetAlpha(0.0f);
+	impactScaleContainer_ = { 0.0f, 0.0f };
+	impactRenderer_->GetTransform()->SetLocalScaling(impactOriginalScale_);
+	targetScaleContainer_ = { 0.0f, 0.0f };
+	targetRenderer_->GetTransform()->SetLocalScaling(targetOriginalScale_);
 
 }
 
 void RioDSkillEffect::updateSleep(float _deltaTime)
 {
-	Release();
+
 }
 
 void RioDSkillEffect::startAwake()
@@ -121,10 +125,9 @@ void RioDSkillEffect::startShot()
 
 void RioDSkillEffect::updateShot(float _deltaTime)
 {
-	impactScaleContainer_ += {360.0f * _deltaTime, 360.0f * _deltaTime};
-	impactRenderer_->GetTransform()->SetLocalScaling(impactOriginalScale_ + impactScaleContainer_);
-
-	impactRenderer_->SetAlpha(shotTimer_ / 0.3f);
+	targetScaleContainer_ += {360.0f * _deltaTime, 360.0f * _deltaTime};
+	targetRenderer_->GetTransform()->SetLocalScaling(impactOriginalScale_ + impactScaleContainer_);
+	targetRenderer_->SetAlpha(shotTimer_ / 0.3f);
 
 	shotTimer_ -= _deltaTime;
 

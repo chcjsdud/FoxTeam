@@ -3,6 +3,7 @@
 #include <GameEngine/GameEngineFSM.h>
 #include "IUnit.h"
 
+class RioDSkillArrow;
 class GameEngineEffectRenderer;
 class RioDSkillEffect : public GameEngineActor
 {
@@ -38,6 +39,8 @@ private:
 	GameEngineEffectRenderer* impactRenderer_;
 	GameEngineEffectRenderer* targetRenderer_;
 	GameEngineCollision* collision_;
+	std::vector<RioDSkillArrow*> arrowList_;
+	
 
 private:
 	float timer_;
