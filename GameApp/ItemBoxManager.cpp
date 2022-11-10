@@ -184,34 +184,24 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 
 	for (size_t i = 0; i < _amount; i++)
 	{
-		// std::vector<ItemBox*>
-		randomValue = randomManager_.RandomInt(0, static_cast<int>(iter->second.size()) - 1);
-
-		std::list<ItemBase*>& curList = iter->second[randomValue]->itemList;
-
-		bool SameItem = false;
-
-		for (const auto& item : curList)
-		{
-			if (item->GetName() == _item)
-			{
-				SameItem = true;
-				break;
-			}
-		}
+		bool Check = false;
 
 		int Count = 0;
 
-		while (SameItem)
+		do
 		{
+			Check = false;
 			randomValue = randomManager_.RandomInt(0, static_cast<int>(iter->second.size()) - 1);
 
-			curList = iter->second[randomValue]->itemList;
+			if (true == iter->second[randomValue]->IsGatherBox())
+			{
+				continue;
+			}
 
-			bool Check = false;
+			std::list<ItemBase*>& curList = iter->second[randomValue]->itemList;
 
 			// 아이템 최대 갯수
-			if (curList.size() > 6)
+			if (curList.size() >= 6)
 			{
 				Check = true;
 			}
@@ -227,26 +217,19 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 				}
 			}
 
-			if (false == Check)
-			{
-				SameItem = false;
-				Count;
-
-				int a = 0;
-			}
-
 			++Count;
 
 			if (Count > 100000)
 			{
-				GameEngineDebug::MsgBox("if (Count > 100000)");
+				GameEngineDebug::MsgBoxError("if (Count > 100000)");
 			}
-		}
 
-		if (false == SameItem)
-		{
-			curList.push_back(findItem->Copy());
-		}
+			if (false == Check)
+			{
+				curList.push_back(findItem->Copy());
+			}
+
+		} while (Check);
 	}
 
 }

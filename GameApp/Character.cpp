@@ -710,19 +710,6 @@ void Character::checkItemBox()
 				break;
 			}
 		}
-
-		if (true == GameEngineInput::GetInst().Down("1"))
-		{
-			getItem(0);
-		}
-		if (true == GameEngineInput::GetInst().Down("2"))
-		{
-			getItem(1);
-		}
-		if (true == GameEngineInput::GetInst().Down("3"))
-		{
-			getItem(2);
-		}
 	}
 
 	// Player와 SelectBox가 서로 충돌상태인지를 체크
