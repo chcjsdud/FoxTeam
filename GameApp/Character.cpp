@@ -1138,6 +1138,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 	}
 
 	stat_.HP -= _Amount;
+	charStat_.HP = stat_.HP;
 
 	if (stat_.HP <= 0.f && false == isPlayerDead_)
 	{
