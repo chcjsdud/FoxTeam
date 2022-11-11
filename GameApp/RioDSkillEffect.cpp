@@ -1,6 +1,7 @@
 #include "PreCompile.h"
 #include "RioDSkillEffect.h"
 #include <GameEngine/GameEngineEffectRenderer.h>
+#include "RioDSkillArrow.h"
 
 RioDSkillEffect::RioDSkillEffect() // default constructer 디폴트 생성자
 	: zoneRenderer_(nullptr), impactRenderer_(nullptr), collision_(nullptr), timer_(0.0f), rotationContainer_(0.0f), impactOriginalScale_({0.0f,0.0f})
@@ -56,12 +57,11 @@ void RioDSkillEffect::Start()
 	targetRenderer_->SetAlpha(0.0f);
 	targetRenderer_->Off();
 
-	//collision_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	//collision_->GetTransform()->SetLocalPosition({ 0.f,0.f,0.f });
-	//collision_->GetTransform()->SetLocalScaling({ 450.0f, 450.0f, 450.0f });
-	//collision_->SetCollisionGroup(eCollisionGroup::PlayerAttack);
-	//collision_->SetCollisionType(CollisionType::CirCle);
-	//collision_->Off();
+	for (int i = 0; i < 30; i++)
+	{
+		RioDSkillArrow* arrow = GetLevel()->CreateActor<RioDSkillArrow>();
+		arrowList_.push_back(arrow);
+	}
 
 	renderState_.CreateState(MakeState(RioDSkillEffect, Sleep));
 	renderState_.CreateState(MakeState(RioDSkillEffect, Awake));
@@ -121,6 +121,13 @@ void RioDSkillEffect::startShot()
 {
 	targetRenderer_->On();
 	shotTimer_ = 0.3f;
+
+	for (int i = 0; i < 30; i++)
+	{
+		arrowList_[i]->GetTransform()->SetWorldPosition(zoneRenderer_->GetTransform()->GetWorldPosition());
+	//	arrowList_[i]->PlayAwake(300.0f, {0.0f, 0.0f, 0.0f});
+		arrowList_[i]->PlayAwake(random_.RandomFloat(6400.0f, 7200.0f), { random_.RandomFloat(-35.f, 35.f) , 3000.0f, random_.RandomFloat(-35.f, 35.f) });
+	}
 }
 
 void RioDSkillEffect::updateShot(float _deltaTime)

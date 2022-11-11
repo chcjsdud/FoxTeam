@@ -13,6 +13,7 @@
 #include "eProjectileType.h"
 #include "RioDSkill.h"
 #include "BasicAttackEffect.h"
+#include "RioDSkillArrow.h"
 #include "RioWSkillWind.h"
 
 Rio::Rio()
@@ -934,6 +935,7 @@ void Rio::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 
 void Rio::onEffectTransformCheck(float _deltaTime)
 {
+
 }
 
 void Rio::onLevelUp()

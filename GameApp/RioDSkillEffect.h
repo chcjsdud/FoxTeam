@@ -1,6 +1,7 @@
 #pragma once
 #include <GameEngine/GameEngineActor.h>
 #include <GameEngine/GameEngineFSM.h>
+#include <GameEngineBase/GameEngineRandom.h>
 #include "IUnit.h"
 
 class RioDSkillArrow;
@@ -52,5 +53,7 @@ private:
 	float4 targetOriginalScale_;
 
 	float shotTimer_;
+	GameEngineRandom random_;
 };
+
 
