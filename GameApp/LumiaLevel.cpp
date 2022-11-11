@@ -1556,6 +1556,8 @@ LumiaLevel::LumiaLevel()
 	, MainLight_(nullptr)
 	, DebugAndControlWindow_(nullptr)
 	, MonsterDebugWindow_(nullptr)
+	, ItemListWindow_(nullptr)
+	, SurvivorCount_(0)
 {
 }
 
