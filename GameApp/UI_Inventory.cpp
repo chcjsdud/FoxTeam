@@ -461,11 +461,17 @@ void UI_Inventory::ItemRenderCheck()
 
 void UI_Inventory::GetInventoryInfo(vector<ItemBase*> _ItemVector)
 {
-	vector<ItemBase*>::iterator listiter = _ItemVector.begin();
+	vector<ItemBase*>::iterator iter = _ItemVector.begin();
 
-	for (listiter = _ItemVector.begin(); listiter != _ItemVector.end(); listiter++)
+	int index = 0;
+
+	for (iter = _ItemVector.begin(); iter != _ItemVector.end(); iter++)
 	{
-		PushItem(*listiter);
+		if (nullptr != _ItemVector[index])
+		{
+			PushItem(*iter, index);
+		}
+		++index;
 	}
 
 	return;
@@ -477,7 +483,16 @@ void UI_Inventory::PushItem(ItemBase* _OriginItemBase, int _SlotNumber)
 	{
 	case 0:
 	{
-		EmptySlotReturn(_OriginItemBase);
+		if (Slot0_Item == nullptr)
+		{
+			Slot0_Item = _OriginItemBase->Copy();
+			return;
+		}
+		else
+		{
+			GameEngineDebug::MsgBoxError("이미 세팅된 슬롯에 아이템을 세팅하려 했습니다");
+			return;
+		}
 		return;
 	}
 	break;
