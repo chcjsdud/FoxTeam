@@ -2005,7 +2005,7 @@ void Character::inputProcess(float _deltaTime)
 
 	bool result = false;
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
-	if (GameEngineInput::Press("LButton") || GameEngineInput::Down("LButton"))
+	if (GameEngineInput::Press("RButton") || GameEngineInput::Down("RButton"))
 	{
 
 		IUnit* otherCharacter = getMousePickedCharacter();
@@ -2031,7 +2031,7 @@ void Character::inputProcess(float _deltaTime)
 		}
 
 	}
-	else if (GameEngineInput::Up("LButton"))
+	else if (GameEngineInput::Up("RButton"))
 	{
 		bool result = false;
 		result = currentMap_->GetNavMesh()->GetIntersectionPointFromMouseRay(destination_);
@@ -2705,7 +2705,7 @@ void Character::updateBasicAttack(float _deltaTime)
 
 		bool result = false;
 		float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
-		if (GameEngineInput::Press("LButton") || GameEngineInput::Down("LButton"))
+		if (GameEngineInput::Press("RButton") || GameEngineInput::Down("RButton"))
 		{
 
 			IUnit* otherCharacter = getMousePickedCharacter();
