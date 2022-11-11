@@ -44,6 +44,16 @@ void MousePointer::GrabItem(ItemBase* _item, GameEngineUIRenderer* _icon)
 	itemIconRenderer_->SetImage(_icon->GetName());
 	itemIconRenderer_->GetTransform()->SetLocalScaling(_icon->GetTransform()->GetLocalScaling());
 	itemIconRenderer_->On();
+
+	isGrabbed_ = true;
+}
+
+ItemBase* MousePointer::PutItem()
+{
+	itemIconRenderer_->Off();
+	isGrabbed_ = false;
+
+	return item_;
 }
 
 void MousePointer::updateMouseRay()
@@ -314,6 +324,7 @@ MousePointer::MousePointer()
 	, MouseCollider_(nullptr)
 	, PrevColCharacter_(nullptr)
 	, PrevColMonster_(nullptr)
+	, isGrabbed_(false)
 	, item_(nullptr)
 	, itemIconRenderer_(nullptr)
 {

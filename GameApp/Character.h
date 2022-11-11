@@ -235,6 +235,8 @@ private:
 
 	void useRecoveryItem(UseableItem* _item);	// 아이템을 사용
 	void updateRecoveryItem(float _deltaTime);	// 실제로 회복시키는 부분 1초에 한번씩 나눠서 회복
+	void mouseGrabItem();
+	void mousePutItem();
 
 	void updateFOW(float _deltaTime);
 	void getFOWData(std::vector<float4>& _data, bool& _bCalc);
@@ -434,6 +436,7 @@ protected:
 	ItemBoxManager* itemBoxmanager_;
 	std::vector<ItemBase*> inventory_;	// 10칸
 	std::list<QueueItem> queueItemMixing_;
+	int prevInventoryItemPos_;
 
 	std::vector<EquipmentItem*> equipedItem_;
 	std::vector<EquipmentItem*>	equipBuildItem_;	// 부위별 최종 장비 아이템

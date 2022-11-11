@@ -75,6 +75,7 @@ private:
 	ItemBase* Slot8_Item;
 	ItemBase* Slot9_Item;
 
+	vector<GameEngineCollision*> SlotCollisions;
 	GameEngineCollision* Slot0Collision;
 	GameEngineCollision* Slot1Collision;
 	GameEngineCollision* Slot2Collision;

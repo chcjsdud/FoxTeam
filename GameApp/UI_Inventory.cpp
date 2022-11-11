@@ -144,6 +144,17 @@ void UI_Inventory::Start()
 	IconRenderers.push_back(Slot7_IconRenderer);
 	IconRenderers.push_back(Slot8_IconRenderer);
 	IconRenderers.push_back(Slot9_IconRenderer);
+
+	SlotCollisions.push_back(Slot0Collision);
+	SlotCollisions.push_back(Slot1Collision);
+	SlotCollisions.push_back(Slot2Collision);
+	SlotCollisions.push_back(Slot3Collision);
+	SlotCollisions.push_back(Slot4Collision);
+	SlotCollisions.push_back(Slot5Collision);
+	SlotCollisions.push_back(Slot6Collision);
+	SlotCollisions.push_back(Slot7Collision);
+	SlotCollisions.push_back(Slot8Collision);
+	SlotCollisions.push_back(Slot9Collision);
 }
 
 void UI_Inventory::Update(float _Time)

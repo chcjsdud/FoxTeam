@@ -1002,7 +1002,7 @@ void Character::checkBuildItemsRecursive(ItemBase* _item)
 
 void Character::checkInventoryInteraction()
 {
-	//checkInventoryInteractionLBtn();
+	checkInventoryInteractionLBtn();
 	checkInventoryInteractionRBtn();
 	checkInventoryInteractionKey();
 }
@@ -1013,27 +1013,15 @@ void Character::checkInventoryInteractionLBtn()
 	{
 		return;
 	}
-
-	UI_Inventory* inven = uiController_->GetInventoryUI();
-
-	int SlotNum = inven->SlotMouseCollisionCheck();
-
-	if (-1 == SlotNum)
+	
+	if (false == mouse_->isGrabbed())
 	{
-		return;
+		mouseGrabItem();
 	}
-
-	if (nullptr == inventory_[SlotNum])
+	else
 	{
-		return;
+		mousePutItem();
 	}
-
-	mouse_->GrabItem(inventory_[SlotNum], inven->GetIconRenderers()[SlotNum]);
-
-	inventory_[SlotNum] = nullptr;
-
-	inven->EmptySlot();
-	inven->GetInventoryInfo(inventory_);
 }
 
 void Character::checkInventoryInteractionRBtn()
@@ -1237,6 +1225,57 @@ void Character::updateRecoveryItem(float _deltaTime)
 		}
 		charStat_.SP = stat_.SP;
 	}
+}
+
+void Character::mouseGrabItem()
+{
+	UI_Inventory* inven = uiController_->GetInventoryUI();
+
+	int SlotNum = inven->SlotMouseCollisionCheck();
+
+	if (-1 == SlotNum)
+	{
+		return;
+	}
+
+	if (nullptr == inventory_[SlotNum])
+	{
+		return;
+	}
+
+	prevInventoryItemPos_ = SlotNum;
+	mouse_->GrabItem(inventory_[SlotNum], inven->GetIconRenderers()[SlotNum]);
+
+	inventory_[SlotNum] = nullptr;
+
+	inven->EmptySlot();
+	inven->GetInventoryInfo(inventory_);
+}
+
+void Character::mousePutItem()
+{
+	UI_Inventory* inven = uiController_->GetInventoryUI();
+
+	int SlotNum = inven->SlotMouseCollisionCheck();
+
+	if (-1 == SlotNum)
+	{
+		mouse_->PutItem();
+		return;
+	}
+
+	if (nullptr == inventory_[SlotNum])
+	{
+		inventory_[SlotNum] = mouse_->PutItem();
+	}
+	else
+	{
+		inventory_[prevInventoryItemPos_] = inventory_[SlotNum];
+		inventory_[SlotNum] = mouse_->PutItem();
+	}
+
+	inven->EmptySlot();
+	inven->GetInventoryInfo(inventory_);
 }
 
 IUnit* Character::getMousePickedCharacter()

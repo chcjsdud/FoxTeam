@@ -30,11 +30,18 @@ public: // Inline Get Function
 		return rayCollision_;
 	}
 
+	inline bool isGrabbed()
+	{
+		return isGrabbed_;
+	}
+
 public: // Public Function
 	float4 GetIntersectionYAxisPlane(float _height, float _rayLength);
 	GameEngineCollision* GetPickCollision(int _Order);
 
 	void GrabItem(ItemBase* _item, GameEngineUIRenderer* _icon);
+
+	ItemBase* PutItem();
 
 private:
 	void updateMouseRay();
@@ -62,12 +69,6 @@ private:
 	MousePointer& operator=(const MousePointer& _other) = delete;
 	MousePointer& operator=(const MousePointer&& _other) = delete;
 
-public: // Grabbed Item
-	//bool isGrabbed_;
-
-	ItemBase* item_;
-	GameEngineUIRenderer* itemIconRenderer_;
-
 private: // Ray(InGame)
 	float4 rayDirection_;
 	float4 rayOrigin_;
@@ -81,6 +82,10 @@ private: // Object That Collided with the Previous Ray
 	Character* PrevColCharacter_;
 	Monsters* PrevColMonster_;
 
+private: // Grabbed Item
+	bool isGrabbed_;
+	ItemBase* item_;
+	GameEngineUIRenderer* itemIconRenderer_;
 
 };
 
