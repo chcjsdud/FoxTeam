@@ -1612,6 +1612,8 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 	// 몬스터 목록의 트랜스폼 데이터 갱신
 	MonstersTransformUpdate();
 
+	// 메인캐릭터 기준 시야처리
+	// -> Rendering On/Off Processing
 	UpdateCharacterVisibility();
 
 	// Switching FreeCamMode

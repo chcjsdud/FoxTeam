@@ -225,10 +225,6 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSet(const std::string& _Value, std::
 				{
 					RenderSetData.BoneData.resize(FBXMesh->GetBoneCount(VertexBufferIndex));
 				}
-
-				const LightsData& LightData = GetLevel()->GetMainCamera()->GetLightData();
-				// 15개가 동일하게 공유하는데 맵 언맵
-				// 음? 1번만 해도 되는걸 15번을 하게 될것이다.
 				RenderSetData.ShaderHelper->SettingStructuredBufferSetting("ArrAniMationMatrix", FBXMesh->GetAnimationBuffer(VertexBufferIndex));
 				RenderSetData.ShaderHelper->SettingStructuredBufferLink("ArrAniMationMatrix", &RenderSetData.BoneData[0], sizeof(float4x4) * RenderSetData.BoneData.size());
 
@@ -371,8 +367,6 @@ void GameEngineFBXRenderer::SetFBXMeshRenderSetChar(const std::string& _Value, s
 				{
 					RenderSetData.BoneData.resize(FBXMesh->GetBoneCount(VertexBufferIndex));
 				}
-
-				const LightsData& LightData = GetLevel()->GetMainCamera()->GetLightData();
 				RenderSetData.ShaderHelper->SettingStructuredBufferSetting("ArrAniMationMatrix", FBXMesh->GetAnimationBuffer(VertexBufferIndex));
 				RenderSetData.ShaderHelper->SettingStructuredBufferLink("ArrAniMationMatrix", &RenderSetData.BoneData[0], sizeof(float4x4) * RenderSetData.BoneData.size());
 
