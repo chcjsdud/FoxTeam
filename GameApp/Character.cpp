@@ -862,7 +862,6 @@ void Character::mixingItem()
 
 		if (invenItem == itemNames.left_)
 		{
-			invenItem->Release();
 			invenItem = nullptr;
 			break;
 		}
@@ -877,7 +876,6 @@ void Character::mixingItem()
 
 		if (invenItem == itemNames.right_)
 		{
-			invenItem->Release();
 			invenItem = nullptr;
 			break;
 		}
@@ -894,7 +892,6 @@ void Character::mixingItem()
 
 		if (equipedItem == itemNames.left_)
 		{
-			equipedItem->Release();
 			equipedItem = nullptr;
 			isEquiped = true;
 			break;
@@ -910,7 +907,6 @@ void Character::mixingItem()
 
 		if (equipedItem == itemNames.right_)
 		{
-			equipedItem->Release();
 			equipedItem = nullptr;
 			isEquiped = true;
 			break;
@@ -919,7 +915,7 @@ void Character::mixingItem()
 
 	if (true == isEquiped)
 	{
-		getEquipItem(reinterpret_cast<EquipmentItem*>(iter->second->Copy()));
+		getEquipItem(reinterpret_cast<EquipmentItem*>(iter->second));
 
 		uiController_->GetInventoryUI()->EmptySlot();
 		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
@@ -939,7 +935,7 @@ void Character::mixingItem()
 			continue;
 		}
 
-		invenItem = iter->second->Copy();
+		invenItem = iter->second;
 		uiController_->GetInventoryUI()->EmptySlot();
 		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 		break;
@@ -970,7 +966,7 @@ void Character::SetEquipBuildItem(const std::string& _itemName, EquipmentType _t
 {
 	equipBuildItem_[static_cast<int>(_type)] = reinterpret_cast<EquipmentItem*>
 		(itemBoxmanager_->GetItemFromItemList(_itemName));
-	allMyBuildItems_.push_back(itemBoxmanager_->GetItemFromItemList(_itemName)->Copy());
+	allMyBuildItems_.push_back(itemBoxmanager_->GetItemFromItemList(_itemName));
 }
 
 void Character::checkBuildItems()
@@ -991,8 +987,8 @@ void Character::checkBuildItemsRecursive(ItemBase* _item)
 	{
 		if (iter.second->GetName() == _item->GetName())
 		{
-			allMyBuildItems_.push_back(iter.first.left_->Copy());
-			allMyBuildItems_.push_back(iter.first.right_->Copy());
+			allMyBuildItems_.push_back(iter.first.left_);
+			allMyBuildItems_.push_back(iter.first.right_);
 
 			checkBuildItemsRecursive(iter.first.left_);
 			checkBuildItemsRecursive(iter.first.right_);
@@ -1261,6 +1257,7 @@ void Character::mousePutItem()
 	if (-1 == SlotNum)
 	{
 		mouse_->PutItem();
+		checkItemRecipes();
 		return;
 	}
 
