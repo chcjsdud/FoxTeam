@@ -118,12 +118,12 @@ void UI_Equip::Update(float _Time)
 		else
 		{
 			Renderer->On();
-			GetLevel()->PushDebugRenderUI(Slot0Collision->GetTransform(), CollisionType::Rect);
-			GetLevel()->PushDebugRenderUI(Slot1Collision->GetTransform(), CollisionType::Rect);
-			GetLevel()->PushDebugRenderUI(Slot2Collision->GetTransform(), CollisionType::Rect);
-			GetLevel()->PushDebugRenderUI(Slot3Collision->GetTransform(), CollisionType::Rect);
-			GetLevel()->PushDebugRenderUI(Slot4Collision->GetTransform(), CollisionType::Rect);
-			GetLevel()->PushDebugRenderUI(Slot5Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot0Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot1Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot2Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot3Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot4Collision->GetTransform(), CollisionType::Rect);
+			//GetLevel()->PushDebugRenderUI(Slot5Collision->GetTransform(), CollisionType::Rect);
 		}
 	}
 
