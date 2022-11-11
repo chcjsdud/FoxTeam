@@ -7,9 +7,16 @@
 #include "CharacterStat.h"
 #include "IUnit.h"
 #include "LevelUPData.h"
+#include "UseableItem.h"
 
 struct CombineItem;
 struct QueueItem;
+struct RecoveryItem
+{
+public:
+	UseableItemType Type;
+	float RecoveryValue;
+};
 
 // 이터널 리턴에 나오는 실험체의 베이스가 되는 클래스
 class StunEffect;
@@ -220,6 +227,14 @@ private:
 	void mixingItem();
 	void gatherItem();
 	void checkBuildItemsRecursive(ItemBase* _item);
+
+	void checkInventoryInteraction();
+	void checkInventoryInteractionMouse();
+	void checkInventoryInteractionKey();
+
+	void useRecoveryItem(UseableItem* _item);	// 아이템을 사용
+	void updateRecoveryItem(float _deltaTime);	// 실제로 회복시키는 부분 1초에 한번씩 나눠서 회복
+
 	void updateFOW(float _deltaTime);
 	void getFOWData(std::vector<float4>& _data, bool& _bCalc);
 
@@ -422,6 +437,9 @@ protected:
 	std::vector<EquipmentItem*> equipedItem_;
 	std::vector<EquipmentItem*>	equipBuildItem_;	// 부위별 최종 장비 아이템
 	std::list<ItemBase*>		allMyBuildItems_;	// 아이템을 완성하기 위한 모든 재료
+
+	std::list<RecoveryItem> queueRecoveryItem_;		// HP, SP 회복관련
+	float recoveryTimeCheck_;
 
 	// 캐릭터 상태, 능력치
 	CharacterStat stat_;		// 장비아이템까지 합산된 최종능력치

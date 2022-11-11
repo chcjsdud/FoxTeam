@@ -105,6 +105,7 @@ Character::Character()
 	, curLocation_(Location::NONE)
 	, hyperLocation_(Location::NONE)
 	, isPlayerWon_(false)
+	, recoveryTimeCheck_(0.0f)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -288,6 +289,7 @@ void Character::Update(float _DeltaTime)
 	ProhibitedAreaCheck(_DeltaTime);
 	checkCurrentNavFace();
 	checkItemBox();
+	checkInventoryInteraction();
 
 	if (true == isInfight_)
 	{
@@ -336,6 +338,7 @@ void Character::Update(float _DeltaTime)
 	}
 
 	updateFOW(_DeltaTime);
+	updateRecoveryItem(_DeltaTime);
 	updateFinalStat();
 }
 
@@ -997,6 +1000,215 @@ void Character::checkBuildItemsRecursive(ItemBase* _item)
 	}
 }
 
+void Character::checkInventoryInteraction()
+{
+	checkInventoryInteractionMouse();
+	checkInventoryInteractionKey();
+}
+
+void Character::checkInventoryInteractionMouse()
+{
+	if (false == GameEngineInput::GetInst().Down("RButton"))
+	{
+		return;
+	}
+
+	int SlotNum = uiController_->GetInventoryUI()->SlotMouseCollisionCheck();
+
+	if (-1 == SlotNum)
+	{
+		return;
+	}
+
+	if (nullptr == inventory_[SlotNum])
+	{
+		return;
+	}
+
+	EquipmentItem* equip = nullptr;
+	UseableItem* use = nullptr;
+
+	switch (inventory_[SlotNum]->GetItemType())
+	{
+	case ItemType::EQUIPMENT:
+		equip = reinterpret_cast<EquipmentItem*>(inventory_[SlotNum]);
+		break;
+	case ItemType::USEABLE:
+		use = reinterpret_cast<UseableItem*>(inventory_[SlotNum]);
+		break;
+	default:
+		break;
+	}
+
+	if (nullptr != equip)
+	{
+		EquipmentItem* tmp = equipedItem_[static_cast<size_t>(equip->GetEquipType())];
+
+		equipedItem_[static_cast<size_t>(equip->GetEquipType())] = equip;
+
+		uiController_->GetEquipUI()->EmptySlot();
+		uiController_->GetEquipUI()->GetEquipInfo(equipedItem_);
+
+		inventory_[SlotNum] = nullptr;
+
+		for (auto& invenItem : inventory_)
+		{
+			if (nullptr != invenItem)
+			{
+				continue;
+			}
+
+			invenItem = tmp;
+
+			uiController_->GetInventoryUI()->EmptySlot();
+			uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+			break;
+		}
+
+		return;
+	}
+
+	if (nullptr != use)
+	{
+		useRecoveryItem(use);
+
+		inventory_[SlotNum] = nullptr;
+
+		uiController_->GetInventoryUI()->EmptySlot();
+		uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+	}
+}
+
+void Character::checkInventoryInteractionKey()
+{
+	for (int SlotNum = 0; SlotNum < 10; SlotNum++)
+	{
+		if (9 != SlotNum)
+		{
+			if (false == GameEngineInput::GetInst().Down(std::to_string(SlotNum + 1)))
+			{
+				return;
+			}
+		}
+		else
+		{
+			if (false == GameEngineInput::GetInst().Down("0"))
+			{
+				return;
+			}
+		}
+
+		if (nullptr == inventory_[SlotNum])
+		{
+			return;
+		}
+
+		EquipmentItem* equip = nullptr;
+		UseableItem* use = nullptr;
+
+		switch (inventory_[SlotNum]->GetItemType())
+		{
+		case ItemType::EQUIPMENT:
+			equip = reinterpret_cast<EquipmentItem*>(inventory_[SlotNum]);
+			break;
+		case ItemType::USEABLE:
+			use = reinterpret_cast<UseableItem*>(inventory_[SlotNum]);
+			break;
+		default:
+			break;
+		}
+
+		if (nullptr != equip)
+		{
+			EquipmentItem* tmp = equipedItem_[static_cast<size_t>(equip->GetEquipType())];
+
+			equipedItem_[static_cast<size_t>(equip->GetEquipType())] = equip;
+
+			uiController_->GetEquipUI()->EmptySlot();
+			uiController_->GetEquipUI()->GetEquipInfo(equipedItem_);
+
+			inventory_[SlotNum] = nullptr;
+
+			for (auto& invenItem : inventory_)
+			{
+				if (nullptr != invenItem)
+				{
+					continue;
+				}
+
+				invenItem = tmp;
+
+				uiController_->GetInventoryUI()->EmptySlot();
+				uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+				break;
+			}
+			return;
+		}
+
+		if (nullptr != use)
+		{
+			useRecoveryItem(use);
+
+			inventory_[SlotNum] = nullptr;
+
+			uiController_->GetInventoryUI()->EmptySlot();
+			uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
+		}
+	}
+}
+
+void Character::useRecoveryItem(UseableItem* _item)
+{
+	RecoveryItem RI = {};
+
+	RI.Type = _item->RegenType_;
+	RI.RecoveryValue = _item->RegenValue_ / _item->RegenTime_;
+
+	for (int i = 0; i < static_cast<int>(_item->RegenTime_); i++)
+	{
+		queueRecoveryItem_.push_back(RI);
+	}
+}
+
+void Character::updateRecoveryItem(float _deltaTime)
+{
+	if (queueRecoveryItem_.empty())
+	{
+		return;
+	}
+
+	recoveryTimeCheck_ += _deltaTime;
+
+	if (1.0f > recoveryTimeCheck_)
+	{
+		return;
+	}
+
+	recoveryTimeCheck_ = 0.0f;
+
+	RecoveryItem RI = queueRecoveryItem_.front();
+	queueRecoveryItem_.pop_front();
+
+	if (UseableItemType::HP == RI.Type)
+	{
+		stat_.HP += RI.RecoveryValue;
+		if (stat_.HP >= stat_.HPMax)
+		{
+			stat_.HP = stat_.HPMax;
+		}
+		charStat_.HP = stat_.HP;
+	}
+	else if (UseableItemType::SP == RI.Type)
+	{
+		stat_.SP += RI.RecoveryValue;
+		if (stat_.SP >= stat_.SPMax)
+		{
+			stat_.SP = stat_.SPMax;
+		}
+		charStat_.SP = stat_.SP;
+	}
+}
+
 IUnit* Character::getMousePickedCharacter()
 {
 	{
@@ -1585,12 +1797,12 @@ void Character::updateFOW(float _deltaTime)
 	if (dayType == DayAndNightType::DAY)
 	{
 		stat_.VisionRange = FT::Char::DEFAULT_VISION_RANGE_DAY;
-		charStat_ = stat_;
+		charStat_.VisionRange = stat_.VisionRange;
 	}
 	else if (dayType == DayAndNightType::NIGHT)
 	{
 		stat_.VisionRange = FT::Char::DEFAULT_VISION_RANGE_NIGHT;
-		charStat_ = stat_;
+		charStat_.VisionRange = stat_.VisionRange;
 	}
 
 	if (bFocused_)

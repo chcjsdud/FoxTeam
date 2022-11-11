@@ -60,8 +60,6 @@ void UI_ItemBox::Start()
 	BoxtypeFont_Renderer->Off();
 
 	{
-		//마우스와의 충돌을 위해서 aabbbox3d로 충돌
-
 		Slot0Collision = CreateTransformComponent<GameEngineCollision>();
 		Slot0Collision->GetTransform()->SetLocalPosition(BasicSlotPos);
 		Slot0Collision->GetTransform()->SetLocalScaling(SlotSize);

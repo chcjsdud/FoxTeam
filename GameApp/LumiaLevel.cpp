@@ -581,7 +581,7 @@ void LumiaLevel::CreateLevelInput()
 		GameEngineInput::GetInst().CreateKey("Esc", VK_ESCAPE);
 	}
 
-	// ItemBox Related Key
+	// Inventory Related Key
 	if (false == GameEngineInput::GetInst().IsKey("1"))
 	{
 		GameEngineInput::GetInst().CreateKey("1", '1');
@@ -595,6 +595,41 @@ void LumiaLevel::CreateLevelInput()
 	if (false == GameEngineInput::GetInst().IsKey("3"))
 	{
 		GameEngineInput::GetInst().CreateKey("3", '3');
+	}
+	
+	if (false == GameEngineInput::GetInst().IsKey("4"))
+	{
+		GameEngineInput::GetInst().CreateKey("4", '4');
+	}
+	
+	if (false == GameEngineInput::GetInst().IsKey("5"))
+	{
+		GameEngineInput::GetInst().CreateKey("5", '5');
+	}
+	
+	if (false == GameEngineInput::GetInst().IsKey("6"))
+	{
+		GameEngineInput::GetInst().CreateKey("6", '6');
+	}
+	
+	if (false == GameEngineInput::GetInst().IsKey("7"))
+	{
+		GameEngineInput::GetInst().CreateKey("7", '7');
+	}
+	
+	if (false == GameEngineInput::GetInst().IsKey("8"))
+	{
+		GameEngineInput::GetInst().CreateKey("8", '8');
+	}
+	
+	if (false == GameEngineInput::GetInst().IsKey("9"))
+	{
+		GameEngineInput::GetInst().CreateKey("9", '9');
+	}
+	
+	if (false == GameEngineInput::GetInst().IsKey("0"))
+	{
+		GameEngineInput::GetInst().CreateKey("0", '0');
 	}
 
 	// Monster Related Key

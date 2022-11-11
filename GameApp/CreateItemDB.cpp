@@ -363,23 +363,32 @@ void ItemBoxManager::CreateUseableItemList()
 	// Beverage À½·á
 	// Common 
 	item = CreateUseableItem("Honey", "ItemIcon_101101.png");
-	item->SPRegen_ = 250.0f;
+	item->RegenType_ = UseableItemType::SP;
+	item->RegenValue_ = 250.0f;
 	item = CreateUseableItem("Water", "ItemIcon_101101.png");
-	item->SPRegen_ = 225.0f;
+	item->RegenType_ = UseableItemType::SP;
+	item->RegenValue_ = 225.0f;
 	item = CreateUseableItem("Ice", "ItemIcon_101101.png");
-	item->SPRegen_ = 200.0f;
+	item->RegenType_ = UseableItemType::SP;
+	item->RegenValue_ = 200.0f;
 	item = CreateUseableItem("Whiskey", "ItemIcon_101101.png");
-	item->SPRegen_ = 450.0f;
+	item->RegenType_ = UseableItemType::SP;
+	item->RegenValue_ = 450.0f;
 	item = CreateUseableItem("Coffee", "ItemIcon_101101.png");
-	item->SPRegen_ = 380.0f;
+	item->RegenType_ = UseableItemType::SP;
+	item->RegenValue_ = 380.0f;
 	item = CreateUseableItem("CarbonatedWater", "ItemIcon_101101.png");
-	item->SPRegen_ = 380.0f;
+	item->RegenType_ = UseableItemType::SP;
+	item->RegenValue_ = 380.0f;
 	item = CreateUseableItem("Milk", "ItemIcon_101101.png");
-	item->SPRegen_ = 200.0f;
+	item->RegenType_ = UseableItemType::SP;
+	item->RegenValue_ = 200.0f;
 	item = CreateUseableItem("Baijiu", "ItemIcon_101101.png", ItemTier::UNCOMMON);
-	item->SPRegen_ = 400.0f;
+	item->RegenType_ = UseableItemType::SP;
+	item->RegenValue_ = 400.0f;
 	item = CreateUseableItem("FlowerLiquor", "ItemIcon_101101.png", ItemTier::RARE);
-	item->SPRegen_ = 750.0f;
+	item->RegenType_ = UseableItemType::SP;
+	item->RegenValue_ = 750.0f;
 
 }
 

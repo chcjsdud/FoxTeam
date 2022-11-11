@@ -11,6 +11,7 @@ enum class UseableItemType
 class UseableItem : public ItemBase
 {
 	friend class ItemBoxManager;
+	friend class Character;
 public:
 	UseableItem();
 	~UseableItem();
@@ -25,10 +26,9 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
-	UseableItemType Type;
+	UseableItemType RegenType_;
 
-	float HPRegen_;
-	float SPRegen_;
+	float RegenValue_;
 	float RegenTime_;
 };
 
