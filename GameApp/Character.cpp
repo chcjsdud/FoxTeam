@@ -1002,7 +1002,7 @@ void Character::checkBuildItemsRecursive(ItemBase* _item)
 
 void Character::checkInventoryInteraction()
 {
-	checkInventoryInteractionLBtn();
+	//checkInventoryInteractionLBtn();
 	checkInventoryInteractionRBtn();
 	checkInventoryInteractionKey();
 }
@@ -1014,7 +1014,9 @@ void Character::checkInventoryInteractionLBtn()
 		return;
 	}
 
-	int SlotNum = uiController_->GetInventoryUI()->SlotMouseCollisionCheck();
+	UI_Inventory* inven = uiController_->GetInventoryUI();
+
+	int SlotNum = inven->SlotMouseCollisionCheck();
 
 	if (-1 == SlotNum)
 	{
@@ -1026,7 +1028,12 @@ void Character::checkInventoryInteractionLBtn()
 		return;
 	}
 
+	mouse_->GrabItem(inventory_[SlotNum], inven->GetIconRenderers()[SlotNum]);
 
+	inventory_[SlotNum] = nullptr;
+
+	inven->EmptySlot();
+	inven->GetInventoryInfo(inventory_);
 }
 
 void Character::checkInventoryInteractionRBtn()

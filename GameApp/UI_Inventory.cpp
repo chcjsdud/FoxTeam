@@ -123,6 +123,27 @@ void UI_Inventory::Start()
 		Slot9_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
 	}
 
+	BGRenderers.push_back(Slot0_BGRenderer);
+	BGRenderers.push_back(Slot1_BGRenderer);
+	BGRenderers.push_back(Slot2_BGRenderer);
+	BGRenderers.push_back(Slot3_BGRenderer);
+	BGRenderers.push_back(Slot4_BGRenderer);
+	BGRenderers.push_back(Slot5_BGRenderer);
+	BGRenderers.push_back(Slot6_BGRenderer);
+	BGRenderers.push_back(Slot7_BGRenderer);
+	BGRenderers.push_back(Slot8_BGRenderer);
+	BGRenderers.push_back(Slot9_BGRenderer);
+
+	IconRenderers.push_back(Slot0_IconRenderer);
+	IconRenderers.push_back(Slot1_IconRenderer);
+	IconRenderers.push_back(Slot2_IconRenderer);
+	IconRenderers.push_back(Slot3_IconRenderer);
+	IconRenderers.push_back(Slot4_IconRenderer);
+	IconRenderers.push_back(Slot5_IconRenderer);
+	IconRenderers.push_back(Slot6_IconRenderer);
+	IconRenderers.push_back(Slot7_IconRenderer);
+	IconRenderers.push_back(Slot8_IconRenderer);
+	IconRenderers.push_back(Slot9_IconRenderer);
 }
 
 void UI_Inventory::Update(float _Time)

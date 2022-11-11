@@ -214,6 +214,7 @@ void GameEngineImageRenderer::SetImage(const std::string& _ImageName, const std:
 	}
 
 	ShaderHelper.SettingTexture("Tex", _ImageName);
+	SetName(_ImageName);
 
 	GameEngineSampler* Sampler = GameEngineSamplerManager::GetInst().Find(_Sampler);
 

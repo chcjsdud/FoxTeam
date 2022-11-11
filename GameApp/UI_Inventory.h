@@ -30,6 +30,14 @@ public:
 
 	int SlotMouseCollisionCheck();
 
+	vector<GameEngineUIRenderer*> GetBGRenderers()
+	{
+		return BGRenderers;
+	}
+	vector<GameEngineUIRenderer*> GetIconRenderers()
+	{
+		return IconRenderers;
+	}
 protected:
 	GameEngineUIRenderer* Renderer;
 	float Time;
@@ -78,6 +86,8 @@ private:
 	GameEngineCollision* Slot8Collision;
 	GameEngineCollision* Slot9Collision;
 
+
+	vector<GameEngineUIRenderer*> BGRenderers;
 	GameEngineUIRenderer* Slot0_BGRenderer;
 	GameEngineUIRenderer* Slot1_BGRenderer;
 	GameEngineUIRenderer* Slot2_BGRenderer;
@@ -89,6 +99,7 @@ private:
 	GameEngineUIRenderer* Slot8_BGRenderer;
 	GameEngineUIRenderer* Slot9_BGRenderer;
 
+	vector<GameEngineUIRenderer*> IconRenderers;
 	GameEngineUIRenderer* Slot0_IconRenderer;
 	GameEngineUIRenderer* Slot1_IconRenderer;
 	GameEngineUIRenderer* Slot2_IconRenderer;

@@ -37,6 +37,15 @@ GameEngineCollision* MousePointer::GetPickCollision(int _Order)
 	return nullptr;
 }
 
+void MousePointer::GrabItem(ItemBase* _item, GameEngineUIRenderer* _icon)
+{
+	item_ = _item;
+
+	itemIconRenderer_->SetImage(_icon->GetName());
+	itemIconRenderer_->GetTransform()->SetLocalScaling(_icon->GetTransform()->GetLocalScaling());
+	itemIconRenderer_->On();
+}
+
 void MousePointer::updateMouseRay()
 {
 	// 뷰포트 개수를 가져옵니다. 뷰포트는 하나만 사용했고, 하나만 가져올 것이기 때문에 1 로 초기화합니다.
@@ -222,6 +231,10 @@ void MousePointer::Start()
 	MouseRenderer_->GetTransform()->SetLocalPosition({ 12.0f, -10.0f, 0.0f });
 	MouseRenderer_->GetTransform()->SetLocalScaling({ 30.0f, 30.0f, 30.0f });
 
+	itemIconRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(static_cast<int>(UIRenderOrder::UIICON));
+	itemIconRenderer_->SetImage(GameEngineString::toupper("Cursor_01.png"));
+	itemIconRenderer_->Off();
+
 	// 마우스 충돌체 생성
 	MouseCollider_ = CreateTransformComponent<GameEngineCollision>(static_cast<int>(UIRenderOrder::MOUSE));
 	MouseCollider_->GetTransform()->SetLocalScaling(float4{ 30.0f, 30.0f, 30.0f });
@@ -301,6 +314,8 @@ MousePointer::MousePointer()
 	, MouseCollider_(nullptr)
 	, PrevColCharacter_(nullptr)
 	, PrevColMonster_(nullptr)
+	, item_(nullptr)
+	, itemIconRenderer_(nullptr)
 {
 }
 
