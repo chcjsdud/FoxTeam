@@ -363,6 +363,8 @@ void Jackie::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("RestLoop", "Jackie_Rest_Loop.UserAnimation", 0, true);
 	renderer_->CreateFBXAnimation("RestEnd", "Jackie_Rest_End.UserAnimation", 0, false);
 
+	renderer_->CreateFBXAnimation("Collect", "Jackie_Collect.UserAnimation", 0, true);
+
 	renderer_->ChangeFBXAnimation("Wait");
 	renderer_->LightShadowOn();
 
@@ -630,6 +632,11 @@ void Jackie::changeAnimationRestEnd()
 void Jackie::changeAnimationCraft()
 {
 	ChangeAnimation("Craft");
+}
+
+void Jackie::changeAnimationGather()
+{
+	ChangeAnimation("Collect");
 }
 
 void Jackie::onStartBasicAttacking(IUnit* _target)

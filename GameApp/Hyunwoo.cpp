@@ -251,6 +251,8 @@ void Hyunwoo::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("RestLoop", "Hyunwoo_Rest_Loop.UserAnimation", 0, true);
 	renderer_->CreateFBXAnimation("RestEnd", "Hyunwoo_Rest_End.UserAnimation", 0, false);
 
+	renderer_->CreateFBXAnimation("Collect", "Hyunwoo_Collect.UserAnimation", 0, true);
+
 	renderer_->ChangeFBXAnimation("Wait");
 	renderer_->LightShadowOn();
 
@@ -429,6 +431,11 @@ void Hyunwoo::changeAnimationRestEnd()
 void Hyunwoo::changeAnimationCraft()
 {
 	ChangeAnimation("Craft");
+}
+
+void Hyunwoo::changeAnimationGather()
+{
+	ChangeAnimation("Collect");
 }
 
 void Hyunwoo::onStartQSkill()

@@ -232,6 +232,8 @@ void Rio::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("RestLoop", "Rio_Rest_Loop.UserAnimation", 0, true);
 	renderer_->CreateFBXAnimation("RestEnd", "Rio_Rest_End.UserAnimation", 0, false);
 
+	renderer_->CreateFBXAnimation("Collect", "Rio_Collect.UserAnimation", 0, true);
+
 	renderer_->CreateFBXAnimation("Death", "Rio_Death." + ext, 0, false);
 
 	renderer_->ChangeFBXAnimation("Wait_Short");
@@ -1187,5 +1189,10 @@ void Rio::changeAnimationRestLoop()
 void Rio::changeAnimationRestEnd()
 {
 	ChangeAnimation("RestEnd");
+}
+
+void Rio::changeAnimationGather()
+{
+	ChangeAnimation("Collect");
 }
 

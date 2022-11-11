@@ -325,8 +325,8 @@ void Character::Update(float _DeltaTime)
 
 	if (GameEngineInput::Down("M"))
 	{
-		
-		
+
+
 		GetUIController()->GetMinimapUI()->Toggle();
 	}
 
@@ -743,7 +743,10 @@ void Character::checkItemBox()
 	}
 
 	// 채집물인 경우 인벤토리로 바로 획득
-	gatherItem();
+	if (GameEngineInput::Down("LButton") && nullptr != mouse_->GetRayCollision()->GetCollision(eCollisionGroup::ItemBox))
+	{
+		gatherItem();
+	}
 
 }
 
@@ -882,7 +885,7 @@ void Character::mixingItem()
 	}
 
 	bool isEquiped = false;
-	
+
 	for (auto& equipedItem : equipedItem_)
 	{
 		if (nullptr == equipedItem)
@@ -959,7 +962,8 @@ void Character::gatherItem()
 
 	itemBoxmanager_->SetItemBoxUI(ui);
 
-	getItem(0);
+
+	normalState_ << "Gather";
 }
 
 void Character::SetEquipBuildItem(const std::string& _itemName, EquipmentType _type)
@@ -1009,7 +1013,7 @@ void Character::checkInventoryInteractionLBtn()
 	{
 		return;
 	}
-	
+
 	if (false == mouse_->isGrabbed())
 	{
 		mouseGrabItem();
@@ -1378,9 +1382,9 @@ void Character::Show()
 void Character::Hide()
 {
 	renderer_->Off();
-	
-	
-	
+
+
+
 	bHidden_ = true;
 
 }
@@ -1424,13 +1428,13 @@ void Character::Damage(float _Amount, IUnit* _Target)
 
 	if (stat_.HP <= 0.f && false == isPlayerDead_)
 	{
-	//e	FT::PlaySoundAndSendPacket("death.wav", transform_.GetWorldPosition());
+		//e	FT::PlaySoundAndSendPacket("death.wav", transform_.GetWorldPosition());
 
 		if (GameServer::GetInstance()->IsOpened())
 		{
 			this->SetCharacterDeath();
 
-		//	GetUIController()->GetMinimapUI()->RemoveIcon(myIndex_);
+			//	GetUIController()->GetMinimapUI()->RemoveIcon(myIndex_);
 
 			CharDeathPacket deathpacket;
 			deathpacket.SetTargetIndex(myIndex_);
@@ -1538,40 +1542,40 @@ void Character::LevelUP(LevelUPData _Data)
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 
 
-		stat_.level += 1;
-		stat_.AttackPower += _Data.AttackPower_;					// 공격력
-		stat_.HPMax += _Data.HP_;									// 체력(최대체력)
-		stat_.HPRegeneration += _Data.HPRegeneration_;				// 체력재생
-		stat_.SPMax += _Data.SP_;									// 스태미나(최대스태미나)
-		stat_.SPRegeneration += _Data.SPRegeneration_;				// 스태미나재생
-		stat_.Defence += _Data.Defence_;							// 방어력
-		stat_.AttackSpeed += _Data.AttackSpeed_;					// 공격속도
-		stat_.CriticalChance += _Data.CriticalChance_;				// 치명타
-		stat_.MovementSpeed += _Data.MovementSpeed_;				// 이동속도
-		stat_.VisionRange += _Data.VisionRange_;					// 시야
+	stat_.level += 1;
+	stat_.AttackPower += _Data.AttackPower_;					// 공격력
+	stat_.HPMax += _Data.HP_;									// 체력(최대체력)
+	stat_.HPRegeneration += _Data.HPRegeneration_;				// 체력재생
+	stat_.SPMax += _Data.SP_;									// 스태미나(최대스태미나)
+	stat_.SPRegeneration += _Data.SPRegeneration_;				// 스태미나재생
+	stat_.Defence += _Data.Defence_;							// 방어력
+	stat_.AttackSpeed += _Data.AttackSpeed_;					// 공격속도
+	stat_.CriticalChance += _Data.CriticalChance_;				// 치명타
+	stat_.MovementSpeed += _Data.MovementSpeed_;				// 이동속도
+	stat_.VisionRange += _Data.VisionRange_;					// 시야
 
-		if (5 > stat_.Level_q)										// 스킬 레벨은 각 최대 스킬 레벨(5,3) 만큼만 일괄적으로 오릅니다.
-		{
-			stat_.Level_q++;
-			stat_.Level_w++;
-			stat_.Level_e++;
-		}
+	if (5 > stat_.Level_q)										// 스킬 레벨은 각 최대 스킬 레벨(5,3) 만큼만 일괄적으로 오릅니다.
+	{
+		stat_.Level_q++;
+		stat_.Level_w++;
+		stat_.Level_e++;
+	}
 
-		if (3 > stat_.Level_r)
-		{
-			stat_.Level_r++;
-			stat_.Level_passive++;
-		}
+	if (3 > stat_.Level_r)
+	{
+		stat_.Level_r++;
+		stat_.Level_passive++;
+	}
 
-		if (2 > stat_.Level_d)
-		{
-			stat_.Level_d++;
-		}
-		if (myIndex_ == pm->GetMyNumber())
-		{
+	if (2 > stat_.Level_d)
+	{
+		stat_.Level_d++;
+	}
+	if (myIndex_ == pm->GetMyNumber())
+	{
 		uiController_->GetSkillUI()->SetStatus(&stat_);
-		}
-		onLevelUp();
+	}
+	onLevelUp();
 
 	levelUpEffect_->GetTransform()->SetWorldPosition(GetTransform()->GetWorldPosition());
 	levelUpEffect_->PlayAwake();
@@ -1725,6 +1729,7 @@ void Character::initState()
 	normalState_.CreateState(MakeState(Character, RestBegin));
 	normalState_.CreateState(MakeState(Character, RestLoop));
 	normalState_.CreateState(MakeState(Character, RestEnd));
+	normalState_.CreateState(MakeState(Character, Gather));
 
 	attackState_.CreateState(MakeState(Character, BasicAttack));
 	attackState_.CreateState(MakeState(Character, BasicAttacking));
@@ -1946,22 +1951,22 @@ void Character::updateFinalStat()
 	{
 		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::CHEST)]->GetStat();
 	}
-	
+
 	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::HEAD)])
 	{
 		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::HEAD)]->GetStat();
 	}
-	
+
 	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::ARM)])
 	{
 		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::ARM)]->GetStat();
 	}
-	
+
 	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::LEG)])
 	{
 		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::LEG)]->GetStat();
 	}
-	
+
 	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::ACCESSORY)])
 	{
 		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::ACCESSORY)]->GetStat();
@@ -2577,6 +2582,20 @@ void Character::updateRestEnd(float _deltaTime)
 	}
 }
 
+void Character::startGather()
+{
+	changeAnimationGather();
+}
+
+void Character::updateGather(float _deltaTime)
+{
+	if (normalState_.GetTime() > 2.0f)
+	{
+		getItem(0);
+		normalState_ << "Watch";
+	}
+}
+
 void Character::startStun()
 {
 	changeAnimationWait();
@@ -3029,7 +3048,7 @@ void Character::CoolTimeCheck(float _DeltaTime)
 	if (false == bCoolQ_ && true == bCoolWQ_)
 	{
 		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetImage("cooltime_whitemask.png", "LinerSmp");
-		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(coolTimerW_Q_/0.5f);
+		uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(coolTimerW_Q_ / 0.5f);
 
 		coolTimerW_Q_ -= _DeltaTime;
 
@@ -3207,13 +3226,13 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 	{
 		prohibitedCounter_ -= _DeltaTime;
 		int adjustedCounter = static_cast<int>(prohibitedCounter_) + 1;
-		
+
 		uiController_->GetTimeUI()->GetProhibitedRenderer()->SetTextColor(float4::RED);
 		uiController_->GetTimeUI()->GetProhibitedRenderer()->AllDelText();
 		uiController_->GetTimeUI()->GetProhibitedRenderer()->SetPrintText(std::to_string(adjustedCounter));
 
 		prohibitTimer_ += _DeltaTime;
-		
+
 		if (1.0f <= prohibitTimer_)
 		{
 			prohibitTimer_ = 0.0f;
@@ -3224,7 +3243,7 @@ void Character::ProhibitedAreaCheck(float _DeltaTime)
 		{
 			//
 			fraggerIndex_ = -3;
-		
+
 			Damage(10000.0f, nullptr);
 		}
 	}

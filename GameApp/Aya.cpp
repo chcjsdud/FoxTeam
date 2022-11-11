@@ -278,6 +278,8 @@ void Aya::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("RestLoop", "Aya_Rest_Loop.UserAnimation", 0, true);
 	renderer_->CreateFBXAnimation("RestEnd", "Aya_Rest_End.UserAnimation", 0, false);
 
+	renderer_->CreateFBXAnimation("Collect", "Aya_Collect.UserAnimation", 0, true);
+
 	renderer_->ChangeFBXAnimation("Idle");
 	renderer_->LightShadowOn();
 
@@ -402,6 +404,11 @@ void Aya::changeAnimationRestEnd()
 void Aya::changeAnimationCraft()
 {
 	ChangeAnimation("Craft");
+}
+
+void Aya::changeAnimationGather()
+{
+	ChangeAnimation("Collect");
 }
 
 void Aya::onStartBasicAttacking(IUnit* _target)

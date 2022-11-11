@@ -313,6 +313,8 @@ void Yuki::initRendererAndAnimation()
 	renderer_->CreateFBXAnimation("RestLoop", "Yuki_Rest_Loop.UserAnimation", 0, true);
 	renderer_->CreateFBXAnimation("RestEnd", "Yuki_Rest_End.UserAnimation", 0, false);
 
+	renderer_->CreateFBXAnimation("Collect", "Yuki_Collect.UserAnimation", 0, true);
+
 	renderer_->ChangeFBXAnimation("Wait");
 	renderer_->LightShadowOn();
 
@@ -530,6 +532,11 @@ void Yuki::changeAnimationRestEnd()
 void Yuki::changeAnimationCraft()
 {
 	ChangeAnimation("Craft");
+}
+
+void Yuki::changeAnimationGather()
+{
+	ChangeAnimation("Collect");
 }
 
 void Yuki::onStartBasicAttacking(IUnit* _target)

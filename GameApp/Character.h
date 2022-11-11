@@ -160,6 +160,7 @@ protected:
 	virtual void changeAnimationRestLoop() = 0;
 	virtual void changeAnimationRestEnd() = 0;
 	virtual void changeDeathAnimation() = 0;
+	virtual void changeAnimationGather() = 0;
 
 	// Main(AttackState)
 	virtual void onStartBasicAttacking(IUnit* _target) = 0;
@@ -337,6 +338,10 @@ private:
 
 	void startRestEnd();
 	void updateRestEnd(float _deltaTime);
+
+	void startGather();
+	void updateGather(float _deltaTime);
+
 #pragma endregion
 
 

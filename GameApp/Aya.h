@@ -47,7 +47,7 @@ public:
 	virtual void changeAnimationRestLoop() override;
 	virtual void changeAnimationRestEnd() override;
 	virtual void changeAnimationCraft() override;
-
+	virtual void changeAnimationGather() override;
 
 	virtual void onStartBasicAttacking(IUnit* _target) override;
 	virtual void onUpdateBasicAttacking(IUnit* _target, float _deltaTime) override;
