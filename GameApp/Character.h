@@ -229,7 +229,8 @@ private:
 	void checkBuildItemsRecursive(ItemBase* _item);
 
 	void checkInventoryInteraction();
-	void checkInventoryInteractionMouse();
+	void checkInventoryInteractionLBtn();
+	void checkInventoryInteractionRBtn();
 	void checkInventoryInteractionKey();
 
 	void useRecoveryItem(UseableItem* _item);	// 아이템을 사용

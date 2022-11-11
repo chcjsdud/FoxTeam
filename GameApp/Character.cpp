@@ -1002,11 +1002,34 @@ void Character::checkBuildItemsRecursive(ItemBase* _item)
 
 void Character::checkInventoryInteraction()
 {
-	checkInventoryInteractionMouse();
+	checkInventoryInteractionLBtn();
+	checkInventoryInteractionRBtn();
 	checkInventoryInteractionKey();
 }
 
-void Character::checkInventoryInteractionMouse()
+void Character::checkInventoryInteractionLBtn()
+{
+	if (false == GameEngineInput::GetInst().Down("LButton"))
+	{
+		return;
+	}
+
+	int SlotNum = uiController_->GetInventoryUI()->SlotMouseCollisionCheck();
+
+	if (-1 == SlotNum)
+	{
+		return;
+	}
+
+	if (nullptr == inventory_[SlotNum])
+	{
+		return;
+	}
+
+
+}
+
+void Character::checkInventoryInteractionRBtn()
 {
 	if (false == GameEngineInput::GetInst().Down("RButton"))
 	{
