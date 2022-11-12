@@ -108,49 +108,100 @@ public:
 
 	}
 
-	CharacterStat operator+(const CharacterStat _cs) const
+	CharacterStat& operator+=(const CharacterStat& _cs)
 	{
-		CharacterStat result = (*this);
+		level += _cs.level;
+		HPMax += _cs.HPMax;
+		HP += _cs.HP;
+		SPMax += _cs.SPMax;
+		SP += _cs.SP;
+		Defence += _cs.Defence;
+		AttackPower += _cs.AttackPower;
+		CriticalChance += _cs.CriticalChance;
+		BasicAttackAmplification += _cs.BasicAttackAmplification;
+		SkillDamageAmplification += _cs.SkillDamageAmplification;
+		CriticalDamageAmplification += _cs.CriticalDamageAmplification;
+		BasicAttackDamageReduction += _cs.BasicAttackDamageReduction;
+		SkillAttackDamageReduction += _cs.SkillAttackDamageReduction;
+		CriticalDamageReduction += _cs.CriticalDamageReduction;
+		TrapDamageReduction += _cs.TrapDamageReduction;
+		Tenacity += _cs.Tenacity;
+		HPRegeneration += _cs.HPRegeneration;
+		SPRegeneration += _cs.SPRegeneration;
+		LifeSteel += _cs.LifeSteel;
+		OmniVamp += _cs.OmniVamp;
+		AttackSpeed += _cs.AttackSpeed;
+		AttackStartTime += _cs.AttackStartTime;
+		AttackEndTime += _cs.AttackEndTime;
+		MovementSpeed += _cs.MovementSpeed;
+		CooldownReduction += _cs.CooldownReduction;
+		AttackRange += _cs.AttackRange;
+		VisionRange += _cs.VisionRange;
+		MovementRatio += _cs.MovementRatio;
+		Level_q += _cs.Level_q;
+		Level_w += _cs.Level_w;
+		Level_e += _cs.Level_e;
+		Level_r += _cs.Level_r;
+		Level_d += _cs.Level_d;
+		Level_passive += _cs.Level_passive;
+		passive_Count += _cs.passive_Count;
 
-		result.level += _cs.level;
-		result.HPMax += _cs.HPMax;
-		result.HP += _cs.HP;
-		result.SPMax += _cs.SPMax;
-		result.SP += _cs.SP;
-		result.Defence += _cs.Defence;
-		result.AttackPower += _cs.AttackPower;
-		result.CriticalChance += _cs.CriticalChance;
-		result.BasicAttackAmplification += _cs.BasicAttackAmplification;
-		result.SkillDamageAmplification += _cs.SkillDamageAmplification;
-		result.CriticalDamageAmplification += _cs.CriticalDamageAmplification;
-		result.BasicAttackDamageReduction += _cs.BasicAttackDamageReduction;
-		result.SkillAttackDamageReduction += _cs.SkillAttackDamageReduction;
-		result.CriticalDamageReduction += _cs.CriticalDamageReduction;
-		result.TrapDamageReduction += _cs.TrapDamageReduction;
-		result.Tenacity += _cs.Tenacity;
-		result.HPRegeneration += _cs.HPRegeneration;
-		result.SPRegeneration += _cs.SPRegeneration;
-		result.LifeSteel += _cs.LifeSteel;
-		result.OmniVamp += _cs.OmniVamp;
-		result.AttackSpeed += _cs.AttackSpeed;
-		result.AttackStartTime += _cs.AttackStartTime;
-		result.AttackEndTime += _cs.AttackEndTime;
-		result.MovementSpeed += _cs.MovementSpeed;
-		result.CooldownReduction += _cs.CooldownReduction;
-		result.AttackRange += _cs.AttackRange;
-		result.VisionRange += _cs.VisionRange;
-		result.MovementRatio += _cs.MovementRatio;
-		result.Level_q += _cs.Level_q;
-		result.Level_w += _cs.Level_w;
-		result.Level_e += _cs.Level_e;
-		result.Level_r += _cs.Level_r;
-		result.Level_d += _cs.Level_d;
-		result.Level_passive += _cs.Level_passive;
-		result.passive_Count += _cs.passive_Count;
-
-		return result;
+		return *this;
 	}
 
+	CharacterStat& operator-=(const CharacterStat& _cs)
+	{
+		level -= _cs.level;
+
+		HPMax -= _cs.HPMax;
+		HP -= _cs.HP;
+
+		if (HP > HPMax)
+		{
+			HP = HPMax;
+		}
+
+		SPMax -= _cs.SPMax;
+		SP -= _cs.SP;
+
+		if (SP > SPMax)
+		{
+			SP = SPMax;
+		}
+
+		Defence -= _cs.Defence;
+		AttackPower -= _cs.AttackPower;
+		CriticalChance -= _cs.CriticalChance;
+		BasicAttackAmplification -= _cs.BasicAttackAmplification;
+		SkillDamageAmplification -= _cs.SkillDamageAmplification;
+		CriticalDamageAmplification -= _cs.CriticalDamageAmplification;
+		BasicAttackDamageReduction -= _cs.BasicAttackDamageReduction;
+		SkillAttackDamageReduction -= _cs.SkillAttackDamageReduction;
+		CriticalDamageReduction -= _cs.CriticalDamageReduction;
+		TrapDamageReduction -= _cs.TrapDamageReduction;
+		Tenacity -= _cs.Tenacity;
+		HPRegeneration -= _cs.HPRegeneration;
+		SPRegeneration -= _cs.SPRegeneration;
+		LifeSteel -= _cs.LifeSteel;
+		OmniVamp -= _cs.OmniVamp;
+		AttackSpeed -= _cs.AttackSpeed;
+		AttackStartTime -= _cs.AttackStartTime;
+		AttackEndTime -= _cs.AttackEndTime;
+		MovementSpeed -= _cs.MovementSpeed;
+		CooldownReduction -= _cs.CooldownReduction;
+		AttackRange -= _cs.AttackRange;
+		VisionRange -= _cs.VisionRange;
+		MovementRatio -= _cs.MovementRatio;
+		Level_q -= _cs.Level_q;
+		Level_w -= _cs.Level_w;
+		Level_e -= _cs.Level_e;
+		Level_r -= _cs.Level_r;
+		Level_d -= _cs.Level_d;
+		Level_passive -= _cs.Level_passive;
+		passive_Count -= _cs.passive_Count;
+
+		return *this;
+	}
 	void Clear()
 	{
 		level = 0;

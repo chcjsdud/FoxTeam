@@ -183,8 +183,6 @@ void Yuki::Start()
 	//stat_.Cooltime_e = 18.0f;
 	//stat_.Cooltime_r = 100.0f;
 
-	charStat_ = stat_;
-
 	DefaultCool_Q_ = 5.0f;
 	DefaultCool_W_ = 14.0f;
 	DefaultCool_E_ = 18.0f;

@@ -339,7 +339,6 @@ void Character::Update(float _DeltaTime)
 
 	updateFOW(_DeltaTime);
 	updateRecoveryItem(_DeltaTime);
-	updateFinalStat();
 }
 
 
@@ -444,6 +443,14 @@ void Character::getEquipItem(EquipmentItem* _item, int _index)
 			itemBoxmanager_->DeleteItemFromItemBox(_index);
 			allMyBuildItems_.erase(iter);
 			uiController_->GetEquipUI()->PushItem(_item, _item->GetEquipType());
+
+			stat_ += _item->GetStat();
+
+			CharStatPacket packet;
+			packet.SetStat(stat_);
+			packet.SetTargetIndex(GetIndex());
+
+			FT::SendPacket(packet);
 			return;
 		}
 
@@ -464,6 +471,7 @@ void Character::getEquipItem(EquipmentItem* _item, int _index)
 				uiController_->GetInventoryUI()->EmptySlot();
 				uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 
+				stat_ -= currentEquipItem->GetStat();
 				break;
 			}
 
@@ -475,6 +483,14 @@ void Character::getEquipItem(EquipmentItem* _item, int _index)
 			equipedItem_[static_cast<size_t>(_item->GetEquipType())] = reinterpret_cast<EquipmentItem*>(_item);
 			itemBoxmanager_->DeleteItemFromItemBox(_index);
 			allMyBuildItems_.erase(iter);
+
+			stat_ += _item->GetStat();
+
+			CharStatPacket packet;
+			packet.SetStat(stat_);
+			packet.SetTargetIndex(GetIndex());
+
+			FT::SendPacket(packet);
 			return;
 		}
 	}
@@ -538,6 +554,14 @@ void Character::getEquipItem(EquipmentItem* _item)
 			{
 				uiController_->GetEquipUI()->PushItem(_item, _item->GetEquipType());
 			}
+
+			stat_ += _item->GetStat();
+
+			CharStatPacket packet;
+			packet.SetStat(stat_);
+			packet.SetTargetIndex(GetIndex());
+
+			FT::SendPacket(packet);
 			return;
 		}
 
@@ -561,6 +585,7 @@ void Character::getEquipItem(EquipmentItem* _item)
 					uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 				}
 
+				stat_ -= currentEquipItem->GetStat();
 				break;
 			}
 
@@ -571,6 +596,14 @@ void Character::getEquipItem(EquipmentItem* _item)
 
 			equipedItem_[static_cast<size_t>(_item->GetEquipType())] = reinterpret_cast<EquipmentItem*>(_item);
 			allMyBuildItems_.erase(iter);
+
+			stat_ += _item->GetStat();
+
+			CharStatPacket packet;
+			packet.SetStat(stat_);
+			packet.SetTargetIndex(GetIndex());
+
+			FT::SendPacket(packet);
 			return;
 		}
 	}
@@ -1064,6 +1097,8 @@ void Character::checkInventoryInteractionRBtn()
 
 		equipedItem_[static_cast<size_t>(equip->GetEquipType())] = equip;
 
+		stat_ += equip->GetStat();
+
 		uiController_->GetEquipUI()->EmptySlot();
 		uiController_->GetEquipUI()->GetEquipInfo(equipedItem_);
 
@@ -1078,10 +1113,21 @@ void Character::checkInventoryInteractionRBtn()
 
 			invenItem = tmp;
 
+			if (nullptr != tmp)
+			{
+				stat_ -= tmp->GetStat();
+			}
+
 			uiController_->GetInventoryUI()->EmptySlot();
 			uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 			break;
 		}
+
+		CharStatPacket packet;
+		packet.SetStat(stat_);
+		packet.SetTargetIndex(GetIndex());
+
+		FT::SendPacket(packet);
 
 		return;
 	}
@@ -1142,6 +1188,8 @@ void Character::checkInventoryInteractionKey()
 
 			equipedItem_[static_cast<size_t>(equip->GetEquipType())] = equip;
 
+			stat_ += equip->GetStat();
+
 			uiController_->GetEquipUI()->EmptySlot();
 			uiController_->GetEquipUI()->GetEquipInfo(equipedItem_);
 
@@ -1156,10 +1204,22 @@ void Character::checkInventoryInteractionKey()
 
 				invenItem = tmp;
 
+				if (nullptr != tmp)
+				{
+					stat_ -= tmp->GetStat();
+				}
+
 				uiController_->GetInventoryUI()->EmptySlot();
 				uiController_->GetInventoryUI()->GetInventoryInfo(inventory_);
 				break;
 			}
+
+			CharStatPacket packet;
+			packet.SetStat(stat_);
+			packet.SetTargetIndex(GetIndex());
+
+			FT::SendPacket(packet);
+
 			return;
 		}
 
@@ -1214,7 +1274,6 @@ void Character::updateRecoveryItem(float _deltaTime)
 		{
 			stat_.HP = stat_.HPMax;
 		}
-		charStat_.HP = stat_.HP;
 	}
 	else if (UseableItemType::SP == RI.Type)
 	{
@@ -1223,8 +1282,13 @@ void Character::updateRecoveryItem(float _deltaTime)
 		{
 			stat_.SP = stat_.SPMax;
 		}
-		charStat_.SP = stat_.SP;
 	}
+
+	CharStatPacket packet;
+	packet.SetStat(stat_);
+	packet.SetTargetIndex(GetIndex());
+
+	FT::SendPacket(packet);
 }
 
 void Character::mouseGrabItem()
@@ -1424,7 +1488,6 @@ void Character::Damage(float _Amount, IUnit* _Target)
 	}
 
 	stat_.HP -= _Amount;
-	charStat_.HP = stat_.HP;
 
 	if (stat_.HP <= 0.f && false == isPlayerDead_)
 	{
@@ -1868,12 +1931,10 @@ void Character::updateFOW(float _deltaTime)
 	if (dayType == DayAndNightType::DAY)
 	{
 		stat_.VisionRange = FT::Char::DEFAULT_VISION_RANGE_DAY;
-		charStat_.VisionRange = stat_.VisionRange;
 	}
 	else if (dayType == DayAndNightType::NIGHT)
 	{
 		stat_.VisionRange = FT::Char::DEFAULT_VISION_RANGE_NIGHT;
-		charStat_.VisionRange = stat_.VisionRange;
 	}
 
 	if (bFocused_)
@@ -1936,43 +1997,6 @@ void Character::getFOWData(std::vector<float4>& _data, bool& _bCalc)
 	_data.clear();
 	_data = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition(), stat_.VisionRange);
 	_bCalc = false;
-}
-
-void Character::updateFinalStat()
-{
-	CharacterStat fianlstat = charStat_;
-
-	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::WEAPON)])
-	{
-		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::WEAPON)]->GetStat();
-	}
-
-	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::CHEST)])
-	{
-		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::CHEST)]->GetStat();
-	}
-
-	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::HEAD)])
-	{
-		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::HEAD)]->GetStat();
-	}
-
-	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::ARM)])
-	{
-		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::ARM)]->GetStat();
-	}
-
-	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::LEG)])
-	{
-		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::LEG)]->GetStat();
-	}
-
-	if (nullptr != equipedItem_[static_cast<size_t>(EquipmentType::ACCESSORY)])
-	{
-		fianlstat = fianlstat + equipedItem_[static_cast<size_t>(EquipmentType::ACCESSORY)]->GetStat();
-	}
-
-	stat_ = fianlstat;
 }
 
 void Character::initBasicEffect()

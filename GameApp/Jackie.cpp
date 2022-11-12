@@ -179,8 +179,6 @@ void Jackie::Start()
 	//stat_.Cooltime_e = 24.0f;
 	//stat_.Cooltime_r = 70.0f;
 
-	charStat_ = stat_;
-
 	DefaultCool_Q_ = 9.0f;
 	DefaultCool_W_ = 19.0f;
 	DefaultCool_E_ = 24.0f;
@@ -896,7 +894,6 @@ void Jackie::onUpdateWSkill(float _deltaTime)
 	mainState_.ChangeState("NormalState", true);
 	normalState_.ChangeState("Watch", true);
 	stat_.MovementSpeed += 100.0f;
-	charStat_.MovementSpeed = stat_.MovementSpeed;
 }
 
 void Jackie::onStartESkill()
