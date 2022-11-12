@@ -602,7 +602,7 @@ void Aya::onUpdateWSkill(float _deltaTime)
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
 	static float cos = 0.0f;
 	static float4 cross;
-	if (GameEngineInput::Press("LButton") || GameEngineInput::Down("LButton"))
+	if (GameEngineInput::Press("RButton") || GameEngineInput::Down("RButton"))
 	{
 		Move(mousePosition);
 		cos = float4::Dot3DToCos(mousePosition - transform_.GetWorldPosition(), transform_.GetWorldForwardVector());
