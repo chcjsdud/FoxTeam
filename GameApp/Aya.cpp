@@ -893,7 +893,7 @@ void Aya::onUpdateDeath(float _deltaTime)
 {
 }
 
-void Aya::onPlayEffect(const std::string& _effectName, IUnit* _victim)
+void Aya::onPlayEffect(const std::string& _effectName, IUnit* _victim, float4 _pos)
 {
 	float4 startPosition = transform_.GetWorldPosition();
 	float arrowSpeed = 1500.f;

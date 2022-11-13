@@ -893,7 +893,7 @@ void Yuki::onUpdateCustomState(float _deltaTime)
 	}
 }
 
-void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim)
+void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim, float4 _pos)
 {
 	if ("TokenLost" == _effectName)
 	{

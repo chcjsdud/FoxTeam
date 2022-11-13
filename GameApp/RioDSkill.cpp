@@ -23,7 +23,7 @@ void RioDSkill::Start()
 {
 	collision_ = CreateTransformComponent<GameEngineCollision>();
 	collision_->SetCollisionType(CollisionType::Sphere3D);
-	collision_->GetTransform()->SetLocalScaling(500.0f);
+	collision_->GetTransform()->SetLocalScaling(800.0f);
 
 	state_.CreateState(MakeState(RioDSkill, Wait));
 	state_.CreateState(MakeState(RioDSkill, Falling));
@@ -51,12 +51,12 @@ void RioDSkill::startWait()
 	float4 ownerPosition = owner_->GetTransform()->GetWorldPosition();
 	float length = float4::Calc_Len3D(skillPosition, ownerPosition);
 
-	if (length > 700.f)
-	{
-		float4 direction = skillPosition - ownerPosition;
-		direction.Normalize3D();
-		transform_.SetWorldPosition(ownerPosition + direction * 700.0f);
-	}
+	//if (length > 700.f)
+	//{
+	//	float4 direction = skillPosition - ownerPosition;
+	//	direction.Normalize3D();
+	//	transform_.SetWorldPosition(ownerPosition + direction * 700.0f);
+	//}
 }
 
 void RioDSkill::updateWait(float _deltaTime)
@@ -96,6 +96,7 @@ void RioDSkill::startFall()
 			}
 
 			unit->Damage(damage_, owner_);
+			unit->Slow(1.0f, 0.5f);
 		}
 	}
 
@@ -111,6 +112,7 @@ void RioDSkill::startFall()
 			}
 
 			unit->Damage(damage_, owner_);
+			unit->Slow(1.0f, 0.5f);
 		}
 	}
 }

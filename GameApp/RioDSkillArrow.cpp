@@ -41,9 +41,9 @@ void RioDSkillArrow::Start()
 	arrowRenderer_->SetFBXMesh("Rio_000_Arrow.fbx", "TextureDeferredLight", false);
 
 
-	float randomX = random_.RandomFloat(-350.0f, 350.0f);
-	float randomZ = random_.RandomFloat(-350.0f, 350.0f);
-	float randomSpeed = random_.RandomFloat(4000.0f, 7200.0f);
+	float randomX = random_.RandomFloat(0.0f, 590.0f);
+	float randomZ = random_.RandomFloat(-320.0f, 320.0f);
+	float randomSpeed = random_.RandomFloat(6000.0f, 8400.0f);
 
 	speed_ = randomSpeed;
 	arrowRenderer_->GetTransform()->SetLocalPosition({ randomX, 1000.0f, randomZ });
@@ -52,11 +52,11 @@ void RioDSkillArrow::Start()
 	arrowRenderer_->Off();
 
 	shotEffect_ = CreateTransformComponent<GameEngineEffectRenderer>();
-	shotEffect_->SetImage("rio_dskillround.png", "LinerSmp");
+	shotEffect_->SetImage("rio_dskillTarget.png", "LinerSmp");
+	shotEffect_->GetTransform()->SetLocalPosition({arrowRenderer_->GetTransform()->GetLocalPosition().x + 30.0f, 10.0f, arrowRenderer_->GetTransform()->GetLocalPosition().z});
 	shotEffect_->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f, 0.0f });
-	shotEffect_->GetTransform()->SetLocalPosition({arrowRenderer_->GetTransform()->GetLocalPosition().x, 10.0f, arrowRenderer_->GetTransform()->GetLocalPosition().z});
 	shotEffect_->GetTransform()->SetLocalScaling({30.0f, 30.0f});
-	shotEffect_->SetColor({ 1.0f, 1.0f, 0.3f });
+	shotEffect_->SetColor({ 1.0f, 1.0f, 0.1f });
 	shotEffect_->Off();
 
 	renderState_.CreateState(MakeState(RioDSkillArrow, Sleep));
@@ -77,7 +77,7 @@ void RioDSkillArrow::startSleep()
 	shotEffect_->GetTransform()->SetLocalScaling({ 30.0f ,30.0f });
 	timer_ = 0.0f;
 	GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
-	//arrowRenderer_->Off();
+
 	scaleContainer_ = { 0.0f, 0.0f };
 }
 
@@ -88,7 +88,14 @@ void RioDSkillArrow::updateSleep(float _deltaTime)
 
 void RioDSkillArrow::startAwake()
 {
+	float randomX = random_.RandomFloat(-220.0f, 420.0f);
+	float randomZ = random_.RandomFloat(-320.0f, 320.0f);
 
+	arrowRenderer_->GetTransform()->SetLocalPosition({ randomX, 1000.0f, randomZ });
+	shotEffect_->GetTransform()->SetLocalPosition({ arrowRenderer_->GetTransform()->GetLocalPosition().x - 180.0f, 10.0f, arrowRenderer_->GetTransform()->GetLocalPosition().z });
+	float randomSpeed = random_.RandomFloat(6000.0f, 8400.0f);
+
+	speed_ = randomSpeed;
 	arrowRenderer_->On();
 	// 위치 설정
 	timer_ = 0.0f;
@@ -98,7 +105,7 @@ void RioDSkillArrow::updateAwake(float _deltaTime)
 {
 	arrowRenderer_->GetTransform()->SetLocalMove({ 0.0f, -1 * speed_ * _deltaTime, 0.0f });
 
-	if (arrowRenderer_->GetTransform()->GetLocalPosition().y <= -330.0f )
+	if (arrowRenderer_->GetTransform()->GetLocalPosition().y <= -400.0f )
 	{
 		// 지상에 거의 닿으면 페이드
 		renderState_ << "Fade";
@@ -124,8 +131,8 @@ void RioDSkillArrow::updateFade(float _deltaTime)
 		renderState_ << "Sleep";
 	}
 
-	scaleContainer_ += { 1800.0f * _deltaTime, 1800.0f * _deltaTime };
-	shotEffect_->SetAlpha(timer_);
+	scaleContainer_ += { 3600.0f * _deltaTime, 3600.0f * _deltaTime };
+	shotEffect_->SetAlpha(timer_/1.2f);
 	shotEffect_->GetTransform()->SetLocalScaling({ 30.0f + scaleContainer_.x, 30.0f + scaleContainer_.y });
 
 }

@@ -16,6 +16,8 @@ public:
 	void SetTargetIndex(int _index);
 	void SetVictimIndex(IUnit& _unit);
 	void SetAnimationName(const std::string& _animation);
+	void SetWorldPos(float4 _worldPos);
+
 
 protected:
 	virtual void userSerialize() override;
@@ -29,5 +31,7 @@ private:
 	int victimIndex_;
 	std::string effectAnimationName_;
 	int victimType_;
+
+	float4 worldPos_;
 };
 

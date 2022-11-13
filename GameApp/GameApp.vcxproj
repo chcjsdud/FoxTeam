@@ -334,6 +334,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="RioDSkillFirstShot.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="RioWSkillWind.cpp">
       <SubType>
       </SubType>
@@ -835,6 +839,10 @@
       </SubType>
     </ClInclude>
     <ClInclude Include="RioDSkillEffect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="RioDSkillFirstShot.h">
       <SubType>
       </SubType>
     </ClInclude>

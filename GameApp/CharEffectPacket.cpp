@@ -12,6 +12,7 @@
 CharEffectPacket::CharEffectPacket() // default constructer 디폴트 생성자
 	: targetIndex_(-1), victimIndex_(-1)
 	, victimType_(static_cast<int>(UnitType::CHARACTER))
+	, worldPos_(float4::ZERO)
 {
 
 }
@@ -42,12 +43,18 @@ void CharEffectPacket::SetAnimationName(const std::string& _animation)
     effectAnimationName_ = _animation;
 }
 
+void CharEffectPacket::SetWorldPos(float4 _worldPos)
+{
+	worldPos_ = _worldPos;
+}
+
 void CharEffectPacket::userSerialize()
 {
 	serializer_ << targetIndex_;
 	serializer_ << effectAnimationName_;
 	serializer_ << victimIndex_;
 	serializer_ << victimType_;
+	serializer_ << worldPos_;
 }
 
 void CharEffectPacket::userDeserialize()
@@ -56,6 +63,7 @@ void CharEffectPacket::userDeserialize()
 	serializer_ >> effectAnimationName_;
 	serializer_ >> victimIndex_;
 	serializer_ >> victimType_;
+	serializer_ >> worldPos_;
 }
 
 void CharEffectPacket::initPacketID()
@@ -91,6 +99,10 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 		{
 			Character* victimChar = level->GetCharacterActorList()[victimIndex_];
 			targetChar->PlayEffect(effectAnimationName_, targetIndex_, victimChar);
+		}
+		else if (worldPos_ != float4::ZERO)
+		{
+			targetChar->PlayEffect(effectAnimationName_, targetIndex_, nullptr, worldPos_);
 		}
 		else
 		{

@@ -2924,7 +2924,7 @@ void Character::updatePlayerWinner(float _deltaTime)
 {
 }
 
-void Character::PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim)
+void Character::PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim, float4 _pos)
 {
 	//if (myIndex_ == _originIndex)
 	//{
@@ -2955,7 +2955,7 @@ void Character::PlayEffect(const std::string& _effectName, int _originIndex, IUn
 		return;
 	}
 
-	onPlayEffect(_effectName, _victim);
+	onPlayEffect(_effectName, _victim, _pos);
 }
 
 void Character::RandomSoundPlay(const std::string& _sound0, const std::string& _sound1, const std::string& _sound2)

@@ -15,6 +15,9 @@
 #include "BasicAttackEffect.h"
 #include "RioDSkillArrow.h"
 #include "RioWSkillWind.h"
+#include "RioDSkillFirstShot.h"
+#include "CharEffectPacket.h"
+#include "RioDSkillEffect.h"
 
 Rio::Rio()
 	: Character()
@@ -26,6 +29,8 @@ Rio::Rio()
 	, longBow_(nullptr)
 	, skillETime_(0.0f)
 	, skillRTime_(0.0f)
+	, dSkillShotEffect_(nullptr)
+	, dSkillEffect_(nullptr)
 {
 
 }
@@ -171,6 +176,12 @@ void Rio::Start()
 	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, -120.0f });
 	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ -90.0f, 0.0f,0.0f });
 	basicHit0Effect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(basicHit0Effect_->GetAttackRenderer()->GetCurrentTexture()->GetTextureSize());
+
+	dSkillShotEffect_ = GetLevel()->CreateActor<RioDSkillFirstShot>();
+	dSkillShotEffect_->SetParent(this);
+
+	dSkillEffect_ = GetLevel()->CreateActor<RioDSkillEffect>();
+	dSkillEffect_->SetParent(this);
 
 	SetEquipBuildItem("CrystalTiara", EquipmentType::HEAD);
 	SetEquipBuildItem("OpticalCamouflageSuit", EquipmentType::CHEST);
@@ -830,7 +841,24 @@ void Rio::onStartDSkill()
 		skill->GetTransform()->SetWorldPosition(mousePosition);
 		skill->SetDamage(stat_.AttackPower * 5);
 		skill->SetWaitTime(0.0f);
+
+
+		dSkillShotEffect_->GetTransform()->SetWorldPosition(transform_.GetWorldPosition());
+		dSkillShotEffect_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
+		dSkillShotEffect_->PlayAwake();
 	}
+	
+		CharEffectPacket pack;
+		pack.SetTargetIndex(myIndex_);
+		pack.SetAnimationName("SkillDShot");
+		FT::SendPacket(pack);
+
+		CharEffectPacket pack1;
+		pack1.SetTargetIndex(myIndex_);
+		pack1.SetAnimationName("SkillD");
+		pack1.SetWorldPos(mousePosition);
+		FT::SendPacket(pack1);
+
 }
 
 void Rio::onUpdateDSkill(float _deltaTime)
@@ -865,7 +893,7 @@ void Rio::onUpdateCustomState(float _deltaTime)
 	customState_.Update(_deltaTime);
 }
 
-void Rio::onPlayEffect(const std::string& _effectName, IUnit* _victim)
+void Rio::onPlayEffect(const std::string& _effectName, IUnit* _victim, float4 _pos)
 {
 	float4 startPosition = transform_.GetWorldPosition();
 	float arrowSpeed = 1500.f;
@@ -931,6 +959,27 @@ void Rio::onPlayEffect(const std::string& _effectName, IUnit* _victim)
 
 	}
 
+	if ("SkillDShot" == _effectName)
+	{
+		float4 wr = transform_.GetLocalRotation();
+
+		dSkillShotEffect_->GetTransform()->SetWorldPosition(startPosition);
+		dSkillShotEffect_->GetTransform()->SetLocalRotationDegree(wr);
+		dSkillShotEffect_->PlayAwake();
+
+	}
+
+	if ("SkillD" == _effectName)
+	{
+		RioDSkill* skill = level_->CreateActor<RioDSkill>();
+		skill->SetOwner(this);
+		skill->GetTransform()->SetWorldPosition(_pos);
+		skill->SetDamage(stat_.AttackPower * 5);
+		skill->SetWaitTime(0.0f);
+
+		//dSkillEffect_->PlayAwake();
+		//dSkillEffect_->GetTransform()->SetWorldPosition(transform_.GetWorldPosition());
+	}
 }
 
 void Rio::onEffectTransformCheck(float _deltaTime)

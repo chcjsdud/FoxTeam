@@ -188,7 +188,7 @@ protected:
 	virtual void onStartDeath() = 0;
 	virtual void onUpdateDeath(float _deltaTime) = 0;
 
-	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr) = 0;
+	virtual void onPlayEffect(const std::string& _effectName, IUnit* _victim = nullptr, float4 _pos = float4::ZERO) = 0;
 
 
 	// LVUP
@@ -397,7 +397,7 @@ private:
 
 public:
 #pragma region EffectPlay
-	void PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim = nullptr);
+	void PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim = nullptr, float4 _pos = float4::ZERO);
 #pragma endregion
 
 #pragma region RandomSoundPlay

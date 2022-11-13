@@ -970,7 +970,7 @@ void Jackie::onUpdateCustomState(float _deltaTime)
 	customState_.Update(_deltaTime);
 }
 
-void Jackie::onPlayEffect(const std::string& _effectName, IUnit* _victim)
+void Jackie::onPlayEffect(const std::string& _effectName, IUnit* _victim, float4 _pos)
 {
 	if ("BasicAttack" == _effectName)
 	{
