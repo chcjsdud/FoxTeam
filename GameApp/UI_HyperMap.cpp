@@ -60,7 +60,7 @@ void UI_HyperMap::Update(float _DeltaTime)
 	{
 		GetSelectLocation(GameEngineInput::GetInst().GetMouse3DPos());
 
-		if (false == GameEngineInput::GetInst().Down("RButton"))
+		if (false == GameEngineInput::GetInst().Down("LButton"))
 		{
 			SelectedLocation = Location::NONE;
 		}
