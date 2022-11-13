@@ -204,6 +204,7 @@ void Aya::Update(float _deltaTime)
 	{
 		return;
 	}
+
 	if (ammo_ <= 0)
 	{
 		if (reloadTime_ == 0.0f)
@@ -216,10 +217,7 @@ void Aya::Update(float _deltaTime)
 
 		if (renderer_->IsOverrideAnimationEnd() || reloadTime_ > 2.5f)
 		{
-			if (GameServer::GetInstance()->IsOpened())
-			{
-				ammo_ = 6;
-			}
+			ammo_ = 6;
 		
 			CharEffectPacket packtoken;
 			packtoken.SetTargetIndex(myIndex_);
