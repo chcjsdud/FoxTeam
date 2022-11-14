@@ -204,9 +204,9 @@ void UI_Status::SetStatus(CharacterStat* _Mystat)
 	string CriticalChance_String = to_string(CriticalChance);
 	AttachPercent(CriticalChance, CriticalChance_String);
 
-	float CooldownChance = UIStat->CriticalChance;
+	float CooldownChance = UIStat->CooldownReduction;
 	string CooldownChance_String = to_string(UIStat->CooldownReduction);
-	AttachPercent(CriticalChance, CooldownChance_String);
+	AttachPercent(CooldownChance, CooldownChance_String);
 
 	float SDIncrease = UIStat->SkillDamageAmplification;
 	string SDIncrease_String = to_string(UIStat->SkillDamageAmplification);
@@ -255,25 +255,12 @@ void UI_Status::AttachPercent(float _Value, string& _Result)
 	//퍼센트 계산을 위해서 100을 곱함
 	float value = _Value * 100.0f;
 
-
 	if (value >= 100.0f)
 	{
-		//100퍼
-		//100.000000
-		_Result.erase(3,10);
+		value = 100.0f;
 	}
-	else if (value >= 10.0f && value < 100.0f)
-	{
-		//10~99퍼
-		//10.000000
-		_Result.erase(2, 9);
-	}
-	else if (value < 10.0f)
-	{
-		//0~9퍼
-		//0.000000
-		_Result.erase(1, 8);
-	}
+
+	_Result = to_string(static_cast<int>(value));
 
 	_Result += "%";
 
