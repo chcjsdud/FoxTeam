@@ -994,6 +994,7 @@ void Character::gatherItem()
 	ui->GetItemBoxInfo(itemBoxmanager_->GetSelectBox());
 
 	itemBoxmanager_->SetItemBoxUI(ui);
+	ui->Off();
 
 
 	normalState_ << "Gather";
