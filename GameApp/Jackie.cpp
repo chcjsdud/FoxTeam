@@ -184,6 +184,11 @@ void Jackie::Start()
 	DefaultCool_E_ = 24.0f;
 	DefaultCool_R_ = 70.0f;
 	DefaultCool_D_ = 0.5f;
+
+	stat_.SP_Q = 50.0f;
+	stat_.SP_W = 50.0f;
+	stat_.SP_E = 60.0f;
+	stat_.SP_R = 120.0f;
 	
 	//GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Hit_05.png");
 	//hitBase->Cut(3, 3);
@@ -1037,6 +1042,12 @@ void Jackie::onLevelUp()
 		DefaultCool_E_ = 24.0f;
 		DefaultCool_R_ = 70.0f;
 		DefaultCool_D_ = 0.5f;
+
+		stat_.SP_Q = 50.0f;
+		stat_.SP_W = 50.0f;
+		stat_.SP_E = 60.0f;
+		stat_.SP_R = 120.0f;
+
 		break;
 	case 2:
 		DefaultCool_Q_ = 8.5f;
@@ -1044,6 +1055,12 @@ void Jackie::onLevelUp()
 		DefaultCool_E_ = 22.0f;
 		DefaultCool_R_ = 60.0f;
 		DefaultCool_D_ = 0.5f;
+
+		stat_.SP_Q = 60.0f;
+		stat_.SP_W = 60.0f;
+		stat_.SP_E = 70.0f;
+		stat_.SP_R = 150.0f;
+
 		break;
 	case 3:
 		DefaultCool_Q_ = 8.0f;
@@ -1051,6 +1068,11 @@ void Jackie::onLevelUp()
 		DefaultCool_E_ = 20.0f;
 		DefaultCool_R_ = 50.0f;
 		DefaultCool_D_ = 0.5f;
+
+		stat_.SP_Q = 70.0f;
+		stat_.SP_W = 70.0f;
+		stat_.SP_E = 80.0f;
+		stat_.SP_R = 180.0f;
 		break;
 	case 4:
 		DefaultCool_Q_ = 7.5f;
@@ -1058,6 +1080,10 @@ void Jackie::onLevelUp()
 		DefaultCool_E_ = 18.0f;
 		DefaultCool_R_ = 50.0f;
 		DefaultCool_D_ = 0.5f;
+
+		stat_.SP_Q = 80.0f;
+		stat_.SP_W = 80.0f;
+		stat_.SP_E = 90.0f;
 		break;
 	case 5:
 		DefaultCool_Q_ = 7.0f;
@@ -1065,6 +1091,10 @@ void Jackie::onLevelUp()
 		DefaultCool_E_ = 16.0f;
 		DefaultCool_R_ = 50.0f;
 		DefaultCool_D_ = 0.5f;
+
+		stat_.SP_Q = 90.0f;
+		stat_.SP_W = 90.0f;
+		stat_.SP_E = 100.0f;
 		break;
 	default:
 		break;
