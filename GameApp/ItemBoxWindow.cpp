@@ -106,6 +106,12 @@ void ItemBoxWindow::OnGUI()
 
 	LumiaLevel* level = dynamic_cast<LumiaLevel*>(GameEngineCore::CurrentLevel());
 
+	if (nullptr == level ||
+		"LumiaLevel" != level->GetName())
+	{
+		return;
+	}
+
 	std::vector<std::string> vecstr = ItemBoxManager_->GetAreaItemsName(level->GetMap()->GetMapName(mapIndex));
 	vecstr.push_back("Pebbles");
 	vecstr.push_back("Flower");
