@@ -189,6 +189,11 @@ void Yuki::Start()
 	DefaultCool_R_ = 100.0f;
 	DefaultCool_D_ = 30.0f;
 
+	stat_.SP_Q = 90.0f;
+	stat_.SP_W = 50.0f;
+	stat_.SP_E = 90.0f;
+	stat_.SP_R = 120.0f;
+
 	stat_.passive_Count = 4;
 
 	passiveDamage_ = 15.0f;
@@ -1036,26 +1041,46 @@ void Yuki::onLevelUp()
 		DefaultCool_W_ = 14.0f;
 		DefaultCool_E_ = 18.0f;
 		DefaultCool_R_ = 100.0f;
+
+
+		stat_.SP_Q = 90.0f;
+		stat_.SP_W = 50.0f;
+		stat_.SP_E = 90.0f;
+		stat_.SP_R = 120.0f;
 		break;
 	case 2:
 		DefaultCool_W_ = 13.0f;
 		DefaultCool_E_ = 17.0f;
 		DefaultCool_R_ = 90.0f;
+
+
+		stat_.SP_Q = 80.0f;
+		stat_.SP_E = 95.0f;
+		stat_.SP_R = 150.0f;
 		break;
 	case 3:
 		DefaultCool_W_ = 12.0f;
 		DefaultCool_E_ = 16.0f;
 		DefaultCool_R_ = 80.0f;
+		
+		stat_.SP_Q = 70.0f;
+		stat_.SP_E = 100.0f;
+		stat_.SP_R = 180.0f;
 		break;
 	case 4:
 		DefaultCool_W_ = 11.0f;
 		DefaultCool_E_ = 15.0f;
 		DefaultCool_R_ = 80.0f;
+		stat_.SP_Q = 60.0f;
+		stat_.SP_E = 105.0f;
 		break;
 	case 5:
 		DefaultCool_W_ = 10.0f;
 		DefaultCool_E_ = 14.0f;
 		DefaultCool_R_ = 80.0f;
+
+		stat_.SP_Q = 50.0f;
+		stat_.SP_E = 110.0f;
 		break;
 	default:
 		break;
