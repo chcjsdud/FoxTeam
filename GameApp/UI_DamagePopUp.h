@@ -31,8 +31,8 @@ public:
 
 	JobType MyChar;
 
-	void DamageFontAppear(string _DamageValue, float4 _Pos);
-	void DamageFontAppearMonster(string _DamageValue, float4 _Pos);
+	void DamageFontAppear(float4 _Pos, string _DamageValue);
+	void DamageFontAppearMonster(float4 _Pos, string _DamageValue);
 
 protected:
 	virtual void Start();

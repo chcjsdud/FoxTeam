@@ -37,6 +37,8 @@ void PlayerUIController::InitUI()
 	notice_UI = GetLevel()->CreateActor<UI_Notice>();
 	winLose_UI = GetLevel()->CreateActor<UI_WinLose>();
 	hpbars_UI = GetLevel()->CreateActor<UI_HPBars>();
+	damamgepopup_UI = GetLevel()->CreateActor<UI_DamagePopUp>();
+	enemydamamgepopup_UI = GetLevel()->CreateActor<UI_DamagePopUp>();
 	//charfollow_UI = GetLevel()->CreateActor<UI_CharFollow>();
 	minimap_UI = GetLevel()->CreateActor<UI_Minimap>();
 
@@ -65,9 +67,7 @@ void PlayerUIController::UIOff()
 	skill_UI->Off();
 	status_UI->Off();
 	time_UI->Off();
-	//notice_UI->Off();
 	hpbars_UI->Off();
-	//charfollow_UI->Off();
 }
 
 
@@ -96,11 +96,15 @@ void PlayerUIController::Update(float _DeltaTime)
 		return;
 	}
 
+	if (true == GameEngineInput::GetInst().Down("I"))
+	{
+		damamgepopup_UI->DamageFontAppear(float4{ 0.f,0.f }, "10");
+		enemydamamgepopup_UI->DamageFontAppear(float4{ -100.f,-100.f }, "10");
+	}
+
 	Character* myChar = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()];
 	status_UI->SetStatus(myChar->GetStat());
 	hpbars_UI->SetStatus(myChar->GetStat());
-	//float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
-	//charfollow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetMyPlayer().stat_);
 	DayAndNightType SunMoon = GameTimeController::GetInstance()->GetCurrentDayType();
 	float DayVision = (FT::Char::DEFAULT_VISION_RANGE_DAY / 2.f) + 50.f;
 	float NightVision = (FT::Char::DEFAULT_VISION_RANGE_NIGHT / 2.f) + 50.f;
@@ -112,9 +116,6 @@ void PlayerUIController::Update(float _DeltaTime)
 		for (size_t i = 0; i < lumiaLevel->GetCharacterActorList().size(); i++)
 		{
 			UI_CharFollow* follow_UI = GetLevel()->CreateActor<UI_CharFollow>();
-			//float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
-			//follow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetPlayerList()[i].stat_);
-			//lumiaLevel->GetCharacterActorList()[i]->GetTransform();
 			charfollows_.push_back(follow_UI);
 		}
 
@@ -122,9 +123,6 @@ void PlayerUIController::Update(float _DeltaTime)
 		for (size_t i = 0; i < lumiaLevel->GetMonsterActorList().size(); i++)
 		{
 			UI_CharFollow* follow_UI = GetLevel()->CreateActor<UI_CharFollow>();
-			//float4 pos = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetTransform()->GetLocalPosition();
-			//follow_UI->SetFollowInfo(calhelper_->Cal3Dto2D(pos), pm->GetPlayerList()[i].stat_);
-			//lumiaLevel->GetCharacterActorList()[i]->GetTransform();
 			Monstercharfollows_.push_back(follow_UI);
 		}
 

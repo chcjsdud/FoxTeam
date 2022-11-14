@@ -16,6 +16,7 @@
 #include "UI_HPBars.h"
 #include "UI_CalculateHelper.h"
 #include "UI_CharFollow.h"
+#include "UI_DamagePopUp.h"
 
 #include "UI_FOW.h"
 #include "UI_BloodBackground.h"
@@ -108,6 +109,16 @@ public:
 	//	return hypermap_UI;
 	//}
 
+	UI_DamagePopUp* GetDamagePopUpUI()
+	{
+		return damamgepopup_UI;
+	}
+
+	UI_DamagePopUp* GetEnemyDamagePopUpUI()
+	{
+		return enemydamamgepopup_UI;
+	}
+
 	void SetJobType(JobType _MyJob);
 	
 	void UIOff();
@@ -129,6 +140,9 @@ private:
 	UI_Notice* notice_UI;
 	UI_HPBars* hpbars_UI;
 	UI_CharFollow* charfollow_UI;
+	UI_DamagePopUp* damamgepopup_UI;
+	UI_DamagePopUp* enemydamamgepopup_UI;
+
 	UI_Minimap* minimap_UI;
 	UI_CalculateHelper* calhelper_;
 

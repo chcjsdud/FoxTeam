@@ -16,14 +16,15 @@ UI_DamagePopUp::~UI_DamagePopUp()
 {
 }
 
-void UI_DamagePopUp::DamageFontAppear(string _DamageValue, float4 _Pos)
+void UI_DamagePopUp::DamageFontAppear(float4 _Pos, string _DamageValue)
 {
-	HPBar_Renderer->GetTransform()->SetLocalPosition(_Pos);
-	HPBar_Renderer->TextSetting("±¼¸²", "Test", 13, FW1_CENTER, float4::RED);
+	float4 Pos = _Pos + float4{0.f, 60.f, 0.f, 0.f};
+	HPBar_Renderer->GetTransform()->SetLocalPosition(Pos);
+	HPBar_Renderer->TextSetting("HMKMRHD", _DamageValue, 20, FW1_CENTER, float4::BLUE);
 	Time_ = 0.5f;
 }
 
-void UI_DamagePopUp::DamageFontAppearMonster(string _DamageValue, float4 _Pos)
+void UI_DamagePopUp::DamageFontAppearMonster(float4 _Pos, string _DamageValue)
 {
 }
 
@@ -37,7 +38,7 @@ void UI_DamagePopUp::Start()
 		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 		HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
 
-		HPBar_Renderer->TextSetting("±¼¸²", "Test", 11, FW1_CENTER, float4::RED);
+		//HPBar_Renderer->TextSetting("±¼¸²", "", 11, FW1_CENTER, float4::RED);
 	}
 
 }
@@ -56,11 +57,15 @@ void UI_DamagePopUp::Update(float _DeltaTime)
 	}
 	
 	Time_ -= _DeltaTime;
+
 	
+
 	if (Time_ <= 0.0f)
 	{
-		HPBar_Renderer->TextSetting("±¼¸²", "", 13, FW1_CENTER, float4::RED);
+		HPBar_Renderer->Off();
+		return;
+		//HPBar_Renderer->TextSetting("±¼¸²", "", 13, FW1_CENTER, float4::RED);
 	}
 
-
+	HPBar_Renderer->GetTransform()->SetLocalDeltaTimeMove(float4{ 0.f,30.f });
 }
