@@ -8,11 +8,22 @@
 #include "LumiaLevel.h"
 
 UI_DamagePopUp::UI_DamagePopUp()
-	: UIOn(true), MyChar(JobType::NONE)
+	: UIOn(true), MyChar(JobType::NONE), Time_(0.5f)
 {
 }
 
 UI_DamagePopUp::~UI_DamagePopUp()
+{
+}
+
+void UI_DamagePopUp::DamageFontAppear(string _DamageValue, float4 _Pos)
+{
+	HPBar_Renderer->GetTransform()->SetLocalPosition(_Pos);
+	HPBar_Renderer->TextSetting("±¼¸²", "Test", 13, FW1_CENTER, float4::RED);
+	Time_ = 0.5f;
+}
+
+void UI_DamagePopUp::DamageFontAppearMonster(string _DamageValue, float4 _Pos)
 {
 }
 
@@ -23,12 +34,11 @@ void UI_DamagePopUp::Start()
 
 
 	{
-		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIPANEL0);
-		HPBar_Renderer->SetImage("HPBar_UI.png", "PointSmp");
+		HPBar_Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 		HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
-		HPBar_Renderer->GetTransform()->SetLocalScaling(HpBarSize);
-	}
 
+		HPBar_Renderer->TextSetting("±¼¸²", "Test", 11, FW1_CENTER, float4::RED);
+	}
 
 }
 
@@ -44,48 +54,13 @@ void UI_DamagePopUp::Update(float _DeltaTime)
 			HPBar_Renderer->On();
 		}
 	}
-
-	if (true == GameEngineInput::GetInst().Down("Esc"))
-	{
-		if (UIOn == true)
-		{
-			UIOn = false;
-		}
-		else
-		{
-			UIOn = true;
-		}
-	}
-}
-
-void UI_DamagePopUp::SetFollowInfo(float4 _Pos, CharacterStat* _Stat)
-{
-	if (_Stat->HP <= 0.0f)
-	{
-		this->Off();
-	}
-
-	float HPPercent = _Stat->HP / _Stat->HPMax;
-
-	HpBarPos = _Pos;
-	//°è»êµÈ ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¿¡ ¸ÂÃç¼­ ÇÇº¿À» ¸ÂÃá´Ù
-	HpBarPos = HpBarPos + float4{0.f, 80.f, 0.f ,0.f};
 	
-
-	HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
-}
-
-void UI_DamagePopUp::SetFollowInfoMonster(float4 _Pos, MonsterStateInfo _Stat)
-{
-
-	float HPPercent = _Stat.HP_ / _Stat.HPMax_;
-
-	HpBarPos = _Pos;
-	HpBarPos = HpBarPos + float4{ 0.f, 60.f, 0.f ,0.f };
-	HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
-	if (_Stat.HP_ <= 0.0f)
+	Time_ -= _DeltaTime;
+	
+	if (Time_ <= 0.0f)
 	{
-		this->Off();
+		HPBar_Renderer->TextSetting("±¼¸²", "", 13, FW1_CENTER, float4::RED);
 	}
+
 
 }
