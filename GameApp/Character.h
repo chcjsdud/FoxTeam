@@ -532,7 +532,7 @@ protected:
 
 	// 1004 이건호 : UI컨트롤러 멤버변수화
 	PlayerUIController* uiController_;
-
+	bool isMouseOntheUI_;
 
 	// 전투 중 유무의 표시용 변수
 	bool isInfight_;

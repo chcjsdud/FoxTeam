@@ -115,7 +115,7 @@ void ItemBoxManager::BoxSelectUpdate()
 
 	GetLevel()->PushDebugRender(col->GetTransform(), CollisionType::AABBBox3D, float4::BLUE);
 
-	if (false == GameEngineInput::GetInst().Down("LBUTTON"))
+	if (false == GameEngineInput::GetInst().Press("RButton"))
 	{
 		return;
 	}

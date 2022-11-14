@@ -813,13 +813,10 @@ void ItemBoxManager::CreateWeaponItemList()
 	item = CreateEquipmentItem("WoodenTonfa", EquipmentType::WEAPON, ItemTier::UNCOMMON);
 	item->stat_.AttackPower = 23.0f;
 
-	CreateEquipmentItem("PoliceBaton", EquipmentType::WEAPON, ItemTier::RARE);
 	item = CreateEquipmentItem("RyukyuTonfa", EquipmentType::WEAPON, ItemTier::RARE);
 	item->stat_.AttackPower = 38.0f;
 	item->stat_.Defence = 3.0f;
 
-	CreateEquipmentItem("TacticalTonfa", EquipmentType::WEAPON, ItemTier::EPIC);
-	CreateEquipmentItem("MaiSok", EquipmentType::WEAPON, ItemTier::EPIC);
 	item = CreateEquipmentItem("PlasmaTonfa", EquipmentType::WEAPON, ItemTier::EPIC);
 	item->stat_.AttackPower = 40.0f;
 	item->stat_.SkillDamageAmplification = 48.0f;

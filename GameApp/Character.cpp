@@ -107,6 +107,7 @@ Character::Character()
 	, isPlayerWon_(false)
 	, recoveryTimeCheck_(0.0f)
 	, isDebugInvincible_(false)
+	, isMouseOntheUI_(false)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -1071,19 +1072,22 @@ void Character::checkInventoryInteractionLBtn()
 
 void Character::checkInventoryInteractionRBtn()
 {
-	if (false == GameEngineInput::GetInst().Down("RButton"))
-	{
-		return;
-	}
-
 	int SlotNum = uiController_->GetInventoryUI()->SlotMouseCollisionCheck();
 
 	if (-1 == SlotNum)
 	{
+		isMouseOntheUI_ = false;
 		return;
 	}
 
+	isMouseOntheUI_ = true;
+
 	if (nullptr == inventory_[SlotNum])
+	{
+		return;
+	}
+
+	if (false == GameEngineInput::GetInst().Down("RButton"))
 	{
 		return;
 	}
@@ -2385,7 +2389,6 @@ void Character::updateStop(float _deltaTime)
 
 void Character::startRun()
 {
-
 }
 
 void Character::updateRun(float _deltaTime)
