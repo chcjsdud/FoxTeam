@@ -155,6 +155,11 @@ void Aya::Start()
 	DefaultCool_E_ = 19.0f;
 	DefaultCool_R_ = 80.0f;
 	DefaultCool_D_ = 40.0f;
+
+	stat_.SP_Q = 80.0f;
+	stat_.SP_W = 80.0f;
+	stat_.SP_E = 85.0f;
+	stat_.SP_R = 150.0f;
 	// 평타 상대 피격 이펙트
 	GameEngineTexture* hitBase = GameEngineTextureManager::GetInst().Find("FX_BI_Shoot_01.png");
 	hitBase->Cut(2, 2);
@@ -999,6 +1004,10 @@ void Aya::onLevelUp()
 		DefaultCool_E_ = 19.0f;
 		DefaultCool_R_ = 80.0f;
 		DefaultCool_D_ = 40.0f;
+		stat_.SP_Q = 80.0f;
+		stat_.SP_W = 80.0f;
+		stat_.SP_E = 85.0f;
+		stat_.SP_R = 150.0f;
 		break;
 	case 2:
 		DefaultCool_Q_ = 6.0f;
@@ -1006,22 +1015,35 @@ void Aya::onLevelUp()
 		DefaultCool_E_ = 17.0f;
 		DefaultCool_R_ = 60.0f;
 		DefaultCool_D_ = 25.0f;
+
+		stat_.SP_W = 90.0f;
+		stat_.SP_E = 90.0f;
+
 		break;
 	case 3:
 		DefaultCool_Q_ = 5.5f;
 		DefaultCool_W_ = 13.0f;
 		DefaultCool_E_ = 15.0f;
 		DefaultCool_R_ = 40.0f;
+
+		stat_.SP_W = 100.0f;
+		stat_.SP_E = 95.0f;
 		break;
 	case 4:
 		DefaultCool_Q_ = 5.0f;
 		DefaultCool_W_ = 11.0f;
 		DefaultCool_E_ = 13.0f;
+
+		stat_.SP_W = 110.0f;
+		stat_.SP_E = 100.0f;
 		break;
 	case 5:
 		DefaultCool_Q_ = 4.5f;
 		DefaultCool_W_ = 9.0f;
 		DefaultCool_E_ = 11.0f;
+
+		stat_.SP_W = 120.0f;
+		stat_.SP_E = 105.0f;
 		break;
 	default:
 		break;
