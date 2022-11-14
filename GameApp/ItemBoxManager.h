@@ -116,6 +116,11 @@ public:
 		return allItemList_;
 	}
 
+	std::vector<std::string> GetAreaItemsName(const std::string& _area)
+	{
+		return areaItemsName_[_area];
+	}
+
 	bool isOpen()
 	{
 		return bOpen_;
@@ -179,6 +184,7 @@ private:
 private:
 	std::string itemBoxInfoPath_;
 	std::map<std::string, std::vector<ItemBox*>> itemBoxs_;
+	std::map<std::string, std::vector<std::string>> areaItemsName_;
 	ItemBox* selectBox_;
 	bool bOpen_;
 

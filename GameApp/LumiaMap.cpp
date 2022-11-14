@@ -11,24 +11,6 @@
 #include "NavMesh.h"
 #include "PlayerInfoManager.h"
 
-const char* enum_MapName[15] = {
-		"HARBOR",			// 항구			
-		"POND",				// 연못
-		"BEACH",			// 모래사장
-		"UPTOWN",			// 고급 주택가
-		"ALLEY",			// 골목길
-		"HOTEL",			// 호텔
-		"DOWNTOWN",			// 번화가		
-		"HOSPITAL",			// 병원
-		"TEMPLE",			// 절
-		"ARCHERY",			// 양궁장
-		"CEMETERY",			// 묘지
-		"FOREST",			// 숲
-		"FACTORY",			// 공장
-		"CHURCH",			// 성당			
-		"SCHOOL"			// 학교
-};
-
 const char* enum_MonsterName[6] = {
 		"CHICKEN",
 		"WILDDOG",
@@ -52,7 +34,21 @@ LumiaMap::LumiaMap()
 	, gridXCount_(0)
 	, mapScale_(100.0f)
 {
-
+		enum_MapName.push_back("HARBOR");			// 항구			
+		enum_MapName.push_back("POND");				// 연못
+		enum_MapName.push_back("BEACH");			// 모래사장
+		enum_MapName.push_back("UPTOWN");			// 고급 주택가
+		enum_MapName.push_back("ALLEY");			// 골목길
+		enum_MapName.push_back("HOTEL");			// 호텔
+		enum_MapName.push_back("DOWNTOWN");			// 번화가		
+		enum_MapName.push_back("HOSPITAL");			// 병원
+		enum_MapName.push_back("TEMPLE");			// 절
+		enum_MapName.push_back("ARCHERY");			// 양궁장
+		enum_MapName.push_back("CEMETERY");			// 묘지
+		enum_MapName.push_back("FOREST");			// 숲
+		enum_MapName.push_back("FACTORY");			// 공장
+		enum_MapName.push_back("CHURCH");			// 성당			
+		enum_MapName.push_back("SCHOOL");			// 학교
 }
 
 LumiaMap::~LumiaMap()

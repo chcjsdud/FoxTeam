@@ -24,5 +24,7 @@ public:
 	ItemBoxManager* ItemBoxManager_;
 	ItemBox* SelectBox_;
 	std::string itemName;
+	int selectItemIndex;
+	int selectAllItemIndex;
 };
 

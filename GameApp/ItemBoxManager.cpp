@@ -155,6 +155,21 @@ void ItemBoxManager::PushRandomItem(const std::string& _area, const std::string&
 {
 	std::string areaUpperName = GameEngineString::toupper(_area);
 
+	std::map<std::string, std::vector<std::string>>::iterator nameIter = areaItemsName_.find(areaUpperName);
+
+	if (areaItemsName_.end() != nameIter)
+	{
+		(*nameIter).second.push_back(_item);
+	}
+	else
+	{
+		std::vector<std::string> vec;
+		vec.push_back(_item);
+		vec.push_back("Meat");
+		vec.push_back("Leather");
+		areaItemsName_.insert(std::make_pair(areaUpperName, vec));
+	}
+
 	std::map<std::string, std::vector<ItemBox*>>::iterator iter = itemBoxs_.find(areaUpperName);
 
 	if (itemBoxs_.end() == iter)

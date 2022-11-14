@@ -7,10 +7,15 @@
 #include <GameEngine/GameEngineCore.h>
 #include "PlayerInfoManager.h"
 #include "Character.h"
+#include <GameEngine/GameEngineCore.h>
+#include "LumiaLevel.h"
+#include "LumiaMap.h"
 
 ItemBoxWindow::ItemBoxWindow()
 	: ItemBoxManager_(nullptr)
 	, SelectBox_(nullptr)
+	, selectItemIndex(-1)
+	, selectAllItemIndex(-1)
 {
 }
 
@@ -21,8 +26,6 @@ ItemBoxWindow::~ItemBoxWindow()
 
 void ItemBoxWindow::OnGUI()
 {
-	
-
 	ImGui::Text("Inventory");
 
 	std::vector<const char*> invenListName;
@@ -96,14 +99,73 @@ void ItemBoxWindow::OnGUI()
 		}
 	}
 
-	char buf[255]{};
-	memcpy(buf, itemName.c_str(), sizeof(buf));
-	ImGui::InputText("##getiteminput", buf, sizeof(buf));
-	itemName = buf;
+	ImGui::Text("Build Items Current Location");
 
-	if (true == ImGui::Button("GetItem"))
+	CurMainPlayer = PlayerInfoManager::GetInstance()->GetMainCharacter();
+	int mapIndex = static_cast<int>(CurMainPlayer->GetCurLocation());
+
+	LumiaLevel* level = dynamic_cast<LumiaLevel*>(GameEngineCore::CurrentLevel());
+
+	std::vector<std::string> vecstr = ItemBoxManager_->GetAreaItemsName(level->GetMap()->GetMapName(mapIndex));
+	vecstr.push_back("Pebbles");
+	vecstr.push_back("Flower");
+	vecstr.push_back("Branch");
+
+	std::vector<const char*> builditemList;
+
+	for (const auto& cstr : vecstr)
 	{
-		Character* player = PlayerInfoManager::GetInstance()->GetMainCharacter();
-		player->getItem(itemName);
+		for (ItemBase* builditem : CurMainPlayer->GetAllMyBuildItems())
+		{
+			if (cstr == builditem->GetName())
+			{
+				builditemList.push_back(cstr.c_str());
+			}
+		}
 	}
+
+	
+	ImGui::PushItemWidth(200);
+	ImGui::ListBox("##builditemlist", &selectItemIndex, &builditemList[0],
+		static_cast<ImGuiID>(builditemList.size()));
+
+	if (-1 != selectItemIndex)
+	{
+		CurMainPlayer = PlayerInfoManager::GetInstance()->GetMainCharacter();
+		CurMainPlayer->getItem(std::string(builditemList[selectItemIndex]));
+		selectItemIndex = -1;
+	}
+
+
+	ImGui::Text("Build Items All Location");
+
+	builditemList.clear();
+
+	for (ItemBase* builditem : CurMainPlayer->GetAllMyBuildItems())
+	{
+		builditemList.push_back(builditem->GetName().c_str());
+	}
+
+	ImGui::PushItemWidth(200);
+	ImGui::ListBox("##builditemlistAll", &selectAllItemIndex, &builditemList[0],
+		static_cast<ImGuiID>(builditemList.size()));
+
+	if (-1 != selectAllItemIndex)
+	{
+		CurMainPlayer = PlayerInfoManager::GetInstance()->GetMainCharacter();
+		CurMainPlayer->getItem(std::string(builditemList[selectAllItemIndex]));
+		selectAllItemIndex = -1;
+	}
+
+	//char buf[255]{};
+	//memcpy(buf, itemName.c_str(), sizeof(buf));
+	//ImGui::InputText("##getiteminput", buf, sizeof(buf));
+	//itemName = buf;
+
+
+	//if (true == ImGui::Button("GetItem"))
+	//{
+	//	CurMainPlayer = PlayerInfoManager::GetInstance()->GetMainCharacter();
+	//	CurMainPlayer->getItem(itemName);
+	//}
 }
