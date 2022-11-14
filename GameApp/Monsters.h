@@ -61,6 +61,11 @@ public: // inline Get Function
 		return bHidden_; 
 	}
 
+	inline bool IsDead()
+	{
+		return IsDeath_;
+	}
+
 public:
 	void GiveItemToPlayer(int _index);
 

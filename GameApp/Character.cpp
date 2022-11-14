@@ -1386,7 +1386,7 @@ IUnit* Character::getMousePickedCharacter()
 		{
 			mousePickedActor = c->GetActor();
 			Monsters* monster = dynamic_cast<Monsters*>(mousePickedActor);
-			if (nullptr != monster || !monster->IsHidden())
+			if (nullptr != monster && !monster->IsHidden() && !monster->IsDead())
 			{
 				return dynamic_cast<IUnit*>(mousePickedActor);
 			}
