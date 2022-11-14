@@ -29,23 +29,15 @@ VertexOut DeferredLightMap_VS(VertexIn _In)
     Out.ViewPosition = mul(_In.Position, WV_);
     Out.Texcoord = _In.Texcoord;
     
-    //_In.Normal.w = 0.0f;
-    //Out.ViewNormal = normalize(mul(_In.Normal, WV_));
-    //Out.ViewNormal.w = 0.0f;
+    //// 현재게임전용 : Mesh파일내 존재하는 모든 Vertex가 범프계산에 필요한 데이터가 존재하나, 기존맵이 빛의 영향을 받지않게 셋팅되어있으므로 강제 셋팅
+    //float4 Tangent = _In.Tangent;
+    //Tangent.w = 0.0f;
     
-    //_In.BiNormal.w = 0.0f;
-    //Out.ViewBiNormal = normalize(mul(_In.BiNormal, WV_));
-    //Out.ViewBiNormal.w = 0.0f;
+    //float4 Normal = _In.Normal;
+    //Normal.w = 0.0f;
     
-    //_In.Tangent.w = 0.0f;
-    //Out.ViewTangent = normalize(mul(_In.Tangent, WV_));
-    //Out.ViewTangent.w = 0.0f;
+    //float4 BiNormal = float4(cross(Tangent.xyz, Normal.xyz), 0.0f);
     
-    //Out.ViewTangent = normalize(mul(_In.Tangent, WV_));
-    //Out.ViewNormal = normalize(mul(_In.Normal, WV_));
-    //Out.ViewBiNormal = normalize(mul(_In.BiNormal, WV_));
-    
-    // 현재게임전용 : Mesh파일내 존재하는 모든 Vertex가 범프계산에 필요한 데이터가 없으므로 강제로 셋팅
     float4 Tangent = _In.Tangent;
     Tangent.x = 1.0f;
     Tangent.y = 0.0f;
@@ -100,12 +92,15 @@ DeferredOutPut DeferredLightMap_PS(VertexOut _In)
     
     Out.ViewPos = _In.ViewPosition;
     Out.ViewPos.w = 1.0f;
-    Out.ViewNor = _In.ViewNormal;
-    Out.ViewNor.w = 1.0f;
     
     if(0 != IsBump)
     {
         Out.ViewNor = BumpNormalCalculate(NormalTex, WrapSmp, _In.Texcoord, _In.ViewTangent, _In.ViewBiNormal, _In.ViewNormal);
+        Out.ViewNor.w = 1.0f;
+    }
+    else
+    {
+        Out.ViewNor = _In.ViewNormal;
         Out.ViewNor.w = 1.0f;
     }
     

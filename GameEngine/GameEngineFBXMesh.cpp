@@ -344,7 +344,6 @@ void GameEngineFBXMesh::LoadBinormal(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix 
 	fbxsdk::FbxAMatrix conversionMeshMatrix = _MeshMatrix.Transpose();
 	BiNormal = conversionMeshMatrix.MultT(BiNormal);
 
-
 	_ArrVtx[_Index].BINORMAL.x = (float)BiNormal.mData[0];
 	_ArrVtx[_Index].BINORMAL.y = (float)BiNormal.mData[1];
 	_ArrVtx[_Index].BINORMAL.z = -(float)BiNormal.mData[2];
@@ -394,7 +393,6 @@ void GameEngineFBXMesh::LoadTangent(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _
 
 	fbxsdk::FbxAMatrix conversionMeshMatrix = _MeshMatrix.Transpose();
 	Tangent = conversionMeshMatrix.MultT(Tangent);
-
 
 	_ArrVtx[_Index].TANGENT.x = (float)Tangent.mData[0];
 	_ArrVtx[_Index].TANGENT.y = (float)Tangent.mData[1];
@@ -451,7 +449,6 @@ void GameEngineFBXMesh::LoadNormal(fbxsdk::FbxMesh* _Mesh, fbxsdk::FbxAMatrix _M
 	_ArrVtx[_Index].NORMAL.y = (float)Normal.mData[1];
 	_ArrVtx[_Index].NORMAL.z = -(float)Normal.mData[2];
 	_ArrVtx[_Index].NORMAL.w = (float)Normal.mData[3];
-	// _ArrVtx[_Index].Normal.w = 0.0f;
 	_ArrVtx[_Index].NORMAL.Normalize3D();
 }
 
@@ -925,56 +922,6 @@ void GameEngineFBXMesh::VertexBufferCheck()
 		// 
 		FbxMeshSetMaterialSetting(pMeshNode, &DrawMesh);
 
-		// LoadUVInformation(pMesh, VtxData);
-
-
-
-
-		//fbxsdk::FbxStringList UVSetNameList;
-		//pMesh->GetUVSetNames(UVSetNameList);
-		//int uvSetCount = UVSetNameList.GetCount();
-		//for (int uvSetIndex = 0; uvSetIndex < uvSetCount; ++uvSetIndex)
-		//{
-		//	const char* uvSetName = UVSetNameList.GetStringAt(uvSetIndex);
-		//	const fbxsdk::FbxGeometryElementUV* pUVElement = pMesh->GetElementUV(uvSetName);
-		//	if (nullptr == pUVElement)
-		//	{
-		//		continue;
-		//	}
-
-		//	fbxsdk::FbxGeometryElement::EMappingMode eMappingMode = pUVElement->GetMappingMode();
-		//	fbxsdk::FbxGeometryElement::EReferenceMode eReferenceMode = pUVElement->GetReferenceMode();
-		//	bool useIndex = fbxsdk::FbxGeometryElement::EReferenceMode::eDirect != eReferenceMode;
-		//	int IndexCount = true == useIndex ? pUVElement->GetIndexArray().GetCount() : 0;
-
-		//	int nPolygonCount = pMesh->GetPolygonCount();
-		//	for (int PolygonIndex = 0; PolygonIndex < nPolygonCount; ++PolygonIndex)
-		//	{
-		//		const int PolygonSize = pMesh->GetPolygonSize(PolygonIndex);
-		//		if (3 != PolygonSize)
-		//		{
-		//			GameEngineDebug::MsgBoxError("삼각형이 아닌 면이 발견됬습니다.");
-		//		}
-
-		//		for (int PositionInPolygon = 0; PositionInPolygon < PolygonSize; ++PositionInPolygon)
-		//		{
-		//			int convertUvIndex = isOddNegativeScale ? 2 - PositionInPolygon : PositionInPolygon;
-		//			int ControlPointIndex = pMesh->GetPolygonVertex(PolygonIndex, PositionInPolygon);
-		//			int UVMapIndex = (fbxsdk::FbxGeometryElement::EMappingMode::eByControlPoint == eMappingMode) ?
-		//				ControlPointIndex : PolygonIndex * 3 + PositionInPolygon;
-
-		//			int UvIndex = useIndex ? pUVElement->GetIndexArray().GetAt(UVMapIndex) : UVMapIndex;
-		//			fbxsdk::FbxVector2 uvValue = pUVElement->GetDirectArray().GetAt(UvIndex);
-
-		//			VtxData[ControlPointIndex].TEXTURECOORD.x = static_cast<float>(uvValue.mData[0]);
-		//			VtxData[ControlPointIndex].TEXTURECOORD.y = static_cast<float>(uvValue.mData[1]);
-
-		//			// VtxData[ControlPointIndex].TEXTURECOORD.x = static_cast<float>(uvValue.mData[0]);
-		//			// VtxData[ControlPointIndex].TEXTURECOORD.y = 1.f - static_cast<float>(uvValue.mData[1]);
-		//		}
-		//	}
-		//}
-
 		pMesh->GetElementMaterialCount();
 		fbxsdk::FbxGeometryElementMaterial* pGeometryElementMaterial = pMesh->GetElementMaterial();
 		fbxsdk::FbxGeometryElementNormal* pGeometryElementNormal = pMesh->GetElementNormal();
@@ -999,7 +946,6 @@ void GameEngineFBXMesh::VertexBufferCheck()
 			{
 				int ControlPointIndex = pMesh->GetPolygonVertex(PolygonIndex, PositionInPolygon);
 				IndexArray[PositionInPolygon] = ControlPointIndex;
-
 
 				LoadNormal(pMesh, meshMatrix, VtxData, VtxId, ControlPointIndex);
 				LoadTangent(pMesh, meshMatrix, VtxData, VtxId, ControlPointIndex);

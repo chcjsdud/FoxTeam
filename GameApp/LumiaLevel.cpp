@@ -1,12 +1,12 @@
 #include "Precompile.h"
 #include "LumiaLevel.h"
 
-#include <GameEngine/GameEngineRenderWindow.h>
-#include <GameEngine/SKySphereActor.h>
-#include <GameEngine/GameEngineLevelControlWindow.h>
-#include <GameEngine/LightActor.h>
 #include <GameEngine/GameEngineLightComponent.h>
 #include <GameEngine/GameEngineFBXMesh.h>
+#include <GameEngine/GameEngineRenderWindow.h>
+#include <GameEngine/GameEngineLevelControlWindow.h>
+#include <GameEngine/SKySphereActor.h>
+#include <GameEngine/LightActor.h>
 
 #include "ItemBoxWindow.h"
 #include "MonsterDebugWindow.h"
@@ -475,6 +475,9 @@ void LumiaLevel::MapResourceLoad()
 	ItemBoxManager_->UserAllLoad(ItemBoxInfoDir);
 	ItemBoxManager_->GetTransform()->SetLocalScaling(100.0f);
 	ItemBoxManager_->SetGatherItem();
+
+	//=============== Test
+	//GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(NaviMeshDir.PathToPlusFileName("DefferedTest_Alley.fbx"));
 }
 
 void LumiaLevel::CharacterResourceLoad()
