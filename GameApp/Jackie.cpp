@@ -301,6 +301,9 @@ void Jackie::Update(float _deltaTime)
 
 		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalPosition({ 5.0f, 40.0f, 80.0f });
 		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree({ -140.f, 0.0f, -30.0f });
+
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalPosition({ 5.0f, 40.0f, 80.0f });
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalRotationDegree({ -140.f, 0.0f, -30.0f });
 	}
 	else if ("Wait" == curAnimationName_)
 	{
@@ -309,6 +312,9 @@ void Jackie::Update(float _deltaTime)
 
 		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalPosition({ 45.0f, 120.0f, 58.0f });
 		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree({ -164.0f, -317.0f, -82.0f });
+
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalPosition({ 45.0f, 120.0f, 58.0f });
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalRotationDegree({ -164.0f, -317.0f, -82.0f });
 	}
 	else
 	{
@@ -317,6 +323,9 @@ void Jackie::Update(float _deltaTime)
 
 		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 		WeaponSilhouetteRenderer1_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
+
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
+		WeaponOutLineRenderer1_->GetTransform()->SetLocalRotationDegree({ -90.f, 0.0f });
 	}
 
 	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
