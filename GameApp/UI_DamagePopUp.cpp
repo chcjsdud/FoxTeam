@@ -18,9 +18,10 @@ UI_DamagePopUp::~UI_DamagePopUp()
 
 void UI_DamagePopUp::DamageFontAppear(float4 _Pos, string _DamageValue)
 {
-	float4 Pos = _Pos + float4{0.f, 60.f, 0.f, 0.f};
+	float4 Pos = Cal3Dto2D(_Pos);
+	Pos = Pos + float4{0.f, 60.f, 0.f, 0.f};
 	HPBar_Renderer->GetTransform()->SetLocalPosition(Pos);
-	HPBar_Renderer->TextSetting("HMKMRHD", _DamageValue, 20, FW1_CENTER, float4::BLUE);
+	HPBar_Renderer->TextSetting("HMKMRHD", _DamageValue, 21, FW1_CENTER, float4::RED);
 	Time_ = 0.5f;
 }
 

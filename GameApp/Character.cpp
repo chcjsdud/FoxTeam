@@ -1512,7 +1512,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 
 	if (GameServer::GetInstance()->IsOpened())
 	{
-		GetDamagepopup()->DamageFontAppear(float4{ 0.0f,0.0f }, to_string(DMG));
+		GetDamagepopup()->DamageFontAppear(GetTransform()->GetLocalPosition(), to_string(DMG));
 	}
 
 	CharEffectPacket pack;
@@ -3017,7 +3017,7 @@ void Character::PlayEffect(const std::string& _effectName, int _originIndex, IUn
 	if ("DamagePopup" == _effectName)
 	{
 		int DMG = static_cast<int>(_damage);
-		damagePopUp_->DamageFontAppear(float4{0.0f, 0.0f}, to_string(DMG));
+		damagePopUp_->DamageFontAppear(GetTransform()->GetLocalPosition(), to_string(DMG));
 	}
 
 	onPlayEffect(_effectName, _victim, _pos);
