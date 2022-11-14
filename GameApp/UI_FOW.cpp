@@ -41,7 +41,7 @@ void UI_FOW::Start()
 
 
 	fowRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	fowRenderer_->SetImage("nightshade2.png", "LinerSmp");
+	fowRenderer_->SetImage("nightshade.png", "LinerSmp");
 	fowRenderer_->GetTransform()->SetLocalScaling(fowRenderer_->GetCurrentTexture()->GetTextureSize());
 	fowRenderer_->SetAlpha(0.0f);
 	fowRenderer_->Off();
