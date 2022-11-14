@@ -337,6 +337,7 @@ void Character::Update(float _DeltaTime)
 		coolTimer_E_ = 0.5f;
 		coolTimer_R_ = 0.5f;
 		coolTimer_D_ = 0.5f;
+		stat_.SP = stat_.SPMax;
 	}
 
 	if (GameEngineInput::Down("M"))
