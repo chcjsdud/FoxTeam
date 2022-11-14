@@ -105,6 +105,7 @@ public:
 	const std::vector<GameEngineVertex>& GetEyesightVertices() { return eyesightVertices_; }
 	const std::vector<UINT>& GetEysightIndices() { return eyesightIndices_; }
 	Location GetCurLocation() { return curLocation_; }
+	std::list<ItemBase*>& GetAllMyBuildItems() { return allMyBuildItems_; };
 
 	void SetUIController();
 	void SetDirection(float4 _dir) { direction_ = _dir; }
@@ -114,6 +115,7 @@ public:
 	void SetIndex(int _index) { myIndex_ = _index; }
 	void SetMouse(MousePointer* _mouse) { mouse_ = _mouse; }
 	void SetMap(LumiaMap* _map) { currentMap_ = _map; }
+	void SetInventoryItem(ItemBase* _item, int _index) { inventory_[_index] = _item; }
 
 	void SetCharacterDeath();
 	void SetFraggerIndex(int _index);
@@ -216,6 +218,8 @@ private:
 	void initInput();
 	void initState();
 
+public:
+	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
 private:
 	void moveTick(float _deltaTime, const float4& _startPosition);
 
@@ -225,7 +229,6 @@ private:
 	void getEquipItem(EquipmentItem* _item, int _index);
 	void getEquipItem(EquipmentItem* _item);
 	void checkItemBox();
-	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
 	void mixingItem();
 	void gatherItem();
 	void checkBuildItemsRecursive(ItemBase* _item);

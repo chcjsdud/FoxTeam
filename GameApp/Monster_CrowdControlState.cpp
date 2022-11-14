@@ -10,6 +10,8 @@
 #include "LumiaLevel.h"
 #include "LumiaMap.h"
 #include "NavMesh.h"
+#include "ItemBox.h"
+#include "UI_ItemBox.h"
 
 void Monsters::StartHitState()
 {
@@ -81,6 +83,7 @@ void Monsters::StartDeadState()
 	// 현재 상태 지정
 	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::DEAD;
+	IsDeath_ = true;
 }
 
 void Monsters::UpdateDeadState(float _DeltaTime)
@@ -115,6 +118,23 @@ void Monsters::UpdateDeadState(float _DeltaTime)
 			GameClient::GetInstance()->Send(&ChangePacket);
 		}
 	}
+
+	if (nullptr == itemBox_->GetItemBoxUI())
+	{
+		return;
+	}
+
+	int slotIndex = itemBox_->GetItemBoxUI()->SlotMouseCollisionCheck();
+
+	if (-1 == slotIndex)
+	{
+		return;
+	}
+
+	if (true == GameEngineInput::GetInst().Down("LButton"))
+	{
+		GiveItemToPlayer(slotIndex);
+	}
 }
 
 void Monsters::EndDeadState()
@@ -122,6 +142,7 @@ void Monsters::EndDeadState()
 	// MainRenderer Off
 	// -> 잠시 Off
 	MainRenderer_->Off();
+	IsDeath_ = false;
 }
 
 void Monsters::StartStunState()

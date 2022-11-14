@@ -1,10 +1,13 @@
 #include "PreCompile.h"
 #include "ItemBox.h"
 #include "ItemBase.h"
+#include "UI_ItemBox.h"
 
 ItemBox::ItemBox()
 	: col(nullptr)
 	, isGatherBox(false)
+	, itemBoxUI_(nullptr)
+	, bOpen_(false)
 {
 
 }
@@ -50,6 +53,41 @@ bool ItemBox::DeleteItem(int _index)
 	}
 
 	return true;
+}
+
+void ItemBox::Open()
+{
+	if (true == bOpen_)
+	{
+		return;
+	}
+
+	if (itemBoxUI_ != nullptr)
+	{
+		itemBoxUI_->Release();
+		itemBoxUI_ = nullptr;
+	}
+	itemBoxUI_ = GetLevel()->CreateActor<UI_ItemBox>();
+	itemBoxUI_->RenderOn();
+	itemBoxUI_->GetItemBoxInfo(this);
+
+	bOpen_ = true;
+}
+
+void ItemBox::Close()
+{
+	if (false == bOpen_)
+	{
+		return;
+	}
+
+	if (itemBoxUI_ != nullptr)
+	{
+		itemBoxUI_->Release();
+		itemBoxUI_ = nullptr;
+	}
+
+	bOpen_ = false;
 }
 
 void ItemBox::Start()

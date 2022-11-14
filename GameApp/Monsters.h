@@ -15,6 +15,7 @@ class NavFace;
 class NavMesh;
 class LumiaMap;
 class Character;
+class ItemBox;
 class Monsters : public IUnit
 {
 public: // Static Value
@@ -59,6 +60,9 @@ public: // inline Get Function
 	{
 		return bHidden_; 
 	}
+
+public:
+	void GiveItemToPlayer(int _index);
 
 public: // inline Set Function
 	inline void SetMonsterIndex(int _Index)
@@ -296,5 +300,8 @@ protected: // CC Value
 	float StunTime_;																	// Ω∫≈œΩ√∞£
 	float KnockbackTime_;																// ≥ÀπÈΩ√∞£
 	float4 KnockbackSpeed_;																// ≥ÀπÈº”µµ(≥ÀπÈπÊ«‚ * ≥ÀπÈº”µµ)
+
+private:
+	ItemBox* itemBox_;
 };
 

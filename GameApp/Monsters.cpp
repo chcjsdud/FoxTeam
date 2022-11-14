@@ -17,6 +17,66 @@
 #include "NavMesh.h"
 
 #include "Character.h"
+#include "ItemBox.h"
+#include "PlayerInfoManager.h"
+#include "PlayerUIController.h"
+#include "UI_ItemBox.h"
+
+void Monsters::GiveItemToPlayer(int _index)
+{
+	ItemBase* Item = itemBox_->GetItem(_index);
+
+	if (nullptr == Item)
+	{
+		return;
+	}
+
+	std::list<ItemBase*> itemlist = GetLevelConvert<LumiaLevel>()->GetItemBoxManager()->GetAllItemList();
+
+	Character* player = PlayerInfoManager::GetInstance()->GetMainCharacter();
+
+	int Count = 0;
+
+	for (auto& invenItem : player->GetInventory())
+	{
+		if (nullptr != invenItem)
+		{
+			++Count;
+			continue;
+		}
+
+		player->SetInventoryItem(Item, Count);
+
+		player->GetUIController()->GetInventoryUI()->EmptySlot();
+		player->GetUIController()->GetInventoryUI()->GetInventoryInfo(player->GetInventory());
+
+		itemBox_->DeleteItem(_index);
+
+		itemBox_->GetItemBoxUI()->EmptySlot();
+		itemBox_->GetItemBoxUI()->GetItemBoxInfo(itemBox_);
+
+		std::list<ItemBase*>::iterator iter = player->GetAllMyBuildItems().begin();
+
+		for (; iter != player->GetAllMyBuildItems().end(); ++iter)
+		{
+			if ((*iter)->GetName() != Item->GetName())
+			{
+				continue;
+			}
+
+			break;
+		}
+
+		if (iter != player->GetAllMyBuildItems().end())
+		{
+			player->GetAllMyBuildItems().erase(iter);
+		}
+
+		break;
+	}
+
+	player->checkItemRecipes();
+}
 
 void Monsters::LevelUP(LevelUPData _Data)
 {
@@ -653,16 +713,22 @@ void Monsters::CheckBodyCollision(float _DeltaTime)
 			GetLevel()->PushDebugRender(BodyCollider_->GetTransform(), CollisionType::OBBBox3D, float4::BLUE);
 		}
 
-		// 221018 SJH : 임시주석처리
-		//// 마우스 그룹과의 충돌
-		//// 단, 몬스터 완전사망상태이며 피격판정무시상태라면 충돌체크하며, 해당 충돌시 드랍된아이템을 표시
-		//if (MonsterStateType::DEAD == CurStateType_ && true == IsDeath_)
-		//{
-		//	if (true == BodyCollider_->Collision(static_cast<int>(eCollisionGroup::MousePointer)) && true == GameEngineInput::GetInst().Down("LButton"))
-		//	{
-		//		// ItemBox View
-		//	}
-		//}
+		// 마우스 그룹과의 충돌
+		// 단, 몬스터 완전사망상태이며 피격판정무시상태라면 충돌체크하며, 해당 충돌시 드랍된아이템을 표시
+
+		if (false == BodyCollider_->Collision(static_cast<int>(eCollisionGroup::Player)))
+		{
+			itemBox_->Close();
+			return;
+		}
+
+		if (MonsterStateType::DEAD == CurStateType_ && true == IsDeath_)
+		{
+			if (true == BodyCollider_->Collision(static_cast<int>(eCollisionGroup::MouseRay)) && true == GameEngineInput::GetInst().Down("RButton"))
+			{
+				itemBox_->Open();
+			}
+		}
 	}
 }
 
@@ -954,6 +1020,24 @@ void Monsters::Start()
 	InitalizeResourceLoad();				// Initalize Resource Load
 	InitalizeRenderAndAnimation();			// Initalize Renderer And Animation Setting
 	InitalizeCollider();					// Initalize Collider
+
+	std::list<ItemBase*> allItemList = GetLevelConvert<LumiaLevel>()->GetItemBoxManager()->GetAllItemList();
+	
+	itemBox_ = GetLevel()->CreateActor<ItemBox>();
+
+	for (const auto& item : allItemList)
+	{
+		if (std::string::npos != item->GetName().find("Meat") ||
+			std::string::npos != item->GetName().find("Leather"))
+		{
+			if (std::string::npos != item->GetName().find("Armor"))
+			{
+				continue;
+			}
+
+			itemBox_->itemList.push_back(item->Copy());
+		}
+	}
 
 	// ...
 }

@@ -18,10 +18,12 @@ public:
 // Ό³Έν : 
 class ItemBase;
 class GameEngineCollision;
+class UI_ItemBox;
 class ItemBox : public GameEngineActor
 {
 	friend class ItemBoxManager;
 	friend class ItemBoxWindow;
+	friend class Monsters;
 public:
 	ItemBox();
 	~ItemBox();
@@ -29,6 +31,11 @@ public:
 	ItemBox(ItemBox&& _other) noexcept = delete;
 	ItemBox& operator=(const ItemBox& _other) = delete;
 	ItemBox& operator=(const ItemBox&& _other) = delete;
+
+	UI_ItemBox* GetItemBoxUI()
+	{
+		return itemBoxUI_;
+	}
 
 	GameEngineCollision* GetCollision() { return col; }
 	ItemBase* GetItem(int _index);
@@ -39,11 +46,15 @@ public:
 		return isGatherBox;
 	}
 
+	void Open();
+	void Close();
+
 protected:
 	void Start() override;
 	void Update(float _DeltaTime) override;
 
 private:
+
 	ItemBoxInfo info;
 	GameEngineCollision* col;
 	std::string area;
@@ -51,5 +62,8 @@ private:
 	std::list<ItemBase*> itemList;
 
 	bool isGatherBox;
+
+	UI_ItemBox* itemBoxUI_;
+	bool bOpen_;
 };
 
