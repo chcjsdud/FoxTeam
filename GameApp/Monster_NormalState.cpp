@@ -11,6 +11,11 @@ void Monsters::StartAppearState()
 	// 현재 상태 지정
 	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::APPEAR;
+
+	// 현재 레벨에 맞게 스텟 재조정
+	StateInfo_.HP_ = StateInfo_.HPMax_;										// 현재 최대체력으로 초기화
+	StateInfo_.HomingInstinctValue_ = StateInfo_.HomingInstinctValueMax_;	// 최대 귀소본능수치로 초기화
+	StateInfo_.RegenTime_ = StateInfo_.RegenTimeMax_;						// 최대 리젠시간으로 초기화
 }
 
 void Monsters::UpdateAppearState(float _DeltaTime)

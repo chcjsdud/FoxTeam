@@ -22,9 +22,24 @@ void Monsters::LevelUP(LevelUPData _Data)
 {
 	StateInfo_.Level_ += 1;
 	StateInfo_.OffencePower_ += _Data.AttackPower_;					// 공격력
-	StateInfo_.HPMax_ += _Data.HP_;									// 체력(최대체력)
+
+	// 현재 몬스터의 현재체력이 현재 최대체력과 같다면 한번도 피격당하지않은 몬스터로 판단하여
+	// 신규 최대체력으로 현재 체력을 초기화
+	if (StateInfo_.HP_ == StateInfo_.HPMax_)
+	{
+		StateInfo_.HPMax_ += _Data.HP_;									// 체력(최대체력)
+		StateInfo_.HP_ = StateInfo_.HPMax_;
+	}
+	// 아니라면 한번이라도 피격당했으므로 최대체력만 증가
+	else
+	{
+		StateInfo_.HPMax_ += _Data.HP_;									// 체력(최대체력)
+	}
+
 	StateInfo_.Defense_ += _Data.Defence_;							// 방어력
 	StateInfo_.MoveSpeed_ += _Data.MovementSpeed_;					// 이동속도
+
+	// 해당 몬스터의 현재체력이 최대
 }
 
 void Monsters::PickingOutLineOn()
