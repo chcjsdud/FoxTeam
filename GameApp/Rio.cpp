@@ -165,6 +165,11 @@ void Rio::Start()
 	DefaultCool_R_ = 80.0f;
 	DefaultCool_D_ = 25.0f;
 
+	stat_.SP_Q = 0.0f;
+	stat_.SP_W = 50.0f;
+	stat_.SP_E = 50.0f;
+	stat_.SP_R = 100.0f;
+
 	basicHitEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
 	basicHitEffect_->GetAttackRenderer()->SetImage("rioHit2.png", "PointSmp");
 	basicHitEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, -10.0f });
@@ -997,25 +1002,41 @@ void Rio::onLevelUp()
 		DefaultCool_E_ = 8.0f;
 		DefaultCool_R_ = 80.0f;
 		DefaultCool_D_ = 25.0f;
+		stat_.SP_Q = 0.0f;
+		stat_.SP_W = 50.0f;
+		stat_.SP_E = 50.0f;
+		stat_.SP_R = 100.0f;
 		break;
 	case 2:
 		DefaultCool_W_ = 11.0f;
 		DefaultCool_E_ = 7.0f;
 		DefaultCool_R_ = 70.0f;
 		DefaultCool_D_ = 15.0f;
+
+		stat_.SP_W = 60.0f;
+		stat_.SP_E = 60.0f;
+		stat_.SP_R = 120.0f;
 		break;
 	case 3:
 		DefaultCool_W_ = 10.0f;
 		DefaultCool_E_ = 6.0f;
 		DefaultCool_R_ = 60.0f;
+
+		stat_.SP_W = 70.0f;
+		stat_.SP_E = 70.0f;
+		stat_.SP_R = 140.0f;
 		break;
 	case 4:
 		DefaultCool_W_ = 9.0f;
 		DefaultCool_E_ = 5.0f;
+		stat_.SP_W = 80.0f;
+		stat_.SP_E = 80.0f;
 		break;
 	case 5:
 		DefaultCool_W_ = 8.0f;
 		DefaultCool_E_ = 4.0f;
+		stat_.SP_W = 90.0f;
+		stat_.SP_E = 90.0f;
 		break;
 	default:
 		break;
