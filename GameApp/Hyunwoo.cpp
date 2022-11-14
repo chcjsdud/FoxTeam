@@ -439,6 +439,11 @@ void Hyunwoo::changeAnimationGather()
 
 void Hyunwoo::onStartQSkill()
 {
+	if (stat_.SP)
+	{
+
+	}
+
 	timer_collision_Q = 0.0f;
 	timer_end_Q = 0.0f;
 	b_Qhit_ = false;
@@ -515,18 +520,6 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 				{
 					character->Damage((stat_.AttackPower*0.4f) + (50.0f * stat_.Level_q), this);
 
-				//int DMG = static_cast<int>((stat_.AttackPower * 0.4f) + (50.0f * stat_.Level_q));
-				//
-				//if (GameServer::GetInstance()->IsOpened())
-				//{
-				//	character->GetDamagepopup()->DamageFontAppear(float4{0.0f,0.0f}, to_string(DMG));
-				//}
-				//
-				//CharEffectPacket pack;
-				//pack.SetTargetIndex(character->GetIndex());
-				//pack.SetAnimationName("DamagePopup");
-				//pack.SetPopupDamage(DMG);
-				//FT::SendPacket(pack);
 
 					character->Slow(2.0f, 0.4f);
 

@@ -118,7 +118,7 @@ private:	// 금지구역 랜덤생성용
 	int nextProhibitArea1_;
 
 	bool isReserved_;
-
+	bool isFirstAnnounced_;
 private: // 게임 시작 
 
 };

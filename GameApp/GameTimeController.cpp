@@ -190,11 +190,34 @@ void GameTimeController::CreateDailytimes()
 
 void GameTimeController::CalcGameTime(float _DeltaTime)
 {
+
 	// DeltaTime 누적(총 게임진행시간)
 	CurGameTime_ += _DeltaTime;
 
 	// 현재일차에 따라 낮과밤전환 및 일차증가
 	DayAndNightTime_ -= _DeltaTime;							// 낮->밤 or 밤->낮 전환시간 감소
+
+
+	if (false == isFirstAnnounced_)
+	{
+		FT::PlaySoundAllAndSendPacket("Announce_Start_Game_02.wav");
+
+		GameEngineLevel* CurLevel = GameEngineCore::CurrentLevel();
+		LumiaLevel* PlayLevel = dynamic_cast<LumiaLevel*>(CurLevel);
+
+		PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+		PlayLevel->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText("실험이 시작되었습니다. 레이더를 활성화합니다.", 3.f);
+
+		NoticeBroadcastPacket packet;
+		packet.SetString("실험이 시작되었습니다. 레이더를 활성화합니다.");
+		packet.SetTimer(3.0f);
+		if (true == GameServer::GetInstance()->IsOpened())
+		{
+			GameServer::GetInstance()->Send(&packet);
+		}
+
+		isFirstAnnounced_ = true;
+	}
 
 
 	if (Dailytimes_[CurDay_ % 4].DayTime_ * 0.5f >= DayAndNightTime_ && false == isReserved_)	// 낮밤 시간이 절반이 되었을 때 (낮 60초면 30초가 되었을 때)
@@ -572,6 +595,7 @@ GameTimeController::GameTimeController()
 	, nextProhibitArea0_(-1)
 	, nextProhibitArea1_(-1)
 	, isReserved_(false)
+	, isFirstAnnounced_(false)
 {
 }
 

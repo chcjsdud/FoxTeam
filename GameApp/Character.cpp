@@ -1526,7 +1526,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 	if (stat_.HP <= 0.f && false == isPlayerDead_)
 	{
 		//e	FT::PlaySoundAndSendPacket("death.wav", transform_.GetWorldPosition());
-		FT::PlaySoundAllAndSendPacket("Announce_Player_Kill_01.wav");
+	//	FT::PlaySoundAllAndSendPacket("Announce_Player_Kill_01.wav");
 
 		if (GameServer::GetInstance()->IsOpened())
 		{
