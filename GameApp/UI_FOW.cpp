@@ -35,13 +35,13 @@ void UI_FOW::SetFOW(bool _b)
 
 void UI_FOW::Start()
 {
-	ambientRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	ambientRenderer_->SetImage("nightshade.png", "PointSmp");
-	ambientRenderer_->GetTransform()->SetLocalScaling(ambientRenderer_->GetCurrentTexture()->GetTextureSize());
+	//ambientRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
+	//ambientRenderer_->SetImage("nightshade.png", "PointSmp");
+	//ambientRenderer_->GetTransform()->SetLocalScaling(ambientRenderer_->GetCurrentTexture()->GetTextureSize());
 
 
 	fowRenderer_ = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-	fowRenderer_->SetImage("Nightshade2.png", "PointSmp");
+	fowRenderer_->SetImage("nightshade.png", "LinerSmp");
 	fowRenderer_->GetTransform()->SetLocalScaling(fowRenderer_->GetCurrentTexture()->GetTextureSize());
 	fowRenderer_->SetAlpha(0.0f);
 	fowRenderer_->Off();
