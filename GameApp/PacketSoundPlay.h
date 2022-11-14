@@ -13,7 +13,7 @@ public:
 	PacketSoundPlay& operator=(const PacketSoundPlay&& _other) = delete;
 
 public:
-	void SetSound(const std::string& _soundName, const float4& _position);
+	void SetSound(const std::string& _soundName, const float4& _position, bool _bPlayAll = false);
 
 protected:
 	virtual void initPacketID() override;
@@ -26,5 +26,6 @@ protected:
 private:
 	std::string soundName_;
 	float4 position_;
+	bool bPlayAll_;
 };
 

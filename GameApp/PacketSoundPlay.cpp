@@ -9,6 +9,9 @@
 #include "ePacketID.h"
 
 PacketSoundPlay::PacketSoundPlay()
+    : soundName_("")
+    , position_(float4::ZERO)
+    , bPlayAll_(false)
 {
 
 }
@@ -18,10 +21,11 @@ PacketSoundPlay::~PacketSoundPlay()
 
 }
 
-void PacketSoundPlay::SetSound(const std::string& _soundName, const float4& _position)
+void PacketSoundPlay::SetSound(const std::string& _soundName, const float4& _position, bool _bPlayAll)
 {
     soundName_ = _soundName;
     position_ = _position;
+    bPlayAll_ = _bPlayAll;
 }
 
 void PacketSoundPlay::initPacketID()
@@ -33,6 +37,7 @@ void PacketSoundPlay::userSerialize()
 {
     serializer_ << soundName_;
     serializer_ << position_;
+    serializer_ << bPlayAll_;
 
 }
 
@@ -40,6 +45,7 @@ void PacketSoundPlay::userDeserialize()
 {
     serializer_ >> soundName_;
     serializer_ >> position_;
+    serializer_ >> bPlayAll_;
 }
 
 GameEnginePacketBase* PacketSoundPlay::getUserObject()
@@ -56,6 +62,11 @@ void PacketSoundPlay::execute(SOCKET _socketSender, GameEngineSocketInterface* _
 
     GameEngineSoundPlayer player(soundName_);
     player.Play();
+
+    if (bPlayAll_)
+    {
+        return;
+    }
 
     // 아래로 거리에 따라 볼륨 조절하는 부분
     // 루미아 레벨이 아니면 적용하지 않는다.

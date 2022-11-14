@@ -32,7 +32,23 @@ void FT::PlaySoundAndSendPacket(const std::string& _name, const float4& _positio
 		packet.SetSound(_name, _position);
 		FT::SendPacket(packet);
 	}
+}
 
+void FT::PlaySoundAllAndSendPacket(const std::string& _name)
+{
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName(_name);
+		PacketSoundPlay packet;
+		packet.SetSound(_name, float4::ZERO, true);
+		FT::SendPacket(packet);
+	}
+	else if (GameClient::GetInstance()->IsConnected())
+	{
+		PacketSoundPlay packet;
+		packet.SetSound(_name, float4::ZERO, true);
+		FT::SendPacket(packet);
+	}
 }
 
 
