@@ -640,6 +640,12 @@ void LumiaLevel::CreateLevelInput()
 	{
 		GameEngineInput::GetInst().CreateKey("MonsterDebugWindowOnOrOff", VK_LCONTROL);
 	}
+
+	// Test Related Key
+	if (false == GameEngineInput::GetInst().IsKey("ForcedChangeDayAndNight"))				// 碍力 撤/广 傈券虐 积己
+	{
+		GameEngineInput::GetInst().CreateKey("ForcedChangeDayAndNight", 'v');
+	}
 }
 
 void LumiaLevel::AddSocketHandle()
@@ -1581,6 +1587,12 @@ void LumiaLevel::CheckLevelRelatedInputKey()
 			CurMap_->ToggleNavMeshRender();
 		}
 	}
+
+	// 碍力 撤/广 傈券
+	if (true == GameEngineInput::GetInst().Down("ForcedChangeDayAndNight"))
+	{
+		GameTimeController::GetInstance()->DayAndNightForecedConversion();
+	}
 }
 
 LumiaLevel::LumiaLevel()
@@ -1602,9 +1614,9 @@ void LumiaLevel::LevelStart()
 {
 	// Create LumiaLevel Input
 	CreateLevelInput();
+
+	// 
 	GetMainCamera()->DebugOn();
-
-
 }
 
 void LumiaLevel::LevelUpdate(float _DeltaTime)

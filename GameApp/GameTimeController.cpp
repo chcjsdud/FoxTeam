@@ -143,19 +143,11 @@ void GameTimeController::GuestUpdate(float _GameTime, DayAndNightType _Type, int
 
 void GameTimeController::DayAndNightForecedConversion()
 {
-	// 강제로 낮/밤 전환시 이전 정보를 저장
-
-
-
-	// 낮/밤 전환
-
-
-
-
-	// 강제전환 Flag On
-
-
-
+	// 강제 낮/밤 시간 초기화하여 전환
+	if (true == GameServer::GetInstance()->IsOpened())
+	{
+		DayAndNightTime_ = 1.0f;
+	}
 }
 
 void GameTimeController::CreateDailytimes()
