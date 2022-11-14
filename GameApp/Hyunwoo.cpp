@@ -22,6 +22,7 @@
 #include "MonsterCrowdControlPacket.h"
 #include "Monsters.h"
 #include "UI_DamagePopUp.h"
+#include "PlayerUIController.h"
 
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
@@ -439,10 +440,19 @@ void Hyunwoo::changeAnimationGather()
 
 void Hyunwoo::onStartQSkill()
 {
-	if (stat_.SP)
+	if (stat_.SP <	(50.0f + (stat_.Level_q * 10.0f)))
 	{
-
+		uiController_->GetNoticeUI()->SetText("SP가 부족해 스킬을 사용할 수 없습니다!", 1.5f);
+		mainState_.ChangeState("NormalState", true);
+		normalState_.ChangeState("Watch", true);
+		return;
 	}
+	else
+	{
+		stat_.SP -= (50.0f + (stat_.Level_q * 10.0f));
+	}
+	
+	// 지금은 사용할 수 없습니다!
 
 	timer_collision_Q = 0.0f;
 	timer_end_Q = 0.0f;

@@ -2239,72 +2239,99 @@ void Character::updateNormalState(float _deltaTime)
 {
 	if (bFocused_)
 	{
-		if (true == GameEngineInput::GetInst().Down("Q") && false == bCoolQ_)
+		if (true == GameEngineInput::GetInst().Down("Q"))
 		{
-			if (uiController_ != nullptr)
+			if (false == bCoolQ_)
 			{
-				uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetImage("cooltime_mask.png", "PointSmp");
-				uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(1.0f);
-				uiController_->GetSkillUI()->GetCoolTimeMaskQ()->On();
+				if (uiController_ != nullptr)
+				{
+					uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetImage("cooltime_mask.png", "PointSmp");
+					uiController_->GetSkillUI()->GetCoolTimeMaskQ()->SetAlpha(1.0f);
+					uiController_->GetSkillUI()->GetCoolTimeMaskQ()->On();
+				}
+
+				bCoolQ_ = true;
+				coolTimer_Q_ = DefaultCool_Q_;
+				mainState_.ChangeState("AttackState", true);
+				attackState_.ChangeState("QSkill", true);
 			}
-			bCoolQ_ = true;
-			coolTimer_Q_ = DefaultCool_Q_;
-			mainState_.ChangeState("AttackState", true);
-			attackState_.ChangeState("QSkill", true);
-
-
-			return;
-		}
-		else
-		{
-			// 쿨입니다 <- 나래이션 띄우기
-		}
-
-		if (true == GameEngineInput::GetInst().Down("W") && false == bCoolW_)
-		{
-			if (uiController_ != nullptr)
+			else
 			{
-				uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetImage("cooltime_mask.png", "PointSmp");
-				uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetAlpha(1.0f);
-				uiController_->GetSkillUI()->GetCoolTimeMaskW()->On();
+				uiController_->GetNoticeUI()->SetText("지금은 사용할 수 없습니다!", 2.f);
 			}
-			bCoolW_ = true;
-			coolTimer_W_ = DefaultCool_W_;
-			mainState_.ChangeState("AttackState", true);
-			attackState_.ChangeState("WSkill", true);
-
 			return;
 		}
 
-		if (true == GameEngineInput::GetInst().Down("E") && false == bCoolE_)
+
+		if (true == GameEngineInput::GetInst().Down("W"))
 		{
-			if (uiController_ != nullptr)
+			if (false == bCoolW_)
 			{
-				uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetImage("cooltime_mask.png", "PointSmp");
-				uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetAlpha(1.0f);
-				uiController_->GetSkillUI()->GetCoolTimeMaskE()->On();
+				if (uiController_ != nullptr)
+				{
+					uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetImage("cooltime_mask.png", "PointSmp");
+					uiController_->GetSkillUI()->GetCoolTimeMaskW()->SetAlpha(1.0f);
+					uiController_->GetSkillUI()->GetCoolTimeMaskW()->On();
+				}
+				bCoolW_ = true;
+				coolTimer_W_ = DefaultCool_W_;
+				mainState_.ChangeState("AttackState", true);
+				attackState_.ChangeState("WSkill", true);
 			}
-			bCoolE_ = true;
-			coolTimer_E_ = DefaultCool_E_;
-			mainState_.ChangeState("AttackState", true);
-			attackState_.ChangeState("ESkill", true);
+			else
+			{
+				uiController_->GetNoticeUI()->SetText("지금은 사용할 수 없습니다!", 2.f);
+			}
 
 
 			return;
 		}
 
-		if (true == GameEngineInput::GetInst().Down("R") && false == bCoolR_)
+		if (true == GameEngineInput::GetInst().Down("E"))
 		{
-			if (uiController_ != nullptr)
+			if (false == bCoolE_)
 			{
-				uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetImage("cooltime_mask.png", "PointSmp");
-				uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetAlpha(1.0f);
-				uiController_->GetSkillUI()->GetCoolTimeMaskR()->On();
+				if (uiController_ != nullptr)
+				{
+					uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetImage("cooltime_mask.png", "PointSmp");
+					uiController_->GetSkillUI()->GetCoolTimeMaskE()->SetAlpha(1.0f);
+					uiController_->GetSkillUI()->GetCoolTimeMaskE()->On();
+				}
+				bCoolE_ = true;
+				coolTimer_E_ = DefaultCool_E_;
+				mainState_.ChangeState("AttackState", true);
+				attackState_.ChangeState("ESkill", true);
 			}
-			bCoolR_ = true;
-			coolTimer_R_ = DefaultCool_R_;
-			mainState_.ChangeState("AttackState", true);
-			attackState_.ChangeState("RSkill", true);
+			else
+			{
+				uiController_->GetNoticeUI()->SetText("지금은 사용할 수 없습니다!", 2.f);
+			}
+			
+
+
+			return;
+		}
+
+		if (true == GameEngineInput::GetInst().Down("R"))
+		{
+			if (false == bCoolR_)
+			{
+				if (uiController_ != nullptr)
+				{
+					uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetImage("cooltime_mask.png", "PointSmp");
+					uiController_->GetSkillUI()->GetCoolTimeMaskR()->SetAlpha(1.0f);
+					uiController_->GetSkillUI()->GetCoolTimeMaskR()->On();
+				}
+				bCoolR_ = true;
+				coolTimer_R_ = DefaultCool_R_;
+				mainState_.ChangeState("AttackState", true);
+				attackState_.ChangeState("RSkill", true);
+			}
+			else
+			{
+				uiController_->GetNoticeUI()->SetText("지금은 사용할 수 없습니다!", 2.f);
+			}
+
 
 
 			return;
@@ -2312,16 +2339,25 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("D") && false == bCoolD_)
 		{
-			if (uiController_ != nullptr)
+			if (false == bCoolD_)
 			{
-				uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetImage("cooltime_mask.png", "PointSmp");
-				uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetAlpha(1.0f);
-				uiController_->GetSkillUI()->GetCoolTimeMaskD()->On();
+				if (uiController_ != nullptr)
+				{
+					uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetImage("cooltime_mask.png", "PointSmp");
+					uiController_->GetSkillUI()->GetCoolTimeMaskD()->SetAlpha(1.0f);
+					uiController_->GetSkillUI()->GetCoolTimeMaskD()->On();
+				}
+				bCoolD_ = true;
+				coolTimer_D_ = DefaultCool_D_;
+				mainState_.ChangeState("AttackState", true);
+				attackState_.ChangeState("DSkill", true);
 			}
-			bCoolD_ = true;
-			coolTimer_D_ = DefaultCool_D_;
-			mainState_.ChangeState("AttackState", true);
-			attackState_.ChangeState("DSkill", true);
+			else
+			{
+				uiController_->GetNoticeUI()->SetText("지금은 사용할 수 없습니다!", 2.f);
+
+			}
+		
 
 			return;
 		}
@@ -2535,12 +2571,13 @@ void Character::updateCraft(float _deltaTime)
 {
 	if (renderer_->IsCurrentAnimationEnd())
 	{
+		
 		mixingItem();
 		normalState_ << "Watch";
 		return;
 	}
 
-	if (normalState_.GetTime() > 8.0f)
+	if (normalState_.GetTime() > 2.0f)
 	{
 		mixingItem();
 		normalState_ << "Watch";
