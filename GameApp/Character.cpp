@@ -2241,6 +2241,17 @@ void Character::updateNormalState(float _deltaTime)
 	{
 		if (true == GameEngineInput::GetInst().Down("Q"))
 		{
+			if (stat_.SP < stat_.SP_Q)
+			{
+				uiController_->GetNoticeUI()->SetText("SP가 부족하여 사용할 수 없습니다!", 2.f);
+				return;
+			}
+			else
+			{
+				stat_.SP -= stat_.SP_Q;
+			}
+
+
 			if (false == bCoolQ_)
 			{
 				if (uiController_ != nullptr)
@@ -2265,6 +2276,16 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("W"))
 		{
+			if (stat_.SP < stat_.SP_W)
+			{
+				uiController_->GetNoticeUI()->SetText("SP가 부족하여 사용할 수 없습니다!", 2.f);
+				return;
+			}
+			else
+			{
+				stat_.SP -= stat_.SP_W;
+			}
+
 			if (false == bCoolW_)
 			{
 				if (uiController_ != nullptr)
@@ -2289,6 +2310,17 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("E"))
 		{
+			if (stat_.SP < stat_.SP_E)
+			{
+				uiController_->GetNoticeUI()->SetText("SP가 부족하여 사용할 수 없습니다!", 2.f);
+				return;
+			}
+			else
+			{
+				stat_.SP -= stat_.SP_E;
+			}
+
+
 			if (false == bCoolE_)
 			{
 				if (uiController_ != nullptr)
@@ -2314,6 +2346,17 @@ void Character::updateNormalState(float _deltaTime)
 
 		if (true == GameEngineInput::GetInst().Down("R"))
 		{
+
+			if (stat_.SP < stat_.SP_R)
+			{
+				uiController_->GetNoticeUI()->SetText("SP가 부족하여 사용할 수 없습니다!", 2.f);
+				return;
+			}
+			else
+			{
+				stat_.SP -= stat_.SP_R;
+			}
+
 			if (false == bCoolR_)
 			{
 				if (uiController_ != nullptr)

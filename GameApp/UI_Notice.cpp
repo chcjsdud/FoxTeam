@@ -35,7 +35,7 @@ void UI_Notice::Start()
 		//폰트출력용
 		FontRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
 		FontRenderer->GetTransform()->SetLocalPosition(Font_Pos);
-		FontRenderer->TextSetting("HMKMRHD", "Test", 12, FW1_CENTER);
+		FontRenderer->TextSetting("굴림", "Test", 16, FW1_CENTER);
 	}
 
 	BackGroundRenderer->Off();
@@ -125,7 +125,7 @@ void UI_Notice::SetText(string _Text, float _Time)
 	FadeWaitTime = (_Time - FadeTime);
 
 
-	FontRenderer->TextSetting("HMKMRHD", _Text, 15, FW1_CENTER);
+	FontRenderer->TextSetting("굴림", _Text, 18, FW1_CENTER);
 	Changing_Flag = true;
 }
 

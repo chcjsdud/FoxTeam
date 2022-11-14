@@ -60,6 +60,11 @@ public:
 	//1109 이건호 : 유키나 아야같은 소모하는 패시브용 int
 	int passive_Count;
 
+	float SP_Q;
+	float SP_W;
+	float SP_E;
+	float SP_R;
+
 public:
 	// 기본 세팅은 리오 기준으로 되어있음
 	CharacterStat()
@@ -99,6 +104,10 @@ public:
 		, Level_passive(1)
 		, isUnstoppable_(false)
 		, passive_Count(0)
+		, SP_Q(0.0f)
+		, SP_W(0.0f)
+		, SP_E(0.0f)
+		, SP_R(0.0f)
 	{
 
 	}

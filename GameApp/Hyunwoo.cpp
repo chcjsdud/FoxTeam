@@ -187,7 +187,11 @@ void Hyunwoo::Start()
 	DefaultCool_R_ = 65.0f;
 	DefaultCool_D_ = 10.0f;
 
-	
+	stat_.SP_Q = 50.0f;
+	stat_.SP_W = 50.0f;
+	stat_.SP_E = 70.0f;
+	stat_.SP_R = 150.0f;
+
 	SetEquipBuildItem("ImperialBurgonet", EquipmentType::HEAD);
 	SetEquipBuildItem("CommandersArmor", EquipmentType::CHEST);
 	SetEquipBuildItem("TindalosBand", EquipmentType::ARM);
@@ -440,19 +444,6 @@ void Hyunwoo::changeAnimationGather()
 
 void Hyunwoo::onStartQSkill()
 {
-	if (stat_.SP <	(50.0f + (stat_.Level_q * 10.0f)))
-	{
-		uiController_->GetNoticeUI()->SetText("SP가 부족해 스킬을 사용할 수 없습니다!", 1.5f);
-		mainState_.ChangeState("NormalState", true);
-		normalState_.ChangeState("Watch", true);
-		return;
-	}
-	else
-	{
-		stat_.SP -= (50.0f + (stat_.Level_q * 10.0f));
-	}
-	
-	// 지금은 사용할 수 없습니다!
 
 	timer_collision_Q = 0.0f;
 	timer_end_Q = 0.0f;
@@ -1061,6 +1052,11 @@ void Hyunwoo::onLevelUp()
 		DefaultCool_E_ = 18.0f;
 		DefaultCool_R_ = 65.0f;
 		DefaultCool_D_ = 10.0f;
+
+		stat_.SP_Q = 50.0f;
+		stat_.SP_W = 50.0f;
+		stat_.SP_E = 70.0f;
+		stat_.SP_R = 150.0f;
 		break;
 	case 2:
 		DefaultCool_Q_ = 7.5f;
@@ -1068,6 +1064,9 @@ void Hyunwoo::onLevelUp()
 		DefaultCool_E_ = 17.0f;
 		DefaultCool_R_ = 55.0f;
 		DefaultCool_D_ = 6.0f;
+
+		stat_.SP_Q = 60.0f;
+		stat_.SP_E = 75.0f;
 		break;
 	case 3:
 		DefaultCool_Q_ = 6.5f;
@@ -1075,6 +1074,9 @@ void Hyunwoo::onLevelUp()
 		DefaultCool_E_ = 16.0f;
 		DefaultCool_R_ = 50.0f;
 		DefaultCool_D_ = 6.0f;
+
+		stat_.SP_Q = 70.0f;
+		stat_.SP_E = 80.0f;
 		break;
 	case 4:
 		DefaultCool_Q_ = 5.5f;
@@ -1082,6 +1084,9 @@ void Hyunwoo::onLevelUp()
 		DefaultCool_E_ = 15.0f;
 		DefaultCool_R_ = 50.0f;
 		DefaultCool_D_ = 6.0f;
+
+		stat_.SP_Q = 80.0f;
+		stat_.SP_E = 85.0f;
 		break;
 	case 5:
 		DefaultCool_Q_ = 4.5f;
@@ -1089,6 +1094,9 @@ void Hyunwoo::onLevelUp()
 		DefaultCool_E_ = 14.0f;
 		DefaultCool_R_ = 50.0f;
 		DefaultCool_D_ = 6.0f;
+
+		stat_.SP_Q = 90.0f;
+		stat_.SP_E = 90.0f;
 		break;
 	default:
 		break;
