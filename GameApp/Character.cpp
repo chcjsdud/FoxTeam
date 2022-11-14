@@ -710,7 +710,7 @@ void Character::checkItemBox()
 
 	if (true == itemBoxmanager_->isOpen())
 	{
-		if (true == GameEngineInput::GetInst().Down("RButton"))
+		if (true == GameEngineInput::GetInst().Down("LButton"))
 		{
 			int SlotNum = itemBoxmanager_->GetItemBoxUI()->SlotMouseCollisionCheck();
 
