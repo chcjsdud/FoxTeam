@@ -106,6 +106,8 @@ public:
 	const std::vector<UINT>& GetEysightIndices() { return eyesightIndices_; }
 	Location GetCurLocation() { return curLocation_; }
 	std::list<ItemBase*>& GetAllMyBuildItems() { return allMyBuildItems_; };
+	UI_DamagePopUp* GetDamagepopup() { return damagePopUp_; }
+
 
 	void SetUIController();
 	void SetDirection(float4 _dir) { direction_ = _dir; }

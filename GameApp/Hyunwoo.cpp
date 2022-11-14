@@ -21,6 +21,7 @@
 #include "SlowEffect.h"
 #include "MonsterCrowdControlPacket.h"
 #include "Monsters.h"
+#include "UI_DamagePopUp.h"
 
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
@@ -513,6 +514,20 @@ void Hyunwoo::onUpdateQSkill(float _deltaTime)
 				if (nullptr != character)
 				{
 					character->Damage((stat_.AttackPower*0.4f) + (50.0f * stat_.Level_q), this);
+
+				//int DMG = static_cast<int>((stat_.AttackPower * 0.4f) + (50.0f * stat_.Level_q));
+				//
+				//if (GameServer::GetInstance()->IsOpened())
+				//{
+				//	character->GetDamagepopup()->DamageFontAppear(float4{0.0f,0.0f}, to_string(DMG));
+				//}
+				//
+				//CharEffectPacket pack;
+				//pack.SetTargetIndex(character->GetIndex());
+				//pack.SetAnimationName("DamagePopup");
+				//pack.SetPopupDamage(DMG);
+				//FT::SendPacket(pack);
+
 					character->Slow(2.0f, 0.4f);
 
 					CharCrowdControlPacket ccPacket;

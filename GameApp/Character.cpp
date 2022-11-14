@@ -236,6 +236,7 @@ void Character::Start()
 	equipBuildItem_.resize(static_cast<int>(EquipmentType::MAX));
 
 	damagePopUp_ = GetLevel()->CreateActor<UI_DamagePopUp>();
+	damagePopUp_->SetParent(this);
 }
 
 void Character::Update(float _DeltaTime)
@@ -1498,7 +1499,6 @@ void Character::ChangeOverrideAnimation(const std::string& _animationName, const
 
 void Character::Damage(float _Amount, IUnit* _Target)
 {
-
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	ResetInfight();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
@@ -1508,18 +1508,17 @@ void Character::Damage(float _Amount, IUnit* _Target)
 		return;
 	}
 
-
 	int DMG = static_cast<int>(_Amount);
+
 	if (GameServer::GetInstance()->IsOpened())
 	{
-		damagePopUp_->DamageFontAppear(float4{ 0.0f,0.0f }, to_string(DMG));
+		GetDamagepopup()->DamageFontAppear(float4{ 0.0f,0.0f }, to_string(DMG));
 	}
-
 
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("DamagePopup");
-	pack.SetPopupDamage(_Amount);
+	pack.SetPopupDamage(DMG);
 	FT::SendPacket(pack);
 
 	stat_.HP -= _Amount;
@@ -1551,9 +1550,6 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				pack.SetTargetIndex(myIndex_);
 				pack.SetAnimationName("Death_Explode");
 				FT::SendPacket(pack);
-
-
-
 			}
 			else if (_Target->UnitType_ == UnitType::CHARACTER)
 			{
@@ -1591,6 +1587,16 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				pack.SetTargetIndex(myIndex_);
 				pack.SetAnimationName("Death");
 				FT::SendPacket(pack);
+
+				if (true == GameServer::GetInstance()->IsOpened())
+				{
+					level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText(pm->GetNickname() + "가 몬스터에게 살해당했습니다.", 3.0f);
+				}
+				NoticeBroadcastPacket packet;
+				packet.SetString(pm->GetNickname() + "가 몬스터에게 살해당했습니다.");
+				packet.SetTimer(3.0f);
+
+				GameServer::GetInstance()->Send(&packet);
 			}
 
 

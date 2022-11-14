@@ -119,11 +119,22 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 		}
 		else if (worldPos_ != float4::ZERO)
 		{
-			targetChar->PlayEffect(effectAnimationName_, targetIndex_, nullptr, worldPos_);
+
+			if (popupDamageCount_ != 0)
+			{
+				targetChar->PlayEffect(effectAnimationName_, targetIndex_, nullptr, worldPos_, popupDamageCount_);
+			}
+			else
+			{
+
+				targetChar->PlayEffect(effectAnimationName_, targetIndex_, nullptr, worldPos_);
+			}
+
+		
 		}
 		else
 		{
-			targetChar->PlayEffect(effectAnimationName_, targetIndex_);
+			targetChar->PlayEffect(effectAnimationName_, targetIndex_, nullptr, float4::ZERO, popupDamageCount_);
 		}
 	}
 	else if (victimType_ == static_cast<int>(UnitType::MONSTER))
