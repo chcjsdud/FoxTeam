@@ -35,6 +35,7 @@
 #include "GameTimeController.h"
 #include "ProhibitedArea.h"
 #include "Monsters.h"
+#include "NoticeBroadcastPacket.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -1495,6 +1496,8 @@ void Character::ChangeOverrideAnimation(const std::string& _animationName, const
 
 void Character::Damage(float _Amount, IUnit* _Target)
 {
+
+	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	ResetInfight();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 
@@ -1508,6 +1511,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 	if (stat_.HP <= 0.f && false == isPlayerDead_)
 	{
 		//e	FT::PlaySoundAndSendPacket("death.wav", transform_.GetWorldPosition());
+		FT::PlaySoundAllAndSendPacket("Announce_Player_Kill_01.wav");
 
 		if (GameServer::GetInstance()->IsOpened())
 		{
@@ -1525,10 +1529,14 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::NONE));
 				deathpacket.SetFraggerIndex(-3);
 
+				fraggerIndex_ = -3;
+
 				CharEffectPacket pack;
 				pack.SetTargetIndex(myIndex_);
 				pack.SetAnimationName("Death_Explode");
 				FT::SendPacket(pack);
+
+
 
 			}
 			else if (_Target->UnitType_ == UnitType::CHARACTER)
@@ -1543,6 +1551,16 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				pack.SetTargetIndex(myIndex_);
 				pack.SetAnimationName("Death");
 				FT::SendPacket(pack);
+
+				if (true == GameServer::GetInstance()->IsOpened())
+				{
+					level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText(pm->GetNickname() + "가 " + pm->GetPlayerList()[tmpIndex].playerNickname_ + " 에게 살해당했습니다.", 3.0f);
+				}
+				NoticeBroadcastPacket packet;
+				packet.SetString(pm->GetNickname() + "가 " + pm->GetPlayerList()[tmpIndex].playerNickname_ + " 에게 살해당했습니다.");
+				packet.SetTimer(3.0f);
+
+				GameServer::GetInstance()->Send(&packet);
 			}
 			else if (_Target->UnitType_ == UnitType::MONSTER)
 			{
@@ -1550,6 +1568,8 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				deathEffect_->PlayAwake(false);
 				deathpacket.SetFraggerType(static_cast<int>(UnitType::MONSTER));
 				deathpacket.SetFraggerIndex(-2);
+
+				fraggerIndex_ = -2;
 
 				CharEffectPacket pack;
 				pack.SetTargetIndex(myIndex_);
@@ -2887,6 +2907,8 @@ void Character::startPlayerDeath()
 	{
 		uiController_->UIOff();
 		uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
+
+		
 
 		if (fraggerIndex_ == -1)
 		{
