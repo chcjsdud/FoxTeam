@@ -32,7 +32,7 @@ void UI_Equip::Start()
 
 	BackGroundPos = { -215.0f, -319.0f, 0.0f };
 	BasicSlotPos = { -255.0f, -303.0f, -1.0f };
-	SlotXPivot = { 41.0f, 0.0f, 0.0f };
+	SlotXPivot = { 40.0f, 0.0f, 0.0f };
 	SlotYPivot = { 0.0f, -33.0f, 0.0f };
 	SlotSize = { 36.f,23.f };
 
