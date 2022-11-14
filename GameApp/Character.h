@@ -576,4 +576,7 @@ protected:
 
 protected:
 	GameEngineRandom randomGenerator;
+
+private:
+	bool isDebugInvincible_;
 };

@@ -106,6 +106,7 @@ Character::Character()
 	, hyperLocation_(Location::NONE)
 	, isPlayerWon_(false)
 	, recoveryTimeCheck_(0.0f)
+	, isDebugInvincible_(false)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -286,7 +287,12 @@ void Character::Update(float _DeltaTime)
 	}
 
 	CoolTimeCheck(_DeltaTime);
-	ProhibitedAreaCheck(_DeltaTime);
+
+	if (false == isDebugInvincible_)
+	{
+		ProhibitedAreaCheck(_DeltaTime);
+	}
+
 	checkCurrentNavFace();
 	checkItemBox();
 	checkInventoryInteraction();
@@ -310,6 +316,11 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
 
 
+	}
+
+	if (GameEngineInput::Down("I"))
+	{
+		isDebugInvincible_ = !isDebugInvincible_;
 	}
 
 	if (GameEngineInput::Down("Z"))
