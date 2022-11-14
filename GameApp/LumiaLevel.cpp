@@ -1581,11 +1581,6 @@ void LumiaLevel::CheckLevelRelatedInputKey()
 			CurMap_->ToggleNavMeshRender();
 		}
 	}
-
-	if (GameEngineInput::Up("I") && nullptr != ItemListWindow_)
-	{
-		ItemListWindow_->On();
-	}
 }
 
 LumiaLevel::LumiaLevel()
