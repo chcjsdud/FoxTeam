@@ -376,6 +376,7 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="UI_DamagePopUp.cpp" />
     <ClCompile Include="UI_FOW.cpp">
       <SubType>
       </SubType>
@@ -884,6 +885,7 @@
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="UI_DamagePopUp.h" />
     <ClInclude Include="UI_FOW.h">
       <SubType>
       </SubType>
