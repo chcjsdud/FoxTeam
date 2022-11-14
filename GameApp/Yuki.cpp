@@ -22,7 +22,7 @@
 
 Yuki::Yuki() // default constructer 디폴트 생성자
 	: b_isQ_(false), timer_Q(0.0f), rEffect_(nullptr), timer_R(0.0f), b_RHit_(false)
-	, swordRenderer_(nullptr), rExplodeTimer_(1.0f), passiveToken_(4), passiveDamage_(0.0f)
+	, swordRenderer_(nullptr), rExplodeTimer_(1.0f), passiveToken_(4), passiveDamage_(0.0f), timer_D(0.0f), b_DShot_(false)
 {
 
 }
@@ -869,10 +869,61 @@ void Yuki::onUpdateRSkill(float _deltaTime)
 
 void Yuki::onStartDSkill()
 {
+	curAnimationName_ = "SkillD_start";
+	renderer_->ChangeFBXAnimation("SkillD_start", true);
+
+	b_DShot_ = false;
+	timer_D = 0.0f;
+	timer_unstoppable_ = 0.5f;
+	stat_.isUnstoppable_ = true;
+
+
 }
 
 void Yuki::onUpdateDSkill(float _deltaTime)
 {
+	timer_D += _deltaTime;
+
+	if (timer_D >= 0.5f && false == b_DShot_)
+	{
+		curAnimationName_ = "SkillD_end";
+		renderer_->ChangeFBXAnimation("SkillD_end", true);
+		stat_.isUnstoppable_ = false;
+		b_DShot_ = true;
+	}
+
+	if (true == b_DShot_)
+	{
+		float4 dashSpeed = direction_ * 2000.f * _deltaTime;
+		float4 nextMovePosition = GetTransform()->GetWorldPosition() + dashSpeed;
+
+		float temp;
+		if (true == currentMap_->GetNavMesh()->CheckIntersects(nextMovePosition + float4{ 0.0f, FT::Map::MAX_HEIGHT, 0.0f }, float4::DOWN, temp))
+		{
+			if (timer_D >= 0.7f && timer_D <= 0.8f)
+			{
+				GetTransform()->SetWorldPosition(nextMovePosition);
+			}
+	
+		}
+
+		if (timer_D >= 1.0f)
+		{
+			b_DShot_ = false;
+			timer_D = 0.0f;
+
+			destination_ = GetTransform()->GetWorldPosition();
+			destinations_.clear();
+
+			changeAnimationWait();
+			mainState_.ChangeState("NormalState", true);
+			normalState_.ChangeState("Watch", true);
+			return;
+		}
+
+	}
+
+
 }
 
 void Yuki::onStartDeath()

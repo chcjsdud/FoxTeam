@@ -134,4 +134,9 @@ private:
 	int passiveToken_; // 단추 수
 	float passiveDamage_; // 단추로 적용되는 추가 고정 대미지
 
+
+	float timer_D;
+	bool b_DShot_;
+	float timer_unstoppable_;
+
 };
