@@ -160,43 +160,43 @@ void UI_ItemBox::Update(float _Time)
 		{
 			ItemBoxBackGround_Renderer->Off();
 			BoxtypeFont_Renderer->Off();
-			Slot0_BGRenderer ->Off();
-			Slot1_BGRenderer ->Off();
-			Slot2_BGRenderer ->Off();
-			Slot3_BGRenderer ->Off();
-			Slot4_BGRenderer ->Off();
-			Slot5_BGRenderer ->Off();
-			Slot6_BGRenderer ->Off();
-			Slot7_BGRenderer ->Off();
-			Slot0_IconRenderer->Off();
-			Slot1_IconRenderer->Off();
-			Slot2_IconRenderer->Off();
-			Slot3_IconRenderer->Off();
-			Slot4_IconRenderer->Off();
-			Slot5_IconRenderer->Off();
-			Slot6_IconRenderer->Off();
-			Slot7_IconRenderer->Off();
+			//Slot0_BGRenderer ->Off();
+			//Slot1_BGRenderer ->Off();
+			//Slot2_BGRenderer ->Off();
+			//Slot3_BGRenderer ->Off();
+			//Slot4_BGRenderer ->Off();
+			//Slot5_BGRenderer ->Off();
+			//Slot6_BGRenderer ->Off();
+			//Slot7_BGRenderer ->Off();
+			//Slot0_IconRenderer->Off();
+			//Slot1_IconRenderer->Off();
+			//Slot2_IconRenderer->Off();
+			//Slot3_IconRenderer->Off();
+			//Slot4_IconRenderer->Off();
+			//Slot5_IconRenderer->Off();
+			//Slot6_IconRenderer->Off();
+			//Slot7_IconRenderer->Off();
 		}
 		else
 		{
 			ItemBoxBackGround_Renderer->On();
 			BoxtypeFont_Renderer->On();
-			Slot0_BGRenderer->On();
-			Slot1_BGRenderer->On();
-			Slot2_BGRenderer->On();
-			Slot3_BGRenderer->On();
-			Slot4_BGRenderer->On();
-			Slot5_BGRenderer->On();
-			Slot6_BGRenderer->On();
-			Slot7_BGRenderer->On();
-			Slot0_IconRenderer->On();
-			Slot1_IconRenderer->On();
-			Slot2_IconRenderer->On();
-			Slot3_IconRenderer->On();
-			Slot4_IconRenderer->On();
-			Slot5_IconRenderer->On();
-			Slot6_IconRenderer->On();
-			Slot7_IconRenderer->On();
+			//Slot0_BGRenderer->On();
+			//Slot1_BGRenderer->On();
+			//Slot2_BGRenderer->On();
+			//Slot3_BGRenderer->On();
+			//Slot4_BGRenderer->On();
+			//Slot5_BGRenderer->On();
+			//Slot6_BGRenderer->On();
+			//Slot7_BGRenderer->On();
+			//Slot0_IconRenderer->On();
+			//Slot1_IconRenderer->On();
+			//Slot2_IconRenderer->On();
+			//Slot3_IconRenderer->On();
+			//Slot4_IconRenderer->On();
+			//Slot5_IconRenderer->On();
+			//Slot6_IconRenderer->On();
+			//Slot7_IconRenderer->On();
 		}
 	}
 
