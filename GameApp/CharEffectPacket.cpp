@@ -12,7 +12,7 @@
 CharEffectPacket::CharEffectPacket() // default constructer 디폴트 생성자
 	: targetIndex_(-1), victimIndex_(-1)
 	, victimType_(static_cast<int>(UnitType::CHARACTER))
-	, worldPos_(float4::ZERO)
+	, worldPos_(float4::ZERO), popupDamageCount_(0)
 {
 
 }
@@ -48,6 +48,11 @@ void CharEffectPacket::SetWorldPos(float4 _worldPos)
 	worldPos_ = _worldPos;
 }
 
+void CharEffectPacket::SetPopupDamage(float _damage)
+{
+	popupDamageCount_ = _damage;
+}
+
 void CharEffectPacket::userSerialize()
 {
 	serializer_ << targetIndex_;
@@ -55,6 +60,7 @@ void CharEffectPacket::userSerialize()
 	serializer_ << victimIndex_;
 	serializer_ << victimType_;
 	serializer_ << worldPos_;
+	serializer_ << popupDamageCount_;
 }
 
 void CharEffectPacket::userDeserialize()
@@ -64,6 +70,7 @@ void CharEffectPacket::userDeserialize()
 	serializer_ >> victimIndex_;
 	serializer_ >> victimType_;
 	serializer_ >> worldPos_;
+	serializer_ >> popupDamageCount_;
 }
 
 void CharEffectPacket::initPacketID()
@@ -97,8 +104,18 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 
 		if (-1 != victimIndex_)
 		{
-			Character* victimChar = level->GetCharacterActorList()[victimIndex_];
-			targetChar->PlayEffect(effectAnimationName_, targetIndex_, victimChar);
+			if (popupDamageCount_ != 0)
+			{
+				Character* victimChar = level->GetCharacterActorList()[victimIndex_];
+				targetChar->PlayEffect(effectAnimationName_, targetIndex_, victimChar, float4::ZERO, popupDamageCount_);
+			}
+			else
+			{
+
+				Character* victimChar = level->GetCharacterActorList()[victimIndex_];
+				targetChar->PlayEffect(effectAnimationName_, targetIndex_, victimChar);
+			}
+
 		}
 		else if (worldPos_ != float4::ZERO)
 		{

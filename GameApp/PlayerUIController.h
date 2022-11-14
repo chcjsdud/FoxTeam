@@ -109,15 +109,7 @@ public:
 	//	return hypermap_UI;
 	//}
 
-	UI_DamagePopUp* GetDamagePopUpUI()
-	{
-		return damamgepopup_UI;
-	}
 
-	UI_DamagePopUp* GetEnemyDamagePopUpUI()
-	{
-		return enemydamamgepopup_UI;
-	}
 
 	void SetJobType(JobType _MyJob);
 	
@@ -140,8 +132,6 @@ private:
 	UI_Notice* notice_UI;
 	UI_HPBars* hpbars_UI;
 	UI_CharFollow* charfollow_UI;
-	UI_DamagePopUp* damamgepopup_UI;
-	UI_DamagePopUp* enemydamamgepopup_UI;
 
 	UI_Minimap* minimap_UI;
 	UI_CalculateHelper* calhelper_;

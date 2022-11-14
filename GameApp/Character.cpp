@@ -234,6 +234,8 @@ void Character::Start()
 
 	equipedItem_.resize(static_cast<int>(EquipmentType::MAX));
 	equipBuildItem_.resize(static_cast<int>(EquipmentType::MAX));
+
+	damagePopUp_ = GetLevel()->CreateActor<UI_DamagePopUp>();
 }
 
 void Character::Update(float _DeltaTime)
@@ -1505,6 +1507,20 @@ void Character::Damage(float _Amount, IUnit* _Target)
 	{
 		return;
 	}
+
+
+	int DMG = static_cast<int>(_Amount);
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		damagePopUp_->DamageFontAppear(float4{ 0.0f,0.0f }, to_string(DMG));
+	}
+
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("DamagePopup");
+	pack.SetPopupDamage(_Amount);
+	FT::SendPacket(pack);
 
 	stat_.HP -= _Amount;
 
@@ -2961,7 +2977,7 @@ void Character::updatePlayerWinner(float _deltaTime)
 {
 }
 
-void Character::PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim, float4 _pos)
+void Character::PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim, float4 _pos, float _damage)
 {
 	//if (myIndex_ == _originIndex)
 	//{
@@ -2990,6 +3006,12 @@ void Character::PlayEffect(const std::string& _effectName, int _originIndex, IUn
 		deathEffect_->GetTransform()->SetWorldPosition(wp);
 		deathEffect_->PlayAwake(true);
 		return;
+	}
+
+	if ("DamagePopup" == _effectName)
+	{
+		int DMG = static_cast<int>(_damage);
+		damagePopUp_->DamageFontAppear(float4{0.0f, 0.0f}, to_string(DMG));
 	}
 
 	onPlayEffect(_effectName, _victim, _pos);

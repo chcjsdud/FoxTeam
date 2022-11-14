@@ -29,6 +29,7 @@ class LumiaMap;
 class ItemBase;
 class EquipmentItem;
 class PlayerUIController;
+class UI_DamagePopUp;
 class GameEngineFBXRenderer;
 class GameEngineShadowRenderer;
 class GameEnginePreprocessingRenderer;
@@ -397,7 +398,7 @@ private:
 
 public:
 #pragma region EffectPlay
-	void PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim = nullptr, float4 _pos = float4::ZERO);
+	void PlayEffect(const std::string& _effectName, int _originIndex, IUnit* _victim = nullptr, float4 _pos = float4::ZERO, float _damage = 0);
 #pragma endregion
 
 #pragma region RandomSoundPlay
@@ -532,6 +533,7 @@ protected:
 
 	// 1004 이건호 : UI컨트롤러 멤버변수화
 	PlayerUIController* uiController_;
+	UI_DamagePopUp* damagePopUp_;
 	bool isMouseOntheUI_;
 
 	// 전투 중 유무의 표시용 변수

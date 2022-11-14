@@ -37,8 +37,6 @@ void PlayerUIController::InitUI()
 	notice_UI = GetLevel()->CreateActor<UI_Notice>();
 	winLose_UI = GetLevel()->CreateActor<UI_WinLose>();
 	hpbars_UI = GetLevel()->CreateActor<UI_HPBars>();
-	damamgepopup_UI = GetLevel()->CreateActor<UI_DamagePopUp>();
-	enemydamamgepopup_UI = GetLevel()->CreateActor<UI_DamagePopUp>();
 	//charfollow_UI = GetLevel()->CreateActor<UI_CharFollow>();
 	minimap_UI = GetLevel()->CreateActor<UI_Minimap>();
 
@@ -96,11 +94,6 @@ void PlayerUIController::Update(float _DeltaTime)
 		return;
 	}
 
-	if (true == GameEngineInput::GetInst().Down("I"))
-	{
-		damamgepopup_UI->DamageFontAppear(float4{ 0.f,0.f }, "10");
-		enemydamamgepopup_UI->DamageFontAppear(float4{ -100.f,-100.f }, "10");
-	}
 
 	Character* myChar = lumiaLevel->GetCharacterActorList()[pm->GetMyNumber()];
 	status_UI->SetStatus(myChar->GetStat());
