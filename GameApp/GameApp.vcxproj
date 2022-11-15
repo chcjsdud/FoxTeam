@@ -383,6 +383,7 @@
     </ClCompile>
     <ClCompile Include="UI_HPBars.cpp" />
     <ClCompile Include="UI_HyperMap.cpp" />
+    <ClCompile Include="UI_ItemRoute.cpp" />
     <ClCompile Include="UI_Minimap.cpp">
       <SubType>
       </SubType>
@@ -892,6 +893,7 @@
     </ClInclude>
     <ClInclude Include="UI_HPBars.h" />
     <ClInclude Include="UI_HyperMap.h" />
+    <ClInclude Include="UI_ItemRoute.h" />
     <ClInclude Include="UI_Minimap.h">
       <SubType>
       </SubType>
