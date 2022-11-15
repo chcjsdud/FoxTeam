@@ -1400,6 +1400,12 @@ IUnit* Character::getMousePickedCharacter()
 		for (GameEngineCollision* c : mousePickedCollision)
 		{
 			mousePickedActor = c->GetActor();
+
+			if (mousePickedActor == this)
+			{
+				continue;
+			}
+
 			Character* chracter = dynamic_cast<Character*>(mousePickedActor);
 			if (nullptr != chracter && !chracter->IsHidden())
 			{
