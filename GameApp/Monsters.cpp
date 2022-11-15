@@ -87,13 +87,13 @@ void Monsters::LevelUP(LevelUPData _Data)
 	// 신규 최대체력으로 현재 체력을 초기화
 	if (StateInfo_.HP_ == StateInfo_.HPMax_)
 	{
-		StateInfo_.HPMax_ += _Data.HP_;									// 체력(최대체력)
+		StateInfo_.HPMax_ += _Data.HP_;								// 체력(최대체력)
 		StateInfo_.HP_ = StateInfo_.HPMax_;
 	}
 	// 아니라면 한번이라도 피격당했으므로 최대체력만 증가
 	else
 	{
-		StateInfo_.HPMax_ += _Data.HP_;									// 체력(최대체력)
+		StateInfo_.HPMax_ += _Data.HP_;								// 체력(최대체력)
 	}
 
 	StateInfo_.Defense_ += _Data.Defence_;							// 방어력
@@ -812,7 +812,7 @@ void Monsters::CheckSkillAttackCollision(float _DeltaTime)
 void Monsters::HomingInstinctValueUpdate(float _DeltaTime)
 {
 	// 타겟이 지정되어있다면 귀소본능수치 감소
-	if (nullptr != CurTarget_)
+	if (nullptr != CurTarget_ && CurStateType_ != MonsterStateType::SKILLATTACK)
 	{
 		StateInfo_.HomingInstinctValue_ -= _DeltaTime;
 		if (0.0f >= StateInfo_.HomingInstinctValue_)
