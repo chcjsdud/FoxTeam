@@ -337,6 +337,7 @@ void Character::Update(float _DeltaTime)
 		coolTimer_D_ = 0.5f;
 		stat_.SP = stat_.SPMax;
 
+		renderer_->ClearOverrideAnimation();
 
 		CharStatPacket packet;
 		packet.SetStat(stat_);
