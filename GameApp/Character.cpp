@@ -36,6 +36,7 @@
 #include "ProhibitedArea.h"
 #include "Monsters.h"
 #include "NoticeBroadcastPacket.h"
+#include "UI_SkillGauge.h"
 
 Character::Character()
 	: collision_(nullptr)
@@ -2694,7 +2695,7 @@ void Character::updateChase(float _deltaTime)
 
 void Character::startMixItem()
 {
-
+	uiController_->GetSkillGauge()->PlayAwake(2.0f, "제작 중");
 }
 
 void Character::updateMixItem(float _deltaTime)
@@ -2799,6 +2800,7 @@ void Character::updateHyperloopEnd(float _deltaTime)
 
 void Character::startRestBegin()
 {
+	uiController_->GetSkillGauge()->PlayAwake(0.5f, "시전 중");
 	changeAnimationRestStart();
 }
 
@@ -2859,6 +2861,7 @@ void Character::updateRestEnd(float _deltaTime)
 
 void Character::startGather()
 {
+	uiController_->GetSkillGauge()->PlayAwake(2.0f, "채집 중");
 	changeAnimationGather();
 }
 
