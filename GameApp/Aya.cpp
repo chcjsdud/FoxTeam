@@ -206,6 +206,14 @@ void Aya::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
 
+	static bool getWeapon = false;
+
+	if (nullptr != uiController_ && false == getWeapon)
+	{
+		getItem("WaltherPPK");
+		getWeapon = true;
+	}
+
 	level_->PushDebugRender(skillRCol_->GetTransform(), CollisionType::CirCle);
 
 	stat_.passive_Count = ammo_;

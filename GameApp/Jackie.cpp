@@ -235,7 +235,6 @@ void Jackie::Update(float _deltaTime)
 	Character::Update(_deltaTime);
 
 	static bool getWeapon = false;
-
 	
 	if (nullptr != uiController_ && false == getWeapon)
 	{

@@ -716,19 +716,7 @@ void Monsters::CheckBodyCollision(float _DeltaTime)
 		// 마우스 그룹과의 충돌
 		// 단, 몬스터 완전사망상태이며 피격판정무시상태라면 충돌체크하며, 해당 충돌시 드랍된아이템을 표시
 
-		if (false == BodyCollider_->Collision(static_cast<int>(eCollisionGroup::Player)))
-		{
-			itemBox_->Close();
-			return;
-		}
-
-		if (MonsterStateType::DEAD == CurStateType_ && true == IsDeath_)
-		{
-			if (true == BodyCollider_->Collision(static_cast<int>(eCollisionGroup::MouseRay)) && true == GameEngineInput::GetInst().Down("RButton"))
-			{
-				itemBox_->Open();
-			}
-		}
+		
 	}
 }
 
@@ -1021,6 +1009,13 @@ void Monsters::Start()
 	InitalizeRenderAndAnimation();			// Initalize Renderer And Animation Setting
 	InitalizeCollider();					// Initalize Collider
 
+	ItemCollider_ = CreateTransformComponent<GameEngineCollision>(GetTransform());
+	ItemCollider_->SetCollisionGroup(eCollisionGroup::ItemBox);
+	ItemCollider_->SetCollisionType(CollisionType::OBBBox3D);
+	ItemCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
+	ItemCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
+
+
 	std::list<ItemBase*> allItemList = GetLevelConvert<LumiaLevel>()->GetItemBoxManager()->GetAllItemList();
 	
 	itemBox_ = GetLevel()->CreateActor<ItemBox>();
@@ -1058,6 +1053,7 @@ Monsters::Monsters()
 	: MainRenderer_(nullptr)
 	, EffectRenderer_(nullptr)
 	, BodyCollider_(nullptr)
+	, ItemCollider_(nullptr)
 	, AtkCollider_(nullptr)
 	, SkillAtkReadyCollider_(nullptr)
 	, SkillAtkCollider_(nullptr)

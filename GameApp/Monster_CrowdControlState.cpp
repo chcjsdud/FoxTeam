@@ -84,6 +84,7 @@ void Monsters::StartDeadState()
 	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::DEAD;
 	IsDeath_ = true;
+	BodyCollider_->Off();
 }
 
 void Monsters::UpdateDeadState(float _DeltaTime)
@@ -119,6 +120,17 @@ void Monsters::UpdateDeadState(float _DeltaTime)
 		}
 	}
 
+	if (false == ItemCollider_->Collision(static_cast<int>(eCollisionGroup::Player)))
+	{
+		itemBox_->Close();
+		return;
+	}
+
+	if (true == ItemCollider_->Collision(static_cast<int>(eCollisionGroup::MouseRay)) && true == GameEngineInput::GetInst().Down("RButton"))
+	{
+		itemBox_->Open();
+	}
+
 	if (nullptr == itemBox_->GetItemBoxUI())
 	{
 		return;
@@ -143,6 +155,12 @@ void Monsters::EndDeadState()
 	// -> Àá½Ã Off
 	MainRenderer_->Off();
 	IsDeath_ = false;
+
+	if (itemBox_->isOpen())
+	{
+		itemBox_->Close();
+	}
+	BodyCollider_->On();
 }
 
 void Monsters::StartStunState()

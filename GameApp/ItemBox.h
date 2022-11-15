@@ -46,6 +46,11 @@ public:
 		return isGatherBox;
 	}
 
+	bool isOpen()
+	{
+		return bOpen_;
+	}
+
 	void Open();
 	void Close();
 

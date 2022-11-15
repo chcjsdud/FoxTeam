@@ -214,6 +214,14 @@ void Yuki::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
 
+	static bool getWeapon = false;
+
+	if (nullptr != uiController_ && false == getWeapon)
+	{
+		getItem("RustySword");
+		getWeapon = true;
+	}
+
 	// 패시브 체크
 	//if (passiveToken_ < 4 && false == isInfight_)
 	//{

@@ -207,6 +207,14 @@ void Hyunwoo::Update(float _deltaTime)
 {
 	Character::Update(_deltaTime);
 
+	static bool getWeapon = false;
+
+	if (nullptr != uiController_ && false == getWeapon)
+	{
+		getItem("Bamboo");
+		getWeapon = true;
+	}
+
 	if (true == b_isW_)
 	{
 		timer_w_ -= _deltaTime;
