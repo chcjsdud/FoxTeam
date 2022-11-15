@@ -338,6 +338,12 @@ void Character::Update(float _DeltaTime)
 		coolTimer_R_ = 0.5f;
 		coolTimer_D_ = 0.5f;
 		stat_.SP = stat_.SPMax;
+		
+
+		CharStatPacket packet;
+		packet.SetStat(stat_);
+		packet.SetTargetIndex(GetIndex());
+		FT::SendPacket(packet);
 	}
 
 	if (GameEngineInput::Down("M"))
@@ -2823,6 +2829,7 @@ void Character::updateStun(float _deltaTime)
 		destination_ = transform_.GetWorldPosition();
 		destinations_.clear();
 		mainState_ << "NormalState";
+		normalState_ << "Watch";
 		return;
 	}
 }
@@ -2840,6 +2847,7 @@ void Character::updateKnockback(float _deltaTime)
 		destination_ = transform_.GetWorldPosition();
 		destinations_.clear();
 		mainState_ << "NormalState";
+		normalState_ << "Watch";
 		return;
 	}
 
@@ -2859,6 +2867,7 @@ void Character::updateWallSlam(float _deltaTime)
 		destination_ = transform_.GetWorldPosition();
 		destinations_.clear();
 		mainState_ << "NormalState";
+		normalState_ << "Watch";
 		return;
 	}
 
