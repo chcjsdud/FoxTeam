@@ -2378,7 +2378,7 @@ void Character::updateNormalState(float _deltaTime)
 				{
 					stat_.SP -= stat_.SP_R;
 
-					CharStatstatpPacket packet;
+					CharStatPacket packet;
 					packet.SetStat(stat_);
 					packet.SetTargetIndex(GetIndex());
 
