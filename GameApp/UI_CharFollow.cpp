@@ -138,9 +138,6 @@ void UI_CharFollow::SetFollowInfo(float4 _Pos, CharacterStat* _Stat)
 	HPBar_Renderer->GetTransform()->SetLocalPosition(HpBarPos);
 	SPBar_Renderer->GetTransform()->SetLocalPosition(SpBarPos);
 	EmptyBar_Renderer->GetTransform()->SetLocalPosition(EmptyBarPos);
-
-
-
 }
 
 void UI_CharFollow::SetFollowInfoMonster(float4 _Pos, MonsterStateInfo _Stat)

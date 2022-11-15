@@ -2252,6 +2252,12 @@ void Character::updateNormalState(float _deltaTime)
 				else
 				{
 					stat_.SP -= stat_.SP_Q;
+
+					CharStatPacket packet;
+					packet.SetStat(stat_);
+					packet.SetTargetIndex(GetIndex());
+
+					FT::SendPacket(packet);
 				}
 
 				if (uiController_ != nullptr)
@@ -2286,6 +2292,12 @@ void Character::updateNormalState(float _deltaTime)
 				else
 				{
 					stat_.SP -= stat_.SP_W;
+
+					CharStatPacket packet;
+					packet.SetStat(stat_);
+					packet.SetTargetIndex(GetIndex());
+
+					FT::SendPacket(packet);
 				}
 
 				if (uiController_ != nullptr)
@@ -2320,6 +2332,12 @@ void Character::updateNormalState(float _deltaTime)
 				else
 				{
 					stat_.SP -= stat_.SP_E;
+
+					CharStatPacket packet;
+					packet.SetStat(stat_);
+					packet.SetTargetIndex(GetIndex());
+
+					FT::SendPacket(packet);
 				}
 
 
@@ -2333,6 +2351,8 @@ void Character::updateNormalState(float _deltaTime)
 				coolTimer_E_ = DefaultCool_E_;
 				mainState_.ChangeState("AttackState", true);
 				attackState_.ChangeState("ESkill", true);
+
+
 			}
 			else
 			{
@@ -2357,6 +2377,12 @@ void Character::updateNormalState(float _deltaTime)
 				else
 				{
 					stat_.SP -= stat_.SP_R;
+
+					CharStatstatpPacket packet;
+					packet.SetStat(stat_);
+					packet.SetTargetIndex(GetIndex());
+
+					FT::SendPacket(packet);
 				}
 
 				if (uiController_ != nullptr)
@@ -2369,6 +2395,8 @@ void Character::updateNormalState(float _deltaTime)
 				coolTimer_R_ = DefaultCool_R_;
 				mainState_.ChangeState("AttackState", true);
 				attackState_.ChangeState("RSkill", true);
+
+
 			}
 			else
 			{
