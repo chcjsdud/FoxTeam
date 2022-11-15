@@ -1385,8 +1385,8 @@ void LumiaLevel::DebugWindowUpdate()
 			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->HP));
 			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->HP));
 
-			//DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Local) : " + std::to_string(static_cast<int>(CharacterActorList_[i]->GetCurLocation())));
-			//DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curHP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->curLocation));
+			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curSP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->SP));
+			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curSP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->SP));
 		}
 	}
 
