@@ -26,22 +26,11 @@ UI_ItemRoute::~UI_ItemRoute()
 
 void UI_ItemRoute::Start()
 {
-	BackGroundPos = { 248.0f, -319.0f, 0.0f };
-	BasicSlotPos = { 141.0f, -313.0f, -1.0f };
+	BackGroundPos = { 0.0f, 0.0f, 0.0f };
+	BasicSlotPos = { -100.0f, 0.0f, -1.0f };
 	SlotXPivot = { 47.0f, 0.0f, 0.0f };
-	SlotYPivot = { 0.0f, -32.0f, 0.0f };
 	SlotSize = { 44.0f,27.0f };
-
-	float4 createSlotSize = { 26.0f,58.0f, 1.f };
-	float4 createSlotPos = { 370.0f, -328.0f, 0.0f };
 	
-	{
-		Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
-		Renderer->SetImage("Inventory_BackGround.png", "PointSmp");
-		Renderer->GetTransform()->SetLocalPosition(BackGroundPos);
-		Renderer->GetTransform()->SetLocalScaling(Renderer->GetCurrentTexture()->GetTextureSize());
-	}
-
 	{
 		//마우스와의 충돌을 위해서 aabbbox3d로 충돌
 
@@ -71,56 +60,43 @@ void UI_ItemRoute::Start()
 		Slot4Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 
 		Slot5Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot5Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotYPivot);
+		Slot5Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 5.0f));
 		Slot5Collision->GetTransform()->SetLocalScaling(SlotSize);
 		Slot5Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
-
-		Slot6Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot6Collision->GetTransform()->SetLocalPosition(BasicSlotPos + SlotXPivot + SlotYPivot);
-		Slot6Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot6Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
-
-		Slot7Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot7Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 2.0f) + SlotYPivot);
-		Slot7Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot7Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
-
-		Slot8Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot8Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 3.0f) + SlotYPivot);
-		Slot8Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot8Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
-
-		Slot9Collision = CreateTransformComponent<GameEngineCollision>();
-		Slot9Collision->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 4.0f) + SlotYPivot);
-		Slot9Collision->GetTransform()->SetLocalScaling(SlotSize);
-		Slot9Collision->SetCollisionInfo(static_cast<int>(eCollisionGroup::UI), CollisionType::Rect);
 	}
-	
 
 	{
-		Slot0_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Slot1_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Slot2_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Slot3_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Slot4_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Slot5_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Slot6_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Slot7_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Slot8_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		Slot9_BGRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
+		RouteRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
+		RouteRenderer->SetImage("IconBG_UI.png", "PointSmp");
+		RouteRenderer->GetTransform()->SetLocalPosition(BackGroundPos);
+		RouteRenderer->GetTransform()->SetLocalScaling(RouteRenderer->GetCurrentTexture()->GetTextureSize());
 	}
+
 
 	{
 		Slot0_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		Slot0_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot0_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos);
+
 		Slot1_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		Slot1_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot1_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + SlotXPivot);
+
 		Slot2_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		Slot2_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot2_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 2.0f));
+
 		Slot3_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		Slot3_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot3_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 3.0f));
+
 		Slot4_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		Slot4_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot4_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 4.0f));
+
 		Slot5_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot6_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot7_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot8_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot9_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		Slot5_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot5_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 5.0f));
 	}
 
 }
@@ -136,11 +112,23 @@ void UI_ItemRoute::Update(float _Time)
 	{
 		if (false == UIOn)
 		{
-			Renderer->Off();
+			RouteRenderer->Off();
+			Slot0_IconRenderer->Off();
+			Slot1_IconRenderer->Off();
+			Slot2_IconRenderer->Off();
+			Slot3_IconRenderer->Off();
+			Slot4_IconRenderer->Off();
+			Slot5_IconRenderer->Off();
 		}
 		else
 		{
-			Renderer->On();
+			RouteRenderer->On();
+			Slot0_IconRenderer->On();
+			Slot1_IconRenderer->On();
+			Slot2_IconRenderer->On();
+			Slot3_IconRenderer->On();
+			Slot4_IconRenderer->On();
+			Slot5_IconRenderer->On();
 		}
 	}
 
@@ -190,29 +178,44 @@ int UI_ItemRoute::SlotMouseCollisionCheck()
 		return 5;
 	}
 
-	if (true == Slot6Collision->Collision(eCollisionGroup::MousePointer))
-	{
-		return 6;
-	}
-
-	if (true == Slot7Collision->Collision(eCollisionGroup::MousePointer))
-	{
-		return 7;
-	}
-
-	if (true == Slot8Collision->Collision(eCollisionGroup::MousePointer))
-	{
-		return 8;
-	}
-
-	if (true == Slot9Collision->Collision(eCollisionGroup::MousePointer))
-	{
-		return 9;
-	}
-
-
 	//충돌중이 아님
 	return -1;
 
 }
 
+void UI_ItemRoute::SetJobType(JobType _myjob)
+{
+	switch (_myjob)
+	{
+	case JobType::NONE:
+		break;
+	case JobType::YUKI:
+	{
+	}
+	break;
+	case JobType::HYUNWOO:
+	{
+	}
+	break;
+	case JobType::JACKIE:
+	{
+	}
+	break;
+	case JobType::RIO:
+	{
+
+	}
+	break;
+	case JobType::AYA:
+	{
+
+	}
+	break;
+	case JobType::DUMMY:
+		break;
+	case JobType::MAX:
+		break;
+	default:
+		break;
+	}
+}

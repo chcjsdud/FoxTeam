@@ -24,8 +24,10 @@ public:
 
 	int SlotMouseCollisionCheck();
 
+	void SetJobType(JobType _myjob);
+
 protected:
-	GameEngineUIRenderer* Renderer;
+	GameEngineUIRenderer* RouteRenderer;
 	float Time;
 
 
@@ -40,7 +42,6 @@ private:
 	float4 BackGroundPos;
 	float4 BasicSlotPos;
 	float4 SlotXPivot;
-	float4 SlotYPivot;
 	float4 SlotSize;
 
 #pragma endregion
@@ -53,22 +54,6 @@ private:
 	GameEngineCollision* Slot3Collision;
 	GameEngineCollision* Slot4Collision;
 	GameEngineCollision* Slot5Collision;
-	GameEngineCollision* Slot6Collision;
-	GameEngineCollision* Slot7Collision;
-	GameEngineCollision* Slot8Collision;
-	GameEngineCollision* Slot9Collision;
-
-
-	GameEngineUIRenderer* Slot0_BGRenderer;
-	GameEngineUIRenderer* Slot1_BGRenderer;
-	GameEngineUIRenderer* Slot2_BGRenderer;
-	GameEngineUIRenderer* Slot3_BGRenderer;
-	GameEngineUIRenderer* Slot4_BGRenderer;
-	GameEngineUIRenderer* Slot5_BGRenderer;
-	GameEngineUIRenderer* Slot6_BGRenderer;
-	GameEngineUIRenderer* Slot7_BGRenderer;
-	GameEngineUIRenderer* Slot8_BGRenderer;
-	GameEngineUIRenderer* Slot9_BGRenderer;
 
 	GameEngineUIRenderer* Slot0_IconRenderer;
 	GameEngineUIRenderer* Slot1_IconRenderer;
@@ -76,10 +61,6 @@ private:
 	GameEngineUIRenderer* Slot3_IconRenderer;
 	GameEngineUIRenderer* Slot4_IconRenderer;
 	GameEngineUIRenderer* Slot5_IconRenderer;
-	GameEngineUIRenderer* Slot6_IconRenderer;
-	GameEngineUIRenderer* Slot7_IconRenderer;
-	GameEngineUIRenderer* Slot8_IconRenderer;
-	GameEngineUIRenderer* Slot9_IconRenderer;
 
 #pragma endregion
 	
