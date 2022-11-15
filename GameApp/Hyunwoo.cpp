@@ -24,10 +24,11 @@
 #include "UI_DamagePopUp.h"
 #include "PlayerUIController.h"
 
+#include "UI_SkillGauge.h"
 Hyunwoo::Hyunwoo()
 	: timer_collision_Q(0.0f), timer_end_Q(0.0f), collision_Q(nullptr), b_Qhit_(false), timer_Dash_E(0.0f), b_Ehit_(false), collision_E(nullptr), atkFlag_(false),
 	  b_Rhit_(false), collision_R(nullptr), collisionRRate_(0.0f), b_Dhit_(false), basicAttackEffect_(nullptr), QGroundCrackEffectRenderer_(nullptr), qEffect_(nullptr),
-	rEffect_(nullptr), b_isW_(false), wEffect_(nullptr)
+	rEffect_(nullptr), b_isW_(false), wEffect_(nullptr), rTimer_(0.0f), rShot_(false)
 {
 
 }
@@ -454,7 +455,7 @@ void Hyunwoo::onStartQSkill()
 	curAnimationName_ = "SkillQ";
 
 	renderer_->ChangeFBXAnimation("SkillQ", true);
-
+	uiController_->GetSkillGauge()->PlayAwake(0.3f, "시전 중");
 	RandomSoundPlay("Hyunwoo_PlaySkill1007200Seq0_1_ko.wav", "Hyunwoo_PlaySkill1007200Seq0_2_ko.wav", "Hyunwoo_PlaySkill1007200Seq0_3_ko.wav");
 }
 
@@ -871,6 +872,9 @@ void Hyunwoo::onStartRSkill()
 {
 	mainState_.ChangeState("CustomState", true);
 	customState_.ChangeState("CustomRSkill", true);
+
+	uiController_->GetSkillGauge()->PlayAwake(5.0f, "시전 중");
+
 	setRotationToMouse();
 }
 
@@ -1146,93 +1150,113 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 	if (false == b_Rhit_)
 	{
 		collisionRRate_ += _deltaTime;
+		
+		rTimer_ += _deltaTime;
+		
 		collision_R->GetTransform()->SetLocalPosition({ 0.f,0.f,150.f + collisionRRate_ * 50.0f });
 		collision_R->GetTransform()->SetLocalScaling({ 350.0f, 10.0f, 100.0f + collisionRRate_ * 100.0f });
+
+
 	}
 
-	if (true == GameEngineInput::GetInst().Down("R"))
+	if (true == GameEngineInput::GetInst().Down("R") || 5.0f <= rTimer_)
 	{
-
-		if (GameServer::GetInstance()->IsOpened())
+		if (false == rShot_)
 		{
-			rEffect_->PlayExplode();
-		}
+			rShot_ = true;
 
-		CharEffectPacket pack;
-		pack.SetTargetIndex(myIndex_);
-		pack.SetAnimationName("SkillR_explode");
-		FT::SendPacket(pack);
+			uiController_->GetSkillGauge()->PlayFadeForce();
 
-		GameEngineSoundManager::GetInstance()->StopSound();
-
-
-		FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
-
-		rearEffectRenderer_->On();
-		rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
-		rearEffectRenderer_->AnimationPlay();
-
-		if (false == b_Rhit_)
-		{
-			// 여기서 피격 충돌 판정이 나옴
-			auto collisionList = collision_R->GetCollisionList(eCollisionGroup::Player);
-
-			for (GameEngineCollision* col : collisionList)
+			if (GameServer::GetInstance()->IsOpened())
 			{
-				GameEngineActor* actor = col->GetActor();
-				Character* character = nullptr;
-				if (nullptr != actor && actor != this)
+				rEffect_->PlayExplode();
+			}
+
+			CharEffectPacket pack;
+			pack.SetTargetIndex(myIndex_);
+			pack.SetAnimationName("SkillR_explode");
+			FT::SendPacket(pack);
+
+			GameEngineSoundManager::GetInstance()->StopSound();
+
+
+			FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
+
+			rearEffectRenderer_->On();
+			rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
+			rearEffectRenderer_->AnimationPlay();
+
+			if (false == b_Rhit_)
+			{
+				// 여기서 피격 충돌 판정이 나옴
+				auto collisionList = collision_R->GetCollisionList(eCollisionGroup::Player);
+
+				for (GameEngineCollision* col : collisionList)
 				{
-					character = dynamic_cast<Character*>(actor);
-
-					if (nullptr != character)
+					GameEngineActor* actor = col->GetActor();
+					Character* character = nullptr;
+					if (nullptr != actor && actor != this)
 					{
-						
+						character = dynamic_cast<Character*>(actor);
 
-						character->Damage((stat_.Level_r * (80.0f + (collisionRRate_ * 100.0f))) + (stat_.AttackPower * 0.75f), this);
+						if (nullptr != character)
+						{
 
+
+							character->Damage((stat_.Level_r * (80.0f + (collisionRRate_ * 100.0f))) + (stat_.AttackPower * 0.75f), this);
+
+						}
 					}
 				}
+				b_Rhit_ = true;
 			}
-			b_Rhit_ = true;
-		}
 
-		if (false == b_Rhit_)
-		{
-			// 여기서 피격 충돌 판정이 나옴
-			auto collisionList = collision_R->GetCollisionList(eCollisionGroup::Monster);
-
-			for (GameEngineCollision* col : collisionList)
+			if (false == b_Rhit_)
 			{
-				GameEngineActor* actor = col->GetActor();
-				IUnit* character = nullptr;
-				if (nullptr != actor)
+				// 여기서 피격 충돌 판정이 나옴
+				auto collisionList = collision_R->GetCollisionList(eCollisionGroup::Monster);
+
+				for (GameEngineCollision* col : collisionList)
 				{
-					character = dynamic_cast<IUnit*>(actor);
-
-					if (nullptr != character)
+					GameEngineActor* actor = col->GetActor();
+					IUnit* character = nullptr;
+					if (nullptr != actor)
 					{
+						character = dynamic_cast<IUnit*>(actor);
+
+						if (nullptr != character)
+						{
 
 
-						character->Damage((stat_.Level_r * (80.0f + (collisionRRate_ * 100.0f))) + (stat_.AttackPower * 0.75f), this);
+							character->Damage((stat_.Level_r * (80.0f + (collisionRRate_ * 100.0f))) + (stat_.AttackPower * 0.75f), this);
 
+						}
 					}
 				}
+				b_Rhit_ = true;
 			}
-			b_Rhit_ = true;
-		}
 
-		if (curAnimationName_ != "SkillR_end")
+			if (curAnimationName_ != "SkillR_end")
+			{
+
+				curAnimationName_ = "SkillR_end";
+				renderer_->ChangeFBXAnimation("SkillR_end", true);
+
+			}
+		}
+		else
 		{
-			curAnimationName_ = "SkillR_end";
-			renderer_->ChangeFBXAnimation("SkillR_end", true);
 
 		}
+
+		
 	}
 
 	if (curAnimationName_ == "SkillR_end" && true == renderer_->IsCurrentAnimationEnd())
 	{
 		b_Rhit_ = false;
+		rShot_ = false;
+		rTimer_ = 0.0f;
 		changeAnimationWait();
 		mainState_.ChangeState("NormalState", true);
 		normalState_.ChangeState("Watch", true);

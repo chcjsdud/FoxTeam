@@ -19,6 +19,9 @@
 #include "CharEffectPacket.h"
 #include "RioDSkillEffect.h"
 
+#include "PlayerUIController.h"
+#include "UI_SkillGauge.h"
+
 Rio::Rio()
 	: Character()
 	, bLongBow_(false)
@@ -473,6 +476,8 @@ void Rio::onUpdateBasicAttacking(IUnit* _target, float _deltaTime)
 
 void Rio::onStartQSkill()
 {
+	uiController_->GetSkillGauge()->PlayAwake(0.4f, "시전 중");
+
 	overrideAnimationBoneName_ = "Bip001 Spine2";
 	if (bLongBow_)
 	{
@@ -660,6 +665,9 @@ void Rio::onStartRSkill()
 
 	if (bLongBow_)
 	{
+
+		uiController_->GetSkillGauge()->PlayAwake(1.4f, "시전 중");
+
 		ChangeAnimation("SkillR_Long");
 
 		FT::PlaySoundAndSendPacket("Rio_LongBow_SKill04_01.wav", transform_.GetWorldPosition());
@@ -692,6 +700,8 @@ void Rio::onStartRSkill()
 	{
 		if (bShortRSkillExtra_)
 		{
+			uiController_->GetSkillGauge()->PlayAwake(0.3f, "시전 중");
+
 			ChangeAnimation("SkillR_Short_End");
 
 			float4 offset = { 20.f, 120.f, 30.f, 0.f };

@@ -39,7 +39,7 @@ void PlayerUIController::InitUI()
 	hpbars_UI = GetLevel()->CreateActor<UI_HPBars>();
 	//charfollow_UI = GetLevel()->CreateActor<UI_CharFollow>();
 	minimap_UI = GetLevel()->CreateActor<UI_Minimap>();
-
+	skillGauge_UI = GetLevel()->CreateActor<UI_SkillGauge>();
 	calhelper_ = GetLevel()->CreateActor<UI_CalculateHelper>();
 
 

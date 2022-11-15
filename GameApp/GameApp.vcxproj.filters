@@ -514,6 +514,9 @@
     <ClCompile Include="UI_ItemRoute.cpp">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClCompile>
+    <ClCompile Include="UI_SkillGauge.cpp">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00.GameApp">
@@ -1293,6 +1296,9 @@
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
     <ClInclude Include="UI_ItemRoute.h">
+      <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_SkillGauge.h">
       <Filter>01.GameObject\03.Level\LumiaLevel\UI</Filter>
     </ClInclude>
   </ItemGroup>
