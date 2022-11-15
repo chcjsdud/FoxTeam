@@ -338,6 +338,7 @@ void Character::Update(float _DeltaTime)
 		stat_.SP = stat_.SPMax;
 
 		renderer_->ClearOverrideAnimation();
+		uiController_->GetSkillGauge()->PlayFadeForce();
 
 		CharStatPacket packet;
 		packet.SetStat(stat_);

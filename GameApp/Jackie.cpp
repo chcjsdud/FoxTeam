@@ -15,6 +15,9 @@
 #include "PacketSoundPlay.h"
 #include "CharEffectPacket.h"
 
+#include "PlayerUIController.h"
+#include "UI_SkillGauge.h"
+
 Jackie::Jackie() // default constructer 디폴트 생성자
 	: atkFlag_(false), timer_collision_Q(0.0f), timer_end_Q(0.0f), b_Qhit_(0), collision_Q(nullptr),
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
@@ -705,6 +708,8 @@ void Jackie::onStartQSkill()
 	timer_collision_Q = 0.0f;
 	timer_end_Q = 0.0f;
 	b_Qhit_ = false;
+
+	uiController_->GetSkillGauge()->PlayAwake(0.8f, "시전 중");
 
 	setRotationToMouse();
 

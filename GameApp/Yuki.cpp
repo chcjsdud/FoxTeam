@@ -19,6 +19,7 @@
 #include "YukiQSlashEffect.h"
 #include "PlayerUIController.h"
 #include "Monsters.h"
+#include "UI_SkillGauge.h"
 
 Yuki::Yuki() // default constructer 디폴트 생성자
 	: b_isQ_(false), timer_Q(0.0f), rEffect_(nullptr), timer_R(0.0f), b_RHit_(false)
@@ -467,6 +468,7 @@ void Yuki::changeAnimationBasicAttack()
 {
 	if (b_isQ_)
 	{
+		uiController_->GetSkillGauge()->PlayAwake(0.2f, "시전 중");
 		curAnimationName_ = "SkillQ";
 		renderer_->ChangeFBXAnimation("SkillQ", true);
 		return;
@@ -547,6 +549,8 @@ void Yuki::onStartBasicAttacking(IUnit* _target)
 	if (b_isQ_)
 	{
 		RandomSoundPlay("Yuki_PlaySkill1011200seq1_1_ko.wav", "Yuki_PlaySkill1011200seq1_2_ko.wav", "Yuki_PlaySkill1011200seq1_3_ko.wav");
+
+		
 
 		if (passiveToken_ <= 0)
 		{
@@ -669,7 +673,7 @@ void Yuki::onStartWSkill()
 
 	FT::PlaySoundAndSendPacket("Yuki_Skill02_Active.wav", transform_.GetWorldPosition());
 
-
+	uiController_->GetSkillGauge()->PlayAwake(0.3f, "시전 중");
 
 
 	if (GameServer::GetInstance()->IsOpened())
@@ -862,6 +866,8 @@ void Yuki::onUpdateESkill(float _deltaTime)
 
 void Yuki::onStartRSkill()
 {
+
+
 	mainState_.ChangeState("CustomState", true);
 	customState_.ChangeState("CustomRStandBy", true);
 	setRotationToMouse();
@@ -874,6 +880,7 @@ void Yuki::onUpdateRSkill(float _deltaTime)
 
 void Yuki::onStartDSkill()
 {
+	uiController_->GetSkillGauge()->PlayReverseAwake(0.5f, "시전 중");
 	curAnimationName_ = "SkillD_start";
 	renderer_->ChangeFBXAnimation("SkillD_start", true);
 
@@ -1093,6 +1100,9 @@ void Yuki::onLevelUp()
 
 void Yuki::startCustomRStandBy()
 {
+
+	uiController_->GetSkillGauge()->PlayReverseAwake(0.8f, "시전 중");
+
 	curAnimationName_ = "SkillR_loop";
 	renderer_->ChangeFBXAnimation("SkillR_loop", true);
 

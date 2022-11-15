@@ -119,7 +119,8 @@ private:
 
 
 	bool b_Rhit_;
-	
+	float rTimer_;
+	bool rShot_;
 	GameEngineCollision* collision_R;
 	float collisionRRate_;
 

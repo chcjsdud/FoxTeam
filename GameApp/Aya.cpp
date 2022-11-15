@@ -14,6 +14,11 @@
 #include "CharCrowdControlPacket.h"
 #include "CharEffectPacket.h"
 #include "AyaREffect.h"
+#include "PlayerUIController.h"
+#include "UI_SkillGauge.h"
+
+
+
 Aya::Aya()
 	: ammo_(6)
 	, skillWFireCount_(0)
@@ -547,6 +552,8 @@ void Aya::onStartQSkill()
 	}
 	RandomSoundPlay("Aya_PlaySkill1002200seq0_1_ko.wav", "Aya_PlaySkill1002200seq0_2_ko.wav", "Aya_PlaySkill1002200seq0_3_ko.wav");	
 	FT::PlaySoundAndSendPacket("aya_Skill01_Attack_v1.wav", transform_.GetWorldPosition());
+
+	uiController_->GetSkillGauge()->PlayAwake(0.3f, "시전 중");
 }
 
 void Aya::onUpdateQSkill(float _deltaTime)
@@ -600,6 +607,9 @@ void Aya::onStartWSkill()
 	RandomSoundPlay("Aya_PlaySkill1002300seq0_1_ko.wav", "Aya_PlaySkill1002300seq0_2_ko.wav", "Aya_PlaySkill1002300seq0_3_ko.wav");
 	FT::PlaySoundAndSendPacket("aya_Skill02_Shot.wav", transform_.GetWorldPosition());
 	skillWFireCount_ = 1;
+
+
+	uiController_->GetSkillGauge()->PlayReverseAwake(3.0f, "시전 중");
 }
 
 void Aya::onUpdateWSkill(float _deltaTime)
@@ -789,6 +799,8 @@ void Aya::onStartRSkill()
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("SkillR");
 	FT::SendPacket(pack);
+
+	uiController_->GetSkillGauge()->PlayAwake(1.5f, "시전 중");
 }
 
 void Aya::onUpdateRSkill(float _d1eltaTime)
