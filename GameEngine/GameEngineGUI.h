@@ -3,12 +3,48 @@
 #include <vector>
 #include "imgui.h"
 
+class GameEngineGUI;
+class GameEngineGUIWindow : public GameEngineObjectNameBase
+{
+	friend GameEngineGUI;
+
+public:
+	virtual void Start() {};
+
+	void Begin()
+	{
+		ImGui::Begin(GetName().c_str(), &GetIsUpdateRef(), Style_);
+	}
+
+	virtual void OnGUI() = 0;
+
+	void End()
+	{
+		ImGui::End();
+	}
+
+	// constrcuter destructer
+	GameEngineGUIWindow();
+	~GameEngineGUIWindow();
+
+protected:
+	int Style_;
+
+
+private:
+	GameEngineGUIWindow(const GameEngineGUIWindow& _Other) = delete;
+	GameEngineGUIWindow(GameEngineGUIWindow&& _Other) noexcept = delete;
+	GameEngineGUIWindow& operator=(const GameEngineGUIWindow& _Other) = delete;
+	GameEngineGUIWindow& operator=(GameEngineGUIWindow&& _Other) noexcept = delete;
+
+};
+
 // Ό³Έν :
-class GameEngineGUIWindow;
 class GameEngineGUI
 {
 	friend class GameEngineCore;
 	friend class GameEngineLevel;
+
 private:
 	static GameEngineGUI* Inst_;
 
@@ -73,44 +109,5 @@ private:
 	GameEngineGUI(GameEngineGUI&& _Other) noexcept = delete;
 	GameEngineGUI& operator=(const GameEngineGUI& _Other) = delete;
 	GameEngineGUI& operator=(GameEngineGUI&& _Other) noexcept = delete;
-
-};
-
-
-
-class GameEngineGUIWindow : public GameEngineObjectNameBase
-{
-	friend GameEngineGUI;
-
-public:
-	virtual void Start() {};
-
-	void Begin()
-	{
-		ImGui::Begin(GetName().c_str(), &GetIsUpdateRef(), Style_);
-	}
-
-	virtual void OnGUI() = 0;
-
-	void End()
-	{
-		ImGui::End();
-	}
-
-	// constrcuter destructer
-	GameEngineGUIWindow();
-	~GameEngineGUIWindow();
-
-protected:
-	int Style_;
-
-
-private:
-
-	// delete Function
-	GameEngineGUIWindow(const GameEngineGUIWindow& _Other) = delete;
-	GameEngineGUIWindow(GameEngineGUIWindow&& _Other) noexcept = delete;
-	GameEngineGUIWindow& operator=(const GameEngineGUIWindow& _Other) = delete;
-	GameEngineGUIWindow& operator=(GameEngineGUIWindow&& _Other) noexcept = delete;
 
 };

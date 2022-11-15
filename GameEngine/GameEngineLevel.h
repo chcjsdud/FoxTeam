@@ -2,6 +2,8 @@
 #include <list>
 #include <map>
 #include <GameEngine\Enums.h>
+#include "GameEngineActor.h"
+#include "GameEnginePostProcessRender.h"
 
 // 분류 : 레벨
 // 용도 : 
@@ -9,12 +11,10 @@
 class GameEngineCore;
 class CameraActor;
 class CameraComponent;
-class GameEngineActor;
 class GameEngineRenderer;
 class GameEngineTransform;
 class GameEngineCollision;
 class GameEngineDebugRenderData;
-class GameEnginePostProcessRender;
 class GameEngineLightComponent;
 class GameEngineLevelControlWindow;
 class GameEngineDepthBuffer;

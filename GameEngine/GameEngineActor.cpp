@@ -1,8 +1,6 @@
 #include "PreCompile.h"
 #include "GameEngineActor.h"
 #include "GameEngineLevel.h"
-#include "GameEngineTransform.h"
-#include "GameEngineTransformComponent.h"
 
 GameEngineActor::GameEngineActor() 
 	: level_(nullptr)
