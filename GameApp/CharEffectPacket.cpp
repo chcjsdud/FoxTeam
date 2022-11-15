@@ -50,7 +50,7 @@ void CharEffectPacket::SetWorldPos(float4 _worldPos)
 
 void CharEffectPacket::SetPopupDamage(float _damage)
 {
-	popupDamageCount_ = _damage;
+	popupDamageCount_ = static_cast<int>(_damage);
 }
 
 void CharEffectPacket::userSerialize()
@@ -107,7 +107,7 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 			if (popupDamageCount_ != 0)
 			{
 				Character* victimChar = level->GetCharacterActorList()[victimIndex_];
-				targetChar->PlayEffect(effectAnimationName_, targetIndex_, victimChar, float4::ZERO, popupDamageCount_);
+				targetChar->PlayEffect(effectAnimationName_, targetIndex_, victimChar, float4::ZERO, static_cast<float>(popupDamageCount_));
 			}
 			else
 			{
@@ -122,7 +122,7 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 
 			if (popupDamageCount_ != 0)
 			{
-				targetChar->PlayEffect(effectAnimationName_, targetIndex_, nullptr, worldPos_, popupDamageCount_);
+				targetChar->PlayEffect(effectAnimationName_, targetIndex_, nullptr, worldPos_, static_cast<float>(popupDamageCount_));
 			}
 			else
 			{
@@ -134,7 +134,7 @@ void CharEffectPacket::execute(SOCKET _sender, GameEngineSocketInterface* _netwo
 		}
 		else
 		{
-			targetChar->PlayEffect(effectAnimationName_, targetIndex_, nullptr, float4::ZERO, popupDamageCount_);
+			targetChar->PlayEffect(effectAnimationName_, targetIndex_, nullptr, float4::ZERO, static_cast<float>(popupDamageCount_));
 		}
 	}
 	else if (victimType_ == static_cast<int>(UnitType::MONSTER))

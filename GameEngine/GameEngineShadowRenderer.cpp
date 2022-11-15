@@ -159,7 +159,7 @@ void GameEngineShadowRenderer::Update(float _DeltaTime)
 
 void GameEngineShadowRenderer::Render(float _DeltaTime, bool _IsDeferred)
 {
-	for (size_t i = 0; i < RenderSets_.size(); i++)
+	for (unsigned int i = 0; i < static_cast<unsigned int>(RenderSets_.size()); ++i)
 	{
 		if (false == RenderSets_[i].isRender)
 		{

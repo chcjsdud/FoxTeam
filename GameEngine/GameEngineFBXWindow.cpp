@@ -11,6 +11,7 @@
 GameEngineFBXWindow::GameEngineFBXWindow()
 	: FBXFileSelect(-1)
 	, ActorSelect(-1)
+	, SelectAnimation()
 {
 
 
@@ -94,9 +95,9 @@ void GameEngineFBXWindow::TestInit()
 
 		GameEngineFBXAnimation* Animation = GameEngineFBXAnimationManager::GetInst().Load(FBXFolder.PathToPlusFileName("Fox enemy.fbx"));
 
-		for (size_t i = 0; i < Animation->AnimationCount(); i++)
+		for (unsigned int i = 0; i < static_cast<unsigned int>(Animation->AnimationCount()); ++i)
 		{
-			auto Data = Animation->GetAnimationData(i);
+			const FbxExAniData& Data = Animation->GetAnimationData(i);
 		}
 
 		Renderer->CreateFBXAnimation("Sprint", "Fox enemy.fbx", 5);
@@ -543,7 +544,7 @@ void GameEngineFBXWindow::OnGUI()
 
 				GameEngineFBXMesh* BaseMesh = GameEngineFBXMeshManager::GetInst().Find(SelectAnimationBaseName);
 
-				for (size_t i = 0; i < Animation->AnimationCount(); i++)
+				for (int i = 0; i < static_cast<int>(Animation->AnimationCount()); ++i)
 				{
 					Animation->CalFbxExBoneFrameTransMatrix(BaseMesh, i);
 				}
@@ -614,7 +615,7 @@ void GameEngineFBXWindow::OnGUI()
 
 			Renderer->SetFBXMesh(Mesh->GetName(), "Color");
 
-			for (size_t i = 0; i < Renderer->GetRenderSetCount(); i++)
+			for (int i = 0; i < static_cast<int>(Renderer->GetRenderSetCount()); ++i)
 			{
 				Renderer->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
 			}
@@ -653,7 +654,7 @@ void GameEngineFBXWindow::OnGUI()
 
 			Renderer->SetFBXMesh(Mesh->GetName(), "ColorAni");
 
-			for (size_t i = 0; i < Renderer->GetRenderSetCount(); i++)
+			for (unsigned int i = 0; i < static_cast<unsigned int>(Renderer->GetRenderSetCount()); ++i)
 			{
 				Renderer->GetRenderSet(i).ShaderHelper->SettingConstantBufferSet("ResultColor", float4::RED);
 			}

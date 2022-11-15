@@ -17,7 +17,7 @@ GameJoinPacket::~GameJoinPacket() // default destructer 디폴트 소멸자
 
 void GameJoinPacket::SetOtherPlayers(std::vector<PlayerInfo> _others)
 {
-    othersSize_ = _others.size();
+    othersSize_ = static_cast<int>(_others.size());
 
     for (size_t i = 0; i < _others.size(); i++)
     {

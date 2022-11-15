@@ -320,7 +320,7 @@ void UI_ItemBox::GetItemBoxInfo(list<ItemBase*> _ItemList)
 
 void UI_ItemBox::GetItemBoxInfo(ItemBox* _ItemBox)
 {
-	for (size_t i = 0; i < 8; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		if (_ItemBox->GetItem(i) != nullptr)
 		{

@@ -50,7 +50,6 @@ Character::Character()
 	, attackCooldown_(0.f)
 	, attackTime_(0.f)
 	, target_(nullptr)
-	, isPlayerDead_(false)
 	, timerStun_(0.0f)
 	, timerKnockback_(0.0f)
 	, currentAnimation_(eCurrentAnimation::None)
@@ -77,6 +76,8 @@ Character::Character()
 	, bSlowFlag_(false)
 	, slowEffect_(nullptr)
 	, stunEffect_(nullptr)
+	, levelUpEffect_(nullptr)
+	, deathEffect_(nullptr)
 	, bCoolWQ_(false)
 	, bCoolWW_(false)
 	, bCoolWE_(false)
@@ -108,6 +109,9 @@ Character::Character()
 	, prevLocation_(Location::NONE)
 	, hyperLocation_(Location::NONE)
 	, isPlayerWon_(false)
+	, isPlayerDead_(false)
+	, fraggerIndex_(-1)
+	, damagePopUp_(nullptr)
 	, recoveryTimeCheck_(0.0f)
 	, isDebugInvincible_(false)
 	, isMouseOntheUI_(false)
@@ -1598,7 +1602,7 @@ void Character::Damage(float _Amount, IUnit* _Target)
 	CharEffectPacket pack;
 	pack.SetTargetIndex(myIndex_);
 	pack.SetAnimationName("DamagePopup");
-	pack.SetPopupDamage(DMG);
+	pack.SetPopupDamage(static_cast<float>(DMG));
 	FT::SendPacket(pack);
 
 	stat_.HP -= _Amount;
@@ -2015,7 +2019,7 @@ void Character::InitEyeSight()
 		eyesightVertices_.push_back(v);
 	}
 
-	for (size_t i = 0; i < 36 - 1; i++)
+	for (int i = 0; i < 36 - 1; i++)
 	{
 		eyesightIndices_.push_back(i + 0);
 		eyesightIndices_.push_back(i + 1);
@@ -3192,7 +3196,7 @@ void Character::startPlayerDeath()
 
 	level->SubtractSurvivorCount();
 	// 총 플레이어 중 몇 위인가?
-	int myRank = pm->GetPlayerList().size();
+	int myRank = static_cast<int>(pm->GetPlayerList().size());
 
 	for (int i = 0; i < pm->GetPlayerList().size(); i++)
 	{
@@ -3250,7 +3254,7 @@ void Character::startPlayerWinner()
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
 
-	int myRank = pm->GetPlayerList().size();
+	int myRank = static_cast<int>(pm->GetPlayerList().size());
 
 	uiController_->UIOff();
 	uiController_->GetWinLoseUI()->SetWinner();

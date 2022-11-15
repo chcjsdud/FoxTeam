@@ -108,7 +108,7 @@ void HyperLoop::Update(float _DeltaTime)
 
 		std::vector<float4> spawnPoints = GetLevelConvert<LumiaLevel>()->GetMap()->GetCharacterSpawnPoints(static_cast<int>(SelectedArea));
 		GameEngineRandom random;
-		int point = random.RandomInt(0, spawnPoints.size() - 1);
+		int point = random.RandomInt(0, static_cast<int>(spawnPoints.size()) - 1);
 
 		//player->GetTransform()->SetWorldPosition(spawnPoints[point]);
 

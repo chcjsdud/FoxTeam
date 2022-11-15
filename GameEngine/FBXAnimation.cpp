@@ -14,7 +14,7 @@ void FBXAnimation::Init(int _Index, bool _isLoop, float _frameTime)
 
 
 
-	End = PixAniData->TimeEndCount;
+	End = static_cast<UINT>(PixAniData->TimeEndCount);
 	bEnd_ = false;
 
 
@@ -63,7 +63,7 @@ void FBXAnimation::Update(float _DeltaTime)
 		CurFrame = Start;
 	}
 
-	if (NextFrame >= End)
+	if (NextFrame >= static_cast<int>(End))
 	{
 		NextFrame = 0;
 	}
@@ -169,7 +169,7 @@ void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnima
 		CurFrame = Start;
 	}
 
-	if (NextFrame >= End)
+	if (NextFrame >= static_cast<int>(End))
 	{
 		NextFrame = 0;
 	}
@@ -205,7 +205,7 @@ void FBXAnimation::UpdateOverride(float _deltaTime, FBXAnimation* _overrideAnima
 		oa->CurFrame = oa->Start;
 	}
 
-	if (oaNextFrame >= oa->End)
+	if (oaNextFrame >= static_cast<int>(oa->End))
 	{
 		oaNextFrame = 0;
 	}
@@ -286,7 +286,7 @@ void FBXAnimation::ResetFrame()
 {
 	CurFrame = Start;
 	CurFrameTime = 0.0f;
-	End = PixAniData->TimeEndCount;
+	End = static_cast<UINT>(PixAniData->TimeEndCount);
 	bEnd_ = false;
 }
 
@@ -303,13 +303,13 @@ float4x4 FBXAnimation::GetAffine(int _boneIndex, int _renderSetIndex)
 
 	int NextFrame = CurFrame + 1;
 
-	if (NextFrame >= End)
+	if (NextFrame >= static_cast<int>(End))
 	{
 		NextFrame = 0;
 	}
 
 	int currentFrame = CurFrame;
-	if (currentFrame >= End)
+	if (currentFrame >= static_cast<int>(End))
 	{
 		currentFrame = Start;
 	}

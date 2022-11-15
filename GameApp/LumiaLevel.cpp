@@ -396,7 +396,7 @@ void LumiaLevel::CharacterCreationCommand()
 		{
 			std::vector<float4> spawnPoints = CurMap_->GetCharacterSpawnPoints(spawnArea);
 			GameEngineRandom random;
-			int point = random.RandomInt(0, spawnPoints.size() - 1);
+			int point = random.RandomInt(0, static_cast<int>(spawnPoints.size()) - 1);
 			pm->GetPlayerList()[PlayerNum].curPos_ = spawnPoints[point];
 			NewCharacter->InitSpawnPoint(spawnPoints[point]);
 		}
@@ -1283,7 +1283,7 @@ void LumiaLevel::UpdateCharacterVisibility()
 		position.y = FT::Map::MAX_HEIGHT;
 		float temp;
 
-		int indexCount = eyesightIndices.size() / 3;
+		int indexCount = static_cast<int>(eyesightIndices.size()) / 3;
 		for (int i = 0; i < indexCount; ++i)
 		{
 			float4 v1 = eyesightVertices[eyesightIndices[i * 3]].POSITION;
@@ -1314,7 +1314,7 @@ void LumiaLevel::UpdateCharacterVisibility()
 		position.y = FT::Map::MAX_HEIGHT;
 		float temp;
 
-		int indexCount = eyesightIndices.size() / 3;
+		int indexCount = static_cast<int>(eyesightIndices.size()) / 3;
 		for (int i = 0; i < indexCount; ++i)
 		{
 			float4 v1 = eyesightVertices[eyesightIndices[i * 3]].POSITION;

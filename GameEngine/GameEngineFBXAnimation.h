@@ -45,20 +45,15 @@ public:
 
 };
 
-
-// 41번 본이 120프레임의 데이터를 가지고 있다.
 class FbxExBoneFrame
 {
 public:
 	int BoneIndex;
 	int BoneParentIndex;
-
-	// 120프레임이야.
 	std::vector<FbxExBoneFrameData> BoneMatData;
 
-
-	FbxExBoneFrame() {
-
+	FbxExBoneFrame() : BoneIndex(), BoneParentIndex()
+	{
 	}
 
 	void Write(GameEngineFile* _File) const

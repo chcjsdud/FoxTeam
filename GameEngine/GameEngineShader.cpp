@@ -20,7 +20,7 @@ void GameEngineShader::AutoCompile(GameEngineFile& ShaderFile)
 	{
 		GameEnginePixelShader* Ptr = GameEnginePixelShaderManager::GetInst().Load(FileName + "_PS", ShaderFile.GetFullPath(), FileName + "_PS");
 
-		int Count = Ptr->GetOutPutSize("SV_Target");
+		int Count = static_cast<int>(Ptr->GetOutPutSize("SV_Target"));
 
 		if (Count > 1 && AllCode.find("DeferredOutPut"))
 		{
@@ -36,6 +36,7 @@ GameEngineShader::GameEngineShader(ShaderType _Type)
 	: VersionHigh_(5)
 	, VersionLow_(0)
 	, Type_(_Type)
+	, CodeBlob_(nullptr)
 {
 }
 

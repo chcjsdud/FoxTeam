@@ -744,7 +744,7 @@ void Jackie::onUpdateQSkill(float _deltaTime)
 	timer_collision_Q += _deltaTime;
 	timer_end_Q += _deltaTime;
 
-	if (true == b_Qhit_)
+	if (1 == b_Qhit_)
 	{
 		collision_Q->Off();
 	}

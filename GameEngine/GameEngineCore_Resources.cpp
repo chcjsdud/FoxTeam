@@ -425,7 +425,7 @@ void GameEngineCore::EngineResourcesCreate_Mesh()
 	{
 		std::vector<UINT> circleIndex;
 
-		for (size_t i = 0; i < 19; i++)
+		for (UINT i = 0; i < 19; i++)
 		{
 			circleIndex.push_back(0);
 			circleIndex.push_back(i + 1);

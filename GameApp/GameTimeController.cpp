@@ -488,9 +488,6 @@ void GameTimeController::MakeNextProhibitedArea()
 	LumiaLevel* PlayLevel = dynamic_cast<LumiaLevel*>(CurLevel);
 
 	// "예정" 금지구역을 두 군데 설정 후 멤버변수로 저장하며, 이를 나래이션으로 브로드캐스트합니다.
-	int tmpAreaIndex0;
-	int tmpAreaIndex1;
-
 	for (int i = 0; i < 2; i++)
 	{
 		int dice0 = randomGenerator_.RandomInt(0, 14);
