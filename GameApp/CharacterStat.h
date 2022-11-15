@@ -1,4 +1,5 @@
 #pragma once
+#include "FTConstant.h"
 
 class CharacterStat
 {
