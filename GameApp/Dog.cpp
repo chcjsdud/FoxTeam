@@ -158,7 +158,11 @@ void Dog::InitalizeCollider()
 	AtkCollider_->Off();
 }
 
-void Dog::SkillAttackProcessing(float _DeltaTime)
+void Dog::StartSkillAttackProcessing()
+{
+}
+
+void Dog::UpdateSkillAttackProcessing(float _DeltaTime)
 {
 	// 스킬없으므로 스킬공격모션 종료시 대기상태로 전환
 	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->IsCurrentAnimationEnd())
@@ -166,6 +170,10 @@ void Dog::SkillAttackProcessing(float _DeltaTime)
 		// 모션종료시 대기상태 전환
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}
+}
+
+void Dog::EndSkillAttackProcessing()
+{
 }
 
 Dog::Dog()

@@ -182,7 +182,11 @@ void Wolf::InitalizeCollider()
 	//SkillAtkCollider_->Off();
 }
 
-void Wolf::SkillAttackProcessing(float _DeltaTime)
+void Wolf::StartSkillAttackProcessing()
+{
+}
+
+void Wolf::UpdateSkillAttackProcessing(float _DeltaTime)
 {
 	if (false == SkillAtk_)
 	{
@@ -227,6 +231,10 @@ void Wolf::SkillAttackProcessing(float _DeltaTime)
 		// 모션종료시 대기상태 전환
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}
+}
+
+void Wolf::EndSkillAttackProcessing()
+{
 }
 
 Wolf::Wolf()

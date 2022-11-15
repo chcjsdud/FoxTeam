@@ -17,7 +17,9 @@ protected:
 	void InitalizeCollider() override;
 
 protected:
-	void SkillAttackProcessing(float _DeltaTime) override;
+	void StartSkillAttackProcessing() override;
+	void UpdateSkillAttackProcessing(float _DeltaTime) override;
+	void EndSkillAttackProcessing() override;
 
 private:
 	void HitBoxRangeOn();

@@ -1385,9 +1385,17 @@ IUnit* Character::getMousePickedCharacter()
 		GameEngineActor* mousePickedActor = nullptr;
 		for (GameEngineCollision* c : mousePickedCollision)
 		{
+			// 피킹된 충돌체가 Off 상태라면 처리불가
+			if (false == c->IsUpdate())
+			{
+				continue;
+			}
+
 			mousePickedActor = c->GetActor();
 			Monsters* monster = dynamic_cast<Monsters*>(mousePickedActor);
-			if (nullptr != monster && !monster->IsHidden() && !monster->IsDead())
+
+			// 피킹된 몬스터가 존재하며 시야범위내있어야하며 사망상태가 아닐때 타겟지정가능
+			if (nullptr != monster && false == monster->IsHidden() && false == monster->IsDead())
 			{
 				return dynamic_cast<IUnit*>(mousePickedActor);
 			}

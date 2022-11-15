@@ -125,17 +125,22 @@ void Weekline::InitalizeCollider()
 	//AtkCollider_->Off();
 }
 
-void Weekline::SkillAttackProcessing(float _DeltaTime)
+void Weekline::StartSkillAttackProcessing()
 {
-	// ???
+}
 
-
+void Weekline::UpdateSkillAttackProcessing(float _DeltaTime)
+{
 	// 스킬공격모션 종료시 대기상태로 전환
 	if ("SKILLATTACK" == MainRenderer_->GetCurAnimationName() && true == MainRenderer_->IsCurrentAnimationEnd())
 	{
 		// 모션종료시 대기상태 전환
 		ChangeAnimationAndState(MonsterStateType::IDLE);
 	}
+}
+
+void Weekline::EndSkillAttackProcessing()
+{
 }
 
 Weekline::Weekline()

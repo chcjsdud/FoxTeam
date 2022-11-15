@@ -222,7 +222,13 @@ void Boar::InitalizeCollider()
 	SkillAtkCollider_->Off();
 }
 
-void Boar::SkillAttackProcessing(float _DeltaTime)
+void Boar::StartSkillAttackProcessing()
+{
+	// 스킬시전중 피격처리무시를 위해 몸체 충돌체 Off
+	BodyCollider_->Off();
+}
+
+void Boar::UpdateSkillAttackProcessing(float _DeltaTime)
 {
 	// 돌진 : 일직선으로 돌격하며 적을 밀어내며 피해를 입힘
 	//		  단, 적이 벽에 부딪혔다면 기절
@@ -309,6 +315,9 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 			SkillAtk_ = false;
 			SkillAtkCollider_->Off();
 
+			// 피격무시를 위해 Off처리했던 몸체충돌체 On
+			BodyCollider_->On();
+
 			// 모션종료시 대기상태 전환
 			ChangeAnimationAndState(MonsterStateType::IDLE);
 			return;
@@ -362,6 +371,16 @@ void Boar::SkillAttackProcessing(float _DeltaTime)
 			MainRenderer_->ChangeFBXAnimation("SKILLATTACK");
 		}
 	}
+}
+
+void Boar::EndSkillAttackProcessing()
+{
+	// 정상동작으로 상태변경 or 특정한 이유로 강제 상태변경시
+	// 히트박스 렌더러 Off 처리
+	HitBoxRangeOff();
+
+	// 피격무시를 위해 Off처리했던 몸체충돌체 On
+	BodyCollider_->On();
 }
 
 void Boar::HitBoxRangeOn()

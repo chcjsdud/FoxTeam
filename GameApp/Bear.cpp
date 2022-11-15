@@ -177,7 +177,11 @@ void Bear::InitalizeCollider()
 	SkillAtkCollider_->Off();
 }
 
-void Bear::SkillAttackProcessing(float _DeltaTime)
+void Bear::StartSkillAttackProcessing()
+{
+}
+
+void Bear::UpdateSkillAttackProcessing(float _DeltaTime)
 {
 	// 지면강타 : 주변범위에 피해를 입히고 1초간 기절
 	// 피해량 - 기본(170) + 공격력의 40%
@@ -245,6 +249,10 @@ void Bear::SkillAttackProcessing(float _DeltaTime)
 			ChangeAnimationAndState(MonsterStateType::IDLE);
 		}
 	}
+}
+
+void Bear::EndSkillAttackProcessing()
+{
 }
 
 Bear::Bear()

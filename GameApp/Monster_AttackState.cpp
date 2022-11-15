@@ -56,14 +56,19 @@ void Monsters::StartSkillAttackState()
 	// 현재 상태 지정
 	PrevStateType_ = CurStateType_;
 	CurStateType_ = MonsterStateType::SKILLATTACK;
+
+	// 몬스터 타입별 스킬공격이 다르므로 순수가상함수로 생성된 함수 실행
+	StartSkillAttackProcessing();
 }
 
 void Monsters::UpdateSkillAttackState(float _DeltaTime)
 {
 	// 몬스터 타입별 스킬공격이 다르므로 순수가상함수로 생성된 함수 실행
-	SkillAttackProcessing(_DeltaTime);
+	UpdateSkillAttackProcessing(_DeltaTime);
 }
 
 void Monsters::EndSkillAttackState()
 {
+	// 몬스터 타입별 스킬공격종료시 처리하는 작업이 다르므로 순수가상함수로 생성된 함수 실행
+	EndSkillAttackProcessing();
 }
