@@ -1385,12 +1385,6 @@ IUnit* Character::getMousePickedCharacter()
 		GameEngineActor* mousePickedActor = nullptr;
 		for (GameEngineCollision* c : mousePickedCollision)
 		{
-			// 피킹된 충돌체가 Off 상태라면 처리불가
-			if (false == c->IsUpdate())
-			{
-				continue;
-			}
-
 			mousePickedActor = c->GetActor();
 			Monsters* monster = dynamic_cast<Monsters*>(mousePickedActor);
 
