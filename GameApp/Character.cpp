@@ -1630,6 +1630,18 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				pack.SetTargetIndex(myIndex_);
 				pack.SetAnimationName("Death_Explode");
 				FT::SendPacket(pack);
+
+				FT::PlaySoundAllAndSendPacket("Announce_Player_Kill_01.wav");
+				if (true == GameServer::GetInstance()->IsOpened())
+				{
+					level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText(pm->GetMyPlayer().playerNickname_ + "가 금지 구역에서 살해당했습니다.", 3.0f);
+				}
+
+				NoticeBroadcastPacket packet;
+				packet.SetString(pm->GetMyPlayer().playerNickname_ + "가 금지 구역에서 사망했습니다.");
+				packet.SetTimer(3.0f);
+
+				FT::SendPacket(packet);
 			}
 			else if (_Target->UnitType_ == UnitType::CHARACTER)
 			{
@@ -1644,15 +1656,17 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				pack.SetAnimationName("Death");
 				FT::SendPacket(pack);
 
+
+				FT::PlaySoundAllAndSendPacket("Announce_Player_Kill_01.wav");
 				if (true == GameServer::GetInstance()->IsOpened())
 				{
-					level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText(pm->GetNickname() + "가 " + pm->GetPlayerList()[tmpIndex].playerNickname_ + " 에게 살해당했습니다.", 3.0f);
+					level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText(pm->GetPlayerList()[myIndex_].playerNickname_ + "가 " + pm->GetPlayerList()[tmpIndex].playerNickname_ + " 에게 살해당했습니다.", 3.0f);
 				}
 				NoticeBroadcastPacket packet;
-				packet.SetString(pm->GetNickname() + "가 " + pm->GetPlayerList()[tmpIndex].playerNickname_ + " 에게 살해당했습니다.");
+				packet.SetString(pm->GetPlayerList()[myIndex_].playerNickname_ + "가 " + pm->GetPlayerList()[tmpIndex].playerNickname_ + " 에게 살해당했습니다.");
 				packet.SetTimer(3.0f);
 
-				GameServer::GetInstance()->Send(&packet);
+				FT::SendPacket(packet);
 			}
 			else if (_Target->UnitType_ == UnitType::MONSTER)
 			{
@@ -1668,15 +1682,16 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				pack.SetAnimationName("Death");
 				FT::SendPacket(pack);
 
+				FT::PlaySoundAllAndSendPacket("Announce_Player_Kill_01.wav");
 				if (true == GameServer::GetInstance()->IsOpened())
 				{
-					level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText(pm->GetNickname() + "가 몬스터에게 살해당했습니다.", 3.0f);
+					level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetNoticeUI()->SetText(pm->GetMyPlayer().playerNickname_ + "가 몬스터에게 살해당했습니다.", 3.0f);
 				}
 				NoticeBroadcastPacket packet;
-				packet.SetString(pm->GetNickname() + "가 몬스터에게 살해당했습니다.");
+				packet.SetString(pm->GetMyPlayer().playerNickname_ + "가 몬스터에게 살해당했습니다.");
 				packet.SetTimer(3.0f);
 
-				GameServer::GetInstance()->Send(&packet);
+				FT::SendPacket(packet);
 			}
 
 
@@ -1699,6 +1714,14 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				pack.SetTargetIndex(myIndex_);
 				pack.SetAnimationName("Death_Explode");
 				FT::SendPacket(pack);
+
+
+				FT::PlaySoundAllAndSendPacket("Announce_Player_Kill_01.wav");
+				NoticeBroadcastPacket packet;
+				packet.SetString(pm->GetMyPlayer().playerNickname_ + "가 금지 구역에서 사망했습니다.");
+				packet.SetTimer(3.0f);
+
+				FT::SendPacket(packet);
 			}
 			else if (_Target->UnitType_ == UnitType::CHARACTER)
 			{
@@ -1711,6 +1734,14 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				pack.SetTargetIndex(myIndex_);
 				pack.SetAnimationName("Death");
 				FT::SendPacket(pack);
+
+
+				FT::PlaySoundAllAndSendPacket("Announce_Player_Kill_01.wav");
+				NoticeBroadcastPacket packet;
+				packet.SetString(pm->GetPlayerList()[myIndex_].playerNickname_ + "가 " + pm->GetPlayerList()[tmpIndex].playerNickname_ + " 에게 살해당했습니다.");
+				packet.SetTimer(3.0f);
+
+				FT::SendPacket(packet);
 			}
 			else if (_Target->UnitType_ == UnitType::MONSTER)
 			{
@@ -1722,6 +1753,14 @@ void Character::Damage(float _Amount, IUnit* _Target)
 				pack.SetTargetIndex(myIndex_);
 				pack.SetAnimationName("Death");
 				FT::SendPacket(pack);
+
+
+				FT::PlaySoundAllAndSendPacket("Announce_Player_Kill_01.wav");
+				NoticeBroadcastPacket packet;
+				packet.SetString(pm->GetMyPlayer().playerNickname_ + "가 몬스터에게 살해당했습니다.");
+				packet.SetTimer(3.0f);
+
+				FT::SendPacket(packet);
 			}
 
 
