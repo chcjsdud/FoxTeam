@@ -176,8 +176,8 @@ void GameTimeController::CreateDailytimes()
 	ThreeDay.NightTime_ = 60.0f;
 
 	DailyTime FourDay = {};
-	FourDay.DayTime_ = 180.0f;
-	FourDay.NightTime_ = 180.0f;
+	FourDay.DayTime_ = 400.0f;
+	FourDay.NightTime_ = 400.0f;
 
 	Dailytimes_.push_back(OneDay);
 	Dailytimes_.push_back(TwoDay);
