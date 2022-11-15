@@ -34,12 +34,23 @@ void UI_Inventory::Start()
 	SlotXPivot = { 47.0f, 0.0f, 0.0f };
 	SlotYPivot = { 0.0f, -32.0f, 0.0f };
 	SlotSize = { 44.0f,27.0f };
+
+	float4 createSlotSize = { 26.0f,58.0f, 1.f };
+	float4 createSlotPos = { 370.0f, -328.0f, 0.0f };
 	
 	{
 		Renderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform());
 		Renderer->SetImage("Inventory_BackGround.png", "PointSmp");
 		Renderer->GetTransform()->SetLocalPosition(BackGroundPos);
 		Renderer->GetTransform()->SetLocalScaling(Renderer->GetCurrentTexture()->GetTextureSize());
+	}
+
+	{
+		CraftCollision = CreateTransformComponent<GameEngineCollision>();
+		CraftCollision->GetTransform()->SetLocalScaling(createSlotSize);
+		CraftCollision->GetTransform()->SetLocalPosition(createSlotPos);
+		CraftCollision->SetCollisionGroup(eCollisionGroup::UI);
+		CraftCollision->SetCollisionType(CollisionType::Rect);
 	}
 
 	{
@@ -175,6 +186,7 @@ void UI_Inventory::Update(float _Time)
 		else
 		{
 			Renderer->On();
+			//GetLevel()->PushDebugRenderUI(CraftCollision->GetTransform(), CollisionType::Rect);
 			//GetLevel()->PushDebugRenderUI(Slot0Collision->GetTransform(), CollisionType::Rect);
 			//GetLevel()->PushDebugRenderUI(Slot1Collision->GetTransform(), CollisionType::Rect);
 			//GetLevel()->PushDebugRenderUI(Slot2Collision->GetTransform(), CollisionType::Rect);
@@ -764,4 +776,9 @@ int UI_Inventory::SlotMouseCollisionCheck()
 	//충돌중이 아님
 	return -1;
 
+}
+
+bool UI_Inventory::CraftCollisionMouseCheck()
+{	
+	return CraftCollision->Collision(eCollisionGroup::MousePointer);
 }

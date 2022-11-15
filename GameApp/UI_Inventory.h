@@ -29,6 +29,8 @@ public:
 	void ItemRenderCheck();
 
 	int SlotMouseCollisionCheck();
+	
+	bool CraftCollisionMouseCheck();
 
 	vector<GameEngineUIRenderer*> GetBGRenderers()
 	{
@@ -86,6 +88,9 @@ private:
 	GameEngineCollision* Slot7Collision;
 	GameEngineCollision* Slot8Collision;
 	GameEngineCollision* Slot9Collision;
+
+
+	GameEngineCollision* CraftCollision;
 
 
 	vector<GameEngineUIRenderer*> BGRenderers;
