@@ -490,6 +490,8 @@ void Aya::onStartQSkill()
 	if (target_ == nullptr)
 	{
 		coolTimer_Q_ = 0.0f;
+		stat_.SP += stat_.SP_Q;
+		FT::SendStatPacket(stat_, GetIndex());
 		changeAnimationWait();
 		mainState_ << "NormalState";
 		return;

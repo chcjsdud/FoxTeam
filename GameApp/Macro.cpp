@@ -3,6 +3,8 @@
 #include <GameEngineBase/GameEngineSoundPlayer.h>
 #include <GameEngine/GameEngineLevelControlWindow.h>
 #include "CharEffectPacket.h"
+#include "CharStatPacket.h"
+
 std::unique_ptr<GameEngineSoundPlayer> FT::BGMPlayer = std::make_unique<GameEngineSoundPlayer>();
 
 void FT::SendPacket(GameEnginePacketBase& packet)
@@ -15,6 +17,14 @@ void FT::SendPacket(GameEnginePacketBase& packet)
 	{
 		GameClient::GetInstance()->Send(&packet);
 	}
+}
+
+void FT::SendStatPacket(CharacterStat& _characterStat, int _characterIndex)
+{
+	CharStatPacket packet;
+	packet.SetStat(_characterStat);
+	packet.SetTargetIndex(_characterIndex);
+	FT::SendPacket(packet);
 }
 
 void FT::PlaySoundAndSendPacket(const std::string& _name, const float4& _position)
