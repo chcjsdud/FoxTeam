@@ -34,7 +34,7 @@ void CameraActor::Start()
 		GameEngineInput::GetInst().CreateKey("CAMMoveLeft", 'A');
 		GameEngineInput::GetInst().CreateKey("CAMMoveRight", 'D');
 		GameEngineInput::GetInst().CreateKey("CAMSpeedBoost", VK_LSHIFT);
-		GameEngineInput::GetInst().CreateKey("CAMRot", VK_RBUTTON);
+		GameEngineInput::GetInst().CreateKey("CAMRot", VK_LBUTTON);
 	}
 }
 
