@@ -256,6 +256,8 @@ void ItemBoxManager::OpenItemBox()
 		return;
 	}
 
+	selectBox_->playOpenSound();
+
 	if (itemBoxUI_ != nullptr)
 	{
 		itemBoxUI_->Release();

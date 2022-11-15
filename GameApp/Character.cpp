@@ -2113,11 +2113,6 @@ void Character::soundChangeByMap()
 	prevLocation_ = curLocation_;
 }
 
-void Character::soundItemBox()
-{
-
-}
-
 void Character::playAreaBGMsound(Location _value)
 {
 	LumiaLevel* level = GetLevelConvert<LumiaLevel>();

@@ -60,45 +60,6 @@ void ItemBoxWindow::OnGUI()
 			static_cast<ImGuiID>(invenListName.size()));
 	}
 
-
-	SelectBox_ = ItemBoxManager_->GetSelectBox();
-
-	if (nullptr != SelectBox_)
-	{
-		const char* Arr = SelectBox_->area.c_str();
-		ImGui::Text(Arr);
-		ImGui::SameLine();
-		ImGui::Text(std::to_string(SelectBox_->info.Index).c_str());
-
-		Arr = SelectBox_->info.BoxType.c_str();
-		ImGui::Text(Arr);
-
-		std::vector<const char*> listName;
-
-		for (auto& Item : SelectBox_->itemList)
-		{
-			//listName.push_back(GameEngineString::AnsiToUTF8Return(Item->GetName()).c_str());
-			if (true == Item->IsDestroyed_)
-			{
-				continue;
-			}
-
-			listName.push_back(Item->GetName().c_str());
-		}
-
-		if (listName.empty())
-		{
-			ImGui::Text("ItemBox Empty");
-		}
-		else
-		{
-			int selectIndex = -1;
-			ImGui::PushItemWidth(200);
-			ImGui::ListBox("##ItemList", &selectIndex, &listName[0],
-				static_cast<ImGuiID>(listName.size()));
-		}
-	}
-
 	ImGui::Text("Build Items Current Location");
 
 	CurMainPlayer = PlayerInfoManager::GetInstance()->GetMainCharacter();
@@ -174,4 +135,43 @@ void ItemBoxWindow::OnGUI()
 	//	CurMainPlayer = PlayerInfoManager::GetInstance()->GetMainCharacter();
 	//	CurMainPlayer->getItem(itemName);
 	//}
+
+	SelectBox_ = ItemBoxManager_->GetSelectBox();
+
+	if (nullptr != SelectBox_)
+	{
+		const char* Arr = SelectBox_->area.c_str();
+		ImGui::Text(Arr);
+		ImGui::SameLine();
+		ImGui::Text(std::to_string(SelectBox_->info.Index).c_str());
+
+		Arr = SelectBox_->info.BoxType.c_str();
+		ImGui::Text(Arr);
+
+		std::vector<const char*> listName;
+
+		for (auto& Item : SelectBox_->itemList)
+		{
+			//listName.push_back(GameEngineString::AnsiToUTF8Return(Item->GetName()).c_str());
+			if (true == Item->IsDestroyed_)
+			{
+				continue;
+			}
+
+			listName.push_back(Item->GetName().c_str());
+		}
+
+		if (listName.empty())
+		{
+			ImGui::Text("ItemBox Empty");
+		}
+		else
+		{
+			int selectIndex = -1;
+			ImGui::PushItemWidth(200);
+			ImGui::ListBox("##ItemList", &selectIndex, &listName[0],
+				static_cast<ImGuiID>(listName.size()));
+		}
+	}
+
 }

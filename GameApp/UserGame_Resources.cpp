@@ -55,7 +55,7 @@ void UserGame::ResourcesLoad()
 		TextureDir.MoveParent("FoxTeam");
 		TextureDir.MoveChild("Resources");
 		TextureDir.MoveChild("Texture");
-		TextureDir.MoveChild("YSJ");
+		TextureDir.MoveChild("Etc");
 
 		std::vector<GameEngineDirectory> AllDir = TextureDir.GetAllDirectoryRecursive();
 		LoadingFolder += static_cast<int>(AllDir.size());
@@ -83,6 +83,19 @@ void UserGame::ResourcesLoad()
 		GameEngineDirectory SoundDir;
 		SoundDir.MoveParent("FoxTeam");
 		SoundDir / "Resources" / "Sound" / "Bgm";
+
+		std::vector<GameEngineFile> AllFile = SoundDir.GetAllFile("wav");
+
+		for (size_t i = 0; i < AllFile.size(); i++)
+		{
+			GameEngineSoundManager::GetInstance()->CreateSound(AllFile[i].FileName(), AllFile[i].GetFullPath());
+		}
+	}
+	
+	{
+		GameEngineDirectory SoundDir;
+		SoundDir.MoveParent("FoxTeam");
+		SoundDir / "Resources" / "Sound" / "ItemBox";
 
 		std::vector<GameEngineFile> AllFile = SoundDir.GetAllFile("wav");
 

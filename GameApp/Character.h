@@ -252,7 +252,6 @@ private:
 	void getFOWData(std::vector<float4>& _data, bool& _bCalc);
 
 	void soundChangeByMap();
-	void soundItemBox();
 	void playAreaBGMsound(Location _value);
 
 #pragma region InfightCheck

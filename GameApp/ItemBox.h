@@ -54,6 +54,10 @@ protected:
 	void Update(float _DeltaTime) override;
 
 private:
+public:
+	void playOpenSound();
+
+private:
 
 	ItemBoxInfo info;
 	GameEngineCollision* col;
