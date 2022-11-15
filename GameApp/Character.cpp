@@ -2695,7 +2695,7 @@ void Character::updateChase(float _deltaTime)
 
 void Character::startMixItem()
 {
-	uiController_->GetSkillGauge()->PlayAwake(2.0f, "제작 중");
+
 }
 
 void Character::updateMixItem(float _deltaTime)
@@ -2722,6 +2722,8 @@ void Character::updateMixItem(float _deltaTime)
 void Character::startCraft()
 {
 	changeAnimationCraft();
+	uiController_->GetSkillGauge()->PlayAwake(2.0f, "제작 중");
+
 	FT::PlaySoundAndSendPacket("chracter_Craft_Tool.wav", transform_.GetWorldPosition());
 }
 
