@@ -10,6 +10,7 @@ RioDSkill::RioDSkill()
 	, collision_(nullptr)
 	, owner_(nullptr)
 	, soundCount_(4)
+	, bShotSound_(false)
 {
 
 }
@@ -65,17 +66,27 @@ void RioDSkill::updateWait(float _deltaTime)
 
 	if (waitTime_ < 0.f)
 	{
+
 		state_ << "Falling";
 	}
 }
 
 void RioDSkill::startFalling()
 {
+
 	effect_->PlayShot();
 }
 
 void RioDSkill::updateFalling(float _deltaTime)
 {
+	if (state_.GetCurrentState()->Time_ > 0.32f && false == bShotSound_)
+	{
+		FT::PlaySoundAndSendPacket("skillBow_fire.wav", transform_.GetWorldPosition());
+		FT::PlaySoundAndSendPacket("skillBow_in.wav", transform_.GetWorldPosition());
+
+		bShotSound_ = true;
+	}
+
 	if (state_.GetCurrentState()->Time_ > 3.0f)
 	{
 		state_ << "Fall";
@@ -115,19 +126,27 @@ void RioDSkill::startFall()
 			unit->Slow(1.0f, 0.5f);
 		}
 	}
+
 }
 
 void RioDSkill::updateFall(float _deltaTime)
 {
-	if (soundCount_ < 0)
+//	if (soundCount_ < 0)
+//	{
+//		Release();
+//	}
+//
+//	if (state_.GetCurrentState()->Time_ > 0.07f)
+//	{
+//		FT::PlaySoundAndSendPacket("Rio_ShortBow_Hit_01.wav", transform_.GetWorldPosition());
+//		state_.GetCurrentState()->Time_ = 0.0f;
+//		soundCount_--;
+//	}
+
+
+	if (state_.GetCurrentState()->Time_ > 2.0f)
 	{
 		Release();
 	}
 
-	if (state_.GetCurrentState()->Time_ > 0.07f)
-	{
-		FT::PlaySoundAndSendPacket("Rio_ShortBow_Hit_01.wav", transform_.GetWorldPosition());
-		state_.GetCurrentState()->Time_ = 0.0f;
-		soundCount_--;
-	}
 }

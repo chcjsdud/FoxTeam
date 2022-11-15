@@ -833,6 +833,7 @@ void Rio::onStartDSkill()
 	}
 
 	FT::PlaySoundAndSendPacket("skillReadyBow_in.wav", transform_.GetWorldPosition());
+	
 
 	PacketCreateProjectile packetArrow;
 	packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower * 5, mousePosition, transform_.GetWorldRotation().y, 1200.f);
@@ -868,11 +869,11 @@ void Rio::onStartDSkill()
 
 void Rio::onUpdateDSkill(float _deltaTime)
 {
+
+
 	if (attackState_.GetCurrentState()->Time_ > 0.2f)
 	{
 		FT::PlaySoundAndSendPacket("attackBow_in_r1.wav", transform_.GetWorldPosition());
-
-
 
 		attackState_.GetCurrentState()->Time_ = -10.f;
 	}

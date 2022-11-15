@@ -5,7 +5,7 @@
 
 RioDSkillEffect::RioDSkillEffect() // default constructer 디폴트 생성자
 	: zoneRenderer_(nullptr), impactRenderer_(nullptr), collision_(nullptr), timer_(0.0f), rotationContainer_(0.0f), impactOriginalScale_({0.0f,0.0f})
-	, impactScaleContainer_({0.0f,0.0f}), shotTimer_(0.3f), targetScaleContainer_({0.0f,0.0f})
+	, impactScaleContainer_({0.0f,0.0f}), shotTimer_(0.3f), targetScaleContainer_({0.0f,0.0f}), bHitsound_(false)
 {
 
 }
@@ -97,6 +97,7 @@ void RioDSkillEffect::startAwake()
 {
 	impactRenderer_->On();
 	zoneRenderer_->On();
+
 }
 
 void RioDSkillEffect::updateAwake(float _deltaTime)
@@ -107,6 +108,14 @@ void RioDSkillEffect::updateAwake(float _deltaTime)
 	{
 		impactRenderer_->SetAlpha(timer_);
 		zoneRenderer_->SetAlpha(timer_);
+
+		
+	}
+
+	if (timer_ >= 1.8f && false == bHitsound_)
+	{
+		FT::PlaySoundAndSendPacket("skillBow_hit.wav", transform_.GetWorldPosition());
+		bHitsound_ = true;
 	}
 	
 	if (timer_ >= 3.0f)
@@ -119,6 +128,7 @@ void RioDSkillEffect::updateAwake(float _deltaTime)
 
 void RioDSkillEffect::startShot()
 {
+
 	targetRenderer_->On();
 	shotTimer_ = 0.3f;
 

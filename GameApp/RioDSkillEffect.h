@@ -54,6 +54,7 @@ private:
 
 	float shotTimer_;
 	GameEngineRandom random_;
+	bool bHitsound_;
 };
 
 

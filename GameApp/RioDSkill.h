@@ -44,5 +44,7 @@ private:
 	int soundCount_;
 
 	RioDSkillEffect* effect_;
+
+	bool bShotSound_;
 };
 
