@@ -104,6 +104,7 @@ Character::Character()
 	, bHidden_(false)
 	, prohibitTimer_(0.0f)
 	, curLocation_(Location::NONE)
+	, prevLocation_(Location::NONE)
 	, hyperLocation_(Location::NONE)
 	, isPlayerWon_(false)
 	, recoveryTimeCheck_(0.0f)
@@ -345,12 +346,8 @@ void Character::Update(float _DeltaTime)
 
 	if (GameEngineInput::Down("M"))
 	{
-
-
 		GetUIController()->GetMinimapUI()->Toggle();
 	}
-
-
 
 	if (eyesightRenderer_ == nullptr)
 	{
@@ -384,6 +381,8 @@ void Character::Update(float _DeltaTime)
 	}
 
 	mainState_.Update(_DeltaTime);
+
+	soundChangeByMap();
 }
 
 
@@ -2092,6 +2091,51 @@ void Character::getFOWData(std::vector<float4>& _data, bool& _bCalc)
 	_data.clear();
 	_data = currentMap_->GetEyeSightPolygon(transform_.GetWorldPosition(), stat_.VisionRange);
 	_bCalc = false;
+}
+
+void Character::soundChangeByMap()
+{
+	if (curLocation_ == prevLocation_)
+	{
+		return;
+	}
+
+	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
+
+	if ("LumiaLevel" != level->GetName())
+	{
+		return;
+	}
+
+	playAreaBGMsound(GetCurLocation());
+
+	prevLocation_ = curLocation_;
+}
+
+void Character::soundItemBox()
+{
+
+}
+
+void Character::playAreaBGMsound(Location _value)
+{
+	LumiaLevel* level = GetLevelConvert<LumiaLevel>();
+
+	if ("LumiaLevel" != level->GetName())
+	{
+		return;
+	}
+
+	int mapIndex = static_cast<int>(_value);
+
+	std::string str = "BSER_AreaBGM_";
+	str.append(level->GetMap()->GetMapName(mapIndex));
+	str.append(".wav");
+
+	areaSoundPlayer_.Stop();
+	areaSoundPlayer_.ChangeSound(str);
+	areaSoundPlayer_.Play();
+	areaSoundPlayer_.SetVolume(0.3f);
 }
 
 void Character::initBasicEffect()

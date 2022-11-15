@@ -12,7 +12,7 @@ class LumiaMap : public GameEngineActor
 {
 public:
 	// 플레이어 거리 기준
-	const float RENDER_RANGE = 1200.f;
+	const float RENDER_RANGE = 1300.f;
 
 public:
 	LumiaMap();

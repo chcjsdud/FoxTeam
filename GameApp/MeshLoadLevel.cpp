@@ -78,7 +78,7 @@ void MeshLoadLevel::LevelStart()
 	tempDir.MoveParent("FoxTeam");
 	tempDir.MoveChild("Resources");
 	tempDir.MoveChild("Texture");
-	tempDir.MoveChild("ItemBox");
+	tempDir.MoveChild("Map");
 
 	std::vector<GameEngineFile> vecFile = tempDir.GetAllFile("FBX");
 

@@ -8,6 +8,7 @@
 #include "IUnit.h"
 #include "LevelUPData.h"
 #include "UseableItem.h"
+#include <GameEngineBase/GameEngineSoundPlayer.h>
 
 struct CombineItem;
 struct QueueItem;
@@ -105,6 +106,7 @@ public:
 	const std::vector<GameEngineVertex>& GetEyesightVertices() { return eyesightVertices_; }
 	const std::vector<UINT>& GetEysightIndices() { return eyesightIndices_; }
 	Location GetCurLocation() { return curLocation_; }
+	Location GetPrevLocation() { return prevLocation_; }
 	std::list<ItemBase*>& GetAllMyBuildItems() { return allMyBuildItems_; };
 	UI_DamagePopUp* GetDamagepopup() { return damagePopUp_; }
 
@@ -124,6 +126,7 @@ public:
 
 	void SetTriggerProhibit(bool _tf) { isInProhibited_ = _tf; }
 	void SetCurLocation(Location _location) { curLocation_ = _location; }
+	void SetPrevLocation(Location _location) { prevLocation_ = _location; }
 
 	// 스탯 내 기준점이 되는 쿨타임 변수
 	//float GetCooltimeQSkill() { return stat_.Cooltime_q; }
@@ -247,6 +250,10 @@ private:
 
 	void updateFOW(float _deltaTime);
 	void getFOWData(std::vector<float4>& _data, bool& _bCalc);
+
+	void soundChangeByMap();
+	void soundItemBox();
+	void playAreaBGMsound(Location _value);
 
 #pragma region InfightCheck
 	void InfightCheck(float _DeltaTime);
@@ -551,6 +558,7 @@ protected:
 	float prohibitedCounter_;
 	float prohibitTimer_;
 	Location curLocation_;
+	Location prevLocation_;
 
 
 private:
@@ -587,4 +595,6 @@ protected:
 
 private:
 	bool isDebugInvincible_;
+
+	GameEngineSoundPlayer areaSoundPlayer_;
 };
