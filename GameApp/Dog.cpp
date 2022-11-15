@@ -13,7 +13,7 @@ void Dog::InitalizeStateInfo()
 	//====================================== 스텟의 최대치(고정)
 	StateInfo_.LevelMin_ = 3;											// 시작 레벨(리젠시 해당 데이터로 레벨초기화)
 	StateInfo_.LevelMax_ = 17;											// 최대 레벨
-	StateInfo_.HomingInstinctValueMax_ = 10.0f;							// 최대 귀소본능 수치
+	StateInfo_.HomingInstinctValueMax_ = 5.0f;							// 최대 귀소본능 수치
 	StateInfo_.RegenTimeMax_ = 180.0f;									// 리젠타임
 	StateInfo_.SkillCoolDownMax_ = 10.0f;								// 최대 스킬쿨타임
 
@@ -36,7 +36,7 @@ void Dog::InitalizeStateInfo()
 	StateInfo_.HPMax_ = 564.0f;											// 최대 체력(레벨당 변화)
 	StateInfo_.HP_ = 564.0f;											// 현재체력
 	StateInfo_.MoveSpeed_ = 2.9f;										// 이동속도
-	StateInfo_.HomingInstinctValue_ = 10.0f;							// 귀소본능 수치(0.0f보다 작거나같아지면 몬스터는 스폰위치로 이동하면 체력을 회복 -> 타겟이 DetectRange_에 벗어난 시간에 따라 감소)
+	StateInfo_.HomingInstinctValue_ = 5.0f;								// 귀소본능 수치(0.0f보다 작거나같아지면 몬스터는 스폰위치로 이동하면 체력을 회복 -> 타겟이 DetectRange_에 벗어난 시간에 따라 감소)
 	StateInfo_.RegenTime_ = 180.0f;										// 리젠타임(갱신) -> 0.0f이하일시 RegenTime_으로 초기화
 
 	//====================================== 스킬관련
