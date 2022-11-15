@@ -838,7 +838,7 @@ void Character::checkItemBox()
 	}
 
 	// 채집물인 경우 인벤토리로 바로 획득
-	if (GameEngineInput::Down("LButton") && nullptr != mouse_->GetRayCollision()->GetCollision(eCollisionGroup::ItemBox))
+	if (GameEngineInput::Down("RButton") && nullptr != mouse_->GetRayCollision()->GetCollision(eCollisionGroup::ItemBox))
 	{
 		gatherItem();
 	}
