@@ -2443,6 +2443,16 @@ void Character::updateNormalState(float _deltaTime)
 			normalState_ << "MixItem";
 			return;
 		}
+
+		if (true == uiController_->GetInventoryUI()->CraftCollisionMouseCheck())
+		{
+			//인벤토리에 있는 제작버튼을 좌클릭해서도 제작 가능
+			if (true == GameEngineInput::GetInst().Down("LButton"))
+			{
+				normalState_ << "MixItem";
+				return;
+			}
+		}
 	}
 
 
