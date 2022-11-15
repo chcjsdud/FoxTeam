@@ -109,6 +109,7 @@ Character::Character()
 	, recoveryTimeCheck_(0.0f)
 	, isDebugInvincible_(false)
 	, isMouseOntheUI_(false)
+	, regenTimer_(0.0f)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::CHARACTER;
@@ -310,8 +311,6 @@ void Character::Update(float _DeltaTime)
 
 	attackCooldown_ += _DeltaTime;
 
-	mainState_.Update(_DeltaTime);
-
 	GameEngineLevelControlWindow* controlWindow = GameEngineGUI::GetInst()->FindGUIWindowConvert<GameEngineLevelControlWindow>("LevelControlWindow");
 	if (nullptr != controlWindow)
 	{
@@ -319,8 +318,6 @@ void Character::Update(float _DeltaTime)
 		controlWindow->AddText("NormalState : " + normalState_.GetCurrentStateName());
 		controlWindow->AddText("CrowdControlState : " + crowdControlState_.GetCurrentStateName());
 		controlWindow->AddText("AttackState : " + attackState_.GetCurrentStateName());
-
-
 	}
 
 	if (GameEngineInput::Down("I"))
@@ -338,7 +335,7 @@ void Character::Update(float _DeltaTime)
 		coolTimer_R_ = 0.5f;
 		coolTimer_D_ = 0.5f;
 		stat_.SP = stat_.SPMax;
-		
+
 
 		CharStatPacket packet;
 		packet.SetStat(stat_);
@@ -362,6 +359,31 @@ void Character::Update(float _DeltaTime)
 
 	updateFOW(_DeltaTime);
 	updateRecoveryItem(_DeltaTime);
+
+	regenTimer_ -= _DeltaTime;
+	if (regenTimer_ < 0.0f)
+	{
+		regenTimer_ = 2.0f;
+		stat_.HP += stat_.HPRegeneration;
+		stat_.SP += stat_.SPRegeneration;
+
+		if (stat_.HP > stat_.HPMax)
+		{
+			stat_.HP = stat_.HPMax;
+		}
+
+		if (stat_.SP > stat_.SPMax)
+		{
+			stat_.SP = stat_.SPMax;
+		}
+
+		CharStatPacket packet;
+		packet.SetStat(stat_);
+		packet.SetTargetIndex(GetIndex());
+		FT::SendPacket(packet);
+	}
+
+	mainState_.Update(_DeltaTime);
 }
 
 
@@ -2365,7 +2387,7 @@ void Character::updateNormalState(float _deltaTime)
 			{
 				uiController_->GetNoticeUI()->SetText("지금은 사용할 수 없습니다!", 2.f);
 			}
-			
+
 
 
 			return;
@@ -2435,7 +2457,7 @@ void Character::updateNormalState(float _deltaTime)
 				uiController_->GetNoticeUI()->SetText("지금은 사용할 수 없습니다!", 2.f);
 
 			}
-		
+
 
 			return;
 		}
@@ -2659,7 +2681,7 @@ void Character::updateCraft(float _deltaTime)
 {
 	if (renderer_->IsCurrentAnimationEnd())
 	{
-		
+
 		mixingItem();
 		normalState_ << "Watch";
 		return;
@@ -3058,7 +3080,7 @@ void Character::startPlayerDeath()
 		uiController_->UIOff();
 		uiController_->GetWinLoseUI()->SetPortrait(GetJobType(), false);
 
-		
+
 
 		if (fraggerIndex_ == -1)
 		{

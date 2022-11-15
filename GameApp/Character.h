@@ -455,6 +455,7 @@ protected:
 
 	// 캐릭터 상태, 능력치
 	CharacterStat stat_;		// 장비아이템까지 합산된 최종능력치
+	float regenTimer_;
 
 	std::string curAnimationName_;
 	std::string overrideAnimationName_;
