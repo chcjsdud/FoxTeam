@@ -882,6 +882,7 @@ void Yuki::onStartDSkill()
 	timer_unstoppable_ = 0.5f;
 	stat_.isUnstoppable_ = true;
 
+	FT::PlaySoundAndSendPacket("TwoHandSword_WeaponSkill.wav", transform_.GetWorldPosition());
 
 }
 
@@ -894,7 +895,10 @@ void Yuki::onUpdateDSkill(float _deltaTime)
 		curAnimationName_ = "SkillD_end";
 		renderer_->ChangeFBXAnimation("SkillD_end", true);
 		stat_.isUnstoppable_ = false;
+
+		FT::PlaySoundAndSendPacket("WeaponSkill_TwoHandSword_Attack.wav", transform_.GetWorldPosition());
 		b_DShot_ = true;
+
 	}
 
 	if (true == b_DShot_)
