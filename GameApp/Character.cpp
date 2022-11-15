@@ -2338,7 +2338,6 @@ void Character::updateNormalState(float _deltaTime)
 					CharStatPacket packet;
 					packet.SetStat(stat_);
 					packet.SetTargetIndex(GetIndex());
-
 					FT::SendPacket(packet);
 				}
 

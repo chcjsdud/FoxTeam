@@ -58,6 +58,10 @@ void CharStatPacket::userSerialize()
     serializer_ << stat_.TrapDamageReduction;
     serializer_ << stat_.VisionRange;
     serializer_ << stat_.passive_Count;
+    serializer_ << stat_.SP_Q;
+    serializer_ << stat_.SP_W;
+    serializer_ << stat_.SP_E;
+    serializer_ << stat_.SP_R;
 }
 
 void CharStatPacket::userDeserialize()
@@ -89,6 +93,10 @@ void CharStatPacket::userDeserialize()
     serializer_ >> stat_.TrapDamageReduction;
     serializer_ >> stat_.VisionRange;
     serializer_ >> stat_.passive_Count;
+    serializer_ >> stat_.SP_Q;
+    serializer_ >> stat_.SP_W;
+    serializer_ >> stat_.SP_E;
+    serializer_ >> stat_.SP_R;
 }
 
 void CharStatPacket::initPacketID()
