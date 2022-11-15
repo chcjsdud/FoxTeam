@@ -105,6 +105,18 @@ void UserGame::ResourcesLoad()
 		}
 	}
 
+	{
+		GameEngineDirectory SoundDir;
+		SoundDir.MoveParent("FoxTeam");
+		SoundDir / "Resources" / "Sound" / "Char";
+
+		std::vector<GameEngineFile> AllFile = SoundDir.GetAllFile("wav");
+
+		for (size_t i = 0; i < AllFile.size(); i++)
+		{
+			GameEngineSoundManager::GetInstance()->CreateSound(AllFile[i].FileName(), AllFile[i].GetFullPath());
+		}
+	}
 
 	AppShaderLoad();
 

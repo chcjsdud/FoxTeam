@@ -198,6 +198,12 @@ void Character::LoadResource()
 	}
 }
 
+void Character::LevelChangeStartEvent(GameEngineLevel* _NextLevel)
+{
+	getItem("Bread");
+	getItem("Water");
+}
+
 void Character::Start()
 {
 	initRendererAndAnimation();
@@ -482,6 +488,7 @@ void Character::getEquipItem(EquipmentItem* _item, int _index)
 
 	if (iter != allMyBuildItems_.end())
 	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("equipmentInstall.wav");
 		EquipmentItem* currentEquipItem = equipedItem_[static_cast<size_t>(_item->GetEquipType())];
 
 		if (nullptr == currentEquipItem)
@@ -591,6 +598,14 @@ void Character::getEquipItem(EquipmentItem* _item)
 
 	if (iter != allMyBuildItems_.end())
 	{
+		static bool skipSound = true;
+
+		if (false == skipSound)
+		{
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("equipmentInstall.wav");
+		}
+		skipSound = false;
+
 		EquipmentItem* currentEquipItem = equipedItem_[static_cast<size_t>(_item->GetEquipType())];
 
 		if (nullptr == currentEquipItem)
@@ -1144,6 +1159,7 @@ void Character::checkInventoryInteractionRBtn()
 
 	if (nullptr != equip)
 	{
+		GameEngineSoundManager::GetInstance()->PlaySoundByName("equipmentInstall.wav");
 		EquipmentItem* tmp = equipedItem_[static_cast<size_t>(equip->GetEquipType())];
 
 		equipedItem_[static_cast<size_t>(equip->GetEquipType())] = equip;
@@ -1235,6 +1251,7 @@ void Character::checkInventoryInteractionKey()
 
 		if (nullptr != equip)
 		{
+			GameEngineSoundManager::GetInstance()->PlaySoundByName("equipmentInstall.wav");
 			EquipmentItem* tmp = equipedItem_[static_cast<size_t>(equip->GetEquipType())];
 
 			equipedItem_[static_cast<size_t>(equip->GetEquipType())] = equip;
@@ -1297,6 +1314,30 @@ void Character::useRecoveryItem(UseableItem* _item)
 	{
 		queueRecoveryItem_.push_back(RI);
 	}
+
+	std::string str = "Consume_";
+	int value = randomGenerator.RandomInt(1, 3);
+
+	switch (RI.Type)
+	{
+	case UseableItemType::HP:
+		str.append("Eat_" + to_string(value));
+		break;
+	case UseableItemType::SP:
+		str.append("Drink_" + to_string(value));
+		break;
+	default:
+		break;
+	}
+
+	str.append(".wav");
+
+	GameEngineSoundPlayer player;
+
+	player.Stop();
+	player.ChangeSound(str);
+	player.Play();
+	player.SetVolume(0.5f);
 }
 
 void Character::updateRecoveryItem(float _deltaTime)

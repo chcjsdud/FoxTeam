@@ -148,6 +148,6 @@ void ItemBox::playOpenSound()
 	player.Stop();
 	player.ChangeSound(soundName);
 	player.Play();
-	player.SetVolume(0.3f);
+	player.SetVolume(0.5f);
 }
 

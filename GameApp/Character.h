@@ -49,6 +49,8 @@ public:
 public:
 	static void LoadResource();
 
+private:
+	void LevelChangeStartEvent(GameEngineLevel* _NextLevel) override;
 public:
 	void Start() override;
 	void Update(float _DeltaTime) override;
