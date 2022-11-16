@@ -37,7 +37,7 @@ void YukiQSlashEffect::Start()
 	burstTexture->Cut(2, 2);
 
 	kiBurstRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
-	kiBurstRenderer_->SetImage("qburst.png", "PointSmp");
+	kiBurstRenderer_->SetImage("qburst.png", "LinerSmp");
 	kiBurstRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	kiBurstRenderer_->GetTransform()->SetLocalRotationDegree({ 60.f,-35.f,0.f });
 	kiBurstRenderer_->GetTransform()->SetLocalScaling(kiBurstRenderer_->GetCurrentTexture()->GetTextureSize());
@@ -48,7 +48,7 @@ void YukiQSlashEffect::Start()
 
 	float4 slashOriSclae = { 42.7f, 512.0f };
 	slashRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
-	slashRenderer_->SetImage("FX_BI_SwordLine_01SE.png", "PointSmp");
+	slashRenderer_->SetImage("FX_BI_SwordLine_01SE.png", "LinerSmp");
 	slashRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 0.0f, 0.0f });
 	slashRenderer_->GetTransform()->SetLocalRotationDegree({ 0.f, -35.f,0.f });
 	slashRenderer_->GetTransform()->SetLocalScaling(slashOriSclae * 3.0f);

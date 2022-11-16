@@ -19,11 +19,12 @@
 #include "YukiQSlashEffect.h"
 #include "PlayerUIController.h"
 #include "Monsters.h"
+#include "YukiESlashEffect.h"
 #include "UI_SkillGauge.h"
 
 Yuki::Yuki() // default constructer 디폴트 생성자
 	: b_isQ_(false), timer_Q(0.0f), rEffect_(nullptr), timer_R(0.0f), b_RHit_(false)
-	, swordRenderer_(nullptr), rExplodeTimer_(1.0f), passiveToken_(4), passiveDamage_(0.0f), timer_D(0.0f), b_DShot_(false)
+	, swordRenderer_(nullptr), rExplodeTimer_(1.0f), passiveToken_(4), passiveDamage_(0.0f), timer_D(0.0f), b_DShot_(false), bisSlashDone_(false), dEffectRenderer_(nullptr)
 {
 
 }
@@ -101,6 +102,9 @@ void Yuki::LoadResource()
 
 	GameEngineTexture* hitBase2 = GameEngineTextureManager::GetInst().Find("FX_BI_Yuki_01.png");
 	hitBase2->Cut(3, 12);
+
+	GameEngineTexture* hitBase3 = GameEngineTextureManager::GetInst().Find("yukiD0.png");
+	hitBase3->Cut(6, 6);
 }
 
 void Yuki::ReleaseResource()
@@ -345,6 +349,8 @@ void Yuki::initRendererAndAnimation()
 	swordRenderer_->ChangeFBXAnimation("Idle");
 	swordRenderer_->LightShadowOn();
 
+
+
 	// 외곽선
 	{
 		// Main
@@ -410,8 +416,8 @@ void Yuki::initYukiCollision()
 	collision_E->Off();
 
 	collision_R = CreateTransformComponent<GameEngineCollision>(GetTransform());
-	collision_R->GetTransform()->SetLocalPosition({ 0.f,10.f,200.f });
-	collision_R->GetTransform()->SetLocalScaling({ 768.0f, 10.0f, 512.0f });
+	collision_R->GetTransform()->SetLocalPosition({ 0.f,10.f,280.f });
+	collision_R->GetTransform()->SetLocalScaling({ 900.0f, 10.0f, 600.0f });
 	collision_R->SetCollisionGroup(eCollisionGroup::PlayerAttack);
 	collision_R->SetCollisionType(CollisionType::OBBBox3D);
 	collision_R->Off();
@@ -429,14 +435,14 @@ void Yuki::initEffectRenderer()
 {
 	float4 bsicAtkOriScale = { 256.0f, 42.7f };
 	basicAttackEffect_ = GetLevel()->CreateActor<BasicAttackEffect>();
-	basicAttackEffect_->GetAttackRenderer()->SetImage("Fx_SQ_Cut01.png", "PointSmp");
+	basicAttackEffect_->GetAttackRenderer()->SetImage("Fx_SQ_Cut01.png", "LinerSmp");
 	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalPosition({ 0.0f,0.0f,0.0f });
 	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalRotationDegree({ 90.0f,0.0f,0.0f });
 	basicAttackEffect_->GetAttackRenderer()->GetTransform()->SetLocalScaling(bsicAtkOriScale * 1.5f);
 	basicAttackEffect_->GetAttackRenderer()->CreateAnimation("Fx_SQ_Cut01.png", "Fx_SQ_Cut01", 0, 5, 0.03f, false);
 
 	groundEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
-	groundEffectRenderer_->SetImage("FX_BI_Yuki_01SE.png");
+	groundEffectRenderer_->SetImage("FX_BI_Yuki_01SE.png", "LinerSmp");
 	groundEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 10.0f,  0.0f });
 	groundEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 90.f,0.f,0.f });
 	groundEffectRenderer_->GetTransform()->SetLocalScaling(groundEffectRenderer_->GetCurrentTexture()->GetTextureSize());
@@ -444,12 +450,21 @@ void Yuki::initEffectRenderer()
 	groundEffectRenderer_->Off();
 
 	rearEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
-	rearEffectRenderer_->SetImage("FX_BI_Yuki_01.png", "PointSmp");
+	rearEffectRenderer_->SetImage("FX_BI_Yuki_01.png", "LinerSmp");
 	rearEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, -180.0f });
 	rearEffectRenderer_->GetTransform()->SetLocalRotationDegree({ 0.f,90.f,0.f });
-	rearEffectRenderer_->GetTransform()->SetLocalScaling(rearEffectRenderer_->GetCurrentTexture()->GetTextureSize() / 3);
+	rearEffectRenderer_->GetTransform()->SetLocalScaling({340.0f, 84.0f});
 	rearEffectRenderer_->CreateAnimation("FX_BI_Yuki_01.png", "FX_BI_Yuki_01", 0, 35, 0.01f, false);
 	rearEffectRenderer_->Off();
+
+	dEffectRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>(GetTransform());
+	dEffectRenderer_->SetImage("yukiD0.png", "LinerSmp");
+	dEffectRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 80.0f, 0.0f });
+	dEffectRenderer_->GetTransform()->SetLocalScaling({ 320.0f, 320.0f });
+	dEffectRenderer_->CreateAnimation("yukiD0.png", "yukiD0", 0, 35, 0.005f, false);
+	dEffectRenderer_->Off();
+
+
 
 	rEffect_ = GetLevel()->CreateActor<YukiREffect>();
 	rEffect_->SetParent(this);
@@ -458,6 +473,7 @@ void Yuki::initEffectRenderer()
 	qEffect_->SetParent(this);
 
 	qSlashEffect_ = GetLevel()->CreateActor<YukiQSlashEffect>();
+	eSlashEffect_ = GetLevel()->CreateActor<YukiESlashEffect>();
 }
 
 void Yuki::changeAnimationRun()
@@ -778,7 +794,7 @@ void Yuki::onUpdateESkill(float _deltaTime)
 			destination_ = GetTransform()->GetWorldPosition();
 			destinations_.clear();
 			// 목적지를 현 위치로 만들어 주고 클리어
-
+			bisSlashDone_ = false;
 			b_Ehit_ = false;
 			changeAnimationWait();
 			mainState_.ChangeState("NormalState", true);
@@ -813,8 +829,8 @@ void Yuki::onUpdateESkill(float _deltaTime)
 						}
 					}
 				}
-				curAnimationName_ = "SkillE_attack";
-				renderer_->ChangeFBXAnimation("SkillE_attack", true);
+				//curAnimationName_ = "SkillE_attack";
+				//renderer_->ChangeFBXAnimation("SkillE_attack", true);
 			}
 		}
 
@@ -844,9 +860,28 @@ void Yuki::onUpdateESkill(float _deltaTime)
 						}
 					}
 				}
-				curAnimationName_ = "SkillE_attack";
-				renderer_->ChangeFBXAnimation("SkillE_attack", true);
+				//curAnimationName_ = "SkillE_attack";
+				//renderer_->ChangeFBXAnimation("SkillE_attack", true);
 			}
+		}
+
+		if (true == b_Ehit_ && false == bisSlashDone_)
+		{
+			curAnimationName_ = "SkillE_attack";
+			renderer_->ChangeFBXAnimation("SkillE_attack", true);
+
+			if (GameServer::GetInstance()->IsOpened())
+			{
+				eSlashEffect_->PlayAwake();
+			}
+
+			CharEffectPacket pack;
+			pack.SetTargetIndex(myIndex_);
+			pack.SetAnimationName("SkillESlash");
+			FT::SendPacket(pack);
+
+
+			bisSlashDone_ = true;
 		}
 
 
@@ -857,7 +892,7 @@ void Yuki::onUpdateESkill(float _deltaTime)
 		timer_Dash_E = 0.0f;
 		collision_E->Off();
 		b_Ehit_ = false;
-
+		bisSlashDone_ = false;
 		destination_ = GetTransform()->GetWorldPosition();
 		destinations_.clear();
 
@@ -899,6 +934,16 @@ void Yuki::onStartDSkill()
 
 	FT::PlaySoundAndSendPacket("TwoHandSword_WeaponSkill.wav", transform_.GetWorldPosition());
 
+	if (GameServer::GetInstance()->IsOpened())
+	{
+		dEffectRenderer_->On();
+		dEffectRenderer_->SetChangeAnimation("yukiD0", true);
+	}
+
+	CharEffectPacket pack;
+	pack.SetTargetIndex(myIndex_);
+	pack.SetAnimationName("SkillD");
+	FT::SendPacket(pack);
 }
 
 void Yuki::onUpdateDSkill(float _deltaTime)
@@ -939,6 +984,7 @@ void Yuki::onUpdateDSkill(float _deltaTime)
 			destination_ = GetTransform()->GetWorldPosition();
 			destinations_.clear();
 
+			dEffectRenderer_->Off();
 			changeAnimationWait();
 			mainState_.ChangeState("NormalState", true);
 			normalState_.ChangeState("Watch", true);
@@ -1028,6 +1074,12 @@ void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim, float4 _
 		return;
 	}
 
+	if ("SkillESlash" == _effectName)
+	{
+		eSlashEffect_->PlayAwake();
+		return;
+	}
+
 	if ("SkillR_awake" == _effectName)
 	{
 		rEffect_->PlayAwake();
@@ -1039,16 +1091,25 @@ void Yuki::onPlayEffect(const std::string& _effectName, IUnit* _victim, float4 _
 		rEffect_->PlaySlash();
 		return;
 	}
+
+	if ("SkillD" == _effectName)
+	{
+		dEffectRenderer_->On();
+		dEffectRenderer_->SetChangeAnimation("yukiD0", true);
+	}
 }
 
 void Yuki::onEffectTransformCheck(float _deltaTime)
 {
 	float4 wp = GetTransform()->GetWorldPosition();
 	rEffect_->GetTransform()->SetLocalPosition(wp);
-	rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+	rEffect_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
 
 	qEffect_->GetTransform()->SetLocalPosition(wp);
-	qEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
+	qEffect_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
+
+	eSlashEffect_->GetTransform()->SetLocalPosition(wp);
+	eSlashEffect_->GetTransform()->SetLocalRotationDegree(transform_.GetLocalRotation());
 
 }
 

@@ -683,6 +683,10 @@
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="YukiESlashEffect.cpp">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="YukiQEffect.cpp">
       <SubType>
       </SubType>
@@ -1185,6 +1189,10 @@
     </ClInclude>
     <ClInclude Include="Wolf.h" />
     <ClInclude Include="Yuki.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="YukiESlashEffect.h">
       <SubType>
       </SubType>
     </ClInclude>

@@ -11,6 +11,7 @@
 // 용도 : 
 // 설명 : 
 
+class YukiESlashEffect;
 class YukiQEffect;
 class YukiQSlashEffect;
 class YukiREffect;
@@ -108,6 +109,8 @@ private:
 
 	GameEngineEffectRenderer* rearEffectRenderer_;
 
+	GameEngineEffectRenderer* dEffectRenderer_;
+
 	BasicAttackEffect* basicAttackEffect_;
 	bool atkFlag_;
 
@@ -120,12 +123,14 @@ private:
 	float timer_Dash_E;		// 대쉬 지속시간
 	GameEngineCollision* collision_E;
 	bool b_Ehit_;
+	YukiESlashEffect* eSlashEffect_;
 
 	YukiREffect* rEffect_;
 	GameEngineFSM customState_;
 	GameEngineCollision* collision_R;
 	float timer_R;
 	bool b_RHit_;
+	bool bisSlashDone_;
 
 	std::vector<IUnit*> rUnitList_;
 	float rExplodeTimer_;

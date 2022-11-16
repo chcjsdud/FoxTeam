@@ -37,18 +37,20 @@ void YukiQEffect::Start()
 
 	kiCoreRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
 	kiCoreRenderer_->SetImage("Fx_UI_Tierlight_OW.png", "PointSmp");
-	kiCoreRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, 0.0f });
+	kiCoreRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, 30.0f });
 	kiCoreRenderer_->GetTransform()->SetLocalRotationDegree({ 60.f,-35.f,0.f });
 	kiCoreRenderer_->GetTransform()->SetLocalScaling(kiCoreRenderer_->GetCurrentTexture()->GetTextureSize());
+	kiCoreRenderer_->SetColor({ 0.8f, 0.8f, 1.0f });
 	kiCoreRenderer_->Off();
 
 	kiGatheringRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
 	kiGatheringRenderer_->SetImage("FX_BI_Dust_04.png", "PointSmp");
-	kiGatheringRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 50.0f, 0.0f });
+	kiGatheringRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 150.0f, 30.0f });
 	kiGatheringRenderer_->GetTransform()->SetLocalRotationDegree({ 60.f,-35.f,0.f });
 	kiGatheringRenderer_->GetTransform()->SetLocalScaling(kiGatheringRenderer_->GetCurrentTexture()->GetTextureSize());
 	kiGatheringRenderer_->CreateAnimation("FX_BI_Dust_04.png", "FX_BI_Dust_04", 0, 35, 0.02f, false);
 	//kiGatheringRenderer_->SetChangeAnimation("FX_BI_Dust_04", true);
+	kiGatheringRenderer_->SetColor({ 0.8f, 0.8f, 1.0f });
 	kiGatheringRenderer_->Off();
 
 
