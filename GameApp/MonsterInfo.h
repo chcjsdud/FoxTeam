@@ -12,3 +12,11 @@ public: // 생성정보
 public: // 초기화정보
 	float4 SpawnPosition_;							// 스폰 위치
 };
+
+struct MonsterSpawnInfo
+{
+public:
+	std::string area;
+	MonsterType type;
+	float4 spawnPosition;
+};

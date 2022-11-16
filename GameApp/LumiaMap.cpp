@@ -11,15 +11,6 @@
 #include "NavMesh.h"
 #include "PlayerInfoManager.h"
 
-const char* enum_MonsterName[6] = {
-		"CHICKEN",
-		"WILDDOG",
-		"BEAR",
-		"BOAR",
-		"BAT",
-		"WOLF",
-};
-
 LumiaMap::LumiaMap()
 	: navMeshRenderer_(nullptr)
 	, downTownRenderer_(nullptr)
@@ -125,7 +116,6 @@ void LumiaMap::Start()
 	spawnPointDir / "Resources" / "FBX" / "Map";
 
 	setCharacterSpawnPoints(spawnPointDir);
-	setMonsterSpawnPoints(spawnPointDir);
 	setHyperLoopSpawnPoints(spawnPointDir);
 
 	/*GameEngineDirectory MeshDir;
@@ -143,8 +133,6 @@ void LumiaMap::Start()
 		FBX->SetFBXMesh(fileName, "TextureDeferredLight");
 		FBX->GetTransform()->SetLocalScaling(mapScale_);
 	}*/
-
-	int a = 0;
 }
 
 void LumiaMap::Update(float _deltaTime)
@@ -903,70 +891,39 @@ void LumiaMap::setAllItem()
 
 void LumiaMap::setCharacterSpawnPoints(GameEngineDirectory _dir)
 {
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(_dir.PathToPlusFileName("CharacterSpawnPoints.fbx")))
+	if (nullptr != GameEngineFBXMeshManager::GetInst().Find(_dir.PathToPlusFileName("CharacterSpawnPoints.fbx")))
 	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(_dir.PathToPlusFileName("CharacterSpawnPoints.fbx"));
-		std::vector<FbxNodeData> nodeDatas = Mesh->GetAllNodeData();
+		return;
+	}
 
-		for (const auto& areaName : enum_MapName)
+	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(_dir.PathToPlusFileName("CharacterSpawnPoints.fbx"));
+	std::vector<FbxNodeData> nodeDatas = Mesh->GetAllNodeData();
+
+	for (const auto& areaName : enum_MapName)
+	{
+		std::vector<float4> vecTrans;
+
+		for (auto& data : nodeDatas)
 		{
-			std::vector<float4> vecTrans;
+			std::string UpperName = GameEngineString::toupper(data.name);
 
-			for (auto& data : nodeDatas)
+			if (std::string::npos != UpperName.find("(") ||
+				std::string::npos != UpperName.find(")"))
 			{
-				std::string UpperName = GameEngineString::toupper(data.name);
-
-				if (std::string::npos != UpperName.find("(") ||
-					std::string::npos != UpperName.find(")"))
-				{
-					continue;
-				}
-
-				if (std::string::npos != UpperName.find(areaName) &&
-					float4::ZERO != data.translation)
-				{
-					data.translation *= { 1.0f, 1.0f, -1.0f };
-					vecTrans.push_back(data.translation * mapScale_);
-				}
+				continue;
 			}
 
-			characterSpawnPoints_.insert(std::pair(areaName, vecTrans));
-		}
-	}
-}
-
-void LumiaMap::setMonsterSpawnPoints(GameEngineDirectory _dir)
-{
-	if (nullptr == GameEngineFBXMeshManager::GetInst().Find(_dir.PathToPlusFileName("MonsterSpawnPoints.fbx")))
-	{
-		GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(_dir.PathToPlusFileName("MonsterSpawnPoints.fbx"));
-		std::vector<FbxNodeData> nodeDatas = Mesh->GetAllNodeData();
-
-		for (const auto& areaName : enum_MonsterName)
-		{
-			std::vector<float4> vecTrans;
-
-			for (auto& data : nodeDatas)
+			if (std::string::npos != UpperName.find(areaName) &&
+				float4::ZERO != data.translation)
 			{
-				std::string UpperName = GameEngineString::toupper(data.name);
-
-				if (std::string::npos != UpperName.find("(") ||
-					std::string::npos != UpperName.find(")"))
-				{
-					continue;
-				}
-
-				if (std::string::npos != UpperName.find(areaName) &&
-					float4::ZERO != data.translation)
-				{
-					data.translation *= { 1.0f, 1.0f, -1.0f };
-					vecTrans.push_back(data.translation * mapScale_);
-				}
+				data.translation *= { 1.0f, 1.0f, -1.0f };
+				vecTrans.push_back(data.translation * mapScale_);
 			}
-
-			monsterSpawnPoints_.insert(std::pair(areaName, vecTrans));
 		}
+
+		characterSpawnPoints_.insert(std::pair(areaName, vecTrans));
 	}
+	
 }
 
 void LumiaMap::setHyperLoopSpawnPoints(GameEngineDirectory _dir)

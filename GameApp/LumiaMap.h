@@ -54,7 +54,6 @@ protected:
 	void checkASterNodeObstacle();
 	void setAllItem();
 	void setCharacterSpawnPoints(GameEngineDirectory _dir);
-	void setMonsterSpawnPoints(GameEngineDirectory _dir);
 	void setHyperLoopSpawnPoints(GameEngineDirectory _dir);
 
 protected:
@@ -82,7 +81,6 @@ protected:
 
 private:
 	std::map<std::string, std::vector<float4>> characterSpawnPoints_;	// Area, Position
-	std::map<std::string, std::vector<float4>> monsterSpawnPoints_;
 	std::vector<float4> hyperLoopSpawnPoints_;
 
 	std::vector<std::string> enum_MapName;

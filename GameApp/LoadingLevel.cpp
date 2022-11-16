@@ -202,6 +202,13 @@ void LoadingLevel::LevelStart()
 	// Camera Setting
 	GetMainCamera()->SetProjectionMode(ProjectionMode::Orthographic);
 	GetMainCameraActor()->GetTransform()->SetLocalPosition(float4(0.0f, 0.0f, -400.0f));
+
+
+	GameEngineDirectory spawnPointDir;
+	spawnPointDir.MoveParent("FoxTeam");
+	spawnPointDir / "Resources" / "FBX" / "Map";
+
+	MonsterInfoManager::GetInstance()->setMonsterSpawnPoints(spawnPointDir);
 }
 
 void LoadingLevel::LevelUpdate(float _DeltaTime)

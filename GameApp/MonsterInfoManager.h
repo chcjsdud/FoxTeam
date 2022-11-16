@@ -65,6 +65,7 @@ private: // 최초 몬스터정보생성시 호출(몬스터정보파일 미존재)
 	void CreateReferenceInfomation(Location _Location);										// 지역별 몬스터개체수, ... 정보를 생성
 	void SaveCreationCountByRegion(RefInfoByRegion& _ResultInfo);							// 지역별 최대생성몬스터갯수 정보 저장 - 상수때려박은...
 	void CreateBasicMonsterInfos();															// 앞서 생성된 정보를 통해 생성하려는 몬스터 기본정보 생성
+	void CreateMonsterInfos();															
 	void SaveMonsterInfoFile(const std::string& _FullPath);									// 최초 생성한 몬스터정보목록 파일저장
 	
 private: // Logging & Conversion Function
@@ -84,7 +85,9 @@ private:
 	MonsterInfoManager& operator=(const MonsterInfoManager&& _other) = delete;
 
 public:
+	void setMonsterSpawnPoints(GameEngineDirectory _dir);
 protected:
+	std::vector<MonsterSpawnInfo> GetMonsterSpawnPoints(Location _spawnArea);
 private:
 	std::vector<MonsterInfo> AllMonsters_;													// 현재 맵에 배치된 모든 몬스터의 정보
 
@@ -93,5 +96,8 @@ private:
 	RefInfoByRegion RefInfoByRegion_[static_cast<int>(Location::MAX)];						// 지역별 생성하려는 몬스터들의 기본정보(참고용)
 	std::set<float4> DesignatedSpawnPos_;													// 이미 지정되어있는 스폰위치목록
 
+	std::vector<std::string> enum_MapName;
+	std::vector<std::string> enum_MonsterName;
+	std::map<std::string, std::vector<MonsterSpawnInfo>> monsterSpawnPoints_;
 };
 

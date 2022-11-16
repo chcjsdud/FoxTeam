@@ -10,6 +10,9 @@
 #include "GameClient.h"
 #include "CreationCommandPacket.h"
 
+#include <GameEngine/GameEngineCore.h>
+#include "LumiaLevel.h"
+
 bool MonsterInfoManager::FirstCreationPacketFlag = false;
 bool MonsterInfoManager::SecondCreationPacketFlag = false;
 
@@ -31,6 +34,17 @@ void MonsterInfoManager::SetMonsterInfos(std::vector<MonsterInfo> _MonsterInfos)
 
 bool MonsterInfoManager::CreatMonsterInfomation()
 {
+	GameEngineDirectory dir;
+	dir.MoveParent("FoxTeam");
+	dir.MoveChild("Resources");
+	dir.MoveChild("FBX");
+	dir.MoveChild("Map");
+
+	std::string fullPath = dir.PathToPlusFileName("MonsterSpawnPoints.fbx");
+
+	std::filesystem::path sysFullPath = fullPath;
+	GameEngineFile File(sysFullPath);
+
 	GameEngineDirectory SpawnMonsterInfoFilePath;
 	SpawnMonsterInfoFilePath.MoveParent("FoxTeam");
 	SpawnMonsterInfoFilePath.MoveChild("Resources");
@@ -53,7 +67,13 @@ bool MonsterInfoManager::CreatMonsterInfomation()
 	else
 	{
 		// 지역별 레퍼런스 정보 생성 및 생성패킷정보 셋팅, 생성패킷전송
-		LoadSpawnPointMeshByRegion(FullPath);
+		CreateMonsterInfos();
+
+		// 3. 몬스터정보 저장파일생성
+		SaveMonsterInfoFile(FullPath);
+
+		// 종료후 생성패킷 전송가능 Flag On(서버에서 한번처리 후 다시 Off처리된다)
+		FirstCreationPacketFlag = true;
 	}
 
 	return true;
@@ -561,6 +581,42 @@ void MonsterInfoManager::CreateBasicMonsterInfos()
 	}
 }
 
+void MonsterInfoManager::CreateMonsterInfos()
+{
+	int allMonsterCount = 0;
+	int index = 0;
+
+	for (int i = 0; i < static_cast<int>(Location::MAX) - 2; i++)
+	{
+		Location type = static_cast<Location>(i);
+
+		std::vector<MonsterSpawnInfo> vecInfo = GetMonsterSpawnPoints(type);
+		allMonsterCount += static_cast<int>(vecInfo.size());
+
+		for (const auto& info : vecInfo)
+		{
+			MonsterInfo NewMonsterInfo = {};
+
+			NewMonsterInfo.Index_ = index++;
+
+			if (MonsterType::WOLF == info.type)
+			{
+				NewMonsterInfo.IsGroup_ = true;
+			}
+			else
+			{
+				NewMonsterInfo.IsGroup_ = false;
+			}
+
+			NewMonsterInfo.MonsterType_ = info.type;
+			NewMonsterInfo.RegionType_ = type;
+			NewMonsterInfo.SpawnPosition_ = info.spawnPosition;
+
+			AllMonsters_.push_back(NewMonsterInfo);
+		}
+	}
+}
+
 void MonsterInfoManager::SaveMonsterInfoFile(const std::string& _FullPath)
 {
 	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
@@ -794,8 +850,115 @@ MonsterInfoManager::MonsterInfoManager()
 	: MaxCreationCount_(0)
 	, RefInfoByRegion_{}
 {
+	enum_MapName.push_back("HARBOR");			// 항구			
+	enum_MapName.push_back("POND");				// 연못
+	enum_MapName.push_back("BEACH");			// 모래사장
+	enum_MapName.push_back("UPTOWN");			// 고급 주택가
+	enum_MapName.push_back("ALLEY");			// 골목길
+	enum_MapName.push_back("HOTEL");			// 호텔
+	enum_MapName.push_back("DOWNTOWN");			// 번화가		
+	enum_MapName.push_back("HOSPITAL");			// 병원
+	enum_MapName.push_back("TEMPLE");			// 절
+	enum_MapName.push_back("ARCHERY");			// 양궁장
+	enum_MapName.push_back("CEMETERY");			// 묘지
+	enum_MapName.push_back("FOREST");			// 숲
+	enum_MapName.push_back("FACTORY");			// 공장
+	enum_MapName.push_back("CHURCH");			// 성당			
+	enum_MapName.push_back("SCHOOL");			// 학교
+
+	enum_MonsterName.push_back("WOLF");						// 늑대
+	enum_MonsterName.push_back("BEAR");						// 곰
+	enum_MonsterName.push_back("BAT");						// 박쥐
+	enum_MonsterName.push_back("DOG");						// 들개
+	enum_MonsterName.push_back("CHICKEN");					// 닭
+	enum_MonsterName.push_back("BOAR");
 }
 
 MonsterInfoManager::~MonsterInfoManager()
 {
+}
+
+
+void MonsterInfoManager::setMonsterSpawnPoints(GameEngineDirectory _dir)
+{
+	if (nullptr != GameEngineFBXMeshManager::GetInst().Find(_dir.PathToPlusFileName("MonsterSpawnPoints.fbx")))
+	{
+		return;
+	}
+
+	GameEngineFBXMesh* Mesh = GameEngineFBXMeshManager::GetInst().Load(_dir.PathToPlusFileName("MonsterSpawnPoints.fbx"));
+	std::vector<FbxNodeData> nodeDatas = Mesh->GetAllNodeData();
+
+
+	for (const auto& name : enum_MapName)
+	{
+		monsterSpawnPoints_.insert(std::pair(name, std::vector<MonsterSpawnInfo>()));
+	}
+
+	std::string areaName;
+
+	for (auto& data : nodeDatas)
+	{
+		size_t typeCount = 0;
+		std::string UpperName = GameEngineString::toupper(data.name);
+
+		if (std::string::npos != UpperName.find("(") ||
+			std::string::npos != UpperName.find(")"))
+		{
+			continue;
+		}
+
+		bool isMapName = false;
+
+		for (const auto& name : enum_MapName)
+		{
+			if (std::string::npos != UpperName.find(name))
+			{
+				areaName = name;
+				isMapName = true;
+				break;
+			}
+		}
+
+		if (true == isMapName)
+		{
+			continue;
+		}
+
+		for (const auto& name : enum_MonsterName)
+		{
+			if (std::string::npos != UpperName.find(name) &&
+				float4::ZERO != data.translation)
+			{
+				data.translation *= { 1.0f, 1.0f, -1.0f };
+
+				MonsterSpawnInfo info;
+				info.area = areaName;
+				info.type = static_cast<MonsterType>(typeCount);
+				info.spawnPosition = data.translation;
+
+				monsterSpawnPoints_[areaName].push_back(info);
+				break;
+			}
+
+			++typeCount;
+		}
+	}
+}
+
+
+std::vector<MonsterSpawnInfo> MonsterInfoManager::GetMonsterSpawnPoints(Location _spawnArea)
+{
+	std::string mapName = enum_MapName[static_cast<size_t>(_spawnArea)];
+
+	auto iter = monsterSpawnPoints_.find(mapName);
+
+	if (monsterSpawnPoints_.end() == iter)
+	{
+		GameEngineDebug::MsgBoxError("if (monsterSpawnPoints_.end() == iter)");
+
+		return std::vector<MonsterSpawnInfo>();
+	}
+
+	return (*iter).second;
 }
