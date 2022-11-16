@@ -55,6 +55,7 @@ void PlayerUIController::SetJobType(JobType _MyJob)
 
 	charPicture_UI->SetJobType(MyJob);
 	skill_UI->SetJobType(MyJob);
+	itemroute_UI->SetJobType(MyJob);
 }
 
 void PlayerUIController::UIOff()

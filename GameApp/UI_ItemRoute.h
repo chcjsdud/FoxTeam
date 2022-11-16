@@ -22,9 +22,13 @@ public:
 
 public:
 
-	int SlotMouseCollisionCheck();
+	void SlotMouseCollisionCheck();
 
 	void SetJobType(JobType _myjob);
+
+	JobType myjob_;
+
+	int EquipType;
 
 protected:
 	GameEngineUIRenderer* RouteRenderer;
@@ -61,6 +65,8 @@ private:
 	GameEngineUIRenderer* Slot3_IconRenderer;
 	GameEngineUIRenderer* Slot4_IconRenderer;
 	GameEngineUIRenderer* Slot5_IconRenderer;
+
+	GameEngineUIRenderer* Select_IconRenderer;
 
 #pragma endregion
 	

@@ -8,7 +8,7 @@
 #include "UI_ItemSettingHelper.h"
 
 UI_ItemRoute::UI_ItemRoute()
-	: Time(1.0f), UIOn(false)
+	: Time(1.0f), UIOn(false), EquipType(-1)
 {
 }
 
@@ -67,7 +67,7 @@ void UI_ItemRoute::Start()
 
 	{
 		RouteRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		RouteRenderer->SetImage("rio_head.png", "PointSmp");
+		RouteRenderer->SetImage("IconBG_UI.png", "PointSmp");
 		RouteRenderer->GetTransform()->SetLocalPosition(BackGroundPos);
 		RouteRenderer->GetTransform()->SetLocalScaling(RouteRenderer->GetCurrentTexture()->GetTextureSize());
 	}
@@ -103,6 +103,13 @@ void UI_ItemRoute::Start()
 		Slot5_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 		Slot5_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 5.0f));
 		Slot5_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
+
+		Select_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
+		Select_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
+		Select_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 5.0f));
+		Select_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
+
+		Select_IconRenderer->Off();
 	}
 
 }
@@ -118,6 +125,9 @@ void UI_ItemRoute::Update(float _Time)
 	{
 		if (false == UIOn)
 		{
+			//선택한거 초기화
+			EquipType = -1;
+			RouteRenderer->SetImage("IconBG_UI.png", "PointSmp");
 			RouteRenderer->Off();
 			Slot0_IconRenderer->Off();
 			Slot1_IconRenderer->Off();
@@ -125,6 +135,7 @@ void UI_ItemRoute::Update(float _Time)
 			Slot3_IconRenderer->Off();
 			Slot4_IconRenderer->Off();
 			Slot5_IconRenderer->Off();
+			Select_IconRenderer->Off();
 		}
 		else
 		{
@@ -149,49 +160,215 @@ void UI_ItemRoute::Update(float _Time)
 	//		UIOn = true;
 	//	}
 	//}
+
+	switch (EquipType)
+	{
+		case -1:
+		{
+			RouteRenderer->SetImage("IconBG_UI.png", "PointSmp");
+		}
+			break;
+		case 0:
+		{
+			switch (myjob_)
+			{
+			case JobType::NONE:
+				break;
+			case JobType::YUKI:
+				break;
+			case JobType::HYUNWOO:
+				break;
+			case JobType::JACKIE:
+				break;
+			case JobType::RIO:
+				RouteRenderer->SetImage("rio_weapon.png", "PointSmp");
+				break;
+			case JobType::AYA:
+				break;
+			case JobType::DUMMY:
+				break;
+			case JobType::MAX:
+				break;
+			default:
+				break;
+			}
+		}
+			break;
+		case 1:
+		{
+			switch (myjob_)
+			{
+			case JobType::NONE:
+				break;
+			case JobType::YUKI:
+				break;
+			case JobType::HYUNWOO:
+				break;
+			case JobType::JACKIE:
+				break;
+			case JobType::RIO:
+				RouteRenderer->SetImage("rio_body.png", "PointSmp");
+				break;
+			case JobType::AYA:
+				break;
+			case JobType::DUMMY:
+				break;
+			case JobType::MAX:
+				break;
+			default:
+				break;
+			}
+		}
+			break;
+		case 2:
+		{
+			switch (myjob_)
+			{
+			case JobType::NONE:
+				break;
+			case JobType::YUKI:
+				break;
+			case JobType::HYUNWOO:
+				break;
+			case JobType::JACKIE:
+				break;
+			case JobType::RIO:
+				RouteRenderer->SetImage("rio_head.png", "PointSmp");
+				break;
+			case JobType::AYA:
+				break;
+			case JobType::DUMMY:
+				break;
+			case JobType::MAX:
+				break;
+			default:
+				break;
+			}
+		}
+			break;
+		case 3:
+		{
+			switch (myjob_)
+			{
+			case JobType::NONE:
+				break;
+			case JobType::YUKI:
+				break;
+			case JobType::HYUNWOO:
+				break;
+			case JobType::JACKIE:
+				break;
+			case JobType::RIO:
+				RouteRenderer->SetImage("rio_arm.png", "PointSmp");
+				break;
+			case JobType::AYA:
+				break;
+			case JobType::DUMMY:
+				break;
+			case JobType::MAX:
+				break;
+			default:
+				break;
+			}
+		}
+			break;
+		case 4:
+		{
+			switch (myjob_)
+			{
+			case JobType::NONE:
+				break;
+			case JobType::YUKI:
+				break;
+			case JobType::HYUNWOO:
+				break;
+			case JobType::JACKIE:
+				break;
+			case JobType::RIO:
+				RouteRenderer->SetImage("rio_leg.png", "PointSmp");
+				break;
+			case JobType::AYA:
+				break;
+			case JobType::DUMMY:
+				break;
+			case JobType::MAX:
+				break;
+			default:
+				break;
+			}
+		}
+			break;
+		case 5:
+		{
+			switch (myjob_)
+			{
+			case JobType::NONE:
+				break;
+			case JobType::YUKI:
+				break;
+			case JobType::HYUNWOO:
+				break;
+			case JobType::JACKIE:
+				break;
+			case JobType::RIO:
+				RouteRenderer->SetImage("rio_acc.png", "PointSmp");
+				break;
+			case JobType::AYA:
+				break;
+			case JobType::DUMMY:
+				break;
+			case JobType::MAX:
+				break;
+			default:
+				break;
+			}
+		}
+			break;
+		default:
+			break;
+	}
 }
 
-int UI_ItemRoute::SlotMouseCollisionCheck()
+void UI_ItemRoute::SlotMouseCollisionCheck()
 {
 
 	if (true == Slot0Collision->Collision(eCollisionGroup::MousePointer))
 	{
-		return 0;
+		EquipType = 0;
 	}
 
 	if (true == Slot1Collision->Collision(eCollisionGroup::MousePointer))
 	{
-		return 1;
+		EquipType = 1;
 	}
 
 	if (true == Slot2Collision->Collision(eCollisionGroup::MousePointer))
 	{
-		return 2;
+		EquipType = 2;
 	}
 
 	if (true == Slot3Collision->Collision(eCollisionGroup::MousePointer))
 	{
-		return 3;
+		EquipType = 3;
 	}
 
 	if (true == Slot4Collision->Collision(eCollisionGroup::MousePointer))
 	{
-		return 4;
+		EquipType = 4;
 	}
 
 	if (true == Slot5Collision->Collision(eCollisionGroup::MousePointer))
 	{
-		return 5;
+		EquipType = 5;
 	}
-
-	//충돌중이 아님
-	return -1;
 
 }
 
 void UI_ItemRoute::SetJobType(JobType _myjob)
 {
-	switch (_myjob)
+	myjob_ = _myjob;
+
+	switch (myjob_)
 	{
 	case JobType::NONE:
 		break;
@@ -209,7 +386,12 @@ void UI_ItemRoute::SetJobType(JobType _myjob)
 	break;
 	case JobType::RIO:
 	{
-
+		Slot0_IconRenderer->SetImage("rio_weapon_Ico.png", "PointSmp");
+		Slot1_IconRenderer->SetImage("rio_body_Ico.png", "PointSmp");
+		Slot2_IconRenderer->SetImage("rio_head_Ico.png", "PointSmp");
+		Slot3_IconRenderer->SetImage("rio_arm_Ico.png", "PointSmp");
+		Slot4_IconRenderer->SetImage("rio_leg_Ico.png", "PointSmp");
+		Slot5_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 	}
 	break;
 	case JobType::AYA:
