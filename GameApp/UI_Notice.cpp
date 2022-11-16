@@ -24,7 +24,7 @@ void UI_Notice::Start()
 	BasicAlpha = 0.4f;
 
 	{
-		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
+		BackGroundRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UICOL);
 		BackGroundRenderer->SetImage("UI_HalfAlphaRect.png", "PointSmp");
 		BackGroundRenderer->GetTransform()->SetLocalPosition(UI_Pos);
 		BackGroundRenderer->GetTransform()->SetLocalScaling(float4{ 620.0f, 30.0f });

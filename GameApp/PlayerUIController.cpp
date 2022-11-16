@@ -41,6 +41,7 @@ void PlayerUIController::InitUI()
 	minimap_UI = GetLevel()->CreateActor<UI_Minimap>();
 	skillGauge_UI = GetLevel()->CreateActor<UI_SkillGauge>();
 	calhelper_ = GetLevel()->CreateActor<UI_CalculateHelper>();
+	itemroute_UI = GetLevel()->CreateActor<UI_ItemRoute>();
 
 
 	//테스트용

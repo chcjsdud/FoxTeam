@@ -8,7 +8,7 @@
 #include "UI_ItemSettingHelper.h"
 
 UI_ItemRoute::UI_ItemRoute()
-	: Time(1.0f), UIOn(true)
+	: Time(1.0f), UIOn(false)
 {
 }
 
@@ -26,9 +26,9 @@ UI_ItemRoute::~UI_ItemRoute()
 
 void UI_ItemRoute::Start()
 {
-	BackGroundPos = { 0.0f, 0.0f, 0.0f };
-	BasicSlotPos = { -100.0f, 0.0f, -1.0f };
-	SlotXPivot = { 47.0f, 0.0f, 0.0f };
+	BackGroundPos = { -350.0f,0.0f, 0.0f };
+	BasicSlotPos = BackGroundPos + float4{ -175.0f, 130.0f, -1.0f };
+	SlotXPivot = { 70.0f, 0.0f, 0.0f };
 	SlotSize = { 44.0f,27.0f };
 	
 	{
@@ -67,7 +67,7 @@ void UI_ItemRoute::Start()
 
 	{
 		RouteRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::BACKDROP);
-		RouteRenderer->SetImage("IconBG_UI.png", "PointSmp");
+		RouteRenderer->SetImage("rio_head.png", "PointSmp");
 		RouteRenderer->GetTransform()->SetLocalPosition(BackGroundPos);
 		RouteRenderer->GetTransform()->SetLocalScaling(RouteRenderer->GetCurrentTexture()->GetTextureSize());
 	}
@@ -75,28 +75,34 @@ void UI_ItemRoute::Start()
 
 	{
 		Slot0_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot0_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot0_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 		Slot0_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos);
+		Slot0_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
 
 		Slot1_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot1_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot1_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 		Slot1_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + SlotXPivot);
+		Slot1_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
 
 		Slot2_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot2_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot2_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 		Slot2_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 2.0f));
+		Slot2_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
 
 		Slot3_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot3_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot3_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 		Slot3_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 3.0f));
+		Slot3_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
 
 		Slot4_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot4_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot4_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 		Slot4_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 4.0f));
+		Slot4_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
 
 		Slot5_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Slot5_IconRenderer->SetImage("Inventory_BackGround.png", "PointSmp");
+		Slot5_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 		Slot5_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 5.0f));
+		Slot5_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
 	}
 
 }
@@ -132,17 +138,17 @@ void UI_ItemRoute::Update(float _Time)
 		}
 	}
 
-	if (true == GameEngineInput::GetInst().Down("Esc"))
-	{
-		if (UIOn == true)
-		{
-			UIOn = false;
-		}
-		else
-		{
-			UIOn = true;
-		}
-	}
+	//if (true == GameEngineInput::GetInst().Down("Esc"))
+	//{
+	//	if (UIOn == true)
+	//	{
+	//		UIOn = false;
+	//	}
+	//	else
+	//	{
+	//		UIOn = true;
+	//	}
+	//}
 }
 
 int UI_ItemRoute::SlotMouseCollisionCheck()
