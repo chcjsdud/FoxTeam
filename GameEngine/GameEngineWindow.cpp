@@ -54,10 +54,12 @@ LRESULT CALLBACK WndProc(HWND _hWnd, UINT _message, WPARAM _wParam, LPARAM _lPar
         if (_wParam == 0)
         {
             GameEngineCore::Deactivate();
+            ShowCursor(true);
         }
         else
         {
             GameEngineCore::Activate();
+            ShowCursor(false);
         }
     }
     break;
