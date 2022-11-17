@@ -40,6 +40,7 @@ LumiaMap::LumiaMap()
 		enum_MapName.push_back("FACTORY");			// 공장
 		enum_MapName.push_back("CHURCH");			// 성당			
 		enum_MapName.push_back("SCHOOL");			// 학교
+		enum_MapName.push_back("RESERCH_CENTRE");	// 연구소
 }
 
 LumiaMap::~LumiaMap()

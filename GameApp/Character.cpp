@@ -2209,6 +2209,10 @@ void Character::playAreaBGMsound(Location _value)
 	}
 
 	int mapIndex = static_cast<int>(_value);
+	if (15 == mapIndex)
+	{
+		return;
+	}
 
 	std::string str = "BSER_AreaBGM_";
 	str.append(level->GetMap()->GetMapName(mapIndex));
