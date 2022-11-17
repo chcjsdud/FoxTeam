@@ -30,6 +30,11 @@ public:
 
 	int EquipType;
 
+	bool isOn() 
+	{
+		return UIOn;
+	}
+
 protected:
 	GameEngineUIRenderer* RouteRenderer;
 	float Time;

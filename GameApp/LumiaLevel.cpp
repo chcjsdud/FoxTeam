@@ -635,6 +635,11 @@ void LumiaLevel::CreateLevelInput()
 		GameEngineInput::GetInst().CreateKey("0", '0');
 	}
 
+	if (false == GameEngineInput::GetInst().IsKey("B"))
+	{
+		GameEngineInput::GetInst().CreateKey("B", 'B');
+	}
+
 	// Monster Related Key
 	if (false == GameEngineInput::GetInst().IsKey("MonsterDebugWindowOnOrOff"))
 	{

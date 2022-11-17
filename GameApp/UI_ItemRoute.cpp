@@ -104,10 +104,10 @@ void UI_ItemRoute::Start()
 		Slot5_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 5.0f));
 		Slot5_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
 
-		Select_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::UIICON);
-		Select_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
+		Select_IconRenderer = CreateTransformComponent<GameEngineUIRenderer>(GetTransform(), (int)UIRenderOrder::FONT);
+		Select_IconRenderer->SetImage("Selected_Ico.png", "PointSmp");
 		Select_IconRenderer->GetTransform()->SetLocalPosition(BasicSlotPos + (SlotXPivot * 5.0f));
-		Select_IconRenderer->GetTransform()->SetLocalScaling(Slot0_IconRenderer->GetCurrentTexture()->GetTextureSize());
+		Select_IconRenderer->GetTransform()->SetLocalScaling(Select_IconRenderer->GetCurrentTexture()->GetTextureSize());
 
 		Select_IconRenderer->Off();
 	}
@@ -149,17 +149,17 @@ void UI_ItemRoute::Update(float _Time)
 		}
 	}
 
-	//if (true == GameEngineInput::GetInst().Down("Esc"))
-	//{
-	//	if (UIOn == true)
-	//	{
-	//		UIOn = false;
-	//	}
-	//	else
-	//	{
-	//		UIOn = true;
-	//	}
-	//}
+	if (true == GameEngineInput::GetInst().Down("B"))
+	{
+		if (UIOn == true)
+		{
+			UIOn = false;
+		}
+		else
+		{
+			UIOn = true;
+		}
+	}
 
 	switch (EquipType)
 	{
@@ -175,15 +175,29 @@ void UI_ItemRoute::Update(float _Time)
 			case JobType::NONE:
 				break;
 			case JobType::YUKI:
+				RouteRenderer->SetImage("rio_weapon.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::HYUNWOO:
+				RouteRenderer->SetImage("rio_weapon.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::JACKIE:
+				RouteRenderer->SetImage("rio_weapon.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::RIO:
 				RouteRenderer->SetImage("rio_weapon.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::AYA:
+				RouteRenderer->SetImage("rio_weapon.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot0Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::DUMMY:
 				break;
@@ -201,15 +215,29 @@ void UI_ItemRoute::Update(float _Time)
 			case JobType::NONE:
 				break;
 			case JobType::YUKI:
+				RouteRenderer->SetImage("rio_body.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::HYUNWOO:
+				RouteRenderer->SetImage("rio_body.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::JACKIE:
+				RouteRenderer->SetImage("rio_body.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::RIO:
 				RouteRenderer->SetImage("rio_body.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::AYA:
+				RouteRenderer->SetImage("rio_body.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot1Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::DUMMY:
 				break;
@@ -227,15 +255,29 @@ void UI_ItemRoute::Update(float _Time)
 			case JobType::NONE:
 				break;
 			case JobType::YUKI:
+				RouteRenderer->SetImage("rio_head.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::HYUNWOO:
+				RouteRenderer->SetImage("rio_head.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::JACKIE:
+				RouteRenderer->SetImage("rio_head.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::RIO:
 				RouteRenderer->SetImage("rio_head.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::AYA:
+				RouteRenderer->SetImage("rio_head.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot2Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::DUMMY:
 				break;
@@ -253,15 +295,29 @@ void UI_ItemRoute::Update(float _Time)
 			case JobType::NONE:
 				break;
 			case JobType::YUKI:
+				RouteRenderer->SetImage("rio_arm.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::HYUNWOO:
+				RouteRenderer->SetImage("rio_arm.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::JACKIE:
+				RouteRenderer->SetImage("rio_arm.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::RIO:
 				RouteRenderer->SetImage("rio_arm.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::AYA:
+				RouteRenderer->SetImage("rio_arm.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot3Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::DUMMY:
 				break;
@@ -279,15 +335,29 @@ void UI_ItemRoute::Update(float _Time)
 			case JobType::NONE:
 				break;
 			case JobType::YUKI:
+				RouteRenderer->SetImage("rio_leg.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::HYUNWOO:
+				RouteRenderer->SetImage("rio_leg.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::JACKIE:
+				RouteRenderer->SetImage("rio_leg.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::RIO:
 				RouteRenderer->SetImage("rio_leg.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::AYA:
+				RouteRenderer->SetImage("rio_leg.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot4Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::DUMMY:
 				break;
@@ -305,15 +375,29 @@ void UI_ItemRoute::Update(float _Time)
 			case JobType::NONE:
 				break;
 			case JobType::YUKI:
+				RouteRenderer->SetImage("rio_acc.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::HYUNWOO:
+				RouteRenderer->SetImage("rio_acc.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::JACKIE:
+				RouteRenderer->SetImage("rio_acc.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::RIO:
 				RouteRenderer->SetImage("rio_acc.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::AYA:
+				RouteRenderer->SetImage("rio_acc.png", "PointSmp");
+				Select_IconRenderer->On();
+				Select_IconRenderer->GetTransform()->SetLocalPosition(Slot5Collision->GetTransform()->GetLocalPosition());
 				break;
 			case JobType::DUMMY:
 				break;
@@ -336,28 +420,23 @@ void UI_ItemRoute::SlotMouseCollisionCheck()
 	{
 		EquipType = 0;
 	}
-
-	if (true == Slot1Collision->Collision(eCollisionGroup::MousePointer))
+	else if (true == Slot1Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		EquipType = 1;
 	}
-
-	if (true == Slot2Collision->Collision(eCollisionGroup::MousePointer))
+	else if (true == Slot2Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		EquipType = 2;
 	}
-
-	if (true == Slot3Collision->Collision(eCollisionGroup::MousePointer))
+	else if (true == Slot3Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		EquipType = 3;
 	}
-
-	if (true == Slot4Collision->Collision(eCollisionGroup::MousePointer))
+	else if (true == Slot4Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		EquipType = 4;
 	}
-
-	if (true == Slot5Collision->Collision(eCollisionGroup::MousePointer))
+	else if (true == Slot5Collision->Collision(eCollisionGroup::MousePointer))
 	{
 		EquipType = 5;
 	}
@@ -374,14 +453,32 @@ void UI_ItemRoute::SetJobType(JobType _myjob)
 		break;
 	case JobType::YUKI:
 	{
+		Slot0_IconRenderer->SetImage("rio_weapon_Ico.png", "PointSmp");
+		Slot1_IconRenderer->SetImage("rio_body_Ico.png", "PointSmp");
+		Slot2_IconRenderer->SetImage("rio_head_Ico.png", "PointSmp");
+		Slot3_IconRenderer->SetImage("rio_arm_Ico.png", "PointSmp");
+		Slot4_IconRenderer->SetImage("rio_leg_Ico.png", "PointSmp");
+		Slot5_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 	}
 	break;
 	case JobType::HYUNWOO:
 	{
+		Slot0_IconRenderer->SetImage("rio_weapon_Ico.png", "PointSmp");
+		Slot1_IconRenderer->SetImage("rio_body_Ico.png", "PointSmp");
+		Slot2_IconRenderer->SetImage("rio_head_Ico.png", "PointSmp");
+		Slot3_IconRenderer->SetImage("rio_arm_Ico.png", "PointSmp");
+		Slot4_IconRenderer->SetImage("rio_leg_Ico.png", "PointSmp");
+		Slot5_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 	}
 	break;
 	case JobType::JACKIE:
 	{
+		Slot0_IconRenderer->SetImage("rio_weapon_Ico.png", "PointSmp");
+		Slot1_IconRenderer->SetImage("rio_body_Ico.png", "PointSmp");
+		Slot2_IconRenderer->SetImage("rio_head_Ico.png", "PointSmp");
+		Slot3_IconRenderer->SetImage("rio_arm_Ico.png", "PointSmp");
+		Slot4_IconRenderer->SetImage("rio_leg_Ico.png", "PointSmp");
+		Slot5_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 	}
 	break;
 	case JobType::RIO:
@@ -396,7 +493,12 @@ void UI_ItemRoute::SetJobType(JobType _myjob)
 	break;
 	case JobType::AYA:
 	{
-
+		Slot0_IconRenderer->SetImage("rio_weapon_Ico.png", "PointSmp");
+		Slot1_IconRenderer->SetImage("rio_body_Ico.png", "PointSmp");
+		Slot2_IconRenderer->SetImage("rio_head_Ico.png", "PointSmp");
+		Slot3_IconRenderer->SetImage("rio_arm_Ico.png", "PointSmp");
+		Slot4_IconRenderer->SetImage("rio_leg_Ico.png", "PointSmp");
+		Slot5_IconRenderer->SetImage("rio_acc_Ico.png", "PointSmp");
 	}
 	break;
 	case JobType::DUMMY:

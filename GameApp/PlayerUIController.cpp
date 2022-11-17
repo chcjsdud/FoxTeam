@@ -181,6 +181,14 @@ void PlayerUIController::Update(float _DeltaTime)
 
 	}
 
+	if (itemroute_UI->isOn())
+	{
+		if (true == GameEngineInput::GetInst().Down("LButton"))
+		{
+			itemroute_UI->SlotMouseCollisionCheck();
+		}
+	}
+
 	//if (true == GameEngineInput::GetInst().Down("L"))
 	//{
 	//	notice_UI->SetText("알림 UI 테스트용 텍스트입니다", 2.f);

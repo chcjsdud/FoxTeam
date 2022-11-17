@@ -108,7 +108,7 @@ public:
 
 	UI_ItemRoute* GetItemRouteUI()
 	{
-	
+		return itemroute_UI;
 	}
 
 	UI_SkillGauge* GetSkillGauge()
