@@ -372,6 +372,7 @@ void Hyunwoo::initEffectRenderer()
 
 	rEffect_ = GetLevel()->CreateActor<HyunwooREffect>();
 	rEffect_->SetParent(this);
+	rEffect_->SetMyCharacter(this);
 }
 
 
@@ -1124,7 +1125,7 @@ void Hyunwoo::startCustomRSkill()
 	collision_R->On();
 
 
-	FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Charging.wav", transform_.GetWorldPosition());
+	//FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Charging.wav", transform_.GetWorldPosition());
 
 	if (GameServer::GetInstance()->IsOpened())
 	{
@@ -1185,10 +1186,8 @@ void Hyunwoo::updateCustomRSkill(float _deltaTime)
 			pack.SetAnimationName("SkillR_explode");
 			FT::SendPacket(pack);
 
-			GameEngineSoundManager::GetInstance()->StopSound();
-
-
-			FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
+			//GameEngineSoundManager::GetInstance()->StopSound();
+		
 
 			rearEffectRenderer_->On();
 			rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);

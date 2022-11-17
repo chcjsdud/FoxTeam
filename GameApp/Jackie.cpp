@@ -23,7 +23,7 @@ Jackie::Jackie() // default constructer 디폴트 생성자
 	timer_collision_E(0.0f), timer_end_E(0.0f), b_Ehit_(false), collision_E(nullptr),
 	basicAttackEffect_(nullptr), skillQEffectRenderer_(nullptr), sawRenderer_(nullptr), axeRenderer_(nullptr),
 	isW_(false), timer_W(0.0f), bSkillEPassable_(false), eStartPosition_(float4::ZERO), eLandingPosition_(float4::ZERO),
-	debugX(-90.0f), debugY(0.0f), debugZ(0.0f), timer_R(0.0f)
+	debugX(-90.0f), debugY(0.0f), debugZ(0.0f), timer_R(0.0f), savedSpeed_(350.0f)
 
 {
 
@@ -256,7 +256,7 @@ void Jackie::Update(float _deltaTime)
 		{
 			timer_W = 0.0f;
 			isW_ = false;
-			stat_.MovementSpeed -= 100.0f;
+			stat_.MovementSpeed = savedSpeed_;
 		}
 	}
 
@@ -902,6 +902,9 @@ void Jackie::onStartWSkill()
 	timer_W = 3.0f;
 	RandomSoundPlay("Jackie_PlaySkill1001300seq0_1_ko.wav", "Jackie_PlaySkill1001300seq0_2_ko.wav", "Jackie_PlaySkill1001300seq0_3_ko.wav");
 
+	savedSpeed_ = stat_.MovementSpeed;
+
+	stat_.MovementSpeed += 100.0f;
 
 	FT::PlaySoundAndSendPacket("jackie_Skill02_Activation.wav", transform_.GetWorldPosition());
 }
@@ -911,7 +914,7 @@ void Jackie::onUpdateWSkill(float _deltaTime)
 	changeAnimationWait();
 	mainState_.ChangeState("NormalState", true);
 	normalState_.ChangeState("Watch", true);
-	stat_.MovementSpeed += 100.0f;
+
 }
 
 void Jackie::onStartESkill()

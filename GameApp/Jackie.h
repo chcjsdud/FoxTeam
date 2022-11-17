@@ -130,5 +130,8 @@ public:
 	float debugX;
 	float debugY;
 	float debugZ;
+
+private:
+	float savedSpeed_;
 };
 

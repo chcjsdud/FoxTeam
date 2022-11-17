@@ -13,6 +13,8 @@ class HyunwooWEffect;
 class HyunwooREffect;
 class Hyunwoo : public Character
 {
+private:
+	friend HyunwooREffect;
 public:
 	Hyunwoo(); 
 	~Hyunwoo();

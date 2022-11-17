@@ -4,11 +4,13 @@
 // 분류 : 
 // 용도 : 
 // 설명 : 
+class Hyunwoo;
 class GameEngineImageRenderer;
 class GameEngineEffectRenderer;
 class HyunwooREffect : public GameEngineActor
 {
 private:	// member Var
+	friend Hyunwoo;
 
 public:
 	HyunwooREffect(); // default constructer 디폴트 생성자
@@ -19,6 +21,8 @@ public:
 	HyunwooREffect& operator=(const HyunwooREffect&& _other) = delete; // default RValue Copy operator 디폴트 RValue 대입연산자
 
 public:
+	void SetMyCharacter(Hyunwoo* _character);
+	
 	void PlayAwake();
 	void PlayExplode();
 
@@ -45,6 +49,8 @@ private:
 	GameEngineEffectRenderer* hitBoxRenderer_;
 	GameEngineEffectRenderer* impactRenderer_;
 	GameEngineEffectRenderer* dustRenderer_;
+
+	Hyunwoo* myCharacter_;
 
 private:
 	bool isActivated_;

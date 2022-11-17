@@ -2,6 +2,7 @@
 #include "HyunwooREffect.h"
 #include <GameEngine/GameEngineEffectRenderer.h>
 #include <GameEngine/GameEngineImageRenderer.h>
+#include "Hyunwoo.h"
 HyunwooREffect::HyunwooREffect() // default constructer 디폴트 생성자
 	: isActivated_(false), isTriggered_(false), timer_(0.0f)
 {
@@ -16,6 +17,11 @@ HyunwooREffect::~HyunwooREffect() // default destructer 디폴트 소멸자
 HyunwooREffect::HyunwooREffect(HyunwooREffect&& _other) noexcept  // default RValue Copy constructer 디폴트 RValue 복사생성자
 {
 
+}
+
+void HyunwooREffect::SetMyCharacter(Hyunwoo* _character)
+{
+	myCharacter_ = _character;
 }
 
 void HyunwooREffect::PlayAwake()
@@ -63,6 +69,8 @@ void HyunwooREffect::Start()
 
 void HyunwooREffect::Update(float _deltaTime)
 {
+
+
 	renderState_.Update(_deltaTime);
 }
 
@@ -79,7 +87,16 @@ void HyunwooREffect::updateAwaken(float _deltaTime)
 	//{
 	//	renderState_ << "Explode";
 	//	return;
+	// 
+	// 
 	//}
+
+	if ("SkillR_start" != myCharacter_->curAnimationName_ && "SkillR_loop" != myCharacter_->curAnimationName_)
+	{
+		renderState_ << "Explode";
+		return;
+	}
+
 	timer_ += _deltaTime;
 
 	hitBoxRenderer_->SetAlpha(1.0f);
@@ -93,6 +110,8 @@ void HyunwooREffect::startExplode()
 	impactRenderer_->SetAlpha(0.85f);
 	impactRenderer_->SetChangeAnimation("FX_BI_William_Skill04_ExpLine2X3", true);
 	impactRenderer_->AnimationPlay();
+
+	FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
 }
 
 void HyunwooREffect::updateExplode(float _deltaTime)
