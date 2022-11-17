@@ -531,6 +531,17 @@ void GameTimeController::MakeNextProhibitedArea()
 	ProhibitedAreaPacket propacket;
 	propacket.SetReserved(1);
 	propacket.SetLocation(nextProhibitArea0_, nextProhibitArea1_);
+
+	if (nextProhibitArea0_ < 0 && nextProhibitArea0_ > 14)
+	{
+		GameEngineDebug::MsgBoxError("쓔ㅣ발1 next");
+	}
+
+	if (nextProhibitArea1_ < 0 && nextProhibitArea1_ > 14)
+	{
+		GameEngineDebug::MsgBoxError("쓔ㅣ발2 next");
+	}
+
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
 		GameServer::GetInstance()->Send(&propacket);
@@ -566,6 +577,16 @@ void GameTimeController::SetProhibitedArea()
 		GameServer::GetInstance()->Send(&packet);
 	}
 
+
+	if (nextProhibitArea0_ < 0 && nextProhibitArea0_ > 14)
+	{
+		GameEngineDebug::MsgBoxError("쓔ㅣ발1 set");
+	}
+
+	if (nextProhibitArea1_ < 0 && nextProhibitArea1_ > 14)
+	{
+		GameEngineDebug::MsgBoxError("쓔ㅣ발2 set");
+	}
 
 	ProhibitedAreaPacket propacket;
 	propacket.SetReserved(0);
