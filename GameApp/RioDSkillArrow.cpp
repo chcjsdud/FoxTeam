@@ -128,6 +128,7 @@ void RioDSkillArrow::updateFade(float _deltaTime)
 		timer_ = 0.0f;
 		arrowRenderer_->Off();
 
+		this->Release();
 		renderState_ << "Sleep";
 	}
 

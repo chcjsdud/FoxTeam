@@ -151,6 +151,9 @@ void RioDSkillEffect::updateShot(float _deltaTime)
 	if (shotTimer_ <= 0.0f)
 	{
 		renderState_ << "Sleep";
+
+		this->Release();
+
 		return;
 	}
 }
