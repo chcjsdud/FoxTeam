@@ -1201,7 +1201,7 @@ void LumiaLevel::CharactersTransformUpdate()
 
 	if (0 < static_cast<int>(CharacterActorList_.size()))
 	{
-		for (int i = 0; i < pm->GetPlayerList().size(); i++)
+		for (int i = 0; i < CharacterActorList_.size(); i++)
 		{
 			// 받은 패킷의 정보로 갱신된 playerinfo 값에 따라
 			// 레벨의 캐릭터 액터들의 위치 회전 애니메이션 등을 변경해주는 코드블록입니다.
@@ -1211,7 +1211,7 @@ void LumiaLevel::CharactersTransformUpdate()
 			}
 
 			// 1019 박종원
-			if (i == pm->GetPlayerList().size())
+			if (i == CharacterActorList_.size())
 			{
 				return;
 			}
