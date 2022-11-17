@@ -41,6 +41,11 @@ void TitleLevel::LevelStart()
 	{
 		GameEngineInput::GetInst().CreateKey("PassLevel", 'P');
 	}
+
+	if (false == GameEngineInput::GetInst().IsKey("Enter"))
+	{
+		GameEngineInput::GetInst().CreateKey("Enter", VK_RETURN);
+	}
 }
 
 void TitleLevel::LevelUpdate(float _DeltaTime)
@@ -67,6 +72,8 @@ void TitleLevel::LevelChangeStartEvent(GameEngineLevel* _PrevLevel)
 
 	FT::BGMPlayer->ChangeSound("BGM_Lobby.wav");
 	FT::BGMPlayer->Play();
+
+
 }
 
 void TitleLevel::StartBooting()
@@ -117,9 +124,9 @@ void TitleLevel::UpdateIdle(float _DeltaTime)
 		isTyped_ = false;
 		UIController_->GetStartButton()->SetImageByIndex(0);
 	}
-	if (true == isTyped_ && true == UIController_->GetStartButton()->MouseCollisionCheck())
+	if (true == isTyped_ /* && true == UIController_->GetStartButton()->MouseCollisionCheck()*/)
 	{
-		if (true == GameEngineInput::GetInst().Press("LBUTTON"))
+		if (true == GameEngineInput::GetInst().Press("Enter"))
 		{
 			UIController_->GetStartButton()->SetImageByIndex(2);
 			GameEngineSoundManager::GetInstance()->PlaySoundByName("oui_btnClick_v1.wav");
@@ -146,7 +153,7 @@ void TitleLevel::UpdateSelect(float _DeltaTime)
 {
 	levelChangeTime_ += GameEngineTime::GetInst().GetDeltaTime();
 
-	if (true == GameEngineInput::GetInst().Up("LBUTTON"))
+	if (true == GameEngineInput::GetInst().Up("Enter"))
 	{
 		UIController_->GetStartButton()->SetImageByIndex(1);
 	}
