@@ -800,35 +800,42 @@ void Monsters::CheckSkillAttackCollision(float _DeltaTime)
 void Monsters::HomingInstinctValueUpdate(float _DeltaTime)
 {
 	// 타겟이 지정되어있다면 귀소본능수치 감소
-	if (nullptr != CurTarget_ && CurStateType_ != MonsterStateType::SKILLATTACK)
+	if (nullptr != CurTarget_ && CurStateType_ == MonsterStateType::CHASE && CurStateType_ != MonsterStateType::SKILLATTACK)
 	{
-		StateInfo_.HomingInstinctValue_ -= _DeltaTime;
-		if (0.0f >= StateInfo_.HomingInstinctValue_)
+		// 현재 타겟과의 일정거리 멀어지면 귀소본능 수치 감소시작
+		float4 TargetPos = CurTarget_->GetTransform()->GetWorldPosition();
+		float4 MyPos = GetTransform()->GetWorldPosition();
+		float TargetDist = (TargetPos - MyPos).Len3D();
+		if (StateInfo_.DetectRange_ <= TargetDist)
 		{
-			// 귀환상태로 전환
-			ChangeAnimationAndState(MonsterStateType::HOMINGINSTINCT);
-
-			// 귀소본능수치 초기화
-			StateInfo_.HomingInstinctValue_ = StateInfo_.HomingInstinctValueMax_;
-
-			// 타겟지정해제
-			CurTarget_ = nullptr;
-			CurTargetIndex_ = -1;
-
-			// 패킷전송
-			MonsterStateChangePacket Packet;
-			Packet.SetIndex(Index_);
-			Packet.SetMonsterType(Type_);
-			Packet.SetMonsterStateType(MonsterStateType::HOMINGINSTINCT);
-			Packet.SetMonsterStatInfo(StateInfo_);
-			Packet.SetTargetIndex(-1);
-			if (true == GameServer::GetInstance()->IsOpened())
+			StateInfo_.HomingInstinctValue_ -= _DeltaTime;
+			if (0.0f >= StateInfo_.HomingInstinctValue_)
 			{
-				GameServer::GetInstance()->Send(&Packet);
-			}
-			else if (true == GameClient::GetInstance()->IsConnected())
-			{
-				GameClient::GetInstance()->Send(&Packet);
+				// 귀환상태로 전환
+				ChangeAnimationAndState(MonsterStateType::HOMINGINSTINCT);
+
+				// 귀소본능수치 초기화
+				StateInfo_.HomingInstinctValue_ = StateInfo_.HomingInstinctValueMax_;
+
+				// 타겟지정해제
+				CurTarget_ = nullptr;
+				CurTargetIndex_ = -1;
+
+				// 패킷전송
+				MonsterStateChangePacket Packet;
+				Packet.SetIndex(Index_);
+				Packet.SetMonsterType(Type_);
+				Packet.SetMonsterStateType(MonsterStateType::HOMINGINSTINCT);
+				Packet.SetMonsterStatInfo(StateInfo_);
+				Packet.SetTargetIndex(-1);
+				if (true == GameServer::GetInstance()->IsOpened())
+				{
+					GameServer::GetInstance()->Send(&Packet);
+				}
+				else if (true == GameClient::GetInstance()->IsConnected())
+				{
+					GameClient::GetInstance()->Send(&Packet);
+				}
 			}
 		}
 	}
