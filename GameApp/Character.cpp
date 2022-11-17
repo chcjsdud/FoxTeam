@@ -371,7 +371,7 @@ void Character::Update(float _DeltaTime)
 	updateRecoveryItem(_DeltaTime);
 
 	regenTimer_ -= _DeltaTime;
-	if (regenTimer_ < 0.0f)
+	if (regenTimer_ < 0.0f && IsDead())
 	{
 		regenTimer_ = 2.0f;
 		stat_.HP += stat_.HPRegeneration;
