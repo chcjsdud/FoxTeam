@@ -638,7 +638,7 @@ void ItemBoxManager::SetGatherItem()
 		{
 			Pebbles = item;
 		}
-		else if (std::string::npos != item->GetName().find("Flower"))
+		else if ("Flower" == item->GetName())
 		{
 			Flower = item;
 		}
