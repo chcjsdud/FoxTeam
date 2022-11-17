@@ -34,6 +34,10 @@ public:
 	template<typename T>
 	void AddPacketHandler(T _packetID, GameEnginePacketBase* _packetObject);
 
+	void RemovePacketHandler(int _packetID);
+	template<typename T>
+	void RemovePacketHandler(T _packetID);
+
 	// 0829 ╧за╬©Ь
 	int GetClientSocketSize()
 	{
@@ -73,4 +77,10 @@ template<typename T>
 inline void GameEngineSocketServer::AddPacketHandler(T _packetID, GameEnginePacketBase* _packetObject)
 {
 	AddPacketHandler(static_cast<int>(_packetID), _packetObject);
+}
+
+template<typename T>
+inline void GameEngineSocketServer::RemovePacketHandler(T _packetID)
+{
+	RemovePacketHandler(static_cast<int>(_packetID));
 }

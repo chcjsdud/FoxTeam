@@ -27,6 +27,7 @@ public:
 	void ProcessPacket(GameEngineSocketInterface* _network);
 
 	void AddHandler(int _packetID, GameEnginePacketBase* _packetObject);
+	void RemoveHandler(int _packetID);
 
 private:
 	std::queue<GameEnginePacketBase*> packetQueue_;

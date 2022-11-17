@@ -660,6 +660,14 @@ void LumiaLevel::AddSocketHandle()
 
 	if (true == server->IsOpened())
 	{
+		server->RemovePacketHandler(ePacketID::LobbyToLumiaPacket);
+		server->RemovePacketHandler(ePacketID::GameJoinPacket2);
+		server->RemovePacketHandler(ePacketID::SetPlayerNumberPacket);
+		server->RemovePacketHandler(ePacketID::CharSelectPacket);
+		server->RemovePacketHandler(ePacketID::StartPointSelectPacket);
+		server->RemovePacketHandler(ePacketID::ReadyPacket);
+		server->RemovePacketHandler(ePacketID::StartPacket);
+
 		server->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
 		server->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
 		server->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);
@@ -678,6 +686,14 @@ void LumiaLevel::AddSocketHandle()
 
 	if (true == client->IsConnected())
 	{
+		client->RemovePacketHandler(ePacketID::LobbyToLumiaPacket);
+		client->RemovePacketHandler(ePacketID::GameJoinPacket2);
+		client->RemovePacketHandler(ePacketID::SetPlayerNumberPacket);
+		client->RemovePacketHandler(ePacketID::CharSelectPacket);
+		client->RemovePacketHandler(ePacketID::StartPointSelectPacket);
+		client->RemovePacketHandler(ePacketID::ReadyPacket);
+		client->RemovePacketHandler(ePacketID::StartPacket);
+
 		client->AddPacketHandler(ePacketID::CharMovementPacket, new CharMovementPacket);
 		client->AddPacketHandler(ePacketID::CharAnimationPacket, new CharAnimationPacket);
 		client->AddPacketHandler(ePacketID::CharStatPacket, new CharStatPacket);

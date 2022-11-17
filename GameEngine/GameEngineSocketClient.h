@@ -35,6 +35,10 @@ public:
 	template<typename T>
 	void AddPacketHandler(T _packetID, GameEnginePacketBase* _packetObject);
 
+	void RemovePacketHandler(int _packetID);
+	template<typename T>
+	void RemovePacketHandler(T _packetID);
+
 public:
 	bool IsConnected() { return bConneted_; }
 
@@ -56,4 +60,10 @@ template<typename T>
 inline void GameEngineSocketClient::AddPacketHandler(T _packetID, GameEnginePacketBase* _packetObject)
 {
 	AddPacketHandler(static_cast<int>(_packetID), _packetObject);
+}
+
+template<typename T>
+inline void GameEngineSocketClient::RemovePacketHandler(T _packetID)
+{
+	RemovePacketHandler(static_cast<int>(_packetID));
 }

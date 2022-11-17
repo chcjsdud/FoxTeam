@@ -146,6 +146,11 @@ void GameEngineSocketClient::AddPacketHandler(int _packetID, GameEnginePacketBas
 	}
 }
 
+void GameEngineSocketClient::RemovePacketHandler(int _packetID)
+{
+	packetHandler_->RemoveHandler(_packetID);
+}
+
 void GameEngineSocketClient::receiveFunction(SOCKET _clientSocket)
 {
 	char packet[PACKET_SIZE] = { 0 };

@@ -96,3 +96,13 @@ void GameEnginePacketHandler::AddHandler(int _packetID, GameEnginePacketBase* _p
 
 	parents_[_packetID] = _packetObject;
 }
+
+void GameEnginePacketHandler::RemoveHandler(int _packetID)
+{
+	auto findHandler = parents_.find(_packetID);
+
+	if (findHandler != parents_.end())
+	{
+		parents_.erase(findHandler);
+	}
+}
