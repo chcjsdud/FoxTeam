@@ -77,10 +77,21 @@ void GameEnginePacketHandler::ProcessPacket(GameEngineSocketInterface* _network)
 		GameEnginePacketBase* packet = packetQueue_.front();
 		packetQueue_.pop();
 
+		GameEngineTime time;
+		time.TimeCheckReset();
+		time.TimeCheck();
+		GameEngineDebug::OutPutDebugString("패킷 역직렬화 시작");
+
 		packet->Deserialize();
 
-		packet->execute(packet->socketSender_, _network, bServer_);
+		time.TimeCheck();
+		GameEngineDebug::OutPutDebugString("패킷 역직렬화 종료 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+		GameEngineDebug::OutPutDebugString("패킷 ID : " + std::to_string(packet->GetPacketID()) + "\n");
 
+		GameEngineDebug::OutPutDebugString("패킷 처리 시작 " + std::string("패킷 ID : ") + std::to_string(packet->GetPacketID()) + "\n");
+		packet->execute(packet->socketSender_, _network, bServer_);
+		time.TimeCheck();
+		GameEngineDebug::OutPutDebugString("패킷 처리 종료 " + std::string("패킷 ID : ") + std::to_string(packet->GetPacketID()) + ", 시간 : " + std::to_string(time.GetDeltaTime()) + "초\n");
 		delete packet;
 	}
 }

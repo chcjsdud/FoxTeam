@@ -106,7 +106,7 @@ private: // GameTime Update Function
 	void GameTimeUpdatePacketSend();										// GameTime Update Packet Send Function
 
 private: // State Update Function
-	void CharacterStateUpdatePacketSend();									// Character State Update Packet Send Function
+	void CharacterStateUpdatePacketSend(float _deltaTime);					// Character State Update Packet Send Function
 	void CharactersTransformUpdate();										// Character ManagerList Transform Update Function
 	void MonsterStateUpdatePacketSend();									// Monster State Update Packet Send Function
 	void MonstersTransformUpdate();											// Monster ManagerList Transform Update Function

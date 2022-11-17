@@ -1166,7 +1166,7 @@ void LumiaLevel::GameTimeUpdatePacketSend()
 	GameServer::GetInstance()->Send(&SendPacket);
 }
 
-void LumiaLevel::CharacterStateUpdatePacketSend()
+void LumiaLevel::CharacterStateUpdatePacketSend(float _deltaTime)
 {
 	GameServer* ServerSocket = GameServer::GetInstance();
 	GameClient* ClientSocket = GameClient::GetInstance();
@@ -1196,15 +1196,23 @@ void LumiaLevel::CharacterStateUpdatePacketSend()
 		AnimPacket.SetAnimationName(currentCharacter->GetCurAnimation());
 		AnimPacket.SetOverrideAnimation(currentCharacter->GetOverrideAnimationName(), currentCharacter->GetOverrideAnimationBoneName());
 
-		if (true == ServerSocket->IsOpened())
-		{
-			ServerSocket->Send(&AnimPacket);
-		}
-		else if (true == ClientSocket->IsConnected())
-		{
-			ClientSocket->Send(&AnimPacket);
-		}
+		static float aniPacketDelay = 0.0f;
 
+		aniPacketDelay += _deltaTime;
+
+		if (aniPacketDelay >= 0.033f)
+		{
+
+			if (true == ServerSocket->IsOpened())
+			{
+				ServerSocket->Send(&AnimPacket);
+			}
+			else if (true == ClientSocket->IsConnected())
+			{
+				ClientSocket->Send(&AnimPacket);
+			}
+			aniPacketDelay = 0.0f;
+		}
 		//// 캐릭터 상태갱신 패킷
 		//CharStatPacket StatePacket;
 		//StatePacket.SetTargetIndex(pm->GetMyNumber());
@@ -1645,17 +1653,31 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 	PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
 	MonsterInfoManager* mm = MonsterInfoManager::GetInstance();
 
+	GameEngineTime time;
+	time.TimeCheckReset();
+
+	time.TimeCheck();
+
 	// 서버 패킷 처리
 	if (true == GameServer::GetInstance()->IsOpened())
 	{
 		GameServer::GetInstance()->ProcessPacket();
 	}
 
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("서버 패킷 처리 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+	
+
+
 	// 클라이언트 패킷 처리
 	if (true == GameClient::GetInstance()->IsConnected())
 	{
 		GameClient::GetInstance()->ProcessPacket();
 	}
+
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("클라 패킷 처리 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+
 
 	// 게임진행컨트롤러(레벨업, 낮/밤전환, 몬스터첫등장, ... )
 	// 단, 서버일때만 처리하며 서버(호스트)가 현재게임을 제어(한곳에서 제어하기위해)
@@ -1664,25 +1686,44 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 		// 레벨업, 낮/밤전환, 몬스터첫등장을 위한 타임갱신
 		GameTimeController::GetInstance()->HostUpdate(_DeltaTime);
 
+		time.TimeCheck();
+		GameEngineDebug::OutPutDebugString("레벨업 낮밤등 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+
 		// 게임시간 실시간 패킷(서버-클라 동기화)
 		GameTimeUpdatePacketSend();
+
+		time.TimeCheck();
+		GameEngineDebug::OutPutDebugString("GameTImeUpdatePacketSend : " + std::to_string(time.GetDeltaTime()) + "초\n");
 	}
 
 	// 캐릭터 상태 업데이트 패킷 전송처리
-	CharacterStateUpdatePacketSend();
+	CharacterStateUpdatePacketSend(_DeltaTime);
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("캐릭터 상태 업데이트 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+
 
 	// 캐릭터 목록의 트랜스폼 데이터 갱신
 	CharactersTransformUpdate();
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("캐릭터 목록 트랜스폼 데이터 갱신 : " + std::to_string(time.GetDeltaTime()) + "초\n");
 
 	// 몬스터 상태 업데이트 패킷 전송처리
 	MonsterStateUpdatePacketSend();
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("몬스터 상태 업데이트 패킷 : " + std::to_string(time.GetDeltaTime()) + "초\n");
 
 	// 몬스터 목록의 트랜스폼 데이터 갱신
 	MonstersTransformUpdate();
 
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("몬스터 목록 트랜스폼 데이터 갱신 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+
 	// 메인캐릭터 기준 시야처리
 	// -> Rendering On/Off Processing
 	UpdateCharacterVisibility();
+
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("메인캐릭터 기준 시야처리 : " + std::to_string(time.GetDeltaTime()) + "초\n");
 
 	// Switching FreeCamMode
 	if (true == GameEngineInput::GetInst().Down("O"))
@@ -1718,6 +1759,9 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 		}
 	}
 
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("메인카메라 조정 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+
 	//// 221011 SJH TEST : 몬스터 확인을위해 몬스터 포커싱
 	//if (false == GetMainCameraActor()->IsFreeCameraMode() && 0 != static_cast<int>(MonsterActorList_.size()))
 	//{
@@ -1726,11 +1770,18 @@ void LumiaLevel::LevelUpdate(float _DeltaTime)
 	//	GetMainCameraActor()->GetTransform()->SetLocalRotationDegree({ 60.f, -35.f, 0.0f });
 	//}
 
+
 	// Debug Window Update
 	DebugWindowUpdate();
 
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("디버그 윈도우 업데이트 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+
 	// Check Level Related InputKey
 	CheckLevelRelatedInputKey();
+
+	time.TimeCheck();
+	GameEngineDebug::OutPutDebugString("레벨 인풋 키 처리 : " + std::to_string(time.GetDeltaTime()) + "초\n");
 }
 
 void LumiaLevel::LevelChangeEndEvent(GameEngineLevel* _NextLevel)
