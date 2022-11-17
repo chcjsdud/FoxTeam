@@ -71,11 +71,11 @@ void GameEngineLevel::ActorUpdate(float _DeltaTime)
 
 void GameEngineLevel::Render(float _DeltaTime)
 {
-	GameEngineTime time;
-	time.TimeCheckReset();
+	//GameEngineTime time;
+	//time.TimeCheckReset();
 
-	time.TimeCheck();
-	GameEngineDebug::OutPutDebugString("렌더링 시작 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+	//time.TimeCheck();
+	//GameEngineDebug::OutPutDebugString("렌더링 시작 : " + std::to_string(time.GetDeltaTime()) + "초\n");
 
 	// 렌더링 시작
 	// -> 백버퍼의 렌더타겟을 클리하고, 백버퍼를 셋팅(렌더링준비)
@@ -123,8 +123,8 @@ void GameEngineLevel::Render(float _DeltaTime)
 	// -> 백버퍼가 들고있는 타겟에 렌더링 명령
 	GameEngineDevice::RenderEnd();
 
-	time.TimeCheck();
-	GameEngineDebug::OutPutDebugString("렌더링 끝 : " + std::to_string(time.GetDeltaTime()) + "초\n");
+	//time.TimeCheck();
+	//GameEngineDebug::OutPutDebugString("렌더링 끝 : " + std::to_string(time.GetDeltaTime()) + "초\n");
 }
 
 void GameEngineLevel::Release(float _DeltaTime)
