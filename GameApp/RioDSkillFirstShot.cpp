@@ -27,7 +27,7 @@ void RioDSkillFirstShot::Start()
 	arrowRenderer_ = CreateTransformComponent<GameEngineEffectRenderer>();
 	arrowRenderer_->SetImage("FX_BI_HitGlow_04.png", "LinerSmp");
 	arrowRenderer_->GetTransform()->SetLocalPosition({ 0.0f, 100.0f, 0.0f });
-	arrowRenderer_->GetTransform()->SetLocalRotationDegree({ 0.f,90.f,0.f });
+	arrowRenderer_->GetTransform()->SetLocalRotationDegree({ 0.f,90.f, -30.f });
 	arrowRenderer_->GetTransform()->SetLocalScaling(arrowRenderer_->GetCurrentTexture()->GetTextureSize() * 2.0f);
 	arrowRenderer_->SetColor({ 1.0f, 1.0f, 0.2f });
 	arrowRenderer_->Off();
