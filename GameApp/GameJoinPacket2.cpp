@@ -5,6 +5,7 @@
 
 #include "PlayerInfoManager.h"
 #include "SetPlayerNumberPacket.h"
+#include <GameEngine/GameEngineCore.h>
 
 // 사실상 GameEngineServer 에서 서버 개설 / 클라이언트 Accept 할 때 번호를 매기는 게 맞다고 생각한다.
 
@@ -57,6 +58,11 @@ GameEnginePacketBase* GameJoinPacket2::getUserObject()
 void GameJoinPacket2::execute(SOCKET _sender, GameEngineSocketInterface* _network, bool _bServer)
 {
     PlayerInfoManager* pm = PlayerInfoManager::GetInstance();
+
+    if ("LumiaLevel" == GameEngineCore::CurrentLevel()->GetName())
+    {
+        return;
+    }
 
     if (_bServer)
     {
