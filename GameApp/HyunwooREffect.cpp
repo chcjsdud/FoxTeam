@@ -111,7 +111,11 @@ void HyunwooREffect::startExplode()
 	impactRenderer_->SetChangeAnimation("FX_BI_William_Skill04_ExpLine2X3", true);
 	impactRenderer_->AnimationPlay();
 
-	FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
+	if (myCharacter_ != nullptr)
+	{
+		FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Hit.wav", myCharacter_->transform_.GetWorldPosition());
+	}
+
 }
 
 void HyunwooREffect::updateExplode(float _deltaTime)
