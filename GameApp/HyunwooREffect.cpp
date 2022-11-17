@@ -93,7 +93,7 @@ void HyunwooREffect::updateAwaken(float _deltaTime)
 
 	if ("SkillR_start" != myCharacter_->curAnimationName_ && "SkillR_loop" != myCharacter_->curAnimationName_)
 	{
-		renderState_ << "Explode";
+		renderState_ << "Explode";	
 		return;
 	}
 
@@ -111,10 +111,10 @@ void HyunwooREffect::startExplode()
 	impactRenderer_->SetChangeAnimation("FX_BI_William_Skill04_ExpLine2X3", true);
 	impactRenderer_->AnimationPlay();
 
-	if (myCharacter_ != nullptr)
-	{
-		FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Hit.wav", myCharacter_->transform_.GetWorldPosition());
-	}
+	//if (myCharacter_ != nullptr)
+	//{
+	//	
+	//}
 
 }
 

@@ -1042,6 +1042,8 @@ void Hyunwoo::onPlayEffect(const std::string& _effectName, IUnit* _victim, float
 		rEffect_->GetTransform()->SetLocalRotationDegree(GetTransform()->GetLocalRotation());
 		rEffect_->PlayExplode();
 
+		FT::PlaySoundAndSendPacket("hyunwoo_Skill04_Hit.wav", transform_.GetWorldPosition());
+
 		rearEffectRenderer_->On();
 		rearEffectRenderer_->SetChangeAnimation("FX_BI_WindDust_01SE", true);
 		rearEffectRenderer_->AnimationPlay();
