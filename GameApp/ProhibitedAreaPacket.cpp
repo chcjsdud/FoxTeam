@@ -8,7 +8,7 @@
 #include "PlayerInfoManager.h"
 #include "PlayerUIController.h"
 ProhibitedAreaPacket::ProhibitedAreaPacket() // default constructer 디폴트 생성자
-    : location0_(-1), location1_(-1), isReserved_(0)
+    : location0_(-1), location1_(-1), isReserved_(-1)
 {
 
 }
@@ -76,6 +76,15 @@ void ProhibitedAreaPacket::execute(SOCKET _socketSender, GameEngineSocketInterfa
     {
         level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetMinimapUI()->SetNextProhibitedArea(static_cast<Location>(location0_));
         level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetMinimapUI()->SetNextProhibitedArea(static_cast<Location>(location1_));
+    }
+    else if (isReserved_ == -1)
+    {
+        level->GetProhibitedAreaList()[location0_]->SetProhibited(true);
+        level->GetProhibitedAreaList()[location1_]->SetProhibited(true);
+
+        level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetMinimapUI()->SetProhibitedArea(static_cast<Location>(location0_));
+        level->GetCharacterActorList()[pm->GetMyNumber()]->GetUIController()->GetMinimapUI()->SetProhibitedArea(static_cast<Location>(location1_));
+        GameEngineSoundManager::GetInstance()->PlaySoundByName("Announce_Restricted Area_01.wav");
     }
 
 
