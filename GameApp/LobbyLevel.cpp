@@ -260,9 +260,9 @@ void LobbyLevel::UpdateIdle(float _DeltaTime)
 		UIController_->GetHostButton()->Off();
 
 		clientSocket_->Initialize();
-		clientSocket_->Connect("127.0.0.1");
+		//clientSocket_->Connect("127.0.0.1");
 		//clientSocket_->Connect("123.142.84.195"); // 123.142.84.195
-		//clientSocket_->Connect("121.129.74.115");
+		clientSocket_->Connect("121.129.74.115");
 		//clientSocket_->AddPacketHandler(ePacketID::PlayerNumberPacket, new PlayerNumberPacket);				// 221010 SJH DEL
 		clientSocket_->AddPacketHandler(ePacketID::LobbyToLumiaPacket, new LobbyToLumiaPacket);
 		clientSocket_->AddPacketHandler(ePacketID::GameJoinPacket2, new GameJoinPacket2);
