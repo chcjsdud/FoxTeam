@@ -220,11 +220,11 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 	}
 
 
-	if (Dailytimes_[CurDay_ % 4].DayTime_ * 0.5f >= DayAndNightTime_ && false == isReserved_)	// 낮밤 시간이 절반이 되었을 때 (낮 60초면 30초가 되었을 때)
-	{
-		MakeNextProhibitedArea();
-		isReserved_ = true;
-	}
+	//if (Dailytimes_[CurDay_ % 4].DayTime_ * 0.5f >= DayAndNightTime_ && false == isReserved_)	// 낮밤 시간이 절반이 되었을 때 (낮 60초면 30초가 되었을 때)
+	//{
+	//	MakeNextProhibitedArea();
+	//	isReserved_ = true;
+	//}
 
 
 	if (0.0f >= DayAndNightTime_)							// 낮/밤 전환시간 도달시
@@ -233,11 +233,11 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 	
 		if (DayAndNightType::DAY == CurDayOrNight_)			// 현재 낮일때
 		{
-			if (true == isReserved_)
-			{
-				SetProhibitedArea();
-				isReserved_ = false;
-			}
+			//if (true == isReserved_)
+			//{
+			//	SetProhibitedArea();
+			//	isReserved_ = false;
+			//}
 
 			// 전환되었으므로 타입을 밤으로 설정
 			CurDayOrNight_ = DayAndNightType::NIGHT;
@@ -258,11 +258,11 @@ void GameTimeController::CalcGameTime(float _DeltaTime)
 		}
 		else if (DayAndNightType::NIGHT == CurDayOrNight_)	// 현재 밤일때
 		{
-			if (true == isReserved_)
-			{
-				SetProhibitedArea();
-				isReserved_ = false;
-			}
+			//if (true == isReserved_)
+			//{
+			//	SetProhibitedArea();
+			//	isReserved_ = false;
+			//}
 
 
 			// 전환되었으므로 타입을 낮으로 설정
