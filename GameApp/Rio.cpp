@@ -575,7 +575,7 @@ void Rio::onStartWSkill()
 		startPosition += offset;
 
 		PacketCreateProjectile packetArrow;
-		packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower * 2.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
+		packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower * 2.0f, startPosition, transform_.GetWorldRotation().y, 1500.f);
 		packetArrow.SetLifeTime(0.7f);
 		packetArrow.SetWaitTime(0.25f);
 		packetArrow.SetScale({ 70.f, 150.0f, 100.f });
@@ -586,7 +586,7 @@ void Rio::onStartWSkill()
 		{
 			RioArrow* arrow = level_->CreateActor<RioArrow>();
 			arrow->SetType(eProjectileType::RioWSkillLong);
-			arrow->MakeNonTargetArrow(*this, stat_.AttackPower * 2.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
+			arrow->MakeNonTargetArrow(*this, stat_.AttackPower * 2.0f, startPosition, transform_.GetWorldRotation().y, 1500.f);
 			arrow->SetLifeTime(0.7f);
 			arrow->SetWaitTime(0.25f);
 			arrow->SetScale({ 70.f, 150.0f, 100.f });
@@ -686,7 +686,7 @@ void Rio::onStartRSkill()
 		startPosition += offset;
 
 		PacketCreateProjectile packetArrow;
-		packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower * 6.0f, startPosition, transform_.GetWorldRotation().y, 700.f);
+		packetArrow.MakeNonTargetProjectile(*this, stat_.AttackPower * 6.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
 		packetArrow.SetLifeTime(1.0f);
 		packetArrow.SetWaitTime(1.4f);
 		packetArrow.SetScale({ 100.f, 150.0f, 150.f });
@@ -697,7 +697,7 @@ void Rio::onStartRSkill()
 		{
 			RioArrow* arrow = level_->CreateActor<RioArrow>();
 			arrow->SetType(eProjectileType::RioRSkillLong);
-			arrow->MakeNonTargetArrow(*this, stat_.AttackPower * 6.0f, startPosition, transform_.GetWorldRotation().y, 700.f);
+			arrow->MakeNonTargetArrow(*this, stat_.AttackPower * 6.0f, startPosition, transform_.GetWorldRotation().y, 1000.f);
 			arrow->SetLifeTime(1.0f);
 			arrow->SetWaitTime(1.4f);
 			arrow->SetScale({ 100.f, 150.0f, 150.f });
