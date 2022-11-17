@@ -756,7 +756,7 @@ void LumiaLevel::InitIMGUIWindow()
 	if (nullptr == MonsterDebugWindow_)
 	{
 		MonsterDebugWindow_ = GameEngineGUI::GetInst()->CreateGUIWindow<MonsterDebugWindow>("MonsterDebugWindow");
-		//MonsterDebugWindow_->OnOffChange();
+		MonsterDebugWindow_->OnOffChange();
 	}
 }
 
