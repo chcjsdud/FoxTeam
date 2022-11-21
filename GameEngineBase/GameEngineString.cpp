@@ -142,20 +142,16 @@ std::wstring GameEngineString::StringToWStringReturn(const std::string& _Text)
 	std::wstring Return;
 
 	int Size = MultiByteToWideChar(CP_ACP, 0, _Text.c_str(), static_cast<int>(_Text.size()), nullptr, 0);
-
 	if (Size == 0)
 	{
-		GameEngineDebug::MsgBoxError("스트링 변환에 실패했습니다.");
 		return L"";
 	}
 
 	Return.resize(Size);
 
 	Size = MultiByteToWideChar(CP_ACP, 0, _Text.c_str(), static_cast<int>(_Text.size()), &Return[0], Size);
-
 	if (Size == 0)
 	{
-		GameEngineDebug::MsgBoxError("스트링 변환에 실패했습니다.");
 		return L"";
 	}
 
