@@ -2329,6 +2329,7 @@ void Character::moveProcess(float _deltaTime)
 		else
 		{
 			normalState_ << "Watch";
+			changeAnimationWait();
 			return;
 		}
 	}
