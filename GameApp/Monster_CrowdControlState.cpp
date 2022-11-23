@@ -130,6 +130,7 @@ void Monsters::UpdateDeadState(float _DeltaTime)
 		if (false == ItemCollider_->Collision(static_cast<int>(eCollisionGroup::Player)))
 		{
 			itemBox_->Close();
+			return;
 		}
 
 		if (true == ItemCollider_->Collision(static_cast<int>(eCollisionGroup::MouseRay)) && true == GameEngineInput::GetInst().Down("RButton"))
