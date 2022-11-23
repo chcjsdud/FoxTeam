@@ -1022,7 +1022,6 @@ void Monsters::Start()
 	ItemCollider_->GetTransform()->SetLocalScaling(MainRenderer_->GetTransform()->GetLocalScaling());
 	ItemCollider_->GetTransform()->SetLocalPosition(MainRenderer_->GetTransform()->GetLocalPosition());
 
-
 	std::list<ItemBase*> allItemList = GetLevelConvert<LumiaLevel>()->GetItemBoxManager()->GetAllItemList();
 	
 	itemBox_ = GetLevel()->CreateActor<ItemBox>();
@@ -1090,6 +1089,7 @@ Monsters::Monsters()
 	, KnockbackTime_(0.0f)
 	, KnockbackSpeed_(float4::ZERO)
 	, bHidden_(false)
+	, itemBox_(nullptr)
 {
 	// 생성과 동시에 유닛타입 결정
 	UnitType_ = UnitType::MONSTER;

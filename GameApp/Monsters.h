@@ -310,6 +310,6 @@ protected: // CC Value
 	float4 KnockbackSpeed_;																// 넉백속도(넉백방향 * 넉백속도)
 
 private:
-	ItemBox* itemBox_;
+	ItemBox* itemBox_;																	// 몬스터사망시 표시되는 아이템 박스
 };
 

@@ -119,33 +119,40 @@ void Monsters::UpdateDeadState(float _DeltaTime)
 			GameClient::GetInstance()->Send(&ChangePacket);
 		}
 	}
-
-	if (false == ItemCollider_->Collision(static_cast<int>(eCollisionGroup::Player)))
+	
+	//============================================ 아이템박스 처리
+	if (nullptr != ItemCollider_)
 	{
-		itemBox_->Close();
-		return;
-	}
+//#ifdef _DEBUG
+		GetLevel()->PushDebugRender(ItemCollider_->GetTransform(), CollisionType::OBBBox3D, float4::BLACK);
+//#endif // _DEBUG
 
-	if (true == ItemCollider_->Collision(static_cast<int>(eCollisionGroup::MouseRay)) && true == GameEngineInput::GetInst().Down("RButton"))
-	{
-		itemBox_->Open();
-	}
+		if (false == ItemCollider_->Collision(static_cast<int>(eCollisionGroup::Player)))
+		{
+			itemBox_->Close();
+		}
 
-	if (nullptr == itemBox_->GetItemBoxUI())
-	{
-		return;
-	}
+		if (true == ItemCollider_->Collision(static_cast<int>(eCollisionGroup::MouseRay)) && true == GameEngineInput::GetInst().Down("RButton"))
+		{
+			itemBox_->Open();
+		}
 
-	int slotIndex = itemBox_->GetItemBoxUI()->SlotMouseCollisionCheck();
+		if (nullptr == itemBox_->GetItemBoxUI())
+		{
+			return;
+		}
 
-	if (-1 == slotIndex)
-	{
-		return;
-	}
+		int slotIndex = itemBox_->GetItemBoxUI()->SlotMouseCollisionCheck();
 
-	if (true == GameEngineInput::GetInst().Down("LButton"))
-	{
-		GiveItemToPlayer(slotIndex);
+		if (-1 == slotIndex)
+		{
+			return;
+		}
+
+		if (true == GameEngineInput::GetInst().Down("LButton"))
+		{
+			GiveItemToPlayer(slotIndex);
+		}
 	}
 }
 
@@ -160,6 +167,7 @@ void Monsters::EndDeadState()
 	{
 		itemBox_->Close();
 	}
+	ItemCollider_->Off();
 	BodyCollider_->On();
 }
 
