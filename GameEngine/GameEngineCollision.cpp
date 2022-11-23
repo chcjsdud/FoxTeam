@@ -306,6 +306,24 @@ bool GameEngineCollision::Collision(int _OtherGroup)
 	return false;
 }
 
+bool GameEngineCollision::Collision(GameEngineCollision* _OtherCollision)
+{
+	if (false == _OtherCollision->IsUpdate())
+	{
+		return false;
+	}
+
+	auto& CheckFunction = CollisionCheckFunction[static_cast<int>(ColType_)][static_cast<int>(_OtherCollision->ColType_)];
+
+	if (nullptr == CheckFunction)
+	{
+		GameEngineDebug::MsgBoxError("아직 구현하지 않는 타입간에 충돌을 하려고 했습니다.");
+		return false;
+	}
+
+	return CheckFunction(GetTransform(), _OtherCollision->GetTransform());
+}
+
 GameEngineCollision* GameEngineCollision::GetCollision(int _OtherGroup)
 {
 	if (true == IsUpdate())

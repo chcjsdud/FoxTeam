@@ -110,6 +110,7 @@ public:
 	}
 
 	bool Collision(int _OtherGroup);
+	bool Collision(GameEngineCollision* _OtherCollision);
 	template <typename T> bool Collision(T _OtherGroup);
 
 	GameEngineCollision* GetCollision(int _OtherGroup);

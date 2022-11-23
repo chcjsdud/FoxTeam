@@ -12,6 +12,7 @@
 #include "NavMesh.h"
 #include "ItemBox.h"
 #include "UI_ItemBox.h"
+#include "PlayerInfoManager.h"
 
 void Monsters::StartHitState()
 {
@@ -127,7 +128,16 @@ void Monsters::UpdateDeadState(float _DeltaTime)
 		GetLevel()->PushDebugRender(ItemCollider_->GetTransform(), CollisionType::OBBBox3D, float4::BLACK);
 //#endif // _DEBUG
 
-		if (false == ItemCollider_->Collision(static_cast<int>(eCollisionGroup::Player)))
+		Character* player = PlayerInfoManager::GetInstance()->GetMainCharacter();
+
+		if (nullptr == player)
+		{
+			return;
+		}
+
+		GameEngineCollision* playerCol = player->GetCollision();
+
+		if (false == ItemCollider_->Collision(playerCol))
 		{
 			itemBox_->Close();
 			return;

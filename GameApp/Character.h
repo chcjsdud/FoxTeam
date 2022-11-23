@@ -111,7 +111,7 @@ public:
 	Location GetPrevLocation() { return prevLocation_; }
 	std::list<ItemBase*>& GetAllMyBuildItems() { return allMyBuildItems_; };
 	UI_DamagePopUp* GetDamagepopup() { return damagePopUp_; }
-
+	GameEngineCollision* GetCollision() { return collision_; };
 
 	void SetUIController();
 	void SetDirection(float4 _dir) { direction_ = _dir; }
