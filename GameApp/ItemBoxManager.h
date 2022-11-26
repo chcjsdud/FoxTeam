@@ -60,9 +60,11 @@ struct QueueItem
 public:
 	CombineItem CI_;
 	bool isMyBuild_;
+	ItemTier tier_;
 
 	QueueItem()
 		: isMyBuild_(false)
+		, tier_(ItemTier::NONE)
 	{};
 };
 
