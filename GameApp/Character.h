@@ -227,6 +227,7 @@ private:
 
 public:
 	void checkItemRecipes();	// 인벤토리 내의 아이템 조합 가능여부를 판별
+
 private:
 	void moveTick(float _deltaTime, const float4& _startPosition);
 

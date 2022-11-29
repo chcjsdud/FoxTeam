@@ -603,7 +603,44 @@ void GameEngineFBXRenderer::OverrideFBXAnimation(const std::string& _AnimationNa
 		return;
 	}
 
-	if (overrideBoneIndexCache_.empty() || overrideBoneIndexCache_.end() == overrideBoneIndexCache_.find(boneIndex))
+	overrideBoneIndex_ = boneIndex;
+
+	if (overrideBoneIndexCache_.find(boneIndex) != overrideBoneIndexCache_.end())
+	{
+		if (overrideBoneIndexCache_.find(bones[boneIndex].ParentIndex) == overrideBoneIndexCache_.end())
+		{
+			return;
+		}
+		else
+		{
+			overrideBoneIndexCache_.clear();
+			overrideBoneIndexCache_.insert(std::pair(boneIndex, boneIndex));
+
+			std::vector<int> temp;
+			temp.push_back(boneIndex);
+
+			while (!temp.empty())
+			{
+				int currentIndex = temp.back();
+				temp.pop_back();
+
+				for (int i = 0; i < boneCount; i++)
+				{
+					Bone* currentBone = &bones[i];
+					if (currentBone->ParentIndex == currentIndex)
+					{
+						overrideBoneIndexCache_.insert(std::pair(currentBone->Index, currentBone->Index));
+
+						if (temp.end() == std::find(temp.begin(), temp.end(), currentBone->Index))
+						{
+							temp.push_back(currentBone->Index);
+						}
+					}
+				}
+			}
+		}
+	}
+	else
 	{
 		overrideBoneIndexCache_.clear();
 		overrideBoneIndexCache_.insert(std::pair(boneIndex, boneIndex));
@@ -631,8 +668,6 @@ void GameEngineFBXRenderer::OverrideFBXAnimation(const std::string& _AnimationNa
 			}
 		}
 	}
-
-	overrideBoneIndex_ = boneIndex;
 }
 
 void GameEngineFBXRenderer::ClearOverrideAnimation()

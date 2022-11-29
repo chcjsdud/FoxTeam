@@ -2265,13 +2265,13 @@ void Character::inputProcess(float _deltaTime)
 	{
 		return;
 	}
+
 	GameEngineCollision* rayCol = mouse_->GetRayCollision();
 
 	bool result = false;
 	float4 mousePosition = mouse_->GetIntersectionYAxisPlane(transform_.GetWorldPosition().y, 2000.f);
 	if (GameEngineInput::Press("RButton") || GameEngineInput::Down("RButton"))
 	{
-
 		IUnit* otherCharacter = getMousePickedCharacter();
 		if (nullptr != otherCharacter && otherCharacter != this)
 		{
