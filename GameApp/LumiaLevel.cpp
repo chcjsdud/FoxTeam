@@ -1593,7 +1593,7 @@ void LumiaLevel::LevelStart()
 
 	// 
 	GetMainCamera()->DebugOn();
-	GetMainCamera()->SetNear(1000.f);
+	GetMainCamera()->SetNear(200.f);
 	GetMainCamera()->SetFar(3000.f);
 }
 
