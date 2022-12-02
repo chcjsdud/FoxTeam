@@ -97,6 +97,10 @@ public:
 		FovAngleY_ = _fovAngle;
 	}
 
+	inline void SetNear(float _near) { NearZ_ = _near; }
+	inline void SetFar(float _far) { FarZ_= _far; }
+
+
 	DeferredCalLightEffect CalLightEffect;
 	DeferredMerge DeferredMergeEffect;
 

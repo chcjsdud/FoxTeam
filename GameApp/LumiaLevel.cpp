@@ -1593,6 +1593,8 @@ void LumiaLevel::LevelStart()
 
 	// 
 	GetMainCamera()->DebugOn();
+	GetMainCamera()->SetNear(1000.f);
+	GetMainCamera()->SetFar(3000.f);
 }
 
 void LumiaLevel::LevelUpdate(float _DeltaTime)
