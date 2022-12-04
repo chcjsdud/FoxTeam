@@ -5,7 +5,6 @@
 // 분류 : IOCP(Input Output Completion Port)
 // 용도 : Thread Management
 // 설명 : 최소한의 스레드를 사용해서 Port와 관련된 입출력을 처리하는 기법
-//       <장점>
 //        1. 최소한의 스레드 사용
 //           -. 무분별한 스레드 할당에 사용되는 비용 절감 -> 스레드풀(Thread Pool) 사용
 //           -. 컨텍스트 스위칭(Context Switchgin) 비용 절감 -> CPU에 Dispatch되는 스레드 수를 조절
