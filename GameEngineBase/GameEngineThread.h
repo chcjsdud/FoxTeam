@@ -4,57 +4,51 @@
 #include <string>
 #include <functional>
 
-// 설명 :
+// 분류 : Thread
+// 용도 : 작업 단위
+// 설명 : Name(스레드 설명)을 포함한 스레드 할당
 class GameEngineThread : public GameEngineObjectNameBase
 {
 public:
-	// constrcuter destructer
-	GameEngineThread();
-	~GameEngineThread();
+	static void GameServerThreadFunction(GameEngineThread* _Thread, std::string _Name);
 
-	// delete Function
-	GameEngineThread(const GameEngineThread& _Other) = delete;
-	GameEngineThread(GameEngineThread&& _Other) noexcept = delete;
-	GameEngineThread& operator=(const GameEngineThread& _Other) = delete;
-	GameEngineThread& operator=(GameEngineThread&& _Other) noexcept = delete;
-
-	//static std::string GetThreadName()
-	//{
-	//	return ThreadName;
-	//}
-
-
+public:
 	void Start(std::string _ThreadName, std::function<void(GameEngineThread*)> _Function)
 	{
-		ThreadFunction = _Function;
-		Thread = std::thread(GameServerThreadFunction, this, _ThreadName);
+		ThreadFunction_ = _Function;
+		Thread_ = std::thread(GameServerThreadFunction, this, _ThreadName);
 	}
 
 	void Join()
 	{
-		if (nullptr != ThreadFunction)
+		if (nullptr != ThreadFunction_)
 		{
 			Sleep(1);
-			Thread.join();
-			ThreadFunction = nullptr;
+			Thread_.join();
+			ThreadFunction_ = nullptr;
 		}
 
 	}
 
 protected:
-
-
-
 private:
-	std::thread Thread;
-	std::function<void(GameEngineThread*)> ThreadFunction;
 
+public:
+	GameEngineThread();
+	~GameEngineThread();
 
+public:
+	GameEngineThread(const GameEngineThread& _Other) = delete;
+	GameEngineThread(GameEngineThread&& _Other) noexcept = delete;
 
-	static void GameServerThreadFunction(GameEngineThread* _Thread, std::string _Name);
+protected:
+	GameEngineThread& operator=(const GameEngineThread& _Other) = delete;
+	GameEngineThread& operator=(GameEngineThread&& _Other) noexcept = delete;
 
-	// 쓰레드마다 전역변수를 가지게 됩니다.
-	// static thread_local std::string ThreadName;
-
+public:
+protected:
+private:
+	std::thread Thread_;
+	std::function<void(GameEngineThread*)> ThreadFunction_;
 };
 
