@@ -68,13 +68,7 @@ void GameEngineFSM::operator<<(const std::string& _stateName)
 	Next_ = FindIter->second;
 }
 
-void GameEngineFSM::CreateState(
-	const std::string& _Name,
-	std::function<void(float)> _Update,
-	std::function<void()> _Start /*= nullptr*/,
-	std::function<void()> _EndStart /*= nullptr*/,
-	std::function<void()> _Init /*= nullptr*/
-)
+void GameEngineFSM::CreateState(const std::string& _Name, std::function<void(float)> _Update, std::function<void()> _Start, std::function<void()> _EndStart, std::function<void()> _Init)
 {
 	if (AllState_.end() != AllState_.find(_Name))
 	{
@@ -101,7 +95,6 @@ void GameEngineFSM::ChangeState(const std::string& _Name, bool _bForceChange)
 	}
 
 	std::map<std::string, State*>::iterator FindIter = AllState_.find(_Name);
-
 	if (AllState_.end() == FindIter)
 	{
 		GameEngineDebug::MsgBoxError("존재하지 않는 스테이트로 체인지하려고 했습니다..");
