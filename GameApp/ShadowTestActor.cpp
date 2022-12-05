@@ -36,13 +36,13 @@ void ShadowTestActor::Start()
 	//ShadowRenderer_ = CreateTransformComponent<GameEngineShadowRenderer>();
 	//ShadowRenderer_->SetBaseRenderer(TestBaseRenderer_, "RendererShadow");
 
-	GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
-	Renderer->SetRenderingPipeLine("DeferredColor");
-	Renderer->SetMesh("Sphere");
-	Renderer->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });
-	Renderer->GetTransform()->SetLocalPosition({ 100.0f, 300.0f, 100.0f });
-	Renderer->ShaderHelper.SettingConstantBufferSet("ResultColor", float4(0.0f, 1.0f, 0.0f));
-	Renderer->LightShadowOn();
+	//GameEngineRenderer* Renderer = CreateTransformComponent<GameEngineRenderer>(GetTransform());
+	//Renderer->SetRenderingPipeLine("DeferredColor");
+	//Renderer->SetMesh("Sphere");
+	//Renderer->GetTransform()->SetLocalScaling({ 100.0f, 100.0f, 100.0f });
+	//Renderer->GetTransform()->SetLocalPosition({ 100.0f, 300.0f, 100.0f });
+	//Renderer->ShaderHelper.SettingConstantBufferSet("ResultColor", float4(0.0f, 1.0f, 0.0f));
+	//Renderer->LightShadowOn();
 
 	if (false == GameEngineInput::GetInst().IsKey("TestChangeKey"))
 	{

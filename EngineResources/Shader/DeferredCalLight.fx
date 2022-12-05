@@ -66,15 +66,22 @@ LightOutPut DeferredCalLight_PS(VertexOut _In)
         {
             float4 WorldPosition = mul(float4(ViewPosition.xyz, 1.0f), Lights[LightNum].CameraViewInverse);
             float4 ShaodwPos = mul(WorldPosition, Lights[LightNum].LightVP);
+
+            // 보간후 재균질화
             float fDepth = ShaodwPos.z / ShaodwPos.w;
             float fUvX = ShaodwPos.x / ShaodwPos.w;
             float fUvY = ShaodwPos.y / ShaodwPos.w;
             
+            // 라이트클립공간(x,y는 -1 ~ 1 / z는 0 ~ 1 범위)의 좌표를 텍스쳐공간(x,y는 0 ~ 1범위)으로 변환
             float2 ShadowUv = float2(fUvX * 0.5f + 0.5f, fUvY * -0.5f + 0.5f);
+
+            // 단, 해당 위치가 빛을 비추는 범위일때만 그림자 영역으로 판단
             if (0.001f < ShadowUv.x && 0.999f > ShadowUv.x && 0.001f < ShadowUv.y && 0.999f > ShadowUv.y)
             {
+                // 그림자맵의 해당 좌표를 샘플링(그림자맵의 깊이 Get)
                 float fShadowDepth = LightShadowTex.Sample(Smp, float3(ShadowUv.x, ShadowUv.y, LightNum)).r;
                 
+                // 클립 공간 z 값이 그림자 맵 값보다 크면 픽셀이 그림자로 판단
                 if (0.0f < fShadowDepth && fDepth > fShadowDepth + 0.001f)
                 {
                     Count++;
