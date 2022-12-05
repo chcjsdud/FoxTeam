@@ -49,6 +49,12 @@ public:
 public:
 	static void LoadResource();
 
+public:
+	inline std::vector<float4> GetCurrentPath() const
+	{
+		return destinations_;
+	}
+
 private:
 	void LevelChangeStartEvent(GameEngineLevel* _NextLevel) override;
 public:

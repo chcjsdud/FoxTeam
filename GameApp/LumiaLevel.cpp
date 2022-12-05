@@ -1364,6 +1364,52 @@ void LumiaLevel::DebugWindowUpdate()
 			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curSP(Local) : " + std::to_string(CharacterActorList_[i]->GetStat()->SP));
 			DebugAndControlWindow_->AddText("Player " + std::to_string(i) + "curSP(Server) : " + std::to_string(pm->GetPlayerList()[i].stat_->SP));
 		}
+
+		// A* Algorithm Debug Value
+		DebugAndControlWindow_->AddText("");
+		if (-1 != pm->GetMyNumber() && false == CharacterActorList_.empty())
+		{
+			for (int Index = 0; Index < static_cast<int>(CharacterActorList_.size()); ++Index)
+			{
+				if (Index != pm->GetMyNumber())
+				{
+					continue;
+				}
+
+				// 경로 관련 디버그
+				DebugAndControlWindow_->AddText("< A* Algorithm >");
+
+				// 현재 위치
+				float4 CurPos = CharacterActorList_[pm->GetMyNumber()]->GetTransform()->GetWorldPosition();
+				DebugAndControlWindow_->AddText("-. Start Position");
+				DebugAndControlWindow_->AddText("X: " + std::to_string(CurPos.x) + "Y: " + std::to_string(CurPos.y) + "Z: " + std::to_string(CurPos.z));
+
+				// 현재경로 뒤집기
+				// 기존 : 최종 -> 다음이동경로
+				// 뒤집기 : 다음이동경로 -> 최종
+				std::vector<float4> Path = CharacterActorList_[pm->GetMyNumber()]->GetCurrentPath();
+				std::reverse(Path.begin(), Path.end());
+
+				// 최종목적지
+				if (false == Path.empty())
+				{
+					float4 FinalPath = Path.back();
+					DebugAndControlWindow_->AddText("-. End Position");
+					DebugAndControlWindow_->AddText("X: " + std::to_string(FinalPath.x) + "Y: " + std::to_string(FinalPath.y) + "Z: " + std::to_string(FinalPath.z));
+					Path.pop_back();
+
+					// 이동경로
+					DebugAndControlWindow_->AddText("-. Move Path List");
+					for (int i = 0; i < static_cast<int>(Path.size()); ++i)
+					{
+						DebugAndControlWindow_->AddText(std::to_string(i) + ". " + "X: " + std::to_string(Path[i].x) + "Y: " + std::to_string(Path[i].y) + "Z: " + std::to_string(Path[i].z));
+					}
+
+					DebugAndControlWindow_->AddText("");
+				}
+			}
+		}
+
 	}
 
 	// MonsterDebugWindow
