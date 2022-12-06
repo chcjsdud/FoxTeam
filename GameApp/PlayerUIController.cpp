@@ -135,7 +135,7 @@ void PlayerUIController::Update(float _DeltaTime)
 		}
 		else
 		{
-			pos = lumiaLevel->GetCharacterActorList()[i]->GetTransform()->GetLocalPosition();
+			pos = lumiaLevel->GetCharacterActorList()[i]->GetTransform()->GetWorldPosition();
 			pos = calhelper_->Cal3Dto2D(pos);
 			pos = calhelper_->CalRound(pos);
 		}
