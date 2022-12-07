@@ -62,10 +62,13 @@ LightOutPut DeferredCalLight_PS(VertexOut _In)
     int Count = 0;
     for (int LightNum = 0; LightNum < LightCount; ++LightNum)
     {
+        // 카메라뷰공간에서의 정점을 월드공간으로 보내고,
         float4 WorldPosition = mul(float4(ViewPosition.xyz, 1.0f), Lights[LightNum].CameraViewInverse);
+
+        // 해당 정점을 빛의 투영공간으로 보내고
         float4 ShaodwPos = mul(WorldPosition, Lights[LightNum].LightVP);
 
-        // 보간후 재균질화
+        // 빛의 투영공간에서 정점의 위치정보를 얻어와서
         float fDepth = ShaodwPos.z / ShaodwPos.w;
         float fUvX = ShaodwPos.x / ShaodwPos.w;
         float fUvY = ShaodwPos.y / ShaodwPos.w;
