@@ -158,7 +158,7 @@ void PlayerUIController::Update(float _DeltaTime)
 
 	for (size_t i = 0; i < lumiaLevel->GetMonsterActorList().size(); i++)
 	{
-		float4 pos = lumiaLevel->GetMonsterActorList()[i]->GetTransform()->GetLocalPosition();
+		float4 pos = lumiaLevel->GetMonsterActorList()[i]->GetTransform()->GetWorldPosition();
 		pos = calhelper_->Cal3Dto2D(pos);
 	
 		bool hidden = lumiaLevel->GetMonsterActorList()[i]->IsHidden();

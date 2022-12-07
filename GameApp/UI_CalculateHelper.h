@@ -13,12 +13,9 @@ public:
 	~UI_CalculateHelper();
 
 public:
-	//인자로 들어오는건 3D좌표의 LocalPosition
 	float4 Cal3Dto2D(float4 _Position)
 	{
-		//3D공간의 좌표를 2D화면좌표로 변환
-		
-
+		//WorldPosition을 받아 카메라에서 하는 연산을 직접 해서 스크린 상에서의 위치를 구하는 함수
 		DirectX::XMVECTOR Position = _Position.DirectVector;
 		D3D11_VIEWPORT ViewPort_;
 
@@ -30,7 +27,7 @@ public:
 		float4x4 View = GetLevel()->GetMainCamera()->GetTransform()->GetTransformData().View_;
 		DirectX::XMMATRIX ViewProjectionMatrix = View.DirectMatrix * Pro.DirectMatrix;
 		Position = DirectX::XMVector3TransformCoord(Position, ViewProjectionMatrix);
-		//로컬좌표에 월드 뷰 투영 행렬을 곱해서 -1과 1사이의 클립 스페이스로 이동
+		//월드좌표에 뷰 투영 행렬을 곱해서 -1과 1사이의 클립 스페이스로 이동
 
 
 		float4 ReturnPosition = { 0.0f, 0.0f };
