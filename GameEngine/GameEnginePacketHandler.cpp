@@ -57,6 +57,7 @@ void GameEnginePacketHandler::AnalyzePacketAndPush(char* _data, int _size, SOCKE
 		{
 			analyzedPacket->setSocketSender(_sender);
 		}
+		analyzedPacket->Deserialize();
 		PushPacket(analyzedPacket);
 	}
 }
@@ -82,7 +83,7 @@ void GameEnginePacketHandler::ProcessPacket(GameEngineSocketInterface* _network)
 		//time.TimeCheck();
 		//GameEngineDebug::OutPutDebugString("패킷 역직렬화 시작");
 
-		packet->Deserialize();
+		//packet->Deserialize();
 
 		//time.TimeCheck();
 		//GameEngineDebug::OutPutDebugString("패킷 역직렬화 종료 : " + std::to_string(time.GetDeltaTime()) + "초\n");
