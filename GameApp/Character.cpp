@@ -2930,11 +2930,11 @@ void Character::updateRestLoop(float _deltaTime)
 		normalState_ << "RestEnd";
 	}
 
-	if (normalState_.GetTime() > 3.0f)
+	if (normalState_.GetTime() > 0.3f)
 	{
 		normalState_.GetCurrentState()->Time_ = 0.0f;
-		stat_.HP += stat_.HPMax * 0.1f;
-		stat_.SP += stat_.SPMax * 0.1f;
+		stat_.HP += stat_.HPMax * 0.02f;
+		stat_.SP += stat_.SPMax * 0.02f;
 		if (stat_.HP > stat_.HPMax)
 		{
 			stat_.HP = stat_.HPMax;
