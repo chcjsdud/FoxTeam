@@ -851,28 +851,25 @@ void Character::checkItemBox()
 
 bool sortItemQueue(QueueItem _left, QueueItem _right)
 {
-	// 모두 루트에 포함된 아이템인 경우 티어로 정렬
+	// 우선도에 따라 정렬
 	if (true == _left.isMyBuild_ &&
-		true == _right.isMyBuild_)
+		false == _right.isMyBuild_)
 	{
-		if (static_cast<int>(_left.tier_) < static_cast<int>(_right.tier_))
-		{
-			return false;
-		}
-		else
+		return true;
+	}
+	else
+	{
+		if (static_cast<int>(_left.tier_) > static_cast<int>(_right.tier_))
 		{
 			return true;
 		}
+		else
+		{
+			return false;
+		}
 	}
 
-	// 우선도에 따라 정렬 (루트)
-	if (false == _left.isMyBuild_ &&
-		true == _right.isMyBuild_)
-	{
-		return false;
-	}
-
-	return true;
+	return false;
 }
 
 void Character::checkItemRecipes()
@@ -945,6 +942,10 @@ void Character::checkItemRecipes()
 		// 조합 대기열에 등록
 		queueItemMixing_.push_back(QI);
 
+	}
+
+	if (false == queueItemMixing_.empty())
+	{
 		queueItemMixing_.sort(sortItemQueue);
 	}
 }
