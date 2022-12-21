@@ -25,7 +25,7 @@ public:
 		LPOVERLAPPED Ptr = nullptr;
 		while (true)
 		{
-			// 작업 완료까지 대기
+			// I/O Completion Queue 등록 완료까지 대기
 			// lpNumberOfBytesTransferred : 송수신된 바이트 수
 			// lpCompletionKey : 비동기 I/O 요청이 발생한 디바이스의 completion Key(IOCP에 작업할당시 lpNumberOfBytesTransferred를 -2로 등록)
 			// Ptr : 비동기 호출시 전달할 Overlapped 구조체의 주소(IOCP에 작업할당시 lpCompletionKey에 해당 작업시 호출되는 함수 포인터 등록)

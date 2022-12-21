@@ -83,6 +83,7 @@ LightOutPut DeferredCalLight_PS(VertexOut _In)
             float fShadowDepth = LightShadowTex.Sample(Smp, float3(ShadowUv.x, ShadowUv.y, LightNum)).r;
                 
             // 클립 공간 z 값이 그림자 맵 값보다 크면 픽셀이 그림자로 판단
+            // 해당 픽셀이 그림자 영역내에 존재하므로 그림자로 판단할 수 있다.
             if (0.0f < fShadowDepth && fDepth > fShadowDepth + 0.001f)
             {
                 Count++;
